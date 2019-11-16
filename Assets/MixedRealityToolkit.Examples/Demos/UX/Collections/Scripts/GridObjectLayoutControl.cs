@@ -43,6 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             LayoutAnchor currentLayout = grid.Anchor;
             var anchorTypeCount = Enum.GetNames(typeof(LayoutAnchor)).Length;
             int nextLayout = (((int)currentLayout) - 1) % anchorTypeCount;
+            if (nextLayout < 0)
+            {
+                nextLayout += anchorTypeCount;
+            }
             grid.Anchor = (LayoutAnchor)nextLayout;
             UpdateUI();
         }

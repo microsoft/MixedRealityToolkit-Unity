@@ -1515,8 +1515,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Near Menu Examples
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1915,8 +1913,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Auto Follow at Distance Enabled in 'FollowMeToggle' script (2 meters)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -2200,8 +2196,82 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e28b3473906c8764a948650d42b975c1, type: 2}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: layout
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[0].Name
+      value: ButtonOne
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[0].Transform
+      value: 
+      objectReference: {fileID: 1355694734}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[1].Name
+      value: ButtonTwo
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[1].Transform
+      value: 
+      objectReference: {fileID: 1355694733}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[2].Name
+      value: ButtonThree
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[2].Transform
+      value: 
+      objectReference: {fileID: 1355694732}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[3].Name
+      value: ButtonFour
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: nodeList.Array.data[3].Transform
+      value: 
+      objectReference: {fileID: 1355694731}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
+--- !u!4 &1355694731 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5733978352390262511, guid: 40b588bd40632eb41a0af374d91c4fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1355694730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1355694732 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2565462927989821909, guid: 40b588bd40632eb41a0af374d91c4fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1355694730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1355694733 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4987367190003920735, guid: 40b588bd40632eb41a0af374d91c4fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1355694730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1355694734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5972206229126697900, guid: 40b588bd40632eb41a0af374d91c4fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1355694730}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1489540746
 GameObject:
   m_ObjectHideFlags: 0
@@ -2483,8 +2553,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'This example scene demonstrates various types of near interaction menus
     with following functionality:
 
@@ -2939,6 +3007,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0912
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486559457699078303, guid: 9a7c24f281a2c3d45a9b8befe608bf77,
+        type: 3}
+      propertyPath: columns
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7c24f281a2c3d45a9b8befe608bf77, type: 3}
