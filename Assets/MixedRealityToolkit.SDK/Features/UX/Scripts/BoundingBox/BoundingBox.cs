@@ -1462,6 +1462,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var cornerbounds = GetMaxBounds(cornerVisual);
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
+                cornerbounds.center = Vector3.zero;
 
                 // we need to multiply by this amount to get to desired scale handle size
                 var invScale = scaleHandleSize / cornerbounds.size.x;
@@ -1592,7 +1593,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.localPosition = Vector3.zero;
                 
                 Bounds bounds = new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale);
-                bounds.size = bounds.size.RotateAround(bounds.center, midpointVisual.transform.localRotation);
+                if (edgeAxes[i] == CardinalAxisType.X)
+                {
+                    bounds.size = new Vector3(bounds.size.y, bounds.size.x, bounds.size.z);
+                }
+                else if (edgeAxes[i] == CardinalAxisType.Z)
+                {
+                    bounds.size = new Vector3(bounds.size.x, bounds.size.z, bounds.size.y);
+                }
 
                 AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
 
