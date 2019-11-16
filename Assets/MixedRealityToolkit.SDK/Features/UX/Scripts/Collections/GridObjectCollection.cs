@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         [Tooltip("Distance for plane layout")]
         [Range(0f, 100f)]
-        private float distance = 1f;
+        private float distance = 0f;
 
         /// <summary>
         /// This is the Distance for an offset for the Plane mapping and is ignored for the other mappings.
@@ -444,7 +444,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 // If we have an old asset, then rows could be != default value, columns would be default value
-                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols;
+                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols 
+                    // We actually want default # of columns
+                    && (nodeListCount <= rows * (columns - 1) || nodeListCount > rows * columns);
                 // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
                 // This will be okay unless the number of children exceeds rows * cols
                 bool upgradeScenarioB = rows == defaultValueRowsCols && columns == defaultValueRowsCols && nodeListCount > rows * columns;
@@ -452,7 +454,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     // Try to guess what the desired columns would be
                     int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                    Debug.LogWarning("GridObjectCollection on " + gameObject.name + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
+                    string objectName = gameObject.name;
+                     if (gameObject.transform.parent != null) 
+                     {
+                         objectName += " (parent " + transform.parent.gameObject.name + ")";
+                     }
+                    Debug.Log("GridObjectCollection on " + objectName + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
                     Columns = columnsGuess;
                 }
             }

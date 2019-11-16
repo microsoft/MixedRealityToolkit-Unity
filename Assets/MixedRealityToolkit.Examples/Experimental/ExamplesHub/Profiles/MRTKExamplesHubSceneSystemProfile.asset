@@ -33,8 +33,8 @@ MonoBehaviour:
   contentScenes:
   - Name: MRTKExamplesHubMainMenu
     Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 63a00118e809c754f9c7911bb85d635f, type: 3}
   - Name: HandInteractionExamples
@@ -45,80 +45,80 @@ MonoBehaviour:
     Asset: {fileID: 102900000, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
   - Name: ClippingExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 2
     Tag: Untagged
     Asset: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310, type: 3}
   - Name: TooltipExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 3
     Tag: Untagged
     Asset: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28, type: 3}
   - Name: MaterialGallery
     Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 4
     Tag: Untagged
     Asset: {fileID: 102900000, guid: c6b1477d31864dff836e9738518eae60, type: 3}
   - Name: BoundingBoxExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 5
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 9da574c0affd04d42a6b1e5db09e82b4, type: 3}
   - Name: PressableButtonExample
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 6
     Tag: Untagged
     Asset: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120, type: 3}
   - Name: HandMenuExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 7
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 2792ec9767804e644906ab978f2eed23, type: 3}
   - Name: SlateExample
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Slate/SlateExample.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 8
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 86e8b0c6246dbb74aa04ecd40a57d89c, type: 3}
   - Name: SliderExample
     Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/SliderExample.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 9
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 086aad2912678d04e968264b2398004b, type: 3}
   - Name: EyeTrackingDemo-02-TargetSelection
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 10
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0, type: 3}
   - Name: EyeTrackingDemo-03-Navigation
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 11
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a, type: 3}
   - Name: EyeTrackingDemo-04-TargetPositioning
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 12
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494, type: 3}
   - Name: EyeTrackingDemo-05-Visualizer
     Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 13
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a, type: 3}
   - Name: NearMenuExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 14
     Tag: Untagged
     Asset: {fileID: 102900000, guid: bf3eb3415bffceb41810526380c2c71c, type: 3}
   permittedLightingSceneComponentTypes:
