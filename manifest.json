@@ -546,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/UnityArCameraSettings.html",
-          "hash": "ohpHHDxzpDkESJNKDzbPVg=="
+          "hash": "0RT72Q5XVvXH6G5IvG7gqg=="
         }
       },
       "is_incremental": false,
@@ -1885,6 +1885,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/UnityArAssemblyReferences.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/UnityArAssemblyReferences.png"
         }
       },
       "is_incremental": false,
@@ -4345,6 +4356,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_WindowsMixedRealityControllerConfigScreen.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_WindowsMixedRealityControllerConfigScreen.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu.png",
       "output": {
         "resource": {
@@ -6127,7 +6149,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "2PT4PDkyyOiUTjGpzCoASw=="
+          "hash": "umhVCaJ/YICneLFm7bJL6A=="
         }
       },
       "is_incremental": false,
@@ -9703,6 +9725,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
           "hash": "Ko5LJtQdL04CMji1wF4x/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu.UpdateSliderTrackLine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu.UpdateSliderTrackLine.html",
+          "hash": "n6pVSqPoFlyrzSQ26TQmYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu.html",
+          "hash": "QSAUKO/Uxrz6KQeihjjqgg=="
         }
       },
       "is_incremental": false,
@@ -23802,7 +23848,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "nNIfqGo4BXBl2CS8YRzolg=="
+          "hash": "Kh//PaX6xZjkjl7gVz4+wg=="
         }
       },
       "is_incremental": false,
@@ -23863,7 +23909,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1421,
+          "total_file_count": 1423,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
