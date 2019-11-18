@@ -5,8 +5,8 @@ Near interactions come in the form of touches and grabs. Touch and grab events a
 There are three key steps to take in order to listen for touch and/or grab input events on a particular GameObject.
 
 1. Ensure the relevant pointer is registered in the main [MRTK Configuration Profile](../MixedRealityConfigurationGuide.md).
-1. Ensure the desired GameObject has the appropriate *NearInteraction** script component and [`Unity Collider`](https://docs.unity3d.com/ScriptReference/Collider.html).
-1. Implement the appropriate input handler interface on an attached script to the desired GameObject to listen for the touch/grab events.
+1. Ensure the desired GameObject has the appropriate [grab](#add-grab-interactions) or [touch](#add-touch-interactions) script component and [`Unity Collider`](https://docs.unity3d.com/ScriptReference/Collider.html).
+1. Implement an input handler interface on an attached script to the desired GameObject to listen for the [grab](#grab-code-example) or [touch](#touch-code-example) events.
 
 ## Add grab interactions
 
@@ -22,7 +22,7 @@ There are three key steps to take in order to listen for touch and/or grab input
 
 1. On the GameObject or one of its ancestors, add a script component that implements the [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) interface. Any ancestor of the object with the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) will be able to receive pointer events as well.
 
-### Code Example
+### Grab code example
 
 Below is a script that will print if an event is a touch or grab. In the relevant *IMixedRealityPointerHandler* interface function, one can look at the type of pointer that triggers that event via the [`MixedRealityPointerEventData`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerEventData). If the pointer is a *SpherePointer*, the interaction is a grab.
 
@@ -149,6 +149,15 @@ public static void MakeNearDraggable(GameObject target)
     });
 }
 ```
+
+## Useful APIs
+
+* [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable)
+* [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable)
+* [`NearInteractionTouchableUnityUI`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI)
+* [`NearInteractionTouchableVolume`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume)
+* [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
+* [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler)
 
 ## See also
 
