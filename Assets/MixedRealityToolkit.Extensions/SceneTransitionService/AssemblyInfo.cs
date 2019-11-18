@@ -6,7 +6,5 @@ using System.Reflection;
 [assembly: AssemblyVersion("2.2.0.0")]
 [assembly: AssemblyFileVersion("2.2.0.0")]
 
-[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit")]
-[assembly: AssemblyDescription("Microsoft® Mixed Reality Toolkit scene transition service")]
-
+[assembly: AssemblyProduct("Microsoft® Mixed Reality Toolkit Extensions")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
