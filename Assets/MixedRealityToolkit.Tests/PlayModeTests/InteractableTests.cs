@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static readonly Quaternion DefaultRotationToggle = Quaternion.LookRotation(Vector3.forward);
 
         private static InputSimulationService inputSimulationService = null;
-        private const int MOVE_HAND_NUM_STEPS = 32;
+        private const int MoveHandNumSteps = 32;
 
         [SetUp]
         public override void Setup()
@@ -643,8 +643,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(secondRadialButton.IsToggled);
             Assert.IsFalse(thirdRadialButton.IsToggled);
 
-            yield return testHand.Show(Vector3.zero);
-
             var aBitBack = Vector3.forward * -0.2f;
             yield return testHand.MoveTo(secondRadialButton.transform.position);
             yield return testHand.Move(aBitBack);
@@ -919,7 +917,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand towards
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, MOVE_HAND_NUM_STEPS, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, MoveHandNumSteps , ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
         }
 
         private IEnumerator MoveHandAwayFromButton()
@@ -928,7 +926,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 p3 = Vector3.zero;
 
             // Move the hand back
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, MOVE_HAND_NUM_STEPS, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, MoveHandNumSteps , ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
         }
 
