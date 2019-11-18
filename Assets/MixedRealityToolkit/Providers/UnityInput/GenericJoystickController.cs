@@ -24,10 +24,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float PointerOffsetAngle { get; protected set; } = 0f;
 
         private Vector2 dualAxisPosition = Vector2.zero;
-        protected Vector3 CurrentControllerPosition = Vector3.zero;
-        protected Quaternion CurrentControllerRotation = Quaternion.identity;
         private MixedRealityPose pointerOffsetPose = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The current position of this controller.
+        /// </summary>
+        protected Vector3 CurrentControllerPosition = Vector3.zero;
+
+        /// <summary>
+        /// The current rotation of this controller.
+        /// </summary>
+        protected Quaternion CurrentControllerRotation = Quaternion.identity;
+
+        /// <summary>
+        /// The previous pose of this controller.
+        /// </summary>
         protected MixedRealityPose LastControllerPose = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The current pose of this controller.
+        /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
 
         /// <inheritdoc />

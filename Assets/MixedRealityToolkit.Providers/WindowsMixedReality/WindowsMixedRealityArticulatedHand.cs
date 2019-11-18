@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// The Windows Mixed Reality Controller default interactions.
+        /// The Windows Mixed Reality articulated hands default interactions.
         /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
+        /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
