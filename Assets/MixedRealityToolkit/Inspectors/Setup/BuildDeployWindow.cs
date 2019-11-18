@@ -123,6 +123,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
 
+        private readonly GUIContent ForceRebuildLabel = new GUIContent("Force Rebuild", "Force fresh clean and rebuild of solution to generate AppX");
+
+        private readonly GUIContent MulticoreBuildLabel = new GUIContent("Multicore Build", "If true, the appx will be built with multicore support enabled in the MSBuild process.");
+
+        private readonly GUIContent PlatformToolsetLabel = new GUIContent("Platform Toolset", "Version of Visual Studio build toolset to utilize for building");
+
         #endregion Labels
 
         #region Properties
@@ -273,6 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
+            RenderBuildDirectory();
+
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
             {
                 RenderStandaloneBuildView();
@@ -320,8 +328,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderStandaloneBuildView()
         {
-            RenderBuildDirectory();
-
             using (new EditorGUILayout.HorizontalScope())
             {
                 RenderPlayerSettingsButton();
@@ -331,10 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     EditorApplication.delayCall += () => UnityPlayerBuildTools.BuildUnityPlayer(new BuildInfo());
                 }
 
-                if (GUILayout.Button("Open Unity Build Window"))
-                {
-                    GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
-                }
+                RenderOpenUnityBuildWindow();
             }
         }
 
@@ -342,8 +345,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderUnityBuildView()
         {
-            RenderBuildDirectory();
-
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
 
 #if !UNITY_2019_1_OR_NEWER
@@ -396,16 +397,29 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 #endif // !UNITY_2019_1_OR_NEWER
 
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                EditorGUILayout.LabelField("Scenes in Build", EditorStyles.boldLabel);
+                for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+                {
+                    EditorGUILayout.LabelField(i + " - " + EditorBuildSettings.scenes[i].path);
+                }
+            }
+
+            EditorGUILayout.Space();
+
             using (new EditorGUILayout.HorizontalScope())
             {
+                RenderOpenUnityBuildWindow();
+
                 using (new EditorGUI.DisabledGroupScope(!ShouldOpenSLNBeEnabled))
                 {
                     RenderOpenVisualStudioButton();
+                }
 
-                    if (GUILayout.Button("Build Unity Project"))
-                    {
-                        EditorApplication.delayCall += BuildUnityProject;
-                    }
+                if (GUILayout.Button("Build Unity Project"))
+                {
+                    EditorApplication.delayCall += BuildUnityProjectUWP;
                 }
             }
 
@@ -475,6 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             using (var c = new EditorGUI.ChangeCheckScope())
             {
                 EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
+
                 var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
                 UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
 
@@ -484,7 +499,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 // Platform Toolset
                 int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
-                int newPlatformToolsetIndex = EditorGUILayout.Popup("Plaform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
+                int newPlatformToolsetIndex = EditorGUILayout.Popup(PlatformToolsetLabel, currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
+                
+                // Force rebuild
+                bool forceRebuildAppx = EditorGUILayout.ToggleLeft(ForceRebuildLabel, UwpBuildDeployPreferences.ForceRebuild);
+
+                // Multicore Appx Build
+                bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft(MulticoreBuildLabel, UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
 
                 EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
 
@@ -504,6 +525,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
                     UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
                     UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
+                    UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
+                    UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                 }
             }
 
@@ -538,6 +561,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             EditorGUILayout.Space();
 
+            if (appxCancellationTokenSource != null)
+            {
+                using (var progressBarRect = new EditorGUILayout.VerticalScope())
+                {
+                    appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+
+                    EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
+                    GUILayout.Space(16);
+                    Repaint();
+                }
+            }
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
@@ -548,38 +583,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
                 {
-                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    if (GUILayout.Button("Open AppX Packages Location", GUILayout.Width(HALF_WIDTH)))
                     {
                         EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-                    }
-                }
-            }
-
-            using (var progressBarRect = new EditorGUILayout.VerticalScope())
-            {
-                appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
-
-                EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
-                GUILayout.Space(16);
-                Repaint();
-            }
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUILayout.FlexibleSpace();
-
-                using (var c = new EditorGUI.ChangeCheckScope())
-                {
-                    // Force rebuild
-                    bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
-
-                    // Multicore Appx Build
-                    bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
-
-                    if (c.changed)
-                    {
-                        UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
-                        UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                     }
                 }
 
@@ -587,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
                     {
-                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                        if (GUILayout.Button("Build AppX", GUILayout.Width(HALF_WIDTH)))
                         {
                             // Check if solution exists
                             string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
@@ -889,6 +895,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             EditorGUILayout.Space();
         }
 
+        private static void RenderOpenUnityBuildWindow()
+        {
+            if (GUILayout.Button("Open Unity Build Window", GUILayout.Width(HALF_WIDTH)))
+            {
+                GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
+            }
+        }
+
         private static void RenderOpenVisualStudioButton()
         {
             if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
@@ -904,7 +918,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     "We couldn't find the Project's Solution. Would you like to Build the project now?",
                     "Yes, Build", "No"))
                 {
-                    EditorApplication.delayCall += BuildUnityProject;
+                    EditorApplication.delayCall += BuildUnityProjectUWP;
                 }
             }
         }
@@ -960,7 +974,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
         }
 
-        public static async void BuildUnityProject()
+        public static async void BuildUnityProjectUWP()
         {
             Debug.Assert(!isBuilding);
             isBuilding = true;
