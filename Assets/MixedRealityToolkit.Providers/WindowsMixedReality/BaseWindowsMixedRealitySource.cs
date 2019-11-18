@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
             }
         }
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
                     }
                 }
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionMapping.BoolData)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -275,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionMapping.BoolData)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
                     }
                     break;
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionSourceState.selectPressedAmount > 0)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
