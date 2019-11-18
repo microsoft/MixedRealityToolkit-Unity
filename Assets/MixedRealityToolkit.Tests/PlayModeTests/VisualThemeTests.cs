@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// tests that the scale theme with "Relative Scale" custom property also take into account the initial scale of target gameobject
+        /// Tests that the scale theme with "Relative Scale" custom property also takes into account the initial scale of target GameObject.
         /// </summary>
         [UnityTest]
         public IEnumerator TestRelativeScaleTheme()
