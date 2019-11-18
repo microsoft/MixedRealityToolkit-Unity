@@ -238,8 +238,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Near Interaction Examples
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -511,6 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
@@ -775,8 +774,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Traditional Style
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1104,8 +1101,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Checkbox, Switch, Radio
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -1301,8 +1296,6 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   Events: []
   enabledOnStart: 1
 --- !u!23 &263774676
@@ -1620,6 +1613,18 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.76586
       objectReference: {fileID: 0}
+    - target: {fileID: 4377713256703586, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377713256703586, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4377713256703586, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51cc6641d88b49d46bd38572540efe6c, type: 3}
 --- !u!4 &288673880 stripped
@@ -1728,8 +1733,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Button Status
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1991,8 +1994,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Various types of button controls that are made with Interactable.cs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -3224,12 +3225,22 @@ PrefabInstance:
     - target: {fileID: 114664771837106342, guid: d12fcfca48d5bea4885b7957a82235f8,
         type: 3}
       propertyPath: InputActionId
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 114664771837106342, guid: d12fcfca48d5bea4885b7957a82235f8,
         type: 3}
       propertyPath: VoiceCommand
-      value: Select
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664771837106342, guid: d12fcfca48d5bea4885b7957a82235f8,
+        type: 3}
+      propertyPath: profiles.Array.data[0].Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114664771837106342, guid: d12fcfca48d5bea4885b7957a82235f8,
+        type: 3}
+      propertyPath: profiles.Array.data[0].Themes.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d12fcfca48d5bea4885b7957a82235f8, type: 3}
@@ -3532,8 +3543,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Various types of UI controls that are made with Interactable.cs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -3750,8 +3759,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3775,8 +3782,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3800,8 +3805,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3825,8 +3828,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3850,8 +3851,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3875,8 +3874,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -3900,8 +3897,6 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -4044,6 +4039,14 @@ PrefabInstance:
       propertyPath: VoiceCommand
       value: Select
       objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f89876ff9050224f949c0490969219d, type: 3}
 --- !u!1 &792227567
@@ -4180,8 +4183,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc, type: 3}
     m_FontSize: 40
@@ -4485,6 +4486,18 @@ PrefabInstance:
       propertyPath: localCenter.z
       value: -0.012441337
       objectReference: {fileID: 0}
+    - target: {fileID: 4888946412176522, guid: 02c524b22137b5449904f5395141cc73, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4888946412176522, guid: 02c524b22137b5449904f5395141cc73, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4888946412176522, guid: 02c524b22137b5449904f5395141cc73, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02c524b22137b5449904f5395141cc73, type: 3}
 --- !u!1 &944840462
@@ -4545,8 +4558,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: a99e8b1ed1154eb58270cc6a18605657, type: 3}
     m_FontSize: 34
@@ -4859,6 +4870,14 @@ PrefabInstance:
         type: 3}
       propertyPath: VoiceCommand
       value: Select
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f89876ff9050224f949c0490969219d, type: 3}
@@ -5202,8 +5221,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: HoloLens 2 Style Buttons
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -5396,6 +5413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
@@ -5464,8 +5482,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -5704,8 +5720,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Custom Object Examples
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -5923,8 +5937,6 @@ MonoBehaviour:
           m_StringArgument: Radial Button Clicked
           m_BoolArgument: 1
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1233474326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6005,8 +6017,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: HoloLens 1 Style Buttons
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -6292,6 +6302,42 @@ PrefabInstance:
       propertyPath: VoiceCommand
       value: Select
       objectReference: {fileID: 0}
+    - target: {fileID: 4417578656984056, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417578656984056, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417578656984056, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610967451646196, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610967451646196, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4610967451646196, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891684840272184, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891684840272184, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891684840272184, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b83134143223104c9bc3865a565cab3, type: 3}
 --- !u!4 &1332690819 stripped
@@ -6358,8 +6404,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
     m_FontSize: 78
@@ -6656,8 +6700,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Grab Here
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -6873,8 +6915,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Unity UI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -7147,8 +7187,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
     m_FontSize: 28
@@ -7321,6 +7359,18 @@ PrefabInstance:
       propertyPath: VoiceCommand
       value: Select
       objectReference: {fileID: 0}
+    - target: {fileID: 4017873985773760, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017873985773760, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017873985773760, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.0073242188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5e0e8cc740eb134789fd1f6bb5bb80a, type: 3}
 --- !u!1 &1590642584
@@ -7403,14 +7453,10 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   Events:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
       Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
@@ -7430,8 +7476,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: InteractableOnTouchReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableOnTouchReceiver,
       Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -7475,8 +7519,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
       Options: []
   enabledOnStart: 1
 --- !u!114 &1590642588
@@ -7568,8 +7610,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Grabbing...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8370,8 +8410,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Texture Example
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
@@ -8933,8 +8971,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
     m_FontSize: 34
@@ -9575,6 +9611,14 @@ PrefabInstance:
       propertyPath: VoiceCommand
       value: Select
       objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.29003906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781408151868912, guid: 6f89876ff9050224f949c0490969219d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.12011719
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f89876ff9050224f949c0490969219d, type: 3}
 --- !u!1 &1944326010 stripped
@@ -9851,8 +9895,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Examples of using Interactable.cs with custom 3D objects
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -10231,8 +10273,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Various types of button controls that are made with Interactable.cs
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}

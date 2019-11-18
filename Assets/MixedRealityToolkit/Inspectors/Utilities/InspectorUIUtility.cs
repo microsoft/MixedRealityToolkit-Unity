@@ -169,10 +169,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     tooltip = docURL,
                 };
 
-                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                // The documentation button should always be enabled.
+                using (new GUIEnabledWrapper(true, true))
                 {
-                    Application.OpenURL(docURL);
-                    return true;
+                    if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                    {
+                        Application.OpenURL(docURL);
+                        return true;
+                    }
                 }
             }
 
