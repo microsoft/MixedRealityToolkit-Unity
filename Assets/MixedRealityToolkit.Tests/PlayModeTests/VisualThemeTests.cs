@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// tests that the rotation theme with "Relative Rotation" custom property keeps the initial rotation of target gameobject
+        /// Tests that the rotation theme with "Relative Rotation" custom property keeps the initial rotation of target GameObject.
         /// </summary>
         [UnityTest]
         public IEnumerator TestRelativeRotationTheme()
