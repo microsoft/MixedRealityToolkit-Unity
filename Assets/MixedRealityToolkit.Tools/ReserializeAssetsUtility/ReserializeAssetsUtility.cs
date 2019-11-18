@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             Object[] selectedAssets = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
 
-            //transform asset object to asset paths
+            // Transform asset object to asset paths.
             List<string> assetsPath = new List<string>();
             foreach (Object asset in selectedAssets)
             {
