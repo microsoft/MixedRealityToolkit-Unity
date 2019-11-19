@@ -128,7 +128,7 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_TypeExtensions_GetAllSubClassesOf_" data-uid="Microsoft.MixedReality.Toolkit.TypeExtensions.GetAllSubClassesOf*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_TypeExtensions_GetAllSubClassesOf_System_Type_Assembly___" data-uid="Microsoft.MixedReality.Toolkit.TypeExtensions.GetAllSubClassesOf(System.Type,Assembly[])">GetAllSubClassesOf(Type, Assembly[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_TypeExtensions_GetAllSubClassesOf_Type_System_Reflection_Assembly___" data-uid="Microsoft.MixedReality.Toolkit.TypeExtensions.GetAllSubClassesOf(Type,System.Reflection.Assembly[])">GetAllSubClassesOf(Type, Assembly[])</h4>
   <div class="markdown level1 summary"><p>Returns a list of types for all classes that extend from the current type and are not abstract</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -147,13 +147,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="xref">Type</span></td>
         <td><span class="parametername">rootType</span></td>
         <td><p>The class type from which to search for inherited classes</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Assembly</span>[]</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.reflection.assembly">Assembly</a>[]</td>
         <td><span class="parametername">searchAssemblies</span></td>
         <td><p>List of assemblies to search through for types. If null, default is to grab all assemblies in current app domain</p>
 </td>
@@ -170,7 +170,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<span class="xref">Type</span>&gt;</td>
         <td><p>Null if rootType is not a class, otherwise returns list of types for sub-classes of rootType</p>
 </td>
       </tr>
