@@ -137,15 +137,22 @@ try
 
         nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta
         
+        # ===
+        # https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6276 states that not having a version on the assemblies in our NuGet packages
+        # is an issue... commenting the localVersion update
+        # ===
+
         # To make debugging the MRTK NuGet packages locally much easier automatically create new packages with version 0.0.0 and then
         # restore them to the machine NuGet feed. To test changes to the packages developers can run this script and then change their
         # project to consume version 0.0.0 and restore. Because the package is in the machine global feed it will resolve properly.
-        $localVersion = '0.0.0'
+        # $localVersion = '0.0.0'
         $packageId = ([xml](Get-Content $_.FullName)).package.metadata.id
-        $finalInstallPath = [System.IO.Path]::Combine($env:UserProfile, '.nuget', 'packages', $packageId, $localVersion)
+        # $finalInstallPath = [System.IO.Path]::Combine($env:UserProfile, '.nuget', 'packages', $packageId, $localVersion)
+        $finalInstallPath = [System.IO.Path]::Combine($env:UserProfile, '.nuget', 'packages', $packageId, $Version)
         
         # Repack but with a hard-coded version of 0.0.0 (the -Version parameter overrides the property value for version)
-        nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta -Version $localVersion
+        # nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta -Version $localVersion
+        nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta -Version $Version
         
         # If the package is already installed to the machine global cache delete it, otherwise the next restore will no-op
         if ([System.IO.Directory]::Exists($finalInstallPath))
@@ -155,7 +162,8 @@ try
         
         # Restore the package by providing the nupkg folder. After this restore the machine global cache will be populated with the package
         $restoreProjectPath = [System.IO.Path]::Combine((Split-Path $MyInvocation.MyCommand.Path), 'NuGetRestoreProject.csproj')
-        dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
+        # dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
+        dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$Version
     }
 }
 finally
