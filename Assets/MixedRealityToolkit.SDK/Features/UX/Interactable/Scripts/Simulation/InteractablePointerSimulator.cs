@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     
     [AddComponentMenu("Scripts/MRTK/SDK/InteractablePointerSimulator")]
-    
     public class InteractablePointerSimulator : MonoBehaviour
     {
         public Interactable Button;

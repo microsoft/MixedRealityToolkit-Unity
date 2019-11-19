@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SurfaceMagnetism))]
     [CanEditMultipleObjects]
-    [AddComponentMenu("Scripts/MRTK/SDK/SurfaceMagnetismInspector")]
     public class SurfaceMagnetismInspector : SolverInspector
     {
         private SerializedProperty magneticSurfacesProperty;

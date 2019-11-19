@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Record joint positions of a hand and log them for use in simulated hands.
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Core/WindowsMixedRealityHandRecorder")]
+    [AddComponentMenu("Scripts/MRTK/Providers/WindowsMixedRealityHandRecorder")]
     public class WindowsMixedRealityHandRecorder : MonoBehaviour
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
