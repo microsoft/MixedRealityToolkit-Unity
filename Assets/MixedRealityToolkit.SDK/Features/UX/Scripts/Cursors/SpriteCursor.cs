@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Object that represents a cursor comprised of sprites and colors for each state
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/SpriteCursor")]
     public class SpriteCursor : BaseCursor
     {
         [Serializable]

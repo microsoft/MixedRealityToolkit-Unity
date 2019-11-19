@@ -17,11 +17,9 @@ using Windows.Storage.Provider;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-
     /// <summary>
     /// Record joint positions of a hand and log them for use in simulated hands.
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Core/WindowsMixedRealityHandRecorder")]
     [AddComponentMenu("Scripts/MRTK/Core/WindowsMixedRealityHandRecorder")]
     public class WindowsMixedRealityHandRecorder : MonoBehaviour
     {

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// <summary>
     /// A MonoBehaviour that interpolates a transform's position, rotation or scale.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/Interpolator")]
     public class Interpolator : MonoBehaviour
     {
         /// <summary>

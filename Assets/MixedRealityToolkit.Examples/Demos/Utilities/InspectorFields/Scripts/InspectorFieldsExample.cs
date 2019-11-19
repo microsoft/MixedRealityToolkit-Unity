@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// An example of this can be found in Interactables Receivers.
     /// Each Receiver is a custom class that renders their properties in the Interactables custom inspector
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InspectorFieldsExample")]
     public class InspectorFieldsExample : MonoBehaviour
     {
         [InspectorField(Label = "Component Name", Tooltip = "The name of the component", Type = InspectorField.FieldTypes.String)]

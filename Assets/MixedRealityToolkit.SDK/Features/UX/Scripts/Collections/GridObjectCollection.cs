@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// control panels or sets of prefab/objects.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/GridObjectCollection")]
     public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// It uses spherical movement around the camera.
     /// Its movement is bound to screenspace, but based in the delta movement of the computer mouse.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/MousePointer")]
     public class MousePointer : BaseMousePointer
     {
         /// <inheritdoc />

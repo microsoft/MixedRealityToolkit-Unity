@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     /// <summary>
     /// Example script to demonstrate a toggle button using dwell
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ToggleDwellSample")]
     public class ToggleDwellSample : BaseDwellSample
     {
         [SerializeField]

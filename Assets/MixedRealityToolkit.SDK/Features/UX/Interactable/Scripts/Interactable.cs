@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [System.Serializable]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,

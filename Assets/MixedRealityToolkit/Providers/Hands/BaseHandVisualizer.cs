@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [AddComponentMenu("Scripts/MRTK/Core/BaseHandVisualizer")]
     public class BaseHandVisualizer : MonoBehaviour, IMixedRealityHandVisualizer, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler, IMixedRealityHandMeshHandler
     {
         public virtual Handedness Handedness { get; set; }
