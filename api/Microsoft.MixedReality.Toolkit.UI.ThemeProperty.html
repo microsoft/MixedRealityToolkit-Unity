@@ -86,7 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_ThemeProperty" data-uid="Microsoft.MixedReality.Toolkit.UI.ThemeProperty" class="text-break">Class ThemeProperty
   </h1>
-  <div class="markdown level0 summary"><p>A simple property with name value and type, used for serialization
+  <div class="markdown level0 summary"><p>A simple property with name, tooltip, value and type, used for serialization
 The custom settings are used in themes to expose properties needed to enhance theme functionality</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -131,7 +131,8 @@ public class ThemeProperty</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_ThemeProperty_Name" data-uid="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Dispalyed as Label in Inspector</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -154,8 +155,34 @@ public class ThemeProperty</code></pre>
   </table>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_ThemeProperty_Tooltip" data-uid="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.Tooltip">Tooltip</h4>
+  <div class="markdown level1 summary"><p>Tooltip associated with Name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Tooltip</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_UI_ThemeProperty_Type" data-uid="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.Type">Type</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>inner type for that property</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -179,7 +206,8 @@ public class ThemeProperty</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_ThemeProperty_Value" data-uid="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.Value">Value</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>inner value, filled for corresponding Type</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

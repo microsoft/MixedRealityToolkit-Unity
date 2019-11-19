@@ -19648,7 +19648,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableRotationTheme.html",
-          "hash": "7N/+Pi3/QpjrJmo/ekIJfw=="
+          "hash": "vkLP0GkjKNL1RePRmIr7EQ=="
         }
       },
       "is_incremental": false,
@@ -19660,7 +19660,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableScaleTheme.html",
-          "hash": "yzcTFlfzWlNGBjC2u6j8Kw=="
+          "hash": "8gLdrmZ2CB5SUi/JinrMmg=="
         }
       },
       "is_incremental": false,
@@ -20020,7 +20020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme.html",
-          "hash": "Qu8TgzffEgksMx264AH5fQ=="
+          "hash": "Mg/U3w+yH7S4Ue1NaJN28A=="
         }
       },
       "is_incremental": false,
@@ -20152,7 +20152,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html",
-          "hash": "z8tCnWDt72aVjln8DSbSGA=="
+          "hash": "I5OFXSrW5keivBZyKOLfLg=="
         }
       },
       "is_incremental": false,
@@ -20188,7 +20188,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ThemeProperty.html",
-          "hash": "U9lHyo8vg6hPbUvCW+MLbg=="
+          "hash": "PI0QfZmFnMRRZchSu/QMCg=="
         }
       },
       "is_incremental": false,
@@ -20416,7 +20416,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "1szKLtFNRQHecT3nCM5zoA=="
+          "hash": "lfLNd1cuII7iOejvuc16Ow=="
         }
       },
       "is_incremental": false,
@@ -21232,7 +21232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.ReserializeUtility.html",
-          "hash": "Xk+u+nBEsiddhdOFmCZDyw=="
+          "hash": "RZgLqPhykdOkUqtnBIPZKw=="
         }
       },
       "is_incremental": false,
