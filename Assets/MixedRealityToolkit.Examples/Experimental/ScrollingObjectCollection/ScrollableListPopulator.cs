@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
     /// <summary>
     /// Simple demonstration of how to instantiate a <see cref="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection"/> as well as use lazy loading to mitigate the perf cost of a large list of items.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ScrollableListPopulator")]
     public class ScrollableListPopulator : MonoBehaviour
     {
         [SerializeField]

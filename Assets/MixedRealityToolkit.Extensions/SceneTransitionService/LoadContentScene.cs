@@ -11,8 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// Utility class to load scenes through MRTK Scene System using a scene transition.
     /// Otherwise, it uses Scene System's LoadContent()
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Extensions/LoadContentScene")]
     public class LoadContentScene : MonoBehaviour
-	{
+    {
         [SerializeField]
         private LoadSceneMode loadSceneMode = LoadSceneMode.Single;
         [SerializeField]
