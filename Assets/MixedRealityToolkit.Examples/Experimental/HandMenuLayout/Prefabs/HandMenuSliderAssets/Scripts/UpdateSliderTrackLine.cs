@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/UpdateSliderTrackLine")]
     public class UpdateSliderTrackLine : MonoBehaviour
     {
         [SerializeField]

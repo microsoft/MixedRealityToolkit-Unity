@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SpeechVisualFeedback")]
     public class SpeechVisualFeedback : MonoBehaviour, IMixedRealitySpeechHandler
     {
         #region Variable declarations

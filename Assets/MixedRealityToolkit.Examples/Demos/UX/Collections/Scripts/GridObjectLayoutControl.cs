@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// as to output positions of child controls to help with building
     /// GridObjectCollectionTests.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/GridObjectLayoutControl")]
     public class GridObjectLayoutControl : MonoBehaviour
     {
         [Tooltip("Point this at the GridObjectCollection to control.")]

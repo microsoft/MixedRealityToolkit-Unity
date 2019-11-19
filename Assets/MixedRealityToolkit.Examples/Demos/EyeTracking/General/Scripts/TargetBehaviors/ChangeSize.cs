@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// This script allows for dynamically changing the size of a GameObject when it is looked at. 
     /// This is for example useful for better legibility of small text.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ChangeSize")]
     public class ChangeSize : MonoBehaviour
     {
         #region Serialized variables

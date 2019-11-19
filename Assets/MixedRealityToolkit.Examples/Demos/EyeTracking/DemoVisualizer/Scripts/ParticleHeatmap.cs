@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [RequireComponent(typeof(ParticleSystem))]
+    [AddComponentMenu("Scripts/MRTK/Examples/ParticleHeatmap")]
     public class ParticleHeatmap : MonoBehaviour
     {
         [SerializeField]

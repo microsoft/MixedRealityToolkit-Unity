@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// and rotation to the given input type. If the input data is not available,
     /// the component will hide the object by disabling all renderers.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InputDataExampleGizmo")]
     public class InputDataExampleGizmo : MonoBehaviour
     {
         public InputSourceType sourceType;

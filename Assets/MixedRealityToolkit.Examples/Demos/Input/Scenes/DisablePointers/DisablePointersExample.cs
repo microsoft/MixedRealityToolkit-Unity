@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// specifying custom behaviors.
     /// </summary>
     [RequireComponent(typeof(PointerBehaviorControls))]
+    [AddComponentMenu("Scripts/MRTK/Examples/DisablePointersExample")]
     public class DisablePointersExample : MonoBehaviour
     {
         public Interactable GazeToggle;

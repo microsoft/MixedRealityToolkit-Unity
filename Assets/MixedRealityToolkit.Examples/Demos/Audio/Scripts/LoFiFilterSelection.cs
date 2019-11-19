@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     [RequireComponent(typeof(AudioLoFiEffect))]
+    [AddComponentMenu("Scripts/MRTK/Examples/LoFiFilterSelection")]
     public class LoFiFilterSelection : MonoBehaviour, IMixedRealityPointerHandler
     {
         [Tooltip("Material used when the emitter is set to Narrow Band Telephony")]
