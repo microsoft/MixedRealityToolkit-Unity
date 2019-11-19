@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [ExecuteAlways]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/ToolTip")]
     public class ToolTip : MonoBehaviour
     {
         [SerializeField]

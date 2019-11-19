@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Good for responsive buttons that can stretch and object realign
     /// </summary>
     [ExecuteInEditMode]
+    [AddComponentMenu("Scripts/MRTK/SDK/ButtonLayout")]
     public class ButtonLayout : MonoBehaviour
     {
         /// <summary>

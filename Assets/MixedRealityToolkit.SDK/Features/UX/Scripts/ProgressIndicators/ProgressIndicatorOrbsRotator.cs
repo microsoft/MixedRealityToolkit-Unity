@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// This class manages the 'rotating circle of dots' effect
     /// that is used as a Progress Indicator effect.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ProgressIndicatorOrbsRotator")]
     public class ProgressIndicatorOrbsRotator : MonoBehaviour, IProgressIndicator
     {
         /// <inheritdoc/>

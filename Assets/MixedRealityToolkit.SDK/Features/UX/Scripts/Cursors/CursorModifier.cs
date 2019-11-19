@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// modify the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor"/> reacts when
     /// focused by a <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/CursorModifier")]
     public class CursorModifier : MonoBehaviour, ICursorModifier
     {
         #region ICursorModifier Implementation

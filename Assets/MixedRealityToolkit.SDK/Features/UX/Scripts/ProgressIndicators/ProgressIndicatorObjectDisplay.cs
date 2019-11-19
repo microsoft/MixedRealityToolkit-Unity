@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// This class manages how a GameObject rotates and/or scales
     /// when activated as part of a Progress Indicator effect.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ProgressIndicatorObjectDisplay")]
     public class ProgressIndicatorObjectDisplay : MonoBehaviour, IProgressIndicator
     {
         /// <inheritdoc/>

@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// Using StabilizationPlaneModifier will override DepthLSR. This is automatically enabled via the depth buffer sharing in Unity build settings
     /// StabilizationPlaneModifier is recommended for HoloLens 1, can be used for HoloLens 2, and does a no op for WMR
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/StabilizationPlaneModifier")]
     public class StabilizationPlaneModifier : MonoBehaviour
     {
         [System.Serializable]
