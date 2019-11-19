@@ -50,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
+            { "MSBuild/Publish/Player/Android", "AndroidPlayer" },
+            { "MSBuild/Publish/Player/iOS", "iOSPlayer" },
             { "MSBuild/Publish/Player/WSA", "UAPPlayer" },
             { "MSBuild/Publish/Player/WindowsStandalone32", "StandalonePlayer" },
         };
@@ -495,9 +497,21 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Android, out FileInfo androidMetaFile))
+            {
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+            }
+
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.iOS, out FileInfo iOSMetaFile))
+            {
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+            }
+
             string editorMetaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
             string uapMetaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
             string standaloneMetaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
+            string androidMetaFileTemplate = File.ReadAllText(androidMetaFile.FullName);
+            string iOSMetaFileTemplate = File.ReadAllText(iOSMetaFile.FullName);
 
             Dictionary<AssemblyInformation, FileInfo[]> mappings = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins"))
                 .GetDirectories("*", SearchOption.AllDirectories)
@@ -513,6 +527,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 //Editor PDB is + 4
                 //Standalone PDB is +5
                 //UAP PDB is +6
+                //Android is guid + 7
+                //iOS is guid + 8
+                //Android PDB is +9
+                //iOS  PDB is +10
                 string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
@@ -522,6 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {
+                        templateToUse = editorMetaFileTemplate;
                         goto WriteMeta;
                     }
 
@@ -544,26 +563,61 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     dllGuid = CycleGuidForward(dllGuid);
 
                     // Switch to PDBs
-                    if (file.DirectoryName.EndsWith("EditorPlayer"))
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {
+                        templateToUse = editorMetaFileTemplate;
                         goto WriteMeta;
                     }
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.DirectoryName.EndsWith("StandalonePlayer"))
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
                     }
 
-                    templateToUse = uapMetaFileTemplate;
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    // if (file.DirectoryName.EndsWith("UAP"))
-                    // Just fall through
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("UAPPlayer"))
+                    {
+                        templateToUse = uapMetaFileTemplate;
+                        goto WriteMeta;
+                    }
 
-                    WriteMeta:
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("AndroidPlayer"))
+                    {
+                        templateToUse = androidMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("iOSPlayer"))
+                    {
+                        templateToUse = iOSMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("AndroidPlayer"))
+                    {
+                        templateToUse = androidMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("iOSPlayer"))
+                    {
+                        templateToUse = iOSMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                WriteMeta:
                     string metaFilePath = $"{file.FullName}.meta";
                     File.WriteAllText(metaFilePath, ProcessMetaTemplate(templateToUse, dllGuid, mapping.Key.ExecutionOrderEntries));
                 }

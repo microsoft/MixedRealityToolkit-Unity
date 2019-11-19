@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     // If our value changed raise it.
                     if (Interactions[i].Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (Interactions[i].BoolData)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
