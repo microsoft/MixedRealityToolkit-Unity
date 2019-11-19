@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -27,6 +28,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             var array = GetAssets("t:Material t:Texture");
             AssetDatabase.ForceReserializeAssets(array);
+        }
+
+        [MenuItem("Assets/Mixed Reality Toolkit/Reserialize Selection")]
+        public static void ReserializeSelection()
+        {
+            Object[] selectedAssets = Selection.GetFiltered(typeof(Object), SelectionMode.DeepAssets);
+
+            // Transform asset object to asset paths.
+            List<string> assetsPath = new List<string>();
+            foreach (Object asset in selectedAssets)
+            {
+                assetsPath.Add(AssetDatabase.GetAssetPath(asset));
+            }
+
+            string[] array = assetsPath.ToArray();
+            AssetDatabase.ForceReserializeAssets(array);
+            Debug.Log($"Reserialized {assetsPath.Count} assets.");
         }
 
         private static string[] GetAssets(string filter)

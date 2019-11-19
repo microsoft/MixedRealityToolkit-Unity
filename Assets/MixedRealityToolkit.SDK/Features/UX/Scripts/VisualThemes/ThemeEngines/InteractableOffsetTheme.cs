@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableOffsetTheme : InteractableThemeBase
     {
-        private Vector3 startPosition;
+        private Vector3 originalPosition;
         private Transform hostTransform;
 
         public InteractableOffsetTheme()
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
             hostTransform = Host.transform;
-            startPosition = hostTransform.localPosition;
+            originalPosition = hostTransform.localPosition;
         }
 
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            hostTransform.localPosition = Vector3.Lerp(property.StartValue.Vector3, startPosition + property.Values[index].Vector3, percentage);
+            hostTransform.localPosition = Vector3.Lerp(property.StartValue.Vector3, originalPosition + property.Values[index].Vector3, percentage);
         }
     }
 }

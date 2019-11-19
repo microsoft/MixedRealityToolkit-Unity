@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             SerializedProperty type = propertyItem.FindPropertyRelative("type");
                             SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
 
-                            RenderValue(statePropertyValue, name.stringValue, (ThemePropertyTypes)type.intValue);
+                            RenderValue(statePropertyValue, new GUIContent(name.stringValue, ""), (ThemePropertyTypes)type.intValue);
                         }
                     }
                 }
@@ -344,18 +344,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 SerializedProperty item = customProperties.GetArrayElementAtIndex(p);
                 SerializedProperty name = item.FindPropertyRelative("Name");
+                SerializedProperty tooltip = item.FindPropertyRelative("Tooltip");
                 SerializedProperty propType = item.FindPropertyRelative("Type");
                 SerializedProperty value = item.FindPropertyRelative("Value");
                 ThemePropertyTypes type = (ThemePropertyTypes)propType.intValue;
 
-                RenderValue(value, name.stringValue, type);
+                RenderValue(value, new GUIContent(name.stringValue, tooltip?.stringValue), type);
             }
         }
 
         /// <summary>
         /// Render a single property value
         /// </summary>
-        public static void RenderValue(SerializedProperty item, string name, ThemePropertyTypes type)
+        public static void RenderValue(SerializedProperty item, GUIContent label, ThemePropertyTypes type)
         {
             SerializedProperty floatValue = item.FindPropertyRelative("Float");
             SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
@@ -364,72 +365,72 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             switch (type)
             {
                 case ThemePropertyTypes.Float:
-                    floatValue.floatValue = EditorGUILayout.FloatField(name, floatValue.floatValue);
+                    floatValue.floatValue = EditorGUILayout.FloatField(label, floatValue.floatValue);
                     break;
                 case ThemePropertyTypes.Int:
                     SerializedProperty intValue = item.FindPropertyRelative("Int");
-                    intValue.intValue = EditorGUILayout.IntField(name, intValue.intValue);
+                    intValue.intValue = EditorGUILayout.IntField(label, intValue.intValue);
                     break;
                 case ThemePropertyTypes.Color:
                     SerializedProperty colorValue = item.FindPropertyRelative("Color");
-                    colorValue.colorValue = EditorGUILayout.ColorField(name, colorValue.colorValue);
+                    colorValue.colorValue = EditorGUILayout.ColorField(label, colorValue.colorValue);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
-                    floatValue.floatValue = EditorGUILayout.FloatField(name, floatValue.floatValue);
+                    floatValue.floatValue = EditorGUILayout.FloatField(label, floatValue.floatValue);
                     break;
                 case ThemePropertyTypes.ShaderRange:
-                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(name, vector2Value.vector2Value);
+                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(label, vector2Value.vector2Value);
                     break;
                 case ThemePropertyTypes.Vector2:
-                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(name, vector2Value.vector2Value);
+                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(label, vector2Value.vector2Value);
                     break;
                 case ThemePropertyTypes.Vector3:
                     SerializedProperty vector3Value = item.FindPropertyRelative("Vector3");
-                    vector3Value.vector3Value = EditorGUILayout.Vector3Field(name, vector3Value.vector3Value);
+                    vector3Value.vector3Value = EditorGUILayout.Vector3Field(label, vector3Value.vector3Value);
                     break;
                 case ThemePropertyTypes.Vector4:
                     SerializedProperty vector4Value = item.FindPropertyRelative("Vector4");
-                    vector4Value.vector4Value = EditorGUILayout.Vector4Field(name, vector4Value.vector4Value);
+                    vector4Value.vector4Value = EditorGUILayout.Vector4Field(label, vector4Value.vector4Value);
                     break;
                 case ThemePropertyTypes.Quaternion:
                     SerializedProperty quaternionValue = item.FindPropertyRelative("Quaternion");
                     Vector4 vect4 = new Vector4(quaternionValue.quaternionValue.x, quaternionValue.quaternionValue.y, quaternionValue.quaternionValue.z, quaternionValue.quaternionValue.w);
-                    vect4 = EditorGUILayout.Vector4Field(name, vect4);
+                    vect4 = EditorGUILayout.Vector4Field(label, vect4);
                     quaternionValue.quaternionValue = new Quaternion(vect4.x, vect4.y, vect4.z, vect4.w);
                     break;
                 case ThemePropertyTypes.Texture:
                     SerializedProperty texture = item.FindPropertyRelative("Texture");
-                    EditorGUILayout.PropertyField(texture, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(texture, label, false);
                     break;
                 case ThemePropertyTypes.Material:
                     SerializedProperty material = item.FindPropertyRelative("Material");
-                    EditorGUILayout.PropertyField(material, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(material, label, false);
                     break;
                 case ThemePropertyTypes.AudioClip:
                     SerializedProperty audio = item.FindPropertyRelative("AudioClip");
-                    EditorGUILayout.PropertyField(audio, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(audio, label, false);
                     break;
                 case ThemePropertyTypes.Animaiton:
                     SerializedProperty animation = item.FindPropertyRelative("Animation");
-                    EditorGUILayout.PropertyField(animation, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(animation, label, false);
                     break;
                 case ThemePropertyTypes.GameObject:
                     SerializedProperty gameObjectValue = item.FindPropertyRelative("GameObject");
-                    EditorGUILayout.PropertyField(gameObjectValue, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(gameObjectValue, label, false);
                     break;
                 case ThemePropertyTypes.String:
-                    stringValue.stringValue = EditorGUILayout.TextField(name, stringValue.stringValue);
+                    stringValue.stringValue = EditorGUILayout.TextField(label, stringValue.stringValue);
                     break;
                 case ThemePropertyTypes.Bool:
                     SerializedProperty boolValue = item.FindPropertyRelative("Bool");
-                    boolValue.boolValue = EditorGUILayout.Toggle(name, boolValue.boolValue);
+                    boolValue.boolValue = EditorGUILayout.Toggle(label, boolValue.boolValue);
                     break;
                 case ThemePropertyTypes.AnimatorTrigger:
-                    stringValue.stringValue = EditorGUILayout.TextField(name, stringValue.stringValue);
+                    stringValue.stringValue = EditorGUILayout.TextField(label, stringValue.stringValue);
                     break;
                 case ThemePropertyTypes.Shader:
                     SerializedProperty shaderObjectValue = item.FindPropertyRelative("Shader");
-                    EditorGUILayout.PropertyField(shaderObjectValue, new GUIContent(name, ""), false);
+                    EditorGUILayout.PropertyField(shaderObjectValue, label, false);
                     break;
                 default:
                     break;
