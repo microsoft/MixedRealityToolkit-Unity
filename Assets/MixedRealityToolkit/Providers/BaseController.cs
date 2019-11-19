@@ -83,14 +83,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
+        [Obsolete("The second parameter is no longer used. This method now reads from the controller's input source.")]
         public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)
+        {
+            return SetupConfiguration(controllerType);
+        }
+
+        /// <summary>
+        /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
+        /// </summary>
+        public bool SetupConfiguration(Type controllerType)
         {
             if (IsControllerMappingEnabled())
             {
                 if (GetControllerVisualizationProfile() != null &&
                     GetControllerVisualizationProfile().RenderMotionControllers)
                 {
-                    TryRenderControllerModel(controllerType, inputSourceType);
+                    TryRenderControllerModel(controllerType, InputSource.SourceType);
                 }
 
                 // We can only enable controller profiles if mappings exist.

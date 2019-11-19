@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return null;
             }
 
-            if (!controller.SetupConfiguration(controllerType, InputSourceType.Hand))
+            if (!controller.SetupConfiguration(controllerType))
             {
                 // Controller failed to be setup correctly.
                 Debug.LogError($"Failed to Setup {controllerType} controller");
