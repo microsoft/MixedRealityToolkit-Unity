@@ -195,18 +195,18 @@ The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Ut
 
 Most commonly used when the *Tracked Target Type* of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) is set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head). In this fashion, a UX component with the [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator)  solver will direct a user to look at the desired point in space.
 
-The desired point in space is determined via the *Directional Target* property. 
+The desired point in space is determined via the *Directional Target* property.
 
 If the directional target is viewable by the user, or whatever frame of reference is set in the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), then this solver will disable all [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html) components underneath it. If not viewable, then everything will be enabled on the indicator.
 
 * *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
-* *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport. 
+* *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.
 
 ![Directional Indicator properties](Images/Solver/DirectionalIndicatorExample.png)
 <br/>
 *Directional Indicator properties*
 
-![Directional Indicator properties](Images/Solver/DirectionalIndicatorExampleScene.gif)
+![Directional Indicator example scene](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
 *[Directional Indicator Example Scene](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
 
