@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     }
 
     [AddComponentMenu("Scripts/MRTK/Examples/MoveObjByEyeGaze")]
-
     public class MoveObjByEyeGaze : MonoBehaviour,
         IMixedRealitySpeechHandler,
         IMixedRealitySourceStateHandler,
