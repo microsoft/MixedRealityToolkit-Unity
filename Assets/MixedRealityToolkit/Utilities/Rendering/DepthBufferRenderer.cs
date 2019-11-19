@@ -6,7 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Rendering
 {
+    /// <summary>
+    /// Component should be applied to the main camera and will apply post-process procedure to blit the scene's rendered depth buffer as the color output
+    /// </summary>
     [ExecuteInEditMode]
+    [AddComponentMenu("Scripts/MRTK/Core/DepthBufferRenderer")]
     public class DepthBufferRenderer : MonoBehaviour
     {
         [SerializeField]

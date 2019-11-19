@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Use a Unity UI RectTransform as touchable surface.
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
+    [AddComponentMenu("Scripts/MRTK/Services/NearInteractionTouchableUnityUI")]
     public class NearInteractionTouchableUnityUI : NearInteractionTouchableSurface
     {
         private Lazy<RectTransform> rectTransform;

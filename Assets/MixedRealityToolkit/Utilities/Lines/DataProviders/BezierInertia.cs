@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 { 
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/Core/BezierInertia")]
     public class BezierInertia : MonoBehaviour
     {
         [SerializeField]
