@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// 
     /// Extend ReceiverBaseMonoBehavior to build external event components
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/CustomInteractablesReceiver")]
     public class CustomInteractablesReceiver : ReceiverBase
     {
         /// <inheritdoc />

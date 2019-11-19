@@ -6,6 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// Provides a solver that overlaps with the tracked object.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/Overlap")]
     public class Overlap : Solver
     {
         /// <inheritdoc />
