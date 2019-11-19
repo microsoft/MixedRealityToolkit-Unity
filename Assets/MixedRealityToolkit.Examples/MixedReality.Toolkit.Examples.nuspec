@@ -27,7 +27,6 @@
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
-    <!-- commenting source packaging for the 2.2.0 release -->
-    <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" /> -->
+    <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" />
   </files>
 </package>
