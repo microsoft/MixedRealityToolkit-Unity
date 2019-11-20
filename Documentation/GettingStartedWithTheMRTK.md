@@ -212,7 +212,7 @@ Which contains the following:
 >[!NOTE]
 > While working in your scene, **DO NOT move the Main Camera** (or the **MixedRealityPlayspace**) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then **move the scene content and NOT the camera**!
 
-6. Hit play and test out hand simulation by pressing spacebar.
+6. Hit play and test out hand simulation by pressing the **space bar**.
 
 You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
