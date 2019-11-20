@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                     if(eyes.Gaze.HasValue)
                     {
-                        Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
+                        Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
 
                         if (SmoothEyeTracking)
                         {
