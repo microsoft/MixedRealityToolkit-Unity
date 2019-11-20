@@ -104,7 +104,7 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 | | [ExtensionServiceCreator](Tools/ExtensionServiceCreationWizard.md) | Wizard to assist in creating extension services. |
 | | [OptimizeWindow](Tools/OptimizeWindow.md) | Utility to help automate configuring a mixed reality project for the best performance in Unity. |
 | | ReserializeAssetsUtility | Provides support for reserializing specific Unity files. |
-| | [RuntimeTools\Tools\ControllerMappingTool](Tools/ControllerMappingTool.md) | Utility enabling developers to quickly determine Unity mappings for hardware controllers. |
+| | [RuntimeTools/Tools/ControllerMappingTool](Tools/ControllerMappingTool.md) | Utility enabling developers to quickly determine Unity mappings for hardware controllers. |
 | | ScreenshotUtility | Enables capturing application images in the Unity editor. |
 | | TextureCombinerWindow | Utility to combine graphics textures. |
 
