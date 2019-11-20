@@ -51,4 +51,4 @@ Ensure every public field, method, property has [triple slash summary comments](
 
 Clear and complete descriptions of pull requests ensure reviewers understand what they are reviewing.
 
-If adding features that contain UX, add an image / gif of the feature you are changing. [Here is a good example](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532). Another suggestion is to have a gif of Before and After, [for example in this pull request](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5896). A tool we reccommend for generating gifs from screen captures is [ScreenToGif](https://www.screentogif.com/).
+If adding features that contain UX, add an image / gif of the feature you are changing. [Here is a good example](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532). Another suggestion is to have a gif of Before and After, [for example in this pull request](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5896). A tool we recommend for generating gifs from screen captures is [ScreenToGif](https://www.screentogif.com/).

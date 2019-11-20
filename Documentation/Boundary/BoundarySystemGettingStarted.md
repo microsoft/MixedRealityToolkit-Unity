@@ -31,7 +31,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 ![Select the Boundary System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
 
 > [!NOTE]
-> All Bounday System implementation must extend the [`IMixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem)
+> All Boundary System implementation must extend the [`IMixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem)
 
 ## Configure Boundary Visualization
 
@@ -51,7 +51,7 @@ Once the boundary system is configured with the desired visualization options, t
 
 ## Accessing Boundary System via code
 
-If enabled and configured, the Boundary System can be accessed via the CoreSerivces static helper class. The reference can then be used to dyanmically change the Boundary parameters and access related GameObjects managed by the system.
+If enabled and configured, the Boundary System can be accessed via the CoreServices static helper class. The reference can then be used to dynamically change the Boundary parameters and access related GameObjects managed by the system.
 
 ```csharp
 // Hide Boundary Walls at runtime

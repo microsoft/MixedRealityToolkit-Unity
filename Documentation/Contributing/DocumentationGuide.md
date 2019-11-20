@@ -205,7 +205,7 @@ If there are any class level dependencies, they should be documented in a remark
 /// </remarks>
 ```
 
-Pull Requests submitted without summaries for classes, strutures or enums will not be approved.
+Pull Requests submitted without summaries for classes, structures or enums will not be approved.
 
 ### Property, method, event summary blocks
 

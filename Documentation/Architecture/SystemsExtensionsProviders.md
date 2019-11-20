@@ -84,7 +84,7 @@ For information on writing a data provider for the MRTK input system, please see
 
 The MRTK spatial awareness system utilizes only data providers that implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver) interface.
 
-![Spatial awarenss system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
+![Spatial awareness system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
 The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 

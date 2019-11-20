@@ -273,14 +273,14 @@ MyClass.cs
 ```c#
 public class MyClass
 {
-    private MyStruct myStructreference;
+    private MyStruct myStructReference;
     private MyEnumType myEnumReference;
 }
  ```
 
 ### Initialize Enums
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
+To ensure all enum are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
 #### Don't
 
@@ -325,8 +325,8 @@ public enum SDKType
 
  ```c#
     /// <summary>
-    /// The SDKType lists the VR SDK's that are supported by the MRTK
-    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// The SDKType lists the VR SDKs that are supported by the MRTK
+    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
     /// </summary>
     public enum SDKType
     {
@@ -538,8 +538,7 @@ This chart can help you decide which `#if` to use, depending on your use cases a
 
 DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. [Others have hit the same issue](https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now).
 
-Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
-
+Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
 
 ## See also
 
