@@ -44,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static readonly GUIContent SpeechComamndsLabel = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
         private static readonly GUIContent OnClickEventLabel = new GUIContent("OnClick", "Fired when this Interactable is triggered by a click.");
         private static readonly GUIContent AddEventReceiverLabel = new GUIContent("Add Event", "Add event receiver to this Interactable for special event handling.");
+        private static readonly GUIContent VoiceRequiresFocusLabel = new GUIContent("Requires Focus");
 
         protected virtual void OnEnable()
         {
@@ -312,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
                         SerializedProperty requireGaze = serializedObject.FindProperty("voiceRequiresFocus");
-                        EditorGUILayout.PropertyField(requireGaze, new GUIContent("Requires Focus", "If true, then the voice command will only respond to voice commands while this Interactable has focus."));
+                        EditorGUILayout.PropertyField(requireGaze, VoiceRequiresFocusLabel);
                     }
                 }
 

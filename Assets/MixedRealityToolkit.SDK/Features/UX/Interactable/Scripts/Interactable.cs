@@ -230,6 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [FormerlySerializedAs("RequiresFocus")]
         [SerializeField]
+        [Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool voiceRequiresFocus = true;
         /// <summary>
         /// Does the voice command require this to have focus?
