@@ -349,7 +349,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1850867357197028}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -382,48 +382,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
-  VoiceCommand: 
-  RequiresFocus: 1
-  Profiles:
+  VoiceCommand: Select
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 1452929679037900}
     Themes:
     - {fileID: 11400000, guid: 5753d89c205814542ba3fef191dc4682, type: 2}
     - {fileID: 11400000, guid: 25fd4afc60b411a4899da8c48e287906, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1184366718457058}
     Themes:
     - {fileID: 11400000, guid: 6c08928bdf950d54390c1346d23d422b, type: 2}
     - {fileID: 11400000, guid: cb5abaa7279811d409e5bac06ad02a1f, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1154866262212832}
     Themes:
     - {fileID: 11400000, guid: 02c718b28bedf814ea16dd51767befc6, type: 2}
     - {fileID: 11400000, guid: 69ccbccdd82ebc34283000ef061eab28, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1491894523937538}
     Themes:
     - {fileID: 11400000, guid: 0eea8a8be0e42494083a2dc52fab717f, type: 2}
     - {fileID: 11400000, guid: 077f50c510dd803449e2247b7fbe3122, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  Events: []
-  dimensionIndex: 0
+  Events:
+  - Event:
+      m_PersistentCalls:
+        m_Calls: []
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+    ClassName: InteractableAudioReceiver
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableAudioReceiver,
+      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Settings:
+    - Type: 17
+      Label: Audio Clip
+      Name: AudioClip
+      Tooltip: Assign an audioclip to play on click
+      IntValue: 0
+      StringValue: 
+      FloatValue: 0
+      BoolValue: 0
+      GameObjectValue: {fileID: 0}
+      ScriptableObjectValue: {fileID: 0}
+      ObjectValue: {fileID: 0}
+      MaterialValue: {fileID: 0}
+      TextureValue: {fileID: 0}
+      ColorValue: {r: 0, g: 0, b: 0, a: 0}
+      Vector2Value: {x: 0, y: 0}
+      Vector3Value: {x: 0, y: 0, z: 0}
+      Vector4Value: {x: 0, y: 0, z: 0, w: 0}
+      CurveValue:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+      AudioClipValue: {fileID: 8300000, guid: 170429180f309a940b54c1001e94e54c, type: 3}
+      QuaternionValue: {x: 0, y: 0, z: 0, w: 0}
+      EventValue:
+        m_PersistentCalls:
+          m_Calls: []
+        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Options: []
+  enabledOnStart: 1
 --- !u!114 &1565874583813688473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,11 +470,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventsToReceive: 0
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 65620022048249504}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.05, y: 0, z: -0.0125}
   bounds: {x: 0.18, y: 0.05}
+  touchableCollider: {fileID: 65620022048249504}
 --- !u!114 &4351817177103377279
 MonoBehaviour:
   m_ObjectHideFlags: 0
