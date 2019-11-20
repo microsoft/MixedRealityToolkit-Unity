@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Ray struct

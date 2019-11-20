@@ -1,0 +1,7 @@
+- name: Demos
+  href: Demos/README.md
+  items:
+  - name: Standard Shader
+    href: Demos/StandardShader/README.md
+- name: Standard Assets
+  href: StandardAssets/README.md

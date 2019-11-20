@@ -1,7 +1,9 @@
-﻿using Microsoft.MixedReality.Toolkit.SDK.UX.Pointers;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Teleport.Editor
 {
     [CustomEditor(typeof(ParabolicTeleportPointer))]
     public class ParabolicTeleportPointerInspector : TeleportPointerInspector

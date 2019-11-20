@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Set the content around the camera height

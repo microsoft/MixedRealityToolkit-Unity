@@ -1,0 +1,50 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- If $(UnityPlayer) is not set, default to Standalone. -->
+    <MRTKUnityPlayer Condition=" '$(MRTKUnityPlayer)' == '' ">Standalone</MRTKUnityPlayer>
+
+    <!-- Player specific assemblies are in a directory name that starts with the player name and is suffixed with 'Player'. -->
+    <_MRTKPlayerDirectory>$(MRTKUnityPlayer)Player</_MRTKPlayerDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include content, but only if explicitly requested. This is useful if an MSBuild project references this
+         nuget package, and the output of the MSBuild project is copied into a Unity project. -->
+    <Content Include="$(MSBuildThisFileDirectory)..\MRTK\**" Condition=" '$(MRTKIncludeContent)' == 'true' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <!-- Don't show .meta files in Solution Explorer - it's not useful. -->
+      <Visible Condition=" '%(Extension)' == '.meta' ">false</Visible>
+      <Link>MRTK\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+
+	<Content Include="$(MSBuildThisFileDirectory)..\link.xml" Condition=" '$(MRTKIncludeContent)' == 'true' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>MRTK\link.xml</Link>
+    </Content>
+
+    <!-- Get all the dlls for the target player, and store the Identity in a custom OriginalPath metadata.
+         If Identity is used directly as the HintPath in the Reference, Visual Studio generates a warning
+         indicating the assemblies are not found, even though the build succeeds. -->
+    <_MRTKPlayerAssemblies Include="$(MSBuildThisFileDirectory)..\Plugins\$(_MRTKPlayerDirectory)\*.dll">
+      <OriginalPath>%(Identity)</OriginalPath>
+    </_MRTKPlayerAssemblies>
+
+    <!-- Add a Reference to each assembly, where the FileName is assumed to be the assembly name (true by default),
+         and the HintPath is just the full path to the assembly.  -->
+    <Reference Include="@(_MRTKPlayerAssemblies -> '%(FileName)')">
+      <HintPath>%(OriginalPath)</HintPath>
+    </Reference>
+
+    <!-- Include assembly meta files, but only if explicitly requested. This is useful if an MSBuild project references this
+         nuget package, and the output of the MSBuild project is copied into a Unity project. -->
+    <Content Include="@(_MRTKPlayerAssemblies -> '%(OriginalPath).meta')" Condition=" '$(MRTKIncludeAssemblyMetaFiles)' == 'true' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+
+    <!-- Clear the _MRTKPlayerAssemblies item list since it will be reused for each MRTK nuget package. -->
+    <_MRTKPlayerAssemblies Remove="@(_MRTKPlayerAssemblies)" />
+  </ItemGroup>
+
+</Project>

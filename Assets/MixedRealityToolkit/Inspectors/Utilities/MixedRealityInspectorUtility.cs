@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,50 +10,90 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// This class has handy inspector utilities and functions.
     /// </summary>
     public static class MixedRealityInspectorUtility
     {
+        #region Colors
+
+        public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
+        public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
+        public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
+        public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
+        public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
+        public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
+        public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
+        public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
+
+        #endregion Colors
+
         public const float DottedLineScreenSpace = 4.65f;
+        public const string DefaultConfigProfileName = "DefaultMixedRealityToolkitConfigurationProfile";
+
+        public static readonly Texture2D LogoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_Black.png"), typeof(Texture2D));
+
+        public static readonly Texture2D LogoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_White.png"), typeof(Texture2D));
 
         /// <summary>
         /// Check and make sure we have a Mixed Reality Toolkit and an active profile.
         /// </summary>
         /// <returns>True if the Mixed Reality Toolkit is properly initialized.</returns>
-        public static bool CheckMixedRealityConfigured(bool showHelpBox = true)
+        public static bool CheckMixedRealityConfigured(bool renderEditorElements = false)
         {
             if (!MixedRealityToolkit.IsInitialized)
-            {
-                // Search the scene for one, in case we've just hot reloaded the assembly.
-                var managerSearch = Object.FindObjectsOfType<MixedRealityToolkit>();
-
-                if (managerSearch.Length == 0)
-                {
-                    if (showHelpBox)
-                    {
-                        EditorGUILayout.HelpBox("No Mixed Reality Toolkit found in scene.", MessageType.Error);
-                    }
-
-                    return false;
-                }
-
-                MixedRealityToolkit.ConfirmInitialized();
+            {   // Don't proceed
+                return false;
             }
 
-            if (!MixedRealityToolkit.HasActiveProfile)
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
             {
-                if (showHelpBox)
+                if (renderEditorElements)
                 {
                     EditorGUILayout.HelpBox("No Active Profile set on the Mixed Reality Toolkit.", MessageType.Error);
                 }
-
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// If MRTK is not initialized in scene, adds and initializes instance to current scene
+        /// </summary>
+        public static void AddMixedRealityToolkitToScene(MixedRealityToolkitConfigurationProfile configProfile = null)
+        {
+            if (!MixedRealityToolkit.IsInitialized)
+            {
+                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
+                MixedRealityToolkit.SetActiveInstance(newInstance);
+                Selection.activeObject = newInstance;
+
+                if (configProfile != null)
+                {
+                    newInstance.ActiveProfile = configProfile;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Render the Mixed Reality Toolkit Logo.
+        /// </summary>
+        public static void RenderMixedRealityToolkitLogo()
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label(EditorGUIUtility.isProSkin ? LogoDarkTheme : LogoLightTheme, GUILayout.MaxHeight(96f));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(3f);
         }
 
         /// <summary>
@@ -99,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
 
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetTypes();
+                var types = assembly.GetLoadableTypes();
                 result.AddRange(types.Where(type => type.IsSubclassOf(aType)));
             }
 
@@ -109,7 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Centers an editor window on the main display.
         /// </summary>
-        /// <param name="window"></param>
         public static void CenterOnMainWin(this EditorWindow window)
         {
             var main = GetEditorMainWindowPos();
@@ -121,30 +160,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
             window.position = pos;
         }
 
-        #region Colors
-
-        public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
-        public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
-        public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
-        public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
-        public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
-        public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
-        public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
-        public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
-        public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
-        public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
-        public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
-        public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
-        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
-
-        #endregion Colors
-
         #region Handles
 
         /// <summary>
         /// Draw an axis move handle.
         /// </summary>
-        /// <param name="target"><see cref="UnityEngine.Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="origin">The initial position of the axis.</param>
         /// <param name="direction">The direction the axis is facing.</param>
         /// <param name="distance">Distance from the axis.</param>
@@ -182,9 +203,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         }
 
         /// <summary>
+        /// Returns the default config profile, if it exists.
+        /// </summary>
+        public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()
+        {
+            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
+            return GetDefaultConfigProfile(allConfigProfiles);
+        }
+
+        /// <summary>
+        /// Given a list of MixedRealityToolkitConfigurationProfile objects, returns
+        /// the one that matches the default profile name.
+        /// </summary>
+        public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile(MixedRealityToolkitConfigurationProfile[] allProfiles)
+        {
+            for (int i = 0; i < allProfiles.Length; i++)
+            {
+                if (allProfiles[i].name == DefaultConfigProfileName)
+                {
+                    return allProfiles[i];
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Draw a Circle Move Handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -192,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 CircleMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorCircle;
@@ -219,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a square move handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -227,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 SquareMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSquare;
@@ -255,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a sphere move handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="xScale">Scale the new value on the x axis by this amount.</param>
         /// <param name="yScale">Scale the new value on the x axis by this amount.</param>
@@ -263,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <param name="handleSize">Optional handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 SphereMoveHandle(Object target, Vector3 position, float xScale = 1f, float yScale = 1f, float zScale = 1f, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorSphere;
@@ -291,16 +337,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a vector handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
-        /// <param name="origin"></param>
-        /// <param name="vector"></param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="normalize">Optional, Normalize the new vector value.</param>
         /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the origin.</param>
         /// <param name="handleLength">Optional, handle length.</param>
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Vector3"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
         public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, bool clamp = true, float handleLength = 1f, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
         {
             Handles.color = HandleColorTangent;
@@ -370,13 +414,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities
         /// <summary>
         /// Draw a rotation handle.
         /// </summary>
-        /// <param name="target"><see cref="Object"/> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
         /// <param name="position">The position to draw the handle.</param>
         /// <param name="rotation">The rotation to draw the handle.</param>
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
-        /// <returns>The new <see cref="Quaternion"/> value.</returns>
+        /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Quaternion.html">Quaternion</see> value.</returns>
         public static Quaternion RotationHandle(Object target, Vector3 position, Quaternion rotation, float handleSize = 0.2f, bool autoSize = true, bool recordUndo = true)
         {
             Handles.color = HandleColorRotation;

@@ -1,0 +1,20 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+#PROJECT_TEMPLATE Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "<PROJECT_NAME>", "<PROJECT_RELATIVE_PATH>", "{<PROJECT_GUID>}"
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+#CONFIGURATION_PLATFORM_TEMPLATE 		<Configuration>|<Platform> = <Configuration>|<Platform>
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+#CONFIGURATION_PLATFORM_MAPPING_TEMPLATE 		{<PROJECT_GUID_TOKEN>}.<PROJECT_CONFIGURATION_TOKEN>|<PROJECT_PLATFORM_TOKEN>.ActiveCfg = <SOLUTION_CONFIGURATION_TOKEN>|<SOLUTION_PLATFORM_TOKEN>
+#CONFIGURATION_PLATFORM_ENABLED_TEMPLATE 		{<PROJECT_GUID_TOKEN>}.<PROJECT_CONFIGURATION_TOKEN>|<PROJECT_PLATFORM_TOKEN>.Build.0 = <SOLUTION_CONFIGURATION_TOKEN>|<SOLUTION_PLATFORM_TOKEN>
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {89752EEF-6413-4D53-BA9D-DCA0707F134E}
+	EndGlobalSection
+EndGlobal

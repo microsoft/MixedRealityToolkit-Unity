@@ -1,53 +1,54 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Inspectors.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(InBetween))]
-    public class InBetweenEditor : Editor
+    public class InBetweenEditor : SolverInspector
     {
-        private SerializedProperty trackedObjectProperty;
-        private SerializedProperty transformTargetProperty;
+        private SerializedProperty secondTrackedTargetTypeProperty;
+        private SerializedProperty secondTransformOverrideProperty;
+        private SerializedProperty partwayOffsetProperty;
+
         private InBetween solverInBetween;
-
-        private static readonly string[] fieldsToExclude = new string[] { "m_Script" };
-
-        private void OnEnable()
+        private static readonly GUIContent SecondTrackedTypeLabel = new GUIContent("Second Tracked Target Type");
+        protected override void OnEnable()
         {
-            trackedObjectProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
-            transformTargetProperty = serializedObject.FindProperty("secondTransformOverride");
+            base.OnEnable();
+
+            secondTrackedTargetTypeProperty = serializedObject.FindProperty("secondTrackedObjectType");
+            secondTransformOverrideProperty = serializedObject.FindProperty("secondTransformOverride");
+            partwayOffsetProperty = serializedObject.FindProperty("partwayOffset");
 
             solverInBetween = target as InBetween;
         }
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             serializedObject.Update();
-            EditorGUILayout.Space();
 
-            bool trackedObjectChanged = false;
+            bool objectChanged = false;
 
-            if (transformTargetProperty.objectReferenceValue == null)
+            EditorGUI.BeginChangeCheck();
+
+            InspectorUIUtility.DrawEnumSerializedProperty(secondTrackedTargetTypeProperty, SecondTrackedTypeLabel, solverInBetween.SecondTrackedObjectType);
+
+            if (secondTrackedTargetTypeProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
             {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(trackedObjectProperty);
-                trackedObjectChanged = EditorGUI.EndChangeCheck();
+                EditorGUILayout.PropertyField(secondTransformOverrideProperty);
             }
 
-            EditorGUILayout.PropertyField(transformTargetProperty);
+            objectChanged = EditorGUI.EndChangeCheck();
 
-            DrawPropertiesExcluding(serializedObject, fieldsToExclude);
+            EditorGUILayout.PropertyField(partwayOffsetProperty);
 
             serializedObject.ApplyModifiedProperties();
-
-            if (Application.isPlaying && trackedObjectChanged)
-            {
-                solverInBetween.AttachSecondTransformToNewTrackedObject();
-            }
         }
     }
 }

@@ -1,18 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// A simple line pointer for drawing lines from the input source origin to the current pointer position.
     /// </summary>
-    [RequireComponent(typeof(DistorterGravity))]
     public class LinePointer : BaseControllerPointer
     {
         [Range(1, 50)]
@@ -59,14 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             set { lineRenderers = value; }
         }
 
-        [SerializeField]
-        private DistorterGravity gravityDistorter = null;
-
-        /// <summary>
-        /// The Gravity Distorter that is affecting the <see cref="BaseMixedRealityLineDataProvider"/> attached to this pointer.
-        /// </summary>
-        public DistorterGravity GravityDistorter => gravityDistorter;
-
         private void CheckInitialization()
         {
             if (lineBase == null)
@@ -77,11 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
             if (lineBase == null)
             {
                 Debug.LogError($"No Mixed Reality Line Data Provider found on {gameObject.name}. Did you forget to add a Line Data provider?");
-            }
-
-            if (gravityDistorter == null)
-            {
-                gravityDistorter = GetComponent<DistorterGravity>();
             }
 
             if (lineBase != null && (lineRenderers == null || lineRenderers.Length == 0))
@@ -97,15 +81,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region MonoBehaviour Implementation
 
-        protected virtual void OnValidate()
-        {
-            CheckInitialization();
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
             CheckInitialization();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
+            {
+                lineRenderer.enabled = false;
+            }
         }
 
         #endregion MonoBehaviour Implementation
@@ -113,23 +102,21 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override void OnPreRaycast()
+        public override void OnPreSceneQuery()
         {
             Debug.Assert(lineBase != null);
 
-            Vector3 pointerPosition;
-            TryGetPointerPosition(out pointerPosition);
+            lineBase.UpdateMatrix();
 
             // Set our first and last points
-            lineBase.FirstPoint = pointerPosition;
-
-            if (IsFocusLocked)
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
             {
-                lineBase.LastPoint = pointerPosition + ((Result.Details.Point - pointerPosition).normalized * PointerExtent);
+                // Make the final point 'stick' to the target at the distance of the target
+                SetLinePoints(Position, Result.Details.Point, Result.Details.RayDistance);
             }
             else
             {
-                lineBase.LastPoint = pointerPosition + (PointerDirection * PointerExtent);
+                SetLinePoints(Position, Position + Rotation * Vector3.forward * DefaultPointerExtent, DefaultPointerExtent);
             }
 
             // Make sure our array will hold
@@ -138,16 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 Rays = new RayStep[LineCastResolution];
             }
 
-            // Set up our rays
-            if (!IsFocusLocked)
-            {
-                // Turn off gravity so we get accurate rays
-                gravityDistorter.enabled = false;
-            }
-
             float stepSize = 1f / Rays.Length;
             Vector3 lastPoint = lineBase.GetUnClampedPoint(0f);
-
             for (int i = 0; i < Rays.Length; i++)
             {
                 Vector3 currentPoint = lineBase.GetUnClampedPoint(stepSize * (i + 1));
@@ -157,62 +136,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         }
 
         /// <inheritdoc />
-        public override void OnPostRaycast()
+        public override void OnPostSceneQuery()
         {
-            // Use the results from the last update to set our NavigationResult
-            float clearWorldLength = 0f;
-            gravityDistorter.enabled = false;
-            Gradient lineColor = LineColorNoTarget;
+            base.OnPostSceneQuery();
 
-            if (IsInteractionEnabled)
+            bool isEnabled = IsInteractionEnabled;
+            LineBase.enabled = isEnabled;
+            BaseCursor?.SetVisibility(isEnabled);
+
+            if (!isEnabled) 
             {
-                lineBase.enabled = true;
+                return;
+            }
 
-                if (IsSelectPressed)
-                {
-                    lineColor = LineColorSelected;
-                }
-
-                // If we hit something
-                if (Result.CurrentPointerTarget != null)
-                {
-                    // Use the step index to determine the length of the hit
-                    for (int i = 0; i <= Result.RayStepIndex; i++)
-                    {
-                        if (i == Result.RayStepIndex)
-                        {
-                            // Only add the distance between the start point and the hit
-                            clearWorldLength += Vector3.Distance(Rays[i].Origin, Result.Details.Point);
-                        }
-                        else if (i < Result.RayStepIndex)
-                        {
-                            // Add the full length of the step to our total distance
-                            clearWorldLength += Rays[i].Length;
-                        }
-                    }
-
-                    // Clamp the end of the line to the result hit's point
-                    lineBase.LineEndClamp = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-
-                    if (FocusTarget != null)
-                    {
-                        lineColor = LineColorValid;
-                    }
-
-                    if (IsFocusLocked)
-                    {
-                        gravityDistorter.enabled = true;
-                        gravityDistorter.WorldCenterOfGravity = Result.Details.Point;
-                    }
-                }
-                else
-                {
-                    lineBase.LineEndClamp = 1f;
-                }
+            // The distance the ray travels through the world before it hits something. Measured in world-units (as opposed to normalized distance).
+            float clearWorldLength;
+            Gradient lineColor = LineColorNoTarget;
+            if (Result?.CurrentPointerTarget != null)
+            {
+                // We hit something
+                clearWorldLength = Result.Details.RayDistance;
+                lineColor = LineColorValid;
             }
             else
             {
-                lineBase.enabled = false;
+                clearWorldLength = DefaultPointerExtent;
+                lineColor = IsSelectPressed ? LineColorSelected : LineColorNoTarget;
             }
 
             if (IsFocusLocked)
@@ -220,11 +169,43 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
                 lineColor = LineColorLockFocus;
             }
 
-            for (int i = 0; i < lineRenderers.Length; i++)
+            int maxClampLineSteps = LineCastResolution;
+            foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
             {
-                lineRenderers[i].LineColor = lineColor;
+                // Renderers are enabled by default if line is enabled
+                maxClampLineSteps = Mathf.Max(maxClampLineSteps, lineRenderer.LineStepCount);
+                lineRenderer.LineColor = lineColor;
+            }
+
+            // Used to ensure the line doesn't extend beyond the cursor
+            float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
+
+            // If focus is locked, we're sticking to the target
+            // So don't clamp the world length
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
+            {
+                float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
+                LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
+            }
+            else
+            {
+                // Otherwise clamp the line end by the clear distance
+                float clearLocalLength = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
+                LineBase.LineEndClamp = clearLocalLength;
             }
         }
+
+        protected virtual void SetLinePoints(Vector3 startPoint, Vector3 endPoint, float distance)
+        {
+            lineBase.FirstPoint = startPoint;
+            lineBase.LastPoint = endPoint;
+        }
+
+        /// <inheritdoc />
+        public override bool IsInteractionEnabled =>
+                // If IsTracked is not true, then we don't have position data yet (or have stale data),
+                // so remain disabled until we know where to appear (not just at the origin).
+                IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
         #endregion IMixedRealityPointer Implementation
     }

@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Events;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public interface IMixedRealitySpatialAwarenessObserver : IMixedRealityDataProvider, IMixedRealityEventSource
     {
@@ -42,18 +41,21 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Gets or sets the extents( 1/2 size) of the volume, in meters per axis, from which individual observations will be made.
         /// </summary>
         /// <remarks>
-        /// When used when <see cref="ObserverVolumeType"/> is set to <see cref="VolumeType.Sphere"/> the X  value of the extents will be
+        /// When used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.Sphere"/> the X  value of the extents will be
         /// used as the radius.
         /// </remarks>
         Vector3 ObservationExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets the orientation of the volume.
+        /// Gets or sets the orientation of the volume in World Space. 
         /// </summary>
+        /// <remarks>
+        /// This is only used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.UserAlignedCube"/>
+        /// </remarks>
         Quaternion ObserverRotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the origin of the observer.
+        /// Gets or sets the origin, in World Space, of the observer.
         /// </summary>
         /// <remarks>
         /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
@@ -75,5 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.
         /// Stop | pause the observer
         /// </summary>
         void Suspend();
+
+        /// <summary>
+        /// Clears the observer's collection of observations.
+        /// </summary>
+        /// <remarks>
+        /// If the observer is currently running, calling ClearObservations will suspend it.
+        /// </remarks>
+        void ClearObservations();
     }
 }

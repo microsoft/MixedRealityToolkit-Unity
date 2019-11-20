@@ -4,15 +4,15 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Mixed Reality Toolkit controller definition, used to manage a specific controller type
     /// </summary>
-    public interface IMixedRealityDictationSystem : IMixedRealityDeviceManager, IMixedRealityExtensionService
+    public interface IMixedRealityDictationSystem : IMixedRealityInputDeviceManager
     {
         /// <summary>
-        /// Is the system currently listing to dictation input?
+        /// Is the system currently listing for dictation input?
         /// </summary>
         bool IsListening { get; }
 
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices
         /// <summary>
         /// Ends the recording session.
         /// </summary>
-        /// <returns><see cref="AudioClip"/> of the last recording session.</returns>
+        /// <returns><see href="https://docs.unity3d.com/ScriptReference/AudioClip.html">AudioClip</see> of the last recording session.</returns>
         Task<AudioClip> StopRecordingAsync();
     }
 }

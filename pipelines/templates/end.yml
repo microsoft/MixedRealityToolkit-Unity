@@ -1,0 +1,14 @@
+# [Template] Steps always executed at the end of each build.
+
+steps:
+# Clean up after build: terminate Unity process if it is still running
+- powershell: |
+   $unityProcess = Get-Process -Name Unity -ErrorAction SilentlyContinue
+   if ($unityProcess)
+   {
+       Write-Host "Closing Unity Process"
+       Stop-Process $unityProcess
+   }
+   
+  displayName: 'Close Unity'
+  condition: always()

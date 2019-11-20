@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Creates a parabolic line based on physics.
@@ -88,8 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <remarks>
         /// This specific override doesn't set any points.
         /// </remarks>
-        /// <param name="pointIndex"></param>
-        /// <param name="point"></param>
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             // Intentionally does nothing. StartPoint is always the base.FirstPoint and EndPoint is always calculated by the physics.

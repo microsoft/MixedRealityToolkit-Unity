@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// GazeStabilizer iterates over samples of Raycast data and
@@ -32,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <summary>
         /// The stabilized rotation.
         /// </summary>
-        private Quaternion stableRotation;
         public override Quaternion StableRotation => stableRotation;
+        private Quaternion stableRotation;
 
         /// <summary>
         /// The stabilized position.

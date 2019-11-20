@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Example of building a custom receiver that can be loaded as part of the events on the Interactable or
@@ -18,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
     /// </summary>
     public class CustomInteractablesReceiver : ReceiverBase
     {
+        /// <inheritdoc />
+        public override bool HideUnityEvents => true;
+
         private State lastState;
         private string statusString = "State: %state%";
         private string clickString = "Clicked!";
@@ -31,10 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         private Coroutine showVoice;
         private int clickCount = 0;
 
-        public CustomInteractablesReceiver(UnityEvent ev) : base(ev)
+        public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
         {
-            Name = "CustomEvent";
-            HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
         }
 
         /// <summary>
@@ -68,8 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// allow the info to remove click info if a click event has expired
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         private IEnumerator ClickTimer(float time)
         {
             yield return new WaitForSeconds(time);
@@ -79,8 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// allow the info to remove voice command info and it expires
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         private IEnumerator VoiceTimer(float time)
         {
             yield return new WaitForSeconds(time);
@@ -90,8 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// Called on update, check to see if the state has changed sense the last call
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             if (state.CurrentState() != lastState)
@@ -140,9 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// click happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             base.OnClick(state, source);
@@ -164,11 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// voice command called
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
         public override void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             base.OnVoiceCommand(state, source, command, index, length);

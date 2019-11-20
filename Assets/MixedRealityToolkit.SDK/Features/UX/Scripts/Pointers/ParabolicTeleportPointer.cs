@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     [RequireComponent(typeof(ParabolaPhysicalLineDataProvider))]
     public class ParabolicTeleportPointer : TeleportPointer
@@ -26,36 +26,33 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
         #region MonoBehaviour Implementation
 
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-            EnsureSetup();
-
-            if (parabolicLineData.LineTransform == transform)
-            {
-                Debug.LogWarning("Missing Parabolic line helper.\nThe Parabolic Teleport Pointer requires an empty GameObject child for calculating the parabola arc.");
-            }
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
             EnsureSetup();
-
-            if (parabolicLineData.LineTransform == transform)
-            {
-                var pointerHelper = new GameObject("ParabolicLinePointerHelper");
-                pointerHelper.transform.SetParent(transform);
-                pointerHelper.transform.localPosition = Vector3.zero;
-                parabolicLineData.LineTransform = pointerHelper.transform;
-            }
         }
 
         private void EnsureSetup()
         {
             if (parabolicLineData == null)
             {
-                parabolicLineData = GetComponent<ParabolaPhysicalLineDataProvider>();
+                parabolicLineData = gameObject.GetComponent<ParabolaPhysicalLineDataProvider>();
+            }
+
+            if (parabolicLineData.LineTransform == transform)
+            {
+                Debug.LogWarning("Missing Parabolic line helper.\nThe Parabolic Teleport Pointer requires an empty GameObject child for calculating the parabola arc. Creating one now.");
+
+                var pointerHelper = transform.Find("ParabolicLinePointerHelper");
+
+                if (pointerHelper == null)
+                {
+                    pointerHelper = new GameObject("ParabolicLinePointerHelper").transform;
+                    pointerHelper.transform.SetParent(transform);
+                }
+
+                pointerHelper.transform.localPosition = Vector3.zero;
+                parabolicLineData.LineTransform = pointerHelper.transform;
             }
         }
 
@@ -64,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
         #region IMixedRealityPointer Implementation
 
         /// <inheritdoc />
-        public override void OnPreRaycast()
+        public override void OnPreSceneQuery()
         {
             parabolicLineData.LineTransform.rotation = Quaternion.identity;
             parabolicLineData.Direction = transform.forward;
@@ -87,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Pointers
 
             parabolicLineData.Velocity = velocity;
             parabolicLineData.DistanceMultiplier = distance;
-            base.OnPreRaycast();
+            base.OnPreSceneQuery();
         }
 
         #endregion IMixedRealityPointer Implementation

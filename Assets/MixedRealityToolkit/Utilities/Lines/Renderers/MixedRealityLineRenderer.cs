@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Implements Unity's built in line renderer component, and applies the line data to it.
@@ -48,6 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
         [HideInInspector]
         private LineRenderer lineRenderer = null;
 
+        [Header("Texture Tiling")]
+        [SerializeField]
+        [Tooltip("Tiles the material on the line renderer by world length. Use if you want the texture size to remain constant regardless of a line's length.")]
+        private bool tileMaterialByWorldLength = false;
+        private MaterialPropertyBlock tilingPropertyBlock;
+        private Vector4 tilingPropertyVector = Vector4.one;
+
+        [SerializeField]
+        private float tileMaterialScale = 1f;
+
         private Vector3[] positions;
 
         private void OnEnable()
@@ -57,6 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             if (lineMaterial == null)
             {
                 lineMaterial = lineRenderer.sharedMaterial;
+            }
+
+            // mafinc - Start the line renderer off disabled (invisible), we'll enable it
+            // when we have enough data for it to render properly.
+            if (lineRenderer != null)
+            {
+                lineRenderer.enabled = false;
             }
 
             if (lineMaterial == null)
@@ -71,7 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             lineRenderer.enabled = false;
         }
 
-        private void Update()
+        /// <inheritdoc />
+        protected override void UpdateLine()
         {
             if (LineDataSource == null)
             {
@@ -96,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
                 }
                 else
                 {
-                    float normalizedDistance = (1f / (LineStepCount - 1)) * i;
+                    float normalizedDistance = GetNormalizedPointAlongLine(i);
                     positions[i] = lineDataSource.GetPoint(normalizedDistance);
                 }
             }
@@ -120,6 +136,27 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.Renderers
             // Set positions
             lineRenderer.positionCount = positions.Length;
             lineRenderer.SetPositions(positions);
+
+            // Update texture tiling, if applicable
+            if (tileMaterialByWorldLength)
+            {
+                if (tilingPropertyBlock == null)
+                {
+                    tilingPropertyBlock = new MaterialPropertyBlock();
+                }
+
+                tilingPropertyVector.x = lineDataSource.UnClampedWorldLength * tileMaterialScale;
+                tilingPropertyBlock.SetVector("_MainTex_ST", tilingPropertyVector);
+                lineRenderer.SetPropertyBlock(tilingPropertyBlock);
+            }
+            else
+            {
+                if (tilingPropertyBlock != null)
+                {
+                    tilingPropertyBlock.Clear();
+                    lineRenderer.SetPropertyBlock(tilingPropertyBlock);
+                }
+            }
         }
     }
 }

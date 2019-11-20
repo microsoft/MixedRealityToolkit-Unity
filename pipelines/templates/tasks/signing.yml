@@ -1,0 +1,13 @@
+# [Template] Codesign using config.
+
+parameters:
+  ConfigName: ""
+
+steps:
+- task: PkgESCodeSign@10
+  inputs:
+    signConfigXml: ${{ parameters.ConfigName }}
+    inPathRoot: $(Build.SourcesDirectory)
+    outPathRoot: $(Build.SourcesDirectory)  
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)

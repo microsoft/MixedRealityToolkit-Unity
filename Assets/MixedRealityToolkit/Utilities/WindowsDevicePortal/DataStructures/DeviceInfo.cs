@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.DataStructures
+namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 {
     [Serializable]
     public class DeviceInfo
@@ -72,10 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WindowsDevicePortal.Data
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
-        /// <param name="machineName"></param>
         public DeviceInfo(string ip, string user, string password, string machineName = "")
         {
             IP = ip;

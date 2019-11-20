@@ -3,7 +3,7 @@
 
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     public struct ComparableRaycastResult
     {

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8275efdbe76bdff49a97a8e82fba118d, type: 3}
+  m_Name: DefaultHoloLens2HandTrackingProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  jointPrefab: {fileID: 1955475817299902, guid: 6a3f88d2571cd234a86d95ee5856b9ec,
+    type: 3}
+  palmPrefab: {fileID: 6797406804172968804, guid: 750bdc3344567a447960aae3eda2b462,
+    type: 3}
+  fingertipPrefab: {fileID: 7094064642998883381, guid: b37dde41a983d664c8a09a91313733e7,
+    type: 3}
+  handMeshPrefab: {fileID: 1887883006053652, guid: a86f479797fea8f4189f924b3b6ad979,
+    type: 3}
+  handMeshVisualizationModes: 0
+  handJointVisualizationModes: 1

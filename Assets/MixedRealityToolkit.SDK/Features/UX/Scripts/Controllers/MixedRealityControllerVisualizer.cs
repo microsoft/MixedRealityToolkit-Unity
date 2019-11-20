@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.SDK.Input.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
-    /// <seealso cref="Core.Definitions.Devices.MixedRealityControllerMappingProfile"/>
+    /// <seealso cref="MixedRealityControllerMappingProfile"/>
     public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
         // TODO wire up input actions to controller transform nodes / animations
@@ -27,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputDown(InputEventData eventData)
         {
             base.OnInputDown(eventData);
@@ -40,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputUp(InputEventData eventData)
         {
             base.OnInputUp(eventData);
@@ -53,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<float> eventData)
         {
             base.OnInputChanged(eventData);
@@ -66,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Controllers
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             base.OnInputChanged(eventData);

@@ -2,12 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if WINDOWS_UWP && !ENABLE_IL2CPP
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Reference to a class <see cref="System.Type"/> with support for Unity serialization.
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// Initializes a new instance of the <see cref="SystemType"/> class.
         /// </summary>
         /// <param name="type">Class type.</param>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// If <paramref name="type"/> is not a class type.
         /// </exception>
         public SystemType(Type type)
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities
         /// <summary>
         /// Gets or sets type of class reference.
         /// </summary>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// If <paramref name="value"/> is not a class type.
         /// </exception>
         public Type Type

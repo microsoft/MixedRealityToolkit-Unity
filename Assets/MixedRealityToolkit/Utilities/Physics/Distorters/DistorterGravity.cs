@@ -3,8 +3,12 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
+    /// <summary>
+    /// A Distorter that distorts points based on their distance and direction to the world
+    /// center of gravity as defined by WorldCenterOfGravity.
+    /// </summary>
     public class DistorterGravity : Distorter
     {
         [SerializeField]
@@ -46,18 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
             get { return radius; }
             set
             {
-                if (value < 0f)
-                {
-                    radius = 0f;
-                }
-                else if (value > 10f)
-                {
-                    radius = 10f;
-                }
-                else
-                {
-                    radius = value;
-                }
+                radius = Mathf.Clamp(value, 0f, 10f);
             }
         }
 
@@ -94,9 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters
 
         public void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(WorldCenterOfGravity, 0.05f);
-            Gizmos.DrawWireSphere(WorldCenterOfGravity, radius);
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(WorldCenterOfGravity, 0.01f);
         }
     }
 }

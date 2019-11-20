@@ -1,60 +1,126 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif // UNITY_EDITOR
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// New controller types can be registered by adding the MixedRealityControllerAttribute to
     /// the controller class.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
     public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        [Tooltip("The list of controller mappings your application can use.")]
+        [FormerlySerializedAs("mixedRealityControllerMappingProfiles")]
+        private MixedRealityControllerMapping[] mixedRealityControllerMappings = new MixedRealityControllerMapping[0];
+
+        /// <summary>
+        /// The list of controller mappings your application can use.
+        /// </summary>
+        public MixedRealityControllerMapping[] MixedRealityControllerMappings => mixedRealityControllerMappings;
+
+        [Obsolete("MixedRealityControllerMappingProfiles is obsolete. Please use MixedRealityControllerMappings.")]
+        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappings;
+
+#if UNITY_EDITOR
+        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Controller Mapping Profiles")]
+        private static void UpdateAllControllerMappingProfiles()
+        {
+            foreach (string guid in AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile"))
+            {
+                MixedRealityControllerMappingProfile asset = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(MixedRealityControllerMappingProfile)) as MixedRealityControllerMappingProfile;
+
+                List<MixedRealityControllerMapping> updatedMappings = new List<MixedRealityControllerMapping>();
+
+                foreach (MixedRealityControllerMapping mapping in asset.MixedRealityControllerMappings)
+                {
+                    if (mapping.ControllerType.Type == null)
+                    {
+                        continue;
+                    }
+
+                    if (!mapping.HasCustomInteractionMappings)
+                    {
+                        mapping.UpdateInteractionSettingsFromDefault();
+                    }
+
+                    updatedMappings.Add(mapping);
+                }
+
+                asset.mixedRealityControllerMappings = updatedMappings.ToArray();
+                EditorUtility.SetDirty(asset);
+            }
+        }
+
+
         private static Type[] controllerMappingTypes;
 
         public static Type[] ControllerMappingTypes { get { CollectControllerTypes(); return controllerMappingTypes; } }
 
         public static Type[] CustomControllerMappingTypes { get => (from type in ControllerMappingTypes where UsesCustomInteractionMapping(type) select type).ToArray(); }
 
-        [SerializeField]
-        [Tooltip("The list of controller templates your application can use.")]
-        private MixedRealityControllerMapping[] mixedRealityControllerMappingProfiles = new MixedRealityControllerMapping[0];
-
-        public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappingProfiles;
-
         private static void CollectControllerTypes()
         {
             if (controllerMappingTypes == null)
             {
-                var tmp = new List<Type>();
-                // todo: not supported on uwp/.net
+                List<Type> controllerTypes = new List<Type>();
                 foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
                 {
+                    IEnumerable<Type> types = null;
                     try
                     {
-                        foreach (Type type in assembly.ExportedTypes)
+                        types = assembly.ExportedTypes;
+                    }
+                    catch (NotSupportedException)
+                    {
+                        // assembly.ExportedTypes may not be supported.
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        // Not all assemblies may load correctly, but even upon encountering error
+                        // some subset may have loaded in.
+                        if (e.Types != null)
+                        {
+                            List<Type> loadedTypes = new List<Type>();
+                            foreach (Type type in e.Types)
+                            {
+                                // According to API docs, this array may contain null values
+                                // so they must be filtered out here.
+                                if (type != null)
+                                {
+                                    loadedTypes.Add(type);
+                                }
+                            }
+                            types = loadedTypes;
+                        }
+                    }
+
+                    if (types != null)
+                    {
+                        foreach (Type type in types)
                         {
                             if (type.IsSubclassOf(typeof(BaseController)) &&
                                 MixedRealityControllerAttribute.Find(type) != null)
                             {
-                                tmp.Add(type);
+                                controllerTypes.Add(type);
                             }
                         }
                     }
-                    catch (NotSupportedException) // assembly.ExportedTypes may not be supported.
-                    { }
                 }
 
-                controllerMappingTypes = tmp.ToArray();
+                controllerMappingTypes = controllerTypes.ToArray();
             }
         }
 
@@ -77,16 +143,39 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 foreach (Handedness handedness in GetSupportedHandedness(controllerType))
                 {
                     // Try to find index of mapping in asset.
-                    int idx = Array.FindIndex(MixedRealityControllerMappingProfiles, 0, MixedRealityControllerMappingProfiles.Length,
+                    int idx = Array.FindIndex(MixedRealityControllerMappings, 0, MixedRealityControllerMappings.Length,
                         profile => profile.ControllerType.Type == controllerType && profile.Handedness == handedness);
 
                     if (idx < 0)
                     {
-                        idx = mixedRealityControllerMappingProfiles.Length;
-                        Array.Resize(ref mixedRealityControllerMappingProfiles, idx + 1);
-                        mixedRealityControllerMappingProfiles[idx] = new MixedRealityControllerMapping(controllerType, handedness);
+                        var newMapping = new MixedRealityControllerMapping(controllerType, handedness);
+                        newMapping.SetDefaultInteractionMapping(overwrite: false);
 
-                        mixedRealityControllerMappingProfiles[idx].SetDefaultInteractionMapping(overwrite: false);
+                        // Re-use existing mapping with the same supported controller type.
+                        foreach (var otherMapping in mixedRealityControllerMappings)
+                        {
+                            if (otherMapping.SupportedControllerType == newMapping.SupportedControllerType &&
+                                otherMapping.Handedness == newMapping.Handedness)
+                            {
+                                try
+                                {
+                                    newMapping.SynchronizeInputActions(otherMapping.Interactions);
+                                }
+                                catch (ArgumentException e)
+                                {
+                                    Debug.LogError($"Controller mappings between {newMapping.Description} and {otherMapping.Description} do not match. Error message: {e.Message}");
+                                }
+                                break;
+                            }
+                        }
+
+                        idx = mixedRealityControllerMappings.Length;
+                        Array.Resize(ref mixedRealityControllerMappings, idx + 1);
+                        mixedRealityControllerMappings[idx] = newMapping;
+                    }
+                    else
+                    {
+                        mixedRealityControllerMappings[idx].UpdateInteractionSettingsFromDefault();
                     }
                 }
             }
@@ -94,10 +183,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
 
         private void SortMappings()
         {
-            Array.Sort(mixedRealityControllerMappingProfiles, (profile1, profile2) => 
+            Array.Sort(mixedRealityControllerMappings, (profile1, profile2) =>
             {
-                bool isOptional1 = (profile1.ControllerType.Type == null || UsesCustomInteractionMapping(profile1.ControllerType.Type));
-                bool isOptional2 = (profile2.ControllerType.Type == null || UsesCustomInteractionMapping(profile2.ControllerType.Type));
+                bool isOptional1 = (profile1.ControllerType.Type == null || profile1.HasCustomInteractionMappings);
+                bool isOptional2 = (profile2.ControllerType.Type == null || profile2.HasCustomInteractionMappings);
                 if (!isOptional1 && !isOptional2)
                 {
                     int idx1 = Array.FindIndex(ControllerMappingTypes, type => type == profile1.ControllerType.Type);
@@ -120,6 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                 return isOptional1 ? 1 : -1; // Put custom mappings at the end. These can be added / removed in the inspector.
             });
         }
+
+#endif // UNITY_EDITOR
 
         private static bool UsesCustomInteractionMapping(Type controllerType)
         {

@@ -1,0 +1,15 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

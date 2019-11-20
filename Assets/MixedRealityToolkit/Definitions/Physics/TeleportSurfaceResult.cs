@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     [Serializable]
     public enum TeleportSurfaceResult

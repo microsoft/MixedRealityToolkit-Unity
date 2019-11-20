@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's Bounds struct
@@ -59,6 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         public const int FWD = 4;
         public const int BCK = 5;
 
+        // Axis of the capsule’s lengthwise orientation in the object’s local space
+        private const int CAPSULE_X_AXIS = 0;
+        private const int CAPSULE_Y_AXIS = 1;
+        private const int CAPSULE_Z_AXIS = 2;
+
         public enum Axis
         {
             X,
@@ -91,11 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
-        /// Gets all the corner points of the bounds in world space
+        /// Gets all the corner points of the bounds in world space by transforming input bounds using the given transform
         /// </summary>
-        /// <param name="transform"></param>
-        /// <param name="positions"></param>
-        /// <param name="bounds"></param>
+        /// <param name="transform">Local to world transform</param>
+        /// <param name="positions">Output corner positions</param>
+        /// <param name="bounds">Input bounds, in local space</param>
         /// <remarks>
         /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
         /// corners array.
@@ -131,10 +136,45 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         }
 
         /// <summary>
+        /// Gets all the corner points of the bounds 
+        /// </summary>
+        /// <remarks>
+        /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
+        /// corners array.
+        /// </remarks>
+        public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
+        {
+            // Calculate the local points to transform.
+            Vector3 center = bounds.center;
+            Vector3 extents = bounds.extents;
+            float leftEdge = center.x - extents.x;
+            float rightEdge = center.x + extents.x;
+            float bottomEdge = center.y - extents.y;
+            float topEdge = center.y + extents.y;
+            float frontEdge = center.z - extents.z;
+            float backEdge = center.z + extents.z;
+
+            // Allocate the array if needed.
+            const int numPoints = 8;
+            if (positions == null || positions.Length != numPoints)
+            {
+                positions = new Vector3[numPoints];
+            }
+
+            // Transform all the local points to world space.
+            positions[LBF] = new Vector3(leftEdge, bottomEdge, frontEdge);
+            positions[LBB] = new Vector3(leftEdge, bottomEdge, backEdge);
+            positions[LTF] = new Vector3(leftEdge, topEdge, frontEdge);
+            positions[LTB] = new Vector3(leftEdge, topEdge, backEdge);
+            positions[RBF] = new Vector3(rightEdge, bottomEdge, frontEdge);
+            positions[RBB] = new Vector3(rightEdge, bottomEdge, backEdge);
+            positions[RTF] = new Vector3(rightEdge, topEdge, frontEdge);
+            positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
+        }
+
+        /// <summary>
         /// Gets all the corner points from Renderer's Bounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="positions"></param>
         public static void GetCornerPositionsFromRendererBounds(this Bounds bounds, ref Vector3[] positions)
         {
             Vector3 center = bounds.center;
@@ -184,8 +224,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Gets all the corner points and mid points from Renderer's Bounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="positions"></param>
         public static void GetCornerAndMidPointPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
             // Calculate the local points to transform.
@@ -234,8 +272,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Gets all the corner points and mid points from Renderer's Bounds, ignoring the z axis
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="positions"></param>
         public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
         {
             // Calculate the local points to transform.
@@ -311,54 +347,62 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (ignoreLayers == (1 << colliders[i].gameObject.layer | ignoreLayers))
-                {
-                    continue;
-                }
+                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers);
+            }
+        }
 
-                if(colliders[i] is SphereCollider)
-                {
-                    SphereCollider sc = colliders[i] as SphereCollider;
-                    Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
-                    sphereBounds.GetFacePositions(sc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }
-                else if(colliders[i] is BoxCollider)
-                {
-                    BoxCollider bc = colliders[i] as BoxCollider;
-                    Bounds boxBounds = new Bounds(bc.center, bc.size);
-                    boxBounds.GetCornerPositions(bc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
+        /// <summary>
+        /// Method to get bounds from a single Collider
+        /// </summary>
+        /// <param name="collider">Target collider</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        {
+            if (ignoreLayers == (1 << collider.gameObject.layer | ignoreLayers)) { return; }
 
-                }
-                else if(colliders[i] is MeshCollider)
-                {
-                    MeshCollider mc = colliders[i] as MeshCollider;
-                    Bounds meshBounds = mc.sharedMesh.bounds;
-                    meshBounds.GetCornerPositions(mc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }
-                else if(colliders[i] is CapsuleCollider)
-                {
-                    CapsuleCollider cc = colliders[i] as CapsuleCollider;
-                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                    switch (cc.direction)
-                    {
-                        case 0:
-                            capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                            break;
+            if (collider is SphereCollider)
+            {
+                SphereCollider sc = collider as SphereCollider;
+                Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
+                sphereBounds.GetFacePositions(sc.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            else if (collider is BoxCollider)
+            {
+                BoxCollider bc = collider as BoxCollider;
+                Bounds boxBounds = new Bounds(bc.center, bc.size);
+                boxBounds.GetCornerPositions(bc.transform, ref corners);
+                boundsPoints.AddRange(corners);
 
-                        case 1:
-                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                            break;
+            }
+            else if (collider is MeshCollider)
+            {
+                MeshCollider mc = collider as MeshCollider;
+                Bounds meshBounds = mc.sharedMesh.bounds;
+                meshBounds.GetCornerPositions(mc.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            else if (collider is CapsuleCollider)
+            {
+                CapsuleCollider cc = collider as CapsuleCollider;
+                Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                switch (cc.direction)
+                {
+                    case CAPSULE_X_AXIS:
+                        capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                        break;
 
-                        case 2:
-                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                            break;
-                    }
-                    capsuleBounds.GetFacePositions(cc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }             
+                    case CAPSULE_Y_AXIS:
+                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                        break;
+
+                    case CAPSULE_Z_AXIS:
+                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                        break;
+                }
+                capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                boundsPoints.AddRange(corners);
             }
         }
 
@@ -513,8 +557,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Returns the volume of the bounds.
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <returns></returns>
         public static float Volume(this Bounds bounds)
         {
             return bounds.size.x * bounds.size.y * bounds.size.z;
@@ -523,9 +565,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Returns bounds that contain both this bounds and the bounds passed in.
         /// </summary>
-        /// <param name="originalBounds"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static Bounds ExpandToContain(this Bounds originalBounds, Bounds otherBounds)
         {
             Bounds tmpBounds = originalBounds;
@@ -538,9 +577,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Checks to see if bounds contains the other bounds completely.
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static bool ContainsBounds(this Bounds bounds, Bounds otherBounds)
         {
             return bounds.Contains(otherBounds.min) && bounds.Contains(otherBounds.max);
@@ -549,10 +585,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// <summary>
         /// Checks to see whether point is closer to bounds or otherBounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="point"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static bool CloserToPoint(this Bounds bounds, Vector3 point, Bounds otherBounds)
         {
             Vector3 distToClosestPoint1 = bounds.ClosestPoint(point) - point;

@@ -1,0 +1,54 @@
+# [Template] Common build tasks shared between CI builds and PR validation.
+parameters:
+  buildStandalone: true
+  buildUWPArm: true
+  buildUWPDotNet: true
+  buildUWPX86: true
+  runTests: true
+  validateCode: true
+
+steps:
+# Build Standalone x86.
+# This must happen before tests run, because if the build fails and tests attempt
+# to get run, Unity will hang showing a dialog (even when in batch mode).
+# This is the fastest build, since it doesn't produce an AppX.
+- ${{ if eq(parameters.buildStandalone, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'x86'
+      Platform: 'Standalone'
+
+# Tests should run earlier in the process, so that engineers can get test failure
+# notifications earlier in the CI process.
+- ${{ if eq(parameters.runTests, true) }}:
+  - template: tests.yml
+
+# Validate that the code doesn't contain common issues
+- ${{ if eq(parameters.validateCode, true) }}:
+  - template: tasks/validatecode.yml
+
+# Build UWP x86
+- ${{ if eq(parameters.buildUWPX86, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'x86'
+      Platform: 'UWP'
+      PublishArtifacts: true
+
+# Build UWP ARM
+- ${{ if eq(parameters.buildUWPArm, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'arm'
+      Platform: 'UWP'
+      PublishArtifacts: true
+      PackagingDir: 'ARM'
+
+# Build UWP x86 .NET backend
+- ${{ if eq(parameters.buildUWPDotNet, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'x86'
+      Platform: 'UWP'
+      PublishArtifacts: true
+      ScriptingBackend: '.NET'

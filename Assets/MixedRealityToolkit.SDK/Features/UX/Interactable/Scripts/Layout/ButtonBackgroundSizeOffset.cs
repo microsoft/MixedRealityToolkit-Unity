@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Scales an object relative the scale of the Anchor Transform
@@ -16,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
     ///     Event if the background changes size, this element will remain 40 pixels smaller.
     /// </summary>
     [ExecuteInEditMode]
+    [System.Obsolete("This component is no longer supported", true)]
     public class ButtonBackgroundSizeOffset : MonoBehaviour
     {
         /// <summary>
@@ -59,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Set the objects scale relative to the Anchor
         /// </summary>
-        /// <param name="scale"></param>
         public void SetScale(Vector3 scale)
         {
             Scale = scale;
@@ -74,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Set a consistent offset value from the Anchor
         /// </summary>
-        /// <param name="offset"></param>
         public void SetOffset(Vector3 offset)
         {
             Offset = offset;
@@ -83,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Get the current offset value
         /// </summary>
-        /// <returns></returns>
         public Vector3 GetSOffset()
         {
             return Offset;
@@ -98,7 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
             transform.localScale = scale;
         }
 
-        // Update is called once per frame
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
+
         void Update()
         {
             if (AnchorTransform != null)

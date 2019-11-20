@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Hardware;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Usb
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
     public class USBDeviceListener

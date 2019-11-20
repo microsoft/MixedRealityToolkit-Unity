@@ -3,10 +3,10 @@
 
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
 {
     /// <summary>
-    /// Copy of Unity's <see cref="UnityEngine.XR.WSA.Input.GestureSettings"/>
+    /// Copy of Unity's <see href="https://docs.unity3d.com/ScriptReference/XR.WSA.Input.GestureSettings.html">GestureSettings</see>
     /// </summary>
     [Flags]
     public enum WindowsGestureSettings

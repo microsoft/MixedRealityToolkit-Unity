@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Synchronizes the follower's transform position with the point along the line.
     /// </summary>
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class LineFollower : MonoBehaviour
     {
         [SerializeField]
@@ -69,10 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines
         private BaseMixedRealityLineDataProvider source = null;
 
         #region MonoBehaviour Implementation
-
-        private void OnValidate() => EnsureSetup();
-
-        private void Awake() => EnsureSetup();
+        
+        private void OnEnable() => EnsureSetup();
 
         private void Update()
         {

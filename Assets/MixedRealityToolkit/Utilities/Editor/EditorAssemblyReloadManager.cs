@@ -4,7 +4,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public static class EditorAssemblyReloadManager
     {
@@ -12,11 +12,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
 
         /// <summary>
         /// Locks the Editor's ability to reload assemblies.<para/>
+        /// </summary>
         /// <remarks>
         /// This is useful for ensuring async tasks complete in the editor without having to worry if any script
         /// changes that happen during the running task will cancel it when the editor re-compiles the assemblies.
         /// </remarks>
-        /// </summary>
         public static bool LockReloadAssemblies
         {
             set
@@ -26,15 +26,24 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Editor
                 if (locked)
                 {
                     EditorApplication.LockReloadAssemblies();
-                    EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading temporarily paused."));
+
+                    if (!Application.isBatchMode)
+                    {
+                        EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading temporarily paused."));
+                    }
                 }
                 else
                 {
                     EditorApplication.UnlockReloadAssemblies();
                     EditorApplication.delayCall += () => AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-                    EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading resumed."));
+
+                    if (!Application.isBatchMode)
+                    {
+                        EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading resumed."));
+                    }
                 }
             }
+            get => locked;
         }
     }
 }

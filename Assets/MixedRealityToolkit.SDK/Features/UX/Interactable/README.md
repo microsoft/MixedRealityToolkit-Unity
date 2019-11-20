@@ -11,7 +11,7 @@ The Interactable is a base component for building interactive content, like butt
 - Checkbox - an example of a checkbox toggle control
 - Radial and Radial Set - an example of a button collection or tab system where only one button can be toggled at a time
 
-![Components of Interactables](https://user-images.githubusercontent.com/22085553/37225808-afa6a7cc-238c-11e8-9cc2-fbd5dd7e3656.jpg)
+![Components of Interactables](/Documentation/Images/Interactable/Interactable_details.png)
 
 
 

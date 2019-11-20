@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
+namespace Microsoft.MixedReality.Toolkit.Boundary
 {
     /// <summary>
     /// The InscribedRectangle class defines the largest rectangle within an
@@ -85,6 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// </remarks>
         public InscribedRectangle(Edge[] geometryEdges, int randomSeed)
         {
+            if (geometryEdges == null || geometryEdges.Length == 0)
+            {
+                Debug.LogError("InscribedRectangle requires an array of Edges. You passed in a null or empty array.");
+                return;
+            }
+
             // Clear previous rectangle
             Center = EdgeUtilities.InvalidPoint;
             Width = 0;
@@ -344,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// <returns>
         /// True if the point is within the rectangle's bounds, false otherwise.
         /// </returns>
-        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
+        /// <exception cref="System.InvalidOperationException">The rectangle is not valid.</exception>
         public bool IsInsideBoundary(Vector2 point)
         {
             if (!IsValid)
@@ -405,7 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.BoundarySystem
         /// <param name="angleRadians">The orientation, in radians, of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns></returns>
         private bool CheckRectangleFit(
             Edge[] geometryEdges,
             Vector2 centerPoint,

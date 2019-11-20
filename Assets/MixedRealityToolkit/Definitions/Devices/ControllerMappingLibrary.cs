@@ -2,17 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if UNITY_EDITOR
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Editor.Setup;
 using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Helper utility to manage all the required Axis configuration for platforms, where required
@@ -20,6 +18,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
     public static class ControllerMappingLibrary
     {
         #region Constants
+
+        /// <summary>
+        /// Axis for movement along the up (gravity) vector.
+        /// </summary>
+        public const string UP_DOWN = "UpDown";
 
         /// <summary>
         /// Mouse: Position Horizontal Movement<para/>
@@ -188,45 +191,52 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// </summary>
         public const string AXIS_27 = "AXIS_27";
 
+        public const string AXIS_28 = "AXIS_28";
+
         #endregion Constants
 
 #if UNITY_EDITOR
 
         #region InputAxisConfig
 
+        // Default value for the dead zone. This should match the default used by Unity for the pre-created Horizontal and Vertical axes.
+        public const float defaultDeadZone = 0.19f;
+
         /// <summary>
         /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
         /// </summary>
-        /// <returns></returns>
         public static InputManagerAxis[] UnityInputManagerAxes => new[]
         {
-            new InputManagerAxis { Name = AXIS_1,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
-            new InputManagerAxis { Name = AXIS_2,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
-            new InputManagerAxis { Name = AXIS_3,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3  },
-            new InputManagerAxis { Name = AXIS_4,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4  },
-            new InputManagerAxis { Name = AXIS_5,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5  },
-            new InputManagerAxis { Name = AXIS_6,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 6  },
-            new InputManagerAxis { Name = AXIS_7,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 7  },
-            new InputManagerAxis { Name = AXIS_8,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 8  },
-            new InputManagerAxis { Name = AXIS_9,  Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 9  },
-            new InputManagerAxis { Name = AXIS_10, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
-            new InputManagerAxis { Name = AXIS_11, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
-            new InputManagerAxis { Name = AXIS_12, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 12 },
-            new InputManagerAxis { Name = AXIS_13, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 13 },
-            new InputManagerAxis { Name = AXIS_14, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 14 },
-            new InputManagerAxis { Name = AXIS_15, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 15 },
-            new InputManagerAxis { Name = AXIS_16, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 16 },
-            new InputManagerAxis { Name = AXIS_17, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 17 },
-            new InputManagerAxis { Name = AXIS_18, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 18 },
-            new InputManagerAxis { Name = AXIS_19, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 19 },
-            new InputManagerAxis { Name = AXIS_20, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 20 },
-            new InputManagerAxis { Name = AXIS_21, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 21 },
-            new InputManagerAxis { Name = AXIS_22, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 22 },
-            new InputManagerAxis { Name = AXIS_23, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 23 },
-            new InputManagerAxis { Name = AXIS_24, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 24 },
-            new InputManagerAxis { Name = AXIS_25, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 25 },
-            new InputManagerAxis { Name = AXIS_26, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
-            new InputManagerAxis { Name = AXIS_27, Dead = 0.001f, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
+            new InputManagerAxis { Name = AXIS_1,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
+            new InputManagerAxis { Name = AXIS_2,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
+            new InputManagerAxis { Name = AXIS_3,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3  },
+            new InputManagerAxis { Name = AXIS_4,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 4  },
+            new InputManagerAxis { Name = AXIS_5,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 5  },
+            new InputManagerAxis { Name = AXIS_6,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 6  },
+            new InputManagerAxis { Name = AXIS_7,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 7  },
+            new InputManagerAxis { Name = AXIS_8,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 8  },
+            new InputManagerAxis { Name = AXIS_9,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 9  },
+            new InputManagerAxis { Name = AXIS_10, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 10 },
+            new InputManagerAxis { Name = AXIS_11, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 11 },
+            new InputManagerAxis { Name = AXIS_12, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 12 },
+            new InputManagerAxis { Name = AXIS_13, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 13 },
+            new InputManagerAxis { Name = AXIS_14, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 14 },
+            new InputManagerAxis { Name = AXIS_15, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 15 },
+            new InputManagerAxis { Name = AXIS_16, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 16 },
+            new InputManagerAxis { Name = AXIS_17, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 17 },
+            new InputManagerAxis { Name = AXIS_18, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 18 },
+            new InputManagerAxis { Name = AXIS_19, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 19 },
+            new InputManagerAxis { Name = AXIS_20, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 20 },
+            new InputManagerAxis { Name = AXIS_21, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 21 },
+            new InputManagerAxis { Name = AXIS_22, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 22 },
+            new InputManagerAxis { Name = AXIS_23, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 23 },
+            new InputManagerAxis { Name = AXIS_24, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 24 },
+            new InputManagerAxis { Name = AXIS_25, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 25 },
+            new InputManagerAxis { Name = AXIS_26, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
+            new InputManagerAxis { Name = AXIS_27, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 },
+            new InputManagerAxis { Name = AXIS_28, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 28 },
+            new InputManagerAxis { Name = UP_DOWN, Gravity = 3, Dead = 0.001f, Sensitivity = 3, Snap = true, Invert = false, Type = InputManagerAxisType.KeyOrMouseButton, PositiveButton = "e", NegativeButton = "q" },
+            new InputManagerAxis { Name = UP_DOWN,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3 },
         };
 
         #endregion InputAxisConfig
@@ -282,12 +292,18 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         private static Texture2D GetControllerTextureInternal(string relativeTexturePath, Handedness handedness, string suffix)
         {
             string handednessSuffix = string.Empty;
-            if (handedness == Handedness.Left) handednessSuffix = "_left";
-            else if (handedness == Handedness.Right) handednessSuffix = "_right";
+            if (handedness == Handedness.Left)
+            {
+                handednessSuffix = "_left";
+            }
+            else if (handedness == Handedness.Right)
+            {
+                handednessSuffix = "_right";
+            }
 
             string themeSuffix = EditorGUIUtility.isProSkin ? "_white" : "_black";
 
-            string fullTexturePath = $"{MixedRealityEditorSettings.MixedRealityToolkit_RelativeFolderPath}/{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png";
+            string fullTexturePath = MixedRealityToolkitFiles.MapRelativeFilePath($"{relativeTexturePath}{handednessSuffix}{themeSuffix}{suffix}.png");
             return (Texture2D)AssetDatabase.LoadAssetAtPath(fullTexturePath, typeof(Texture2D));
         }
 

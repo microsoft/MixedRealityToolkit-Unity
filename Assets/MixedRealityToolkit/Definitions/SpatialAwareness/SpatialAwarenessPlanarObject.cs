@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
+namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public partial class SpatialAwarenessPlanarObject : BaseSpatialAwarenessObject
     {
@@ -24,9 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessPlanarObject"/>.
         /// </summary>
-        /// <param name="bounds"></param> todo: add comments
-        /// <param name="name"></param>
-        /// <param name="planeId"></param>
         /// <returns>
         /// SpatialAwarenessPlanarObject containing the fields that describe the plane.
         /// </returns>

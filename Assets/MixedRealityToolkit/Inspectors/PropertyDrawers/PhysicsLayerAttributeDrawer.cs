@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
+using Microsoft.MixedReality.Toolkit.Editor;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Physics.Editor
 {
     /// <summary>
     /// Renders the physics layer dropdown based on the current layers set in the Tag Manager.
@@ -20,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
             var guiContents = new List<GUIContent>();
             var layerIds = new List<int>();
 
-            for (int i = 0; i < LayerExtensions.TagManagerLayers.arraySize; i++)
+            for (int i = 0; i < EditorLayerExtensions.TagManagerLayers.arraySize; i++)
             {
-                var layer = LayerExtensions.TagManagerLayers.GetArrayElementAtIndex(i);
+                var layer = EditorLayerExtensions.TagManagerLayers.GetArrayElementAtIndex(i);
 
                 if (!string.IsNullOrWhiteSpace(layer.stringValue))
                 {

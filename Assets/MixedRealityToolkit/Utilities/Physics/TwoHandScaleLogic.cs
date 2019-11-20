@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
+namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
     /// Implements a scale logic that will scale an object based on the 
@@ -34,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Physics
         /// <summary>
         /// update GameObject with new Scale state
         /// </summary>
-        /// <param name="handsPressedMap"></param>
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
         public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
         {

@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
@@ -119,6 +118,32 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         }
 
         [SerializeField]
+        [Tooltip("Ignore vertical movement and lock the Y position of the object")]
+        private bool useFixedVerticalPosition = false;
+
+        /// <summary>
+        /// Ignore vertical movement and lock the Y position of the object.
+        /// </summary>
+        public bool UseFixedVerticalPosition
+        {
+            get { return useFixedVerticalPosition; }
+            set { useFixedVerticalPosition = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Offset amount of the vertical position")]
+        private float fixedVerticalPosition = -0.4f;
+
+        /// <summary>
+        /// Offset amount of the vertical position.
+        /// </summary>
+        public float FixedVerticalPosition
+        {
+            get { return fixedVerticalPosition; }
+            set { fixedVerticalPosition = value; }
+        }
+
+        [SerializeField]
         [Tooltip("If true, element will orient to ReferenceDirection, otherwise it will orient to ref position.")]
         private bool orientToReferenceDirection = false;
 
@@ -138,8 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
         /// <summary>
         /// The up direction to use for orientation.
-        /// <remarks>Cone may roll with head, or not.</remarks>
         /// </summary>
+        /// <remarks>Cone may roll with head, or not.</remarks>
         private Vector3 UpReference
         {
             get
@@ -197,17 +222,18 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                 goalRotation.x = goalRotation.z = 0f;
             }
 
+            if (UseFixedVerticalPosition)
+            {
+                goalPosition.y = ReferencePoint.y + FixedVerticalPosition;
+            }
+
             GoalPosition = goalPosition;
             GoalRotation = goalRotation;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>
         /// Optimized version of GetDesiredOrientation.
         /// </summary>
-        /// <param name="desiredPos"></param>
         private void GetDesiredOrientation_DistanceOnly(ref Vector3 desiredPos)
         {
             // TODO: There should be a different solver for distance constraint.

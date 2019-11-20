@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.States;
-using System.Collections;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Example of building an event system for Interactable that still uses ReceiverBase events
@@ -30,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         {
             if (Events.Count > 0)
             {
-                InteractableEvent.EventLists lists = InteractableEvent.GetEventTypes();
-                Events[0].Receiver = InteractableEvent.GetReceiver(Events[0], lists);
+                Events[0].Receiver = InteractableEvent.CreateReceiver(Events[0]);
                 Events[0].Receiver.Host = this;
             }
         }
@@ -39,8 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// A state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public override void OnStateChange(InteractableStates state, Interactable source)
         {
             base.OnStateChange(state, source);
@@ -56,9 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// click happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             base.OnClick(state, source, pointer);
@@ -75,11 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Events
         /// <summary>
         /// voice command happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
         public override void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             base.OnVoiceCommand(state, source, command, index, length);

@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.
@@ -41,12 +37,35 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// </summary>
         protected Transform ControllerTransform;
 
+        private IMixedRealityInputSystem inputSystem = null;
+
+        /// <summary>
+        /// The active instance of the input system.
+        /// </summary>
+        protected IMixedRealityInputSystem InputSystem
+        {
+            get
+            {
+                if (inputSystem == null)
+                {
+                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                }
+                return inputSystem;
+            }
+        }
+
         #region MonoBehaviour Implementation
 
         protected virtual void OnEnable()
         {
             // Look if the controller has loaded.
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             RefreshControllerTransform();
+        }
+
+        protected virtual void OnDisable()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation
@@ -57,7 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             if (eventData.Controller?.ControllerHandedness == handedness)
             {
-                AddControllerTransform(eventData.Controller);
+                if (eventData.Controller is IMixedRealityHand)
+                {
+
+                }
+                else
+                {
+                    AddControllerTransform(eventData.Controller);
+                }
             }
         }
 
@@ -78,13 +104,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (MixedRealityToolkit.InputSystem == null)
+            if (InputSystem == null)
             {
                 // The InputSystem could not be found.
                 return;
             }
 
-            foreach (IMixedRealityController controller in MixedRealityToolkit.InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
             {
                 if (controller.ControllerHandedness == handedness)
                 {
@@ -100,7 +126,16 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         /// <param name="newController">The new controller to be tracked.</param>
         protected virtual void AddControllerTransform(IMixedRealityController newController)
         {
-            if (newController.ControllerHandedness == handedness && newController.Visualizer.GameObjectProxy.transform != null && !newController.Visualizer.GameObjectProxy.transform.Equals(ControllerTransform))
+            if (newController == null || 
+                newController.Visualizer == null || 
+                newController.Visualizer.GameObjectProxy == null ||
+                newController.Visualizer.GameObjectProxy.transform == null)
+            {
+                return;
+            }
+
+            if (newController.ControllerHandedness == handedness &&
+                !newController.Visualizer.GameObjectProxy.transform.Equals(ControllerTransform))
             {
                 ControllerTransform = newController.Visualizer.GameObjectProxy.transform;
 

@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public abstract class BaseObjectCollection : MonoBehaviour
     {
@@ -75,7 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
             for (int i = 0; i < transform.childCount; i++)
             {
                 Transform child = transform.GetChild(i);
-
+#if UNITY_EDITOR
+                UnityEditor.Undo.RecordObject(child, "ObjectCollection modify transform");
+#endif // UNITY_EDITOR
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
                     NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child });

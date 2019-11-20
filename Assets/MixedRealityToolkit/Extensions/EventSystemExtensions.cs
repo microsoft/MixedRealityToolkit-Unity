@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Physics;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics;
+using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Extensions
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Extension methods for Unity's EventSystem 
@@ -21,11 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// Executes a raycast all and returns the closest element.
         /// Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.
         /// </summary>
+        /// <remarks>
+        /// Takes an optional RaycastResultComparer, which will be used to select the highest priority
+        /// raycast result.
+        /// </remarks>
         /// <returns>RaycastResult if hit, or an empty RaycastResult if nothing was hit</returns>
-        public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
+        public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks, RaycastResultComparer raycastResultComparer = null)
         {
             eventSystem.RaycastAll(pointerEventData, RaycastResults);
-            return PrioritizeRaycastResult(layerMasks);
+            return PrioritizeRaycastResult(layerMasks, raycastResultComparer);
         }
 
         /// <summary>
@@ -33,8 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
         /// </summary>
         /// <param name="priority">The layer mask priority.</param>
         /// <returns><see cref="RaycastResult"/></returns>
-        private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority)
+        private static RaycastResult PrioritizeRaycastResult(LayerMask[] priority, RaycastResultComparer raycastResultComparer)
         {
+            // If not specified, default to the in-box RaycastResultComparer.
+            if (raycastResultComparer == null)
+            {
+                raycastResultComparer = RaycastResultComparer;
+            }
+
             ComparableRaycastResult maxResult = default(ComparableRaycastResult);
 
             for (var i = 0; i < RaycastResults.Count; i++)
@@ -46,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Extensions
 
                 var result = new ComparableRaycastResult(RaycastResults[i], layerMaskIndex);
 
-                if (maxResult.RaycastResult.module == null || RaycastResultComparer.Compare(maxResult, result) < 0)
+                if (maxResult.RaycastResult.module == null || raycastResultComparer.Compare(maxResult, result) < 0)
                 {
                     maxResult = result;
                 }

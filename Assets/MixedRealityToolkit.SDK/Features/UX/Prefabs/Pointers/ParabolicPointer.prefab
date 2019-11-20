@@ -64,6 +64,7 @@ MonoBehaviour:
   velocitySearchRange: 0.02
   distorters:
   - {fileID: 114225980339285346}
+  distortionEnabled: 1
   distortionMode: 0
   distortionStrength:
     serializedVersion: 2
@@ -335,10 +336,38 @@ MonoBehaviour:
   widthOffset: 0
   stepMode: 0
   lineStepCount: 64
+  pointDistributionMode: 1
+  customPointDistributionLength: 0.1
+  customPointDistributionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120827243805602862}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!114 &114225980339285346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,9 +442,11 @@ MonoBehaviour:
     description: Trigger
     axisConstraint: 3
   requiresHoldAction: 0
+  requiresActionBeforeEnabling: 1
   overrideGlobalPointerExtent: 0
   pointerExtent: 20
-  pointerOrientation: 0
+  defaultPointerExtent: 20
+  sphereCastRadius: 0.1
   LineCastResolution: 15
   LineColorSelected:
     serializedVersion: 2
@@ -565,7 +596,6 @@ MonoBehaviour:
   lineBase: {fileID: 114203474425088848}
   lineRenderers:
   - {fileID: 114102700686190618}
-  gravityDistorter: {fileID: 114225980339285346}
   teleportAction:
     id: 5
     description: Teleport
@@ -613,6 +643,8 @@ MonoBehaviour:
   InvalidLayers:
     serializedVersion: 2
     m_Bits: 4
+  gravityDistorter: {fileID: 114225980339285346}
+  pointerOrientation: 0
   minParabolaVelocity: 5
   maxParabolaVelocity: 20
   minDistanceModifier: 1

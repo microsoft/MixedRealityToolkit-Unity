@@ -1,17 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// A basic grid layout for game objects of a consistent size
     /// </summary>
     /// 
-    [ExecuteInEditMode]
+    [ExecuteAlways]
     public class TileGridObjectCollection : MonoBehaviour
     {
         /// <summary>
@@ -110,8 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Collections
         /// <summary>
         /// Set the item position by index
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public virtual Vector3 GetListPosition(int index)
         {
             int column = index % Columns;

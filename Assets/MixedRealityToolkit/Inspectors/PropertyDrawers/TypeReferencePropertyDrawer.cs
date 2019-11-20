@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="SystemType"/> properties.
+    /// Custom property drawer for <see cref="Utilities.SystemType"/> properties.
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]
@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         private static readonly Dictionary<string, Type> TypeMap = new Dictionary<string, Type>();
         private static readonly int ControlHint = typeof(SystemTypeReferencePropertyDrawer).GetHashCode();
         private static readonly GUIContent TempContent = new GUIContent();
+        private static readonly Color enabledColor = Color.white;
+        private static readonly Color disabledColor = Color.Lerp(Color.white, Color.clear, 0.5f);
 
         #region Type Filtering
 
@@ -34,12 +36,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         /// </summary>
         /// <remarks>
         /// <para>This property must be set immediately before presenting a class
-        /// type reference property field using <see cref="EditorGUI.PropertyField(Rect,SerializedProperty)"/>
-        /// or <see cref="EditorGUILayout.PropertyField(SerializedProperty,UnityEngine.GUILayoutOption[])"/> since the value of this
-        /// property is reset to <c>null</c> each time the control is drawn.</para>
-        /// <para>Since filtering makes extensive use of <see cref="ICollection{Type}.Contains"/>
+        /// type reference property field using <see href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</see>
+        /// since the value of this property is reset to <c>null</c> each time the control is drawn.</para>
+        /// <para>Since filtering makes extensive use of <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
         /// it is recommended to use a collection that is optimized for fast
-        /// look ups such as <see cref="HashSet{Type}"/> for better performance.</para>
+        /// look ups such as HashSet for better performance.</para>
         /// </remarks>
         /// <example>
         /// <para>Exclude a specific type from being selected:</para>
@@ -67,13 +68,15 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         private static List<Type> GetFilteredTypes(SystemTypeAttribute filter)
         {
             var types = new List<Type>();
-            var assemblies = CompilationPipeline.GetAssemblies();
             var excludedTypes = ExcludedTypeCollectionGetter?.Invoke();
 
+            // We prefer using this over CompilationPipeline.GetAssemblies() because
+            // some types may come from plugins and other sources that have already
+            // been compiled.
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                Assembly compiledAssembly = Assembly.Load(assembly.name);
-                FilterTypes(compiledAssembly, filter, excludedTypes, types);
+                FilterTypes(assembly, filter, excludedTypes, types);
             }
 
             types.Sort((a, b) => string.Compare(a.FullName, b.FullName, StringComparison.Ordinal));
@@ -82,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 
         private static void FilterTypes(Assembly assembly, SystemTypeAttribute filter, ICollection<Type> excludedTypes, List<Type> output)
         {
-            foreach (var type in assembly.GetTypes())
+            foreach (var type in assembly.GetLoadableTypes())
             {
                 bool isValid = type.IsValueType && !type.IsEnum || type.IsClass;
                 if (!type.IsVisible || !isValid)
@@ -124,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
 
         #region Control Drawing / Event Handling
 
-        private static string DrawTypeSelectionControl(Rect position, GUIContent label, string classRef, SystemTypeAttribute filter)
+        private static string DrawTypeSelectionControl(Rect position, GUIContent label, string classRef, SystemTypeAttribute filter, bool typeResolved)
         {
             if (label != null && label != GUIContent.none)
             {
@@ -188,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
                     {
                         TempContent.text = "(None)";
                     }
-                    else if (ResolveType(classRef) == null)
+                    else if (!typeResolved)
                     {
                         TempContent.text += " {Missing}";
                     }
@@ -212,15 +215,76 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.PropertyDrawers
         {
             try
             {
+                Color restoreColor = GUI.color;
                 bool restoreShowMixedValue = EditorGUI.showMixedValue;
+                bool typeResolved = string.IsNullOrEmpty(property.stringValue) || ResolveType(property.stringValue) != null;
                 EditorGUI.showMixedValue = property.hasMultipleDifferentValues;
-                property.stringValue = DrawTypeSelectionControl(position, label, property.stringValue, filter);
+
+                GUI.color = enabledColor;
+
+                if (typeResolved)
+                {
+                    property.stringValue = DrawTypeSelectionControl(position, label, property.stringValue, filter, true);
+                }
+                else
+                {
+                    if (SelectRepairedTypeWindow.WindowOpen)
+                    {
+                        GUI.color = disabledColor;
+                        DrawTypeSelectionControl(position, label, property.stringValue, filter, false);
+                    }
+                    else
+                    {
+                        var errorContent = EditorGUIUtility.IconContent("d_console.erroricon.sml");
+                        GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
+
+                        Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
+                        Rect buttonPosition = new Rect(position.x + position.width - 75, position.y, 75, position.height);
+
+                        property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
+
+                        if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
+                        {
+                            string typeNameWithoutAssembly = property.stringValue.Split(new string[] { "," }, StringSplitOptions.None)[0];
+                            string typeNameWithoutNamespace = System.Text.RegularExpressions.Regex.Replace(typeNameWithoutAssembly, @"[.\w]+\.(\w+)", "$1");
+
+                            Type[] repairedTypeOptions = FindTypesByName(typeNameWithoutNamespace, filter);
+                            if (repairedTypeOptions.Length > 1)
+                            {
+                                SelectRepairedTypeWindow.Display(repairedTypeOptions, property);
+                            }
+                            else if (repairedTypeOptions.Length > 0)
+                            {
+                                property.stringValue = SystemType.GetReference(repairedTypeOptions[0]);
+                            }
+                            else
+                            {
+                                EditorUtility.DisplayDialog("No types found", "No types with the name '" + typeNameWithoutNamespace + "' were found.", "OK");
+                            }
+                        }
+                    }
+                }
+
+                GUI.color = restoreColor;
                 EditorGUI.showMixedValue = restoreShowMixedValue;
             }
             finally
             {
                 ExcludedTypeCollectionGetter = null;
             }
+        }
+
+        private static Type[] FindTypesByName(string typeName, SystemTypeAttribute filter)
+        {
+            List<Type> types = new List<Type>();
+            foreach (Type t in GetFilteredTypes(filter))
+            {
+                if (t.Name.Equals(typeName))
+                {
+                    types.Add(t);
+                }
+            }
+            return types.ToArray();
         }
 
         private static void DisplayDropDown(Rect position, List<Type> types, Type selectedType, TypeGrouping grouping)

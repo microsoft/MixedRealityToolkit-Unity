@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Attributes
+namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// Attribute that defines the properties of a Mixed Reality Toolkit data provider.
@@ -20,8 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Attributes
         public MixedRealityDataProviderAttribute(
             Type serviceInterfaceType,
             SupportedPlatforms runtimePlatforms,
+            string name = "",
             string profilePath = "",
-            string packageFolder = "MixedRealityToolkit") : base(runtimePlatforms, profilePath, packageFolder)
+            string packageFolder = "MixedRealityToolkit") : base(runtimePlatforms, name, profilePath, packageFolder)
         {
             ServiceInterfaceType = serviceInterfaceType;
         }

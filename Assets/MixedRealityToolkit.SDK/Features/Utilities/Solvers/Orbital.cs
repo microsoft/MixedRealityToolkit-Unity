@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Provides a solver that follows the TrackedObject/TargetTransform in an orbital motion.
@@ -29,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("XYZ offset for this object in relation to the TrackedObject/TargetTransform. Mixing local and world offsets is not recommended.")]
+        [Tooltip("XYZ offset for this object oriented with the TrackedObject/TargetTransform's forward. Mixing local and world offsets is not recommended. Local offsets are applied before world offsets.")]
         private Vector3 localOffset = new Vector3(0, -1, 1);
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientationType. Mixing local and world offsets is not recommended.")]
+        [Tooltip("XYZ offset for this object in worldspace, best used with the YawOnly orientationType. Mixing local and world offsets is not recommended. Local offsets are applied before world offsets.")]
         private Vector3 worldOffset = Vector3.zero;
 
         /// <summary>
@@ -61,16 +60,17 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
         }
 
         [SerializeField]
+        [FormerlySerializedAs(oldName: "useAngleSteppingForWorldOffset")]
         [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
-        private bool useAngleSteppingForWorldOffset = false;
+        private bool useAngleStepping = false;
 
         /// <summary>
         /// Lock the rotation to a specified number of steps around the tracked object.
         /// </summary>
-        public bool UseAngleSteppingForWorldOffset
+        public bool UseAngleStepping
         {
-            get { return useAngleSteppingForWorldOffset; }
-            set { useAngleSteppingForWorldOffset = value; }
+            get { return useAngleStepping; }
+            set { useAngleStepping = value; }
         }
 
         [Range(2, 24)]
@@ -90,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
             }
         }
 
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             Vector3 desiredPos = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
@@ -103,15 +104,12 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
 
             GoalPosition = desiredPos;
             GoalRotation = desiredRot;
-
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
 
         private Quaternion SnapToTetherAngleSteps(Quaternion rotationToSnap)
         {
-            if (!UseAngleSteppingForWorldOffset || SolverHandler.TransformTarget == null)
+            if (!UseAngleStepping || SolverHandler.TransformTarget == null)
             {
                 return rotationToSnap;
             }
@@ -154,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Utilities.Solvers
                     break;
             }
 
-            if (UseAngleSteppingForWorldOffset)
+            if (UseAngleStepping)
             {
                 desiredRot = SnapToTetherAngleSteps(desiredRot);
             }

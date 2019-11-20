@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Pointer Profile", fileName = "MixedRealityInputPointerProfile", order = (int)CreateProfileMenuItemIndices.Pointer)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Pointer Profile", fileName = "MixedRealityInputPointerProfile", order = (int)CreateProfileMenuItemIndices.Pointer)]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Pointers.html")]
     public class MixedRealityPointerProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -73,11 +72,39 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         }
 
         [SerializeField]
+        [Tooltip("The Pointer options for this profile.")]
         private PointerOption[] pointerOptions = new PointerOption[0];
 
         /// <summary>
         /// The Pointer options for this profile.
         /// </summary>
         public PointerOption[] PointerOptions => pointerOptions;
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityPointerMediator), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("The concrete Pointer Mediator component to use. This is a component that mediates all pointers in system, disabling / enabling them based on the state of other pointers.")]
+        private SystemType pointerMediator = null;
+
+        /// <summary>
+        /// The concrete Pointer Mediator component to use.
+        /// This is a component that mediates all pointers in system, disabling / enabling them based on the state of other pointers.
+        /// </summary>
+        public SystemType PointerMediator
+        {
+            get { return pointerMediator; }
+        }
+
+        [SerializeField]
+        [Implements(typeof(IMixedRealityPrimaryPointerSelector), TypeGrouping.ByNamespaceFlat)]
+        [Tooltip("Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.")]
+        private SystemType primaryPointerSelector = null;
+
+        /// <summary>
+        /// Primary pointer selector implementation to use. This is used by the focus provider to choose the primary pointer.
+        /// </summary>
+        public SystemType PrimaryPointerSelector
+        {
+            get { return primaryPointerSelector; }
+        }
     }
 }

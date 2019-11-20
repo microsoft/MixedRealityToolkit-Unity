@@ -1,24 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests")]
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Configuration profile settings for setting up controller pointers.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
+    [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
+
+        public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
+        {
+            get { return dataProviderConfigurations; }
+            internal set { dataProviderConfigurations = value; }
+        }
+
         [SerializeField]
         [Tooltip("The focus provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
@@ -31,6 +40,43 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         {
             get { return focusProviderType; }
             internal set { focusProviderType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The raycast provider service concrete type to use when raycasting.")]
+        [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType raycastProviderType;
+
+        /// <summary>
+        /// The raycast provider service concrete type to use when raycasting.
+        /// </summary>
+        public SystemType RaycastProviderType
+        {
+            get { return raycastProviderType; }
+            internal set { raycastProviderType = value; }
+        }
+
+        /// <summary>
+        /// Maximum number of colliders that can be detected in a SphereOverlap scene query.
+        /// </summary>
+        public int FocusQueryBufferSize => focusQueryBufferSize;
+
+        [SerializeField]
+        [Range(1, 2048)]
+        [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
+        private int focusQueryBufferSize = 128;
+
+        [SerializeField]
+        [Tooltip("In case of a compound collider, does the individual collider receive focus")]
+        private bool focusIndividualCompoundCollider = false;
+
+        /// <summary>
+        /// In case of a compound collider, does the individual collider receive focus
+        /// </summary>
+        public bool FocusIndividualCompoundCollider
+        {
+            get { return focusIndividualCompoundCollider; }
+            set { focusIndividualCompoundCollider = value; }
         }
 
         [SerializeField]
@@ -85,18 +131,34 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             internal set { gesturesProfile = value; }
         }
 
-
-        private IMixedRealitySpeechSystem speechSystem;
+        /// <summary>
+        /// The list of cultures where speech recognition is supported
+        /// </summary>
+        private List<CultureInfo> supportedVoiceCultures = new List<CultureInfo>
+        {
+            new CultureInfo("en-US"),
+            new CultureInfo("en-CA"),
+            new CultureInfo("fr-CA"),
+            new CultureInfo("en-GB"),
+            new CultureInfo("en-AU"),
+            new CultureInfo("de-DE"),
+            new CultureInfo("fr-FR"),
+            new CultureInfo("zh-CN"),
+            new CultureInfo("ja-JP"),
+            new CultureInfo("es-ES"),
+            new CultureInfo("it-IT")
+        };
 
         /// <summary>
-        /// Current Registered Speech System.
+        /// Returns whether speech is supported for the current language or not
         /// </summary>
-        public IMixedRealitySpeechSystem SpeechSystem => speechSystem ?? (speechSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpeechSystem>());
-
-        /// <summary>
-        /// Is the speech Commands Enabled?
-        /// </summary>
-        public bool IsSpeechCommandsEnabled => speechCommandsProfile != null && SpeechSystem != null && MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled;
+        public bool IsSpeechSupported
+        {
+            get
+            {
+                return supportedVoiceCultures.Contains(CultureInfo.CurrentUICulture);
+            }
+        }
 
         [SerializeField]
         [Tooltip("Speech Command profile for wiring up Voice Input to Actions.")]
@@ -110,18 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
             get { return speechCommandsProfile; }
             internal set { speechCommandsProfile = value; }
         }
-
-        private IMixedRealityDictationSystem dictationSystem;
-
-        /// <summary>
-        /// Current Registered Dictation System.
-        /// </summary>
-        public IMixedRealityDictationSystem DictationSystem => dictationSystem ?? (dictationSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityDictationSystem>());
-
-        /// <summary>
-        /// Is Dictation Enabled?
-        /// </summary>
-        public bool IsDictationEnabled => MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled && DictationSystem != null;
 
         [SerializeField]
         [Tooltip("Enable and configure the devices for your application.")]
@@ -160,6 +210,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem
         {
             get { return controllerVisualizationProfile; }
             internal set { controllerVisualizationProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring Hands tracking.")]
+        private MixedRealityHandTrackingProfile handTrackingProfile;
+
+        /// <summary>
+        /// Active profile for hands tracking
+        /// </summary>
+        public MixedRealityHandTrackingProfile HandTrackingProfile
+        {
+            get { return handTrackingProfile; }
+            private set { handTrackingProfile = value; }
         }
     }
 }

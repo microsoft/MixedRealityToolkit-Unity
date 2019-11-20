@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Examples",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Services.InputAnimation",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Unity.TextMeshPro"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

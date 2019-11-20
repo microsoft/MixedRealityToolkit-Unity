@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Services;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// A cursor that looks and acts more like the shell cursor.
@@ -51,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         private bool hasHand = false;
         private bool isDown = false;
 
-        private Vector3 targetScale;
+        private float ringDotTargetScale;
         private Vector3 initialScale;
 
         private void Awake()
@@ -62,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <summary>
         /// Decide which element (ring or dot) should be visible and at what scale
         /// </summary>
-        /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
@@ -77,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
             isDown = IsPointerDown;
             hasHover = TargetedObject != null;
 
-            targetScale = Vector3.one * defaultScale;
+            ringDotTargetScale = defaultScale;
             bool showRing = false;
 
             switch (state)
@@ -91,14 +88,14 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     break;
                 case CursorStateEnum.Interact:
                     showRing = true;
-                    targetScale = Vector3.one * downScale;
+                    ringDotTargetScale = downScale;
                     break;
                 case CursorStateEnum.InteractHover:
                     showRing = true;
-                    targetScale = Vector3.one * upScale;
+                    ringDotTargetScale = upScale;
                     break;
                 case CursorStateEnum.Select:
-                    targetScale = Vector3.one * upScale;
+                    ringDotTargetScale = upScale;
                     break;
                 case CursorStateEnum.Release:
                     break;
@@ -137,12 +134,13 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
                     timer = scaleTime;
                 }
 
-                ring.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
-                dot.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
+                Vector3 useScale = Vector3.one * Mathf.Lerp(defaultScale, ringDotTargetScale, timer / scaleTime);
+                ring.transform.localScale = useScale;
+                dot.transform.localScale = useScale;
             }
 
             // handle scale of main cursor go
-            float distance = Vector3.Distance(MixedRealityToolkit.InputSystem.GazeProvider.GazeOrigin, transform.position);
+            float distance = Vector3.Distance(InputSystem.GazeProvider.GazeOrigin, transform.position);
             float smoothScaling = 1 - DefaultCursorDistance * distanceScaleFactor;
             transform.localScale = initialScale * (distance * distanceScaleFactor + smoothScaling);
         }
@@ -150,7 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <summary>
         /// override the base class for custom visibility
         /// </summary>
-        /// <param name="visible"></param>
         public override void SetVisibility(bool visible)
         {
             base.SetVisibility(visible);
@@ -167,7 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Cursors
         /// <summary>
         /// controls the visibility of cursor elements in one place
         /// </summary>
-        /// <param name="visible"></param>
         private void ElementVisibility(bool visible)
         {
             if (ring != null)

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Generates a parabolic line between two points.
@@ -49,20 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             get { return height; }
             set { height = Mathf.Clamp(value, 0.01f, 10f); }
         }
-
-        #region MonoBehaviour Implementation
-
-        protected override void OnValidate()
-        {
-            if (endPoint == StartPoint)
-            {
-                endPoint.Position = transform.InverseTransformPoint(LineTransform.position) + Vector3.forward;
-            }
-
-            base.OnValidate();
-        }
-
-        #endregion MonoBehaviour Implementation
 
         #region Line Data Provider Implementation
 

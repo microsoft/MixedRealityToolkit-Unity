@@ -5,7 +5,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem {
+namespace Microsoft.MixedReality.Toolkit.Input {
     /// <summary>
     /// Data class that maps <see cref="MixedRealityInputAction"/>s to <see cref="UnityEvent"/>s wired up in the inspector.
     /// </summary>
@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="inputAction"></param>
-        /// <param name="unityEvent"></param>
         public InputActionEventPair(MixedRealityInputAction inputAction, UnityEvent unityEvent)
         {
             this.inputAction = inputAction;

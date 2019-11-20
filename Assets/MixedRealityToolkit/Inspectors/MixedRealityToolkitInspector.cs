@@ -1,68 +1,98 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Extensions.EditorClassExtensions;
-using Microsoft.MixedReality.Toolkit.Core.Services;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityToolkit))]
-    public class MixedRealityToolkitInspector : Editor
+    public class MixedRealityToolkitInspector : UnityEditor.Editor
     {
         private SerializedProperty activeProfile;
         private int currentPickerWindow = -1;
-        private bool checkChange = false;
+
+        // Utility to show object picker for ActiveProfile property since Show command must be called in OnGUI()
+        private static bool forceShowProfilePicker = false;
 
         private void OnEnable()
         {
             activeProfile = serializedObject.FindProperty("activeProfile");
             currentPickerWindow = -1;
-            checkChange = activeProfile.objectReferenceValue == null;
         }
 
         public override void OnInspectorGUI()
         {
+            MixedRealityToolkit instance = (MixedRealityToolkit)target;
+
+            if (MixedRealityToolkit.Instance == null && instance.isActiveAndEnabled)
+            {   // See if an active instance exists at all. If it doesn't register this instance preemptively.
+                MixedRealityToolkit.SetActiveInstance(instance);
+            }
+
+            if (!instance.IsActiveInstance)
+            {
+                EditorGUILayout.HelpBox("This instance of the toolkit is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Select Active Instance"))
+                    {
+                        UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
+                    }
+
+                    if (GUILayout.Button("Make this the Active Instance"))
+                    {
+                        MixedRealityToolkit.SetActiveInstance(instance);
+                    }
+                }
+                return;
+            }
+
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(activeProfile);
             bool changed = EditorGUI.EndChangeCheck();
             string commandName = Event.current.commandName;
-            var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
 
-            if (activeProfile.objectReferenceValue == null && currentPickerWindow == -1 && checkChange)
+            // If not profile is assigned, then warn user
+            if (activeProfile.objectReferenceValue == null)
             {
-                if (allConfigProfiles.Length > 1)
+                EditorGUILayout.HelpBox("MixedRealityToolkit cannot initialize unless an Active Profile is assigned!", MessageType.Error);
+
+                if (GUILayout.Button("Assign MixedRealityToolkit Profile") || forceShowProfilePicker)
                 {
-                    EditorUtility.DisplayDialog("Attention!", "You must choose a profile for the Mixed Reality Toolkit.", "OK");
-                    currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
-                    EditorGUIUtility.ShowObjectPicker<MixedRealityToolkitConfigurationProfile>(null, false, string.Empty, currentPickerWindow);
-                }
-                else if (allConfigProfiles.Length == 1)
-                {
-                    activeProfile.objectReferenceValue = allConfigProfiles[0];
-                    changed = true;
-                    Selection.activeObject = allConfigProfiles[0];
-                    EditorGUIUtility.PingObject(allConfigProfiles[0]);
-                }
-                else
-                {
-                    if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Toolkit.\n\n" +
-                                                                  "Would you like to create one now?", "OK", "Later"))
+                    forceShowProfilePicker = false;
+
+                    var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
+
+                    // Shows the list of MixedRealityToolkitConfigurationProfiles in our project,
+                    // selecting the default profile by default (if it exists).
+                    if (allConfigProfiles.Length > 0)
                     {
-                        ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
-                        profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles");
-                        activeProfile.objectReferenceValue = profile;
-                        Selection.activeObject = profile;
-                        EditorGUIUtility.PingObject(profile);
+                        currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
+
+                        var defaultMRTKProfile = MixedRealityInspectorUtility.GetDefaultConfigProfile(allConfigProfiles);
+                        activeProfile.objectReferenceValue = defaultMRTKProfile;
+
+                        EditorGUIUtility.ShowObjectPicker<MixedRealityToolkitConfigurationProfile>(defaultMRTKProfile, false, string.Empty, currentPickerWindow);
+                    }
+                    else
+                    {
+                        if (EditorUtility.DisplayDialog("Attention!", "No profiles were found for the Mixed Reality Toolkit.\n\n" +
+                                                                      "Would you like to create one now?", "OK", "Later"))
+                        {
+                            ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
+                            profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles");
+                            activeProfile.objectReferenceValue = profile;
+                            EditorGUIUtility.PingObject(profile);
+                        }
                     }
                 }
 
-                checkChange = false;
             }
 
+            // If user selects a new MRTK Active Profile, then update configuration
             if (EditorGUIUtility.GetObjectPickerControlID() == currentPickerWindow)
             {
                 switch (commandName)
@@ -75,8 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
                         activeProfile.objectReferenceValue = EditorGUIUtility.GetObjectPickerObject();
                         currentPickerWindow = -1;
                         changed = true;
-                        Selection.activeObject = activeProfile.objectReferenceValue;
-                        EditorGUIUtility.PingObject(activeProfile.objectReferenceValue);
                         break;
                 }
             }
@@ -90,19 +118,22 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors
 
             if (activeProfile.objectReferenceValue != null)
             {
-                Editor activeProfileEditor = Editor.CreateEditor(activeProfile.objectReferenceValue);
+                UnityEditor.Editor activeProfileEditor = CreateEditor(activeProfile.objectReferenceValue);
                 activeProfileEditor.OnInspectorGUI();
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Configure...")]
+        [MenuItem("Mixed Reality Toolkit/Add to Scene and Configure...")]
         public static void CreateMixedRealityToolkitGameObject()
         {
+            MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();
             Selection.activeObject = MixedRealityToolkit.Instance;
-            Debug.Assert(MixedRealityToolkit.IsInitialized);
-            var playspace = MixedRealityToolkit.Instance.MixedRealityPlayspace;
-            Debug.Assert(playspace != null);
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
+
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
+            {
+                forceShowProfilePicker = true;
+            }
         }
     }
 }

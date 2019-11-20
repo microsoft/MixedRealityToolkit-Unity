@@ -1,0 +1,24 @@
+# Build for PR validation.
+
+variables:
+  UnityVersion: Unity2018.3.7f1
+  MRTKVersion: 2.1.0
+
+jobs:
+- job: PRValidation
+  timeoutInMinutes: 90
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2018.3.7f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/common.yml
+    parameters:
+      # For mrtk_pr builds, don't build all flavors to reduce the amount of time
+      # taken for each validation run. Note that this flavor is still checked in
+      # the ongoing rolling CI build. This build in particular is highly correlated
+      # the .NET x86 build and ARM IL2CPP build.
+      buildUWPX86: false
+  - template: templates/end.yml

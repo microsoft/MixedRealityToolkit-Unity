@@ -1,17 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.EventDatum.Input;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem.Handlers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// This component handles pointer clicks from all types of input sources.<para/>
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
+    [System.Obsolete("Use PointerHandler instead of PointerClickHandler", true)]
     public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
@@ -25,6 +23,27 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
         [SerializeField]
         [Tooltip("The input actions to be recognized on pointer clicked.")]
         private InputActionEventPair onPointerClickedActionEvent;
+
+        private void Awake()
+        {
+            Debug.LogError("PointerClickHandler is deprecated. Use PointerHandler instead", this.gameObject);
+        }
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        /// <inheritdoc />
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        /// <inheritdoc />
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealityPointerHandler Implementation
 
@@ -49,6 +68,9 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Input.Handlers
                 onPointerDownActionEvent.UnityEvent.Invoke();
             }
         }
+
+        /// <inheritdoc />
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData)

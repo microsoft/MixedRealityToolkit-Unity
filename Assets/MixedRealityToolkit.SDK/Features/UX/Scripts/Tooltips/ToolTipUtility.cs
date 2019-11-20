@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.ToolTips
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Static class providing useful functions for

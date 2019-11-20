@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(ParabolaConstrainedLineDataProvider))]
     public class ParabolicConstrainedLineDataProviderInspector : BaseLineDataProviderInspector
@@ -13,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
         private SerializedProperty height;
         private SerializedProperty endPoint;
         private SerializedProperty upDirection;
-        private SerializedProperty endPointPosition;
 
         protected override void OnEnable()
         {
@@ -45,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Inspectors.Utilities.Lines
         protected override void OnSceneGUI()
         {
             base.OnSceneGUI();
-        
+
             serializedObject.Update();
 
             var rotation = endPoint.FindPropertyRelative("rotation");

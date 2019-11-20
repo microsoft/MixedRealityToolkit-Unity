@@ -1,0 +1,146 @@
+# [Template] Compile MRTK inside Unity.
+
+parameters: 
+  Arch: ''  # x86|arm
+  Platform: ''  # UWP|Standalone
+  UnityArgs: 'none' # [optional] additional args passed to Unity
+  ScriptingBackend: 'default'  # [optional] default|.NET
+  PublishArtifacts: false
+  PackagingDir: 'Win32'
+
+steps:
+- powershell: |
+   # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
+   $editor = Get-ChildItem ${Env:$(UnityVersion)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   
+   # The build output goes to a unique combination of Platform + Arch + ScriptingBackend to ensure that
+   # each build will have a fresh destination folder.
+   $outDir = "$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}"
+   $logFile = New-Item -Path "$outDir\build\build.log" -ItemType File -Force
+   $logDirectory = "$outDir\logs"
+
+   $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
+   
+   $extraArgs = ''
+   If ("${{ parameters.Platform }}" -eq "UWP")
+   {
+       $extraArgs += '-buildTarget WSAPlayer -buildAppx'
+   }
+   ElseIf ("${{ parameters.Platform }}" -eq "Standalone")
+   {
+       $extraArgs += "-buildTarget StandaloneWindows"
+   }
+
+   If ("${{ parameters.UnityArgs }}" -ne "none")
+   {
+       $extraArgs += " ${{ parameters.UnityArgs }}"
+   }
+
+   If ("${{  parameters.ScriptingBackend }}" -eq ".NET")
+   {
+       $extraArgs += " -scriptingBackend 2"
+   }
+
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress $(Unity.CacheServer.Address) -logDirectory $logDirectory" -PassThru
+   $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
+   
+   while (-not $proc.HasExited -and $ljob.HasMoreData)
+   {
+       Receive-Job $ljob
+       Start-Sleep -Milliseconds 200
+   }
+   Receive-Job $ljob
+   
+   Stop-Job $ljob
+   
+   Remove-Job $ljob
+   Stop-Process $proc
+
+   Write-Output '====================================================='
+   Write-Output '           Unity Build Player Finished               '
+   Write-Output '====================================================='
+
+   If (Test-Path $logFile.FullName)
+   {
+      Write-Output '====================================================='
+      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '====================================================='
+
+      Get-Content $logFile.FullName
+
+      Write-Output '====================================================='
+      Write-Output '           End Unity Player Log                      '
+      Write-Output '====================================================='
+   }
+   Else
+   {
+      Write-Output 'Unity Player Log Missing!'
+   }
+
+   # The NuGet and AppX logs are only relevant for UWP builds.
+   If ("${{ parameters.Platform }}" -eq "UWP")
+   {
+        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
+        If (Test-Path $nugetRestoreLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin NuGet Restore Log                   '
+            Write-Output '====================================================='
+
+            Get-Content $nugetRestoreLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End NuGet Restore Log                     '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
+        }
+
+        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
+        If (Test-Path $appxBuildLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin AppX Build Log                      '
+            Write-Output '====================================================='
+
+            Get-Content $appxBuildLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End AppX Build Log                        '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+        }
+   }
+
+   If ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
+  displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
+
+- task: PowerShell@2
+  displayName: 'Validate build logs'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validatebuildlog.ps1
+    arguments: >
+      -LogFile: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\build\build.log'
+
+- task: PublishBuildArtifacts@1
+  enabled: ${{ parameters.PublishArtifacts }}
+  displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'
+  inputs:
+    ArtifactName: 'mrtk-build-${{ parameters.Arch }}'
+    # The final location of the generated package depends on the type of scripting backend it's built against.
+    # For the default scripting backend (IL2CPP) the naming of the appx follows the form below:
+    ${{ if eq(parameters.ScriptingBackend, 'default') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\AppPackages\MixedRealityToolkit\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.PackagingDir }}_Master_Test'
+    # For .NET scripting backends, the naming is slightly different (mainly the AppPackages and MixedRealityToolkit folder
+    # names are reversed, and the Architecture is part of the AppX name)
+    ${{ if eq(parameters.ScriptingBackend, '.NET') }}:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\MixedRealityToolkit\AppPackages\MixedRealityToolkit_$(MRTKVersion).0_${{ parameters.Arch }}_Master_Test'

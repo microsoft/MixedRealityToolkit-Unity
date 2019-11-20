@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Response to a REST Call.
@@ -31,10 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.WebRequestRest
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="successful"></param>
-        /// <param name="responseBody"></param>
-        /// <param name="responseData"></param>
-        /// <param name="responseCode"></param>
         public Response(bool successful, string responseBody, byte[] responseData, long responseCode)
         {
             Successful = successful;

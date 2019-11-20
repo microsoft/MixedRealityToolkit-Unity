@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
+namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
     /// An audio effect that limits the frequency range of a sound to simulate being played 
@@ -61,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
 
         private void Awake()
         {
+            influencerController = gameObject.GetComponent<AudioInfluencerController>();
+
             LoadQualityFilterSettings();
             filterSettings = sourceQualityFilterSettings[SourceQuality];
 
@@ -89,11 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
                 lowPassFilter.cutoffFrequency = filterSettings.LowPassCutoff;
                 highPassFilter.cutoffFrequency = filterSettings.HighPassCutoff;
             }
-        }
-
-        private void OnValidate()
-        {
-            influencerController = gameObject.GetComponent<AudioInfluencerController>();
         }
 
         /// <summary>
@@ -205,7 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.Audio.Influencers
             /// <summary>
             /// Generates a hash code representing this FilterSettings.
             /// </summary>
-            /// <returns></returns>
             public override int GetHashCode()
             {
                 string s = $"[{GetType().ToString()}] Low: {LowPassCutoff}, High: {HighPassCutoff}";

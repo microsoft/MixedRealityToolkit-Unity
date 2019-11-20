@@ -2,13 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// A set of Inspector fields for setting up properties in a
@@ -20,33 +17,37 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
         /// Copies values from Inspector PropertySettings to an instantiated class on start,
         /// helps overcome polymorphism limitations of serialization
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="settings"></param>
         public static void LoadSettings(T target, List<InspectorPropertySetting> settings)
         {
             Type myType = target.GetType();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
                     object value = InspectorField.GetSettingValue(settings, propInfo.Name);
-                    propInfo.SetValue(target, value);
+                    if (value != null)
+                    {
+                        propInfo.SetValue(target, value);
+                    }
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);
                 foreach (var attr in attrs)
                 {
                     object value = InspectorField.GetSettingValue(settings, fieldInfo.Name);
-                    fieldInfo.SetValue(target, value);
+                    if (value != null)
+                    {
+                        fieldInfo.SetValue(target, value);
+                    }
                 }
             }
         }
@@ -55,15 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
         /// Searches through a class for InspectorField tags creates properties that can be serialized and
         /// automatically rendered in a custom inspector
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static List<InspectorPropertySetting> GetSettings(T source)
         {
             Type myType = source.GetType();
             List<InspectorPropertySetting> settings = new List<InspectorPropertySetting>();
 
-            PropertyInfo[] propInfoList = myType.GetProperties();
-            for (int i = 0; i < propInfoList.Length; i++)
+            List<PropertyInfo> propInfoList = new List<PropertyInfo>(myType.GetProperties());
+            for (int i = 0; i < propInfoList.Count; i++)
             {
                 PropertyInfo propInfo = propInfoList[i];
                 var attrs = (InspectorField[])propInfo.GetCustomAttributes(typeof(InspectorField), false);
@@ -73,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.InspectorFields
                 }
             }
 
-            FieldInfo[] fieldInfoList = myType.GetFields();
-            for (int i = 0; i < fieldInfoList.Length; i++)
+            List<FieldInfo> fieldInfoList = new List<FieldInfo>(myType.GetFields());
+            for (int i = 0; i < fieldInfoList.Count; i++)
             {
                 FieldInfo fieldInfo = fieldInfoList[i];
                 var attrs = (InspectorField[])fieldInfo.GetCustomAttributes(typeof(InspectorField), false);

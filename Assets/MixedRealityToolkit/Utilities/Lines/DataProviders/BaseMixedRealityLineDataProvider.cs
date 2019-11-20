@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Lines;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Physics.Distorters;
+using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="Renderers.BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
+        protected const int UnclampedWorldLengthSearchSteps = 10;
         private const float MinRotationMagnitude = 0.0001f;
         private const float MinLineStartClamp = 0.0001f;
         private const float MaxLineEndClamp = 0.9999f;
@@ -198,6 +198,19 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         }
 
         [SerializeField]
+        [Tooltip("Enables / disables all distorters used by line")]
+        private bool distortionEnabled = true;
+
+        /// <summary>
+        /// Enabled / disables all distorters used by line.
+        /// </summary>
+        public bool DistortionEnabled
+        {
+            get { return distortionEnabled; }
+            set { distortionEnabled = value; }
+        }
+
+        [SerializeField]
         [Tooltip("NormalizedLength mode uses the DistortionStrength curve for distortion strength, Uniform uses UniformDistortionStrength along entire line")]
         private DistortionMode distortionMode = DistortionMode.NormalizedLength;
 
@@ -251,31 +264,23 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Sets the point at index.
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <param name="point"></param>
         protected abstract void SetPointInternal(int pointIndex, Vector3 point);
 
         /// <summary>
         /// Get a point based on normalized distance along line
         /// Normalized distance will be pre-clamped
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         protected abstract Vector3 GetPointInternal(float normalizedLength);
 
         /// <summary>
         /// Get a point based on point index
         /// Point index will be pre-clamped
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <returns></returns>
         protected abstract Vector3 GetPointInternal(int pointIndex);
 
         /// <summary>
         /// Gets the up vector at a normalized length along line (used for rotation)
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         protected virtual Vector3 GetUpVectorInternal(float normalizedLength)
         {
             return LineTransform.forward;
@@ -284,18 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Get the UnClamped world length of the line
         /// </summary>
-        /// <returns></returns>
         protected abstract float GetUnClampedWorldLengthInternal();
 
         #endregion BaseMixedRealityLineDataProvider Abstract Declarations
 
         #region MonoBehaviour Implementation
-
-        protected virtual void OnValidate()
-        {
-            UpdateMatrix();
-            distorters.Sort();
-        }
 
         protected virtual void OnEnable()
         {
@@ -303,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             distorters.Sort();
         }
 
-        protected virtual void Update()
+        protected virtual void LateUpdate()
         {
             UpdateMatrix();
         }
@@ -314,9 +312,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// Returns a normalized length corresponding to a world length
         /// Useful for determining LineStartClamp / LineEndClamp values
         /// </summary>
-        /// <param name="worldLength"></param>
-        /// <param name="searchResolution"></param>
-        /// <returns></returns>
         public float GetNormalizedLengthFromWorldLength(float worldLength, int searchResolution = 10)
         {
             if (searchResolution < 1)
@@ -352,8 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets the velocity along the line
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         public Vector3 GetVelocity(float normalizedLength)
         {
             Vector3 velocity;
@@ -377,9 +370,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets the rotation of a point along the line at the specified length
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <param name="lineRotationMode"></param>
-        /// <returns></returns>
         public Quaternion GetRotation(float normalizedLength, LineRotationMode lineRotationMode = LineRotationMode.None)
         {
             lineRotationMode = (lineRotationMode != LineRotationMode.None) ? lineRotationMode : rotationMode;
@@ -423,9 +413,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets the rotation of a point along the line at the specified index
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <param name="lineRotationMode"></param>
-        /// <returns></returns>
         public Quaternion GetRotation(int pointIndex, LineRotationMode lineRotationMode = LineRotationMode.None)
         {
             return GetRotation((float)pointIndex / PointCount, lineRotationMode != LineRotationMode.None ? lineRotationMode : rotationMode);
@@ -434,8 +421,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets a point along the line at the specified normalized length.
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         public Vector3 GetPoint(float normalizedLength)
         {
             normalizedLength = ClampedLength(normalizedLength);
@@ -445,8 +430,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets a point along the line at the specified length without using LineStartClamp or LineEndClamp
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         public Vector3 GetUnClampedPoint(float normalizedLength)
         {
             normalizedLength = Mathf.Clamp01(normalizedLength);
@@ -456,8 +439,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Gets a point along the line at the specified index
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <returns></returns>
         public Vector3 GetPoint(int pointIndex)
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
@@ -473,8 +454,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// Sets a point in the line
         /// This function is not guaranteed to have an effect
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <param name="point"></param>
         public void SetPoint(int pointIndex, Vector3 point)
         {
             if (pointIndex < 0 || pointIndex >= PointCount)
@@ -489,10 +468,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Iterates along line until it finds the point closest to worldPosition
         /// </summary>
-        /// <param name="worldPosition"></param>
-        /// <param name="resolution"></param>
-        /// <param name="maxIterations"></param>
-        /// <returns></returns>
         public Vector3 GetClosestPoint(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
         {
             float length = GetNormalizedLengthFromWorldPos(worldPosition, resolution, maxIterations);
@@ -502,10 +477,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
         /// <summary>
         /// Iterates along line until it finds the length closest to worldposition.
         /// </summary>
-        /// <param name="worldPosition"></param>
-        /// <param name="resolution"></param>
-        /// <param name="maxIterations"></param>
-        /// <returns></returns>
         public float GetNormalizedLengthFromWorldPos(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
         {
             int iteration = 0;
@@ -537,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
             }
         }
 
-        private void UpdateMatrix()
+        public void UpdateMatrix()
         {
             switch (transformMode)
             {
@@ -607,7 +578,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
 
         private Vector3 DistortPoint(Vector3 point, float normalizedLength)
         {
-            if (distorters.Count == 0)
+            if (!distortionEnabled || distorters.Count == 0)
                 return point;
 
             float strength = uniformDistortionStrength;
@@ -659,7 +630,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Lines.DataProviders
                 return;
             }
 #endif
-
             DrawUnselectedGizmosPreview();
         }
 

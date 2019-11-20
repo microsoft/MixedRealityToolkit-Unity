@@ -1,17 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Extensions;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.Devices;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Core.Inspectors")]
-namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Editor.Inspectors")]
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Used to define a controller or other input device's physical buttons, and other attributes.
@@ -48,12 +44,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                     }
                 }
 
-                    string handednessText = string.Empty;
+                string handednessText = string.Empty;
                 switch (handedness)
                 {
                     case Handedness.Left:
                     case Handedness.Right:
                         handednessText = $"{handedness} Hand ";
+                        // Avoid multiple occurrences of "Hand":
+                        controllerName = controllerName.Replace("Hand", "").Trim();
                         break;
                 }
 
@@ -83,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
                         return attr.SupportedControllerType;
                     }
                 }
-                return SupportedControllerType.None;
+                return 0;
             }
         }
 
@@ -129,35 +127,84 @@ namespace Microsoft.MixedReality.Toolkit.Core.Definitions.Devices
         /// </summary>
         internal void SetDefaultInteractionMapping(bool overwrite = false)
         {
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) as BaseController;
+            if (interactions == null || interactions.Length == 0 || overwrite)
+            {
+                MixedRealityInteractionMapping[] defaultMappings = GetDefaultInteractionMappings();
 
-            if (detectedController != null && (interactions == null || interactions.Length == 0 || overwrite))
+                if (defaultMappings != null)
+                {
+                    interactions = defaultMappings;
+                }
+            }
+        }
+
+        internal bool UpdateInteractionSettingsFromDefault()
+        {
+            bool updatedMappings = false;
+
+            if (interactions?.Length > 0)
+            {
+                MixedRealityInteractionMapping[] newDefaultInteractions = GetDefaultInteractionMappings();
+
+                if (newDefaultInteractions == null)
+                {
+                    return updatedMappings;
+                }
+
+                for (int i = 0; i < newDefaultInteractions.Length; i++)
+                {
+                    MixedRealityInteractionMapping currentMapping = interactions[i];
+                    MixedRealityInteractionMapping currentDefaultMapping = newDefaultInteractions[i];
+
+                    if (currentMapping.Id != currentDefaultMapping.Id ||
+                        currentMapping.Description != currentDefaultMapping.Description ||
+                        currentMapping.AxisType != currentDefaultMapping.AxisType ||
+                        currentMapping.InputType != currentDefaultMapping.InputType ||
+                        currentMapping.KeyCode != currentDefaultMapping.KeyCode ||
+                        currentMapping.AxisCodeX != currentDefaultMapping.AxisCodeX ||
+                        currentMapping.AxisCodeY != currentDefaultMapping.AxisCodeY ||
+                        currentMapping.InvertXAxis != currentDefaultMapping.InvertXAxis ||
+                        currentMapping.InvertYAxis != currentDefaultMapping.InvertYAxis)
+                    {
+                        interactions[i] = new MixedRealityInteractionMapping(currentDefaultMapping)
+                        {
+                            MixedRealityInputAction = currentMapping.MixedRealityInputAction
+                        };
+
+                        updatedMappings = true;
+                    }
+                }
+            }
+
+            return updatedMappings;
+        }
+
+        private MixedRealityInteractionMapping[] GetDefaultInteractionMappings()
+        {
+            if (Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) is BaseController detectedController)
             {
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        interactions = detectedController.DefaultLeftHandedInteractions;
-                        break;
+                        return detectedController.DefaultLeftHandedInteractions;
                     case Handedness.Right:
-                        interactions = detectedController.DefaultRightHandedInteractions;
-                        break;
+                        return detectedController.DefaultRightHandedInteractions;
                     default:
-                        interactions = detectedController.DefaultInteractions;
-                        break;
+                        return detectedController.DefaultInteractions;
                 }
             }
+
+            return null;
         }
 
         /// <summary>
         /// Synchronizes the Input Actions of the same physical controller of a different concrete type.
         /// </summary>
-        /// <param name="otherControllerMapping"></param>
         internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping)
         {
             if (otherControllerMapping.Length != interactions.Length)
             {
-                Debug.LogError("Controller Input Actions must be the same length!");
-                return;
+                throw new ArgumentException($"otherControllerMapping length {otherControllerMapping.Length} does not match this length {interactions.Length}.");
             }
 
             for (int i = 0; i < interactions.Length; i++)

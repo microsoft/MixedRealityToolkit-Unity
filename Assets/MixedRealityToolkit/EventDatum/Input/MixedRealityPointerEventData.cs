@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Definitions.InputSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.InputSystem;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine.EventSystems;
 
-namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Describes an Input Event that involves a tap, click, or touch.
@@ -29,11 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="count"></param>
         public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null, int count = 0)
         {
             if (inputSource != null)
@@ -52,10 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.EventDatum.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="count"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
         public void Initialize(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count = 0)
         {
             Initialize(pointer.InputSourceParent, handedness, inputAction);

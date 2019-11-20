@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Ease settings and functionality for animation with curves
     /// </summary>
-    
+
     [System.Serializable]
     public class Easing
     {
@@ -32,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
 
 
         /// <summary>
-        /// The amount of time the ease should run
+        /// The amount of time the ease should run in seconds
         /// </summary>
         public float LerpTime = 0.5f;
 
@@ -42,6 +39,20 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         public Easing()
         {
             Stop();
+        }
+
+        /// <summary>
+        /// Create Easing object with copied internal properties
+        /// </summary>
+        /// <returns>Copy of current Easing instance</returns>
+        public Easing Copy()
+        {
+            return new Easing()
+            {
+                Curve = this.Curve,
+                Enabled = this.Enabled,
+                LerpTime = this.LerpTime,
+            };
         }
 
         /// <summary>
@@ -70,7 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <summary>
         /// Is the ease currently running?
         /// </summary>
-        /// <returns></returns>
         public bool IsPlaying()
         {
             return timer < LerpTime;
@@ -87,7 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <summary>
         /// get the linear ease value
         /// </summary>
-        /// <returns></returns>
         public float GetLinear()
         {
             return timer / LerpTime;
@@ -96,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <summary>
         /// get the ease value based on the animation curve
         /// </summary>
-        /// <returns></returns>
         public float GetCurved()
         {
             return IsLinear() ? GetLinear() : Curve.Evaluate(GetLinear());
@@ -128,7 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX
         /// <summary>
         /// set the animation curve using a preset
         /// </summary>
-        /// <param name="curve"></param>
         public void SetCurve(BasicEaseCurves curve)
         {
             AnimationCurve animation = AnimationCurve.Linear(0, 1, 1, 1);

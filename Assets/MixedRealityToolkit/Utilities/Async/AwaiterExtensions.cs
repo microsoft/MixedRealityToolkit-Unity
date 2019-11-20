@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.AwaitYieldInstructions;
-using Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +32,7 @@ using System.Threading;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// We could just add a generic GetAwaiter to YieldInstruction and CustomYieldInstruction

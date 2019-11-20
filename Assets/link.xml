@@ -1,0 +1,26 @@
+<linker>
+  <!--
+    This link.xml file is provided to prevent MRTK code from being optimized away
+    during IL2CPP builds. More details on when this is needed and why this is needed
+    can be found here: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5273
+
+    If your application doesn't use some specific services (for example, if teleportation system is
+    disabled in the profile), it is possible to remove their corresponding lines down
+    below (in the previous example, we would remove the TeleportSystem below).
+
+    It's recommended to start with this list and narrow down if you want to ensure
+    specific bits of code get optimized away.
+  -->
+  <assembly fullname="Microsoft.MixedReality.Toolkit" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.OpenVR" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.SDK" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.InputSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.BoundarySystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.CameraSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.SceneSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.TeleportSystem" preserve="all"/>
+</linker>

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem
+namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     public interface IMixedRealityTeleportHotSpot
     {
@@ -30,14 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.Core.Interfaces.TeleportSystem
         /// <summary>
         /// Should the destination orientation be overridden?
         /// Useful when you want to orient the user in a specific direction when they teleport to this position.
+        /// </summary>
         /// <remarks>
         /// Override orientation is the transform forward of the GameObject this component is attached to.
         /// </remarks>
-        /// </summary>
         float TargetOrientation { get; }
 
         /// <summary>
-        /// Returns the <see cref="GameObject"/> reference for this teleport target.
+        /// Returns the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> reference for this teleport target.
         /// </summary>
         GameObject GameObjectReference { get; }
     }

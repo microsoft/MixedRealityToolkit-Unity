@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// The base layout component for a button or UI elements - easily build UI with Unity Primitives.
@@ -20,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
     /// The designer or engineer can take pixel based redlines and create UI at 1:1 scale.
     /// </summary>
     [ExecuteInEditMode]
+    [System.Obsolete("This component is no longer supported", true)]
     public class ButtonBackgroundSize : MonoBehaviour
     {
         /// <summary>
@@ -50,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Set the size at Runtime or through code
         /// </summary>
-        /// <param name="size"></param>
         public void SetSize(Vector3 size)
         {
             ItemSize = size;
@@ -59,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Get the current size
         /// </summary>
-        /// <returns></returns>
         public Vector3 GetSize()
         {
             return ItemSize;
@@ -68,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Get the base pixel scale
         /// </summary>
-        /// <returns></returns>
         public float GetBasePixelScale()
         {
             return BasePixelScale;
@@ -77,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         /// <summary>
         /// Set the base pixel scale
         /// </summary>
-        /// <param name="scale"></param>
         public void SetBasePixelScale(float scale)
         {
             BasePixelScale = scale;
@@ -90,6 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.SDK.UX.Interactable.Layout
         {
             Vector3 newScale = new Vector3(ItemSize.x / BasePixelScale, ItemSize.y / BasePixelScale, ItemSize.z / BasePixelScale);
             transform.localScale = newScale;
+        }
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
         }
 
         // Update is called once per frame

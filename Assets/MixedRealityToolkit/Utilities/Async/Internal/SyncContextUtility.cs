@@ -23,7 +23,7 @@
 using System.Threading;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Utility class to assist in thread and context synchronization.
@@ -74,5 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Utilities.Async.Internal
         /// This Unity Player's Synchronization Context.
         /// </summary>
         public static SynchronizationContext UnitySynchronizationContext { get; private set; }
+
+        /// <summary>
+        /// Is this being called from the main thread?
+        /// </summary>
+        public static bool IsMainThread => UnitySynchronizationContext == SynchronizationContext.Current;
     }
 }

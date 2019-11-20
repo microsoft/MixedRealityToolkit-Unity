@@ -1,37 +1,49 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Core.Attributes;
-using Microsoft.MixedReality.Toolkit.Core.Definitions;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Definitions.Utilities;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem;
-using Microsoft.MixedReality.Toolkit.Core.Interfaces.SpatialAwarenessSystem.Observers;
-using Microsoft.MixedReality.Toolkit.Core.Providers;
-using Microsoft.MixedReality.Toolkit.Core.Services;
-using Microsoft.MixedReality.Toolkit.Core.Utilities;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 #if UNITY_WSA
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
-namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+#if WINDOWS_UWP
+using WindowsSpatialSurfaces = global::Windows.Perception.Spatial.Surfaces;
+#endif // WINDOWS_UWP
+
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 {
     [MixedRealityDataProvider(
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
-        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealitySpatialMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver
+        "Windows Mixed Reality Spatial Mesh Observer",
+        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
+        "MixedRealityToolkit.SDK")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    public class WindowsMixedRealitySpatialMeshObserver :
+        BaseSpatialObserver,
+        IMixedRealitySpatialAwarenessMeshObserver,
+        IMixedRealityCapabilityCheck
     {
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowsMixedRealitySpatialMeshObserver(string name, uint priority, BaseMixedRealityProfile profile) : base(name, priority, profile)
+        public WindowsMixedRealitySpatialMeshObserver(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
         {
             ReadProfile();
         }
@@ -68,15 +80,31 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             VisibleMaterial = profile.VisibleMaterial;
         }
 
-        #region IMixedRealityToolkit implementation
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            {
+#if WINDOWS_UWP
+                return ((capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported());
+#endif // WINDOWS_UWP
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
+
+        #region IMixedRealityDataProvider implementation
 
 #if UNITY_WSA
 
         /// <inheritdoc />
         public override void Initialize()
         {
-            // Only initialize if the Spatial Awareness system has been enabled in the configuration profile.
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled) { return; }
+            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
 
             CreateObserver();
 
@@ -117,24 +145,16 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
 #endif // UNITY_WSA
 
-        #endregion IMixedRealityToolkit implementation
+        #endregion IMixedRealityDataProvider implementation
 
         #region IMixedRealitySpatialAwarenessObserver implementation
 
         private GameObject observedObjectParent = null;
 
         /// <summary>
-        /// The <see cref="GameObject"/> to which observed objects are parented.
+        /// The <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to which observed objects are parented.
         /// </summary>
-        private GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObjectParent("WindowsMixedRealitySpatialMeshObserver"));
-
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        /// <summary>
-        /// The currently active instance of <see cref="IMixedRealitySpatialAwarenessSystem"/>.
-        /// </summary>
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => spatialAwarenessSystem ?? (spatialAwarenessSystem = MixedRealityToolkit.SpatialAwarenessSystem);
+        private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySpatialMeshObserver"));
 
 #if UNITY_WSA
         /// <inheritdoc />
@@ -200,11 +220,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             set
             {
-                if (value != displayOption)
-                {
-                    displayOption = value;
-                    ApplyUpdatedMeshDisplayOption(displayOption);
-                }
+                displayOption = value;
+                ApplyUpdatedMeshDisplayOption(displayOption);
             }
         }
 
@@ -219,12 +236,45 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             {
                 if (value != SpatialAwarenessMeshLevelOfDetail.Custom)
                 {
-                    // For non-custom levels, the enum value is the appropriate triangles per cubic meter.
-                    TrianglesPerCubicMeter = (int)value;
+                    TrianglesPerCubicMeter = LookupTriangleDensity(value);
                 }
 
                 levelOfDetail = value;
             }
+        }
+
+        /// <summary>
+        /// Maps <see cref="SpatialAwarenessMeshLevelOfDetail"/> to <see cref="TrianglesPerCubicMeter"/>.
+        /// </summary>
+        /// <param name="levelOfDetail">The desired level of density for the spatial mesh.</param>
+        /// <returns>
+        /// The number of triangles per cubic meter that will result in the desired level of density.
+        /// </returns>
+        private int LookupTriangleDensity(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
+        {
+            int triangleDensity = 0;
+
+            switch (levelOfDetail)
+            {
+                case SpatialAwarenessMeshLevelOfDetail.Coarse:
+                    triangleDensity = 0;
+                    break;
+
+                case SpatialAwarenessMeshLevelOfDetail.Medium:
+                    triangleDensity = 400;
+                    break;
+
+                case SpatialAwarenessMeshLevelOfDetail.Fine:
+                    triangleDensity = 2000;
+                    break;
+
+                default:
+                    Debug.LogWarning($"There is no triangle density lookup for {levelOfDetail}, defaulting to Coarse");
+                    triangleDensity = 0;
+                    break;
+            }
+
+            return triangleDensity;
         }
 
         private Dictionary<int, SpatialAwarenessMeshObject> meshes = new Dictionary<int, SpatialAwarenessMeshObject>();
@@ -232,23 +282,76 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// <inheritdoc />
         public IReadOnlyDictionary<int, SpatialAwarenessMeshObject> Meshes => new Dictionary<int, SpatialAwarenessMeshObject>(meshes) as IReadOnlyDictionary<int, SpatialAwarenessMeshObject>;
 
+        private int meshPhysicsLayer = 31;
+
         /// <inheritdoc />
-        public int MeshPhysicsLayer { get; set; }
+        public int MeshPhysicsLayer
+        {
+            get => meshPhysicsLayer;
+
+            set
+            {
+                if ((value < 0) || (value > 31))
+                {
+                    Debug.LogError("Specified MeshPhysicsLayer is out of bounds. Please set a value between 0 and 31, inclusive.");
+                    return;
+                }
+
+                meshPhysicsLayer = value;
+                ApplyUpdatedPhysicsLayer();
+            }
+        }
 
         /// <inheritdoc />
         public int MeshPhysicsLayerMask => (1 << MeshPhysicsLayer);
 
+        private Material occlusionMaterial = null;
+
         /// <inheritdoc />
-        public Material OcclusionMaterial { get; set; } = null;
+        public Material OcclusionMaterial
+        {
+            get => occlusionMaterial;
+
+            set
+            {
+                if (value != occlusionMaterial)
+                {
+                    occlusionMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Occlusion)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Occlusion);
+                    }
+                }
+            }
+        }
 
         /// <inheritdoc />
         public bool RecalculateNormals { get; set; } = true;
 
         public int TrianglesPerCubicMeter { get; set; } = 0;
 
+        private Material visibleMaterial = null;
+
         /// <inheritdoc />
-        public Material VisibleMaterial { get; set; } = null;
-        
+        public Material VisibleMaterial
+        {
+            get => visibleMaterial;
+
+            set
+            {
+                if (value != visibleMaterial)
+                {
+                    visibleMaterial = value;
+
+                    if (DisplayOption == SpatialAwarenessMeshDisplayOptions.Visible)
+                    {
+                        ApplyUpdatedMeshDisplayOption(SpatialAwarenessMeshDisplayOptions.Visible);
+                    }
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public override void Resume()
         {
@@ -258,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
                 return;
             }
-            
+
             // We want the first update immediately.
             lastUpdated = 0;
 
@@ -287,6 +390,8 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         }
 
 #if UNITY_WSA
+        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
+
         /// <summary>
         /// Creates the surface observer and handles the desired startup behavior.
         /// </summary>
@@ -322,11 +427,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         {
             if (Application.isPlaying)
             {
-                // Cleanup the scene objects are managing
-                if (observedObjectParent != null)
-                {
-                    observedObjectParent.transform.DetachChildren();
-                }
 
                 foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
                 {
@@ -373,11 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         private void UpdateObserver()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsSpatialAwarenessSystemEnabled ||
-                (SpatialAwarenessSystem == null))
-            {
-                return;
-            }
+            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             // Only update the observer if it is running.
             if (IsRunning && (outstandingMeshObject == null))
@@ -414,6 +510,35 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         }
 
         /// <summary>
+        /// Internal component to monitor the WorldAnchor's transform, apply the MixedRealityPlayspace transform,
+        /// and apply it to its parent.
+        /// </summary>
+        private class PlayspaceAdapter : MonoBehaviour
+        {
+            /// <summary>
+            /// Compute concatenation of lhs * rhs such that lhs * (rhs * v) = Concat(lhs, rhs) * v
+            /// </summary>
+            /// <param name="lhs">Second transform to apply</param>
+            /// <param name="rhs">First transform to apply</param>
+            private static Pose Concatenate(Pose lhs, Pose rhs)
+            {
+                return rhs.GetTransformedBy(lhs);
+            }
+
+            /// <summary>
+            /// Compute and set the parent's transform.
+            /// </summary>
+            private void Update()
+            {
+                Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
+                Pose anchorPose = new Pose(transform.position, transform.rotation);
+                Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
+                transform.parent.position = parentPose.position;
+                transform.parent.rotation = parentPose.rotation;
+            }
+        }
+
+        /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
         /// </summary>
         /// <param name="surfaceId">ID of the mesh to bake.</param>
@@ -426,9 +551,25 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             if (spareMeshObject == null)
             {
-                newMesh = SpatialAwarenessMeshObject.Create(null, MeshPhysicsLayer, meshName, surfaceId.handle);
+                newMesh = SpatialAwarenessMeshObject.Create(
+                    null,
+                    MeshPhysicsLayer,
+                    meshName,
+                    surfaceId.handle,
+                    ObservedObjectParent);
 
-                worldAnchor = newMesh.GameObject.AddComponent<WorldAnchor>();
+                // The WorldAnchor component places its object where the anchor is in the same space as the camera. 
+                // But since the camera is repositioned by the MixedRealityPlayspace's transform, the meshes' transforms
+                // should also the WorldAnchor position repositioned by the MixedRealityPlayspace's transform.
+                // So rather than put the WorldAnchor on the mesh's GameObject, the WorldAnchor is placed out of the way in the scene,
+                // and its transform is concatenated with the Playspace transform to compute the transform on the mesh's object.
+                // That adapting the WorldAnchor's transform into playspace is done by the internal PlayspaceAdapter component.
+                // The GameObject the WorldAnchor is placed on is unimportant, but it is convenient for cleanup to make it a child
+                // of the GameObject whose transform will track it.
+                GameObject anchorHolder = new GameObject(meshName + "_anchor");
+                anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
+                worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
+                anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
             }
             else
             {
@@ -439,7 +580,10 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 newMesh.Id = surfaceId.handle;
                 newMesh.GameObject.SetActive(true);
 
-                worldAnchor = newMesh.GameObject.GetComponent<WorldAnchor>();
+                // There should be exactly one child on the newMesh.GameObject, and that is the GameObject added above
+                // to hold the WorldAnchor component and adapter.
+                Debug.Assert(newMesh.GameObject.transform.childCount == 1, "Expecting a single child holding the WorldAnchor");
+                worldAnchor = newMesh.GameObject.transform.GetChild(0).gameObject.GetComponent<WorldAnchor>();
             }
 
             Debug.Assert(worldAnchor != null);
@@ -464,7 +608,6 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
             }
         }
 
-
         /// <summary>
         /// Removes the <see cref="SpatialAwarenessMeshObject"/> associated with the specified id.
         /// </summary>
@@ -482,14 +625,24 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 ReclaimMeshObject(mesh);
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem?.RaiseMeshRemoved(this, id);
+                meshEventData.Initialize(this, id, null);
+                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
             }
         }
 
         /// <summary>
+        /// Event sent whenever a mesh is discarded.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshRemoved =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationRemoved(spatialEventData);
+            };
+
+        /// <summary>
         /// Reclaims the <see cref="SpatialAwarenessMeshObject"/> to allow for later reuse.
         /// </summary>
-        /// <param name="availableMeshObject"></param>
         protected void ReclaimMeshObject(SpatialAwarenessMeshObject availableMeshObject)
         {
             if (spareMeshObject == null)
@@ -516,20 +669,34 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
         /// </summary>
         private void ConfigureObserverVolume()
         {
+            if (MixedRealityPlayspace.Transform == null)
+            {
+                Debug.LogError("Unexpected failure acquiring MixedRealityPlayspace.");
+                return;
+            }
+
+            // If we aren't using a HoloLens or there isn't an XR device present, return.
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
+
+            // The observer's origin is in world space, we need it in the camera's parent's space
+            // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
+            Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+            Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
+
             // Update the observer
-            switch(ObserverVolumeType)
+            switch (ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(ObserverOrigin, ObservationExtents);
+                    observer.SetVolumeAsAxisAlignedBox(observerOriginPlayspace, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(ObserverOrigin, ObservationExtents.x);
+                    observer.SetVolumeAsSphere(observerOriginPlayspace, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                    observer.SetVolumeAsOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                     break;
 
                 default:
@@ -574,13 +741,11 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             if (outstandingMeshObject == null)
             {
-                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
             }
 
             if (!outputWritten)
             {
-                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
                 ReclaimMeshObject(outstandingMeshObject);
                 outstandingMeshObject = null;
                 return;
@@ -626,14 +791,58 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
 
             meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
 
+            meshEventData.Initialize(this, cookedData.id.handle, meshObject);
             if (sendUpdatedEvent)
             {
-                SpatialAwarenessSystem?.RaiseMeshUpdated(this, cookedData.id.handle, meshObject);
+                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
             }
             else
             {
-                SpatialAwarenessSystem?.RaiseMeshAdded(this, cookedData.id.handle, meshObject);
+                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
             }
+        }
+
+        /// <summary>
+        /// Event sent whenever a mesh is added.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshAdded =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationAdded(spatialEventData);
+            };
+
+        /// <summary>
+        /// Event sent whenever a mesh is updated.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshUpdated =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationUpdated(spatialEventData);
+            };
+
+        /// <inheritdoc />
+        public override void ClearObservations()
+        {
+            if (IsRunning)
+            {
+                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                Suspend();
+            }
+
+            IReadOnlyList<int> observations = new List<int>(Meshes.Keys);
+            foreach (int meshId in observations)
+            {
+                RemoveMeshObject(meshId);
+            }
+
+            if (spareMeshObject != null)
+            {
+                spareMeshObject.CleanObject();
+                spareMeshObject = null;
+            }
+
         }
 #endif // UNITY_WSA
 
@@ -657,6 +866,19 @@ namespace Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
                 }
 
                 meshObject.Renderer.enabled = enable;
+            }
+        }
+
+        /// <summary>
+        /// Updates the mesh physics layer for current mesh observations.
+        /// </summary>
+        private void ApplyUpdatedPhysicsLayer()
+        {
+            foreach (SpatialAwarenessMeshObject meshObject in Meshes.Values)
+            {
+                if (meshObject?.GameObject == null) { continue; }
+
+                meshObject.GameObject.layer = MeshPhysicsLayer;
             }
         }
 
