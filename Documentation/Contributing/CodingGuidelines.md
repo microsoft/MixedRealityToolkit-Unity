@@ -1,4 +1,4 @@
-# Coding Guidelines
+# Coding guidelines
 This document outlines coding principles and conventions to follow when contributing to MRTK.
 
 ---
