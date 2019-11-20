@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         [HideInInspector]
         [SerializeField]
-        private int InputActionId = -1;
+        private int InputActionId = 0;
 
         [FormerlySerializedAs("IsGlobal")]
         [SerializeField]
@@ -1062,8 +1062,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
             MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
-            index = Mathf.Clamp(index, 0, actions.Length - 1);
-            return actions[index];
+            if (actions?.Length > 0)
+            {
+                index = Mathf.Clamp(index, 0, actions.Length - 1);
+                return actions[index];
+            }
+
+            return default;
         }
 
         /// <summary>
