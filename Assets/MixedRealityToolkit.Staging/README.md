@@ -1,6 +1,6 @@
 # What is MixedRealityToolkit.Staging
 
-The MixedRealityToolkit.Staging folder has been created to allow the delivery of these features to customers while the MRTK team works to implement packaging changes that may have posed risk to the product.
+The MixedRealityToolkit.Staging folder has been created to allow the delivery of these features to customers while the MRTK team works to implement packaging changes that span the current and next iteration.
 
 > [!Important]
 > This folder is expected to be removed from the **_next_** version of the Microsoft Mixed Reality Toolkit. Please take no dependencies on the current structure.
