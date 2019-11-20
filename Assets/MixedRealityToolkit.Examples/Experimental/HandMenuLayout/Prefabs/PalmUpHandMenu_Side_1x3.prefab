@@ -311,6 +311,7 @@ MonoBehaviour:
   columns: 1
   cellWidth: 0.032
   cellHeight: 0.032
+  assetVersion: 1
 --- !u!1001 &831020803452172622
 PrefabInstance:
   m_ObjectHideFlags: 0

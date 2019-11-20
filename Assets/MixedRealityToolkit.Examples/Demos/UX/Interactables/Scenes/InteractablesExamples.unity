@@ -523,6 +523,7 @@ MonoBehaviour:
   columns: 3
   cellWidth: 0.07
   cellHeight: 0.07
+  assetVersion: 1
 --- !u!1 &88961089 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5168285722127277137, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
@@ -5509,6 +5510,7 @@ MonoBehaviour:
   columns: 3
   cellWidth: 0.07
   cellHeight: 0.07
+  assetVersion: 1
 --- !u!1 &1191649517
 GameObject:
   m_ObjectHideFlags: 0
