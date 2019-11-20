@@ -1,4 +1,4 @@
-# Coding Guidelines
+# Coding guidelines
 
 This document outlines coding principles and conventions to follow when contributing to MRTK.
 
@@ -38,9 +38,9 @@ Every time you add a public method, field, property, it becomes part of MRTK’s
 
 New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.
 
-### Prioritize Writing Tests
+### Prioritize writing tests
 
-MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/results?buildId=5428) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
+MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build?definitionId=16) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
