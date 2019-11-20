@@ -2915,10 +2915,43 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/GrabPointer_MRTKProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/GrabPointer_MRTKProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/Pointers/MRTK_Pointers.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/Pointers/MRTK_Pointers.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/NearInteractionTouchableGizmos.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/NearInteractionTouchableGizmos.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/NearInteractionTouchableSetup.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/NearInteractionTouchableSetup.gif"
         }
       },
       "is_incremental": false,
@@ -2941,6 +2974,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/Pointers/PointerProfile.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/PokePointer_MRTKProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/PokePointer_MRTKProfile.png"
         }
       },
       "is_incremental": false,
@@ -6005,7 +6049,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/HowToAddNearInteractivity.html",
-          "hash": "vCPJgYgBZ/JNjLbnfnRSFQ=="
+          "hash": "YxRbHSq0eLNhDUo+/CQ4fw=="
         }
       },
       "is_incremental": false,
