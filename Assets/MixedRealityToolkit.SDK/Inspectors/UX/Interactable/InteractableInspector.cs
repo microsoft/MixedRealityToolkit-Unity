@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected string[] speechKeywordOptions = null;
 
         private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions");
-        private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "The selection mode of the Interactable is based on the number of Dimensions available.");
+        private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "The selection mode of the Interactable is based on the number of dimensions available.");
         private static readonly GUIContent dimensionsLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
         private static readonly GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
         private static readonly GUIContent isToggledLabel = new GUIContent("Is Toggled", "Should this Interactable be toggled on or off by default on start.");
