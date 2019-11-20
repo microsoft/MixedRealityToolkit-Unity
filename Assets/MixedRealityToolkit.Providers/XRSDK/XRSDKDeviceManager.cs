@@ -153,25 +153,29 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var currentControllerType = GetCurrentControllerType(inputDevice);
             Type controllerType;
 
+            List<InputFeatureUsage> inputFeatureUsages = new List<InputFeatureUsage>();
+
+            inputDevice.TryGetFeatureUsages(inputFeatureUsages);
+
             switch (currentControllerType)
             {
-                case SupportedControllerType.GenericOpenVR:
-                    controllerType = typeof(GenericOpenVRController);
-                    break;
-                case SupportedControllerType.ViveWand:
-                    controllerType = typeof(ViveWandController);
-                    break;
-                case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(ViveKnucklesController);
-                    break;
-                case SupportedControllerType.OculusTouch:
-                    controllerType = typeof(OculusTouchController);
-                    break;
-                case SupportedControllerType.OculusRemote:
-                    controllerType = typeof(OculusRemoteController);
-                    break;
+                //case SupportedControllerType.GenericOpenVR:
+                //    controllerType = typeof(GenericOpenVRController);
+                //    break;
+                //case SupportedControllerType.ViveWand:
+                //    controllerType = typeof(ViveWandController);
+                //    break;
+                //case SupportedControllerType.ViveKnuckles:
+                //    controllerType = typeof(ViveKnucklesController);
+                //    break;
+                //case SupportedControllerType.OculusTouch:
+                //    controllerType = typeof(OculusTouchController);
+                //    break;
+                //case SupportedControllerType.OculusRemote:
+                //    controllerType = typeof(OculusRemoteController);
+                //    break;
                 case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
+                    controllerType = typeof(WindowsMixedRealityXRSDKMotionController);
                     break;
                 default:
                     return null;
