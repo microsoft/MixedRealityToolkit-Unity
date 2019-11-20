@@ -1,6 +1,6 @@
 # Solvers
 
-![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)
+![Solver](Images/Solver/MRTK_Solver_Main.png)
 
 Solvers are components that facilitate the means of calculating an object's position & orientation according to a predefine algorithm. An example may be placing an object on the surface the user's gaze raycast currently hits.  
 
@@ -46,7 +46,7 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 > [!NOTE]
 > For both *ControllerRay* and *HandJoint* types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the `TrackedHandedness` property specifies otherwise.
 
-![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
+![Solver](Images/Solver/TrackedObjectType-Example.gif)
 <br/>
 *Example of various properties associated with each TrackedTargetType*
 
@@ -94,7 +94,7 @@ If *Smoothing* is enabled, then the Solver will gradually update the transform o
 
 If *MaintainScale* is enabled, then the Solver will utilize the GameObject's default local scale.
 
-![Core Solver Properties](../Documentation/Images/Solver/GeneralSolverProperties.png)
+![Core Solver Properties](Images/Solver/GeneralSolverProperties.png)
 <br/>
 *Common properties inherited by all Solver components*
 
@@ -104,7 +104,7 @@ The [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) c
 
 Developers can modify this fixed offset to keep menus or other scene components at eye-level or at waist level etc. around a user. This is done by modifying the *Local Offset* and *World Offset* properties. The *Orientation Type* property determines the rotation applied to the object if it should maintain it's original rotation or always face the camera or face whatever transform is driving it's position etc.
 
-![Orbital Example](../Documentation/Images/Solver/OrbitalExample.png)
+![Orbital Example](Images/Solver/OrbitalExample.png)
 <br/>
 *Orbital example*
 
@@ -118,7 +118,7 @@ The *Min & Max Distance* properties determines how far the GameObject should be 
 
 Generally, the [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) is used in conjunction with *Tracked Target Type* set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) so that the component follows the user's gaze. However, this component can function to be kept in *"view"* of any *Tracked Target Type*.
 
-![RadialView Example](../Documentation/Images/Solver/RadialViewExample.png)
+![RadialView Example](Images/Solver/RadialViewExample.png)
 <br/>
 *RadialView example*
 
@@ -130,7 +130,7 @@ At runtime, the [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solv
 
 The `PartwayOffset` defines where along the line between two transforms the object shall be placed with 0.5 as halfway, 1.0 at the first transform, and 0.0 at the second transform.
 
-![InBetween Example](../Documentation/Images/Solver/InBetweenExample.png)
+![InBetween Example](Images/Solver/InBetweenExample.png)
 <br/>
 *Example of using InBetween solver to keep object between two transforms*
 
@@ -154,7 +154,7 @@ To force the associated GameObject to stay vertical in any mode other than *None
 > [!NOTE]
 > Use the *Orientation Blend* property to control the balance between rotation factors when *Orientation Mode* is set to *Blended*. A value of 0.0 will have orientation entirely driven by *TrackedTarget* mode and a value of 1.0 will have orientation driven entirely by *SurfaceNormal*.
 
-![SurfaceMagnetism Example](../Documentation/Images/Solver/SurfaceMagExample.png)
+![SurfaceMagnetism Example](Images/Solver/SurfaceMagExample.png)
 
 #### Determining what surfaces can be hit
 
@@ -166,17 +166,17 @@ Finally, surfaces farther than the `MaxRaycastDistance` property setting will be
 
 ### Hand Menu with HandConstraint and HandConstraintPalmUp
 
-![Hand Menu UX Example](../Documentation/Images/Solver/MRTK_UX_HandMenu.png)
+![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
 
 The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes)
 
 Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) property for additional documentation. A few properties are defined in more detail below.
 
-<img src="../Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG" width="450">
+<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
 
 * **Safe Zone**: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with [`IMixedRealityHand`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.
 
-<img src="../Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG" width="450">
+<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
 
 * **Activation Events**: Currently the [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) triggers four activation events. These events can be used in many different combinations to create unique [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behaviors, please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes) for examples of these behaviors.
 
@@ -195,18 +195,18 @@ The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Ut
 
 Most commonly used when the *Tracked Target Type* of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) is set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head). In this fashion, a UX component with the [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator)  solver will direct a user to look at the desired point in space.
 
-The desired point in space is determined via the *Directional Target* property. 
+The desired point in space is determined via the *Directional Target* property.
 
 If the directional target is viewable by the user, or whatever frame of reference is set in the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), then this solver will disable all [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html) components underneath it. If not viewable, then everything will be enabled on the indicator.
 
 * *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
-* *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport. 
+* *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.
 
-![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExample.png)
+![Directional Indicator properties](Images/Solver/DirectionalIndicatorExample.png)
 <br/>
 *Directional Indicator properties*
 
-![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExampleScene.gif)
+![Directional Indicator example scene](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
 *[Directional Indicator Example Scene](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
 
