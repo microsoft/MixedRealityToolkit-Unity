@@ -128,11 +128,13 @@ MonoBehaviour:
   sortType: 0
   surfaceType: 1
   orientType: 0
-  layout: 0
+  layout: 1
+  anchor: 4
   radius: 2
   radialRange: 180
   distance: 0
   rows: 3
+  columns: 3
   cellWidth: 0.032
   cellHeight: 0.032
 --- !u!1 &6266962933852948004
@@ -550,11 +552,13 @@ MonoBehaviour:
   sortType: 0
   surfaceType: 1
   orientType: 0
-  layout: 0
+  layout: 1
+  anchor: 4
   radius: 2
   radialRange: 180
   distance: 0
   rows: 3
+  columns: 3
   cellWidth: 0.032
   cellHeight: 0.032
 --- !u!1001 &6266962933286543096
