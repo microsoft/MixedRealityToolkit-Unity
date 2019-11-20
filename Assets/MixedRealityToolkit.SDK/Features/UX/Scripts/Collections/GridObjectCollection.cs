@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// control panels or sets of prefab/objects.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
+    [ExecuteAlways]
     public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
@@ -421,43 +423,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        private void Awake()
+        {
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying)
+            {
+                if (assetVersion != CurrentAssetVersion)
+                {
+                    Undo.RecordObject(this, "version patching");
+                    PerformVersionPatching();
+                }
+            }
+#endif
+        }
+
 #region asset version migration
 #if UNITY_EDITOR
+        private const int CurrentAssetVersion = 1;
 
-        static GridObjectCollection()
-        {
-            // Patch on reload. 
-            // Need to defer patching as accessing the scene is not allowed in the static constructor.
-            EditorApplication.update += PatchAllInstancesDeferred;
-
-            // Patch on scene change.
-            UnityEditor.SceneManagement.EditorSceneManager.activeSceneChangedInEditMode +=
-                delegate (UnityEngine.SceneManagement.Scene prev, UnityEngine.SceneManagement.Scene next)
-                    { PatchAllInstances(); };
-        }
-
-        private static void PatchAllInstancesDeferred()
-        {
-            EditorApplication.update -= PatchAllInstancesDeferred;
-            PatchAllInstances();
-        }
-
-        private static void PatchAllInstances()
-        {
-            GridObjectCollection[] instances = FindObjectsOfType<GridObjectCollection>();
-            for (int i = 0; i < instances.Length; i++)
-            {
-                Undo.RecordObject(instances[i], "patch GridObjectCollection");
-                instances[i].PerformVersionPatching();
-            }
-        }
+        [SerializeField]
+        [HideInInspector]
+        private int assetVersion = 0;
 
         private void PerformVersionPatching()
         {
-            CheckUpdgradeToMRTK2_2();
+            if (assetVersion == 0)
+            {
+                Debug.Log("Upgrade GridObjectCollection on " + GetUserFriendlyName() + " from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
+                // Migrate from version 0 to version 1
+                UpgradeAssetToVersion1();
+            }
+            assetVersion = CurrentAssetVersion;
         }
 
-        private void CheckUpdgradeToMRTK2_2()
+        /// <summary>
+        /// Version 1 of GridObjectCollection introduced in MRTK 2.2 when 
+        /// incorrect semantics of "rows" field was fixed, see
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6550
+        /// </summary>
+        private void UpgradeAssetToVersion1()
         {
             // Check upgrade from MRTK 2.X to 2.2
             //
@@ -486,24 +490,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     // Try to guess what the desired columns would be
                     int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                    string objectName = gameObject.name;
-                    if (gameObject.transform.parent != null)
-                    {
-                        objectName += " (parent " + transform.parent.gameObject.name + ")";
-                    }
-                    Debug.Log("Asset update to MRTK 2.2 on GridObjectCollection on " + objectName 
-                        + " layout is ColumnsThenRows, columns is " + columns
-                        + " rows is " + rows +
-                        ". Updating columns to " + nodeListCount + "/ " + rows + " = " + columnsGuess 
-                        + " and layout out grid. Check asset to make sure GridObjectCollection has the correct values.");
-                    Undo.RecordObject(this, "update rows columns");
+                    string objectName = GetUserFriendlyName();
+                    Debug.Log("[GridObjectCollection upgrade to version 1] on " + objectName +
+                        ". Setting columns to " + nodeListCount + "/ " + rows + " = " + columnsGuess
+                        + ". Check asset to make sure GridObjectCollection has the correct values.");
                     columns = columnsGuess;
-                    UpdateCollection();
                 }
             }
         }
+
+        private string GetUserFriendlyName()
+        {
+            string objectName = gameObject.name;
+            if (gameObject.transform.parent != null)
+            {
+                objectName += " (parent " + transform.parent.gameObject.name + ")";
+            }
+
+            return objectName;
+        }
 #endif
-#endregion
+        #endregion
 
     }
 }
