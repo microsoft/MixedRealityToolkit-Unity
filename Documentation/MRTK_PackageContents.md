@@ -34,7 +34,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | [InputSystem](Input/Overview.md) | System providing support for accessing and handling user input. |
 | | [SceneSystem](SceneSystem/SceneSystemGettingStarted.md) | System providing multi-scene application support. |
 | | [SpatialAwarenessSystem](SpatialAwareness/SpatialAwarenessGettingStarted.md) | System providing support for awareness of the user's environment. |
-| | [TeleportSystem](TeleportSystem/Overview.md) | System providing support for telporting (moving about the experience in jumps). |
+| | [TeleportSystem](TeleportSystem/Overview.md) | System providing support for teleporting (moving about the experience in jumps). |
 
 ## Extensions
 
