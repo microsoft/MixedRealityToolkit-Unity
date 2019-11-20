@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -54,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
         private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
-        public LayoutAnchor Anchor 
+        public LayoutAnchor Anchor
         {
             get { return anchor; }
             set { anchor = value; }
@@ -115,14 +117,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public int Rows
         {
             get { return rows; }
-            set 
+            set
             {
-                if (Layout == LayoutOrder.ColumnThenRow) 
+                if (Layout == LayoutOrder.ColumnThenRow)
                 {
                     Debug.LogError("When using ColumnThenRow layout, assign Columns instead of Rows.");
-                    return;                    
+                    return;
                 }
-                rows = value; 
+                rows = value;
             }
         }
 
@@ -137,8 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public int Columns
         {
             get { return columns; }
-            set 
-            { 
+            set
+            {
                 if (Layout == LayoutOrder.RowThenColumn)
                 {
                     Debug.LogError("When using RowThenColumn layout, assign Rows instead of Columns.");
@@ -418,18 +420,48 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
-    
 
-        public void OnValidate()
+#region asset version migration
+#if UNITY_EDITOR
+
+        static GridObjectCollection()
         {
-            if (Application.isPlaying)
-            {   // Don't validate during play mode
-                return;
-            }
+            // Patch on reload. 
+            // Need to defer patching as accessing the scene is not allowed in the static constructor.
+            EditorApplication.update += PatchAllInstancesDeferred;
 
+            // Patch on scene change.
+            UnityEditor.SceneManagement.EditorSceneManager.activeSceneChangedInEditMode +=
+                delegate (UnityEngine.SceneManagement.Scene prev, UnityEngine.SceneManagement.Scene next)
+                    { PatchAllInstances(); };
+        }
+
+        private static void PatchAllInstancesDeferred()
+        {
+            EditorApplication.update -= PatchAllInstancesDeferred;
+            PatchAllInstances();
+        }
+
+        private static void PatchAllInstances()
+        {
+            GridObjectCollection[] instances = FindObjectsOfType<GridObjectCollection>();
+            for (int i = 0; i < instances.Length; i++)
+            {
+                Undo.RecordObject(instances[i], "patch GridObjectCollection");
+                instances[i].PerformVersionPatching();
+            }
+        }
+
+        private void PerformVersionPatching()
+        {
+            CheckUpdgradeToMRTK2_2();
+        }
+
+        private void CheckUpdgradeToMRTK2_2()
+        {
             // Check upgrade from MRTK 2.X to 2.2
-            // We used to always specify rows even when layout was column then row
-            // 
+            //
+            // Look for case when asset's layout is ColumnThenRow but # columns is specified in "row" field
             if (Layout == LayoutOrder.ColumnThenRow)
             {
                 // We count number of children this way to avoid re-laying out children without button press
@@ -444,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 // If we have an old asset, then rows could be != default value, columns would be default value
-                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols 
+                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols
                     // We actually want default # of columns
                     && (nodeListCount <= rows * (columns - 1) || nodeListCount > rows * columns);
                 // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
@@ -455,15 +487,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     // Try to guess what the desired columns would be
                     int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
                     string objectName = gameObject.name;
-                     if (gameObject.transform.parent != null) 
-                     {
-                         objectName += " (parent " + transform.parent.gameObject.name + ")";
-                     }
-                    Debug.Log("GridObjectCollection on " + objectName + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
-                    Columns = columnsGuess;
+                    if (gameObject.transform.parent != null)
+                    {
+                        objectName += " (parent " + transform.parent.gameObject.name + ")";
+                    }
+                    Debug.Log("Asset update to MRTK 2.2 on GridObjectCollection on " + objectName 
+                        + " layout is ColumnsThenRows, columns is " + columns
+                        + " rows is " + rows +
+                        ". Updating columns to " + nodeListCount + "/ " + rows + " = " + columnsGuess 
+                        + " and layout out grid. Check asset to make sure GridObjectCollection has the correct values.");
+                    Undo.RecordObject(this, "update rows columns");
+                    columns = columnsGuess;
+                    UpdateCollection();
                 }
             }
         }
+#endif
+#endregion
 
     }
 }
