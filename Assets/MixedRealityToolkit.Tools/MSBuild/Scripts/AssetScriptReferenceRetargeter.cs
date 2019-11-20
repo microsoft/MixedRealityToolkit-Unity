@@ -425,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             {
                 throw new InvalidOperationException("Failed to find the defineConstraints: [] when patching WSA dll.");
             }
-            File.WriteAllText(dllMetaPath, contents.Replace(searchString, "defineConstraints:\r\n    UNITY_WSA"));
+            File.WriteAllText(dllMetaPath, contents.Replace(searchString, "defineConstraints:\r\n  - UNITY_WSA"));
         }
 
         private static void CopyPluginContents(string outputPath)
