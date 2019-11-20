@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             CopyPluginContents(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
 
             // Special case the Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll for UNITY_WSA Editor
-            string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WindowsStandalone32/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
+            string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WSA/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
             string pdbPath = Path.ChangeExtension(dllPath, ".pdb");
             string editorOutputDirectory = Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer");
 
