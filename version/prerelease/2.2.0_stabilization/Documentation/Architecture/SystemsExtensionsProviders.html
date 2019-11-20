@@ -127,7 +127,7 @@ query the service instance for which they were registered (ex: input system).</p
 <pre><code class="lang-c#">if (CoreServices.InputSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-    
+
     if (dataProviderAccess != null)
     {
         IInputSimulationService inputSimulation =
@@ -148,13 +148,13 @@ application is running.</p>
 <p>For information on writing a data provider for the MRTK input system, please see <a href="../Input/CreateDataProvider.html">creating an input system data provider</a>.</p>
 <h3 id="spatial-awareness">Spatial Awareness</h3>
 <p>The MRTK spatial awareness system utilizes only data providers that implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html"><code>IMixedRealitySpatialAwarenessObserver</code></a> interface.</p>
-<p><img src="../Images/SpatialAwareness/SpatialAwarenessProfile.png" alt="Spatial awarenss system data providers"></p>
+<p><img src="../Images/SpatialAwareness/SpatialAwarenessProfile.png" alt="Spatial awareness system data providers"></p>
 <p>The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.</p>
 <pre><code class="lang-c#">if (CoreServices.SpatialAwarenessSystem != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = 
+    IMixedRealityDataProviderAccess dataProviderAccess =
         CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-    
+
     if (dataProviderAccess != null)
     {
         IReadOnlyList&lt;IMixedRealitySpatialAwarenessMeshObserver&gt; observers =

@@ -125,7 +125,7 @@ External xref services for resolving links to external libraries/apis can be add
 <p>Example:</p>
 <p>This links to the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.html">BoundarySystem API</a>
 as well as this short version: <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.html">Microsoft.MixedReality.Toolkit.Boundary</a></p>
-<pre><code>This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
+<pre><code class="lang-md">This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 </code></pre>
 <h2 id="enumerating-available-xrefs">Enumerating available xrefs</h2>
@@ -136,7 +136,7 @@ docfx locally:</p>
 </blockquote>
 <p>This will generate an xrefmap.yml file, which will be located in docs/xrefmap.yml.</p>
 <p>For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:</p>
-<pre><code>- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
+<pre><code class="lang-yml">- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
   name: HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
   href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
   commentId: M:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
@@ -158,20 +158,26 @@ toc.yml files can be used for structuring and there can be any amount of those f
 <p>There are some files like images, videos or PDFs that the documentation can refer to but are not converted by docfx. For those files there's a resource section in the docfx.json. Files in that section will only be copied over without performing any conversion on them.</p>
 <p>Currently there's a definition for the following resource types:</p>
 <table>
+<thead>
 <tr>
-<td><i>ResourceType</i></td> <td><i>Path</i></td>
+<th>ResourceType</th>
+<th>Path</th>
 </tr>
+</thead>
+<tbody>
 <tr>
-<td>Images</td> <td>Documentation/Images/</td>
+<td>Images</td>
+<td>Documentation/Images/</td>
 </tr>
+</tbody>
 </table>
 <h2 id="releasing-a-new-version">Releasing a new version</h2>
 <p>Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.</p>
 <ol>
-<li>Optional: Adjusting your docfx.json
+<li>Optional: Adjusting your docfx.json<br>
 Depending on whether you want to have the &quot;Improve this doc&quot; to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:</li>
 </ol>
-<pre><code> &quot;_gitContribute&quot;: {
+<pre><code class="lang-json"> &quot;_gitContribute&quot;: {
         &quot;repo&quot;: &quot;https://github.com/Microsoft/MixedRealityToolkit-Unity.git&quot;,
         &quot;branch&quot;: &quot;mrtk_development&quot;
       }
@@ -207,7 +213,7 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
 <li>Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref=&quot;Interfaces.IMixedRealityServiceRegistrar&quot;</li>
 </ul>
 </li>
-<li>External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see></li>
+<li>External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <code>&lt;see href=&quot;https://docs.unity3d.com/ScriptReference/EditorPrefs.html&quot;&gt;EditorPrefs&lt;/see&gt;</code></li>
 </ul>
 </li>
 </ul>
