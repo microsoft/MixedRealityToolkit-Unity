@@ -10980,7 +10980,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseController.html",
-          "hash": "SZENmmU6wwLBvLRSm3bIzQ=="
+          "hash": "kEswV2uSc9bXFRChLBRbkA=="
         }
       },
       "is_incremental": false,
@@ -11052,7 +11052,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseHand.html",
-          "hash": "FYVAd5Un+f5lJ7pdAl8iJA=="
+          "hash": "aQISMgP/P3IRuUV3cv+uzA=="
         }
       },
       "is_incremental": false,
@@ -13452,7 +13452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.html",
-          "hash": "+8nxsk/2E+xVxZ7KH7jHDQ=="
+          "hash": "pOQsMKspGz//KMZ0s08M5w=="
         }
       },
       "is_incremental": false,
@@ -13464,7 +13464,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html",
-          "hash": "CGCBl2CT6Vo4RiY2UWtSMg=="
+          "hash": "s5Fb9hLx2F0HBKljoCE9zA=="
         }
       },
       "is_incremental": false,
@@ -13476,7 +13476,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html",
-          "hash": "QdDi1EaVDfVGWLbnbjRAcg=="
+          "hash": "hKyaYCFgNbv8PjlWI8Tdkw=="
         }
       },
       "is_incremental": false,
@@ -13716,7 +13716,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html",
-          "hash": "lbZHfX5MnMnyng+ZZhzUrQ=="
+          "hash": "a6k/6U9sWZs7R/Us4Nop5Q=="
         }
       },
       "is_incremental": false,
@@ -13728,7 +13728,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html",
-          "hash": "ohEaIj9E/oYI1gzo+L+qrg=="
+          "hash": "dEkX1spbs4sggmHrGIR2Ig=="
         }
       },
       "is_incremental": false,
@@ -13764,7 +13764,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html",
-          "hash": "TwouzWeBo9WWcPh/rjMXiQ=="
+          "hash": "N5BqILnwCLyiGcgpNm+cPQ=="
         }
       },
       "is_incremental": false,
@@ -13788,7 +13788,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController.html",
-          "hash": "UgHgMeOI7J/ramUg6wDZww=="
+          "hash": "Kh7j/lSBHExSotbhND+hFw=="
         }
       },
       "is_incremental": false,
