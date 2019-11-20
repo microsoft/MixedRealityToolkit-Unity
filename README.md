@@ -118,6 +118,3 @@ You can find our planning material on [our wiki](https://github.com/Microsoft/Mi
 Learn how you can contribute to MRTK at [Contributing](Documentation/Contributing/CONTRIBUTING.md).
 
 **For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).**
-
-<img src="Documentation/Images/Contributing/ContributionFlow.png">
-

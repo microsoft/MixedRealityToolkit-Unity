@@ -5,10 +5,6 @@ The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. All 
 If you have any questions, please reach out on the [mixed-reality-toolkit channel on Slack](https://holodevelopers.slack.com/messages/C2H4HT858).
  You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
-## Overview
-<img src="../Images/Contributing/ContributionFlow.png">
-
-
 ## Submission process
 We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose).
 
