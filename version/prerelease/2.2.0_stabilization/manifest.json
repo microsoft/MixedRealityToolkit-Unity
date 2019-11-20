@@ -882,7 +882,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "yJW4YfY770bW0TiCFtnKug=="
+          "hash": "j+ijjIet1Ejr6KQOHZtr/g=="
         }
       },
       "is_incremental": false,
@@ -4037,6 +4037,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_NoProfileMessage.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_NoProfileMessage.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_SceneSetup.png",
       "output": {
         "resource": {
@@ -4052,6 +4063,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_SelectConfigurationDialog.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_SelectConfigurationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_SelectConfigurationProfile.png"
         }
       },
       "is_incremental": false,
@@ -6189,6 +6211,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/MRTK_PackageContents.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/MRTK_PackageContents.html",
+          "hash": "vQiNcUKzs6olM/HDeSKttg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/MixedRealityConfigurationGuide.md",
       "output": {
         ".html": {
@@ -6769,7 +6803,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "RYYlkXgyM+EDg3p+jcgylQ=="
+          "hash": "BBprMPPm0uSFP1BoPyTedQ=="
         }
       },
       "is_incremental": false,
@@ -23906,13 +23940,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 139,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1419,
+          "total_file_count": 140,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -23920,6 +23948,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1419,
           "skipped_file_count": 0
         }
       }
