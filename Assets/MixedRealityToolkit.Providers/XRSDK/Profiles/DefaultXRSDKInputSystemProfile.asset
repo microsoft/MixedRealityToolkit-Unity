@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: DefaultXRSDKInputSystemProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  dataProviderConfigurations: []
+  dataProviderConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.XRSDKDeviceManager, Microsoft.MixedReality.Toolkit.Providers.XRSDK
+    componentName: XRSDK Device Manager
+    priority: 0
+    runtimePlatform: 15
+    deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem
   raycastProviderType:
