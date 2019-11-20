@@ -7,16 +7,16 @@ The Unity AR camera settings provider is an experimental MRTK component that ena
 Before the Unity AR camera settings provider can be enabled in an application, the following steps need to be completed.
 
 1. Download and import the **Microsoft.MixedReality.Toolkit.Providers.UnityAR** package, from GitHub or NuGet
-1. In the Unity Package Manager, ensure the following package(s) are installed.
+1. In the Unity Package Manager, ensure the following package(s) are installed:
 
-| Unity 2018.4 | Unity 2019.x | Comments |
-| --- | --- | -- |
-| AR Foundation | AR Foundation | For Unity 2018.4, this package is included as a preview |
-| | XR Legacy Input Helpers | |
-| AR Core | | For Android device support |
-| AR Kit | | For iOS device support |
+    | Unity 2018.4 | Unity 2019.x | Comments |
+    | --- | --- | -- |
+    | AR Foundation | AR Foundation | For Unity 2018.4, this package is included as a preview |
+    | | XR Legacy Input Helpers | |
+    | AR Core | | For Android device support |
+    | AR Kit | | For iOS device support |
 
-3. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityEngine.SpatialTracking** reference added.
+1. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityEngine.SpatialTracking** reference added.
 
     ![Unity AR assembly definition](../Images/CrossPlatform/UnityArAssemblyReferences.png)
 

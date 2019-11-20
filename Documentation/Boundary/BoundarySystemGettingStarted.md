@@ -2,7 +2,7 @@
 
 The Boundary system provides support for visualizing Virtual Reality boundary components in mixed reality applications. Boundaries define the area in which users can safely move around while wearing a VR headset. Boundaries are an important component of a mixed reality experience to help users avoid unseen obstacles while wearing a VR headset.
 
-Many Virtual Reality platforms provide an automatic display, for example a white outline superimposed on the virtual world as the user or their controller nears the boundary. The Mixed Reality Toolkit's Boundary System extends this feature to enable the display of an outline of the tracked area, a floor plane and other features that can be used to provide additional information to users. 
+Many Virtual Reality platforms provide an automatic display, for example a white outline superimposed on the virtual world as the user or their controller nears the boundary. The Mixed Reality Toolkit's Boundary System extends this feature to enable the display of an outline of the tracked area, a floor plane and other features that can be used to provide additional information to users.
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 ## Configure Boundary Visualization
 
-The [Boundary System uses a configuration profile](ConfiguringBoundaryVisualization.md) to specify which boundary components are to be displayed and to configure their appearance. 
+The [Boundary System uses a configuration profile](ConfiguringBoundaryVisualization.md) to specify which boundary components are to be displayed and to configure their appearance.
 
 ![Boundary Visualization Options](../../Documentation/Images/Boundary/BoundaryVisualizationProfile.png)
 

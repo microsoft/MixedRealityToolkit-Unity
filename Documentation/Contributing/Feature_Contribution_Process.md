@@ -5,6 +5,7 @@
 Adding features to the Mixed Reality Toolkit (MRTK) is split up into a few iteration steps, so maintainers can have time to review and and ensure the process goes smoothly. Please be sure to review the list of [feature requirements](#new-feature-requirements) before you get started.
 
 # Process
+
 The following process has been drafted to ensure all new work complies to the updated standards and architecture defined for the MRTK, this has been defined as:
 
 1. [Open a new Proposal and related Tasks](#new-proposal)
@@ -95,6 +96,7 @@ Most feature implementations can be broken down into 3 main parts:
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
 ## Event Data Implementation Requirements
+
 The Event Data defines exactly what data the handler is expected to receive from the event.
 
 * All Event Datum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
