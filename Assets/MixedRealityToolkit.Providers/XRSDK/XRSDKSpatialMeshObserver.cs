@@ -95,7 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             // For non - custom levels, the enum value is the appropriate triangles per cubic meter.
             int level = (int)levelOfDetail;
-            observer.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
+            if (observer != null)
+            {
+                observer.meshDensity = level / (float)SpatialAwarenessMeshLevelOfDetail.Fine; // For now, map Coarse to 0.0 and Fine to 1.0
+            }
             return level;
         }
 
