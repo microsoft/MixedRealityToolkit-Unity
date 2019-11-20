@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Boundary
     /// <summary>
     /// Service manager supporting running the boundary system, without requiring the MixedRealityToolkit object.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/BoundarySystemManager")]
     public class BoundarySystemManager : BaseServiceManager
     {
         [SerializeField]

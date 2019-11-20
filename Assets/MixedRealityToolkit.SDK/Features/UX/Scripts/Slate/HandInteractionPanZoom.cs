@@ -8,9 +8,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [AddComponentMenu("Scripts/MRTK/SDK/HandInteractionPanZoom")]
     public class HandInteractionPanZoom : 
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {

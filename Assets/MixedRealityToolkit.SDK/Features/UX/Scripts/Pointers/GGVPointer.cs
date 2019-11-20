@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This pointer's position is given by hand position (grip pose),
     /// and the input focus is given by head gaze.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/SDK/GGVPointer")]
     public class GGVPointer : InputSystemGlobalHandlerListener,
         IMixedRealityPointer,
         IMixedRealityInputHandler,

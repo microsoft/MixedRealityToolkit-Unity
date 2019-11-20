@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// <summary>
     /// Component to manage the visuals for a Mixed Reality Keyboard Preview window.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityKeyboardPreview")]
     public class MixedRealityKeyboardPreview : MonoBehaviour
     {
         [SerializeField, Tooltip("The Text Mesh Pro text field to display the preview text.")]

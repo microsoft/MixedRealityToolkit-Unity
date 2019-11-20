@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/TargetMoveToCamera")]
     public class TargetMoveToCamera : BaseEyeFocusHandler
     {
         public static TargetMoveToCamera currentlyFocusedTarget;

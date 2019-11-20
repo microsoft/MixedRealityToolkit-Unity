@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// A Scatter Object Collection is simply a set of child objects randomly laid out within a radius.
     /// Pressing "update collection" will run the randomization, feel free to run as many times until you get the desired result.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ScatterObjectCollection")]
     public class ScatterObjectCollection : GridObjectCollection
     {
         /// <summary>

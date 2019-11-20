@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
     /// a visual anchor at the target's center. Different fade in and fade out options are also available.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/OnLookAtShowHoverFeedback")]
     public class OnLookAtShowHoverFeedback : MonoBehaviour
     {
         // Overlay Feedback: Acts as a visual anchor at the target's center to fixate on.

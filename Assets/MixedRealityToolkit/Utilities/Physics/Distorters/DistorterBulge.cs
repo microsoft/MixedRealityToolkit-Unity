@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// The characteristics of the distortion are also heavily controlled by the BulgeFalloff
     /// property, which should contain key frames that cover the [0, 1] time range.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/Core/DistorterBulge")]
     public class DistorterBulge : Distorter
     {
         [SerializeField]

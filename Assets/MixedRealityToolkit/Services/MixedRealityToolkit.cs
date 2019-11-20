@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// The Profile can be swapped out at any time to meet the needs of your project.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("Scripts/MRTK/Core/MixedRealityToolkit")]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
         private static bool isInitializing = false;

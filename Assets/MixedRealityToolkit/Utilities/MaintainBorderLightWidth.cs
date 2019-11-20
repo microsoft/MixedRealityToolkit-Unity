@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// "MixedRealityToolkit/Standard" shader "_BorderLight" feature.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
+    [AddComponentMenu("Scripts/MRTK/Core/MaintainBorderLightWidth")]
     public class MaintainBorderLightWidth : MonoBehaviour
     {
         private Renderer targetRenderer = null;

@@ -12,6 +12,7 @@ using UnityPhysics = UnityEngine.Physics;
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     [RequireComponent(typeof(DistorterGravity))]
+    [AddComponentMenu("Scripts/MRTK/SDK/TeleportPointer")]
     public class TeleportPointer : LinePointer, IMixedRealityTeleportPointer, IMixedRealityTeleportHandler
     {
         public bool TeleportRequestRaised { get { return teleportEnabled; } }

@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Example of building an event system for Interactable that still uses ReceiverBase events
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InteractableReceiver")]
     public class InteractableReceiver : ReceiverBaseMonoBehavior
     {
         // list of events added to this interactable

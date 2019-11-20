@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/DebugTextOutput")]
     public class DebugTextOutput : MonoBehaviour
     {
         [SerializeField]

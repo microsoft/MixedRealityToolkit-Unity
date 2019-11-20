@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/MaterialInstance.html")]
     [ExecuteAlways, RequireComponent(typeof(Renderer))]
+    [AddComponentMenu("Scripts/MRTK/Core/MaterialInstance")]
     public class MaterialInstance : MonoBehaviour
     {
         /// <summary>

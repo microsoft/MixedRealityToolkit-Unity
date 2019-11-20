@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [ExecuteInEditMode]
+    [AddComponentMenu("Scripts/MRTK/SDK/ButtonSize")]
     public class ButtonSize : MonoBehaviour
     {
         [Tooltip("A pixel to Unity unit conversion, Default: 2048x2048 pixels covers a 1x1 Unity Unit or default primitive size")]

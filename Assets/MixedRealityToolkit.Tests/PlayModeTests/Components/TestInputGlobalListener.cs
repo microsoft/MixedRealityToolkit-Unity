@@ -4,11 +4,13 @@
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-// For InputSystemGlobalListener
+    // For InputSystemGlobalListener
 #pragma warning disable 0618
+    [AddComponentMenu("Scripts/MRTK/Tests/TestInputGlobalListener")]
     internal class TestInputGlobalListener: InputSystemGlobalListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         // Parameters, which are set by child classes

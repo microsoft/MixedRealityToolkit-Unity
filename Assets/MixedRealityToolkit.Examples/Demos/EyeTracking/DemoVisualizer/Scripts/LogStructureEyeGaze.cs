@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/LogStructureEyeGaze")]
     public class LogStructureEyeGaze : LogStructure
     {
         private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
