@@ -419,7 +419,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             // Patch the special cased library to have a define_constraint:
             string dllMetaPath = $"{dllOutputPath}.meta";
             Debug.Log($"Patching: {dllMetaPath}");
-            File.WriteAllText(dllMetaPath, File.ReadAllText(dllMetaPath).Replace("defineConstraints: []", "defineConstraints:\r\n    UNITY_WSA"));
+            string contents = File.ReadAllText(dllMetaPath);
+            string searchString = "defineConstraints: []";
+            if (!contents.Contains(searchString))
+            {
+                throw new InvalidOperationException("Failed to find the defineConstraints: [] when patching WSA dll.");
+            }
+            File.WriteAllText(dllMetaPath, contents.Replace(searchString, "defineConstraints:\r\n    UNITY_WSA"));
         }
 
         private static void CopyPluginContents(string outputPath)
