@@ -140,6 +140,12 @@
 </ul>
 <p>For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.</p>
 <p>Omitting the namespace for an interface, class or data type will cause your change to be blocked.</p>
+<h3 id="adding-new-monobehaviour-scripts">Adding new MonoBehaviour scripts</h3>
+<p>When adding new MonoBehaviour scripts with a pull-request, ensure the <a href="https://docs.unity3d.com/ScriptReference/AddComponentMenu.html"><code>AddComponentMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the <em>Add Component</em> button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
+<p>In the example below, the <em>Package here</em> should be filled with the package location of the component. If placing an item in <em>MixedRealityToolkit.SDK</em> folder, then the package will be <em>SDK</em>. If placing an item in the <em>MixedRealityToolkit</em> folder, then use <em>Core</em> as the string to insert.</p>
+<pre><code class="lang-csharp">[AddComponentMenu(&quot;Scripts/MRTK/{Package here}/MyNewComponent&quot;)]
+public class MyNewComponent : MonoBehaviour
+</code></pre>
 <h3 id="spaces-vs-tabs">Spaces vs Tabs</h3>
 <p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
 <h3 id="spacing">Spacing</h3>

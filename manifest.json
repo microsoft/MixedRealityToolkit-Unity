@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "f0cqbNNtdR0ePtsUGW3Wyw=="
+          "hash": "LhQmoCD3Ahz1uOjhlrs+sw=="
         }
       },
       "is_incremental": false,
@@ -8612,6 +8612,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ColorChangerUnityUI.html",
+          "hash": "E8z78nhGJo5kU5C/VbvXRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.DebugTextOutput.yml",
       "output": {
         ".html": {
@@ -9768,7 +9780,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "Ko5LJtQdL04CMji1wF4x/Q=="
+          "hash": "zQ6c+B/P3Nz6zkHR+aE7ZA=="
         }
       },
       "is_incremental": false,
@@ -17220,7 +17232,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer.html",
-          "hash": "4Mrex8vgObhyGqOhV5jlYw=="
+          "hash": "YXLCqCHl2RfKnFyz2TlzqQ=="
         }
       },
       "is_incremental": false,
@@ -17256,7 +17268,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Rendering.html",
-          "hash": "f3SKphpUjP5DcBUuL3V6fg=="
+          "hash": "r8AotIlGSpLy4lnCa7EITQ=="
         }
       },
       "is_incremental": false,
@@ -23904,7 +23916,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "zIy5BphnBDiNYiDOdxRLsw=="
+          "hash": "LQQCVEMeiZXlA9NY55grrg=="
         }
       },
       "is_incremental": false,
@@ -23956,9 +23968,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -23972,12 +23984,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1424,
+          "total_file_count": 1425,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
