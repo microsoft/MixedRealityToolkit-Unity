@@ -76,12 +76,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Vector3 Velocity { get; protected set; }
 
+        /// <inheritdoc />
         public virtual bool IsInPointingPose => true;
 
         #endregion IMixedRealityController Implementation
 
         /// <summary>
-        /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
+        /// Sets up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         [Obsolete("The second parameter is no longer used. This method now reads from the controller's input source.")]
         public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)
@@ -90,8 +91,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
+        /// Sets up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
+        /// <param name="controllerType">The type this controller represents.</param>
         public bool SetupConfiguration(Type controllerType)
         {
             if (IsControllerMappingEnabled())
