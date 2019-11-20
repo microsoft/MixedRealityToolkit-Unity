@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// The Windows Mixed Reality Controller default interactions.
+        /// The Windows Mixed Reality articulated hands default interactions.
         /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
+        /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
             new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                             for (int i = 0; i < handMeshObserver.VertexCount; i++)
                             {
-                                neutralPoseVertices[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Position);
+                                neutralPoseVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
                             }
 
                             // Compute UV mapping
@@ -271,8 +271,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                                 for (int i = 0; i < handMeshObserver.VertexCount; i++)
                                 {
-                                    handMeshVertices[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Position);
-                                    handMeshNormals[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Normal);
+                                    handMeshVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
+                                    handMeshNormals[i] = vertexAndNormals[i].Normal.ToUnityVector3();
                                 }
 
                                 HandMeshInfo handMeshInfo = new HandMeshInfo
@@ -281,8 +281,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                     normals = handMeshNormals,
                                     triangles = handMeshTriangleIndices,
                                     uvs = handMeshUVs,
-                                    position = WindowsMixedRealityUtilities.SystemVector3ToUnity(translation),
-                                    rotation = WindowsMixedRealityUtilities.SystemQuaternionToUnity(rotation)
+                                    position = translation.ToUnityVector3(),
+                                    rotation = rotation.ToUnityQuaternion()
                                 };
 
                                 CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
@@ -306,8 +306,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         for (int i = 0; i < jointPoses.Length; i++)
                         {
-                            unityJointOrientations[i] = WindowsMixedRealityUtilities.SystemQuaternionToUnity(jointPoses[i].Orientation);
-                            unityJointPositions[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(jointPoses[i].Position);
+                            unityJointOrientations[i] = jointPoses[i].Orientation.ToUnityQuaternion();
+                            unityJointPositions[i] = jointPoses[i].Position.ToUnityVector3();
 
                             // We want the controller to follow the Playspace, so fold in the playspace transform here to 
                             // put the controller pose into world space.
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
 #endif // WINDOWS_UWP

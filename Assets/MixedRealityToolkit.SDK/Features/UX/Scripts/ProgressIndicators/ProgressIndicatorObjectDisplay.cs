@@ -67,12 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TextMeshPro messageText = null;
 
         [SerializeField]
-        private ProgressIndicatorState state = ProgressIndicatorState.Closed;
-
-        [SerializeField]
         [Range(0f, 1f)]
         private float progress;
 
+        private ProgressIndicatorState state = ProgressIndicatorState.Closed;
         private float currentScale;
 
         /// <inheritdoc/>

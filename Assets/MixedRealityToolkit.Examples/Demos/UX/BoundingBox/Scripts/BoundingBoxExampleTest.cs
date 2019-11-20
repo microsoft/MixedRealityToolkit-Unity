@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         protected virtual void OnDisable()
         {
-            CoreServices.InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         // Start is called before the first frame update
