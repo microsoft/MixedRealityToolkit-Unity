@@ -197,7 +197,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisabledOnStart_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisabledOnStart*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisabledOnStart" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisabledOnStart">TestDisabledOnStart()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tests that Interactable configured not Enabled on start works as expected.
+Enabled on start is an editor level setting only that is applied on Awake/Start</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -220,14 +222,43 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisableState_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisableState*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisableState" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisableState">TestDisableState()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisabledStateThemes_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisabledStateThemes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisabledStateThemes" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisabledStateThemes">TestDisabledStateThemes()</h4>
   <div class="markdown level1 summary"><p>Instantiates a runtime assembled Interactable and set Interactable state to disabled (not disabling the GameObject/component)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestDisableState()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator TestDisabledStateThemes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisableOnClick_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisableOnClick*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestDisableOnClick" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestDisableOnClick">TestDisableOnClick()</h4>
+  <div class="markdown level1 summary"><p>Tests button depth and focus state after enabling, disabling and re-enabling Interactable
+internally via IsEnabled. The focus state after re-enabling should be false and button
+depth should be in its default position.  This test is specifically addressing behavior described
+in issue 4967.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TestDisableOnClick()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -298,65 +329,14 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActionMenuInput_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActionMenuInput*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActionMenuInput" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActionMenuInput">TestInputActionMenuInput()</h4>
-  <div class="markdown level1 summary"><p>Instantiates a push button prefab and uses simulated input events to press it.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestInputActionMenuInput()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActionSelectInput_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActionSelectInput*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActionSelectInput" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActionSelectInput">TestInputActionSelectInput()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActions_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActions*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInputActions" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInputActions">TestInputActions()</h4>
   <div class="markdown level1 summary"><p>Assembles a push button from primitives and uses simulated input events to press it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestInputActionSelectInput()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInteractableDisableOnClick_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInteractableDisableOnClick*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInteractableDisableOnClick" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInteractableDisableOnClick">TestInteractableDisableOnClick()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestInteractableDisableOnClick()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator TestInputActions()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -377,7 +357,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInteractableToggleCollectionIndexUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInteractableToggleCollectionIndexUpdate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestInteractableToggleCollectionIndexUpdate" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestInteractableToggleCollectionIndexUpdate">TestInteractableToggleCollectionIndexUpdate()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Test InteractableToggleCollection CurrentIndex updates</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -402,7 +383,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestPressableToggleHoloLens2_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestPressableToggleHoloLens2*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestPressableToggleHoloLens2" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestPressableToggleHoloLens2">TestPressableToggleHoloLens2()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tests that the toggle button states consistently return to original state
+after subsequent clicks (front plate does not move back after every click).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -454,7 +437,7 @@ set allows just one button to be selected at a time</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestSelectGlobalInput_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestSelectGlobalInput*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestSelectGlobalInput" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestSelectGlobalInput">TestSelectGlobalInput()</h4>
-  <div class="markdown level1 summary"><p>Instantiates a push button prefab and uses simulated global input events to press it.</p>
+  <div class="markdown level1 summary"><p>Instantiates a push button prefab and uses simulated global input events to press it. Test that global input behaves correctly when Interactable IsEnabled and not</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -478,14 +461,40 @@ set allows just one button to be selected at a time</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestSelectGlobalInputOnDisabled_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestSelectGlobalInputOnDisabled*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestSelectGlobalInputOnDisabled" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestSelectGlobalInputOnDisabled">TestSelectGlobalInputOnDisabled()</h4>
-  <div class="markdown level1 summary"><p>Instantiates a push button prefab and disable it but also enable global input. Ensure cannot interact because disabled</p>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestTouchInput_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestTouchInput*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestTouchInput" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestTouchInput">TestTouchInput()</h4>
+  <div class="markdown level1 summary"><p>Test touch input on Interactable by looking at state changes, both for when IsEnabled and not</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator TestSelectGlobalInputOnDisabled()</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerator TestTouchInput()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestTriggerOnClick_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestTriggerOnClick*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestTriggerOnClick" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestTriggerOnClick">TestTriggerOnClick()</h4>
+  <div class="markdown level1 summary"><p>Test the TriggerOnClick API for Interactable both when IsEnabled and not. Button should fire OnClick and move UI</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TestTriggerOnClick()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -506,7 +515,7 @@ set allows just one button to be selected at a time</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestVoiceInputOnPrefab_" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestVoiceInputOnPrefab*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_InteractableTests_TestVoiceInputOnPrefab" data-uid="Microsoft.MixedReality.Toolkit.Tests.InteractableTests.TestVoiceInputOnPrefab">TestVoiceInputOnPrefab()</h4>
-  <div class="markdown level1 summary"><p>Instantiates a push button prefab and uses simulated voice input events to press it.</p>
+  <div class="markdown level1 summary"><p>Instantiates a push button prefab and uses simulated voice input events to press it, both when IsEnabled and not</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
