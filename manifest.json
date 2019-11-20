@@ -17864,6 +17864,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SystemNumericsExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.SystemNumericsExtensions.html",
+          "hash": "goXp9x8ik3p2Nq4EuW5DQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.SystemTypeAttribute.yml",
       "output": {
         ".html": {
@@ -23808,7 +23820,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityUtilities.html",
-          "hash": "Ylejzmq5+IIClmKLdJuIiA=="
+          "hash": "Jzj4uko+zAJKamn88mOFXg=="
         }
       },
       "is_incremental": false,
@@ -23880,7 +23892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "tILH0qGljtrjU0uz44vbJg=="
+          "hash": "gYr0lcsIz5xV0oetdQBHNQ=="
         }
       },
       "is_incremental": false,
@@ -23892,7 +23904,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Kh//PaX6xZjkjl7gVz4+wg=="
+          "hash": "zIy5BphnBDiNYiDOdxRLsw=="
         }
       },
       "is_incremental": false,
@@ -23951,16 +23963,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1423,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 139,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1424,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
