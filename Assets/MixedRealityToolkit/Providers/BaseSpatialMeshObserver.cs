@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
-            ReadProfile();
         }
 
         #region BaseSpatialMeshObserver Implementation
@@ -162,6 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
             
             base.Initialize();
+
+            ReadProfile();
         }
 
         #endregion IMixedRealityDataProvider Implementation
