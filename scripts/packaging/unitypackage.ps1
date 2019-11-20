@@ -95,7 +95,7 @@ $packages = @{
     # NOTE: This is a temporary package to facilitate experimental Unity AR support while we
     # invest in better packaging solution
     "Providers.UnityAR" = @(
-        "Assets\MixedRealityToolkit.Staging\UnityAR"
+        "Assets\MixedRealityToolkit.Staging"
     );
 }
 
