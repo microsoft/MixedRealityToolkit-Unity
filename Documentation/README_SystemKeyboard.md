@@ -37,4 +37,4 @@ A Unity application can invoke the system keyboard at any time. Note that the sy
 
 ## System keyboard example ##
 You can see simple example of how to bring up system keyboard in 
-[`SystemKeyboardExample.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/SystemKeyboardExample.cs)
+[`MixedRealityKeyboard.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/UX/MixedRealityKeyboard.cs)
