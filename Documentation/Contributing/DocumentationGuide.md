@@ -340,6 +340,7 @@ When writing documentation, installing the following two extensions is also high
 
 - Code Spell Checker - misspelled words will be underlined; right-click on a misspelled word to change it or save it to the dictionary.
 
+Both of these come packaged in the Microsoft published Docs Authoring Pack.
 
 ## See also
 
