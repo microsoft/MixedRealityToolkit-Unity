@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
         [Tooltip("Defines whether the Interactable is enabled or not internally." +
-        "This is different than the Enabled property at the GameObject/Component level." +
+        "This is different than the enabled property at the GameObject/Component level." +
         "When false, Interactable will continue to run in Unity but not respond to Input." +
         "\n\nProperty is useful for disabling UX, such as greying out a button, until a user completes some pre-mandatory step such as fill out their name, etc")]
         private bool enabledOnStart = true;
