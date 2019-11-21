@@ -99,7 +99,7 @@ function CheckAssemblyCSharp(
 ) {
     <#
     .SYNOPSIS
-        Checks if the given profile contains references to Assembly-CSharp, often indicative of invalid reference
+        Checks if the given profile contains references to Assembly-CSharp, often indicative of invalid reference.
         Returns true if such a reference exists.
     #>
     if ($FileName -and $FileContent[$LineNumber] -match "Assembly-CSharp") {
