@@ -778,10 +778,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
                 if (success)
                 {
-                    targetDevice.CsrfToken = response.ResponseBody;
+                    // If null, authentication succeeded but we had no cookie token in the response.
+                    // This usually means Unity has a cached token, so it can be ignored.
+                    if (response.ResponseBody != null)
+                    {
+                        targetDevice.CsrfToken = response.ResponseBody;
 
-                    // Strip the beginning of the cookie header
-                    targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                        // Strip the beginning of the cookie header
+                        targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                    }
                 }
                 else
                 {
