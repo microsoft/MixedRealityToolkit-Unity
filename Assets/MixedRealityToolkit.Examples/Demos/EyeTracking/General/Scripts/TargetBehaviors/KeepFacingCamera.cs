@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// This script continuously updates the orientation of the associated game object to keep facing the camera/user.
     /// </summary>
     [System.Obsolete("This component is no longer supported", true)]
-    [AddComponentMenu("Scripts/MRTK/Examples/KeepFacingCamera")]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/KeepFacingCamera")]
     public class KeepFacingCamera : MonoBehaviour
     {
         private Vector3 origForwardVector;

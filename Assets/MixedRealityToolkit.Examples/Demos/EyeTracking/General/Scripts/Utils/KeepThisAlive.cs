@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// Enforces to keep this GameObject alive across different scenes.
     /// </summary>
     [System.Obsolete("This component is no longer supported", true)]
-    [AddComponentMenu("Scripts/MRTK/Examples/KeepThisAlive")]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/KeepThisAlive")]
     public class KeepThisAlive : MonoBehaviour
     {
         public static KeepThisAlive Instance { get; private set; }

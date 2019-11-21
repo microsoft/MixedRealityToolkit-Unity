@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     [System.Obsolete("This component is no longer supported", true)]
-    [AddComponentMenu("Scripts/MRTK/Examples/ToggleBoundingBox")]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/ToggleBoundingBox")]
     public class ToggleBoundingBox : MonoBehaviour
     {
         public BoundingBox boundingBox;
