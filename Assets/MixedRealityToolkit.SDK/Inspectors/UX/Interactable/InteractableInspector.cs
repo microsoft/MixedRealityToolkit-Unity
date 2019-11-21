@@ -35,17 +35,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected string[] inputActionOptions = null;
         protected string[] speechKeywordOptions = null;
 
-        private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions", "The input action filter");
-        private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "How the Interactable should react to input");
+        private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions");
+        private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "The selection mode of the Interactable is based on the number of dimensions available.");
         private static readonly GUIContent dimensionsLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
         private static readonly GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
-        private static readonly GUIContent CurrentDimensionLabel = new GUIContent("Dimension Index", "The dimensionIndex value at runtime.");
-        private static readonly GUIContent isToggledLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
+        private static readonly GUIContent isToggledLabel = new GUIContent("Is Toggled", "Should this Interactable be toggled on or off by default on start.");
         private static readonly GUIContent CreateThemeLabel = new GUIContent("Create and Assign New Theme", "Create a new theme");
-        private static readonly GUIContent AddThemePropertyLabel = new GUIContent("+ Add Theme Property", "Add Theme Property");
         private static readonly GUIContent SpeechComamndsLabel = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
         private static readonly GUIContent OnClickEventLabel = new GUIContent("OnClick", "Fired when this Interactable is triggered by a click.");
         private static readonly GUIContent AddEventReceiverLabel = new GUIContent("Add Event", "Add event receiver to this Interactable for special event handling.");
+        private static readonly GUIContent VoiceRequiresFocusLabel = new GUIContent("Requires Focus");
 
         protected virtual void OnEnable()
         {
@@ -265,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     statesProperty.objectReferenceValue = GetDefaultInteractableStatesFile();
                 }
 
-                EditorGUILayout.PropertyField(statesProperty, new GUIContent("States", "The States this Interactable is based on"));
+                EditorGUILayout.PropertyField(statesProperty, new GUIContent("States"));
 
                 if (statesProperty.objectReferenceValue == null)
                 {
@@ -274,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     return;
                 }
 
-                EditorGUILayout.PropertyField(enabledProperty, new GUIContent("Enabled", "Is this Interactable Enabled?"));
+                EditorGUILayout.PropertyField(enabledProperty, new GUIContent("Enabled"));
 
                 // Input Actions
                 bool validActionOptions = inputActionOptions != null;
@@ -286,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
+                    EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global"));
                 }
 
                 // Speech keywords
@@ -314,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
                         SerializedProperty requireGaze = serializedObject.FindProperty("voiceRequiresFocus");
-                        EditorGUILayout.PropertyField(requireGaze, new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"));
+                        EditorGUILayout.PropertyField(requireGaze, VoiceRequiresFocusLabel);
                     }
                 }
 

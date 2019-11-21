@@ -24,8 +24,8 @@ The input system has some of its own terminology that are worth defining:
 
 - **Pointer**
 
-    Controller use pointers to interact with game objects. For example, the near interaction pointer is 
-    responsible to detecting when the hand (which is a controller) is close to objects that advertise 
+    Controller use pointers to interact with game objects. For example, the near interaction pointer is
+    responsible to detecting when the hand (which is a controller) is close to objects that advertise
     themselves as supporting ‘near interaction’. Other examples for pointers are teleportation or far
     pointers (i.e. the shell hand ray pointer) that use far raycasts to engage with content that is
     longer than arms length from the user.
@@ -47,7 +47,7 @@ The input system has some of its own terminology that are worth defining:
 
     The component that updates which objects are in focus is the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs)
 
-- **Cursor** 
+- **Cursor**
 
     An entity associated with a pointer that gives additional visual cues around pointer interaction. For example,
     the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to
