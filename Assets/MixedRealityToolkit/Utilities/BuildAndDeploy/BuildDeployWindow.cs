@@ -1181,7 +1181,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Builds the open Unity project and its AppX for
         /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
         /// </summary>
-        public async void BuildAll(bool install = true)
+        public static async void BuildAll(bool install = true)
         {
             Debug.Assert(!isBuilding);
             isBuilding = true;
