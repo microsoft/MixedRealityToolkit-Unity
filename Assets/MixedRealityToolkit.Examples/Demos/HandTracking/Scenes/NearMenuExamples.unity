@@ -594,6 +594,11 @@ PrefabInstance:
       propertyPath: autoFollowAtDistance
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1879986855381370587, guid: d82e2f09994ad2f4fb43359bfb977f64,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e2f09994ad2f4fb43359bfb977f64, type: 3}
 --- !u!4 &431060260 stripped
@@ -1387,6 +1392,11 @@ PrefabInstance:
       propertyPath: autoFollowAtDistance
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1879986855381370587, guid: d82e2f09994ad2f4fb43359bfb977f64,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e2f09994ad2f4fb43359bfb977f64, type: 3}
 --- !u!4 &643418347 stripped
@@ -1848,6 +1858,21 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3896337419547188363, guid: 6dfc5f0a5fe04f94ab15177720f4bf05,
+        type: 3}
+      propertyPath: nodeList.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896337419547188363, guid: 6dfc5f0a5fe04f94ab15177720f4bf05,
+        type: 3}
+      propertyPath: columns
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896337419547188363, guid: 6dfc5f0a5fe04f94ab15177720f4bf05,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dfc5f0a5fe04f94ab15177720f4bf05, type: 3}
 --- !u!4 &1163245285 stripped
@@ -2246,6 +2271,41 @@ PrefabInstance:
       propertyPath: nodeList.Array.data[3].Transform
       value: 
       objectReference: {fileID: 1355694731}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: rows
+      value: -2147483648
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: columns
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467028391546711362, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5733978352390262511, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.048
+      objectReference: {fileID: 0}
+    - target: {fileID: 2565462927989821909, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987367190003920735, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972206229126697900, guid: 40b588bd40632eb41a0af374d91c4fc9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.048
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40b588bd40632eb41a0af374d91c4fc9, type: 3}
 --- !u!4 &1355694731 stripped
@@ -2461,6 +2521,16 @@ PrefabInstance:
     - target: {fileID: 4305907101023272046, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
       propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1713571739358940556, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6489359697116138686, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: assetVersion
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2879,6 +2949,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6789302152215437280, guid: e969038e4d67d9b498de2ef538969506,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e969038e4d67d9b498de2ef538969506, type: 3}
 --- !u!1001 &7522892761215568235
@@ -3012,6 +3087,11 @@ PrefabInstance:
         type: 3}
       propertyPath: columns
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486559457699078303, guid: 9a7c24f281a2c3d45a9b8befe608bf77,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7c24f281a2c3d45a9b8befe608bf77, type: 3}

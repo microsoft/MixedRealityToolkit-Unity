@@ -304,6 +304,11 @@ PrefabInstance:
       propertyPath: lockVertical
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7779420038862058148, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6478522880476602763, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: enableZoom
@@ -801,10 +806,30 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858272, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: hideElementsInInspector
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: debugText
+      value: 
+      objectReference: {fileID: 1029155711}
     - target: {fileID: 10361944725086399, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: lockHorizontal
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7779420038862058148, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6478522880476602763, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
@@ -831,21 +856,6 @@ PrefabInstance:
       propertyPath: lockHorizontal
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858272, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: hideElementsInInspector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779420039263858275, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: debugText
-      value: 
-      objectReference: {fileID: 1029155711}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
 --- !u!4 &283354342 stripped
@@ -1139,6 +1149,16 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7779420039263858272, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7779420038862058148, guid: 937ce507dd7ee334ba569554e24adbdd,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6478522880476602763, guid: 937ce507dd7ee334ba569554e24adbdd,
         type: 3}
       propertyPath: reticle
@@ -1154,11 +1174,6 @@ PrefabInstance:
       propertyPath: rightPoint
       value: 
       objectReference: {fileID: 870499135}
-    - target: {fileID: 7779420039263858272, guid: 937ce507dd7ee334ba569554e24adbdd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 937ce507dd7ee334ba569554e24adbdd, type: 3}
 --- !u!4 &355382937 stripped
@@ -1741,8 +1756,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Hand Interaction Pan & Zoom
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -2191,8 +2204,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: This example scene demonstrates the use of HandInteractionPanZoom script
     on the Slate prefab. Please take a look at 'ContentQuad' object to see various
     configuration options for the panning and zooming interactions.

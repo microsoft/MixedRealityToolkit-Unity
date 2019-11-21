@@ -2693,6 +2693,7 @@ MonoBehaviour:
   columns: 14
   cellWidth: 0.2
   cellHeight: 0.16
+  assetVersion: 1
 --- !u!4 &1552594808
 Transform:
   m_ObjectHideFlags: 0
