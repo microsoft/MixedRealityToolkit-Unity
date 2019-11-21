@@ -20,5 +20,5 @@ MonoBehaviour:
     componentName: Scene Transition Service
     priority: 10
     runtimePlatform: 15
-    configurationProfile: {fileID: 11400000, guid: 45c20fade71a3ec418860b757ff5a5ce,
+    configurationProfile: {fileID: 11400000, guid: 23872a85e06a8a54f9381e062152f891,
       type: 2}
