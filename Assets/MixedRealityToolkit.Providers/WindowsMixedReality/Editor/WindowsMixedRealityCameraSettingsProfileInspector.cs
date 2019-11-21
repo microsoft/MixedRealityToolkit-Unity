@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
         private SerializedProperty renderFromPVCameraForMixedRealityCapture;
 
-        private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Use PV Camera Rendering For MRC");
+        private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Use PV Camera Rendering for MRC");
 
         private const string MRCDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
 

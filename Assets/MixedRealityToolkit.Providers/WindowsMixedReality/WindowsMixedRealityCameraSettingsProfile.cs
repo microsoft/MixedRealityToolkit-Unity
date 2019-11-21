@@ -14,11 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     public class WindowsMixedRealityCameraSettingsProfile : BaseCameraSettingsProfile
     {
         [SerializeField]
-        [Tooltip("Whether to use PV camera rendering for Mixed Reality Capture on Windows.")]
+        [Tooltip("Whether to use photo/video camera rendering for Mixed Reality Capture on Windows.")]
         private bool renderFromPVCameraForMixedRealityCapture = true;
 
         /// <summary>
-        /// Whether to use PV camera rendering for Mixed Reality Capture on Windows.
+        /// Whether to use photo/video camera rendering for Mixed Reality Capture on Windows.
         /// </summary>
         /// <remarks>
         /// If true, the platform will provide an additional HolographicCamera to the app when the user takes a mixed reality capture photo or video.
