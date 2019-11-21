@@ -447,9 +447,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (assetVersion == 0)
             {
-                Debug.Log("Upgrade GridObjectCollection on " + GetUserFriendlyName() + " from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
+                string friendlyName = GetUserFriendlyName();
+
+                Debug.Log($"Upgrade GridObjectCollection on ${friendlyName} from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
                 // Migrate from version 0 to version 1
                 UpgradeAssetToVersion1();
+                assetVersion = 1;
             }
             assetVersion = CurrentAssetVersion;
         }
@@ -488,10 +491,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     // Try to guess what the desired columns would be
                     int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                    string objectName = GetUserFriendlyName();
-                    Debug.Log("[GridObjectCollection upgrade to version 1] on " + objectName +
-                        ". Setting columns to " + nodeListCount + "/ " + rows + " = " + columnsGuess
-                        + ". Check asset to make sure GridObjectCollection has the correct values.");
+                    string friendlyName = GetUserFriendlyName();
+                    Debug.Log($"[GridObjectCollection upgrade to version 1] on ${friendlyName}. Setting columns to ${nodeListCount} / rows = ${columnsGuess}. Check asset to make sure GridObjectCollection has the correct values.");
                     columns = columnsGuess;
                 }
             }
