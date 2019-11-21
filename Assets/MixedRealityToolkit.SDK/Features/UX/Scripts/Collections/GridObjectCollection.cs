@@ -449,7 +449,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 string friendlyName = GetUserFriendlyName();
 
-                Debug.Log($"Upgrade GridObjectCollection on ${friendlyName} from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
+                Debug.Log($"Upgrade GridObjectCollection on {friendlyName} from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
                 // Migrate from version 0 to version 1
                 UpgradeAssetToVersion1();
                 assetVersion = 1;
@@ -480,21 +480,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                 }
 
-                // If we have an old asset, then rows could be != default value, columns would be default value
-                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols
-                    // We actually want default # of columns
-                    && (nodeListCount <= rows * (columns - 1) || nodeListCount > rows * columns);
-                // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
-                // This will be okay unless the number of children exceeds rows * cols
-                bool upgradeScenarioB = rows == defaultValueRowsCols && columns == defaultValueRowsCols && nodeListCount > rows * columns;
-                if (upgradeScenarioA || upgradeScenarioB)
-                {
-                    // Try to guess what the desired columns would be
-                    int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                    string friendlyName = GetUserFriendlyName();
-                    Debug.Log($"[GridObjectCollection upgrade to version 1] on ${friendlyName}. Setting columns to ${nodeListCount} / rows = ${columnsGuess}. Check asset to make sure GridObjectCollection has the correct values.");
-                    columns = columnsGuess;
-                }
+                // Try to guess what the desired columns would be
+                int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
+                string friendlyName = GetUserFriendlyName();
+                Debug.Log($"Setting columns to {nodeListCount} / {rows} = {columnsGuess}. Check {friendlyName} to make sure GridObjectCollection has the correct values.");
+                columns = columnsGuess;
             }
         }
 
