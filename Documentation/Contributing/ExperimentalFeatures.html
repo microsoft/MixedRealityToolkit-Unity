@@ -83,7 +83,7 @@
 <h1 id="experimental-features">Experimental Features</h1>
 
 <p>Some features the MRTK team works on appear to have a lot of initial value even if we haven’t fully fleshed out the details. For these types of features, we want the community to get a chance to see them early. Because they are early in the cycle, we label them as experimental to indicate that they are still evolving, and subject to change over time.</p>
-<h3 id="what-to-expect-from-an-experimental-feature">What to expect from an experimental feature</h3>
+<h2 id="what-to-expect-from-an-experimental-feature">What to expect from an experimental feature</h2>
 <p>If a component is marked experimental you can expect the following:</p>
 <ul>
 <li>An example scene demonstrating usage, located under <code>MixedRealityToolkit.Examples\Experimental</code> sub-folder</li>
@@ -91,7 +91,7 @@
 <li>They probably don't have tests.</li>
 <li>Experimental features are subject to change.</li>
 </ul>
-<h1 id="experimental-feature-guidelines">Experimental feature guidelines</h1>
+<h2 id="experimental-feature-guidelines">Experimental feature guidelines</h2>
 <h3 id="experimental-code-should-live-in-a-separate-folder">Experimental code should live in a separate folder</h3>
 <p>Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:</p>
 <ul>
@@ -133,7 +133,7 @@ Any regressions you make to the MRTK core code would result in your pull request
 <h3 id="minimize-user-visible-flaws-in-experimental-features">Minimize user visible flaws in experimental features</h3>
 <p>Others will not use the experimental feature if it does not work, it will not graduate to a feature.</p>
 <p>Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.</p>
-<h1 id="graduating-experimental-code-into-mrtk-code">Graduating experimental code into MRTK code</h1>
+<h2 id="graduating-experimental-code-into-mrtk-code">Graduating experimental code into MRTK code</h2>
 <p>If a feature ends up seeing quite a lot of use, then we should graduate it into core MRTK code. To do this, the feature should have tests, documentation, and an example scene.</p>
 <p>When you are ready to graduate the feature MRTK, create an issue to check in your PR against. The PR should include all the things needed to make this a core feature: tests, documentation, and an example scene showing usage.</p>
 <p>Also, don’t forget to update the namespaces to remove the “Experimental” subspace.</p>

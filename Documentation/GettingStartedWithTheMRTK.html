@@ -117,22 +117,29 @@ when building for OpenVR.</p>
 <li>Under Assets, download
 <ul>
 <li><strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong></li>
-<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
-<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</li>
-<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</li>
+<li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
+<li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</li>
+<li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</li>
+<li>(<strong><em>Optional</em></strong>, <strong><em>Experimental</em></strong>) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</li>
 </ul>
 </li>
 </ol>
-<p>The Mixed Reality Toolkit is now available for download on NuGet.org, for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
+<p>For information on package contents, please see <a href="MRTK_PackageContents.html">MRTK Package Contents</a>.</p>
+<p>The Mixed Reality Toolkit is also available for download on NuGet.org, for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
 <h3 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h3>
 <ol>
 <li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
 <li>Import the <strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
-<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
-<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
-<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</strong> following the same steps as for the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.</li>
 </ol>
-<p>After importing the Foundation package, you may see a setup prompt like the following:</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, please see the <a href="CameraSystem/UnityArCameraSettings.html">UnityAR camera settings provider</a> article.</p>
+</div>
+<p>After importing the Foundation package, you may see a prompt similar to the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt="UnitySetupPrompt"></p>
 <p>MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:</p>
 <ul>
@@ -165,14 +172,14 @@ when building for OpenVR.</p>
 </ol>
 <p><img src="Images/MRTK_ConfigureScene.png" alt="Configure to scene"></p>
 <ol start="4">
-<li>You will see a prompt like this:</li>
+<li>In the Inspector, you will see a prompt like this:</li>
 </ol>
-<p><img src="Images/MRTK_ConfigureDialog.png" alt="MRTK Configure Dialog"></p>
+<p><img src="Images/MRTK_NoProfileMessage.png" alt="MRTK Configure Dialog"></p>
 <p>Click &quot;OK&quot;.</p>
 <ol start="5">
-<li>You will then be prompted to choose an MRTK Configuration profile. Double click &quot;DefaultMixedRealityToolkitConfigurationProfile&quot;.</li>
+<li>Select &quot;DefaultMixedRealityToolkitConfigurationProfile&quot; from the list.</li>
 </ol>
-<p><img src="Images/MRTK_SelectConfigurationDialog.png" alt="MRTK Select Configure Dialog"></p>
+<p><img src="Images/MRTK_SelectConfigurationProfile.png" alt="MRTK Select Configure Dialog"></p>
 <p>For more information on profiles, please see the <a href="Profiles/Profiles.html">profiles</a> article.</p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -192,7 +199,7 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 <p>While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the <strong>MixedRealityPlayspace</strong>) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
 </div>
 <ol start="6">
-<li>Hit play and test out hand simulation by pressing spacebar.</li>
+<li>Hit play and test out hand simulation by pressing the <strong>spacebar</strong>.</li>
 </ol>
 <p>You are now ready to build and deploy to device! Follow the steps instructions at <a href="BuildAndDeploy.html">Build and Deploy MRTK</a>.</p>
 <h3 id="getting-started-tutorials">Getting started tutorials</h3>
@@ -227,7 +234,7 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 </ul>
 <p>How to simulate hand input:</p>
 <ul>
-<li>Press and hold the <strong>space bar</strong> to enable the right hand.</li>
+<li>Press and hold the <strong>spacebar</strong> to enable the right hand.</li>
 <li>While holding the space bar, move your mouse to move the hand.</li>
 <li>Use the mouse <strong>scroll wheel</strong> to adjust the depth of the hand.</li>
 <li>Click the <strong>left mouse button</strong> to simulate pinch gesture.</li>

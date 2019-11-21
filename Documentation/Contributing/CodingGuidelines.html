@@ -217,7 +217,7 @@ protected virtual void FooBar() { }
 </code></pre>
 <h4 id="dont-4">Don't</h4>
 <pre><code class="lang-c#">private Foo() { // &lt;- Open bracket on same line
-    if (Bar==null) DoThing(); &lt;- if action on same line with no surrounding brackets 
+    if (Bar==null) DoThing(); &lt;- if action on same line with no surrounding brackets
     else DoTheOtherThing();
 }
 </code></pre>
@@ -234,7 +234,7 @@ protected virtual void FooBar() { }
     }
 }
 </code></pre>
-<h3 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files.</h3>
+<h3 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files</h3>
 <p>If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.</p>
 <h4 id="dont-5">Don't</h4>
 <pre><code class="lang-c#">public class MyClass
@@ -277,7 +277,7 @@ public struct MyStruct
 }
 </code></pre>
 <h3 id="initialize-enums">Initialize Enums</h3>
-<p>To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)</p>
+<p>To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)</p>
 <h4 id="dont-6">Don't</h4>
 <pre><code class="lang-c#">public enum Value
 {
@@ -308,8 +308,8 @@ public struct MyStruct
 </code></pre>
 <h4 id="do-7">Do</h4>
 <pre><code class="lang-c#">   /// &lt;summary&gt;
-   /// The SDKType lists the VR SDK's that are supported by the MRTK
-   /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+   /// The SDKType lists the VR SDKs that are supported by the MRTK
+   /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
    /// &lt;/summary&gt;
    public enum SDKType
    {
@@ -322,7 +322,7 @@ public struct MyStruct
        /// &lt;/summary&gt;
        Other,
        /// &lt;summary&gt;
-       /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
+       /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
        /// &lt;/summary&gt;
        WindowsMR,
        /// &lt;summary&gt;
@@ -399,7 +399,7 @@ public float MyValue
 <pre><code class="lang-c#">int length = items.length; // cache reference to list/array length
 for(int i=0; i &lt; length; i++)
 </code></pre>
-<h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible.</h3>
+<h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible</h3>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
 <h4 id="dont-10">Don't</h4>
 <pre><code class="lang-c#">void Update()
@@ -425,7 +425,7 @@ private void Update()
     myRenderer.Foo(Bar);
 }
 </code></pre>
-<h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time.</h3>
+<h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time</h3>
 <p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
 <h4 id="dont-11">Don't</h4>
 <pre><code class="lang-c#">public class MyClass

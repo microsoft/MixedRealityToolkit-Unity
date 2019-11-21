@@ -566,7 +566,7 @@ This allows for visual feedbacks and other typical UX responsiveness and behavio
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_VoiceCommand" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.VoiceCommand">VoiceCommand</h4>
-  <div class="markdown level1 summary"><p>A voice command to fire a click event</p>
+  <div class="markdown level1 summary"><p>This string keyword is the voice command that will fire a click on this Interactable.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1104,7 +1104,8 @@ Currently not controlled by Interactable directly</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_InputAction_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.InputAction*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_InputAction" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.InputAction">InputAction</h4>
-  <div class="markdown level1 summary"><p>Which action is this interactable listening for</p>
+  <div class="markdown level1 summary"><p>The Interactable will only respond to input down events fired with the corresponding assigned Input Action.
+Available input actions are populated via the Input Actions Profile under the MRTK Input System Profile assigned in the current scene</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1214,7 +1215,8 @@ When false, Interactable will continue to run in Unity but not respond to Input.
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal">IsGlobal</h4>
-  <div class="markdown level1 summary"><p>Is the interactable listening to global events (input only)</p>
+  <div class="markdown level1 summary"><p>If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks.
+If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1508,7 +1510,7 @@ public bool RequiresFocus { get; set; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_States_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.States*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_States" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.States">States</h4>
-  <div class="markdown level1 summary"><p>A collection of states and basic state logic</p>
+  <div class="markdown level1 summary"><p>ScriptableObject to reference for basic state logic to follow when interacting and transitioning between states. Should generally be &quot;DefaultInteractableStates&quot; object</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

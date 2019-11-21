@@ -187,8 +187,8 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>Similarly, when a filename, a path or a menu-entry is mentioned in text, prefer to make it italic to logically group it, without being distracting.</p>
 <p>In general, try to <strong>avoid unnecessary text highlighting</strong>. Special terms can be highlighted once to make the reader aware, do not repeat such highlighting throughout the text, when it serves no purpose anymore and only distracts.</p>
 <h3 id="mentioning-menu-entries">Mentioning menu entries</h3>
-<p>When mentioning a menu entry that a user should click, the current convention is:</p>
-<p><em>Project &gt; Files &gt; Create &gt; Leaf</em></p>
+<p>When mentioning a menu entry that a user should click, the current convention is:
+<em>Project &gt; Files &gt; Create &gt; Leaf</em></p>
 <h3 id="links">Links</h3>
 <p>Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in your page, and think about how annoying it would be, if the same page opens 20 times.</p>
 <p>Prefer links embedded in a sentence:</p>
@@ -236,56 +236,55 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>In addition to the above, the code should be well commented to allow for maintenance, bug fixes and ease of customization.</p>
 <h3 id="class-struct-enum-summary-blocks">Class, struct, enum summary blocks</h3>
 <p>If a class, struct or enum is being added to the MRTK, it's purpose must be described. This is to take the form of a summary block above the class.</p>
-<pre><code>    /// &lt;summary&gt;
-    /// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
-    /// &lt;/summary&gt;
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
+/// &lt;/summary&gt;
 </code></pre>
 <p>If there are any class level dependencies, they should be documented in a remarks block, immediately below the summary.</p>
-<pre><code>    /// &lt;remarks&gt;
-    /// Ensure that all sound emitting objects have an attached AudioInfluencerController. 
-    /// Failing to do so will result in the desired effect not being applied to the sound.
-    /// &lt;/remarks&gt;
+<pre><code class="lang-c#">/// &lt;remarks&gt;
+/// Ensure that all sound emitting objects have an attached AudioInfluencerController.
+/// Failing to do so will result in the desired effect not being applied to the sound.
+/// &lt;/remarks&gt;
 </code></pre>
-<p>Pull Requests submitted without summaries for classes, strutures or enums will not be approved.</p>
+<p>Pull Requests submitted without summaries for classes, structures or enums will not be approved.</p>
 <h3 id="property-method-event-summary-blocks">Property, method, event summary blocks</h3>
 <p>Properties, methods and events (PMEs) as well as fields are to be documented with summary blocks, regardless of code visibility (public, private, protected and internal). The documentation generation tool is responsible for filtering out and publishing only the public and protected features.</p>
 <p>NOTE: A summary block is <strong>not</strong> required for Unity methods (ex: Awake, Start, Update).</p>
 <p>PME documentation is <strong>required</strong> for a pull request to be approved.</p>
 <p>As part of a PME summary block, the meaning and purpose of parameters and returned data is required.</p>
-<pre><code>        /// &lt;summary&gt;
-        /// Sets the cached native cutoff frequency of the attached low pass filter.
-        /// &lt;/summary&gt;
-        /// &lt;param name=&quot;frequency&quot;&gt;The new low pass filter cutoff frequency.&lt;/param&gt;
-        /// &lt;returns&gt;The new cutoff frequency value.&lt;/returns&gt;
-
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// Sets the cached native cutoff frequency of the attached low pass filter.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;frequency&quot;&gt;The new low pass filter cutoff frequency.&lt;/param&gt;
+/// &lt;returns&gt;The new cutoff frequency value.&lt;/returns&gt;
 </code></pre>
 <h3 id="feature-introduction-version-and-dependencies">Feature introduction version and dependencies</h3>
 <p>As part of the API summary documentation, information regarding the MRTK version in which the feature was introduced and any dependencies should be documented in a remarks block.</p>
 <p>Dependencies should include extension and/or platform dependencies.</p>
-<pre><code>    /// &lt;remarks&gt;
-    /// Introduced in MRTK version: 2018.06.0
-    /// Minimum Unity version: 2018.0.0f1
-    /// Minimum Operating System: Windows 10.0.11111.0
-    /// Requires installation of: ImaginarySDK v2.1
-    /// &lt;/remarks&gt;
+<pre><code class="lang-c#">/// &lt;remarks&gt;
+/// Introduced in MRTK version: 2018.06.0
+/// Minimum Unity version: 2018.0.0f1
+/// Minimum Operating System: Windows 10.0.11111.0
+/// Requires installation of: ImaginarySDK v2.1
+/// &lt;/remarks&gt;
 </code></pre>
 <h3 id="serialized-fields">Serialized fields</h3>
 <p>It is a good practice to use Unity's tooltip attribute to provide runtime documentation for a script's fields in the inspector.</p>
 <p>So that configuration options are included in the API documentation, scripts are required to include <em>at least</em> the tooltip contents in a summary block.</p>
-<pre><code>        /// &lt;summary&gt;
-        /// The quality level of the simulated audio source (ex: AM radio).
-        /// &lt;/summary&gt;
-        [Tooltip(&quot;The quality level of the simulated audio source.&quot;)]
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// The quality level of the simulated audio source (ex: AM radio).
+/// &lt;/summary&gt;
+[Tooltip(&quot;The quality level of the simulated audio source.&quot;)]
 </code></pre>
 <h3 id="enumeration-values">Enumeration values</h3>
 <p>When defining and enumeration, code must also document the meaning of the enum values using a summary block. Remarks blocks can optionally be used to provide additional details to enhance understanding.</p>
-<pre><code>        /// &lt;summary&gt;
-        /// Full range of human hearing.
-        /// &lt;/summary&gt;
-        /// &lt;remarks&gt;
-        /// The frequency range used is a bit wider than that of human
-        /// hearing. It closely resembles the range used for audio CDs.
-        /// &lt;/remarks&gt;
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// Full range of human hearing.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// The frequency range used is a bit wider than that of human
+/// hearing. It closely resembles the range used for audio CDs.
+/// &lt;/remarks&gt;
 </code></pre>
 <h2 id="how-to-documentation">How-to documentation</h2>
 <p>Many users of the Mixed Reality Toolkit may not need to use the API documentation. These users will take advantage of our pre-made, reusable prefabs and scripts to create their experiences.</p>
@@ -305,14 +304,15 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <h2 id="performance-notes">Performance notes</h2>
 <p>Some important features come at a performance cost. Often this code will very depending how they are configured.</p>
 <p>For example:</p>
-<pre><code>When using the spatial mapping component, the performance impact will increase with the level of detail requested. It is recommended to use the least detail possible for your experience.
+<pre><code class="lang-md">When using the spatial mapping component, the performance impact will increase with the level of detail requested.  
+It is recommended to use the least detail possible for your experience.
 </code></pre>
 <p>Performance notes are recommended for CPU and/or GPU heavy components and <strong>may</strong> be requested as part of a pull request review. Any applicable performance notes are to be included in API <strong>and</strong> overview documentation.</p>
 <h2 id="breaking-changes">Breaking changes</h2>
 <p>Breaking changes documentation is to consist of a top level <a href="BreakingChanges.html">file</a> which links to each feature area's individual BreakingChanges.md.</p>
 <p>The feature area BreakingChanges.md files are to contain the list of all known breaking changes for a given release <strong>as well as</strong> the history of breaking changes from past releases.</p>
 <p>For example:</p>
-<pre><code>Spatial sound breaking changes
+<pre><code class="lang-md">Spatial sound breaking changes
 
 2018.07.2
 * Spatialization of the imaginary effect is now required.
@@ -335,6 +335,7 @@ No known breaking changes
 <li><p>Code Spell Checker - misspelled words will be underlined; right-click on a misspelled word to change it or save it to the dictionary.</p>
 </li>
 </ul>
+<p>Both of these come packaged in the Microsoft published Docs Authoring Pack.</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="DevDocGuide.html">Documentation portal generation guide</a></li>

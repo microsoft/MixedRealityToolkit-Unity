@@ -108,7 +108,7 @@
 <p><img src="../Images/Boundary/BoundarySelectSystemType.png" alt="Select the Boundary System Implementation"></p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>All Bounday System implementation must extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html"><code>IMixedRealityBoundarySystem</code></a></p>
+<p>All Boundary System implementation must extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html"><code>IMixedRealityBoundarySystem</code></a></p>
 </div>
 <h2 id="configure-boundary-visualization">Configure Boundary Visualization</h2>
 <p>The <a href="ConfiguringBoundaryVisualization.html">Boundary System uses a configuration profile</a> to specify which boundary components are to be displayed and to configure their appearance.</p>
@@ -124,7 +124,7 @@
 <p>Unity Play Mode enables in-editor visualization of the configured boundary. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running on the target hardware and platform.</p>
 </div>
 <h2 id="accessing-boundary-system-via-code">Accessing Boundary System via code</h2>
-<p>If enabled and configured, the Boundary System can be accessed via the CoreSerivces static helper class. The reference can then be used to dyanmically change the Boundary parameters and access related GameObjects managed by the system.</p>
+<p>If enabled and configured, the Boundary System can be accessed via the CoreServices static helper class. The reference can then be used to dynamically change the Boundary parameters and access related GameObjects managed by the system.</p>
 <pre><code class="lang-csharp">// Hide Boundary Walls at runtime
 CoreServices.BoundarySystem.ShowBoundaryWalls = false;
 
