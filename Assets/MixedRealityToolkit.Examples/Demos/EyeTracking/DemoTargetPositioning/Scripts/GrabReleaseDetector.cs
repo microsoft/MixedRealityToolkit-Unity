@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [System.Obsolete("This component is no longer supported", true)]
-    [AddComponentMenu("Scripts/MRTK/Examples/GrabReleaseDetector")]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/GrabReleaseDetector")]
     public class GrabReleaseDetector : MonoBehaviour, IMixedRealityPointerHandler
     {
         [SerializeField]
