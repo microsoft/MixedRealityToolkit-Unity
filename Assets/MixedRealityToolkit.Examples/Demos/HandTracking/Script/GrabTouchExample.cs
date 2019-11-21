@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Examples/GrabTouchExample")]
     public class GrabTouchExample : MonoBehaviour, IMixedRealityTouchHandler, IMixedRealityInputHandler
     {
         [SerializeField]

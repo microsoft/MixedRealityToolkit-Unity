@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/RadialView")]
     public class RadialView : Solver
     {
         [SerializeField]

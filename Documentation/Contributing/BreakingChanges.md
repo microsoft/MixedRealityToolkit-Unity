@@ -44,7 +44,7 @@ accrue significant customer or framework long term value.
 
 ## What to do about breaking changes
 
-If it is possible to accomplish something without a breaking change and without compromising the long term structure and viability of the feature, don't do the breaking change. If there is no other way, the current policy is to evaluate each individual breaking change, to understand if the benefit from taking the change outweighs the cost to the consumer of absorbing the change. Debate about what is worth doing and what isn't will generally take place on the PR or issue discussion itself. 
+If it is possible to accomplish something without a breaking change and without compromising the long term structure and viability of the feature, don't do the breaking change. If there is no other way, the current policy is to evaluate each individual breaking change, to understand if the benefit from taking the change outweighs the cost to the consumer of absorbing the change. Debate about what is worth doing and what isn't will generally take place on the PR or issue discussion itself.
 
 What can happen here falls into several buckets:
 

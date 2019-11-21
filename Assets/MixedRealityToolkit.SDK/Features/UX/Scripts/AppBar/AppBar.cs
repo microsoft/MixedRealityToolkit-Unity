@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Logic for the App Bar. Generates buttons, manages states.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/AppBar")]
     public class AppBar : MonoBehaviour
     {
         private const float backgroundBarMoveSpeed = 5;
@@ -372,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             //calculate best follow position for AppBar
             Vector3 finalPosition = Vector3.zero;
-            Vector3 headPosition = Camera.main.transform.position;
+            Vector3 headPosition = CameraCache.Main.transform.position;
             boundsPoints.Clear();
 
             helper.UpdateNonAABoundingBoxCornerPositions(boundingBox, boundsPoints);

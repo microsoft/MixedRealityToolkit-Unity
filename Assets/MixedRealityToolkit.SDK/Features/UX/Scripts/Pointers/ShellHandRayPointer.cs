@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [AddComponentMenu("Scripts/MRTK/SDK/ShellHandRayPointer")]
     public class ShellHandRayPointer : LinePointer
     {
         [SerializeField]

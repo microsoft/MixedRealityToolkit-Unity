@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///
     /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/SDK/PokePointer")]
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         /// <summary>
@@ -297,11 +298,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
-                        InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        CoreServices.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
+                        CoreServices.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
                     }
                 }
             }
@@ -319,12 +320,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
-                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
+                    CoreServices.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
                 }
 
                 currentTouchableObjectDown = null;
@@ -339,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                    CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
             }
         }

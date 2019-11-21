@@ -7,7 +7,7 @@ One of the great new features of Mixed Reality Toolkit v2 is improved componenti
 MRTK v2 was intentionally developed to be modular and to minimize dependencies between system services 
 (ex: spatial awareness).
 
-Due to the nature of some system services (ex: input and teleportation) a small number of dependencies exist.
+Due to the nature of some system services (ex: input and teleportation), a small number of dependencies exist.
 
 While it is expected that services will need one or more data provider components, there are no direct links 
 between them. The same is true for SDK features (ex: User Interface components).

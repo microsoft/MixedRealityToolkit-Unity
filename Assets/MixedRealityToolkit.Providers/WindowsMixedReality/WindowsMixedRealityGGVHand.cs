@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions { get; } = new[]
         {
-            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
     }
 }

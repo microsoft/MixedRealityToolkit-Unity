@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
-        private ReorderableList pointerOptionList;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
@@ -51,7 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input))
+            {
+                return;
+            }
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {

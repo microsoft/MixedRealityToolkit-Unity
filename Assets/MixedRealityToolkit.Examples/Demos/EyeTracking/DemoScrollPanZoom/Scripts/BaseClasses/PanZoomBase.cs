@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             {
                 if (eyeSaccadeProvider == null)
                 {
-                    IMixedRealityEyeGazeDataProvider eyeGazeProvider = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityEyeGazeDataProvider>();
+                    IMixedRealityEyeGazeDataProvider eyeGazeProvider = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityEyeGazeDataProvider>();
                     eyeSaccadeProvider = eyeGazeProvider?.SaccadeProvider;
                 }
                 return eyeSaccadeProvider;
@@ -139,23 +139,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
 
         #endregion
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         public abstract void Initialize();
         public abstract float ComputePanSpeed(float cursorPosInOneDir, float maxSpeed, float minDistFromCenterForAutoPan);
@@ -591,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            foreach (var pointer in InputSystem.GazeProvider.GazeInputSource.Pointers)
+            foreach (var pointer in CoreServices.InputSystem.GazeProvider.GazeInputSource.Pointers)
             {
                 pointer.IsFocusLocked = false;
             }

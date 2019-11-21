@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         private BaseSpatialAwarenessObserverProfile observerProfile;
 
         /// <summary>
-        /// 
+        /// Spatial Observer specific configuration profile.
         /// </summary>
         public BaseSpatialAwarenessObserverProfile ObserverProfile => observerProfile;
 

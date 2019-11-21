@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -10,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Touch Pointer Implementation.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/TouchPointer")]
     public class TouchPointer : BaseControllerPointer, IMixedRealityTouchPointer
     {
         private bool isInteractionEnabled = false;

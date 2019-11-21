@@ -16,12 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         [SerializeField]
         private float distortStrength = 1f;
 
-        private bool distortionEnabled;
-
-        public bool DistortionEnabled
-        {
-            get { return distortionEnabled; }
-        }
+        public bool DistortionEnabled { get; private set; }
 
         public float DistortStrength
         {
@@ -84,12 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         protected virtual void OnEnable()
         {
-            distortionEnabled = true;
+            DistortionEnabled = true;
         }
 
         protected virtual void OnDisable()
         {
-            distortionEnabled = false;
+            DistortionEnabled = false;
         }
 
         #endregion MonoBehaviour Implementation

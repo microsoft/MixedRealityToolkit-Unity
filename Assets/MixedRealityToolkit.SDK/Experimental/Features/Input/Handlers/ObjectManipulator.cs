@@ -570,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
                 MixedRealityPose pose = GetPointersPose();
-                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale);
+                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
                 constraints.ApplyTranslationConstraints(ref targetTransform);
             }
 
@@ -651,18 +651,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     break;
                 }
                 case RotateInOneHandType.RotateAboutObjectCenter:
+                case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;
                     TryGetGripRotation(pointer, out gripRotation);
                     targetTransform.Rotation = gripRotation * objectToGripRotation;
-                    break;
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    targetTransform.Rotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
             constraints.ApplyRotationConstraints(ref targetTransform);
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale);
+            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
             constraints.ApplyTranslationConstraints(ref targetTransform);
 
             ApplyTargetTransform(targetTransform);
@@ -680,6 +678,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     ManipulationSource = gameObject,
                     IsNearInteraction = isNearManipulation,
+                    Pointer = GetFirstPointer().pointer,
                     PointerCentroid = GetPointersGrabPoint(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
@@ -788,6 +787,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     OnHoverEntered.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = gameObject,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
@@ -800,6 +800,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     OnHoverExited.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = gameObject,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }

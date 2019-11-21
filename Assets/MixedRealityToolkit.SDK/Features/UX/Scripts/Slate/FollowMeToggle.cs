@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// This script also provides optional toggle at specified distance.
     /// </summary>
     [RequireComponent(typeof(RadialView))]
+    [AddComponentMenu("Scripts/MRTK/SDK/FollowMeToggle")]
     public class FollowMeToggle : MonoBehaviour
     {
         /// <summary>

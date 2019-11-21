@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorChildrenTheme()
         {
-            Types = new Type[] {  };
+            Types = Array.Empty<Type>();
             Name = "Color Children Theme";
         }
 

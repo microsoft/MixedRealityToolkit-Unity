@@ -82,10 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public KeyBinding MouseLookButton => mouseLookButton;
         [SerializeField]
-        [Tooltip("Toggle mouse look on with with the mouse look button, press escape to release")]
+        [Tooltip("Toggle mouse look on with the mouse look button, press escape to release")]
         private bool mouseLookToggle = false;
         /// <summary>
-        /// Toggle mouse look on with with the mouse look button, press escape to release
+        /// Toggle mouse look on with the mouse look button, press escape to release
         /// </summary>
         public bool MouseLookToggle => mouseLookToggle;
         [SerializeField]

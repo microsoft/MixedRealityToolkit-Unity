@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cube.transform.position = Vector3.forward;
 
             yield return null;
+            yield return null;
 
             Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
 

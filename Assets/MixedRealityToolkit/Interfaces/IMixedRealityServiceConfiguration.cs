@@ -18,12 +18,12 @@ namespace Microsoft.MixedReality.Toolkit
         SystemType ComponentType { get; }
 
         /// <summary>
-        /// The simple, human readable name for the system, feature, or manager.
+        /// The name of the system, feature or manager.
         /// </summary>
         string ComponentName { get; }
 
         /// <summary>
-        /// The priority this system, feature, or manager will be initialized in.
+        /// The priority this system, feature or manager will be initialized in.
         /// </summary>
         uint Priority { get; }
 

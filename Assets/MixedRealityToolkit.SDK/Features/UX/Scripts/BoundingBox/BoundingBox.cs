@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox")]
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -1464,6 +1465,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
+                cornerbounds.center = new Vector3(
+                    (i & (1 << 0)) == 0 ? cornerbounds.center.x : -cornerbounds.center.x,
+                    (i & (1 << 1)) == 0 ? -cornerbounds.center.y : cornerbounds.center.y,
+                    (i & (1 << 2)) == 0 ? -cornerbounds.center.z : cornerbounds.center.z
+                    );
+
                 // we need to multiply by this amount to get to desired scale handle size
                 var invScale = scaleHandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
@@ -1591,8 +1598,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
+                
+                Bounds bounds = new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale);
+                if (edgeAxes[i] == CardinalAxisType.X)
+                {
+                    bounds.size = new Vector3(bounds.size.y, bounds.size.x, bounds.size.z);
+                }
+                else if (edgeAxes[i] == CardinalAxisType.Z)
+                {
+                    bounds.size = new Vector3(bounds.size.x, bounds.size.z, bounds.size.y);
+                }
 
-                AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
+                AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
 
                 balls.Add(midpoint.transform);
 

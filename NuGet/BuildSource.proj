@@ -10,9 +10,27 @@
     </MSBuild>
   </Target>
 
+  <Target Name="BuildWSAEditor">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=InEditor;Platform=WSA;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildWSAEditorOutputs" /><!--AssembliesBuiltByChildProjects-->
+    </MSBuild>
+  </Target>
+
   <Target Name="BuildStandalonePlayer">
     <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WindowsStandalone32;BuildProjectReferences=false">
       <Output TaskParameter="TargetOutputs" ItemName="BuildStandalonePlayerOutputs" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="BuildAndroidPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=Android;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildAndroidPlayerOutputs" />
+    </MSBuild>
+  </Target>
+  
+  <Target Name="BuildIOSPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=IOS;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildIOSPlayerOutputs" />
     </MSBuild>
   </Target>
 
