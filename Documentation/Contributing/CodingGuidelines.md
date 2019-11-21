@@ -1,4 +1,5 @@
 # Coding guidelines
+
 This document outlines coding principles and conventions to follow when contributing to MRTK.
 
 ---
@@ -6,6 +7,7 @@ This document outlines coding principles and conventions to follow when contribu
 ## Philosophy
 
 ### Be concise and strive for simplicity
+
 The simplest solution is often the best. This is an overriding aim of these guidelines and should be the goal of all coding activity. Part of being simple is being concise, and consistent with existing code. Try to keep your code simple.
 
 Readers should only encounter artifacts that provide useful information. For example, comments that restate what is obvious provide no extra information and increase the noise to signal ratio.
@@ -13,6 +15,7 @@ Readers should only encounter artifacts that provide useful information. For exa
 Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.
 
 ### Produce consistent, readable code
+
 Code readability is correlated with low defect rates. Strive to create code that is easy to read. Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.
 
 All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.
@@ -21,7 +24,7 @@ All details of the code you produce matter, from the most basic detail of correc
 
 MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.
 
-All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime. 
+All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.
 
 ### Play-In-Editor is your first and primary target platform
 
@@ -35,7 +38,8 @@ Every time you add a public method, field, property, it becomes part of MRTK’s
 
 New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.
 
-### Prioritize writing tests 
+### Prioritize writing tests
+
 MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build?definitionId=16) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
@@ -204,7 +208,7 @@ private Foo()
 
 ```c#
 private Foo() { // <- Open bracket on same line
-    if (Bar==null) DoThing(); <- if action on same line with no surrounding brackets 
+    if (Bar==null) DoThing(); <- if action on same line with no surrounding brackets
     else DoTheOtherThing();
 }
 ```
@@ -225,7 +229,7 @@ private Foo()
 }
 ```
 
-### Public classes, structs, and enums should all go in their own files.
+### Public classes, structs, and enums should all go in their own files
 
 If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
@@ -287,7 +291,7 @@ public class MyClass
 
 ### Initialize Enums
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
+To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
 #### Don't
 
@@ -332,8 +336,8 @@ public enum SDKType
 
  ```c#
     /// <summary>
-    /// The SDKType lists the VR SDK's that are supported by the MRTK
-    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// The SDKType lists the VR SDKs that are supported by the MRTK
+    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
     /// </summary>
     public enum SDKType
     {
@@ -346,7 +350,7 @@ public enum SDKType
         /// </summary>
         Other,
         /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
+        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
         /// </summary>
         WindowsMR,
         /// <summary>
@@ -445,7 +449,7 @@ int length = items.length; // cache reference to list/array length
 for(int i=0; i < length; i++)
  ```
 
-### Cache values and serialize them in the scene/prefab whenever possible.
+### Cache values and serialize them in the scene/prefab whenever possible
 
 With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.
 
@@ -479,7 +483,7 @@ private void Update()
 }
  ```
 
-### Cache references to materials, do not call the ".material" each time.
+### Cache references to materials, do not call the ".material" each time
 
 Unity will create a new material each time you use ".material", which will cause a memory leak if not cleaned up properly.
 
@@ -520,6 +524,7 @@ public class MyClass
     }
 }
  ```
+
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
 
@@ -546,6 +551,6 @@ DateTime.UtcNow is faster than DateTime.Now. In previous performance investigati
 
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
 
-
 ## See also
+
  [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
