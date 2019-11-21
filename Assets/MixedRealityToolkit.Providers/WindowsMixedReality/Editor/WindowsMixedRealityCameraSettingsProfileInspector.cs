@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 
         private SerializedProperty renderFromPVCameraForMixedRealityCapture;
 
-        private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Use PV Camera Rendering for MRC");
+        private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
 
         private const string MRCDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
 
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                 serializedObject.Update();
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("MRC Settings", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
