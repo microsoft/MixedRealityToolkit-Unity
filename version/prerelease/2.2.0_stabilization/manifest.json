@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/UnityArCameraSettings.html",
-          "hash": "Idp0sfK7OekWOeoUPHDhoA=="
+          "hash": "ILDyrKwlf7C3OWVmP9xHxw=="
         }
       },
       "is_incremental": false,
@@ -570,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/WindowsMixedRealityCameraSettings.html",
-          "hash": "OVxHorHsBj82xv02IxZYMg=="
+          "hash": "4rRuaQQgt/oc2mgaTSqAMA=="
         }
       },
       "is_incremental": false,
@@ -1776,6 +1776,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CameraSystem/UnityArSettingsConfiguration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/WMRCameraSettingsProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/WMRCameraSettingsProfile.png"
         }
       },
       "is_incremental": false,
@@ -14265,7 +14276,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.html",
-          "hash": "8RYGW5yyBcWGBPLlyhL29w=="
+          "hash": "mksTJAbmLQ9PQvOYtZP+UA=="
         }
       },
       "is_incremental": false,
@@ -23741,6 +23752,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.WindowsMixedRealityCameraSettingsProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.WindowsMixedRealityCameraSettingsProfileInspector.html",
+          "hash": "TBN0yx/qiqKfqFP3gSwhRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.html",
+          "hash": "i3oMBrC0tLZs5Y5ELTJR8w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.BaseWindowsMixedRealitySource.yml",
       "output": {
         ".html": {
@@ -23865,7 +23900,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html",
-          "hash": "BchsGrswlzNdTb5zF2XJcA=="
+          "hash": "mfe8UgBBY6PoGHABLSBbAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettingsProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettingsProfile.html",
+          "hash": "JBeVKUJUiG0DIAQ90dyV5g=="
         }
       },
       "is_incremental": false,
@@ -23877,7 +23924,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.html",
-          "hash": "Bzta2Rqknm99OjPcvYWB6g=="
+          "hash": "RwJUANzebfVnNSZvK/UIxw=="
         }
       },
       "is_incremental": false,
@@ -23901,7 +23948,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "U6fKB01X9lXHAxUUWizcMA=="
+          "hash": "L9Op2U/k2dDul+hxN61SMQ=="
         }
       },
       "is_incremental": false,
@@ -23969,7 +24016,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1419,
+          "total_file_count": 1422,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
