@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "6oYVNzppV3E/b1tmLRONEA=="
+          "hash": "7W/pLiAfi+IyhzMub0kYag=="
         }
       },
       "is_incremental": false,
@@ -3763,6 +3763,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_GalaxyExplorer.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_GalaxyExplorer.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_APIReference.png",
       "output": {
         "resource": {
@@ -6839,7 +6850,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "po92ia2SuguKA3xZE0iPCw=="
+          "hash": "DbiCfn8CqnOa/cvPVtSjXw=="
         }
       },
       "is_incremental": false,
@@ -23949,16 +23960,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 141,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1419,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 141,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
