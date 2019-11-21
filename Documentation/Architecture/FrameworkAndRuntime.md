@@ -25,6 +25,7 @@ some of the background and motivation behind this approach. MRTK has a single
 object that manages life and runtime of its services.
 
 This entity ensures that:
+
 - when the game starts, discovery and initialization of services happens in a pre-defined order.
 - it provides a mechanism for services to register themselves (i.e. “I support this service!”) and for other
   callers to get a hold of those services.

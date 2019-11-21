@@ -1,12 +1,14 @@
 - name: Getting Started with MRTK
   href: GettingStartedWithTheMRTK.md
   items:
-  - name: Upgrading from HTK
-    href: HTKToMRTKPortingGuide.md
-  - name: Updating from earlier versions
-    href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md
+  - name: MRTK Package Contents
+    href: MRTK_PackageContents.md
+  - name: Updating from earlier versions
+    href: Updating.md
+  - name: Upgrading from HTK
+    href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
   - name: Performance

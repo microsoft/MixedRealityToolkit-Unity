@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         #endregion IMixedRealityEventSource Implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialAwarenessObserver Implementation
 
         /// <inheritdoc />
         public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
@@ -137,6 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public virtual void ClearObservations() { }
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialAwarenessObserver Implementation
     }
 }
