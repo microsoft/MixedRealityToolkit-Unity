@@ -18,9 +18,9 @@ The following process has been drafted to ensure all new work complies to the up
 
 ### New Proposal
 
- Start by opening a new Proposal or Task describing the feature or the problem you want to solve. Describe the approach and how it fits into the version of the Mixed Reality Toolkit you're targeting. This will enable everyone have a discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.
+Start by opening a new Proposal or Task describing the feature or the problem you want to solve. Describe the approach and how it fits into the version of the Mixed Reality Toolkit you're targeting. This will enable everyone have a discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.
 
- New Proposals will be reviewed and discussed during our weekly ship room meetings and if a proposal is accepted, supplemental tasks will then be created and assigned.
+New Proposals will be reviewed and discussed during our weekly ship room meetings and if a proposal is accepted, supplemental tasks will then be created and assigned.
 
 ### Architecture Draft
 
@@ -80,33 +80,32 @@ Most feature implementations can be broken down into 3 main parts:
 
 ### Manager Implementation Requirements
 
-* Assembly Definitions for code outside of the `MixedRealityToolkit/_Core` folder.
+* Assembly Definitions for code outside of the `MixedRealityToolkit` folder.
   * This ensures features are self-contained and have no dependencies to other features.
-  * This only applies to `MixedRealityToolkit` folder.
-* Be defined using an interface found in `MixedRealityToolkit/_Core/definitions/<FeatureName>System`.
+* Be defined using an interface found in `MixedRealityToolkit/Definitions/<FeatureName>System`.
 * A feature's concrete manager implementation should inherit directly from `BaseManager` or `MixedRealityEventManager` if they will raise events.
-* A feature's concrete manager implementation should setup and verify scene is ready for that system to use in `Initialize`.
+* A feature's concrete manager implementation should setup and verify that the scene is ready for that system to use in `Initialize`.
 * A feature's concrete manager should also clean up after themselves removing anything created in the scene in `Destroy`.
 * Be registered with the Mixed Reality Manager.
-  * If the feature is a core feature, this should be hard coded into the `MixedRealityManager` and added to the `MixedRealityConfigurationProfile`.
+  * If the feature is a core feature, this should be hard coded into the `MixedRealityToolkit` and `CoreServices` and added to the `MixedRealityConfigurationProfile`.
     * This includes being able to specify a concrete implementation via dropdown using `SystemType`.
     * Features should have a configuration profile that derives from a scriptable object.
-    * A default configuration profile located in `MixedRealityToolkit-SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
-  * If this feature is **not** a core feature, then it must be registered using the component configuration profile and implement `IMixedRealityComponent`.
-* Have a default implementation located in `MixedRealityToolkit-SDK/Features/<FeatureName>`
+    * A default configuration profile located in `MixedRealityToolkit.SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
+  * If this feature is **not** a core feature, then it must be registered using the extension service configuration profile and implement `IMixedRealityExtensionService`.
+* Have a default implementation located in `MixedRealityToolkit.Services/<FeatureName>`
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
 ### Event Data Implementation Requirements
 
 The Event Data defines exactly what data the handler is expected to receive from the event.
 
-* All Event Datum for the feature should be defined in `MixedRealityToolkit/_Core/EventDatum/<FeatureName>`.
+* All Event Datum for the feature should be defined in `MixedRealityToolkit/EventDatum/<FeatureName>`.
 * All new Event Data classes should inherit from `GenericBaseEventData`
 
 ### Handler Implementation Requirements
 
 The Handler Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.
 
-* Handler interfaces should be defined in `MixedRealityToolkit/_Core/Interfaces/<FeatureName>System/Handlers`.
+* Handler interfaces should be defined in `MixedRealityToolkit/Interfaces/<FeatureName>System/Handlers`.
 * Handler interfaces should inherit from `UnityEngine.EventSystems.IEventSystemHandler`
 * Opt-in by default. To receive events from the system, the handler will need to register itself with the system to receive those events.
