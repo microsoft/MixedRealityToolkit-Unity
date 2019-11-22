@@ -19,8 +19,8 @@ If checked, the default progress indicator prefab will be used when no progress 
 If checked, the transition service will apply a fade during your transition. This setting can be changed at runtime via the service's `UseFadeColor` property.
 
 ### Fade Color
-Controls the color of the fade effect. Alpha is ingored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
 
+Controls the color of the fade effect. Alpha is ignored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
 
 ### Fade Targets
 

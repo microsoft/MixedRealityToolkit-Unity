@@ -25,7 +25,7 @@ Input simulation is an optional [Mixed Reality service](../MixedRealityServices.
 
 Enable the input simulation tools window from the  _Mixed Reality Toolkit > Utilities > Input Simulation_ menu. This window provides access to the state of input simulation during play mode.
 
-## Viewport Butttons
+## Viewport Buttons
 
 A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [input simulation tools window](#input-simulation-tools-window).
 
