@@ -9,9 +9,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #if WINDOWS_UWP
+using Windows.Foundation.Metadata;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
+#elif UNITY_WSA && DOTNETWINRT_PRESENT
+using Microsoft.Windows.Foundation.Metadata;
+using Microsoft.Windows.Perception;
+using Microsoft.Windows.Perception.People;
+using Microsoft.Windows.UI.Input.Spatial;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -37,9 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
+
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            eyesApiAvailable = ApiInformation.IsPropertyPresent("SpatialPointerPose", "Eyes");
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 
         /// <summary>
@@ -71,23 +81,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public event Action OnSaccade;
         public event Action OnSaccadeX;
         public event Action OnSaccadeY;
+        private readonly bool eyesApiAvailable = false;
 
-#if WINDOWS_UWP
-
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         private static bool askedForETAccessAlready = false; // To make sure that this is only triggered once.
-
-#endif // WINDOWS_UWP
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         #region IMixedRealityCapabilityCheck Implementation
-        
+
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
-#if WINDOWS_UWP
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
-#endif // WINDOWS_UWP
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             }
 
             return false;
@@ -104,9 +113,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     this.GetType());
 #endif
 
-            if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            if (Application.isPlaying && eyesApiAvailable)
             {
-#if WINDOWS_UWP
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 AskForETPermission();
 #endif
                 ReadProfile();
@@ -116,8 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc />
         public override void Update()
         {
-#if WINDOWS_UWP
-            if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !eyesApiAvailable)
             {
                 return;
             }
@@ -130,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
 
-                    if(eyes.Gaze.HasValue)
+                    if (eyes.Gaze.HasValue)
                     {
                         Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
 
@@ -143,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                 }
             }
-#endif // WINDOWS_UWP
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 
         private void ReadProfile()
@@ -164,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             SmoothEyeTracking = profile.SmoothEyeTracking;
         }
 
-#if WINDOWS_UWP
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         /// <summary>
         /// Triggers a prompt to let the user decide whether to permit using eye tracking 
         /// </summary>
@@ -176,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 await EyesPose.RequestAccessAsync();
             }
         }
-#endif // WINDOWS_UWP
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         private Ray SmoothGaze(Ray? newGaze)
         {
