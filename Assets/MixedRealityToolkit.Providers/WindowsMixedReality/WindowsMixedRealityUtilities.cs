@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-#if NETFX_CORE
 using System;
-#endif // NETFX_CORE
 using UnityEngine.XR.WSA;
 #if WINDOWS_UWP
 using System.Runtime.InteropServices;
@@ -22,8 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if NETFX_CORE
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
         private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
-
-        public static SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
 
         /// <summary>
         /// Helps marshal WinRT IInspectable objects that have been passed to managed code as an IntPtr.
@@ -47,22 +43,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
             }
         }
-#elif WINDOWS_UWP
-        public static SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
-#elif DOTNETWINRT_PRESENT
+#endif //NETFX_CORE
+
+        /// <summary>
+        /// Access the underlying native spatial coordinate system.
+        /// </summary>
+        /// <remarks>
+        /// Changing the state of the native objects received via this API may cause unpredictable
+        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// </remarks>
         public static SpatialCoordinateSystem SpatialCoordinateSystem
         {
             get
             {
+#if NETFX_CORE
+                return spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
+#elif WINDOWS_UWP
+                return spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
+#elif DOTNETWINRT_PRESENT
                 var spatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
-                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != System.IntPtr.Zero)
+                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != IntPtr.Zero)
                 {
                     spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
                 }
                 return spatialCoordinateSystem;
+#endif
             }
         }
-#endif
+
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
