@@ -209,7 +209,7 @@
 {
     private void OnEnable()
     {
-        // Instruct Input System that we would like to receive all input events of type 
+        // Instruct Input System that we would like to receive all input events of type
         // IMixedRealitySourceStateHandler and IMixedRealityHandJointHandler
         CoreServices.InputSystem?.RegisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
         CoreServices.InputSystem?.RegisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);

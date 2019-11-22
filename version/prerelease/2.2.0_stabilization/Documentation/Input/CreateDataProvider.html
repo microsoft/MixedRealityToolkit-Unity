@@ -106,7 +106,7 @@ located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolk
 </ul>
 <p>For example, an input data provider created by the Contoso company may be &quot;Contoso.MixedReality.Toolkit.Input&quot;.</p>
 <h3 id="recommended-folder-structure">Recommended folder structure</h3>
-<p>It is recommended that the source code for data providers be layed out in a folder heirarchy as shown in the following image.</p>
+<p>It is recommended that the source code for data providers be layed out in a folder hierarchy as shown in the following image.</p>
 <p><img src="../Images/Input/ExampleProviderFolderStructure.png" alt="Example folder structure"></p>
 <p>Where ContosoInput contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code), the Textures folder
 contains images of the supported controllers, and Profiles contains one or more pre-made profiles.</p>
@@ -117,15 +117,15 @@ contains images of the supported controllers, and Profiles contains one or more 
 <h2 id="implement-the-data-provider">Implement the data provider</h2>
 <h3 id="specify-interface-andor-base-class-inheritance">Specify interface and/or base class inheritance</h3>
 <p>All input system data providers must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html"><code>IMixedRealityInputDeviceManager</code></a>
-interface, which specifies the minimium functionality required by the input system. The MRTK foundation includes the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html"><code>BaseInputDeviceManager</code></a>
+interface, which specifies the minimum functionality required by the input system. The MRTK foundation includes the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html"><code>BaseInputDeviceManager</code></a>
 class which provides a default implementation of this required functionality. For devices that build upon Unity's UInput class, the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.html"><code>UnityJoystickManager</code></a>
 class can be used as a base class.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>The <code>BaseInputDeviceManager</code> and <code>UnityJoystickManager</code> classes provide the required <code>IMixedRealityInputDeviceManager</code> implementation.</p>
 </div>
-<pre><code class="lang-c#">public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+<pre><code class="lang-c#">public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 </code></pre>
@@ -140,8 +140,8 @@ attribute to the class. This step enables setting the default profile and platfo
     typeof(IMixedRealityInputSystem),
     SupportedPlatforms.WindowsUniversal,
     &quot;Windows Mixed Reality Device Manager&quot;)]
-public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 </code></pre>
@@ -150,7 +150,7 @@ public class WindowsMixedRealityDeviceManager :
 interface.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>The <code>BaseInputDevicemManager</code> class, via the <code>BaseService</code> class, provides only empty implementations for <code>IMixedRealityDataProvider</code> methods. The details of these methods are generally data provider specific.</p>
+<p>The <code>BaseInputDeviceManager</code> class, via the <code>BaseService</code> class, provides only empty implementations for <code>IMixedRealityDataProvider</code> methods. The details of these methods are generally data provider specific.</p>
 </div>
 <p>The methods that should be implemented by the data provider are:</p>
 <ul>
@@ -178,7 +178,7 @@ interface.</p>
 <p>Not all device managers will support multiple controller types.</p>
 </div>
 <h4 id="apply-the-mixedrealitycontroller-attribute">Apply the MixedRealityController attribute</h4>
-<p>Next, apply the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute.html"><code>MixedRealityController</code></a> attribute to the class. This attribute speficies the type of controller
+<p>Next, apply the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute.html"><code>MixedRealityController</code></a> attribute to the class. This attribute specifies the type of controller
 (ex: articulated hand), the handedness (ex: left or right) and an optional controller image.</p>
 <pre><code class="lang-c#">[MixedRealityController(
     SupportedControllerType.WindowsMixedReality,

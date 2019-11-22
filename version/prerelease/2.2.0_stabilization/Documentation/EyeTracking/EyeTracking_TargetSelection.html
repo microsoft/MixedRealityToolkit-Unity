@@ -80,9 +80,9 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="eye-supported-target-selection">Eye-supported target selection</h1>
 
 <p><img src="../Images/EyeTracking/mrtk_et_targetselect.png" alt="MRTK"></p>
-<h1 id="eye-supported-target-selection">Eye-supported target selection</h1>
 <p>This page discusses different options for accessing eye gaze data and eye gaze specific events to select targets in MRTK. Eye tracking allows for fast and effortless target selections using a combination of information about what a user is looking at with additional inputs such as <em>hand tracking</em> and <em>voice commands</em>:</p>
 <ul>
 <li>Look &amp; Say <em>&quot;Select&quot;</em> (default voice command)</li>
@@ -123,19 +123,19 @@ In your app, a user can use far hand rays to manipulate some holographic mechani
 <h3 id="focusing-on-a-hologram">Focusing on a hologram</h3>
 <p>To detect when a hologram is focused, use the <em>'IMixedRealityFocusHandler'</em> interface that provides you with two interface members: <em>OnFocusEnter</em> and <em>OnFocusExit</em>.</p>
 <p>Here is a simple example from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap.html">ColorTap.cs</a> to change a hologram's color when being looked at.</p>
-<pre><code class="lang-csharp">    public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
+<pre><code class="lang-csharp">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
+{
+    void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
     {
-        void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-            material.color = color_OnHover;
-        }
-
-        void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
-        {
-            material.color = color_IdleState;
-        }
-        ...
+        material.color = color_OnHover;
     }
+
+    void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
+    {
+        material.color = color_IdleState;
+    }
+    ...
+}
 </code></pre>
 <h3 id="selecting-a-focused-hologram">Selecting a focused hologram</h3>
 <p>To select a focused hologram, use <em>PointerHandler</em> to listen for input events to confirm a selection.
@@ -144,31 +144,31 @@ The <em>IMixedRealityPointerHandler</em> interface requires implementing the fol
 <em>OnPointerUp</em>, <em>OnPointerDown</em>, and <em>OnPointerClicked</em>.</p>
 <p>In the example below, we change the color of a hologram by looking at it and pinching or saying &quot;select&quot;.
 The required action to trigger the event is defined by <code>eventData.MixedRealityInputAction == selectAction</code> whereby we can set the type of <code>selectAction</code> in the Unity Editor - by default it's the &quot;Select&quot; action. The types of available <a href="../Input/InputActions.html">MixedRealityInputActions</a> can be configured in the MRTK Profile via <em>MRTK Configuration Profile</em> -&gt; <em>Input</em> -&gt; <em>Input Actions</em>.</p>
-<pre><code class="lang-csharp">   public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+<pre><code class="lang-csharp">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+{
+    // Allow for editing the type of select action in the Unity Editor.
+    [SerializeField]
+    private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
+    ...
+
+    void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
     {
-        // Allow for editing the type of select action in the Unity Editor.
-        [SerializeField]
-        private MixedRealityInputAction selectAction = MixedRealityInputAction.None; 
-        ...
-
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        if (eventData.MixedRealityInputAction == selectAction)
         {
-            if (eventData.MixedRealityInputAction == selectAction)
-            {
-                material.color = color_OnHover;
-            }
+            material.color = color_OnHover;
         }
-
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-            if (eventData.MixedRealityInputAction == selectAction)
-            {
-                material.color = color_OnSelect;
-            }
-        }
-
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
     }
+
+    void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+    {
+        if (eventData.MixedRealityInputAction == selectAction)
+        {
+            material.color = color_OnSelect;
+        }
+    }
+
+    void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
+}
 </code></pre>
 <h3 id="eye-gaze-specific-baseeyefocushandler">Eye-gaze-specific BaseEyeFocusHandler</h3>
 <p>Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is <em>eye gaze</em> and it is currently the primary input pointer.
@@ -181,30 +181,30 @@ If the right side is looked at, then that part will slowly move to the front.
 This is a behavior that you may not want to have active at all times and also something that you may not want to accidentally trigger by a hand ray or head gaze.
 Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze.html"><code>OnLookAtRotateByEyeGaze</code></a>
 attached, a GameObject will rotate while being looked at.</p>
-<pre><code class="lang-csharp">    public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
+<pre><code class="lang-csharp">public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
+{
+    ...
+
+    protected override void OnEyeFocusStay()
     {
-        ...
-        
-        protected override void OnEyeFocusStay()
-        {
-            // Update target rotation
-            RotateHitTarget();
-        }
-        
-        ...
-        
-        ///
-        /// This function computes the rotation of the target to move the currently 
-        /// looked at aspect slowly to the front. 
-        ///
-        private void RotateHitTarget()
-        {
-            // Example for querying the hit position of the eye gaze ray using EyeGazeProvider
-            Vector3 TargetToHit = (this.gameObject.transform.position - InputSystem.EyeGazeProvider.HitPosition).normalized;
-                       
-            ...
-        }
+        // Update target rotation
+        RotateHitTarget();
     }
+
+    ...
+
+    ///
+    /// This function computes the rotation of the target to move the currently
+    /// looked at aspect slowly to the front.
+    ///
+    private void RotateHitTarget()
+    {
+        // Example for querying the hit position of the eye gaze ray using EyeGazeProvider
+        Vector3 TargetToHit = (this.gameObject.transform.position - InputSystem.EyeGazeProvider.HitPosition).normalized;
+
+        ...
+    }
+}
 </code></pre>
 <p>Check the API documentation for a complete list of available events of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler.html"><code>BaseEyeFocusHandler</code></a>:</p>
 <ul>
@@ -338,13 +338,11 @@ This means that the user can simply raise their hand and pinch their thumb and i
 <p><img src="../Images/EyeTracking/mrtk_et_voicecmdsample.jpg" alt="Voice commands EyeTrackingTarget sample"></p>
 <p>When a gem is selected it will explode, making a sound and disappear. This is handled by the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect.html"><code>HitBehaviorDestroyOnSelect</code></a> script. You have two options:</p>
 <ul>
-<li><p><strong>In the Unity Editor:</strong>
-You could simply link the script that is attached to each of our gem templates to the OnSelected() Unity event in the Unity Editor.</p>
-</li>
-<li><p><strong>In code:</strong>
+<li><strong>In the Unity Editor:</strong>
+You could simply link the script that is attached to each of our gem templates to the OnSelected() Unity event in the Unity Editor.</li>
+<li><strong>In code:</strong>
 If you don't want to drag and drop GameObjects around, you can also simply add a event listener directly to your script.<br>
-Here's an example from how we did it in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect.html"><code>HitBehaviorDestroyOnSelect</code></a> script:</p>
-</li>
+Here's an example from how we did it in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect.html"><code>HitBehaviorDestroyOnSelect</code></a> script:</li>
 </ul>
 <pre><code class="lang-csharp">/// &lt;summary&gt;
 /// Destroys the game object when selected and optionally plays a sound or animation when destroyed.
@@ -386,14 +384,13 @@ To enable the hand ray, go to <em>Mixed Reality Toolkit -&gt; Input -&gt; Pointe
 In the <em>EyeTrackingDemo-00-RootScene</em> where the Mixed Reality Toolkit is configured once for all of the eye tracking demo scenes, you should see the <em>EyeTrackingDemoPointerProfile</em>.
 You can either create a new <em>Input Profile</em> from scratch or adapt the current eye tracking one:</p>
 <ul>
-<li><p><strong>From scratch:</strong>
+<li><strong>From scratch:</strong>
 In the <em>Pointers</em> tab, select the <em>DefaultMixedRealityInputPointerProfile</em> from the context menu.
 This is the default pointer profile that already has the hand ray enabled!
 To change the default cursor (an opaque white dot), simply clone the profile and create your own custom pointer profile.
-Then replace <em>DefaultCursor</em> with <em>EyeGazeCursor</em> under <em>Gaze Cursor Prefab</em>.</p>
-</li>
-<li><p><strong>Based on the existing <em>EyeTrackingDemoPointerProfile</em>:</strong>
-Double-click the <em>EyeTrackingDemoPointerProfile</em> and add the following entry under <em>Pointer Options</em>:</p>
+Then replace <em>DefaultCursor</em> with <em>EyeGazeCursor</em> under <em>Gaze Cursor Prefab</em>.</li>
+<li><strong>Based on the existing <em>EyeTrackingDemoPointerProfile</em>:</strong>
+Double-click the <em>EyeTrackingDemoPointerProfile</em> and add the following entry under <em>Pointer Options</em>:
 <ul>
 <li><strong>Controller Type:</strong> 'Articulated Hand', 'Windows Mixed Reality'</li>
 <li><strong>Handedness:</strong> Any</li>

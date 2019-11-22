@@ -98,27 +98,23 @@ The MRTK eye tracking demo scenes are <a href="https://docs.unity3d.com/ScriptRe
 It includes an example for subtle yet powerful feedback to provide the user with the confidence that a target is focused without being overwhelming.
 In addition, there is a simple example of smart notifications that automatically disappear after being read.</p>
 <p><strong>Summary</strong>: Fast and effortless target selections using a combination of eyes, voice and hand input.</p>
-<br>
 <h3 id="eye-supported-navigation"><a href="EyeTracking_Navigation.html"><strong>Eye-Supported Navigation</strong></a></h3>
 <p>Imagine that you are reading some information on a distant display or your e-reader and when you reach the end of the displayed text, the text automatically scrolls up to reveal more content.
 Or how about magically zooming directly toward where you were looking at?
 These are some of the examples showcased in this tutorial regarding eye-supported navigation.
 In addition, there is an example for hands-free rotation of 3D holograms by making them automatically rotate based on your current focus.</p>
 <p><strong>Summary</strong>: Scroll, pan, zoom, 3D rotation using a combination of eyes, voice and hand input.</p>
-<br>
 <h3 id="eye-supported-positioning"><a href="EyeTracking_Positioning.html"><strong>Eye-Supported Positioning</strong></a></h3>
 <p>This tutorial shows an input scenario called <a href="https://youtu.be/CbIn8p4_4CQ">Put-That-There</a> dating back to research from the MIT Media Lab in the early 1980's with eye, hand and voice input.
 The idea is simple: Benefit from your eyes for fast target selection and positioning.
 Simply look at a hologram and say <em>'put this'</em>, look over where you want to place it and say <em>'there!'</em>.
 For more precisely positioning your hologram, you can use additional input from your hands, voice or controllers.</p>
 <p><strong>Summary</strong>: Positioning holograms using eyes, voice and hand input (<em>drag-and-drop</em>). Eye-supported sliders using eyes + hands.</p>
-<br>
 <h3 id="visualization-of-visual-attention"><strong>Visualization of Visual Attention</strong></h3>
 <p>Data based on where users look makes an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams.
 This tutorial discusses different eye tracking visualizations and how they fit different needs.
 We provide basic examples for logging and loading eye tracking data and examples for how to visualize them.</p>
 <p><strong>Summary</strong>: Two-dimensional attention map (heatmaps) on slates. Recording &amp; replaying eye tracking data.</p>
-<br>
 <h2 id="setting-up-the-mrtk-eye-tracking-samples">Setting up the MRTK eye tracking samples</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <p>Note that using the eye tracking samples on device requires a HoloLens 2
@@ -168,18 +164,20 @@ This way you can switch between the different eye tracking sample scenes.</p>
 Instead, you may want to start directly from the scene that you are currently working on when pressing the <em>Play</em> button.
 No problem! Here is what you can do:</p>
 <ol>
-<li>Load the <em>root</em> scene</li>
-<li>In the <em>root</em> scene, disable the <em>'OnLoadStartScene'</em> script</li>
-<li><em>Drag and drop</em> one of the eye tracking test scenes that are described below (or any other scene) into your <em>Hierarchy</em> view as shown in the screenshot below.</li>
-</ol>
+<li><p>Load the <em>root</em> scene</p>
+</li>
+<li><p>In the <em>root</em> scene, disable the <em>'OnLoadStartScene'</em> script</p>
+</li>
+<li><p><em>Drag and drop</em> one of the eye tracking test scenes that are described below (or any other scene) into your <em>Hierarchy</em> view as shown in the screenshot below.</p>
 <p><img src="../Images/EyeTracking/mrtk_et_additivescene.jpg" alt="Example for additive scene"></p>
-<ol start="4">
-<li>Press <em>Play</em></li>
+</li>
+<li><p>Press <em>Play</em></p>
+</li>
 </ol>
 <p>Please note that loading the sub scene like this is not persistent:
 This means that if you deploy your app to the HoloLens 2 device, it will only load the root scene (assuming it appears at the top of your Build Settings).
 Also, when you share your project with others, the sub scenes are not automatically loaded.</p>
-<br>
+<hr>
 <p>Now that you know how to get the MRTK eye tracking example scenes to work, let's continue with diving deeper into how to select holograms with your eyes: <a href="EyeTracking_TargetSelection.html">Eye-supported target selection</a>.</p>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
