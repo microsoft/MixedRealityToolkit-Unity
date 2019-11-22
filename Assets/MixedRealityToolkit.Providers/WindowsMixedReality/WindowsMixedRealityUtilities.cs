@@ -3,11 +3,17 @@
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine.XR.WSA;
 #if WINDOWS_UWP
-using System.Runtime.InteropServices;
 using Windows.Perception.Spatial;
+#if DOTNETWINRT_PRESENT
+using Microsoft.Windows.Graphics.Holographic;
+#else
+using Windows.Graphics.Holographic;
+#endif
 #elif DOTNETWINRT_PRESENT
+using Microsoft.Windows.Graphics.Holographic;
 using Microsoft.Windows.Perception.Spatial;
 #endif
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -67,6 +73,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
                 }
                 return spatialCoordinateSystem;
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Access the underlying native current holographic frame.
+        /// </summary>
+        /// <remarks>
+        /// Changing the state of the native objects received via this API may cause unpredictable
+        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// </remarks>
+        public static HolographicFrame CurrentHolographicFrame
+        {
+            get
+            {
+#if DOTNETWINRT_PRESENT
+                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
+                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
+                return HolographicFrame.FromNativePtr(hfd.IHolographicFramePtr);
+#elif WINDOWS_UWP
+                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
+                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
+                return Marshal.GetObjectForIUnknown(hfd.IHolographicFramePtr) as HolographicFrame;
+#else
+                return null;
 #endif
             }
         }
