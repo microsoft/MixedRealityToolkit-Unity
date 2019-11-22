@@ -94,7 +94,15 @@ namespace Microsoft.MixedReality.Toolkit
                         continue;
                     }
 
-                    eventHandler.Invoke((T)handlerEntry.handler, eventData);
+                    try
+                    {
+                        // Ensure client code does not crash our input system
+                        eventHandler.Invoke((T)handlerEntry.handler, eventData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
                 }
             }
 
