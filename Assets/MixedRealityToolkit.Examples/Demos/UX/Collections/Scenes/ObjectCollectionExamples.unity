@@ -1032,6 +1032,7 @@ MonoBehaviour:
   columns: 12
   cellWidth: 0.6
   cellHeight: 0.6
+  assetVersion: 1
 --- !u!4 &87600027
 Transform:
   m_ObjectHideFlags: 0
@@ -5834,6 +5835,7 @@ MonoBehaviour:
   columns: 9
   cellWidth: 0.5
   cellHeight: 0.5
+  assetVersion: 1
 --- !u!4 &461250619
 Transform:
   m_ObjectHideFlags: 0
@@ -10259,6 +10261,7 @@ MonoBehaviour:
   columns: 6
   cellWidth: 0.6
   cellHeight: 0.6
+  assetVersion: 1
 --- !u!4 &879357014
 Transform:
   m_ObjectHideFlags: 0
@@ -20055,6 +20058,7 @@ MonoBehaviour:
   columns: 6
   cellWidth: 0.6
   cellHeight: 0.6
+  assetVersion: 1
 --- !u!4 &2075923375
 Transform:
   m_ObjectHideFlags: 0
@@ -21348,6 +21352,7 @@ MonoBehaviour:
   columns: 9
   cellWidth: 0.8
   cellHeight: 0.8
+  assetVersion: 1
 --- !u!4 &2146124594
 Transform:
   m_ObjectHideFlags: 0

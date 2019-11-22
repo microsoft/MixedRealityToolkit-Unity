@@ -3373,6 +3373,11 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6489359697116138686, guid: c0931c4da6d91ea429abedb10290dd16,
+        type: 3}
+      propertyPath: assetVersion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1272738663672335838, guid: c0931c4da6d91ea429abedb10290dd16, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c0931c4da6d91ea429abedb10290dd16, type: 3}
@@ -6220,6 +6225,7 @@ MonoBehaviour:
   columns: 7
   cellWidth: 0.4
   cellHeight: 0.5
+  assetVersion: 1
 --- !u!1001 &1984437762
 PrefabInstance:
   m_ObjectHideFlags: 0

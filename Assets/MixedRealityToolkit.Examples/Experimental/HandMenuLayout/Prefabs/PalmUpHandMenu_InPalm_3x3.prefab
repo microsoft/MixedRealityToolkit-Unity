@@ -128,13 +128,16 @@ MonoBehaviour:
   sortType: 0
   surfaceType: 1
   orientType: 0
-  layout: 0
+  layout: 1
+  anchor: 4
   radius: 2
   radialRange: 180
   distance: 0
   rows: 3
+  columns: 3
   cellWidth: 0.032
   cellHeight: 0.032
+  assetVersion: 1
 --- !u!1 &6266962933852948004
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,13 +553,16 @@ MonoBehaviour:
   sortType: 0
   surfaceType: 1
   orientType: 0
-  layout: 0
+  layout: 1
+  anchor: 4
   radius: 2
   radialRange: 180
   distance: 0
   rows: 3
+  columns: 3
   cellWidth: 0.032
   cellHeight: 0.032
+  assetVersion: 1
 --- !u!1001 &6266962933286543096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -708,11 +714,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6266962934927460395}
     m_Modifications:
-    - target: {fileID: 7993839106200101949, guid: a7556dea0ca1e4442ade81ef1da5028b,
-        type: 3}
-      propertyPath: m_Name
-      value: HandMenu_Slider
-      objectReference: {fileID: 0}
     - target: {fileID: 7993839106200101936, guid: a7556dea0ca1e4442ade81ef1da5028b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -768,6 +769,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7993839106200101949, guid: a7556dea0ca1e4442ade81ef1da5028b,
+        type: 3}
+      propertyPath: m_Name
+      value: HandMenu_Slider
+      objectReference: {fileID: 0}
     - target: {fileID: 7993839106634432246, guid: a7556dea0ca1e4442ade81ef1da5028b,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -822,6 +828,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4759724202073444424, guid: a7556dea0ca1e4442ade81ef1da5028b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4759724202073444423, guid: a7556dea0ca1e4442ade81ef1da5028b,
         type: 3}
@@ -1087,6 +1098,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4759724203258084770, guid: a7556dea0ca1e4442ade81ef1da5028b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7556dea0ca1e4442ade81ef1da5028b, type: 3}

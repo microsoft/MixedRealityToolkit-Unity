@@ -42,7 +42,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 ## Configuring the Unity AR camera settings provider
 
-    ![Unity AR camera settings configuration](../Images/CameraSystem/UnityArSettingsConfiguration.png)
+![Unity AR camera settings configuration](../Images/CameraSystem/UnityArSettingsConfiguration.png)
 
 ### Tracking settings
 
