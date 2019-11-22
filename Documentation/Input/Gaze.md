@@ -72,4 +72,3 @@ void LogGazeDirectionOrigin()
         + CoreServices.InputSystem.GazeProvider.GazeOrigin);
 }
 ```
-

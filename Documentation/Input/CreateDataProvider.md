@@ -52,8 +52,8 @@ class can be used as a base class.
 > The `BaseInputDeviceManager` and `UnityJoystickManager` classes provide the required `IMixedRealityInputDeviceManager` implementation.
 
 ``` c#
-public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 ```
@@ -71,8 +71,8 @@ attribute to the class. This step enables setting the default profile and platfo
     typeof(IMixedRealityInputSystem),
     SupportedPlatforms.WindowsUniversal,
     "Windows Mixed Reality Device Manager")]
-public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 ```
@@ -193,7 +193,7 @@ public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
 { }
 ```
 
-The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the 
+The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the
 **Create > Assets > Mixed Reality Toolkit > Profiles** menu.
 
 ### Implement the inspector
