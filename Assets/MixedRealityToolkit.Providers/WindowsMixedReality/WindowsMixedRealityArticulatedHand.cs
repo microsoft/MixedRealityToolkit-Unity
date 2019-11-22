@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
 #if UNITY_WSA
-#if DOTNETWINRT_PRESENT || WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
         private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
 
         private SpatialInteractionManager spatialInteractionManager = null;
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private readonly float CursorBeamUpTolerance = 0.8f;
 
         private readonly bool articulatedHandApiAvailable = false;
-#endif // DOTNETWINRT_PRESENT || WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         #region Update data functions
 
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateHandData(InteractionSourceState interactionSourceState)
         {
-#if DOTNETWINRT_PRESENT || WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
             // Articulated hand support is only present in the 18362 version and beyond Windows
             // SDK (which contains the V8 drop of the Universal API Contract). In particular,
             // the HandPose related APIs are only present on this version and above.
@@ -349,12 +349,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                 }
             }
-#endif // DOTNETWINRT_PRESENT || WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 
         private void UpdateIndexFingerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-#if DOTNETWINRT_PRESENT || WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
             UpdateCurrentIndexPose();
 
             // Update the interaction data source
@@ -366,12 +366,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
-#endif // DOTNETWINRT_PRESENT || WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 
         #endregion Update data functions
 
-#if DOTNETWINRT_PRESENT || WINDOWS_UWP
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
         private static readonly HandJointKind[] jointIndices = new HandJointKind[]
         {
             HandJointKind.Palm,
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion Private InputSource Helpers
 
-#endif // DOTNETWINRT_PRESENT || WINDOWS_UWP
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 #endif // UNITY_WSA
     }
 }
