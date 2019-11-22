@@ -21,8 +21,8 @@ using Microsoft.Windows.Perception;
 using Microsoft.Windows.Perception.People;
 using Microsoft.Windows.UI.Input.Spatial;
 #endif
-#endif
-#endif
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
