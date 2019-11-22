@@ -21,33 +21,48 @@ namespace Microsoft.MixedReality.Toolkit.UI
             constraints = gameObject.GetComponents<TransformConstraint>().ToList();
         }
 
-        public void ApplyScaleConstraints(ref MixedRealityTransform transform)
+        public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
+            ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
+            ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
+            
             foreach (var constraint in constraints)
             {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Scale)
+                if (constraint.ConstraintType == Utilities.TransformFlags.Scale &&
+                    constraint.HandType.HasFlag(handMode) &&
+                    constraint.ProximityType.HasFlag(proximityMode))
                 {
                     constraint.ApplyConstraint(ref transform);
                 }
             }
         }
 
-        public void ApplyRotationConstraints(ref MixedRealityTransform transform)
+        public void ApplyRotationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
+            ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
+            ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
+            
             foreach (var constraint in constraints)
             {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Rotate)
+                if (constraint.ConstraintType == Utilities.TransformFlags.Rotate &&
+                    constraint.HandType.HasFlag(handMode) &&
+                    constraint.ProximityType.HasFlag(proximityMode))
                 {
                     constraint.ApplyConstraint(ref transform);
                 }
             }
         }
 
-        public void ApplyTranslationConstraints(ref MixedRealityTransform transform)
+        public void ApplyTranslationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
+            ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
+            ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
+            
             foreach (var constraint in constraints)
             {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Move)
+                if (constraint.ConstraintType == Utilities.TransformFlags.Move &&
+                    constraint.HandType.HasFlag(handMode) &&
+                    constraint.ProximityType.HasFlag(proximityMode))
                 {
                     constraint.ApplyConstraint(ref transform);
                 }

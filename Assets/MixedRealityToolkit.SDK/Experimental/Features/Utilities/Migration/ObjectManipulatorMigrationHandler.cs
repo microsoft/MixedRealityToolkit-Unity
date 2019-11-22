@@ -23,82 +23,149 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <inheritdoc />
         public void Migrate(GameObject gameObject)
         {
-            var mh1 = gameObject.GetComponent<ManipulationHandler>();
-            var mh2 = gameObject.AddComponent<ObjectManipulator>();
+            var manipHandler = gameObject.GetComponent<ManipulationHandler>();
+            var objManip = gameObject.AddComponent<ObjectManipulator>();
 
-            mh2.HostTransform = mh1.HostTransform;
+            objManip.HostTransform = manipHandler.HostTransform;
 
-            switch (mh1.ManipulationType)
+            switch (manipHandler.ManipulationType)
             {
                 case ManipulationHandler.HandMovementType.OneHandedOnly:
-                    mh2.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+                    objManip.ManipulationType = ManipulationHandFlags.OneHanded;
                     break;
                 case ManipulationHandler.HandMovementType.TwoHandedOnly:
-                    mh2.ManipulationType = ObjectManipulator.HandMovementType.TwoHanded;
+                    objManip.ManipulationType = ManipulationHandFlags.TwoHanded;
                     break;
                 case ManipulationHandler.HandMovementType.OneAndTwoHanded:
-                    mh2.ManipulationType = ObjectManipulator.HandMovementType.OneHanded |
-                        ObjectManipulator.HandMovementType.TwoHanded;
+                    objManip.ManipulationType = ManipulationHandFlags.OneHanded |
+                        ManipulationHandFlags.TwoHanded;
                     break;
             }
 
-            mh2.AllowFarManipulation = mh1.AllowFarManipulation;
-            mh2.OneHandRotationModeNear = (ObjectManipulator.RotateInOneHandType)mh1.OneHandRotationModeNear;
-            mh2.OneHandRotationModeFar = (ObjectManipulator.RotateInOneHandType)mh1.OneHandRotationModeFar;
+            objManip.AllowFarManipulation = manipHandler.AllowFarManipulation;
 
-            switch (mh1.TwoHandedManipulationType)
+            if (manipHandler.OneHandRotationModeNear == manipHandler.OneHandRotationModeFar)
+            {
+                MigrateOneHandRotationModes(ref objManip, manipHandler.OneHandRotationModeNear, ManipulationProximityFlags.Near | ManipulationProximityFlags.Far);
+            }
+            else
+            {
+                MigrateOneHandRotationModes(ref objManip, manipHandler.OneHandRotationModeNear, ManipulationProximityFlags.Near);
+                MigrateOneHandRotationModes(ref objManip, manipHandler.OneHandRotationModeFar, ManipulationProximityFlags.Far);
+            }
+
+            switch (manipHandler.TwoHandedManipulationType)
             {
                 case ManipulationHandler.TwoHandedManipulation.Scale:
-                    mh2.TwoHandedManipulationType = TransformFlags.Scale;
+                    objManip.TwoHandedManipulationType = TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.Rotate:
-                    mh2.TwoHandedManipulationType = TransformFlags.Rotate;
+                    objManip.TwoHandedManipulationType = TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveScale:
-                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                    objManip.TwoHandedManipulationType = TransformFlags.Move |
                         TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotate:
-                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                    objManip.TwoHandedManipulationType = TransformFlags.Move |
                         TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.RotateScale:
-                    mh2.TwoHandedManipulationType = TransformFlags.Rotate |
+                    objManip.TwoHandedManipulationType = TransformFlags.Rotate |
                         TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotateScale:
-                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                    objManip.TwoHandedManipulationType = TransformFlags.Move |
                         TransformFlags.Rotate |
                         TransformFlags.Scale;
                     break;
             }
 
-            mh2.ReleaseBehavior = (ObjectManipulator.ReleaseBehaviorType)mh1.ReleaseBehavior;
+            objManip.ReleaseBehavior = (ObjectManipulator.ReleaseBehaviorType)manipHandler.ReleaseBehavior;
 
-            if (mh1.ConstraintOnRotation != RotationConstraintType.None)
+            if (manipHandler.ConstraintOnRotation != RotationConstraintType.None)
             {
-                var rotateConstraint = mh2.gameObject.AddComponent<RotationAxisConstraint>();
-                rotateConstraint.TargetTransform = mh1.HostTransform;
-                rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(mh1.ConstraintOnRotation);
+                var rotateConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
+                rotateConstraint.TargetTransform = manipHandler.HostTransform;
+                rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(manipHandler.ConstraintOnRotation);
             }
 
-            if (mh1.ConstraintOnMovement == MovementConstraintType.FixDistanceFromHead)
+            if (manipHandler.ConstraintOnMovement == MovementConstraintType.FixDistanceFromHead)
             {
-                var moveConstraint = mh2.gameObject.AddComponent<FixedDistanceConstraint>();
-                moveConstraint.TargetTransform = mh1.HostTransform;
+                var moveConstraint = objManip.EnsureComponent<FixedDistanceConstraint>();
+                moveConstraint.TargetTransform = manipHandler.HostTransform;
                 moveConstraint.ConstraintTransform = CameraCache.Main.transform;
             }
 
-            mh2.SmoothingActive = mh1.SmoothingActive;
-            mh2.MoveLerpTime = mh1.SmoothingAmoutOneHandManip;
-            mh2.RotateLerpTime = mh1.SmoothingAmoutOneHandManip;
-            mh2.ScaleLerpTime = mh1.SmoothingAmoutOneHandManip;
-            mh2.OnManipulationStarted = mh1.OnManipulationStarted;
-            mh2.OnManipulationEnded = mh1.OnManipulationEnded;
-            mh2.OnHoverEntered = mh1.OnHoverEntered;
-            mh2.OnHoverExited = mh1.OnHoverExited;
+            objManip.SmoothingActive = manipHandler.SmoothingActive;
+            objManip.MoveLerpTime = manipHandler.SmoothingAmoutOneHandManip;
+            objManip.RotateLerpTime = manipHandler.SmoothingAmoutOneHandManip;
+            objManip.ScaleLerpTime = manipHandler.SmoothingAmoutOneHandManip;
+            objManip.OnManipulationStarted = manipHandler.OnManipulationStarted;
+            objManip.OnManipulationEnded = manipHandler.OnManipulationEnded;
+            objManip.OnHoverEntered = manipHandler.OnHoverEntered;
+            objManip.OnHoverExited = manipHandler.OnHoverExited;
 
-            Object.DestroyImmediate(mh1);
+            Object.DestroyImmediate(manipHandler);
+        }
+
+        private void MigrateOneHandRotationModes(ref ObjectManipulator objManip, ManipulationHandler.RotateInOneHandType mode, ManipulationProximityFlags proximity)
+        {
+            ObjectManipulator.RotateInOneHandType newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+            switch (mode)
+            {
+                case ManipulationHandler.RotateInOneHandType.MaintainRotationToUser:
+                    {
+                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+                        var constraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
+                        constraint.TargetTransform = objManip.HostTransform;
+                        constraint.HandType = ManipulationHandFlags.OneHanded;
+                        constraint.ProximityType = proximity;
+                        break;
+                    }
+                case ManipulationHandler.RotateInOneHandType.GravityAlignedMaintainRotationToUser:
+                    {
+                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+                        var rotConstraint = objManip.EnsureComponent<FixedRotationToUserConstraint>();
+                        rotConstraint.TargetTransform = objManip.HostTransform;
+                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                        rotConstraint.ProximityType = proximity;
+
+                        var axisConstraint = objManip.EnsureComponent<RotationAxisConstraint>();
+                        axisConstraint.TargetTransform = objManip.HostTransform;
+                        axisConstraint.HandType = ManipulationHandFlags.OneHanded;
+                        axisConstraint.ProximityType = proximity;
+                        axisConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
+                        break;
+                    }
+                case ManipulationHandler.RotateInOneHandType.FaceUser:
+                    newMode = ObjectManipulator.RotateInOneHandType.FaceUser;
+                    break;
+                case ManipulationHandler.RotateInOneHandType.FaceAwayFromUser:
+                    newMode = ObjectManipulator.RotateInOneHandType.FaceAwayFromUser;
+                    break;
+                case ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation:
+                    newMode = ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation;
+                    break;
+                case ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter:
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
+                    break;
+                case ManipulationHandler.RotateInOneHandType.RotateAboutGrabPoint:
+                    newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+                    break;
+            }
+
+            if (proximity.HasFlag(ManipulationProximityFlags.Near))
+            {
+                objManip.OneHandRotationModeNear = newMode;
+            }
+            if (proximity.HasFlag(ManipulationProximityFlags.Far))
+            {
+                objManip.OneHandRotationModeFar = newMode;
+            }
         }
     }
 }

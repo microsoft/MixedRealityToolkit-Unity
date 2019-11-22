@@ -4,6 +4,7 @@
 //
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -80,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
 
-            var handedness = (ObjectManipulator.HandMovementType)manipulationType.intValue;
+            var handedness = (ManipulationHandFlags)manipulationType.intValue;
 
             EditorGUILayout.Space();
             GUIStyle style = EditorStyles.foldout;
@@ -90,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness.HasFlag(ObjectManipulator.HandMovementType.OneHanded))
+                if (handedness.HasFlag(ManipulationHandFlags.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -106,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness.HasFlag(ObjectManipulator.HandMovementType.TwoHanded))
+                if (handedness.HasFlag(ManipulationHandFlags.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }

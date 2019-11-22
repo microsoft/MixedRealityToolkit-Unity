@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             var constraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
             constraint.UseLocalSpaceForConstraint = false;
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
 
             var constraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
             constraint.UseLocalSpaceForConstraint = true;
@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             var constraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             var constraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
@@ -400,7 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.TwoHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.TwoHanded;
             var scaleHandler = testObject.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             var constraint = manipHandler.EnsureComponent<FixedDistanceConstraint>();
@@ -508,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
             manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
 
             // add an xy move constraint so that the object's position does not change on screen
@@ -525,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            const int numHandSteps = 100;
+            const int numHandSteps = 1;
 
             // Hand pointing at middle of cube
             TestHand hand = new TestHand(Handedness.Right);
@@ -542,6 +542,216 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float newAngle = Vector3.Angle(newtopLeft - CameraCache.Main.transform.position, newBottomRight - CameraCache.Main.transform.position);
 
             Assert.AreEqual(originalAngle, newAngle, 0.05f);
+        }
+
+        /// <summary>
+        /// Tests FixedRotationToUserConstraint MaintainRotationToUser should only align with user / camera 
+        /// on x / y and not apply rotations in z
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstrainRotationFixToUser()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
+            manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToUserConstraint>();
+            rotConstraint.TargetTransform = manipHandler.HostTransform;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Vector3 initialGrabPosition = new Vector3(-0.1f, -0.1f, 1f); // grab the left bottom corner of the cube 
+            TestHand hand = new TestHand(Handedness.Right);
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return hand.Show(initialGrabPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            Quaternion originalObjRotation = testObject.transform.rotation;
+
+            CameraCache.Main.transform.Rotate(new Vector3(10, 0, 0));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Quaternion rotatedOriginal = originalObjRotation * Quaternion.Euler(10, 0, 0);
+            // check if x rotation was applied to object
+            TestUtilities.AssertAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object wasn't rotated with camera");
+
+            CameraCache.Main.transform.Rotate(new Vector3(-10, 0, 0));
+            CameraCache.Main.transform.Rotate(new Vector3(0, 10, 0));
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // check if y rotation was applied to object
+            rotatedOriginal = originalObjRotation * Quaternion.Euler(0, 10, 0);
+            TestUtilities.AssertAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object wasn't rotated with camera");
+
+            CameraCache.Main.transform.Rotate(new Vector3(0, -10, 0));
+            CameraCache.Main.transform.Rotate(new Vector3(0, 0, 10));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // check if z rotation wasn't applied to object
+            rotatedOriginal = originalObjRotation * Quaternion.Euler(0, 0, 10);
+            TestUtilities.AssertNotAboutEqual(testObject.transform.rotation.eulerAngles, rotatedOriginal.eulerAngles, "Object rolled with camera");
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.Hide();
+        }
+
+        /// <summary>
+        /// Tests that different constraints can apply for one handed and two handed manipulation
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstrainByNumberOfHands()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 originalPosition = Vector3.forward;
+            testObject.transform.position = originalPosition;
+            Quaternion originalRotation = Quaternion.identity;
+            testObject.transform.rotation = originalRotation;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
+
+            // add an xyz rotate constraint for one handed so we can only move
+            var rotateConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
+            rotateConstraint.UseLocalSpaceForConstraint = false;
+            rotateConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+            rotateConstraint.HandType = ManipulationHandFlags.OneHanded;
+
+            // add an xyz move constraint for two handed so we can only rotate
+            var moveConstraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
+            moveConstraint.UseLocalSpaceForConstraint = false;
+            moveConstraint.ConstraintOnMovement = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+            moveConstraint.HandType = ManipulationHandFlags.TwoHanded;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            const int numHandSteps = 1;
+            
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return leftHand.Show(new Vector3(-0.05f, -0.1f, 0.45f));
+            yield return rightHand.Show(new Vector3(0.05f, -0.1f, 0.45f));
+
+            // rotate and move left hand
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return leftHand.SetRotation(Quaternion.Euler(45, 45, 45), numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should be equal for one handed interaction");
+
+            yield return leftHand.Move((Vector3.left + Vector3.up) * 0.2f, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertNotAboutEqual(originalPosition, testObject.transform.position, "Position should not be equal for one handed interaction");
+
+            // return hand to original pose
+            yield return leftHand.SetRotation(Quaternion.identity, numHandSteps);
+            yield return leftHand.Move((Vector3.right + Vector3.down) * 0.2f, numHandSteps);
+            yield return null;
+
+            // grab with both hands and move/rotate
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return leftHand.Move((Vector3.left + Vector3.up) * 0.2f, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertNotAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should not be equal for two handed interaction");
+            TestUtilities.AssertAboutEqual(originalPosition, testObject.transform.position, "Position should be equal for two handed interaction");
+        }
+
+        /// <summary>
+        /// Tests that different constraints can apply for near and far manipulation
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstrainByProximity()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 originalPosition = Vector3.forward;
+            testObject.transform.position = originalPosition;
+            Quaternion originalRotation = Quaternion.identity;
+            testObject.transform.rotation = originalRotation;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutObjectCenter;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            // add an xyz rotate constraint for one handed so we can only move
+            var rotateConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
+            rotateConstraint.UseLocalSpaceForConstraint = false;
+            rotateConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+            rotateConstraint.ProximityType = ManipulationProximityFlags.Near;
+
+            // add an xyz move constraint for two handed so we can only rotate
+            var moveConstraint = manipHandler.EnsureComponent<MoveAxisConstraint>();
+            moveConstraint.UseLocalSpaceForConstraint = false;
+            moveConstraint.ConstraintOnMovement = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+            moveConstraint.ProximityType = ManipulationProximityFlags.Far;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            const int numHandSteps = 1;
+
+            TestHand leftHand = new TestHand(Handedness.Left);
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return leftHand.Show(new Vector3(-0.05f, 0, 1));
+            yield return rightHand.Show(new Vector3(0.05f, 0, 1));
+            yield return null;
+
+            // near interaction
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return leftHand.Move((Vector3.left + Vector3.up) * 0.2f, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should be equal for near interaction");
+            TestUtilities.AssertNotAboutEqual(originalPosition, testObject.transform.position, "Position should not be equal for near interaction");
+
+            // far interaction
+            yield return leftHand.Move((Vector3.right + Vector3.down) * 0.2f, numHandSteps);
+            yield return null;
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            yield return leftHand.MoveTo(new Vector3(-0.05f, -0.1f, 0.45f), numHandSteps);
+            yield return rightHand.MoveTo(new Vector3(0.05f, -0.1f, 0.45f), numHandSteps);
+            yield return null;
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return leftHand.Move((Vector3.left + Vector3.up) * 0.2f, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertNotAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should not be equal for far interaction");
+            TestUtilities.AssertAboutEqual(originalPosition, testObject.transform.position, "Position should be equal for far interaction");
         }
     }
 }
