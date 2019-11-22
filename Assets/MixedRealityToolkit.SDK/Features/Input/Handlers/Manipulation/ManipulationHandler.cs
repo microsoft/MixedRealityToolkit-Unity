@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
@@ -660,7 +661,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale);
+                targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
                 if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
                 {
                     moveConstraint.ApplyConstraint(ref targetTransform);
@@ -712,12 +713,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         break;
                     }
                 case RotateInOneHandType.RotateAboutObjectCenter:
+                case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;
                     TryGetGripRotation(pointer, out gripRotation);
                     targetTransform.Rotation = gripRotation * objectToGripRotation;
-                    break;
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    targetTransform.Rotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
             if (rotateConstraint != null)
@@ -726,7 +725,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale);
+            targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
             if (constraintOnMovement == MovementConstraintType.FixDistanceFromHead && moveConstraint != null)
             {
                 moveConstraint.ApplyConstraint(ref targetTransform);
@@ -807,6 +806,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     ManipulationSource = gameObject,
                     IsNearInteraction = isNearManipulation,
+                    Pointer = GetFirstPointer().pointer,
                     PointerCentroid = GetPointersCentroid(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
@@ -894,6 +894,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverEntered.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = gameObject,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
@@ -910,6 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverExited.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = gameObject,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }

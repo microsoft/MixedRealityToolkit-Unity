@@ -1,17 +1,17 @@
 # Detecting platform capabilities
 
 A common question asked of the MRTK involves knowing which specific device (ex: Microsoft HoloLens 2) is being
-used to run an application. Identifying the exact hardware can be challenging on different platforms. The MRTK
-instead provides a way to identify specific capabilities at runtime such as if the current device endpoint supports articulated hands.
+used to run an application. Identifying the exact hardware can be challenging on different platforms. Instead, the MRTK
+provides a way to identify specific capabilities at runtime, (e.g. if the current device endpoint supports articulated hands).
 
 ## Capabilities
 
 The Mixed Reality Toolkit provides the [`MixedRealityCapability`](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
-enumeration which defines a set of capabilities for which an application can query at runtime.
+enumeration, which defines a set of capabilities for which an application can query at runtime.
 
 ### Input System capabilities
 
-The default MRTK Input System supports querying the following capabilities.
+The default MRTK Input System supports querying the following capabilities:
 
 | Capability | Description |
 |---|---|
@@ -36,7 +36,7 @@ if (capabilityCheck != null)
 
 ### Spatial Awareness capabilities
 
-The default MRTK Spatial Awareness system supports querying the following capabilities.
+The default MRTK Spatial Awareness system supports querying the following capabilities:
 
 | Capability | Description |
 |---|---|

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
     /// <seealso cref="MixedRealityControllerMappingProfile"/>
+    [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityControllerVisualizer")]
     public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
         // TODO wire up input actions to controller transform nodes / animations

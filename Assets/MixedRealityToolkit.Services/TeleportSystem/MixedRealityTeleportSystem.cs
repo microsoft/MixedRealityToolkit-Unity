@@ -13,15 +13,24 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     /// </summary>
     public class MixedRealityTeleportSystem : BaseCoreSystem, IMixedRealityTeleportSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityTeleportSystem(
             IMixedRealityServiceRegistrar registrar) : base(registrar, null) // Teleport system does not use a profile
         {
-            if (registrar == null)
-            {
-                Debug.LogError("The MixedRealityTeleportSystem object requires a valid IMixedRealityServiceRegistrar instance.");
-            }
-            IsInputSystemEnabled = (registrar.GetService<IMixedRealityInputSystem>(showLogs: false) != null);
-        } 
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public MixedRealityTeleportSystem() : base(null) // Teleport system does not use a profile
+        {
+            IsInputSystemEnabled = CoreServices.InputSystem != null;
+        }
 
         private TeleportEventData teleportEventData;
 

@@ -16,28 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
+        protected GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
-            PointerId = (InputSystem?.FocusProvider != null) ? InputSystem.FocusProvider.GenerateNewPointerId() : 0;
+            PointerId = (CoreServices.InputSystem?.FocusProvider != null) ? CoreServices.InputSystem.FocusProvider.GenerateNewPointerId() : 0;
             PointerName = pointerName;
             this.inputSourceParent = inputSourceParent;
-        }
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
         }
 
         /// <inheritdoc />

@@ -21,9 +21,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityFocusProvider, 
         IPointerPreferences
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public FocusProvider(
+            MixedRealityInputSystemProfile profile) : base(profile)
         {
             maxQuerySceneResults = profile.FocusQueryBufferSize;
             focusIndividualCompoundCollider = profile.FocusIndividualCompoundCollider;
@@ -52,23 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// are active (IsInteractionEnabled == true), excluding the gaze cursor
         /// </summary>
         public int NumFarPointersActive { get; private set; }
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         private IMixedRealityPointer primaryPointer;
 
@@ -148,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (InputSystem == null)
+                if (CoreServices.InputSystem == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
@@ -503,14 +502,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
-            var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            var primaryPointerSelectorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
             if (primaryPointerSelectorType != null)
             {
                 primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
                 primaryPointerSelector.Initialize();
             }
 
-            foreach (var inputSource in InputSystem.DetectedInputSources)
+            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
             }
@@ -555,14 +554,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (gazeHitResult == null)
             {
                 hitResult3d.Clear();
-                var raycastProvider = InputSystem.RaycastProvider;
+                var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
                 gazeHitResult = hitResult3d;
             }
 
-            InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+            CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
@@ -729,21 +728,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityPointerMediator mediator = null;
 
-            var mediatorType = InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
+            var mediatorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
             if (mediatorType != null)
             {
                 try
                 {
                     // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
                     mediator = Activator.CreateInstance(
-                    InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type,
+                    CoreServices.InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type,
                     this) as IMixedRealityPointerMediator;
                 }
                 catch (MissingMethodException)
                 {
                     // We are using custom mediator not provided by MRTK, instantiate with empty constructor
                     mediator = Activator.CreateInstance(
-                        InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                        CoreServices.InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
                 }
             }
 
@@ -762,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RegisterPointer(inputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
                     gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                 }
@@ -792,15 +791,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                CoreServices.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
-                    InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    CoreServices.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                CoreServices.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -955,7 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     // Perform raycast to determine focused object
-                    var raycastProvider = InputSystem.RaycastProvider;
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
@@ -964,7 +963,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         gazeHitResult = hitResult3d;
                     }
 
-                    int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
+                    int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
                     if (hitResult3dLayer == 0)
                     {
                         // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
@@ -1086,7 +1085,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     NumNearPointersActive,
                     NumFarPointersActive,
                     numFarPointersWithoutCursorActive,
-                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
+                    CoreServices.InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
@@ -1274,7 +1273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
+            uiRaycastResult = CoreServices.InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
             graphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
             return (uiRaycastCamera.gameObject != null);
@@ -1348,7 +1347,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                CoreServices.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 int numExits;
                 if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
@@ -1359,18 +1358,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        CoreServices.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                         pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                     }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    CoreServices.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                CoreServices.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -1409,7 +1408,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider?.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;

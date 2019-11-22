@@ -79,10 +79,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<InspectorPropertySetting> Settings = new List<InspectorPropertySetting>();
 
         /// <summary>
-        /// Create the event and setup the values from the inspector
+        /// Create the event and setup the values from the inspector. If the asset is invalid,
+        /// returns null.
         /// </summary>
         public static ReceiverBase CreateReceiver(InteractableEvent iEvent)
         {
+            if (string.IsNullOrEmpty(iEvent.ClassName))
+            {
+                // If the class name of this event is empty, the asset is invalid and loading types will throw errors. Return null.
+                return null;
+            }
+
             // Temporary workaround
             // This is to fix a bug in GA where the AssemblyQualifiedName was never actually saved. Functionality would work in editor...but never on device player
             if (iEvent.ReceiverType == null)

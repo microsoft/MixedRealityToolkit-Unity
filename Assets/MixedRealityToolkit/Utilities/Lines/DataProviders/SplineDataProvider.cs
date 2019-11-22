@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Creates a spline based on control points.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/SplineDataProvider")]
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]

@@ -337,7 +337,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
+                Vector3 initialGrabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                Vector3 initialOffsetGrabToObjPivot = initialGrabPoint - testObject.transform.position;
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(initialGrabPoint);
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -360,10 +362,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
 
-                    // make sure that the offset between grab point and object pivot hasn't changed while rotating
-                    Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
-                    Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
-                    TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
+                    if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
+                    {
+                        // make sure that the offset between grab and object centre hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 offsetRotated = grabPoint - testObject.transform.position;
+                        TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
+                    }
+                    else
+                    {
+                        // make sure that the offset between grab point and object pivot hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                        TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
+                    }
                 }
 
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
@@ -475,7 +487,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
-        /// NOTE: This tests both LOCAL and WORLD SPACE roation.
+        /// NOTE: This tests both LOCAL and WORLD SPACE rotation.
         /// </summary>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandRotateWithConstraint()
@@ -949,6 +961,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Apply correction delta again as we have changed hand pose
+            correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
             yield return null;
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
@@ -1224,6 +1240,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
+        }
+
+        /// <summary>
+        /// Ensure that a manipulated object has the same rotation as the hand
+        /// when RotateAboutObjectCenter is used
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerRotateAboutObjectCenter()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter;
+
+            Quaternion rotateTo = Quaternion.Euler(45, 45, 45);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Rotate the hand and test that the rotations are equal
+            yield return hand.Show(new Vector3(0.06f, -0.1f, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.SetRotation(rotateTo, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(rotateTo, testObject.transform.rotation, "Object moved after it was disabled");
+
+            // Rotate the hand back and test that the rotations still are equal
+            yield return hand.SetRotation(Quaternion.identity, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(Quaternion.identity, testObject.transform.rotation, "Object moved after it was disabled");
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Test script that forcefully stops manipulation on the manipulatedObject when it collides with the collisionTrigger
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ChangeManipulation")]
     public class ChangeManipulation : MonoBehaviour
     {
         public GameObject manipulatedObject;

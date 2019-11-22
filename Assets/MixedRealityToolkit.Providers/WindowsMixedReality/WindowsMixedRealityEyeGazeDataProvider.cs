@@ -31,12 +31,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public WindowsMixedRealityEyeGazeDataProvider(
+            IMixedRealityInputSystem inputSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         public bool SmoothEyeTracking { get; set; } = false;
 
@@ -49,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private int confidenceOfSaccade = 0;
         private int confidenceOfSaccadeThreshold = 6; // TODO(https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/3767): This value should be adjusted based on the FPS of the ET system
         private Ray saccade_initialGazePoint;
-        private List<Ray> saccade_newGazeCluster = new List<Ray>();
+        private readonly List<Ray> saccade_newGazeCluster = new List<Ray>();
 
         public event Action OnSaccade;
         public event Action OnSaccadeX;
@@ -69,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
-                return ((capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported());
+                return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
 #endif // WINDOWS_UWP
             }
 
@@ -78,8 +95,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
+        /// <inheritdoc />
         public override void Initialize()
         {
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    this.GetType());
+#endif
+
             if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
@@ -89,6 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
 #if WINDOWS_UWP
@@ -107,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                     if(eyes.Gaze.HasValue)
                     {
-                        Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
+                        Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
 
                         if (SmoothEyeTracking)
                         {

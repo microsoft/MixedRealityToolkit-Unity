@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MRTK_SurfaceReconstruction
+  m_Shader: {fileID: 4800000, guid: c31d23be78a0c7d438feb3d0305a7707, type: 3}
+  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _AUTO_PULSE__ON _COLOR_MAP_ENABLE_
+    _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON
+    _RIM_LIGHT _UNITY_TO_SRGB__ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Color_Map_:
+        m_Texture: {fileID: 2800000, guid: 98e3b4b60df348344985cb363d5778fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - USE_ALBEDO_TEXTURE: 1
+    - _Auto_Pulse_: 1
+    - _Color_Center_: 0.4
+    - _Color_Leading_Fuzz_: 1
+    - _Color_Map_Enable_: 1
+    - _Color_Trailing_Fuzz_: 1
+    - _Desaturated_Intensity_: 0
+    - _Draw_End_Time_: 0.5
+    - _Draw_Fuzz_: 0.2
+    - _Edge_Width_: 1
+    - _Fill_Start_Time_: 0.5
+    - _Filter_Width_: 1.5
+    - _Flip_V_: 0
+    - _Intensity_: 1.38
+    - _Line_End_Time_: 0.5
+    - _Line_Width_: 0.5
+    - _Line_Width_Fade_: 0.25
+    - _Line_Width_Fade_Far_: 5
+    - _Max_Hover_: 0.004
+    - _Max_In_Angle_: 0.6
+    - _Max_Out_Angle_: 0.4
+    - _Noise_Frequency_: 40.5
+    - _Period_: 5
+    - _Pulse_: 0
+    - _Pulse_Amplify_Leading_: 0
+    - _Pulse_Color_Width_: 1
+    - _Pulse_Enabled_: 1
+    - _Pulse_Lead_Fuzz_: 0.67
+    - _Pulse_Line_Fuzz_: 0.2
+    - _Pulse_Middle_: 0
+    - _Pulse_Noise_Frequency_: 777
+    - _Pulse_Outer_Fuzz_: 1
+    - _Pulse_Outer_Size_: 5
+    - _Pulse_Tail_Fuzz_: 0.8
+    - _Pulse_Vary_: 0.075
+    - _Pulse_Width_: 1
+    - _Vary_Color_: 0.7
+    - _Vary_UV_: 0.71
+    - _Wrist_Fade_End_: 0.16
+    - _Wrist_Fade_Start_: 0.1
+    m_Colors:
+    - _Fill_Color_: {r: 0.6857557, g: 0.19290671, b: 0.8018868, a: 1}
+    - _Line_Color_: {r: 0.990566, g: 0.2476415, b: 0.8074146, a: 1}
+    - _Pulse_Origin_: {r: 0, g: 0, b: 0, a: 1}

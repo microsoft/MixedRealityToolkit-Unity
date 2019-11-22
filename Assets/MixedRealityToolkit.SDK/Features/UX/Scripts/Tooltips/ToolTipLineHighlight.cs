@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Renders an outline around tooltip background
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ToolTipLineHighlight")]
     public class ToolTipLineHighlight : MonoBehaviour, IToolTipHighlight
     {
         public bool ShowHighlight

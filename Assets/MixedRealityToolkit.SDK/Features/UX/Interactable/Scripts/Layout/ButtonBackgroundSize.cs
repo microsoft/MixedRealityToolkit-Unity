@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [ExecuteInEditMode]
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/SDK/ButtonBackgroundSize")]
     public class ButtonBackgroundSize : MonoBehaviour
     {
         /// <summary>

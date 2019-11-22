@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulted at start");
+            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
             yield return DirectPinchAndMoveSlider(slider, 1.0f);
-            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulted at start");
+            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
 
             // clean up
             GameObject.Destroy(pinchSliderObject);

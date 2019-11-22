@@ -79,7 +79,7 @@ LightmapSettings:
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVRFilteringMode: 1
+    m_PVRFilteringMode: 2
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 941829596}
   - component: {fileID: 941829595}
   - component: {fileID: 941829594}
+  - component: {fileID: 941829599}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 941829592}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
@@ -286,6 +287,21 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &941829599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941829592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &1550664218
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +334,7 @@ MonoBehaviour:
   loadSceneMode: 0
   contentScene:
     Name: MRTKExamplesHubMainMenu
-    Path: Assets/MixedRealityToolkit.Examples/Demos/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+    Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
     Included: 1
     BuildIndex: 1
     Tag: Untagged
@@ -593,6 +609,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7236097622359626994, guid: 26b0c24187a40734a89bfc6c224c8c60,
+        type: 3}
+      propertyPath: contentScene.Path
+      value: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 7236097622359626994, guid: 26b0c24187a40734a89bfc6c224c8c60,
+        type: 3}
+      propertyPath: contentScene.BuildIndex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8364699125781508857, guid: 26b0c24187a40734a89bfc6c224c8c60,
+        type: 3}
+      propertyPath: layout
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26b0c24187a40734a89bfc6c224c8c60, type: 3}

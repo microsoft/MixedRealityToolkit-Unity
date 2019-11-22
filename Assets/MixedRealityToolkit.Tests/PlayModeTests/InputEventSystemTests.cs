@@ -48,10 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Need to remove cursors and other global event handlers
             yield return PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers();
 
-            IMixedRealityInputSystem iInputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
-
-            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
+            BaseEventSystem inputSystem = (BaseEventSystem)CoreServices.InputSystem;
 
             var object1 = new GameObject("Object");
 
@@ -119,10 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Need to remove cursors and other global event handlers
             yield return PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers();
 
-            IMixedRealityInputSystem iInputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
-
-            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
+            BaseEventSystem inputSystem = (BaseEventSystem)CoreServices.InputSystem;
 
             var object1 = new GameObject("Object");
 
@@ -247,10 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSpeechEventCallsForGlobalHandlers()
         {
-            // We need Gaze Cursor in this test to use it as source to emit events.
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-
             var object1 = new GameObject("Object 1");
 
             // These 2 handlers are independent
@@ -268,8 +258,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             LogAssert.Expect(LogType.Error, new Regex("Detected simultaneous usage of IMixedRealityEventSystem.Register and IMixedRealityEventSystem.RegisterHandler"));
 
             // Emit speech event, which should be received by all handlers.
-            var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
-            inputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("menu", KeyCode.Alpha1, MixedRealityInputAction.None));
+            var gazeInputSource = CoreServices.InputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
+            CoreServices.InputSystem.RaiseSpeechCommandRecognized(gazeInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(), System.DateTime.Now, new SpeechCommands("menu", KeyCode.Alpha1, MixedRealityInputAction.None));
 
             Assert.Zero(objectBasedListener.pointerClickedCount, "Pointer clicked event is received by old API handler.");
             Assert.Zero(objectBasedListener.pointerDownCount,    "Pointer down event is received by old API handler.");
@@ -310,10 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Need to remove cursors and other global event handlers
             yield return PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers();
 
-            IMixedRealityInputSystem iInputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out iInputSystem);
-
-            BaseEventSystem inputSystem = (BaseEventSystem)iInputSystem;
+            BaseEventSystem inputSystem = (BaseEventSystem)CoreServices.InputSystem;
 
             var object1 = new GameObject("Object");
 

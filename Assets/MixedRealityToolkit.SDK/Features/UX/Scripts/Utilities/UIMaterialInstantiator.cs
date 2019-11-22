@@ -8,12 +8,12 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// This is required since UnityUI Graphic elements do not support MaterialPropertyBlocks, and any shader operations can end up modifying the material permanenetly across all shared instances.
+    /// This is required since UnityUI Graphic elements do not support MaterialPropertyBlocks, and any shader operations can end up modifying the material permanently across all shared instances.
     /// To prevent that we create a runtime copy of the material.
     /// </summary>
     public class UIMaterialInstantiator
     {
-        // this set ensures that we do not end up creating multiple copies of materials for every theme targetting the same instance
+        // this set ensures that we do not end up creating multiple copies of materials for every theme targeting the same instance
         private static HashSet<int> targetInstances = new HashSet<int>();
 
         /// <summary>

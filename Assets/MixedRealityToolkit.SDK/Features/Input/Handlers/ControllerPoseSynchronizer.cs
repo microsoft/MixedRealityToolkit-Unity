@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ControllerPoseSynchronizer")]
     public class ControllerPoseSynchronizer : InputSystemGlobalHandlerListener, IMixedRealityControllerPoseSynchronizer
     {
         #region IMixedRealityControllerPoseSynchronizer Implementation
@@ -92,13 +93,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation

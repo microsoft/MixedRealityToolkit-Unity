@@ -27,12 +27,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public UnityJoystickManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public UnityJoystickManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         private const float DeviceRefreshInterval = 3.0f;
 
@@ -103,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                             inputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
 
-                        ActiveControllers.Remove(lastDeviceList[i]);
+                        RemoveController(lastDeviceList[i]);
                     }
                 }
             }
@@ -132,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Gets or adds a controller using the joystick name provided.
         /// </summary>
-        /// <param name="joystickName">The name of they joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
+        /// <param name="joystickName">The name of the joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>A new controller reference.</returns>
         protected virtual GenericJoystickController GetOrAddController(string joystickName)
         {
@@ -180,9 +197,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         /// <summary>
+        /// Removes a controller using the joystick name provided.
+        /// </summary>
+        /// <param name="joystickName">The name of the joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
+        protected virtual void RemoveController(string joystickName)
+        {
+            ActiveControllers.Remove(joystickName);
+        }
+
+        /// <summary>
         /// Gets the current controller type for the joystick name provided.
         /// </summary>
-        /// <param name="joystickName">The name of they joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
+        /// <param name="joystickName">The name of the joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>The supported controller type</returns>
         protected virtual SupportedControllerType GetCurrentControllerType(string joystickName)
         {

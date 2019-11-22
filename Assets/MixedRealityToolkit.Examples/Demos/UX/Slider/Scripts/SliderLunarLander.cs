@@ -9,6 +9,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SliderLunarLander")]
     public class SliderLunarLander : MonoBehaviour
     {
         [SerializeField]

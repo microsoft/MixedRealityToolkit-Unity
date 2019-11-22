@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         private Vector3 pointerLocalGrabPoint;
         private Vector3 objectLocalGrabPoint;
-        private Vector3 pointerToObject;
+        private Vector3 grabToObject;
 
         /// <summary>
         /// Setup function
@@ -41,14 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             objectLocalGrabPoint = Quaternion.Inverse(objectPose.Rotation) * (grabCentroid - objectPose.Position);
             objectLocalGrabPoint = objectLocalGrabPoint.Div(objectScale);
 
-            pointerToObject = objectPose.Position - pointerCentroidPose.Position;
+            grabToObject = objectPose.Position - grabCentroid;
         }
 
         /// <summary>
         /// Update the position based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;
             float distanceRatio = 1.0f;
@@ -60,11 +60,18 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
-            Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
-            Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
-            adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
+            if (usePointerRotation)
+            {
+                Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
+                Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
+                adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
 
-            return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+                return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+            }
+            else
+            {
+                return pointerCentroidPose.Position + pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject * distanceRatio;
+            }
         }
     }
 }

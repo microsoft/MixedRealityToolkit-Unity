@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// <summary>
     /// A Distorter that randomly distorts points.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/DistorterSimplex")]
     public class DistorterSimplex : Distorter
     {
         private readonly FastSimplexNoise noise = new FastSimplexNoise();

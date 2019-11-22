@@ -10,12 +10,11 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using NUnit.Framework;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.SanityTests
 {
@@ -38,10 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SanityTests
 
             yield return new WaitForSeconds(ScenePlayDuration);
 
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-
-            Assert.NotNull(inputSystem);
+            Assert.NotNull(CoreServices.InputSystem);
         }
 
         [TearDown]

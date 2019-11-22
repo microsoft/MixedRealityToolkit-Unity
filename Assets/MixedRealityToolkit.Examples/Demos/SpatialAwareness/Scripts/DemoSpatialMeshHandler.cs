@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This class is an example of the <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/DemoSpatialMeshHandler")]
     public class DemoSpatialMeshHandler : MonoBehaviour, SpatialAwarenessHandler
     {
         /// <summary>

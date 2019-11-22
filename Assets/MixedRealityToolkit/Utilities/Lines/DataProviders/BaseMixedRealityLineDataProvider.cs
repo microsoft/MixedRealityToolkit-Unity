@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float distanceSoFar = 0f;
             float normalizedSegmentLength = 1f / searchResolution;
 
-            for (int i = 1; i < searchResolution; i++)
+            for (int i = 1; i <= searchResolution; i++)
             {
                 // Get the normalized length of this position along the line
                 normalizedLength = normalizedSegmentLength * i;

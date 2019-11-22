@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Teleport
     /// <summary>
     /// Service manager supporting running the teleport system, without requiring the MixedRealityToolkit object.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/TeleportSystemManager")]
     public class TeleportSystemManager : BaseServiceManager
     {
         [SerializeField]
@@ -33,11 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Teleport
         /// </summary>
         private void InitializeManager()
         {
-            // The teleport system class takes arguments for:
-            // * The registrar
-            object[] args = { this };
-
-            Initialize<IMixedRealityTeleportSystem>(TeleportSystemType.Type, args: args);
+            // The teleport system class takes no arguments.
+            Initialize<IMixedRealityTeleportSystem>(TeleportSystemType.Type);
         }
 
         /// <summary>

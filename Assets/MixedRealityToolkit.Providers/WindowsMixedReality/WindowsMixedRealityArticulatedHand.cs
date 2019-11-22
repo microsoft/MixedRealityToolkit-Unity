@@ -37,16 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 
         /// <summary>
-        /// The Windows Mixed Reality Controller default interactions.
+        /// The Windows Mixed Reality articulated hands default interactions.
         /// </summary>
-        /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
+        /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger, MixedRealityInputAction.None)
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger)
         };
 
         #region IMixedRealityHand Implementation
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     HandPose handPose = sourceState.TryGetHandPose();
 
-                    if (InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+                    if (CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                             for (int i = 0; i < handMeshObserver.VertexCount; i++)
                             {
-                                neutralPoseVertices[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Position);
+                                neutralPoseVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
                             }
 
                             // Compute UV mapping
@@ -271,8 +271,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                                 for (int i = 0; i < handMeshObserver.VertexCount; i++)
                                 {
-                                    handMeshVertices[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Position);
-                                    handMeshNormals[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(vertexAndNormals[i].Normal);
+                                    handMeshVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
+                                    handMeshNormals[i] = vertexAndNormals[i].Normal.ToUnityVector3();
                                 }
 
                                 HandMeshInfo handMeshInfo = new HandMeshInfo
@@ -281,11 +281,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                     normals = handMeshNormals,
                                     triangles = handMeshTriangleIndices,
                                     uvs = handMeshUVs,
-                                    position = WindowsMixedRealityUtilities.SystemVector3ToUnity(translation),
-                                    rotation = WindowsMixedRealityUtilities.SystemQuaternionToUnity(rotation)
+                                    position = translation.ToUnityVector3(),
+                                    rotation = rotation.ToUnityQuaternion()
                                 };
 
-                                InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                                CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             }
                         }
                     }
@@ -296,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         {
                             // notify that hand mesh has been updated (cleared)
                             HandMeshInfo handMeshInfo = new HandMeshInfo();
-                            InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             hasRequestedHandMeshObserver = false;
                             handMeshObserver = null;
                         }
@@ -306,8 +306,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         for (int i = 0; i < jointPoses.Length; i++)
                         {
-                            unityJointOrientations[i] = WindowsMixedRealityUtilities.SystemQuaternionToUnity(jointPoses[i].Orientation);
-                            unityJointPositions[i] = WindowsMixedRealityUtilities.SystemVector3ToUnity(jointPoses[i].Position);
+                            unityJointOrientations[i] = jointPoses[i].Orientation.ToUnityQuaternion();
+                            unityJointPositions[i] = jointPoses[i].Position.ToUnityVector3();
 
                             // We want the controller to follow the Playspace, so fold in the playspace transform here to 
                             // put the controller pose into world space.
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                 unityJointPoses[handJoint] = new MixedRealityPose(unityJointPositions[i], unityJointOrientations[i]);
                             }
                         }
-                        InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
+                        CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
                     }
                 }
             }
@@ -348,8 +348,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
-                InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                // Raise input system event if it's enabled
+                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
 #endif // WINDOWS_UWP
         }
