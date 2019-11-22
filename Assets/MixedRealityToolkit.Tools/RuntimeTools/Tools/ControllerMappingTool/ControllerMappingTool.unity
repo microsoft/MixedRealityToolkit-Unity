@@ -669,12 +669,15 @@ MonoBehaviour:
   surfaceType: 1
   orientType: 0
   layout: 1
+  anchor: 4
   radius: 1
   radialRange: 180
   distance: 1
   rows: 6
+  columns: 3
   cellWidth: 0.225
   cellHeight: 0.1
+  assetVersion: 1
 --- !u!1001 &264003338
 PrefabInstance:
   m_ObjectHideFlags: 0

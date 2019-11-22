@@ -1,32 +1,31 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
 {
-    [CustomEditor(typeof(UnityARCameraSettingsProfile))]
-    public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    [CustomEditor(typeof(WindowsMixedRealityCameraSettingsProfile))]
+    public class WindowsMixedRealityCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private const string ProfileTitle = "Unity AR Foundation Camera Settings";
+        private const string ProfileTitle = "Windows Mixed Reality Camera Settings";
         private const string ProfileDescription = "";
 
-        // Tracking settings
-        private SerializedProperty poseSource;
-        private SerializedProperty trackingType;
-        private SerializedProperty updateType;
+        private SerializedProperty renderFromPVCameraForMixedRealityCapture;
+
+        private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
+
+        private const string MRCDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            // Tracking settings
-            poseSource = serializedObject.FindProperty("poseSource");
-            trackingType = serializedObject.FindProperty("trackingType");
-            updateType = serializedObject.FindProperty("updateType");
+            renderFromPVCameraForMixedRealityCapture = serializedObject.FindProperty("renderFromPVCameraForMixedRealityCapture");
         }
 
         public override void OnInspectorGUI()
@@ -38,10 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 serializedObject.Update();
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Tracking Settings", EditorStyles.boldLabel);
-                EditorGUILayout.PropertyField(poseSource);
-                EditorGUILayout.PropertyField(trackingType);
-                EditorGUILayout.PropertyField(updateType);
+                EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
+                    InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
+                }
 
                 serializedObject.ApplyModifiedProperties();
             }

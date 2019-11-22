@@ -272,7 +272,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 251773535}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1000013198843976, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_Name
@@ -280,15 +280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.29652783
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.136
+      value: 0.29054102
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.0257568
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalRotation.x
@@ -308,7 +308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -334,12 +334,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
---- !u!4 &176756777 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54,
-    type: 3}
-  m_PrefabInstance: {fileID: 176756776}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &208193368
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,13 +424,8 @@ MonoBehaviour:
     Radius: 0
     Transform: {fileID: 1741344962}
     Colliders: []
-  - Name: 3DTextSelawikBold (1)
-    Offset: {x: 0, y: 0}
-    Radius: 0
-    Transform: {fileID: 176756777}
-    Colliders: []
   ignoreInactiveTransforms: 1
-  sortType: 0
+  sortType: 1
   surfaceType: 1
   orientType: 0
   layout: 0
@@ -444,10 +433,11 @@ MonoBehaviour:
   radius: 2
   radialRange: 180
   distance: 0
-  rows: 6
+  rows: 5
   columns: 1
   cellWidth: 0.1
   cellHeight: 0.03
+  assetVersion: 1
 --- !u!4 &251773535
 Transform:
   m_ObjectHideFlags: 0
@@ -459,7 +449,6 @@ Transform:
   m_LocalPosition: {x: 0.243, y: -0.16296387, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 176756777}
   - {fileID: 1499136695}
   - {fileID: 83666595}
   - {fileID: 384816103}
@@ -516,7 +505,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodeList: []
+  nodeList:
+  - Name: New Text (1)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1093156362}
+    Colliders: []
+  - Name: New Text (2)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1404545961}
+    Colliders: []
+  - Name: New Text (3)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 759348343}
+    Colliders: []
+  - Name: New Text (4)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 626183608}
+    Colliders: []
+  - Name: New Text (5)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1616684904}
+    Colliders: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
@@ -525,11 +539,12 @@ MonoBehaviour:
   anchor: 4
   radius: 2
   radialRange: 180
-  distance: 1
+  distance: 0
   rows: 5
   columns: 1
   cellWidth: 0.1
   cellHeight: 0.03
+  assetVersion: 1
 --- !u!1 &334838242
 GameObject:
   m_ObjectHideFlags: 0

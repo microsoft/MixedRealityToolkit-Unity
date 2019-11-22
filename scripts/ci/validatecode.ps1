@@ -92,6 +92,24 @@ function CheckMainCamera(
     return $false;
 }
 
+function CheckAssemblyCSharp(
+    [string]$FileName,
+    [string[]]$FileContent,
+    [int]$LineNumber
+) {
+    <#
+    .SYNOPSIS
+        Checks if the given profile contains references to Assembly-CSharp, often indicative of invalid reference.
+        Returns true if such a reference exists.
+    #>
+    if ($FileName -and $FileContent[$LineNumber] -match "Assembly-CSharp") {
+        Write-Host "An instance of 'Assembly-CSharp' was found in $FileName at line $LineNumber"
+        Write-Host "Please update this to reference the correct assembly."
+        return $true
+    }
+    return $false
+}
+
 function CheckCustomProfile(
     [string]$FileName,
     [string[]]$FileContent,
@@ -256,6 +274,9 @@ function CheckAsset(
     $fileContent = Get-Content $FileName
     for ($i = 0; $i -lt $fileContent.Length; $i++) {
         if (CheckCustomProfile $FileName $fileContent $i) {
+            $containsIssue = $true
+        }
+        if (CheckAssemblyCSharp $FileName $fileContent $i) {
             $containsIssue = $true
         }
     }
