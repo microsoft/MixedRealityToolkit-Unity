@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -93,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pointerUpCount++;
         }
 
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        public virtual void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             pointerClickedCount++;
         }
@@ -101,6 +102,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             speechCount++;
+        }
+    }
+
+    internal class TestInputGlobalListenerException : TestInputGlobalListener
+    {
+        public const string ExceptionMessage = "Test exception thrown during event fired for global listener";
+        public override void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            throw new Exception(ExceptionMessage);
         }
     }
 
