@@ -40,10 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-#if WINDOWS_UWP
-            articulatedHandApiAvailable = ApiInformation.IsMethodPresent("SpatialInteractionSourceState", "TryGetHandPose");
-#elif UNITY_WSA && DOTNETWINRT_PRESENT
-            articulatedHandApiAvailable = typeof(SpatialInteractionSourceState).GetMethod("TryGetHandPose") != null;
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            articulatedHandApiAvailable = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionSourceState", "TryGetHandPose");
 #endif
         }
 
