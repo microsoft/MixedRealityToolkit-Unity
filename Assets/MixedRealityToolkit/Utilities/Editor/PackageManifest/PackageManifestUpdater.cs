@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         manifestFileLines.Add(line);
                     }
 
-                    // Go back to the start of the file.q`
+                    // Go back to the start of the file.
                     manifestStream.Seek(0, 0);
 
                     // Deserialize the scoped registries portion of the package manifest.
