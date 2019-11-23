@@ -16,16 +16,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
         private const string ProfileDescription = "";
 
         private SerializedProperty renderFromPVCameraForMixedRealityCapture;
+        private SerializedProperty reprojectionMethod;
 
         private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
+        private readonly GUIContent reprojectionMethodTitle = new GUIContent("HoloLens 2 Reprojection Method");
 
         private const string MRCDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
+        private const string DepthReprojectionDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/hologram-stability#reprojection";
 
         protected override void OnEnable()
         {
             base.OnEnable();
 
             renderFromPVCameraForMixedRealityCapture = serializedObject.FindProperty("renderFromPVCameraForMixedRealityCapture");
+            reprojectionMethod = serializedObject.FindProperty("reprojectionMethod");
         }
 
         public override void OnInspectorGUI()
@@ -43,6 +47,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                 {
                     EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Depth Reprojection Settings", EditorStyles.boldLabel);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
+                    InspectorUIUtility.RenderDocumentationButton(DepthReprojectionDocURL);
                 }
 
                 serializedObject.ApplyModifiedProperties();
