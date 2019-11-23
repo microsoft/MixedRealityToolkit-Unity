@@ -45,10 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
-
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            eyesApiAvailable = ApiInformation.IsPropertyPresent("SpatialPointerPose", "Eyes");
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 
         /// <summary>
@@ -62,7 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
+        {
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            eyesApiAvailable = ApiInformation.IsPropertyPresent("Windows.UI.Input.Spatial.SpatialPointerPose", "Eyes");
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+        }
 
         public bool SmoothEyeTracking { get; set; } = false;
 
