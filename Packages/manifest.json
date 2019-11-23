@@ -9,7 +9,7 @@
         }
     ],
   "dependencies": {
-"com.microsoft.msbuildforunity": "0.8.1",
+    "com.microsoft.msbuildforunity": "0.8.1",
     "com.unity.package-manager-ui": "2.0.8",
     "com.unity.textmeshpro": "1.4.1",
     "com.unity.xr.arcore": "2.1.2",
