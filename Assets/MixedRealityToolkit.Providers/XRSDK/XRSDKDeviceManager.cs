@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             }
         }
 
-        protected static readonly Dictionary<string, GenericJoystickController> ActiveControllers = new Dictionary<string, GenericJoystickController>();
+        protected static readonly Dictionary<string, GenericXRSDKController> ActiveControllers = new Dictionary<string, GenericXRSDKController>();
 
         private InputDevice leftInputDevice;
         private InputDevice rightInputDevice;
@@ -81,8 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 if (wasLeftInputDeviceValid)
                 {
-                    GenericJoystickController controller = GetOrAddController(leftInputDevice);
-                    //CoreServices.InputSystem.RaiseSourceLost(controller.InputSource, controller);
+                    GenericXRSDKController controller = GetOrAddController(leftInputDevice);
+
+                    if (controller != null)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    }
+
                     wasLeftInputDeviceValid = false;
                 }
 
@@ -91,17 +96,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 if (leftInputDevice.isValid)
                 {
                     wasLeftInputDeviceValid = true;
-                    GenericJoystickController controller = GetOrAddController(leftInputDevice);
-                    //CoreServices.InputSystem.RaiseSourceDetected(controller.InputSource, controller);
+                    GenericXRSDKController controller = GetOrAddController(leftInputDevice);
+
+                    if (controller != null)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                    }
                 }
+            }
+            else
+            {
+                GetOrAddController(leftInputDevice)?.UpdateController(leftInputDevice);
             }
 
             if (!rightInputDevice.isValid)
             {
                 if (wasRightInputDeviceValid)
                 {
-                    GenericJoystickController controller = GetOrAddController(rightInputDevice);
-                    //CoreServices.InputSystem.RaiseSourceLost(controller.InputSource, controller);
+                    GenericXRSDKController controller = GetOrAddController(rightInputDevice);
+
+                    if (controller != null)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    }
+
                     wasRightInputDeviceValid = false;
                 }
 
@@ -110,9 +128,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 if (rightInputDevice.isValid)
                 {
                     wasRightInputDeviceValid = true;
-                    GenericJoystickController controller = GetOrAddController(rightInputDevice);
-                    //CoreServices.InputSystem.RaiseSourceDetected(controller.InputSource, controller);
+                    GenericXRSDKController controller = GetOrAddController(rightInputDevice);
+
+                    if (controller != null)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                    }
                 }
+            }
+            else
+            {
+                GetOrAddController(rightInputDevice)?.UpdateController(rightInputDevice);
             }
         }
 
@@ -123,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         /// <param name="joystickName">The name of the joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
         /// <returns>The controller reference.</returns>
-        protected virtual GenericJoystickController GetOrAddController(InputDevice inputDevice)
+        protected virtual GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
             // If a device is already registered with the ID provided, just return it.
             if (ActiveControllers.ContainsKey(inputDevice.name))
@@ -153,10 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             var currentControllerType = GetCurrentControllerType(inputDevice);
             Type controllerType;
 
-            List<InputFeatureUsage> inputFeatureUsages = new List<InputFeatureUsage>();
-
-            inputDevice.TryGetFeatureUsages(inputFeatureUsages);
-
             switch (currentControllerType)
             {
                 //case SupportedControllerType.GenericOpenVR:
@@ -181,34 +203,33 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     return null;
             }
 
-            //IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            //var pointers = RequestPointers(currentControllerType, controllingHand);
-            //var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
-            //var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
+            var pointers = RequestPointers(currentControllerType, controllingHand);
+            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
+            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
 
-            //if (detectedController == null)
-            //{
-            //    Debug.LogError($"Failed to create {controllerType.Name} controller");
-            //    return null;
-            //}
+            if (detectedController == null)
+            {
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
+                return null;
+            }
 
-            //if (!detectedController.SetupConfiguration(controllerType))
-            //{
-            //    // Controller failed to be set up correctly.
-            //    Debug.LogError($"Failed to set up {controllerType.Name} controller");
-            //    // Return null so we don't raise the source detected.
-            //    return null;
-            //}
+            if (!detectedController.SetupConfiguration(controllerType))
+            {
+                // Controller failed to be set up correctly.
+                Debug.LogError($"Failed to set up {controllerType.Name} controller");
+                // Return null so we don't raise the source detected.
+                return null;
+            }
 
-            //for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-            //{
-            //    detectedController.InputSource.Pointers[i].Controller = detectedController;
-            //}
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
 
-            //ActiveControllers.Add(joystickName, detectedController);
-            //return detectedController;
-            return null;
+            ActiveControllers.Add(inputDevice.name, detectedController);
+            return detectedController;
         }
 
         ///// <inheritdoc />
