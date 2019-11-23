@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Attempt to find an entry in the scoped regstries collection for the MSBuild for Unity url
-            string msBuildRegistryUrl = "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry";
+            const string msBuildRegistryUrl = "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry";
             bool needToAddRegistry = true;
             foreach (ScopedRegistry registry in scopedRegistries)
             {
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // If no entry was found, add one.
-            string msBuildRegistryName = "MS Build for Unity";
+            const string msBuildRegistryName = "MS Build for Unity";
             string[] msBuildRegistryScopes = new string[] { "com.microsoft" };
             if (needToAddRegistry)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
             // This loop also identifies the dependecies collection line and the start / end of a
             // pre-existing scoped registries collections
-            string msBuildPackageName = "com.microsoft.msbuildforunity";
+            const string msBuildPackageName = "com.microsoft.msbuildforunity";
             bool needToAddPackage = true;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
@@ -126,11 +126,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // If no package was found add it to the dependencies collection.
-            string msBuildPackageVersion = "0.8.1";
+            const string msBuildPackageVersion = "0.8.1";
             if (needToAddPackage)
             {
-                // Add the package to the collection
-                manifestFileLines.Insert(dependenciesStartIndex + 1, $"\"{msBuildPackageName}\": \"{msBuildPackageVersion}\",");
+                // Add the package to the collection (pad the entry with four spaces)
+                manifestFileLines.Insert(dependenciesStartIndex + 1, $"    \"{msBuildPackageName}\": \"{msBuildPackageVersion}\",");
             }
 
             if (needToAddRegistry || needToAddPackage)
