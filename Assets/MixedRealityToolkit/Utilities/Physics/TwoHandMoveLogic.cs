@@ -31,8 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
-            Vector3 headPosition = CameraCache.Main.transform.position;            
-            pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
+            Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
+            Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
+            pointerRefDistance = Vector2.Distance(pointerPosXZ, headPosXZ);
             pointerPosIndependentOfHead = pointerRefDistance != 0;
             
             Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
@@ -50,13 +51,15 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>A Vector3 describing the desired position</returns>
         public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation, MovementConstraintType movementConstraint)
         {
-            Vector3 headPosition = CameraCache.Main.transform.position;
             float distanceRatio = 1.0f;
 
             if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
-                var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
+                Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
+                Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
+
+                var currentHandDistance = Vector2.Distance(pointerPosXZ, headPosXZ);
                 distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
