@@ -223,12 +223,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             // Locate the full path to the package manifest.
             DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
-            string manifestPath = Path.Combine(projectRoot.FullName, System.IO.Path.Combine("Packages", "manifest.json"));
+            string[] paths = { projectRoot.FullName, "Packages", "manifest.json" };
+            string manifestPath = Path.Combine(paths);
 
             // Verify that the package manifest file exists.
             if (!File.Exists(manifestPath))
             {
-                Debug.LogError("Unable to locate the package manifest file");
+                Debug.LogError($"Package manifest file ({manifestPath}) could not be found.");
                 return false;
             }
 
@@ -236,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string manifestFileContents = File.ReadAllText(manifestPath);
             if (string.IsNullOrWhiteSpace(manifestFileContents))
             {
-                Debug.LogError("Failed to load the package manifest file");
+                Debug.LogError($"Failed to read the package manifest file ({manifestPath})");
                 return false;
             }
 
