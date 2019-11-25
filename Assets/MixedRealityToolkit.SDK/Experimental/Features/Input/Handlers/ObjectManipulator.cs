@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region Public Enums
         public enum RotateInOneHandType
         {
-            MaintainOriginalRotation,
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
         };
@@ -589,23 +588,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             constraints.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
 
-            RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
-            switch (rotateInOneHandType)
-            {
-                case RotateInOneHandType.MaintainOriginalRotation:
-                    targetTransform.Rotation = HostTransform.rotation;
-                    break;
-                case RotateInOneHandType.RotateAboutObjectCenter:
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    Quaternion gripRotation;
-                    TryGetGripRotation(pointer, out gripRotation);
-                    targetTransform.Rotation = gripRotation * objectToGripRotation;
-                    break;
-            }
+            Quaternion gripRotation;
+            TryGetGripRotation(pointer, out gripRotation);
+            targetTransform.Rotation = gripRotation * objectToGripRotation;
+
             constraints.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
 
+            RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
+
             constraints.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
 
             ApplyTargetTransform(targetTransform);
@@ -779,7 +771,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-
             for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)

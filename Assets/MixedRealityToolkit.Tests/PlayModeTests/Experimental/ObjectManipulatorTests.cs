@@ -356,12 +356,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // do this test for every one hand rotation mode
             foreach (ObjectManipulator.RotateInOneHandType type in Enum.GetValues(typeof(ObjectManipulator.RotateInOneHandType)))
             {
-                // Some rotation modes move the object on grab, don't test those
-                if (type == ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation)
-                {
-                    continue;
-                }         
-
                 manipHandler.OneHandRotationModeFar = type;
 
                 TestUtilities.PlayspaceToOriginLookingForward();

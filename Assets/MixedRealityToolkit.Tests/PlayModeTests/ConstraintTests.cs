@@ -813,6 +813,54 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
             Assert.Less(checkNegative(), 0, "Object facing away");
         }
+
+        /// <summary>
+        /// Tests that FixedRotationToWorldConstraint maintains the original rotation of the manipulated object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstrainRotationFixToWorld()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
+            manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+            var rotConstraint = manipHandler.EnsureComponent<FixedRotationToWorldConstraint>();
+            rotConstraint.TargetTransform = manipHandler.HostTransform;
+
+            // Face user first
+            const int numHandSteps = 1;
+            TestHand hand = new TestHand(Handedness.Right);
+
+            yield return hand.Show(new Vector3(0.05f, -0.1f, 0.45f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            // rotate the hand
+            yield return hand.SetRotation(Quaternion.Euler(45, 45, 45), numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(Quaternion.identity, testObject.transform.rotation);
+
+            // move the hand
+            yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(Quaternion.identity, testObject.transform.rotation);
+
+            // rotate the head
+            CameraCache.Main.transform.Rotate(new Vector3(0, 10, 0));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreEqual(Quaternion.identity, testObject.transform.rotation);
+        }
     }
 }
 #endif
