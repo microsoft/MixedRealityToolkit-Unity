@@ -13,8 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     internal static class PackageManifestUpdater
     {
-        private static string PackageManifestRelativePath = Path.Combine("Packages", "manifest.json");
-
         /// <summary>
         /// Ensures the required settings exist in the package manager to allow for
         /// installing MSBuild for Unity.
