@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString(); } },
+            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1"); } },
             { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture); } },
             { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription; } },
         };
