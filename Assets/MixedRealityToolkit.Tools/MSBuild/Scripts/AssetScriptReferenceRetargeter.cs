@@ -376,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 }
                                 else if ((type.Namespace == null) || 
                                         !type.Namespace.Contains("Microsoft.MixedReality.Toolkit") ||
-                                        !type.Namespace.Contains."Microsoft.Windows.MixedReality")) // DotNetWinRT adapter
+                                        !type.Namespace.Contains("Microsoft.Windows.MixedReality")) // DotNetWinRT adapter
                                 {
                                     throw new InvalidDataException($"Type {type.Name} is not a member of an approved (typically, 'Microsoft.MixedReality.Toolkit') namespace");
                                 }
