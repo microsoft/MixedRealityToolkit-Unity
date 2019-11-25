@@ -41,22 +41,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                 serializedObject.Update();
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
-
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
+                    EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
                 }
+                EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Depth Reprojection Settings", EditorStyles.boldLabel);
-
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
+                    EditorGUILayout.LabelField("Depth Reprojection Settings", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(DepthReprojectionDocURL);
                 }
+                EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
 
                 serializedObject.ApplyModifiedProperties();
             }
