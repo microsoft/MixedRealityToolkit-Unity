@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             VirtualRealitySupported,
             SinglePassInstancing,
             SpatialAwarenessLayer,
+            EnableMSBuildForUnity,
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -60,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
             { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
+            { Configurations.EnableMSBuildForUnity, () => { return IsMSBuildForUnityEnabled(); } },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
@@ -91,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported,  () => { PlayerSettings.virtualRealitySupported = true; } },
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
+            { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
@@ -211,6 +214,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool IsForceTextSerialization()
         {
             return EditorSettings.serializationMode == SerializationMode.ForceText;
+        }
+
+        /// <summary>
+        /// Checks package manifest to see if MSBuild for Unity is included in the dependencies.
+        /// </summary>
+        public static bool IsMSBuildForUnityEnabled()
+        {
+            // Locate the full path to the package manifest.
+            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
+            string manifestPath = Path.Combine(projectRoot.FullName, System.IO.Path.Combine("Packages", "manifest.json"));
+
+            // Verify that the package manifest file exists.
+            if (!File.Exists(manifestPath))
+            {
+                Debug.LogError("Unable to locate the package manifest file");
+                return false;
+            }
+
+            // Load the manfiest file.
+            string manifestFileContents = File.ReadAllText(manifestPath);
+            if (string.IsNullOrWhiteSpace(manifestFileContents))
+            {
+                Debug.LogError("Failed to load the package manifest file");
+                return false;
+            }
+
+            // Attempt to find the MSBuild for Unity package name.
+            const string msBuildPackageName = "com.microsoft.msbuildforunity";
+            return manifestFileContents.Contains(msBuildPackageName);
         }
 
         /// <summary>

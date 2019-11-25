@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         static EditorProjectUtilities()
         {
             CheckMinimumEditorVersion();
-            PackageManifestUpdater.EnsureMSBuildForUnity();
             ApplyARFoundationUWPCompileFix();
         }
 
