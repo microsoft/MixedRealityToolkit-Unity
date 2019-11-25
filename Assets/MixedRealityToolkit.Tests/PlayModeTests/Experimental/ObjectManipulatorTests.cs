@@ -357,9 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             foreach (ObjectManipulator.RotateInOneHandType type in Enum.GetValues(typeof(ObjectManipulator.RotateInOneHandType)))
             {
                 // Some rotation modes move the object on grab, don't test those
-                if (type == ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation ||
-                    type == ObjectManipulator.RotateInOneHandType.FaceAwayFromUser ||
-                    type == ObjectManipulator.RotateInOneHandType.FaceUser)
+                if (type == ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation)
                 {
                     continue;
                 }         

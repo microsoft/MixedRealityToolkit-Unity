@@ -645,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            const int numHandSteps = 1;
+            const int numHandSteps = 10;
             
             TestHand leftHand = new TestHand(Handedness.Left);
             TestHand rightHand = new TestHand(Handedness.Right);
@@ -685,8 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ConstrainByProximity()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
-
-            // set up cube with manipulation handler
+            
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 originalPosition = Vector3.forward;
@@ -752,6 +751,67 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestUtilities.AssertNotAboutEqual(originalRotation, testObject.transform.rotation, "Rotation should not be equal for far interaction");
             TestUtilities.AssertAboutEqual(originalPosition, testObject.transform.position, "Position should be equal for far interaction");
+        }
+
+        /// <summary>
+        /// Tests that FaceUserConstraint updates the rotation to face the user
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ConstrainRotationFaceUser()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ManipulationHandFlags.OneHanded;
+            manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+            var rotConstraint = manipHandler.EnsureComponent<FaceUserConstraint>();
+            rotConstraint.TargetTransform = manipHandler.HostTransform;
+            rotConstraint.FaceAway = false;
+
+            // Face user first
+            const int numHandSteps = 10;
+            TestHand hand = new TestHand(Handedness.Right);
+
+            yield return hand.Show(new Vector3(0.05f, -0.1f, 0.45f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Vector3 cameraToObject() => testObject.transform.position - CameraCache.Main.transform.position;
+            Vector3 checkCollinear() => Vector3.Cross(testObject.transform.forward, cameraToObject());
+            float checkNegative() => Vector3.Dot(testObject.transform.forward, cameraToObject());
+
+            TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
+            Assert.Greater(checkNegative(), 0, "Object facing away");
+
+            // Move the hand
+            yield return hand.Move(new Vector3(0.2f, 0.2f, 0), numHandSteps);
+            yield return null;
+
+            Assert.AreNotEqual(Vector3.forward, testObject.transform.position); // ensure the object moved
+            TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
+            Assert.Greater(checkNegative(), 0, "Object facing away");
+
+            // Face away from user
+            rotConstraint.FaceAway = true;
+            yield return hand.Move(new Vector3(-0.2f, -0.2f, 0), numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
+            Assert.Less(checkNegative(), 0, "Object facing away");
+
+            // Move the hand
+            yield return hand.Move(new Vector3(0.2f, 0.2f, 0), numHandSteps);
+            yield return null;
+
+            Assert.AreNotEqual(Vector3.forward, testObject.transform.position); // ensure the object moved
+            TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
+            Assert.Less(checkNegative(), 0, "Object facing away");
         }
     }
 }

@@ -142,11 +142,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         break;
                     }
                 case ManipulationHandler.RotateInOneHandType.FaceUser:
-                    newMode = ObjectManipulator.RotateInOneHandType.FaceUser;
-                    break;
+                    {
+                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+                        var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
+                        rotConstraint.TargetTransform = objManip.HostTransform;
+                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                        rotConstraint.ProximityType = proximity;
+                        rotConstraint.FaceAway = false;
+                        break;
+                    }
                 case ManipulationHandler.RotateInOneHandType.FaceAwayFromUser:
-                    newMode = ObjectManipulator.RotateInOneHandType.FaceAwayFromUser;
-                    break;
+                    {
+                        newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+
+                        var rotConstraint = objManip.EnsureComponent<FaceUserConstraint>();
+                        rotConstraint.TargetTransform = objManip.HostTransform;
+                        rotConstraint.HandType = ManipulationHandFlags.OneHanded;
+                        rotConstraint.ProximityType = proximity;
+                        rotConstraint.FaceAway = true;
+                        break;
+                    }
                 case ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation:
                     newMode = ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation;
                     break;

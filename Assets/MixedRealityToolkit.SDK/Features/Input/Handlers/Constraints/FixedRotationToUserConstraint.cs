@@ -7,8 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Component for limiting the rotation of a manipulated object relative to the user
-    /// or BoundingBox
+    /// Component for fixing the rotation of a manipulated object relative to the user
     /// </summary>
     public class FixedRotationToUserConstraint : TransformConstraint
     {
@@ -31,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Removes rotation about given axis if its flag is found
-        /// in ConstraintOnRotation
+        /// Updates the objects rotation so that the rotation relative to the user
+        /// is fixed
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {

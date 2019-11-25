@@ -25,8 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region Public Enums
         public enum RotateInOneHandType
         {
-            FaceUser,
-            FaceAwayFromUser,
             MaintainOriginalRotation,
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
@@ -283,15 +281,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
-        private Quaternion objectToHandRotation;
         private Quaternion objectToGripRotation;
         private bool isNearManipulation;
         private bool isManipulationStarted;
 
         private Rigidbody rigidBody;
         private bool wasKinematic = false;
-        
-        private Quaternion hostWorldRotationOnManipulationStart;
 
         private ConstraintManager constraints;
 
@@ -573,15 +568,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
 
-            // cache objects rotation on start to have a reference for constraint calculations
-            // if we don't cache this on manipulation start the near rotation might drift off the hand
-            // over time
-            hostWorldRotationOnManipulationStart = HostTransform.rotation;
-
-            // Calculate relative transform from object to hand.
-            Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
-            objectToHandRotation = worldToPalmRotation * HostTransform.rotation;
-
             // Calculate relative transform from object to grip.
             Quaternion gripRotation;
             TryGetGripRotation(pointer, out gripRotation);
@@ -609,19 +595,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 case RotateInOneHandType.MaintainOriginalRotation:
                     targetTransform.Rotation = HostTransform.rotation;
                     break;
-                case RotateInOneHandType.FaceUser:
-                {
-                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    // Vector3 directionToTarget = HostTransform.position - CameraCache.Main.transform.position;
-                    targetTransform.Rotation = Quaternion.LookRotation(-directionToTarget);
-                    break;
-                }
-                case RotateInOneHandType.FaceAwayFromUser:
-                {
-                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    targetTransform.Rotation = Quaternion.LookRotation(directionToTarget);
-                    break;
-                }
                 case RotateInOneHandType.RotateAboutObjectCenter:
                 case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;
