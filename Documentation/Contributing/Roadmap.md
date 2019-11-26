@@ -51,7 +51,7 @@ The MRTK build and deploy tools remain a continued area of stability and quality
 
 **Unity 2019.3 XR SDK support**
 
-XR SDK is Unity's new mixed reality platform. The Microsoft Mixed Reality Toolkit is committed to supporting our customers on this new platform. All new platform support in MRTK is be delivered via XR SDK.
+XR SDK is Unity's new mixed reality platform. The Microsoft Mixed Reality Toolkit is committed to supporting our customers on this new platform. All new platform support in MRTK is expected to be delivered via XR SDK.
 
 **User Experience**
 
