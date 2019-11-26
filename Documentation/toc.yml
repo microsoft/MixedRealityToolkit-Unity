@@ -51,6 +51,10 @@
         href: CameraSystem/UnityArCameraSettings.md
       - name: Creating a camera settings provider
         href: CameraSystem/CreateSettingsProvider.md
+  - name: Cross Platform Support
+    items: 
+    - name: Configure MRTK for iOS and Android
+      href: CrossPlatform/UsingARFoundation.md
   - name: Detecting Platform Capabilities
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System
