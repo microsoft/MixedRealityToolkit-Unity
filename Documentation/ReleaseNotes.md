@@ -29,7 +29,7 @@ The following software is required.
 
 NuGet requirements
 
-If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
+If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
 
@@ -87,13 +87,115 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
 
 ### What's new in 2.2.0
 
+**Camera Settings Providers**
+
 << todo >>
+
+**Cursor resizing**
+
+<< todo based on distance and angular scale >>
+
+**Directional Indicator Solver**
+
+<< todo >>
+
+**Fingertip cursor translation and alignment*
+
+<< todo >>
+
+**GridObjectCollection supports content alignment**
+
+<< todo asset version has been upgraded to allow for some fixes. All components with layout ColumnsThenRows will be upgraded automatically, keep eye out for logs and remember to check and save assets. >>
+
+**InteractableToggleCollection**
+
+<< todo new custom inspector >>
+
+**Mixed Reality Capture settings (Experimental)**
+
+<< todo >>
+
+**Mobile AR (Android and iOS) support (Experimental)**
+
+<< todo >>
+
+**MSBuild for Unity**
+
+<< todo: optionally installed via the Configure Unity menu >>
+
+**New audio clips for HoloLens 2 style bounding boxes**
+
+<< todo >>
+
+**PressableButtonHoloLens2 icon lift on focus**
+
+<< todo shell parity >>
+
+**Pulse shaders for spatial mesh and hand mesh (Experimental)**
+
+<< todo >>
+
+**Scrolling Object Collection (Experimental)**
+
+<< todo >>
+
+**Search MRTK profiles for keywords**
+
+<< todo >>
+
+**Select HoloLens 2 depth reprojection mode**
+
+<< todo requires >>
+
+**Surface Magnetism Solver and Hand Ray example scene**
+
+<< todo requires MSBuild for Unity installation >>
+
+**Support for hand and eye tracking remoting for Microsoft HoloLens 2**
+
+<< todo requires MSBuild for Unity installation >>
 
 ### Known issues in 2.1.0
 
 The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
 
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
 << todo >>
+
+**Unity 2018: .NET Backend and AR Foundation**
+
+<< todo >>
+
+**Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
+
+<< todo >>
+
+**Mixed Reality Capture settings (Experimental)**
+
+<< todo off by default. not supported on Unity 2019.1, 2019.2 and some versions of 2018.4 >>
+
+**MRTK Configurator dialog**
+
+<< todo may appear multiple times on project load >>
 
 ## Version 2.1.0
 
