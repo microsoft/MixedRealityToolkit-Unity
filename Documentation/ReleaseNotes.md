@@ -89,43 +89,75 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
 
 **Camera Settings Providers**
 
-<< todo >>
+MRTK has added settings providers to the camera system. These components enable customization of the camera system on a per-platform basis. Shipping in version 2.2.0 are providers for
+
+- Windows Mixed Reality (Foundation package)
+- (Experimental) UnityAR for Android and iOS (Providers.UnityAR package)
+
+> [!Note] 
+> If no camera settings provider is configured for the current platform, the behavior from MRTK v2.1.0 will be used.
 
 **Cursor resizing**
 
-<< todo based on distance and angular scale >>
+The DefaultCursor prefab now dynamically resizes based on the distance (to the raycast hit point) and uses angular scale to account for platform differences.
 
 **Directional Indicator Solver**
 
-<< todo >>
+The HoloToolkit directional indicator component has been re-introduced as a solver.
 
-**Fingertip cursor translation and alignment*
+![DirectionalIndicatorSolver](https://user-images.githubusercontent.com/25975362/67609639-9a4ab400-f742-11e9-9d50-6511aede13dc.gif)
 
-<< todo >>
+**Fingertip cursor translation and alignment**
+
+The fingertip cursor's translation and alignment have been updated to better match the HoloLens 2 shell behavior.
+
+![Fingertip cursor](https://user-images.githubusercontent.com/16657884/68256795-e836a600-ffe5-11e9-9aab-ea5ae5687417.gif)
 
 **GridObjectCollection supports content alignment**
 
-<< todo asset version has been upgraded to allow for some fixes. All components with layout ColumnsThenRows will be upgraded automatically, keep eye out for logs and remember to check and save assets. >>
+The GridObjectCollection UX control now supports aligning content to combinations of
+
+- Left
+- Center
+- Right
+
+and
+
+- Top
+- Middle
+- Bottom
+
+![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
 
 **InteractableToggleCollection**
 
 << todo new custom inspector >>
 
-**Mixed Reality Capture settings (Experimental)**
+**Mixed Reality Capture setting (Experimental)**
 
-<< todo >>
+The Windows Mixed Reality camera settings provider provides and experimental setting to better align holograms in mixed reality capture (MRC) recordings.
+
+![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
+
+> [!Note]
+> This feature is supported on Unity versions 2018.4 (.12f1 and newer) and 2019.3 (.0b12 and newer). With other Unity versions, the recording behavior may not work as expected.s
 
 **Mobile AR (Android and iOS) support (Experimental)**
 
-<< todo >>
+An experimental camera settings provider has been added to support mobile AR on Android and iOS phones and tablets. This provider requires Unity's AR Foundation as well as AR Core or AR Kit packages to be installed into the project.
+
+The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR package on GitHub and NuGet.
 
 **MSBuild for Unity**
 
-<< todo: optionally installed via the Configure Unity menu >>
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
+
+> [!Note]
+> Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
 
 **New audio clips for HoloLens 2 style bounding boxes**
 
-<< todo >>
+The HoloLens 2 style bounding box UX control uses new audio clips to better match the shell experience.
 
 **PressableButtonHoloLens2 icon lift on focus**
 
@@ -133,23 +165,35 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
 
 **Pulse shaders for spatial mesh and hand mesh (Experimental)**
 
-<< todo >>
+Experimental shaders have been added for the spatial mesh and hand mesh to replicate the HoloLens 2 shell behavior.
+
+Spatial mesh
+![Spatial mesh shader](https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif)
+
+Hand mesh
+
+> [!Note]
+> On HoloLens 2, the experience does not show an offset from the hands.
+
+![Hand mesh shader](https://user-images.githubusercontent.com/13754172/68262035-e4f7e600-fff6-11e9-9858-796afd1cabc5.gif)
 
 **Scrolling Object Collection (Experimental)**
 
-<< todo >>
+An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 intitial (out of box) experience.
+
+![Scrolling object collection](https://user-images.githubusercontent.com/13754172/65283862-f3dd1480-daec-11e9-8868-671106c6732b.gif)
 
 **Search MRTK profiles for keywords**
 
-<< todo >>
+MRTK profiles now support searching by keyword.
 
-**Select HoloLens 2 depth reprojection mode**
-
-<< todo requires >>
+![Profile keyword search](https://user-images.githubusercontent.com/168492/69468019-6497eb80-0d3f-11ea-8568-874db66c0099.gif)
 
 **Surface Magnetism Solver and Hand Ray example scene**
 
-<< todo requires MSBuild for Unity installation >>
+A new example scene has been added, which demonstrates surface magnetism and the spatial awareness mesh.
+
+![Surface magnetism and hand ray example](https://user-images.githubusercontent.com/13754172/69566003-f6377100-0f6a-11ea-8963-a6ef93554e43.gif)
 
 **Support for hand and eye tracking remoting for Microsoft HoloLens 2**
 
