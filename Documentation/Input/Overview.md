@@ -1,6 +1,7 @@
 # Input Overview
 
 The Input System in MRTK allows you to:
+
 - Consume inputs from a variety of input sources, such as 6 DOF controllers, articulated hands or speech, via input events.
 - Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
 - Setup pointers attached to controllers to drive UI components via focus and pointer events.

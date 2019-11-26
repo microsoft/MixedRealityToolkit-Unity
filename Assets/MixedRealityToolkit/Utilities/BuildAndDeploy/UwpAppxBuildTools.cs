@@ -619,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             public string pathSuffix;
         }
 
-        private static VSWhereFindOption[] VSWhereFindOptions =
+        private static readonly VSWhereFindOption[] VSWhereFindOptions =
         {
             // This find option corresponds to the version of vswhere that ships with VS2019.
             new VSWhereFindOption(

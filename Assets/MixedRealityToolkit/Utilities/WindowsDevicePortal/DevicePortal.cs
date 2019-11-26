@@ -728,7 +728,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// This Utility method finalizes the URL and formats the HTTPS string if needed.
         /// </summary>
-        /// <remarks>Local Machine will be changed to 127.0.1:10080 for HoloLens connections.</remarks>
+        /// <remarks>Local Machine will be changed to 127.0.0.1:10080 for HoloLens connections.</remarks>
         /// <param name="targetUrl">The target URL i.e. 128.128.128.128</param>
         /// <returns>The finalized URL with http/https prefix.</returns>
         public static string FinalizeUrl(string targetUrl)
@@ -745,7 +745,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         }
 
         /// <summary>
-        /// Refreshes the CSRF Token in case the device or it's portal was restarted.
+        /// Refreshes the CSRF Token in case the device or its portal was restarted.
         /// </summary>
         /// <returns>True, if refresh was successful.</returns>
         public static async Task<bool> RefreshCsrfTokenAsync(DeviceInfo targetDevice)
@@ -767,16 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <returns>True if Authentication is successful, otherwise false.</returns>
         public static async Task<bool> EnsureAuthenticationAsync(DeviceInfo targetDevice)
         {
-            string auth = Rest.GetBasicAuthentication(targetDevice.User, targetDevice.Password);
-
-            if (targetDevice.Authorization.ContainsKey("Authorization"))
-            {
-                targetDevice.Authorization["Authorization"] = auth;
-            }
-            else
-            {
-                targetDevice.Authorization.Add("Authorization", auth);
-            }
+            targetDevice.Authorization["Authorization"] = Rest.GetBasicAuthentication(targetDevice.User, targetDevice.Password);
 
             bool success;
 
@@ -787,10 +778,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
                 if (success)
                 {
-                    targetDevice.CsrfToken = response.ResponseBody;
+                    // If null, authentication succeeded but we had no cookie token in the response.
+                    // This usually means Unity has a cached token, so it can be ignored.
+                    if (response.ResponseBody != null)
+                    {
+                        targetDevice.CsrfToken = response.ResponseBody;
 
-                    // Strip the beginning of the cookie header
-                    targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                        // Strip the beginning of the cookie header
+                        targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                    }
                 }
                 else
                 {
@@ -828,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
         private static async Task<Response> DevicePortalAuthorizationAsync(DeviceInfo targetDevice)
         {
-            var webRequest = UnityWebRequest.Get(FinalizeUrl(targetDevice.IP));
+            UnityWebRequest webRequest = UnityWebRequest.Get(FinalizeUrl(targetDevice.IP));
 
             webRequest.timeout = 5;
             webRequest.SetRequestHeader("Authorization", targetDevice.Authorization["Authorization"]);
