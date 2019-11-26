@@ -361,16 +361,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if ((CoreServices.InputSystem != null) && (CoreServices.InputSystem.FocusProvider != null))
             {
-                if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
                 {
-                    Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                    if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                    {
+                        Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
+                    }
                 }
-            }
 
-            UpdateCursorState();
-            UpdateCursorTransform();
+                UpdateCursorState();
+                UpdateCursorTransform();
+            }
         }
 
         protected virtual void OnEnable()
