@@ -25,7 +25,7 @@ The Mixed Reality Toolkit will require Unity 2018.4.
 
 ### 2.3.0
 
-The version 2.3.0 plan has been finalized. While some details may change as the iteration progresses, the following describes the overal plan for the next MRTK release. For the latest status of the release, please visit the [milestone page]( https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/10).
+The version 2.3.0 plan has been finalized. While some details may change as the iteration progresses, the following describes the overall plan for the next MRTK release. For the latest status of the release, please visit the [milestone page]( https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/10).
 
 Status: In development
 
