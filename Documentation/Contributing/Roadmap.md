@@ -83,7 +83,7 @@ Themes:
 
 Potential areas of focus
 
-- Leap Motion support (Unity 2018 and Unity 2010)
+- Leap Motion support (Unity 2018 and Unity 2019)
 - Enhanced MRTK modularity
 - Integration of Azure services
 - User Experience
