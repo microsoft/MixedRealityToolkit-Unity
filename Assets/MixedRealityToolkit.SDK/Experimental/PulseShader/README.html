@@ -82,11 +82,15 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="pulse-shader">Pulse Shader</h1>
 
-<p>Use the pulse shader to animate a visual pulse effect over surface reconstruction, articulated hand mesh, or any other meshes.</p>
-<h2 id="getting-started-with-pulse-shader">Getting started with Pulse Shader</h2>
-<p>Open PulseShaderExamples.unity scene, and observe the pulsing effect on the spheres, surface reconstruction, and the articulated hand mesh.</p>
+<p><img src="https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif" alt="MRTK_SpatialMesh_Pulse"></p>
+<p><img src="https://user-images.githubusercontent.com/13754172/68262035-e4f7e600-fff6-11e9-9858-796afd1cabc5.gif" alt="MRTK_HandMesh_Pulse2">
+Use the pulse shader to animate a visual pulse effect over surface reconstruction, articulated hand mesh, or any other meshes.</p>
+<h2 id="shader-and-material">Shader and material</h2>
+<p><strong>MRTK_SurfaceReconstruction.mat</strong> and <strong>MRTK_ArticulatedHandMeshPulse.mat</strong> uses <strong>SR_Triangles</strong> shader. You can configure various options such as fill color, line color, and pulse color.</p>
+<h2 id="example-scene">Example scene</h2>
+<p>Open <strong>PulseShaderExamples.unity</strong> scene, and observe the pulsing effect on the spheres, surface reconstruction, and the articulated hand mesh.</p>
 <p>Use the SurfacePulse.cs script to animate the pulse effect on the assigned material, or turn on &quot;Auto Pulse&quot; in the material itself.</p>
-<h3 id="prerequisites">Prerequisites</h3>
+<h2 id="prerequisites">Prerequisites</h2>
 <p>For surface reconstruction, ensure that MRTK_SurfaceReconstruction.mat is assigned under MRTK Settings -&gt; Spatial Awareness -&gt; Display Settings -&gt; Visible Material.</p>
 <p>For articulated hand, ensure that MRTK_ArticulatedHandMeshPulse.mat is assigned in ArticulatedHandMesh.prefab, which itself should be assigned in MRTK Settings -&gt; Input -&gt; Hand Tracking -&gt; Hand Mesh Prefab.</p>
 <h2 id="how-it-works">How it works</h2>

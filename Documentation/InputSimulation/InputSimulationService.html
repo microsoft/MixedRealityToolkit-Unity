@@ -103,7 +103,7 @@
 </ul>
 <h2 id="input-simulation-tools-window">Input simulation tools window</h2>
 <p>Enable the input simulation tools window from the  <em>Mixed Reality Toolkit &gt; Utilities &gt; Input Simulation</em> menu. This window provides access to the state of input simulation during play mode.</p>
-<h2 id="viewport-butttons">Viewport Butttons</h2>
+<h2 id="viewport-buttons">Viewport Buttons</h2>
 <p>A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under <strong>Indicators Prefab</strong>. This is an optional utility, the same features can be accessed in the <a href="#input-simulation-tools-window">input simulation tools window</a>.</p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -116,9 +116,9 @@
 <li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png" alt="Controlled hand icon" title="Controlled hand icon"> The hand is tracked and controlled by the user. Click to hide the hand.</li>
 <li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png" alt="Reset hand icon" title="Reset hand icon"> Click to reset the hand to default position.</li>
 </ul>
-<h1 id="camera-control">Camera Control</h1>
+<h2 id="camera-control">Camera Control</h2>
 <p>Head movement can be emulated by the Input Simulation Service.</p>
-<h3 id="to-rotate-the-camera">To rotate the camera:</h3>
+<h3 id="rotating-the-camera">Rotating the camera</h3>
 <ol>
 <li>Hover over the viewport editor window.
 <em>You may need to click the window to give it input focus if button presses don't work.</em></li>
@@ -128,13 +128,13 @@
 </ol>
 <p>Camera rotation speed can be configured by changing the <strong>Mouse Look Speed</strong> setting in the input simulation profile.</p>
 <p>Alternatively, use the <strong>Look Horizontal</strong>/<strong>Look Vertical</strong> axes to rotate the camera (default: game controller right thumbstick).</p>
-<h3 id="to-move-the-camera">To move the camera:</h3>
+<h3 id="moving-the-camera">Moving the camera</h3>
 <p>Use the <strong>Move Horizontal</strong>/<strong>Move Vertical</strong> axes to move the camera (default: WASD keys or game controller left thumbstick).</p>
 <p>Camera position and rotation angles can be set explicitly in the tools window, as well. The camera can be reset to its default using the <strong>Reset</strong> button.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h1 id="hand-simulation">Hand Simulation</h1>
+<h2 id="hand-simulation">Hand Simulation</h2>
 <p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.</p>
-<h2 id="hand-simulation-mode">Hand Simulation Mode</h2>
+<h3 id="hand-simulation-mode">Hand Simulation Mode</h3>
 <p>In the <a href="#input-simulation-tools-window">input simulation tools window</a> the <strong>Hand Simulation Mode</strong> setting switches between two distinct input models. The default mode can also be set in the input simulation profile.</p>
 <ul>
 <li><p><em>Articulated Hands</em>: Simulates a fully articulated hand device with joint position data.</p>
@@ -146,20 +146,20 @@
 <p>Focus is controlled using the Gaze pointer. The <em>Air Tap</em> gesture is used to interact with buttons.</p>
 </li>
 </ul>
-<h2 id="controlling-hand-movement">Controlling hand movement</h2>
+<h3 id="controlling-hand-movement">Controlling hand movement</h3>
 <p>Press and hold the <strong>Left/Right Hand Control Key</strong> (default: <em>Left Shift</em> for left hand and <em>Space</em> for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released, the hands will disappear after a short <strong>Hand Hide Timeout</strong>.</p>
 <p>Hands can be toggled on permanently in the <a href="#input-simulation-tools-window">input simulation tools window</a> or by pressing the <strong>Toggle Left/Right Hand Key</strong> (default: <em>T</em> for left and <em>Y</em> for right). Press the toggle key again to hide the hands again.</p>
 <p>Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the <strong>mouse wheel</strong>.</p>
 <p>To rotate hands using the mouse, hold both the <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>) <em>and</em> the <strong>Hand Rotate Button</strong> (default: <em>cntrl</em> button) and then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the <strong>Mouse Hand Rotation Speed</strong> setting in the input simulation profile.</p>
 <p>All hand placement can also changed in the <a href="#input-simulation-tools-window">input simulation tools window</a>, including resetting hands to default.</p>
-<h2 id="additional-profile-settings">Additional profile settings</h2>
+<h3 id="additional-profile-settings">Additional profile settings</h3>
 <ul>
 <li><strong>Hand Depth Multiplier</strong> controls the sensitivity of the mouse scroll wheel depth movement. A larger number will speed up hand zoom.</li>
 <li><strong>Default Hand Distance</strong> is the initial distance of hands from the camera. Clicking the <strong>Reset</strong> button hands will also place hands at this distance.</li>
 <li><strong>Hand Jitter Amount</strong> adds random motion to hands. This feature can be used to simulate inaccurate hand tracking on the device, and ensure that interactions work well with noisy input.</li>
 </ul>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h2 id="hand-gestures">Hand Gestures</h2>
+<h3 id="hand-gestures">Hand Gestures</h3>
 <p>Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.</p>
 <ol>
 <li><p>Enable hand control using the <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>)</p>
@@ -173,7 +173,7 @@
 <h5>Note</h5>
 <p>The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</p>
 </div>
-<h2 id="one-hand-manipulation">One-Hand Manipulation</h2>
+<h3 id="one-hand-manipulation">One-Hand Manipulation</h3>
 <ol>
 <li>Press and  <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>)</li>
 <li>Point at object</li>
@@ -182,7 +182,7 @@
 <li>Release the mouse button to stop interaction</li>
 </ol>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h2 id="two-hand-manipulation">Two-Hand Manipulation</h2>
+<h3 id="two-hand-manipulation">Two-Hand Manipulation</h3>
 <p>For manipulating objects with two hands at the same time, the persistent hand mode is recommended.</p>
 <ol>
 <li>Toggle on both hands by pressing the toggle keys (T/Y).</li>
@@ -197,7 +197,7 @@
 <li>Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.</li>
 </ol>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h2 id="ggv-interaction">GGV Interaction</h2>
+<h3 id="ggv-interaction">GGV Interaction</h3>
 <ol>
 <li>Enable GGV simulation by switching <strong>Hand Simulation Mode</strong> to <em>Gestures</em> in the <a href="#enabling-the-input-simulation-service">Input Simulation Profile</a></li>
 <li>Rotate the camera to point the gaze cursor at the interactable object (right mouse button)</li>
@@ -206,7 +206,7 @@
 <li>Rotate the camera again to manipulate the object</li>
 </ol>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h2 id="eye-tracking">Eye tracking</h2>
+<h3 id="eye-tracking">Eye tracking</h3>
 <p><a href="../EyeTracking/EyeTracking_BasicSetup.html#simulating-eye-tracking-in-the-unity-editor">Eye tracking simulation</a> can be enabled by checking the <strong>Simulate Eye Position</strong> option in the
 <a href="#enabling-the-input-simulation-service">Input Simulation Profile</a>. This should not be used with GGV
 style interactions (so ensure that <strong>Hand Simulation Mode</strong> is set to <em>Articulated</em>).</p>
