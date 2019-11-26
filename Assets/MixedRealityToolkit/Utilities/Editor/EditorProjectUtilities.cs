@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
-    public class EditorProjectUtilities
+    public static class EditorProjectUtilities
     {
         /// <summary>
         /// Static constructor that allows for executing code on project load.
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the directory could be found, false otherwise.</returns>
         public static bool FindRelativeDirectory(string packageDirectory, out string path)
         {
-            return FindRelativeDirectory(UnityEngine.Application.dataPath, packageDirectory, out path);
+            return FindRelativeDirectory(Application.dataPath, packageDirectory, out path);
         }
 
         /// <summary>
@@ -127,9 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void ApplyARFoundationUWPCompileFix()
         {
 #if !UNITY_2019_1_OR_NEWER
-
-            Debug.Log("Checking to see if the AR Foundation, UWP, .NET backend workaround needs to be applied.");
-
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
             {
@@ -173,10 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         asmDef.Save(arFoundation.FullName);
                     }
-                    else
-                    {
-                        Debug.Log($"No changes required for {arFoundation.FullName}.");
-                    }
                 }
 
                 FileInfo arSubsystems = GetPackageCacheAssemblyDefinitionFile(
@@ -210,10 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         asmDef.Save(arSubsystems.FullName);
                     }
-                    else
-                    {
-                        Debug.Log($"No changes required for {arSubsystems.FullName}.");
-                    }
                 }
             }
 
@@ -235,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             string packageCacheFolderName = @"Library\PackageCache";
 
-            DirectoryInfo projectRoot = new DirectoryInfo(UnityEngine.Application.dataPath).Parent;
+            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
             return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
         }
 
@@ -243,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Gets the assembly definition file that best matches the folder name pattern and the file names.
         /// </summary>
         /// <param name="root"><see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> that describes the package cache root folder.</param>
-        /// <param name="folderName">The name of the folder in which to find the requested file. A wildcard ('*') can be specifid to match a partial name.</param>
+        /// <param name="folderName">The name of the folder in which to find the requested file. A wildcard ('*') can be specified to match a partial name.</param>
         /// <param name="fileName">The name of the assembly definition file.</param>
         /// <returns>
         /// A <see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.fileinfo"/>FileInfo</see> object that describes the assembly definition file or null.

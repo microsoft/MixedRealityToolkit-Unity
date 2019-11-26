@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// on objects which are not watertight (or required to be two sided) and depth sorting issues can occur on overlapping objects.
     /// </summary>
     [RequireComponent(typeof(MeshRenderer))]
+    [AddComponentMenu("Scripts/MRTK/Core/MeshOutline")]
     public class MeshOutline : BaseMeshOutline
     {
         private const string vertexExtrusionKeyword = "_VERTEX_EXTRUSION";

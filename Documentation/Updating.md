@@ -1,7 +1,18 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
+- [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
+
+## Updating 2.1.0 to 2.2.0
+
+- [API changes](#api-changes-in-220)
+
+### API changes in 2.2.0
+
+#### IMixedRealityBoundarySystem.Contains
+
+This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.
 
 ## Updating 2.0.0 to 2.1.0
 

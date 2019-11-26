@@ -126,6 +126,7 @@ MonoBehaviour:
       ShaderName: 
     customProperties:
     - Name: ScaleMagnifier
+      Tooltip: 
       Type: 6
       Value:
         Name: 
@@ -145,6 +146,7 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
     - Name: GripTimer
+      Tooltip: 
       Type: 0
       Value:
         Name: 

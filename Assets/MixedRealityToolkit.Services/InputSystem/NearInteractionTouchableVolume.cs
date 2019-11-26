@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchableVolume to your scene and configure a touchable volume
     /// in order to get PointerDown and PointerUp events whenever a PokePointer collides with this volume.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Services/NearInteractionTouchableVolume")]
     public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
     {
 #if UNITY_EDITOR

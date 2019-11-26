@@ -135,8 +135,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
+        public static void InitializeCamera()
+        {
+            Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+
+            if (cameras.Length == 0)
+            {
+                new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
+            }
+        }
+
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
+            InitializeCamera();
+
             if (!MixedRealityToolkit.IsInitialized)
             {
                 MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();

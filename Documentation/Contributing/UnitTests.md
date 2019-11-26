@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 Consider placing the test in a folder hierarchy that is similar to its corresponding non-test file.
 For example:
 
-```
+```md
 Non-Test: Assets/MixedRealityToolkit/Utilities/InterestingUtilityClass.cs
 Test: Assets/MixedRealityToolkit.Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
 ```

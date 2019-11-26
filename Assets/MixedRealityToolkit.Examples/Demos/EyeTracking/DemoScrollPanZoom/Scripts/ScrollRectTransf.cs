@@ -8,7 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to zoom into and pan the texture of a GameObject. 
     /// It also allows for scrolling by restricting panning to one direction.  
-    /// </summary>    
+    /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ScrollRectTransf")]
     public class ScrollRectTransf : PanZoomBaseRectTransf
     {
         // Scroll

@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Script that demonstrates querying the Mixed Reality Toolkit for platform capabilities.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/MixedRealityCapabilityDemo")]
     public class MixedRealityCapabilityDemo : MonoBehaviour
     {
         [SerializeField]

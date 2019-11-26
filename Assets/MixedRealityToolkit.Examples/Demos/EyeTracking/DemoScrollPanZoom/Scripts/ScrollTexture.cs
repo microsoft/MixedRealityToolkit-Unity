@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ScrollTexture")]
     public class ScrollTexture : PanZoomBaseTexture
     {
         // Pan

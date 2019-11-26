@@ -92,6 +92,11 @@ $packages = @{
     "Tools" = @(
         "Assets\MixedRealityToolkit.Tools"
     );
+    # NOTE: This is a temporary package to facilitate experimental Unity AR support while we
+    # invest in better packaging solution
+    "Providers.UnityAR" = @(
+        "Assets\MixedRealityToolkit.Staging"
+    );
 }
 
 function GetPackageVersion() {

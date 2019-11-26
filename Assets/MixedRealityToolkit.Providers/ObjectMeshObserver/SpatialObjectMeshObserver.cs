@@ -31,12 +31,28 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public SpatialObjectMeshObserver(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : this(spatialAwarenessSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public SpatialObjectMeshObserver(
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         { }
 
         private bool sendObservations = true;
@@ -83,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-        #region IMixedRealityDataProvider implementation
+        #region IMixedRealityDataProvider Implementation
 
         bool autoResume = false;
 
@@ -145,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             CleanupObserver();
         }
 
-        #endregion IMixedRealityDataProvider implementation
+        #endregion IMixedRealityDataProvider Implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialAwarenessObserver Implementation
 
         private GameObject observedObjectParent = null;
 
@@ -266,9 +282,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 handler.OnObservationRemoved(spatialEventData);
             };
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialAwarenessObserver Implementation
 
-        #region IMixedRealitySpatialAwarenessMeshObserver implementation
+        #region IMixedRealitySpatialAwarenessMeshObserver Implementation
 
         private SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
         
@@ -437,6 +453,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             }
         }
 
-        #endregion IMixedRealitySpatialAwarenessMeshObserver implementation
+        #endregion IMixedRealitySpatialAwarenessMeshObserver Implementation
     }
 }

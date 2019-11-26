@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [RequireComponent(typeof(Camera))]
+    [AddComponentMenu("Scripts/MRTK/Services/MixedRealityInputModule")]
     public class MixedRealityInputModule : StandaloneInputModule, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         protected class PointerData

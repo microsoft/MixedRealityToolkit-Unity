@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
     /// <summary>
     /// Represents and loads models from the OpenVR APIs. This class is based on the SteamVR_RenderModel class.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Providers/OpenVRRenderModel")]
     public class OpenVRRenderModel : MonoBehaviour
     {
         private class RenderModel

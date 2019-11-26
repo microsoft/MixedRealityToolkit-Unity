@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/GestureTester")]
     public class GestureTester : MonoBehaviour, IMixedRealityGestureHandler<Vector3>
     {
         public GameObject HoldIndicator = null;

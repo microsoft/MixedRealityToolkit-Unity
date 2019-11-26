@@ -35,12 +35,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsMixedRealityDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public WindowsMixedRealityDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         #region IMixedRealityCapabilityCheck Implementation
 
@@ -597,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (interactionSource.kind == InteractionSourceKind.Hand)
                 {
                     detectedController = new WindowsMixedRealityArticulatedHand(TrackingState.NotTracked, controllingHand, inputSource);
-                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityArticulatedHand), inputSourceType))
+                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityArticulatedHand)))
                     {
                         // Controller failed to be setup correctly.
                         // Return null so we don't raise the source detected.
@@ -607,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 else if (interactionSource.kind == InteractionSourceKind.Controller)
                 {
                     detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController), inputSourceType))
+                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
                     {
                         // Controller failed to be setup correctly.
                         // Return null so we don't raise the source detected.
@@ -623,7 +640,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             else
             {
                 detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
-                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand), inputSourceType))
+                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand)))
                 {
                     // Controller failed to be setup correctly.
                     // Return null so we don't raise the source detected.

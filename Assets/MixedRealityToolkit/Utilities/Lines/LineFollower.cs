@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Synchronizes the follower's transform position with the point along the line.
     /// </summary>
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/Core/LineFollower")]
     public class LineFollower : MonoBehaviour
     {
         [SerializeField]

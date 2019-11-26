@@ -38,28 +38,35 @@ To get started with the Mixed Reality Toolkit you will need:
 1. Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.
 1. Under Assets, download
     - **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage**
-    - (Optional) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
-    - (Optional) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
-    - (Optional) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
+    - (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
+    - (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
+    - (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
+    - (**_Optional_**, **_Experimental_**) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage
 
-The Mixed Reality Toolkit is now available for download on NuGet.org, for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
+For information on package contents, please see [MRTK Package Contents](MRTK_PackageContents.md).
+
+The Mixed Reality Toolkit is also available for download on NuGet.org, for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
 
 ### Import MRTK packages into your Unity project
 
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type.
 1. Import the **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage** you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
-1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
-1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage** following the same steps as for the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.
 
-After importing the Foundation package, you may see a setup prompt like the following:
+> [!Note]
+> Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, please see the [UnityAR camera settings provider](CameraSystem/UnityArCameraSettings.md) article.
+
+After importing the Foundation package, you may see a prompt similar to the following:
 
 ![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)
 
 MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
 
- * Enable XR Settings for your current platform (enabling the XR checkbox).
- * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
+* Enable XR Settings for your current platform (enabling the XR checkbox).
+* Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
 
 Accepting these options is completely optional, but recommended.
 
@@ -82,7 +89,7 @@ To create a **HoloLens application**, switch to Universal Windows Platform:
 
 ### Add MRTK to a new scene or new project
 
-1. Create a new Unity project, or start a new scene in your current project. 
+1. Create a new Unity project, or start a new scene in your current project.
 
 2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
 
@@ -90,15 +97,15 @@ To create a **HoloLens application**, switch to Universal Windows Platform:
 
 ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
-4. You will see a prompt like this:
+4. In the Inspector, you will see a prompt like this:
 
-![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
+![MRTK Configure Dialog](../Documentation/Images/MRTK_NoProfileMessage.png)
 
 Click "OK".
 
-5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
+5. Select "DefaultMixedRealityToolkitConfigurationProfile" from the list.
 
-![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
+![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationProfile.png)
 
 For more information on profiles, please see the [profiles](Profiles/Profiles.md) article.
 
@@ -116,16 +123,16 @@ Which contains the following:
 * **MixedRealityPlayspace** - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
 * The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
 
->[!NOTE] 
+>[!NOTE]
 > While working in your scene, **DO NOT move the Main Camera** (or the **MixedRealityPlayspace**) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then **move the scene content and NOT the camera**!
 
-6. Hit play and test out hand simulation by pressing spacebar.
+6. Hit play and test out hand simulation by pressing the **spacebar**.
 
 You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
 ### Getting started tutorials
 
-If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2. 
+If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
 
 ### Learn about the core building blocks of MRTK
 
@@ -133,7 +140,7 @@ Check out [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactio
 
 ### Run the HandInteractionExamples scene in the Unity Editor
 
-The [hand interaction examples scene](README_HandInteractionExamples.md) article is a great place to learn more about the UX controls and interactions in MRTK. 
+The [hand interaction examples scene](README_HandInteractionExamples.md) article is a great place to learn more about the UX controls and interactions in MRTK.
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
@@ -161,7 +168,7 @@ How to move around in the scene:
 - Press and hold the **right mouse button** to rotate the camera.
 
 How to simulate hand input:
-- Press and hold the **space bar** to enable the right hand. 
+- Press and hold the **spacebar** to enable the right hand. 
 - While holding the space bar, move your mouse to move the hand.
 - Use the mouse **scroll wheel** to adjust the depth of the hand.
 - Click the **left mouse button** to simulate pinch gesture.

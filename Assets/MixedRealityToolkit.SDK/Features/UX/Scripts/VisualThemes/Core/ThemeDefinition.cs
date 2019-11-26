@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Defines configuration properties and settings to use when initializing a class extending InteractableThemeBase
     /// </summary>
     [System.Serializable]
-    public struct ThemeDefinition
+    public struct ThemeDefinition : ISerializationCallbackReceiver
     {
         /// <summary>
         /// Defines the type of Theme to associate with this definition. Type must be a class that extends InteractableThemeBase
@@ -136,5 +136,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return null;
         }
+
+        #region ISerializationCallbackReceiver implementation
+
+        ///<inheritdoc/>
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+            //backward compatibility at runtime in case some custom properties have been added in code after first serialization
+            ThemeDefinition defaultDefinition = GetDefaultThemeDefinition(ThemeType).Value;
+
+            if (defaultDefinition.CustomProperties.Count > CustomProperties.Count)
+            {
+                foreach (ThemeProperty prop in defaultDefinition.CustomProperties)
+                {
+                    if (!CustomProperties.Exists(p => p.Name == prop.Name))
+                    {
+                        CustomProperties.Add(new ThemeProperty()
+                        {
+                            Name = prop.Name,
+                            Tooltip = prop.Tooltip,
+                            Type = prop.Type,
+                            Value = prop.Value,
+                        });
+                    }
+                }
+            }
+        }
+
+        ///<inheritdoc/>
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+        }
+
+        #endregion
     }
 }

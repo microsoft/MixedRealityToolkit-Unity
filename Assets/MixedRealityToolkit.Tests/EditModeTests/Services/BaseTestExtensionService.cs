@@ -10,10 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     internal abstract class BaseTestExtensionService : BaseExtensionService
     {
         public BaseTestExtensionService(
-            IMixedRealityServiceRegistrar registrar,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         public bool IsEnabled { get; private set; }
 

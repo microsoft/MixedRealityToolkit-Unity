@@ -553,9 +553,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Draw a button that finds the profile in the project window
                 if (property.objectReferenceValue != null)
                 {
-                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
-                    {
-                        EditorGUIUtility.PingObject(property.objectReferenceValue);
+                    // The view asset button should always be enabled.
+                    using (new GUIEnabledWrapper(true, true))
+                    { 
+                        if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
+                        {
+                            EditorGUIUtility.PingObject(property.objectReferenceValue);
+                        }
                     }
                 }
 

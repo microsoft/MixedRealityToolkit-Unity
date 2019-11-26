@@ -16,15 +16,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         IMixedRealitySpatialAwarenessSystem, 
         IMixedRealityCapabilityCheck
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealitySpatialAwarenessSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealitySpatialAwarenessSystemProfile profile) : base(registrar, profile)
+            MixedRealitySpatialAwarenessSystemProfile profile) : this(profile)
         {
-            if (registrar == null)
-            {
-                Debug.LogError("The MixedRealitySpatialAwarenessSystem object requires a valid IMixedRealityServiceRegistrar instance.");
-            }
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public MixedRealitySpatialAwarenessSystem(
+            MixedRealitySpatialAwarenessSystemProfile profile) : base(profile)
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Spatial Awareness System";
@@ -79,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
                 {
                     MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
 
                     RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,

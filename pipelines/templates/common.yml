@@ -8,6 +8,10 @@ parameters:
   validateCode: true
 
 steps:
+# Validate that the code doesn't contain common issues
+- ${{ if eq(parameters.validateCode, true) }}:
+  - template: tasks/validatecode.yml
+
 # Build Standalone x86.
 # This must happen before tests run, because if the build fails and tests attempt
 # to get run, Unity will hang showing a dialog (even when in batch mode).
@@ -22,10 +26,6 @@ steps:
 # notifications earlier in the CI process.
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
-
-# Validate that the code doesn't contain common issues
-- ${{ if eq(parameters.validateCode, true) }}:
-  - template: tasks/validatecode.yml
 
 # Build UWP x86
 - ${{ if eq(parameters.buildUWPX86, true) }}:

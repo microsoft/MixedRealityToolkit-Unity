@@ -5,12 +5,14 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.IO;
 using UnityEngine;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     [RequireComponent(typeof(DistorterGravity))]
+    [AddComponentMenu("Scripts/MRTK/SDK/TeleportPointer")]
     public class TeleportPointer : LinePointer, IMixedRealityTeleportPointer, IMixedRealityTeleportHandler
     {
         public bool TeleportRequestRaised { get { return teleportEnabled; } }
@@ -75,6 +77,26 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// The Gravity Distorter that is affecting the <see cref="Utilities.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
+
+        private float cachedInputThreshold = 0f;
+
+        private float inputThresholdSquared = 0f;
+
+        /// <summary>
+        /// The square of the InputThreshold value.
+        /// </summary>
+        private float InputThresholdSquared
+        {
+            get
+            {
+                if (!Mathf.Approximately(cachedInputThreshold, inputThreshold))
+                {
+                    inputThresholdSquared = Mathf.Pow(inputThreshold, 2f);
+                    cachedInputThreshold = inputThreshold;
+                }
+                return inputThresholdSquared;
+            }
+        }
 
         protected override void OnEnable()
         {
@@ -320,8 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 currentInputPosition = eventData.InputData;
             }
 
-            if (Mathf.Abs(currentInputPosition.y) > inputThreshold ||
-                Mathf.Abs(currentInputPosition.x) > inputThreshold)
+            if (currentInputPosition.sqrMagnitude > InputThresholdSquared)
             {
                 // Get the angle of the pointer input
                 float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
@@ -359,7 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         if (offsetRotationAngle > 0)
                         {
                             // check to make sure we're still under our activation threshold.
-                            if (offsetRotationAngle < rotateActivationAngle)
+                            if (offsetRotationAngle < 2 * rotateActivationAngle)
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
@@ -374,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                 offsetStrafeAngle = absoluteAngle - offsetStrafeAngle;
 
                                 // Check to make sure we're still under our activation threshold.
-                                if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
+                                if (offsetStrafeAngle > 0 && offsetStrafeAngle <= backStrafeActivationAngle)
                                 {
                                     canMove = false;
                                     var height = MixedRealityPlayspace.Position.y;

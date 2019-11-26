@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Script used to handle input action events. Invokes Unity events when the configured input action starts or ends. 
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InputActionHandler")]
     public class InputActionHandler : BaseInputHandler, IMixedRealityInputActionHandler
     {
         [SerializeField]

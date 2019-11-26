@@ -10,13 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         // Hand ray
         protected HandRay HandRay { get; } = new HandRay();
-        public override bool IsInPointingPose
-        {
-            get
-            {
-                return HandRay.ShouldShowRay;
-            }
-        }
+
+        public override bool IsInPointingPose => HandRay.ShouldShowRay;
 
         // Velocity internal states
         private float deltaTimeStart;
@@ -30,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public BaseHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        protected BaseHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
         }

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Renders meshes at the corners of a tool tip
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ToolTipBackgroundCorners")]
     public class ToolTipBackgroundCorners : MonoBehaviour, IToolTipBackground
     {
         private enum ScaleModeEnum

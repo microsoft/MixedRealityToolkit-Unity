@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         private Vector3 pointerLocalGrabPoint;
         private Vector3 objectLocalGrabPoint;
-        private Vector3 pointerToObject;
+        private Vector3 grabToObject;
 
         /// <summary>
         /// Setup function
@@ -41,27 +41,27 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             objectLocalGrabPoint = Quaternion.Inverse(objectPose.Rotation) * (grabCentroid - objectPose.Position);
             objectLocalGrabPoint = objectLocalGrabPoint.Div(objectScale);
 
-            pointerToObject = objectPose.Position - pointerCentroidPose.Position;
+            grabToObject = objectPose.Position - grabCentroid;
         }
 
         /// <summary>
         /// Update the rotation based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation, MovementConstraintType movementConstraint)
         {
-            if (!isNearMode || usePointerRotation)
+            Vector3 headPosition = CameraCache.Main.transform.position;
+            float distanceRatio = 1.0f;
+
+            if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
-                Vector3 headPosition = CameraCache.Main.transform.position;
-                float distanceRatio = 1.0f;
+                // Compute how far away the object should be based on the ratio of the current to original hand distance
+                var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
+                distanceRatio = currentHandDistance / pointerRefDistance;
+            }
 
-                if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
-                {
-                    // Compute how far away the object should be based on the ratio of the current to original hand distance
-                    var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
-                    distanceRatio = currentHandDistance / pointerRefDistance;
-                }
-
+            if (usePointerRotation)
+            {
                 Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
                 Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
                 adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             }
             else
             {
-                return pointerCentroidPose.Position + pointerToObject;
+                return pointerCentroidPose.Position + pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject * distanceRatio;
             }
         }
     }

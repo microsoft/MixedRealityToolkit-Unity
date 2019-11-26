@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// </summary>
     [RequireComponent(typeof(RectTransform), typeof(Graphic))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#ugui-support")]
+    [AddComponentMenu("Scripts/MRTK/Services/ScaleMeshEffect")]
     public class ScaleMeshEffect : BaseMeshEffect
     {
         /// <summary>

@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// AudioFeedbackPlayer eases playing single audio feedback. Good for audio effects.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/AudioFeedbackPlayer")]
     public class AudioFeedbackPlayer : MonoBehaviour
     {
         /// <summary>

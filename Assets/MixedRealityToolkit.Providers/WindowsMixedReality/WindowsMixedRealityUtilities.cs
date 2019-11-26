@@ -49,14 +49,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // WINDOWS_UWP
 
+        [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
-            return new UnityEngine.Vector3(vector.X, vector.Y, -vector.Z);
+            return vector.ToUnityVector3();
         }
 
+        [System.Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
         public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
-            return new UnityEngine.Quaternion(-quaternion.X, -quaternion.Y, quaternion.Z, quaternion.W);
+            return quaternion.ToUnityQuaternion();
         }
     }
 }

@@ -10,7 +10,7 @@ MRTK Examples Hub is a Unity scene that makes it easy to experience multiple sce
 MRTK Examples Hub uses [Scene Transition Service](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html) and related scripts. If you are using MRTK through Unity packages, please import **Microsoft.MixedReality.Toolkit.Unity.Extensions.x.x.x.unitypackage** which is part of the [release packages](https://github.com/microsoft/MixedRealityToolkit-Unity/releases). If you are using MRTK through the repository clone, you should already have **MixedRealityToolkit.Extensions** folder in your project.
 
 ## MRTKExamplesHub Scene and the Scene System ##
-Open **MRTKExamplesHub.unity** which is located at ``MixedRealityToolkit.Examples/Demos/ExamplesHub/Scenes/`` It is an empty scene with MixedRealityToolkit, MixedRealityPlayspace and LoadHubOnStartup. This scene is configured to use MRTK's Scene System. Click ``MixedRealitySceneSystem`` under MixedRealityToolkit. It will display the Scene System's information in the Inspector panel.
+Open **MRTKExamplesHub.unity** which is located at ``MixedRealityToolkit.Examples/Experimental/Demos/ExamplesHub/Scenes/`` It is an empty scene with MixedRealityToolkit, MixedRealityPlayspace and LoadHubOnStartup. This scene is configured to use MRTK's Scene System. Click ``MixedRealitySceneSystem`` under MixedRealityToolkit. It will display the Scene System's information in the Inspector panel.
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_Hierarchy.png" width="300">
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_Inspector1.png" width="450">
 

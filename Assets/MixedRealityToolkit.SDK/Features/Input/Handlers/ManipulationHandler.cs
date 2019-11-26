@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
@@ -611,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement);
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, true, constraintOnMovement);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -685,18 +686,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
                 }
                 case RotateInOneHandType.RotateAboutObjectCenter:
+                case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;
                     TryGetGripRotation(pointer, out gripRotation);
                     targetRotation = gripRotation * objectToGripRotation;
-                    break;
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    targetRotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
 
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
@@ -773,6 +772,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     ManipulationSource = this,
                     IsNearInteraction = isNearManipulation,
+                    Pointer = GetFirstPointer().pointer,
                     PointerCentroid = GetPointersCentroid(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
@@ -845,6 +845,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverEntered.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = this,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
@@ -861,6 +862,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverExited.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = this,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
