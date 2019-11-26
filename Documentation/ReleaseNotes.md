@@ -1,8 +1,99 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.2.0
+
+- [Upgrading projects](#upgrading-projects-to-220)
+- [What's new](#whats-new-in-220)
+- [Known issues](#known-issues-in-220)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+- (Experimental) Mobile AR
+    - Android
+    - iOS
+
+The following software is required.
+
+- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
+- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
+- Unity 2018.4, 2019.1 or 2019.2
+
+NuGet requirements
+
+If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
+
+- [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
+
+### Upgrading projects to 2.2.0
+
+The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.1.0 to 2.2.0**](Updating.md#updating-210-to-220) article.
+
+**Updating using .unitypackage files**
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+**Updating from NuGet**
+
+If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Re-open the project in Unity
+
+### What's new in 2.2.0
+
+<< todo >>
+
+### Known issues in 2.1.0
+
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
+
+<< todo >>
 
 ## Version 2.1.0
 
