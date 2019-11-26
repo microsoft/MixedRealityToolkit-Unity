@@ -3,127 +3,102 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
-using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
     // Tests for the MixedRealityToolkitFiles utility class
     public class MixedRealityToolkitFilesTests
     {
-        string[] basePaths = new string[] { "", "C:\\", "C:\\xyz\\", "C:/xyz/" };
-
-        [Test]
-        public void FindMatchingModule()
+        /// <summary>
+        /// Validate that each module has a corresponding found folder (excluding None/AdHocTesting)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestGetDirectories()
         {
-            TestInvalidPath("");
+            yield return RefreshFiles();
 
-            // Test invalid base name
-            TestInvalidPath("aaa");
-            TestInvalidPath(".SDK");
-            TestInvalidPath("aaa.SDK");
-
-            // Test missing chars
-            TestInvalidPath("MixedRealityToolki.SDK");
-            TestInvalidPath("MixedRealityToolkit.SD");
-            TestInvalidPath("ixedRealityToolkit.SDK");
-            TestInvalidPath("MixedRealityToolkit.DK");
-
-            // Test missing dots
-            TestInvalidPath("SDK");
-            TestInvalidPath("MixedRealityToolkitSDK");
-
-            // Test valid paths
-            TestValidPath("MixedRealityToolkit", MixedRealityToolkitModuleType.Core);
-            TestValidPath("MixedRealityToolkit.SDK", MixedRealityToolkitModuleType.SDK);
-
-            // Test that all modules can be found and internal module map is complete.
-            // Check that MixedRealityToolkitFiles.moduleNameMap has all entries if this fails!
-            var modules = Enum.GetValues(typeof(MixedRealityToolkitModuleType));
-            var moduleNames = Enum.GetNames(typeof(MixedRealityToolkitModuleType));
-            for (int i = 0; i < modules.Length; ++i)
+            foreach (var moduleType in GetTestModulesTypes())
             {
-                var module = (MixedRealityToolkitModuleType)modules.GetValue(i);
-                if (module != MixedRealityToolkitModuleType.Core)
-                {
-                    TestValidPath($"MixedRealityToolkit.{moduleNames[i]}", module);
-                }
+                var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
+                Assert.IsNotNull(dirs, $"Directory list was null for module type {moduleType.ToString()}");
+                Assert.IsNotEmpty(dirs, $"Directory list was empty for module type {moduleType.ToString()}");
             }
         }
 
-        [Test]
-        public void FindMatchingModuleNuget()
+        /// <summary>
+        /// Test that the MapModulePath API works for each Module Type
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMapModulePath()
         {
-            // Test invalid base name
-            TestInvalidPath("aaa.1.23-45/MRTK");
-            TestInvalidPath(".1.23-45.SDK/MRTK");
-            TestInvalidPath("aaa.1.23-45.SDK/MRTK");
+            yield return RefreshFiles();
 
-            // Test missing chars
-            TestInvalidPath("Microsoft.MixedReality.Toolki.SDK.1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SD.1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SDK.1.23-45/MRT");
-
-            TestInvalidPath("icrosoft.MixedReality.Toolkit.SDK.1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.DK.1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SDK.1.23-45/RTK");
-
-            // Test missing dots
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SDK1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.ToolkitSDK.1.23-45/MRTK");
-            TestInvalidPath("Microsoft.MixedReality.ToolkitSDK1.23-45/MRTK");
-
-            // Test missing version
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SDK/MRTK");
-            // Test missing MRTK suffix
-            TestInvalidPath("Microsoft.MixedReality.Toolkit.SDK.1.23-45");
-
-            // Test valid paths
-            TestValidPath("Microsoft.MixedReality.Toolkit.1.23-45/MRTK", MixedRealityToolkitModuleType.Core);
-            TestValidPath("Microsoft.MixedReality.Toolkit.SDK.1.23-45/MRTK", MixedRealityToolkitModuleType.SDK);
-
-            // Test that all modules can be found and internal module map is complete.
-            // Check that MixedRealityToolkitFiles.moduleNameMap has all entries if this fails!
-            var modules = Enum.GetValues(typeof(MixedRealityToolkitModuleType));
-            var moduleNames = Enum.GetNames(typeof(MixedRealityToolkitModuleType));
-            for (int i = 0; i < modules.Length; ++i)
+            foreach (var moduleType in GetTestModulesTypes())
             {
-                var module = (MixedRealityToolkitModuleType)modules.GetValue(i);
-                if (module != MixedRealityToolkitModuleType.Core)
+                Assert.IsNotNull(MixedRealityToolkitFiles.MapModulePath(moduleType), $"Module Path was null for module type {moduleType.ToString()}");
+            }
+        }
+
+        /// <summary>
+        /// Test the ModuleType.None and that no items are found
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestNoneDirectory()
+        {
+            yield return RefreshFiles();
+
+            var dirs = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.None);
+            Assert.IsNull(dirs, $"Directory list should be null for module type {MixedRealityToolkitModuleType.None.ToString()}");
+        }
+
+        /// <summary>
+        /// Validate that a Non-MRTK folder is recognized still
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAdHocDirectory()
+        {
+            string adhocTesting = MixedRealityToolkitModuleType.AdhocTesting.ToString();
+            string adHocFolderPath = Path.Combine(UnityEngine.Application.dataPath, adhocTesting);
+            string adHocFolderMetaPath = Path.Combine(UnityEngine.Application.dataPath, adhocTesting + ".meta");
+            string adHocSentinelFilePath = Path.Combine(adHocFolderPath, "MRTK." + adhocTesting + ".sentinel");
+
+            try
+            {
+                Directory.CreateDirectory(adHocFolderPath);
+                using (var file = File.Create(adHocSentinelFilePath))
                 {
-                    TestValidPath($"Microsoft.MixedReality.Toolkit.{moduleNames[i]}.1.23-45/MRTK", (MixedRealityToolkitModuleType)modules.GetValue(i));
+                    yield return RefreshFiles();
+
+                    var moduleType = MixedRealityToolkitModuleType.AdhocTesting;
+                    var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
+                    Assert.IsNotNull(dirs, $"Directory list was null for module type {moduleType.ToString()}");
+                    Assert.IsNotEmpty(dirs, $"Directory list was empty for module type {moduleType.ToString()}");
                 }
+            }
+            finally
+            {
+                // Clean up
+                Directory.Delete(adHocFolderPath, true);
+                File.Delete(adHocFolderMetaPath);
             }
         }
 
         /// <summary>
         /// Validates that MixedRealityToolkitFiles is able to reason over MRTK folders when placed in the root Asset directory.
         /// </summary>
-        public void TestRootAssetFolderResolution()
+        [UnityTest]
+        public IEnumerator TestRootAssetFolderResolution()
         {
-            string resolvedPath = MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath("Inspectors/Data/EditorWindowOptions.json");
-            string expectedPath = Path.Combine(Application.dataPath, "MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json");
-            Assert.AreEqual(expectedPath, resolvedPath);
-        }
+            yield return RefreshFiles();
 
-        public void TestInvalidPath(string path)
-        {
-            foreach (string basePath in basePaths)
-            {
-                string fullPath = Path.Combine(basePath, path);
-                Assert.False(MixedRealityToolkitFiles.FindMatchingModule(fullPath, out MixedRealityToolkitModuleType module));
-            }
-        }
-
-        public void TestValidPath(string path, MixedRealityToolkitModuleType expectedModule)
-        {
-            foreach (string basePath in basePaths)
-            {
-                string fullPath = Path.Combine(basePath, path);
-                Assert.True(MixedRealityToolkitFiles.FindMatchingModule(fullPath, out MixedRealityToolkitModuleType module));
-                Assert.AreEqual(module, expectedModule);
-            }
+            string resolvedPath = MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath("Inspectors\\Data\\EditorWindowOptions.json");
+            Assert.IsNotNull(resolvedPath);
         }
 
         [TearDown]
@@ -131,5 +106,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.EditorTearDownScenes();
         }
+
+        #region Test Helpers
+
+        private static IEnumerator RefreshFiles()
+        {
+            MixedRealityToolkitFiles.RefreshFolders();
+            var task = MixedRealityToolkitFiles.WaitForFolderRefresh();
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            Assert.IsTrue(MixedRealityToolkitFiles.AreFoldersAvailable);
+        }
+
+        private static IEnumerable<MixedRealityToolkitModuleType> GetTestModulesTypes()
+        {
+            var excludeTypes = new[] { MixedRealityToolkitModuleType.None, MixedRealityToolkitModuleType.AdhocTesting };
+
+            return Enum.GetValues(typeof(MixedRealityToolkitModuleType))
+                .Cast<MixedRealityToolkitModuleType>()
+                .Where(t => !excludeTypes.Contains(t));
+        }
+
+        #endregion
     }
 }
