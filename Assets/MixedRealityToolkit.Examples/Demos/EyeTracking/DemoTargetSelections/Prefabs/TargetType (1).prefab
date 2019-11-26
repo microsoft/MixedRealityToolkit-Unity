@@ -4895,4 +4895,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotateByEulerAngles: {x: 0, y: 1, z: 1}
-  speed: 1
+  speed: 0.3

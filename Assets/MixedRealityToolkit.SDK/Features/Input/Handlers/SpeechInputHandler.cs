@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
         #region MonoBehaviour Implementation
+        private bool rememberFocusRequired;
 
         protected override void Start()
         {
@@ -75,6 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     responses.Add(keyword, keywordAndResponse.Response);
                 }
             }
+
+            rememberFocusRequired = this.IsFocusRequired;
+            this.IsFocusRequired = true;
         }
 
         #endregion MonoBehaviour Implementation
@@ -147,5 +151,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         #endregion  IMixedRealitySpeechHandler Implementation
+
+        void LateUpdate()
+        {
+            if (this.IsFocusRequired != rememberFocusRequired)
+            {
+                this.IsFocusRequired = rememberFocusRequired;
+            }
+        }
     }
 }

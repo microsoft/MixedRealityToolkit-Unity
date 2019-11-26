@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,11 +21,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (recordingService == null)
+                try
                 {
-                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
+                    if (recordingService == null)
+                    {
+                        recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
+                    }
+                    return recordingService;
                 }
-                return recordingService;
+                catch (NullReferenceException) { }
+                return null;
             }
         }
 

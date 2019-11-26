@@ -333,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (pointer.InputSourceParent == inputSource)
                 {
                     int pointerId = (int)pointer.PointerId;
-                    Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
+                   // Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
 
                     PointerData pointerData = null;
                     if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
