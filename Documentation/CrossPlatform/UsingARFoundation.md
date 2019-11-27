@@ -17,16 +17,17 @@
     | **Android** | **iOS** | Comments |
     | --- | --- | --- |
     | AR Foundation  <br/> Version: 1.5.0 - preview 6 | AR Foundation  <br/> Version: 1.5.0 - preview 6 | For Unity 2018.4, this package is included as a preview. To view package: Window > Package Manager > Advanced > Show Preview Packages|
-    | ARCore XR Plugin <br/> Version: 2.1.2 |  
-    |  | ARKit XR Plugin <br/> Version: 2.1.2  | 
+    | ARCore XR Plugin <br/> Version: 2.1.2 | | |
+    |  | ARKit XR Plugin <br/> Version: 2.1.2  | |
+
 
     ### Unity 2019.x 
 
     | **Android** | **iOS** | 
     | --- | --- |
     | AR Foundation  <br/> Version: 2.1.4 |  AR Foundation  <br/> Version: 2.1.4 |
-    | ARCore XR Plugin <br/> Version: 2.1.2 | 
-    |  | ARKit XR Plugin <br/> Version: 2.1.2  | 
+    | ARCore XR Plugin <br/> Version: 2.1.2 | |
+    |  | ARKit XR Plugin <br/> Version: 2.1.2  |
 
 
 
