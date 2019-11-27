@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                 EditorGUILayout.Space();
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField("Mixed Reality Capture Settings (Experimental)", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
                 }
                 EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
@@ -55,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                     InspectorUIUtility.RenderDocumentationButton(DepthReprojectionDocURL);
                 }
                 EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
+
+                EditorGUILayout.HelpBox("Render from PV Camera is supported on Unity 2018.4.12f1 or newer and 2019.3 or newer. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
+
+                EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 serializedObject.ApplyModifiedProperties();
             }
