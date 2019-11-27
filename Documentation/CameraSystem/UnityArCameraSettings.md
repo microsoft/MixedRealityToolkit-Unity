@@ -2,47 +2,11 @@
 
 The Unity AR camera settings provider is an experimental MRTK component that enables mixed reality applications to run on Android and iOS devices.
 
-## Prerequisites
-
-Before the Unity AR camera settings provider can be enabled in an application, the following steps need to be completed.
-
-1. Download and import the **Microsoft.MixedReality.Toolkit.Providers.UnityAR** package, from GitHub or NuGet
-1. In the Unity Package Manager, ensure the following package(s) are installed:
-
-    | Unity 2018.4 | Unity 2019.x | Comments |
-    | --- | --- | -- |
-    | AR Foundation | AR Foundation | For Unity 2018.4, this package is included as a preview |
-    | | XR Legacy Input Helpers | |
-    | AR Core | | For Android device support |
-    | AR Kit | | For iOS device support |
-
-1. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityEngine.SpatialTracking** reference added.
-
-    ![Unity AR assembly definition](../Images/CrossPlatform/UnityArAssemblyReferences.png)
-
-## Enabling the Unity AR camera settings provider
-
-The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
-
-1. Select the MixedRealityToolkit object in the scene hierarchy.
-
-    ![MRTK Configured Scene Hierarchy](../Images/MRTK_ConfiguredHierarchy.png)
-
-2. Navigate the Inspector panel to the camera system section and expand the **Camera Settings Providers** section.
-
-    ![Expand settings providers](../Images/CameraSystem/ExpandProviders.png)
-
-3. Click **Add Camera Settings Provider** and expand the newly added **New camera settings** entry.
-
-    ![Expand new settings provider](../Images/CameraSystem/ExpandNewProvider.png)
-
-4. Select the Unity AR Camera Settings provider
-
-    ![Select Unity AR settings provider](../Images/CameraSystem/SelectUnityArSettings.png)
-
-## Configuring the Unity AR camera settings provider
+## Unity AR camera settings provider options
 
 ![Unity AR camera settings configuration](../Images/CameraSystem/UnityArSettingsConfiguration.png)
+
+For a guide on how to add the provider to your scene: [How to configure MRTK for iOS and Android](../CrossPlatform/UsingARFoundation.md)
 
 ### Tracking settings
 

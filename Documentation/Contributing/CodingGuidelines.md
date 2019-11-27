@@ -51,8 +51,8 @@ When you fix a bug, write a test to ensure it does not regress in the future. If
 All Microsoft employees contributing new files should add the following standard License header at the top of any new files, exactly as shown below:
 
 ```c#
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 ```
 
 ### Function / Method summary headers
