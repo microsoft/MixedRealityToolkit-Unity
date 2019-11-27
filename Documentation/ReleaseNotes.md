@@ -94,7 +94,7 @@ MRTK has added settings providers to the camera system. These components enable 
 - Windows Mixed Reality (Foundation package)
 - (Experimental) UnityAR for Android and iOS (Providers.UnityAR package)
 
-> [!Note] 
+> [!Note]
 > If no camera settings provider is configured for the current platform, the behavior from MRTK v2.1.0 will be used.
 
 **Cursor resizing**
@@ -129,9 +129,11 @@ and
 
 ![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
 
-**InteractableToggleCollection**
+**InteractableToggleCollection improvements**
 
-<< todo new custom inspector >>
+InteractableToggleCollection now properly updates the toggle states within groups. A new InteractableToggleCollection inspector has also been added.
+
+![Corrected toggle collection behavior](https://user-images.githubusercontent.com/53493796/68235326-eb1aa200-ffb7-11e9-9d34-f5c4d37ef4fb.gif)
 
 **Mixed Reality Capture setting (Experimental)**
 
@@ -140,7 +142,7 @@ The Windows Mixed Reality camera settings provider provides and experimental set
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
 > [!Note]
-> This feature is supported on Unity versions 2018.4 (.12f1 and newer) and 2019.3 (.0b12 and newer). With other Unity versions, the recording behavior may not work as expected.s
+> This feature is supported on Unity versions 2018.4 (.13f1 and newer) and 2019.3 (.0f1 and newer). With other Unity versions, the recording behavior may not work as expected.s
 
 **Mobile AR (Android and iOS) support (Experimental)**
 
@@ -161,7 +163,9 @@ The HoloLens 2 style bounding box UX control uses new audio clips to better matc
 
 **PressableButtonHoloLens2 icon lift on focus**
 
-<< todo shell parity >>
+The PressableButtonHoloLens2 UX control now has improved parity with the HoloLens shell experience.
+
+![PressableButton icon lift](https://user-images.githubusercontent.com/13754172/67797289-bdc17780-fa3e-11e9-8f59-c8b8714dd6b8.gif)
 
 **Pulse shaders for spatial mesh and hand mesh (Experimental)**
 
@@ -197,9 +201,16 @@ A new example scene has been added, which demonstrates surface magnetism and the
 
 **Support for hand and eye tracking remoting for Microsoft HoloLens 2**
 
-<< todo requires MSBuild for Unity installation >>
+MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
 
-### Known issues in 2.1.0
+> [!Note]
+> This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
+
+**Windows Mixed Reality Depth Reprojection Settings**
+
+<< todo >>
+
+### Known issues in 2.2.0
 
 The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
 
@@ -223,23 +234,35 @@ MRTK does not fully support profile swapping at runtime. This feature is being i
 [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
 [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
 
-<< todo >>
-
 **Unity 2018: .NET Backend and AR Foundation**
 
-<< todo >>
+There is an issue in Unity 2018 where, when building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail to install.
+
+To work around this issue, please perform one of the following steps:
+
+- Switch the scripting backend to IL2CPP
+- In the Build Settings window, uncheck **Unity C# Projects"
 
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
-<< todo >>
+If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
+
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
 
 **Mixed Reality Capture settings (Experimental)**
 
-<< todo off by default. not supported on Unity 2019.1, 2019.2 and some versions of 2018.4 >>
+The Windows Mixed Reality camera settings provider's experimental Mixed Reality Capture settings are disabled in the default profiles. This is due to some versions of Unity not properly supporting the feature of using the HoloLens photo video camera when recording captures.
+
+It is recommended to only enable this option on versions of Unity in the following list:
+
+- 2018.4 (.13f1 and later)
+- 2019.3.0f1 and later
+
+Enabling this feature on other versions of Unity may result in incorrect captures (ex: missing holograms).
 
 **MRTK Configurator dialog**
 
-<< todo may appear multiple times on project load >>
+When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.
 
 ## Version 2.1.0
 
