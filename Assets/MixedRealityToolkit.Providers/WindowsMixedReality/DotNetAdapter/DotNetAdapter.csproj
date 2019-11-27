@@ -17,10 +17,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.MixedReality.DotNetWinRT">
-      <Version>0.5.1034</Version>
+      <Version>0.5.*</Version>
     </PackageReference>
     <PackageReference Include="MSBuildForUnity">
-      <Version>0.8.1</Version>
+      <Version>0.8.*</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
