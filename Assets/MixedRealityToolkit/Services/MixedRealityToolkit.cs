@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit
             //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                // Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+                Debug.LogWarning("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
                 return;
             }
 
