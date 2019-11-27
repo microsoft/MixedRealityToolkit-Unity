@@ -1,0 +1,7 @@
+#include "il2cpp-config.h"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\BoehmGC.cpp"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\GCHandle.cpp"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\GarbageCollector.cpp"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\NullGC.cpp"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\WriteBarrier.cpp"
+#include "D:\Apps\MRTKv2 Original\MixedRealityToolkit-Unity\apps\Il2CppOutputProject\IL2CPP\libil2cpp\gc\WriteBarrierValidation.cpp"

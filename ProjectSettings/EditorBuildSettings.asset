@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
-    guid: 3dd4a396b5225f8469b9a1eb608bfa57
+    path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity
+    guid: 1c24cbaf7678cb042b33b7b436b2e8d0
   m_configObjects: {}

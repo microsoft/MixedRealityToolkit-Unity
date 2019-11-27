@@ -1,0 +1,2360 @@
+{
+    "typesInScenes": [
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Object",
+            "fullManagedTypeName": "UnityEngine.Object",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "EditorExtension",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "NamedObject",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MonoScript",
+            "fullManagedTypeName": "UnityEditor.MonoScript",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Material",
+            "fullManagedTypeName": "UnityEngine.Material",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "GlobalGameManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "StreamingManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Streaming",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "GameManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "UnityConnectSettings",
+            "fullManagedTypeName": "UnityEditor.UnityConnectSettings",
+            "moduleName": "UnityConnect",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "VFXManager",
+            "fullManagedTypeName": "UnityEditor.VFXManager",
+            "moduleName": "VFX",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Shader",
+            "fullManagedTypeName": "UnityEngine.Shader",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AudioManager",
+            "fullManagedTypeName": "UnityEditor.AudioManager",
+            "moduleName": "Audio",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "PlayerSettings",
+            "fullManagedTypeName": "UnityEditor.PlayerSettings",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "TextAsset",
+            "fullManagedTypeName": "UnityEngine.TextAsset",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "PhysicsManager",
+            "fullManagedTypeName": "UnityEditor.PhysicsManager",
+            "moduleName": "Physics",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "TimeManager",
+            "fullManagedTypeName": "UnityEditor.TimeManager",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "InputManager",
+            "fullManagedTypeName": "UnityEditor.InputManager",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "TagManager",
+            "fullManagedTypeName": "UnityEditor.TagManager",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MonoManager",
+            "fullManagedTypeName": "UnityEditor.MonoManager",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "GraphicsSettings",
+            "fullManagedTypeName": "UnityEngine.Rendering.GraphicsSettings",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "DelayedCallManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "QualitySettings",
+            "fullManagedTypeName": "UnityEngine.QualitySettings",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "BuildSettings",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "RuntimeInitializeOnLoadManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "ResourceManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "ScriptMapper",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "NavMeshProjectSettings",
+            "fullManagedTypeName": "",
+            "moduleName": "AI",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Physics2DSettings",
+            "fullManagedTypeName": "UnityEditor.Physics2DSettings",
+            "moduleName": "Physics2D",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Camera",
+            "fullManagedTypeName": "UnityEngine.Camera",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Transform",
+            "fullManagedTypeName": "UnityEngine.Transform",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Renderer",
+            "fullManagedTypeName": "UnityEngine.Renderer",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "LineRenderer",
+            "fullManagedTypeName": "UnityEngine.LineRenderer",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Light",
+            "fullManagedTypeName": "UnityEngine.Light",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MeshFilter",
+            "fullManagedTypeName": "UnityEngine.MeshFilter",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MeshRenderer",
+            "fullManagedTypeName": "UnityEngine.MeshRenderer",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AnimationClip",
+            "fullManagedTypeName": "UnityEngine.AnimationClip",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AudioBehaviour",
+            "fullManagedTypeName": "UnityEngine.AudioBehaviour",
+            "moduleName": "Audio",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AudioListener",
+            "fullManagedTypeName": "UnityEngine.AudioListener",
+            "moduleName": "Audio",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AudioClip",
+            "fullManagedTypeName": "UnityEngine.AudioClip",
+            "moduleName": "Audio",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Texture",
+            "fullManagedTypeName": "UnityEngine.Texture",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Collider",
+            "fullManagedTypeName": "UnityEngine.Collider",
+            "moduleName": "Physics",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MeshCollider",
+            "fullManagedTypeName": "UnityEngine.MeshCollider",
+            "moduleName": "Physics",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "CapsuleCollider",
+            "fullManagedTypeName": "UnityEngine.CapsuleCollider",
+            "moduleName": "Physics",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "BoxCollider",
+            "fullManagedTypeName": "UnityEngine.BoxCollider",
+            "moduleName": "Physics",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "SphereCollider",
+            "fullManagedTypeName": "UnityEngine.SphereCollider",
+            "moduleName": "Physics",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "TextMesh",
+            "fullManagedTypeName": "UnityEngine.TextMesh",
+            "moduleName": "TextRendering",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Canvas",
+            "fullManagedTypeName": "UnityEngine.Canvas",
+            "moduleName": "UI",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "RectTransform",
+            "fullManagedTypeName": "UnityEngine.RectTransform",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Behaviour",
+            "fullManagedTypeName": "UnityEngine.Behaviour",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Animator",
+            "fullManagedTypeName": "UnityEngine.Animator",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "RuntimeAnimatorController",
+            "fullManagedTypeName": "UnityEngine.RuntimeAnimatorController",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Motion",
+            "fullManagedTypeName": "UnityEngine.Motion",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Component",
+            "fullManagedTypeName": "UnityEngine.Component",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "MonoBehaviour",
+            "fullManagedTypeName": "UnityEngine.MonoBehaviour",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "AnimatorController",
+            "fullManagedTypeName": "UnityEditor.Animations.AnimatorController",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Avatar",
+            "fullManagedTypeName": "UnityEngine.Avatar",
+            "moduleName": "Animation",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "GameObject",
+            "fullManagedTypeName": "UnityEngine.GameObject",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "LightmapSettings",
+            "fullManagedTypeName": "UnityEngine.LightmapSettings",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Font",
+            "fullManagedTypeName": "UnityEngine.Font",
+            "moduleName": "TextRendering",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Mesh",
+            "fullManagedTypeName": "UnityEngine.Mesh",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Texture2D",
+            "fullManagedTypeName": "UnityEngine.Texture2D",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "CanvasRenderer",
+            "fullManagedTypeName": "UnityEngine.CanvasRenderer",
+            "moduleName": "UI",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "SampleClip",
+            "fullManagedTypeName": "",
+            "moduleName": "Audio",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "Cubemap",
+            "fullManagedTypeName": "UnityEngine.Cubemap",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "RenderSettings",
+            "fullManagedTypeName": "UnityEngine.RenderSettings",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "LightProbes",
+            "fullManagedTypeName": "UnityEngine.LightProbes",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "UnityEngine.dll",
+            "nativeClass": "CGProgram",
+            "fullManagedTypeName": "UnityEngine.TextAsset",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "",
+            "nativeClass": "LevelGameManager",
+            "fullManagedTypeName": "",
+            "moduleName": "Core",
+            "usedInScenes": [
+                "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/TestScene.unity"
+            ]
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Examples.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "EmotionalButton",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Examples.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "MaterialParameterChanger",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.AnimatedCursor",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.FingerCursor",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.GGVPointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MeshCursor",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MousePointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.PokePointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.SpherePointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.SpherePointerGrabPoint",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.SpherePointerVisual",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.TouchHandler",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.TouchPointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Teleport.TeleportCursor",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.Billboard",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.Interactable",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.PinchSlider",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.SliderSounds",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.States",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.UI.Theme",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.SDK.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputAnimation.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputRecordingProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputSimulation.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputSystem.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.GazeProvider",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputSystem.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputSystem.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.Services.InputSystem.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundaryVisualizationProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.BaseHandVisualizer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerMappingProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityEyeTrackingProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityGesturesProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputActionRulesProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputActionsProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystemProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Input.MixedRealitySpeechCommandsProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.MixedRealityRegisteredServiceProvidersProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.MixedRealityToolkit",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Physics.DistorterGravity",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystemProfile",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.BezierDataProvider",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.BezierInertia",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.ClippingBox",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.HoverLight",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.MixedRealityLineRenderer",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.ParabolaPhysicalLineDataProvider",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.ProximityLight",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Microsoft.MixedReality.Toolkit.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "Microsoft.MixedReality.Toolkit.Utilities.SimpleLineDataProvider",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.TextMeshPro.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "TMPro.TMP_FontAsset",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.TextMeshPro.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "TMPro.TMP_Settings",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.TextMeshPro.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "TMPro.TMP_SpriteAsset",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.TextMeshPro.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "TMPro.TMP_StyleSheet",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "Unity.TextMeshPro.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "TMPro.TextMeshPro",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.UI.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.EventSystems.EventSystem",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.UI.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.UI.CanvasScaler",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.UI.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.UI.GraphicRaycaster",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "UnityEngine.UI.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.UI.Text",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "com.unity.multiplayer-hlapi.Runtime.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.Networking.NetworkCallbacks",
+            "moduleName": "",
+            "usedInScenes": []
+        },
+        {
+            "managedAssemblyName": "com.unity.multiplayer-hlapi.Runtime.dll",
+            "nativeClass": "",
+            "fullManagedTypeName": "UnityEngine.Networking.NetworkIdentity",
+            "moduleName": "",
+            "usedInScenes": []
+        }
+    ],
+    "allNativeTypes": [
+        {
+            "name": "Object",
+            "module": "Core"
+        },
+        {
+            "name": "AnnotationManager",
+            "module": "Core"
+        },
+        {
+            "name": "AssetDatabaseV1",
+            "module": "AssetDatabase"
+        },
+        {
+            "name": "AssetMetaData",
+            "module": "Core"
+        },
+        {
+            "name": "BuiltAssetBundleInfoSet",
+            "module": "BuildReportingEditor"
+        },
+        {
+            "name": "Derived",
+            "module": "Core"
+        },
+        {
+            "name": "SubDerived",
+            "module": "Core"
+        },
+        {
+            "name": "EditorBuildSettings",
+            "module": "Editor"
+        },
+        {
+            "name": "EditorExtension",
+            "module": "Core"
+        },
+        {
+            "name": "Component",
+            "module": "Core"
+        },
+        {
+            "name": "Behaviour",
+            "module": "Core"
+        },
+        {
+            "name": "Animation",
+            "module": "Animation"
+        },
+        {
+            "name": "Animator",
+            "module": "Animation"
+        },
+        {
+            "name": "AudioBehaviour",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioListener",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioSource",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioChorusFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioDistortionFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioEchoFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioHighPassFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioLowPassFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioReverbFilter",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioReverbZone",
+            "module": "Audio"
+        },
+        {
+            "name": "Camera",
+            "module": "Core"
+        },
+        {
+            "name": "Canvas",
+            "module": "UI"
+        },
+        {
+            "name": "CanvasGroup",
+            "module": "UI"
+        },
+        {
+            "name": "Cloth",
+            "module": "Cloth"
+        },
+        {
+            "name": "Collider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "BoxCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "CapsuleCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "CircleCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "CompositeCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "EdgeCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PolygonCollider2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "TilemapCollider2D",
+            "module": "Tilemap"
+        },
+        {
+            "name": "ConstantForce",
+            "module": "Physics"
+        },
+        {
+            "name": "Effector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "AreaEffector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "BuoyancyEffector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PlatformEffector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PointEffector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "SurfaceEffector2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "FlareLayer",
+            "module": "Core"
+        },
+        {
+            "name": "GUIElement",
+            "module": "Core"
+        },
+        {
+            "name": "GUIText",
+            "module": "TextRendering"
+        },
+        {
+            "name": "GUITexture",
+            "module": "Core"
+        },
+        {
+            "name": "GUILayer",
+            "module": "Core"
+        },
+        {
+            "name": "GridLayout",
+            "module": "Grid"
+        },
+        {
+            "name": "Grid",
+            "module": "Grid"
+        },
+        {
+            "name": "Tilemap",
+            "module": "Tilemap"
+        },
+        {
+            "name": "Halo",
+            "module": "Core"
+        },
+        {
+            "name": "HaloLayer",
+            "module": "Core"
+        },
+        {
+            "name": "IConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "AimConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "LookAtConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "ParentConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "PositionConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "RotationConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "ScaleConstraint",
+            "module": "Animation"
+        },
+        {
+            "name": "Joint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "AnchoredJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "DistanceJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "FixedJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "FrictionJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "HingeJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "SliderJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "SpringJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "WheelJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "RelativeJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "TargetJoint2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "LensFlare",
+            "module": "Core"
+        },
+        {
+            "name": "Light",
+            "module": "Core"
+        },
+        {
+            "name": "LightProbeGroup",
+            "module": "Core"
+        },
+        {
+            "name": "LightProbeProxyVolume",
+            "module": "Core"
+        },
+        {
+            "name": "MonoBehaviour",
+            "module": "Core"
+        },
+        {
+            "name": "NavMeshAgent",
+            "module": "AI"
+        },
+        {
+            "name": "NavMeshObstacle",
+            "module": "AI"
+        },
+        {
+            "name": "OffMeshLink",
+            "module": "AI"
+        },
+        {
+            "name": "ParticleSystemForceField",
+            "module": "ParticleSystem"
+        },
+        {
+            "name": "PhysicsUpdateBehaviour2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "ConstantForce2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PlayableDirector",
+            "module": "Director"
+        },
+        {
+            "name": "Projector",
+            "module": "Core"
+        },
+        {
+            "name": "ReflectionProbe",
+            "module": "Core"
+        },
+        {
+            "name": "Skybox",
+            "module": "Core"
+        },
+        {
+            "name": "SortingGroup",
+            "module": "Core"
+        },
+        {
+            "name": "StreamingController",
+            "module": "Streaming"
+        },
+        {
+            "name": "Terrain",
+            "module": "Terrain"
+        },
+        {
+            "name": "VideoPlayer",
+            "module": "Video"
+        },
+        {
+            "name": "VisualEffect",
+            "module": "VFX"
+        },
+        {
+            "name": "WindZone",
+            "module": "Wind"
+        },
+        {
+            "name": "CanvasRenderer",
+            "module": "UI"
+        },
+        {
+            "name": "Collider",
+            "module": "Physics"
+        },
+        {
+            "name": "BoxCollider",
+            "module": "Physics"
+        },
+        {
+            "name": "CapsuleCollider",
+            "module": "Physics"
+        },
+        {
+            "name": "CharacterController",
+            "module": "Physics"
+        },
+        {
+            "name": "MeshCollider",
+            "module": "Physics"
+        },
+        {
+            "name": "SphereCollider",
+            "module": "Physics"
+        },
+        {
+            "name": "TerrainCollider",
+            "module": "TerrainPhysics"
+        },
+        {
+            "name": "WheelCollider",
+            "module": "Vehicles"
+        },
+        {
+            "name": "FakeComponent",
+            "module": "Core"
+        },
+        {
+            "name": "Joint",
+            "module": "Physics"
+        },
+        {
+            "name": "CharacterJoint",
+            "module": "Physics"
+        },
+        {
+            "name": "ConfigurableJoint",
+            "module": "Physics"
+        },
+        {
+            "name": "FixedJoint",
+            "module": "Physics"
+        },
+        {
+            "name": "HingeJoint",
+            "module": "Physics"
+        },
+        {
+            "name": "SpringJoint",
+            "module": "Physics"
+        },
+        {
+            "name": "LODGroup",
+            "module": "Core"
+        },
+        {
+            "name": "MeshFilter",
+            "module": "Core"
+        },
+        {
+            "name": "OcclusionArea",
+            "module": "Core"
+        },
+        {
+            "name": "OcclusionPortal",
+            "module": "Core"
+        },
+        {
+            "name": "ParticleSystem",
+            "module": "ParticleSystem"
+        },
+        {
+            "name": "Renderer",
+            "module": "Core"
+        },
+        {
+            "name": "BillboardRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "LineRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "RendererFake",
+            "module": "Core"
+        },
+        {
+            "name": "MeshRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "ParticleSystemRenderer",
+            "module": "ParticleSystem"
+        },
+        {
+            "name": "SkinnedMeshRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "SpriteMask",
+            "module": "SpriteMask"
+        },
+        {
+            "name": "SpriteRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "SpriteShapeRenderer",
+            "module": "SpriteShape"
+        },
+        {
+            "name": "TilemapRenderer",
+            "module": "Tilemap"
+        },
+        {
+            "name": "TrailRenderer",
+            "module": "Core"
+        },
+        {
+            "name": "VFXRenderer",
+            "module": "VFX"
+        },
+        {
+            "name": "Rigidbody",
+            "module": "Physics"
+        },
+        {
+            "name": "Rigidbody2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "TextMesh",
+            "module": "TextRendering"
+        },
+        {
+            "name": "Transform",
+            "module": "Core"
+        },
+        {
+            "name": "RectTransform",
+            "module": "Core"
+        },
+        {
+            "name": "Tree",
+            "module": "Terrain"
+        },
+        {
+            "name": "WorldAnchor",
+            "module": "VR"
+        },
+        {
+            "name": "GameObject",
+            "module": "Core"
+        },
+        {
+            "name": "NamedObject",
+            "module": "Core"
+        },
+        {
+            "name": "AnimatorState",
+            "module": "Editor"
+        },
+        {
+            "name": "AnimatorStateMachine",
+            "module": "Editor"
+        },
+        {
+            "name": "AnimatorTransitionBase",
+            "module": "Editor"
+        },
+        {
+            "name": "AnimatorStateTransition",
+            "module": "Editor"
+        },
+        {
+            "name": "AnimatorTransition",
+            "module": "Editor"
+        },
+        {
+            "name": "AssetBundle",
+            "module": "AssetBundle"
+        },
+        {
+            "name": "AssetBundleManifest",
+            "module": "AssetBundle"
+        },
+        {
+            "name": "AssetImportInProgressProxy",
+            "module": "Editor"
+        },
+        {
+            "name": "AssetImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "AssemblyDefinitionImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "AssemblyDefinitionReferenceImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "AudioImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "ComputeShaderImporter",
+            "module": "Core"
+        },
+        {
+            "name": "DefaultImporter",
+            "module": "Core"
+        },
+        {
+            "name": "IHVImageFormatImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "LibraryAssetImporter",
+            "module": "Core"
+        },
+        {
+            "name": "LocalizationImporter",
+            "module": "LocalizationEditor"
+        },
+        {
+            "name": "ModelImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "FBXImporter",
+            "module": "Core"
+        },
+        {
+            "name": "Mesh3DSImporter",
+            "module": "Core"
+        },
+        {
+            "name": "SketchUpImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "MonoImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "MovieImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "MultiArtifactTestImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "NativeFormatImporter",
+            "module": "Core"
+        },
+        {
+            "name": "PackageManifestImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "PluginImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "PrefabImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "ReferencesArtifactGenerator",
+            "module": "Editor"
+        },
+        {
+            "name": "ScriptedImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "ShaderImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "SpeedTreeImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "SubstanceImporter",
+            "module": "SubstanceEditor"
+        },
+        {
+            "name": "TextScriptImporter",
+            "module": "Core"
+        },
+        {
+            "name": "TextureImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "TrueTypeFontImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "VideoClipImporter",
+            "module": "Editor"
+        },
+        {
+            "name": "VisualEffectImporter",
+            "module": "VFXEditor"
+        },
+        {
+            "name": "AssetImporterLog",
+            "module": "Core"
+        },
+        {
+            "name": "AudioMixer",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioMixerController",
+            "module": "Editor"
+        },
+        {
+            "name": "AudioMixerEffectController",
+            "module": "Editor"
+        },
+        {
+            "name": "AudioMixerGroup",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioMixerGroupController",
+            "module": "Editor"
+        },
+        {
+            "name": "AudioMixerSnapshot",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioMixerSnapshotController",
+            "module": "Editor"
+        },
+        {
+            "name": "Avatar",
+            "module": "Animation"
+        },
+        {
+            "name": "AvatarMask",
+            "module": "Animation"
+        },
+        {
+            "name": "BaseAnimationTrack",
+            "module": "Animation"
+        },
+        {
+            "name": "NewAnimationTrack",
+            "module": "Animation"
+        },
+        {
+            "name": "BillboardAsset",
+            "module": "Core"
+        },
+        {
+            "name": "BuildReport",
+            "module": "Editor"
+        },
+        {
+            "name": "CachedSpriteAtlas",
+            "module": "Core"
+        },
+        {
+            "name": "CachedSpriteAtlasRuntimeData",
+            "module": "Core"
+        },
+        {
+            "name": "ComputeShader",
+            "module": "Core"
+        },
+        {
+            "name": "DefaultAsset",
+            "module": "Editor"
+        },
+        {
+            "name": "SceneAsset",
+            "module": "Editor"
+        },
+        {
+            "name": "EditorProjectAccess",
+            "module": "Editor"
+        },
+        {
+            "name": "Flare",
+            "module": "Core"
+        },
+        {
+            "name": "Font",
+            "module": "TextRendering"
+        },
+        {
+            "name": "GameObjectRecorder",
+            "module": "Editor"
+        },
+        {
+            "name": "HumanTemplate",
+            "module": "Editor"
+        },
+        {
+            "name": "LightProbes",
+            "module": "Core"
+        },
+        {
+            "name": "LightingDataAsset",
+            "module": "Editor"
+        },
+        {
+            "name": "LightingDataAssetParent",
+            "module": "Core"
+        },
+        {
+            "name": "LightmapParameters",
+            "module": "Editor"
+        },
+        {
+            "name": "LocalizationAsset",
+            "module": "Localization"
+        },
+        {
+            "name": "Material",
+            "module": "Core"
+        },
+        {
+            "name": "ProceduralMaterial",
+            "module": "Substance"
+        },
+        {
+            "name": "Mesh",
+            "module": "Core"
+        },
+        {
+            "name": "Motion",
+            "module": "Animation"
+        },
+        {
+            "name": "AnimationClip",
+            "module": "Animation"
+        },
+        {
+            "name": "PreviewAnimationClip",
+            "module": "Core"
+        },
+        {
+            "name": "BlendTree",
+            "module": "Editor"
+        },
+        {
+            "name": "NavMeshData",
+            "module": "AI"
+        },
+        {
+            "name": "OcclusionCullingData",
+            "module": "Umbra"
+        },
+        {
+            "name": "PhysicMaterial",
+            "module": "Physics"
+        },
+        {
+            "name": "PhysicsMaterial2D",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PreloadData",
+            "module": "Core"
+        },
+        {
+            "name": "Preset",
+            "module": "Editor"
+        },
+        {
+            "name": "RuntimeAnimatorController",
+            "module": "Animation"
+        },
+        {
+            "name": "AnimatorController",
+            "module": "Animation"
+        },
+        {
+            "name": "AnimatorOverrideController",
+            "module": "Animation"
+        },
+        {
+            "name": "SampleClip",
+            "module": "Audio"
+        },
+        {
+            "name": "AudioClip",
+            "module": "Audio"
+        },
+        {
+            "name": "Shader",
+            "module": "Core"
+        },
+        {
+            "name": "ShaderVariantCollection",
+            "module": "Core"
+        },
+        {
+            "name": "SpeedTreeWindAsset",
+            "module": "Terrain"
+        },
+        {
+            "name": "Sprite",
+            "module": "Core"
+        },
+        {
+            "name": "SpriteAtlas",
+            "module": "Core"
+        },
+        {
+            "name": "SubstanceArchive",
+            "module": "Substance"
+        },
+        {
+            "name": "TerrainData",
+            "module": "Terrain"
+        },
+        {
+            "name": "TerrainLayer",
+            "module": "Terrain"
+        },
+        {
+            "name": "TextAsset",
+            "module": "Core"
+        },
+        {
+            "name": "AssemblyDefinitionAsset",
+            "module": "Editor"
+        },
+        {
+            "name": "AssemblyDefinitionReferenceAsset",
+            "module": "Editor"
+        },
+        {
+            "name": "CGProgram",
+            "module": "Core"
+        },
+        {
+            "name": "MonoScript",
+            "module": "Core"
+        },
+        {
+            "name": "PackageManifest",
+            "module": "Editor"
+        },
+        {
+            "name": "Texture",
+            "module": "Core"
+        },
+        {
+            "name": "BaseVideoTexture",
+            "module": "Audio"
+        },
+        {
+            "name": "MovieTexture",
+            "module": "Audio"
+        },
+        {
+            "name": "WebCamTexture",
+            "module": "Audio"
+        },
+        {
+            "name": "CubemapArray",
+            "module": "Core"
+        },
+        {
+            "name": "LowerResBlitTexture",
+            "module": "Core"
+        },
+        {
+            "name": "ProceduralTexture",
+            "module": "Substance"
+        },
+        {
+            "name": "RenderTexture",
+            "module": "Core"
+        },
+        {
+            "name": "CustomRenderTexture",
+            "module": "Core"
+        },
+        {
+            "name": "SparseTexture",
+            "module": "Core"
+        },
+        {
+            "name": "Texture2D",
+            "module": "Core"
+        },
+        {
+            "name": "Cubemap",
+            "module": "Core"
+        },
+        {
+            "name": "Texture2DArray",
+            "module": "Core"
+        },
+        {
+            "name": "Texture3D",
+            "module": "Core"
+        },
+        {
+            "name": "VideoClip",
+            "module": "Video"
+        },
+        {
+            "name": "VisualEffectObject",
+            "module": "VFX"
+        },
+        {
+            "name": "VisualEffectAsset",
+            "module": "VFX"
+        },
+        {
+            "name": "VisualEffectSubgraph",
+            "module": "Editor"
+        },
+        {
+            "name": "VisualEffectSubgraphBlock",
+            "module": "Editor"
+        },
+        {
+            "name": "VisualEffectSubgraphOperator",
+            "module": "Editor"
+        },
+        {
+            "name": "VisualEffectResource",
+            "module": "Editor"
+        },
+        {
+            "name": "EditorExtensionImpl",
+            "module": "Core"
+        },
+        {
+            "name": "EditorSettings",
+            "module": "Editor"
+        },
+        {
+            "name": "EditorUserBuildSettings",
+            "module": "Editor"
+        },
+        {
+            "name": "EditorUserSettings",
+            "module": "Editor"
+        },
+        {
+            "name": "EmptyObject",
+            "module": "Core"
+        },
+        {
+            "name": "GameManager",
+            "module": "Core"
+        },
+        {
+            "name": "GlobalGameManager",
+            "module": "Core"
+        },
+        {
+            "name": "AudioManager",
+            "module": "Audio"
+        },
+        {
+            "name": "BuildSettings",
+            "module": "Core"
+        },
+        {
+            "name": "ClusterInputManager",
+            "module": "ClusterInput"
+        },
+        {
+            "name": "DelayedCallManager",
+            "module": "Core"
+        },
+        {
+            "name": "GraphicsSettings",
+            "module": "Core"
+        },
+        {
+            "name": "InputManager",
+            "module": "Core"
+        },
+        {
+            "name": "MonoManager",
+            "module": "Core"
+        },
+        {
+            "name": "NavMeshProjectSettings",
+            "module": "AI"
+        },
+        {
+            "name": "Physics2DSettings",
+            "module": "Physics2D"
+        },
+        {
+            "name": "PhysicsManager",
+            "module": "Physics"
+        },
+        {
+            "name": "PlayerSettings",
+            "module": "Core"
+        },
+        {
+            "name": "QualitySettings",
+            "module": "Core"
+        },
+        {
+            "name": "ResourceManager",
+            "module": "Core"
+        },
+        {
+            "name": "RuntimeInitializeOnLoadManager",
+            "module": "Core"
+        },
+        {
+            "name": "ScriptMapper",
+            "module": "Core"
+        },
+        {
+            "name": "StreamingManager",
+            "module": "Streaming"
+        },
+        {
+            "name": "TagManager",
+            "module": "Core"
+        },
+        {
+            "name": "TimeManager",
+            "module": "Core"
+        },
+        {
+            "name": "UnityConnectSettings",
+            "module": "UnityConnect"
+        },
+        {
+            "name": "VFXManager",
+            "module": "VFX"
+        },
+        {
+            "name": "LevelGameManager",
+            "module": "Core"
+        },
+        {
+            "name": "LightmapSettings",
+            "module": "Core"
+        },
+        {
+            "name": "NavMeshSettings",
+            "module": "AI"
+        },
+        {
+            "name": "OcclusionCullingSettings",
+            "module": "Umbra"
+        },
+        {
+            "name": "RenderSettings",
+            "module": "Core"
+        },
+        {
+            "name": "HierarchyState",
+            "module": "Core"
+        },
+        {
+            "name": "InspectorExpandedState",
+            "module": "Core"
+        },
+        {
+            "name": "NativeObjectType",
+            "module": "Core"
+        },
+        {
+            "name": "PackedAssets",
+            "module": "BuildReportingEditor"
+        },
+        {
+            "name": "PlatformModuleSetup",
+            "module": "Core"
+        },
+        {
+            "name": "Prefab",
+            "module": "Core"
+        },
+        {
+            "name": "PrefabInstance",
+            "module": "Core"
+        },
+        {
+            "name": "PresetManager",
+            "module": "Editor"
+        },
+        {
+            "name": "PropertyModificationsTargetTestObject",
+            "module": "Core"
+        },
+        {
+            "name": "SceneVisibilityState",
+            "module": "Core"
+        },
+        {
+            "name": "SerializableManagedHost",
+            "module": "Core"
+        },
+        {
+            "name": "SerializableManagedRefTestClass",
+            "module": "Core"
+        },
+        {
+            "name": "SiblingDerived",
+            "module": "Core"
+        },
+        {
+            "name": "SpriteAtlasDatabase",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectVectorPairStringBool",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSerializedAnimationCurve",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSerializedArray",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSerializedMapStringBool",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSerializedMapStringNonAlignedStruct",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSpecialLayoutOne",
+            "module": "Core"
+        },
+        {
+            "name": "TestObjectWithSpecialLayoutTwo",
+            "module": "Core"
+        },
+        {
+            "name": "Vector3f",
+            "module": "undefined"
+        },
+        {
+            "name": "AudioMixerLiveUpdateBool",
+            "module": "undefined"
+        },
+        {
+            "name": "bool",
+            "module": "undefined"
+        },
+        {
+            "name": "void",
+            "module": "undefined"
+        },
+        {
+            "name": "RootMotionData",
+            "module": "undefined"
+        },
+        {
+            "name": "AudioMixerLiveUpdateFloat",
+            "module": "undefined"
+        },
+        {
+            "name": "MonoObject",
+            "module": "undefined"
+        },
+        {
+            "name": "Collision2D",
+            "module": "undefined"
+        },
+        {
+            "name": "Polygon2D",
+            "module": "undefined"
+        },
+        {
+            "name": "Collision",
+            "module": "undefined"
+        },
+        {
+            "name": "float",
+            "module": "undefined"
+        },
+        {
+            "name": "int",
+            "module": "undefined"
+        }
+    ],
+    "forceIncludeModules": [],
+    "forceExcludeModules": [
+        "ClusterInput",
+        "ClusterRenderer"
+    ]
+}

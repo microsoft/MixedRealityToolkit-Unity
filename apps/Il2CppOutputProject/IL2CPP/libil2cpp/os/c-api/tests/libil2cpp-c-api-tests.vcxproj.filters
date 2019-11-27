@@ -1,0 +1,1122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="UnitTest++">
+      <UniqueIdentifier>{a90afd27-d348-410a-80f0-8e370ca5a1f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp">
+      <UniqueIdentifier>{e8fc7348-1d1b-47ba-a20e-b928b208dbee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os">
+      <UniqueIdentifier>{9a458613-a38d-4454-908d-92ca3a18502c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\utils">
+      <UniqueIdentifier>{13bab44e-1b9c-4d95-a570-ca6405ef1d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\c-api">
+      <UniqueIdentifier>{dac4904b-0085-4d4e-8b5a-dd02621c6503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\Android">
+      <UniqueIdentifier>{343d6dd4-b2ca-4fdd-8e2f-396c6810eec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\Generic">
+      <UniqueIdentifier>{b739e922-d459-4f5d-bcac-10c75d33126b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\OSX">
+      <UniqueIdentifier>{2a5db093-2d58-4066-99c3-4ce40f21fda5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\Posix">
+      <UniqueIdentifier>{2c65abe8-c345-4591-9d59-d99fc83b4f22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\Std">
+      <UniqueIdentifier>{2344db20-4bdb-468c-a840-76895da4e561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\Win32">
+      <UniqueIdentifier>{972e90ce-4be4-4abb-9edf-fc2edc3f100c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\WinRT">
+      <UniqueIdentifier>{c8385fcc-6c08-4b6e-8079-51f0d8e63dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\c-api\Win32">
+      <UniqueIdentifier>{13c8974e-0542-4e1f-b26e-42a02530a38b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libil2cpp\os\c-api\Posix">
+      <UniqueIdentifier>{0b159496-34fc-4f02-816e-280a2d7d4e23}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="COMTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionVariableTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CpuInfoTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptographyTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectoryTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryLoaderTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LocaleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryMappedFileTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NativeMethodsTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLocalValueTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeZoneTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\AssertException.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\Checks.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\CurrentTest.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredSuiteReporter.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredSuiteResult.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredTestReporter.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredTestResult.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\MemoryOutStream.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\NunitTestReporter.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\ReportAssert.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\Test.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestDetails.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestList.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporter.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterDebugLog.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterFormat.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterStdout.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestResults.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestRunner.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TimeConstraint.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TimeHelpersDefault.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\XmlTestReporter.cpp">
+      <Filter>UnitTest++</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTestRunner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MutexTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvironmentTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ConditionVariable.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Error.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Event.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Messages.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Mutex.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Path.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Semaphore.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Socket.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Thread.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThreadLocalValue.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\DirectoryUtils.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Environment.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Exception.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Logging.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\MarshalingUtils.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Memory.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\MemoryPool.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Output.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\PathUtils.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\RegisterRuntimeInitializeAndCleanup.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\Runtime.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\StringUtils.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Allocator.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\COM.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ConditionVariable.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Console.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CpuInfo.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Cryptography.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Error.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\File.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\LibraryLoader.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Locale.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MemoryMappedFile.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Messages.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Mutex.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\NativeMethods.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Path.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Process.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThreadLocalValue.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Time.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TimeZone.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Android\StackTrace.cpp">
+      <Filter>libil2cpp\os\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\COM.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\Environment.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\Initialize.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\MarshalStringAlloc.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\MemoryMappedFile.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\SocketImpl.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\WindowsRuntime.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Cryptography.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Environment.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\File.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Initialize.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Locale.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Process.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Win32ApiSharedEmulation.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\WinRT\Win32ApiWinRTEmulation.cpp">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\COM.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\ConditionVariableImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Console.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\CpuInfo.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Cryptography.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Debug.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Directory.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Encoding.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Environment.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\EventImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\File.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\FileSystemWatcher.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Image.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Initialize.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\LastError.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\LibraryLoader.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Locale.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\MarshalAlloc.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\MarshalStringAlloc.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Memory.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\MemoryMappedFile.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\MutexImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\NativeMethods.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Path.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Process.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\SemaphoreImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\SocketImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\StackTrace.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\ThreadImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\ThreadLocalValueImpl.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\Time.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\TimeZone.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\WindowsHelpers.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Win32\WindowsRuntime.cpp">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Std\ThreadImpl.cpp">
+      <Filter>libil2cpp\os\Std</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\ConditionVariableImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Console.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\CpuInfo.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Cryptography.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Directory.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Encoding.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Environment.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Error.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\EventImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\File.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\FileSystemWatcher.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Image.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\LastError.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\LibraryLoader.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Locale.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\MarshalAlloc.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Memory.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\MemoryMappedFile.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\MutexImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\NativeMethods.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Path.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\PosixHelpers.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\PosixWaitObject.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Process.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\SemaphoreImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\SocketImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\StackTrace.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\ThreadImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\ThreadLocalValueImpl.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\Time.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Posix\TimeZone.cpp">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSX\Image.cpp">
+      <Filter>libil2cpp\os\OSX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\OSX\Process.cpp">
+      <Filter>libil2cpp\os\OSX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Environment.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Directory.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Memory.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="MessagesTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\CpuInfo.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Event.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Handle.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="SemaphoreTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Semaphore.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Handle.cpp">
+      <Filter>libil2cpp\os</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Generic\TimeZoneInfo.cpp">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\TimeZoneInfo.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeZoneInfoTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thread.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Socket.cpp">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\MemoryMappedFile.cpp">
+      <Filter>libil2cpp\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\AssertException.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\CheckMacros.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\Checks.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\Config.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\CurrentTest.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredSuiteReporter.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredSuiteResult.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredTestReporter.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\DeferredTestResult.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\ExecuteTest.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\MemoryOutStream.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\NunitTestReporter.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\ReportAssert.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\ReportMacros.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\Test.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestAttribute.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestDetails.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestList.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestMacros.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestProperty.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporter.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterDebugLog.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterFormat.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestReporterStdout.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestResults.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestRunner.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TestSuite.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TimeConstraint.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TimeHelpers.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TimeHelpersDefault.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\TypeHelpers.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\UnitTest++.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\il2cpp-deps\artifacts\Stevedore\UnitTest-cpp\UnitTest++\XmlTestReporter.h">
+      <Filter>UnitTest++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Atomic.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\COM.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ConditionVariable.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Console.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CpuInfo.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Cryptography.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Debug.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Directory.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Encoding.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Environment.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Error.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ErrorCodes.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Event.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\File.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\FileSystemWatcher.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Handle.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Image.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Initialize.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LastError.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\LibraryLoader.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Locale.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MarshalAlloc.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MarshalStringAlloc.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Memory.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\MemoryMappedFile.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Messages.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Mutex.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\NativeMethods.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\OSGlobalEnums.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Path.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Process.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Semaphore.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Socket.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\StackTrace.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Thread.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThreadLocalValue.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Time.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\TimeZone.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WaitStatus.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WindowsRuntime.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\CallOnce.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Collections.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\DirectoryUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\dynamic_array.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Environment.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Exception.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Functional.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\HashUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Il2CppHashMap.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Il2CppHashSet.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Il2CppHStringReference.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\KeyWrapper.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Logging.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\MarshalingUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\MathUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Memory.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\MemoryPool.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\MemoryRead.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\NonCopyable.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Output.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\PathUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\RegisterRuntimeInitializeAndCleanup.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\Runtime.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\StringUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\StringView.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\StringViewStream.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\TemplateUtils.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\ThreadSafeFreeList.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Allocator.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\COM-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ConditionVariable-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Console-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CpuInfo-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Cryptography-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Error-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\File-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\LibraryLoader-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Locale-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MemoryMappedFile-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Messages-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Mutex-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\NativeMethods-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Path-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Process-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThreadLocalValue-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Time-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TimeZone-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Generic\SocketImpl.h">
+      <Filter>libil2cpp\os\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WinRT\SynchronousOperation.h">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WinRT\Win32ApiSharedEmulation.h">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\WinRT\Win32ApiWinRTEmulation.h">
+      <Filter>libil2cpp\os\WinRT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\AtomicImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\ConditionVariableImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\EventImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\MutexImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\SemaphoreImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\SocketImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\ThreadImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\ThreadLocalValueImpl.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\WindowsHeaders.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Win32\WindowsHelpers.h">
+      <Filter>libil2cpp\os\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Std\ThreadImpl.h">
+      <Filter>libil2cpp\os\Std</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\AtomicImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\ConditionVariableImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\Error.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\EventImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\FileHandle.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\MutexImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\PosixHelpers.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\PosixWaitObject.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\SemaphoreImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\SocketImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\ThreadImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Posix\ThreadLocalValueImpl.h">
+      <Filter>libil2cpp\os\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Environment-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Directory-c-api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Memory-c-api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Atomic-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Win32\AtomicImpl-c-api.h">
+      <Filter>libil2cpp\os\c-api\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Win32\WindowsHeaders.h">
+      <Filter>libil2cpp\os\c-api\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Posix\AtomicImpl-c-api.h">
+      <Filter>libil2cpp\os\c-api\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="PathHelper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Event-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Handle-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Semaphore-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\TimeZoneInfo.h">
+      <Filter>libil2cpp\os</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TimeZoneInfo-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thread-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Socket-c-api.h">
+      <Filter>libil2cpp\os\c-api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\utils\MemoryMappedFile.h">
+      <Filter>libil2cpp\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

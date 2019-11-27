@@ -1,0 +1,4006 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Master|ARM">
+      <Configuration>Master</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Master|ARM64">
+      <Configuration>Master</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Master|Win32">
+      <Configuration>Master</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Master|x64">
+      <Configuration>Master</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MasterWithLTCG|ARM">
+      <Configuration>MasterWithLTCG</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MasterWithLTCG|ARM64">
+      <Configuration>MasterWithLTCG</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MasterWithLTCG|Win32">
+      <Configuration>MasterWithLTCG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MasterWithLTCG|x64">
+      <Configuration>MasterWithLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\il2cppOutput\Assembly-CSharp_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\com.unity.multiplayer-hlapi.Runtime_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.CJK_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.MidEast_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.Other_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.Rare_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.West_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericClassTable.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericInstDefinitions.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericMethodDefinitions.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericMethodTable.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppMetadataRegistration.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppMetadataUsage.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppTypeDefinitions.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Async_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.Gltf_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.InspectorFields_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.UX.Interactables_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Examples_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Gltf_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.BoundarySystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.CameraSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputAnimation_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputSimulation_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.SceneSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.TeleportSystem_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Tools.Runtime_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Mono.Security_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Configuration_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Core_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Numerics.Vectors_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Numerics_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.ObjectModel_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.InteropServices.WindowsRuntime_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.WindowsRuntime.UI.Xaml_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.WindowsRuntime_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Xml_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Unity.TextMeshPro_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AIModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AndroidJNIModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AnimationModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AssetBundleModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AudioModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.CoreModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.DirectorModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.GridModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.ImageConversionModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.IMGUIModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.InputLegacyModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.InputModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.JSONSerializeModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.ParticleSystemModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.Physics2DModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.PhysicsModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.SharedInternalsModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TerrainModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TextCoreModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TextRenderingModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TilemapModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UIElementsModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UIModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UI_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UNETModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UnityAnalyticsModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UnityWebRequestModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VFXModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VideoModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VRModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.XRModule_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\WindowsRuntimeMetadata_CodeGen.c">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Assembly-CSharp.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\com.unity.multiplayer-hlapi.Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\com.unity.multiplayer-hlapi.Runtime1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\com.unity.multiplayer-hlapi.Runtime2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\com.unity.multiplayer-hlapi.Runtime3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods10.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods11.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods5.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods6.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods7.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods8.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\GenericMethods9.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics10.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics11.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics12.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics13.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics14.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics15.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics16.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics17.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics18.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics19.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics20.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics21.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics22.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics23.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics24.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics25.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics26.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics27.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics28.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics29.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics30.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics31.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics32.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics33.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics34.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics35.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics36.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics37.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics38.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics39.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics40.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics41.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics42.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics43.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics44.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics45.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics46.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics47.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics48.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics49.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics5.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics50.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics51.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics52.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics53.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics54.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics55.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics56.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics57.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics58.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics59.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics6.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics60.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics61.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics62.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics63.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics64.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics65.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics66.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics67.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics68.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics69.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics7.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics8.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Generics9.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.CJK.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.MidEast.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.Other.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.Rare.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.Rare1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\I18N.West.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppAttributes.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppCodeRegistration.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers10.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers11.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers12.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers13.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers14.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers15.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers16.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers17.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers18.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers19.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers20.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers21.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers22.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers23.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers24.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers25.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers26.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers27.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers28.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers29.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers30.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers31.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers32.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers33.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers5.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers6.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers7.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers8.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppComCallableWrappers9.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppCompilerCalculateTypeValues.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppCompilerCalculateTypeValues1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppCompilerCalculateTypeValues2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppCompilerCalculateTypeValuesTable.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericComDefinitions.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppGenericMethodPointerTable.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppInteropDataTable.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppInvokerTable.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppProjectedComCallableWrapperMethods5.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Il2CppReversePInvokeWrapperTable.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Async.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.Gltf.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.InspectorFields.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Demos.UX.Interactables.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Examples.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Examples1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Examples2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Gltf.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.SDK4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.BoundarySystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.CameraSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputAnimation.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputSimulation.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.InputSystem1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.SceneSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Services.TeleportSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit.Tools.Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Microsoft.MixedReality.Toolkit4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Mono.Security.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib10.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib11.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib12.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib13.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib14.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib15.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib16.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib17.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib18.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib4.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib5.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib6.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib7.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib8.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\mscorlib9.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Configuration.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Core.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Numerics.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Numerics.Vectors.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.ObjectModel.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.InteropServices.WindowsRuntime.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.WindowsRuntime.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Runtime.WindowsRuntime.UI.Xaml.cpp">
+      <DependentUpon>System.Runtime.WindowsRuntime.UI.Xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System.Xml.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\System2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Unity.TextMeshPro.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Unity.TextMeshPro1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Unity.TextMeshPro2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\Unity.TextMeshPro3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AIModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AndroidJNIModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AnimationModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AssetBundleModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.AudioModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.CoreModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.CoreModule1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.CoreModule2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.DirectorModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.GridModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.ImageConversionModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.IMGUIModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.InputLegacyModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.InputModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.JSONSerializeModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.ParticleSystemModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.Physics2DModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.PhysicsModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.SharedInternalsModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TerrainModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TextCoreModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TextRenderingModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.TilemapModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UI.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UI1.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UI2.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UI3.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UIElementsModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UIModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UNETModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UnityAnalyticsModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.UnityWebRequestModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VFXModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VideoModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.VRModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnityEngine.XRModule.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\UnresolvedVirtualCallStubs.cpp">
+    </ClCompile>
+    <ClCompile Include="Source\il2cppOutput\WindowsRuntimeMetadata.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\allchblk.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\alloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\backgraph.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\blacklst.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\checksums.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\darwin_stop_world.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\dbg_mlc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\dyn_load.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\finalize.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\fnlz_mlc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\gcj_mlc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\gc_dlopen.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\headers.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\heapsections.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\mach_dep.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\malloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\mallocx.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\mark.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\mark_rts.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\misc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\new_hblk.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\obj_map.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\os_dep.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\pthread_start.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\pthread_stop_world.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\pthread_support.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\ptr_chck.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\reclaim.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\specific.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\thread_local_alloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\typd_mlc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\win32_threads.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\cordbscs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\cordprnt.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\cordxtra.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\tests\cordtest.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\tests\de.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\cord\tests\de_win.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\AmigaOS.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\gc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\krait_signal_handler.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\MacOS.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\msvc_dbg.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\pcr_interface.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\real_malloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\Mac_files\dataend.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\extra\Mac_files\datastart.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops_malloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops_stack.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\tests\test_atomic.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\tests\test_malloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\libatomic_ops\tests\test_stack.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\disclaim_bench.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\disclaim_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\huge_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\initsecondarythread.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\leak_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\middle.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\realloc_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\smash_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\staticrootslib.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\staticrootstest.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\subthread_create.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\test_atomic_ops.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\threadkey_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\thread_leak_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tests\trace_test.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tools\if_mach.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tools\if_not_there.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tools\setjmp_t.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\tools\threadlibs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\bdwgc\windows-untested\stdafx.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\garray.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gbytearray.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gdate-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gdir-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gerror.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gfile-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gfile.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\ghashtable.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\giconv.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\glist.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gmarkup.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gmem.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gmisc-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\goutput.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gpath.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gpattern.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gptrarray.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gqsort.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gqueue.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gshell.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gslist.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gspawn.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gstr.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gstring.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gunicode-win32-uwp.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gunicode-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gunicode.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\eglib\gutf8.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\appdomain.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\assembly.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\attach.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\boehm-gc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\class-accessors.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\class.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\cominterop.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\console-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\console-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\console-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\coree.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\custom-attrs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\debug-helpers.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\debug-mono-ppdb.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\debug-mono-symfile.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\decimal-ms.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\domain.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\dynamic-image.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\dynamic-stream.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\environment.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\exception.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\fdhandle.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\file-mmap-posix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\file-mmap-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\file-mmap-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\filewatcher.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\gc-stats.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\gc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\handle.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\icall-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\icall.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\image.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\jit-info.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\loader.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\locales.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\lock-tracer.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\marshal-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\marshal.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mempool.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\metadata-cross-helpers.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\metadata-verify.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\metadata.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\method-builder.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\monitor.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-basic-block.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-conc-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-config-dirs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-config.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-debug.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-endian.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-mlist.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-perfcounters.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-route.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-security-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\mono-security.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\null-gc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\number-ms.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\object.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\opcodes.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\profiler.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\property-bag.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\rand.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\reflection.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\remoting.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\runtime.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\security-core-clr.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\security-manager.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\seq-points-data.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-bridge.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-mono.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-new-bridge.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-old-bridge.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-stw.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-tarjan-bridge.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sgen-toggleref.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sre-encode.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sre-save.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sre.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\string-icalls.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\sysmath.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\threadpool-io.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\threadpool-worker-default.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\threadpool.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\threads.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\unity-icall.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\unity-liveness.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\unity-utils.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\verify.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32error-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32error-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32error-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32event-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32event-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32event-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32file-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32file-unix-glob.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32file-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32file-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32file.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32handle-namespace.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32handle.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32mutex-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32mutex-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32mutex-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process-unix-default.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process-unix-osx.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32process.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32semaphore-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32semaphore-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32semaphore-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32socket-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32socket-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32socket-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\w32socket.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\private\threadpool-io-epoll.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\private\threadpool-io-kqueue.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\metadata\private\threadpool-io-poll.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\mini\debugger-agent.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-alloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-array-list.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-cardtable.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-debug.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-descriptor.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-fin-weak-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-gc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-gchandles.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-gray.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-hash-table.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-internal.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-layout-stats.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-los.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-marksweep.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-memory-governor.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-nursery-allocator.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-pinning-stats.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-pinning.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-pointer-queue.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-protocol.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-qsort.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-simple-nursery.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-split-nursery.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-thread-pool.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\sgen\sgen-workers.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\atomic.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\bsearch.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\dlmalloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\hazard-pointer.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\json.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\lock-free-alloc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\lock-free-array-queue.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\lock-free-queue.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mach-support-amd64.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mach-support-x86.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mach-support.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\memfuncs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-codeman.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-conc-hashtable.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-context.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-counters.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl-darwin.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl-posix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl-windows-uwp.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-dl.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-error.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-filemap.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-hwcap-arm.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-hwcap-arm64.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-hwcap-web.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-hwcap-x86.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-hwcap.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-internal-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-io-portability.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-linked-list-set.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-android.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-common.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-darwin.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-posix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-log-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-logger.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-math.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-md5.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-mmap-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-mmap.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-networkinterfaces.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-os-mutex.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-os-wait-win32-uwp.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-os-wait-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-path.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-poll.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-proclib-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-proclib.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-property-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-publib.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-sha1.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-stdlib.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-android.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-coop.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-mach-helper.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-mach.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-posix-signals.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-posix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-state-machine.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-threads.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-tls.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-uri.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\mono-value-hash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\monobitset.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\networking-missing.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\networking-posix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\networking-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\networking-windows.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\networking.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\os-event-unity.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\os-event-unix.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\os-event-win32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\parse.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\strenc.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\unity-rand.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\mono\utils\unity-time.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\mono\support\libm\complex.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\xamarin-android\xamarin_getifaddrs.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\xxHash\xxhash.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\xxHash\xxhsum.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\adler32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\compress.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\crc32.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\deflate.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\gzclose.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\gzlib.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\gzread.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\gzwrite.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\infback.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\inffast.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\inflate.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\inftrees.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\trees.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\uncompr.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\external\zlib\zutil.c">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\char-conversions.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\il2cpp-api.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\il2cpp-benchmark-support.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\il2cpp-runtime-stats.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\UnityAdsStubs.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-common.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-il2cpp.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\debugger\il2cpp-stubs.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\BoehmGC.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\GarbageCollector.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\GCHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\NullGC.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\WriteBarrier.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\gc\WriteBarrierValidation.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeClassHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeGPtrArrayHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeMarshal.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\SafeStringMarshal.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Globalization.Unicode\Normalization.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Interop\ComInteropProxy.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Security.Cryptography\KeyPairPersistence.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Unity\UnityTls.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Activator.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\AppDomain.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ArgIterator.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Array.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Buffer.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Char.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\CLRConfig.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Console.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ConsoleDriver.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Convert.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\CurrentSystemTimeZone.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\DateTime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Decimal.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Delegate.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Double.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Enum.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Exception.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\GC.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Math.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MissingMemberException.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoCustomAttrs.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoEnumInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoType.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Number.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\NumberFormatter.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Object.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeFieldHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeMethodHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeType.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeTypeHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\SizedReference.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\String.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\TimeSpan.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Type.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\TypedReference.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ValueType.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System\__ComObject.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\Assert.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\Debugger.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\StackFrame.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CalendarData.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CompareInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureData.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\RegionInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\DriveInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\MonoIO.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\Assembly.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\AssemblyName.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\CustomAttributeData.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\EventInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\FieldInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MemberInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MethodBase.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\Module.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoCMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoEventInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoField.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericClass.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericCMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoMethodInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoPropertyInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\ParameterInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\PropertyInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\RtFieldInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\AssemblyBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\CustomAttributeBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\DerivedType.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\DynamicMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\EnumBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\GenericTypeParameterBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\MethodBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\ModuleBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\SignatureHelper.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\SymbolType.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\TypeBuilder.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.CompilerServices\RuntimeHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices\GCHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices\Marshal.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices.WindowsRuntime\UnsafeNativeMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting\RemotingServices.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Activation\ActivationServices.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Contexts\Context.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Messaging\AsyncResult.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Messaging\MonoMethodMessage.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Proxies\RealProxy.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Versioning\VersioningHelper.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security\SecurityFrame.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security\SecurityManager.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Cryptography\RNGCryptoServiceProvider.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Policy\Evidence.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsIdentity.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsImpersonationContext.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsPrincipal.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\Encoding.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\EncodingHelper.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\Normalization.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Interlocked.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\InternalThread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Monitor.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Mutex.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\NativeEventCalls.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\OSSpecificSynchronizationContext.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Thread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\ThreadPool.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Timer.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\WaitHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\Microsoft.Win32\NativeMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\Mono.Net.Security\MonoTlsProviderFactory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System\IOSelector.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.ComponentModel\Win32Exception.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Configuration\DefaultConfig.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Configuration\InternalConfigurationHost.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\DefaultTraceListener.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\FileVersionInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounter.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounterCategory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounterUtils.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\Stopwatch.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.IO\FAMWatcher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.IO\FileSystemWatcher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.IO\InotifyWatcher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.IO\KqueueMonitor.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Net\Dns.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Net.NetworkInformation\LinuxNetworkInterface.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Net.NetworkInformation\MacOsIPInterfaceProperties.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Net.Sockets\Socket.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Net.Sockets\SocketException.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System\System.Threading\Semaphore.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System.Configuration\System.Configuration\InternalConfigurationHost.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\icalls\System.Core\System.IO.MemoryMappedFiles\MemoryMapImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\ArrayMetadata.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\FieldLayout.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\GenericMetadata.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\GenericMethod.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\GenericSharing.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericClassCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericClassHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericContextCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericContextHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericInstCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericInstHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericMethodCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppGenericMethodHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppSignatureCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppSignatureHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppTypeCompare.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\metadata\Il2CppTypeHash.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\MonoPosixHelper.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms-io-poll.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms-io.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolMonitorThread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolWorkerThread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono-runtime\il2cpp-callbacks.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\mono-runtime\il2cpp-mono-support.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\ConditionVariable.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\CrashHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Error.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Event.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Messages.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Mutex.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\ReaderWriterLock.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Semaphore.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Socket.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Thread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Android\Initialize.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Android\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Android\TimeZoneInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Allocator.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\COM.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\ConditionVariable.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Console.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\CpuInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Cryptography.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Debug.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Directory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Error.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Event.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Handle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\LibraryLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Locale.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Memory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\MemoryMappedFile.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Messages.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Mutex.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\NativeMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Semaphore.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Socket.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\SystemCertificates.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Thread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\ThreadLocalValue.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\Time.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\TimeZone.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\TimeZoneInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\COMTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ConditionVariableTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ConsoleTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\CpuInfoTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\CryptographyTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\DebugTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\DirectoryTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\EnvironmentTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ErrorTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\EventTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\FileTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\LibraryLoaderTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\LocaleTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\MainTestRunner.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\MemoryMappedFileTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\MemoryTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\MessagesTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\MutexTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\NativeMethodsTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\PathTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ProcessTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\SemaphoreTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\SocketTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ThreadLocalValueTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\ThreadTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\TimeTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\TimeZoneInfoTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\c-api\tests\TimeZoneTests.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Emscripten\SocketBridge.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\COM.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\CpuInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\CrashHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\Debug.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\Handle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\Initialize.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\MarshalStringAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\MemoryMappedFile.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\SocketBridge.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\SocketImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\SystemCertificates.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\TimeZoneInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Generic\WindowsRuntime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Lumin\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Lumin\Initialize.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Lumin\Lifecycle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Lumin\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Lumin\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\OSX\Image.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\OSX\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\OSX\SystemCertificates.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\ConditionVariableImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Console.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\CpuInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\CrashHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Cryptography.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Directory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Encoding.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Error.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\EventImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\FileSystemWatcher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Image.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\LastError.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\LibraryLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Locale.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\MarshalAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Memory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\MemoryMappedFile.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\MutexImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\NativeMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\PosixHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\PosixWaitObject.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\SemaphoreImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\SocketImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\SystemCertificates.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\ThreadImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\Time.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Posix\TimeZone.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Std\ThreadImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Unity\AtomicQueue.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\COM.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\ConditionVariableImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Console.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\CpuInfo.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\CrashHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Cryptography.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Debug.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Directory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\DllMain.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Encoding.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\EventImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\FileSystemWatcher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Handle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Image.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Initialize.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\LastError.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\LibraryLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Locale.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\MarshalAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\MarshalStringAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Memory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\MemoryMappedFile.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\MutexImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\NativeMethods.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\SemaphoreImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\SocketImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\SynchronizationContext.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\SystemCertificates.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\ThreadImpl.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\Time.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\TimeZone.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\WindowsHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\Win32\WindowsRuntime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\BrokeredFileSystem.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Cryptography.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\File.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Initialize.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Locale.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Process.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Win32ApiSharedEmulation.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\os\WinRT\Win32ApiWinRTEmulation.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\DirectoryUtils.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Environment.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Exception.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Il2CppHStringReference.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Logging.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\MarshalingUtils.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Memory.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\MemoryMappedFile.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\MemoryPool.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\mono-structs.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Output.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\PathUtils.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\RegisterRuntimeInitializeAndCleanup.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\utils\StringUtils.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Array.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Assembly.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\AssemblyName.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Atomic.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\CCW.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Class.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\ClassInlines.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\COM.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\ComObjectBase.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Domain.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Enum.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Event.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Exception.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Field.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\GenericClass.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\GenericContainer.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Image.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\InternalCalls.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\LastError.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\LibraryLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Liveness.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\MarshalAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\MemoryInformation.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\MetadataAlloc.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\MetadataCache.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\MetadataLoader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Method.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Module.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Monitor.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Object.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Parameter.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Path.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\PlatformInvoke.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Profiler.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Property.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Random.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\RCW.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Reflection.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Runtime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\ScopedThreadAttacher.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\StackTrace.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\String.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Thread.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\ThreadPool.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\ThreadPoolMs.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\Type.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\VisualizerHelpers.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\WaitHandle.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\WeakReference.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm\WindowsRuntime.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm-utils\BlobReader.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm-utils\Debugger.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm-utils\NativeDelegateMethodCache.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm-utils\NativeSymbol.cpp">
+    </ClCompile>
+    <ClCompile Include="IL2CPP\libil2cpp\vm-utils\VmStringUtils.cpp">
+    </ClCompile>
+    <ClInclude Include="IL2CPP\external\bdwgc\cord\tests\de_cmds.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\cord\tests\de_win.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\extra\Mac_files\MacOS_config.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\cord.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\cord_pos.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\ec.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_allocator.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_alloc_ptrs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_backptr.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_config_macros.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_cpp.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_disclaim.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_gcj.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_inline.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_mark.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_pthread_redirects.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_tiny_fl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_typed.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\gc_version.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\javaxfc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\leak_detector.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\new_gc_alloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\weakpointer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\extra\gc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\extra\gc_cpp.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\darwin_semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\darwin_stop_world.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\dbg_mlc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gcconfig.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gc_atomic_ops.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gc_hdrs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gc_locks.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gc_pmark.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\gc_priv.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\msvc_dbg.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\pthread_stop_world.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\pthread_support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\specific.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\include\private\thread_local_alloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops_malloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops_stack.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\ao_version.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\generalize-arithm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\generalize-small.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\generalize.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\all_acquire_release_volatile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\all_aligned_atomic_load_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\all_atomic_load_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\all_atomic_only_load.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\ao_t_is_int.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\emul_cas.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\generic_pthread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\ordered.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\ordered_except_wr.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\read_ordered.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\standard_ao_double_t.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\test_and_set_t_is_ao_t.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\test_and_set_t_is_char.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\armcc\arm_v6.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\aarch64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\alpha.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\arm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\avr32.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\cris.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\generic-arithm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\generic-small.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\generic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\hexagon.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\hppa.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\ia64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\m68k.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\mips.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\powerpc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\s390.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\sh.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\sparc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\gcc\x86.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\hpc\hppa.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\hpc\ia64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\ibmc\powerpc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\icc\ia64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\acquire_release_volatile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\atomic_load.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\atomic_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\char_acquire_release_volatile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\char_atomic_load.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\char_atomic_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\double_atomic_load_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\int_acquire_release_volatile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\int_atomic_load.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\int_atomic_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\ordered_loads_only.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\ordered_stores_only.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\short_acquire_release_volatile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\short_atomic_load.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\loadstore\short_atomic_store.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\msftc\arm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\msftc\common32_defs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\msftc\x86.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\msftc\x86_64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\sunc\sparc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\src\atomic_ops\sysdeps\sunc\x86.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\libatomic_ops\tests\run_parallel.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\bdwgc\windows-untested\stdafx.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\google\sparsehash\densehashtable.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\google\sparsehash\dense_hash_map.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\google\sparsehash\dense_hash_set.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\google\sparsehash\type_traits.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\amd64\amd64-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\arm\arm-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\arm\arm-vfp-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\arm\arm_dpimacros.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\arm\arm_vfpmacros.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\arm64\arm64-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\arch\x86\x86-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\eglib\eglib-remap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\eglib\glib.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\eglib\gmodule.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\eglib\sort.frag.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\eglib\unicode-data.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\abi-details.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\appdomain-icalls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\appdomain.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\assembly-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\assembly.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\attach.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\attrdefs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\blob.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\callspec.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\cil-coff.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\class-inlines.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\class-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\class.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\cominterop-win32-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\cominterop.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\console-io.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\coree-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\coree.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\culture-info-tables.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\culture-info.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\custom-attrs-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\debug-helpers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\debug-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\debug-mono-ppdb.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\debug-mono-symfile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\decimal-ms.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\domain-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\dynamic-image-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\dynamic-stream-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\environment.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\exception-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\exception.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\fdhandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\file-mmap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\filewatcher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\gc-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\handle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\icall-def.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\icall-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\icall-windows-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\il2cpp-compat-metadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\image-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\image.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\loader.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\locales.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\lock-tracer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\marshal-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\marshal-windows-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\marshal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mempool-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mempool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\metadata-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\metadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\method-builder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\monitor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-basic-block.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-conc-hash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-config-dirs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-config.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-debug.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-endian.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-gc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-hash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-mlist.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-perfcounters-def.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-perfcounters.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-ptr-array.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-route.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\mono-security-windows-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\normalization-tables.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\null-gc-handles.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\number-formatter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\number-ms.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\object-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\object-offsets.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\opcodes.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\profiler-events.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\profiler-private.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\profiler.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\property-bag.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\rand.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\reflection-cache.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\reflection-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\reflection.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\remoting.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\row-indexes.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\runtime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\security-core-clr.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\security-manager.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\security.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\seq-points-data.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sgen-bridge-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sgen-bridge.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sgen-client-mono.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sgen-dynarray.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sgen-toggleref.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sre-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\string-icalls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\sysmath.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\tabledefs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\threadpool-io.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\threadpool-worker.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\threadpool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\threads-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\threads.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\tokentype.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\unity-utils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\verify-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\verify.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32error.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32event.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32file-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32file-unix-glob.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32file-win32-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32file.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32handle-namespace.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32handle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32mutex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32process-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32process-unix-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32process-win32-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32process.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32socket-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\w32socket.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\metadata\wrapper-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\mini\debugger-agent.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\mini\mini-arm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\mini\mini-arm64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\gc-internal-agnostic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-archdep.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-array-list.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-cardtable.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-client.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-conf.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-copy-object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-descriptor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-gc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-gray.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-hash-table.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-layout-stats.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-major-copy-object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-marksweep-drain-gray-stack.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-memory-governor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-minor-copy-object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-minor-scan-object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-pinning.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-pointer-queue.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-protocol-def.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-protocol.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-qsort.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-scan-object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-tagged-pointer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-thread-pool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\sgen\sgen-workers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\atomic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\bsearch.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\checked-build.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\dlmalloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\dtrace.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\freebsd-dwarf.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\freebsd-elf32.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\freebsd-elf64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\freebsd-elf_common.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\gc_wrapper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\hazard-pointer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\json.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\linux_magic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\lock-free-alloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\lock-free-array-queue.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\lock-free-queue.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mach-support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\memcheck.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\memfuncs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-codeman.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-compiler.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-complex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-conc-hashtable.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-context.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-coop-mutex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-coop-semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-counters.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-digest.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-dl-fallback.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-dl-windows-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-dl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-embed.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-error-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-error.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-hwcap-vars.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-hwcap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-internal-hash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-io-portability.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-lazy-init.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-linked-list-set.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-logger-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-logger.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-machine.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-math.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-membar.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-memory-model.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-mmap-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-mmap-windows-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-mmap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-networkinterfaces.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-once.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-os-mutex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-os-semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-os-wait.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-path.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-poll.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-proclib.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-property-hash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-publib.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-rand.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-sigcontext.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-signal-handler.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-stack-unwinding.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-stdlib.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-string.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-threads-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-threads-coop.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-threads-debug.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-threads.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-time.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-tls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-uri.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\mono-value-hash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\monobitset.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\networking.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\os-event.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\parse.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\refcount.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\strenc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\unlocked.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\valgrind.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\w32api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\mono\utils\ward.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\support\libm\complex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\mono\support\libm\math_private.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\xamarin-android\logger.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\xamarin-android\monodroid.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\xamarin-android\xamarin_getifaddrs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\xxHash\xxh3.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\xxHash\xxhash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\crc32.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\deflate.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\gzguts.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\inffast.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\inffixed.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\inflate.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\inftrees.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\trees.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\zconf.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\zlib.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\external\zlib\zutil.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\char-conversions.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-api-functions.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-api-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-benchmark-support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-blob.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-class-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-config-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-config.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-metadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-normalization-tables.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-number-formatter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-object-internals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-pinvoke-support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-runtime-metadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-runtime-stats.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-sanitizers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-string-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-tabledefs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-tokentype.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-vm-support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\il2cpp-windowsruntime-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono-structs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-common.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-il2cpp.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-metadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen-mono.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\codegen\il2cpp-codegen.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\debugger\il2cpp-c-types.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\debugger\il2cpp-compat.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\Allocator.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\AppendOnlyGCHashMap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\GarbageCollector.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\GCHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\gc_wrapper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\WriteBarrier.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\gc\WriteBarrierValidation.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\Runtime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeClassHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeGPtrArrayHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\RuntimeMarshal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono\SafeStringMarshal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Globalization.Unicode\Normalization.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Interop\ComInteropProxy.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Security.Cryptography\KeyPairPersistence.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\Mono.Unity\UnityTls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Activator.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\AppDomain.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ArgIterator.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Array.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Buffer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Char.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\CLRConfig.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ConsoleDriver.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Convert.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\CurrentSystemTimeZone.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\DateTime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Decimal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Delegate.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Double.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Enum.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Environment.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Exception.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\GC.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Math.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MissingMemberException.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoCustomAttrs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoEnumInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\MonoType.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Number.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\NumberFormatter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeFieldHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeMethodHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeType.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\RuntimeTypeHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\SizedReference.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\String.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\TimeSpan.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\TimeZoneInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\Type.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\TypedReference.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\ValueType.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System\__ComObject.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\Assert.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\Debugger.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\StackFrame.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Diagnostics\StackTrace.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CalendarData.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CompareInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CompareOptions.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureData.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureInfoInternals.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\CultureInfoTables.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\RegionInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\Generated\CultureInfoInternalsNet_4_0.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Globalization\Generated\CultureInfoTablesNet_4_0.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\DriveInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\MonoIO.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.IO\Path.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\Assembly.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\AssemblyName.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\CustomAttributeData.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\EventInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\FieldInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MemberInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MethodBase.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\Module.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoCMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoEventInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoField.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericClass.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericCMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoGenericMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoMethodInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\MonoPropertyInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\ParameterInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\PropertyInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection\RtFieldInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\AssemblyBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\CustomAttributeBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\DerivedType.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\DynamicMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\EnumBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\GenericTypeParameterBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\MethodBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\ModuleBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\SignatureHelper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\SymbolType.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Reflection.Emit\TypeBuilder.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.CompilerServices\RuntimeHelpers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices\GCHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices\Marshal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.InteropServices.WindowsRuntime\UnsafeNativeMethods.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting\RemotingServices.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Activation\ActivationServices.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Contexts\Context.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Messaging\AsyncResult.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Messaging\MonoMethodMessage.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Remoting.Proxies\RealProxy.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Runtime.Versioning\VersioningHelper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security\SecurityFrame.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security\SecurityManager.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Cryptography\RNGCryptoServiceProvider.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Policy\Evidence.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsIdentity.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsImpersonationContext.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Security.Principal\WindowsPrincipal.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\Encoding.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\EncodingHelper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Text\Normalization.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Interlocked.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\InternalThread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Monitor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Mutex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\NativeEventCalls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\OSSpecificSynchronizationContext.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Thread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\ThreadPool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\Timer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\mscorlib\System.Threading\WaitHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\Microsoft.Win32\NativeMethods.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\Mono.Net.Security\MonoTlsProviderFactory.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System\IOSelector.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.ComponentModel\Win32Exception.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Configuration\DefaultConfig.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Configuration\InternalConfigurationHost.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\DefaultTraceListener.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\FileVersionInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\perfcounters-def.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounterCategory.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\PerformanceCounterUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\Process.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Diagnostics\Stopwatch.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.IO\FAMWatcher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.IO\FileSystemWatcher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.IO\InotifyWatcher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.IO\KqueueMonitor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Net\Dns.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Net.NetworkInformation\LinuxNetworkInterface.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Net.NetworkInformation\MacOsIPInterfaceProperties.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Net.Sockets\Socket.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Net.Sockets\SocketException.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System\System.Threading\Semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System.Configuration\System.Configuration\InternalConfigurationHost.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\icalls\System.Core\System.IO.MemoryMappedFiles\MemoryMapImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\ArrayMetadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\FieldLayout.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\GenericMetadata.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\GenericMethod.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\GenericSharing.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericClassCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericClassHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericContextCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericContextHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericInstCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericInstHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericMethodCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppGenericMethodHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppSignatureCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppSignatureHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppTypeCompare.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppTypeHash.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\metadata\Il2CppTypeVector.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\MonoPosixHelper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms-io-poll.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms-io.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\threadpool-ms.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolDataStructures.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolMacros.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolMonitorThread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono\ThreadPool\ThreadPoolWorkerThread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono-runtime\il2cpp-callbacks.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono-runtime\il2cpp-mapping.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\mono-runtime\il2cpp-mono-support.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Atomic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\COM.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\ConditionVariable.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Console.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\CpuInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\CrashHelpers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Cryptography.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Debug.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Directory.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Encoding.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Environment.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Error.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\ErrorCodes.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Event.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\File.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\FileSystemWatcher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Handle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Image.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Initialize.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\LastError.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\LibraryLoader.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Locale.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\MarshalAlloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\MarshalStringAlloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Memory.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\MemoryMappedFile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Messages.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Mutex.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\NativeMethods.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Path.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Process.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\ReaderWriterLock.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\ReaderWriterLockImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Semaphore.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Socket.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\SocketBridge.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\StackTrace.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\SynchronizationContext.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\SystemCertificates.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Thread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\ThreadLocalValue.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Time.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\TimeZone.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\TimeZoneInfo.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WaitStatus.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WindowsRuntime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Allocator.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Atomic-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\COM-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\ConditionVariable-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Console-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\CpuInfo-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Cryptography-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Debug-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Directory-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Environment-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Error-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Event-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\File-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Handle-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\il2cpp-config-api-platforms.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\il2cpp-config-platforms.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\LibraryLoader-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Locale-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Memory-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\MemoryMappedFile-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Messages-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Mutex-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\NativeMethods-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\OSGlobalEnums.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Path-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Process-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Semaphore-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Socket-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\SystemCertificates-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Thread-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\ThreadLocalValue-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Time-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\TimeZone-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\TimeZoneInfo-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\WaitStatus-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Posix\AtomicImpl-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\tests\PathHelper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Win32\AtomicImpl-c-api.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\c-api\Win32\WindowsHeaders.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Generic\SocketImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Lumin\File.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Lumin\Lifecycle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\AtomicImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\ConditionVariableImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\Error.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\EventImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\FileHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\MutexImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\PosixHelpers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\PosixWaitObject.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\ReaderWriterLockImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\SemaphoreImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\SocketImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\ThreadImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Posix\ThreadLocalValueImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Std\ThreadImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\AtomicNode.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\AtomicQueue.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-arm.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-arm64-windows.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-arm64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-clang-gcc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-x86-64.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps-x86.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicOps.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\ExtendedAtomicTypes.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Unity\UnityPlatformConfigure.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\AtomicImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\ConditionVariableImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\DllMain.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\EventImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\MutexImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\ReaderWriterLockImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\SemaphoreImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\SocketImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\ThreadImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\ThreadLocalValueImpl.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\WindowsHeaders.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\Win32\WindowsHelpers.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WinRT\BrokeredFileSystem.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WinRT\ReferenceCounter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WinRT\SynchronousOperation.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WinRT\Win32ApiSharedEmulation.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\os\WinRT\Win32ApiWinRTEmulation.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\CallOnce.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Collections.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\DirectoryUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\dynamic_array.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Environment.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Exception.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Functional.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\HashUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Il2CppHashMap.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Il2CppHashSet.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Il2CppHStringReference.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\KeyWrapper.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\LeaveTargetStack.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Logging.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MarshalingUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MathUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Memory.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MemoryMappedFile.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MemoryPool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MemoryRead.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\MemoryUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\NonCopyable.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Output.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\PathUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\RegisterRuntimeInitializeAndCleanup.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\Runtime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\StringUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\StringView.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\StringViewUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\TemplateUtils.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\ThreadSafeFreeList.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\utf8-cpp\source\utf8.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\utf8-cpp\source\utf8\checked.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\utf8-cpp\source\utf8\core.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\utils\utf8-cpp\source\utf8\unchecked.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Array.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Assembly.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\AssemblyName.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Atomic.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\CachedCCWBase.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\CCW.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Class.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\ClassInlines.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\COM.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\ComObjectBase.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Domain.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Enum.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Event.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Exception.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Field.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\GenericClass.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\GenericContainer.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Image.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\InternalCalls.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\LastError.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\LibraryLoader.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Liveness.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MarshalAlloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MemoryInformation.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MetadataAlloc.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MetadataCache.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MetadataLoader.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\MetadataLock.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Method.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Module.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Monitor.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\NonCachedCCWBase.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Object.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Parameter.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Path.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\PlatformInvoke.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Profiler.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Property.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Random.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\RCW.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Reflection.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Runtime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\ScopedThreadAttacher.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\StackTrace.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\String.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Thread.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\ThreadPool.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\ThreadPoolMs.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\Type.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\WaitHandle.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\WeakReference.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm\WindowsRuntime.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm-utils\BlobReader.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm-utils\Debugger.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm-utils\NativeDelegateMethodCache.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm-utils\NativeSymbol.h">
+    </ClInclude>
+    <ClInclude Include="IL2CPP\libil2cpp\vm-utils\VmStringUtils.h">
+    </ClInclude>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA17D85E-DA6F-49EA-A879-8F48265B121D}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+    <ApplicationType>Windows Store</ApplicationType>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <NMakePreprocessorDefinitions>_DEBUG;DEBUG;ALL_INTERIOR_POINTERS=1;GC_GCJ_SUPPORT=1;JAVA_FINALIZATION=1;NO_EXECUTE_PERMISSION=1;GC_NO_THREADS_DISCOVERY=1;IGNORE_DYNAMIC_LOADING=1;GC_DONT_REGISTER_MAIN_STATIC_DATA=1;GC_VERSION_MAJOR=7;GC_VERSION_MINOR=7;GC_VERSION_MICRO=0;GC_THREADS=1;USE_MMAP=1;USE_MUNMAP=1;NET_4_0=1;UNITY_AOT=1;NET_STANDARD_2_0=1;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;WINDOWS;_UNICODE;UNICODE;WINAPI_FAMILY=WINAPI_FAMILY_APP;WINDOWS_UWP;UNITY_UWP;UNITY_WSA_10_0;UNITY_WSA;UNITY_WINRT;PLATFORM_WINRT</NMakePreprocessorDefinitions>
+    <BuilderConfiguration>Debug</BuilderConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release' OR '$(Configuration)'=='Master'">
+    <NMakePreprocessorDefinitions>_NDEBUG;NDEBUG;ALL_INTERIOR_POINTERS=1;GC_GCJ_SUPPORT=1;JAVA_FINALIZATION=1;NO_EXECUTE_PERMISSION=1;GC_NO_THREADS_DISCOVERY=1;IGNORE_DYNAMIC_LOADING=1;GC_DONT_REGISTER_MAIN_STATIC_DATA=1;GC_VERSION_MAJOR=7;GC_VERSION_MINOR=7;GC_VERSION_MICRO=0;GC_THREADS=1;USE_MMAP=1;USE_MUNMAP=1;NET_4_0=1;UNITY_AOT=1;NET_STANDARD_2_0=1;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;WINDOWS;_UNICODE;UNICODE;WINAPI_FAMILY=WINAPI_FAMILY_APP;WINDOWS_UWP;UNITY_UWP;UNITY_WSA_10_0;UNITY_WSA;UNITY_WINRT;PLATFORM_WINRT</NMakePreprocessorDefinitions>
+    <BuilderConfiguration>Release</BuilderConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='MasterWithLTCG'">
+    <NMakePreprocessorDefinitions>_NDEBUG;NDEBUG;ALL_INTERIOR_POINTERS=1;GC_GCJ_SUPPORT=1;JAVA_FINALIZATION=1;NO_EXECUTE_PERMISSION=1;GC_NO_THREADS_DISCOVERY=1;IGNORE_DYNAMIC_LOADING=1;GC_DONT_REGISTER_MAIN_STATIC_DATA=1;GC_VERSION_MAJOR=7;GC_VERSION_MINOR=7;GC_VERSION_MICRO=0;GC_THREADS=1;USE_MMAP=1;USE_MUNMAP=1;NET_4_0=1;UNITY_AOT=1;NET_STANDARD_2_0=1;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;WIN32;WINDOWS;_UNICODE;UNICODE;WINAPI_FAMILY=WINAPI_FAMILY_APP;WINDOWS_UWP;UNITY_UWP;UNITY_WSA_10_0;UNITY_WSA;UNITY_WINRT;PLATFORM_WINRT</NMakePreprocessorDefinitions>
+    <BuilderConfiguration>ReleasePlus</BuilderConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' OR '$(Configuration)'=='Release'">
+    <Il2CppDebuggerFlags></Il2CppDebuggerFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Master' OR '$(Configuration)'=='MasterWithLTCG'">
+    <Il2CppDebuggerFlags></Il2CppDebuggerFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='ARM'">
+    <BuilderArchitecture>ARMv7</BuilderArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='ARM64'">
+    <BuilderArchitecture>ARM64</BuilderArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='Win32'">
+    <BuilderArchitecture>x86</BuilderArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'">
+    <BuilderArchitecture>x64</BuilderArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)\build\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\build\obj\il2cppOutputProject\$(Platform)\$(Configuration)\</IntDir>
+    <NMakeOutput>$(OutDir)GameAssembly.dll</NMakeOutput>
+    <IncludePath>$(VC_IncludePath);$(UniversalCRT_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)\IL2CPP\libil2cpp;$(ProjectDir)\IL2CPP\external\bdwgc\include</IncludePath>
+    <NMakeBuildCommandLine>"$(ProjectDir)\IL2CPP\build\il2cpp.exe" --libil2cpp-static --compile-cpp -architecture=$(BuilderArchitecture) -configuration=$(BuilderConfiguration) -platform=winrt -outputpath="$(NMakeOutput)" --data-folder="$(OutDir)\" -cachedirectory="$(IntDir)\" -generatedcppdir="$(ProjectDir)\Source" $(Il2CppDebuggerFlags) --profiler-report --additional-defines=WINDOWS_UWP --additional-defines=UNITY_UWP --additional-defines=UNITY_WSA_10_0 --additional-defines=UNITY_WSA --additional-defines=UNITY_WINRT --additional-defines=PLATFORM_WINRT -dotnetprofile=unityaot -verbose --map-file-parser="$(ProjectDir)\IL2CPP\MapFileParser\MapFileParser.exe"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>$(NMakeBuildCommandLine) -forcerebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del "$(NMakeOutput)"</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
