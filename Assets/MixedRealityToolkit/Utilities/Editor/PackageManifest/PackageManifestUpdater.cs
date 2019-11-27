@@ -13,6 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     internal static class PackageManifestUpdater
     {
+        private static string MSBuildRegistryUrl = "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry";
+        private static string MSBuildRegistryName = "MS Build for Unity";
+        private static string[] MSBuildRegistryScopes = new string[] { "com.microsoft" };
+
+        private static string MSBuildPackageName = "com.microsoft.msbuildforunity";
+        private static string MSBuildPackageVersion = "0.8.2";
+
         /// <summary>
         /// Ensures the required settings exist in the package manager to allow for
         /// installing MSBuild for Unity.
@@ -69,25 +76,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Attempt to find an entry in the scoped regstries collection for the MSBuild for Unity url
-            const string msBuildRegistryUrl = "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry";
             bool needToAddRegistry = true;
             foreach (ScopedRegistry registry in scopedRegistries)
             {
-                if (registry.url == msBuildRegistryUrl)
+                if (registry.url == MSBuildRegistryUrl)
                 {
                     needToAddRegistry = false;
                 }
             }
 
             // If no entry was found, add one.
-            const string msBuildRegistryName = "MS Build for Unity";
-            string[] msBuildRegistryScopes = new string[] { "com.microsoft" };
             if (needToAddRegistry)
             {
                 ScopedRegistry registry = new ScopedRegistry();
-                registry.name = msBuildRegistryName;
-                registry.url = msBuildRegistryUrl;
-                registry.scopes = msBuildRegistryScopes;
+                registry.name = MSBuildRegistryName;
+                registry.url = MSBuildRegistryUrl;
+                registry.scopes = MSBuildRegistryScopes;
 
                 scopedRegistries.Add(registry);
             }
@@ -102,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
             // This loop also identifies the dependecies collection line and the start / end of a
             // pre-existing scoped registries collections
-            const string msBuildPackageName = "com.microsoft.msbuildforunity";
             bool needToAddPackage = true;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
@@ -118,18 +121,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     dependenciesStartIndex = i;
                 }
-                if (manifestFileLines[i].Contains(msBuildPackageName))
+                if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
                     needToAddPackage = false;
                 }
             }
 
             // If no package was found add it to the dependencies collection.
-            const string msBuildPackageVersion = "0.8.1";
             if (needToAddPackage)
             {
                 // Add the package to the collection (pad the entry with four spaces)
-                manifestFileLines.Insert(dependenciesStartIndex + 1, $"    \"{msBuildPackageName}\": \"{msBuildPackageVersion}\",");
+                manifestFileLines.Insert(dependenciesStartIndex + 1, $"    \"{MSBuildPackageName}\": \"{MSBuildPackageVersion}\",");
             }
 
             if (needToAddRegistry || needToAddPackage)
