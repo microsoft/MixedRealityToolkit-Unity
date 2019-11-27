@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                     EditorGUILayout.LabelField("Mixed Reality Capture Settings (Experimental)", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
                 }
+                EditorGUILayout.HelpBox("Render from PV Camera is supported on Unity 2018.4.12f1 or newer and 2019.3 or newer. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
                 EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 EditorGUILayout.Space();
@@ -55,10 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                     InspectorUIUtility.RenderDocumentationButton(DepthReprojectionDocURL);
                 }
                 EditorGUILayout.PropertyField(reprojectionMethod, reprojectionMethodTitle);
-
-                EditorGUILayout.HelpBox("Render from PV Camera is supported on Unity 2018.4.12f1 or newer and 2019.3 or newer. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
-
-                EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 serializedObject.ApplyModifiedProperties();
             }

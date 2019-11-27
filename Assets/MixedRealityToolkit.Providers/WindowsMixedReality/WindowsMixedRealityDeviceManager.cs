@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using UnityEngine;
 using System;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -312,6 +313,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #endregion Gesture Settings
 
         #region IMixedRealityDeviceManager Interface
+
+        /// <inheritdoc/>
+        public override void Initialize()
+        {
+            base.Initialize();
+
+#if UNITY_EDITOR
+            // When in the editor, check for the DotNetWinRT dll and define the appropriate
+            // preprocessor sybmol
+            ScriptingUtilities.AppendScriptingDefinitions(
+                "Microsoft.Windows.MixedReality.DotNetWinRT.dll", 
+                UnityEditor.BuildTargetGroup.WSA, 
+                new string[] { "DOTNETWINRT_PRESENT" });
+#endif // UNITY_EDITOR
+        }
 
         /// <inheritdoc/>
         public override void Enable()
