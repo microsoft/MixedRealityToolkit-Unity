@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotateByEulerAngles: {x: 0, y: 1, z: 1}
-  speed: 0.3
+  speed: 1
 --- !u!1 &1173518706371706450
 GameObject:
   m_ObjectHideFlags: 0
