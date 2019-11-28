@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public event Action<string> OnTextUpdated = delegate { };
 
         /// <summary>
-        /// Fired every time the Close button is pressed.
+        /// Fired every time the close button is pressed.
         /// (Cleared when keyboard is closed.)
         /// </summary>
         public event EventHandler OnClosed = delegate { };
