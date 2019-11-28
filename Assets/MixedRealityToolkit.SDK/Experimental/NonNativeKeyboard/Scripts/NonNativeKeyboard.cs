@@ -430,7 +430,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Presents a specific keyboard to the camera, with start text.
         /// </summary>
-        /// <param name="startText">The initial text to show in the Keyboard's InputField.</param>
+        /// <param name="startText">The initial text to show in the keyboard's input field.</param>
         /// <param name="keyboardType">Specify the keyboard type.</param>
         public void PresentKeyboard(string startText, LayoutType keyboardType)
         {
