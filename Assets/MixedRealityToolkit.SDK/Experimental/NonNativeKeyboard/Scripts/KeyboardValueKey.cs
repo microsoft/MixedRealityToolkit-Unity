@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Text m_Text;
 
         /// <summary>
-        /// Reference to the GameObject's Button component.
+        /// Reference to the GameObject's button component.
         /// </summary>
         private Button m_Button;
 
