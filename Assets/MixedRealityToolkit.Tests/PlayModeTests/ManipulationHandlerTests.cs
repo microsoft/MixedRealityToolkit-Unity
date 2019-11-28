@@ -1016,14 +1016,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
 
-            float xPos, yPos;
+            float xPos, yPosUp, yPosDown;
 
             // Grab the object
             yield return hand.Show(new Vector3(0, 0, 0.5f));
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
 
-            // Move the hand in a way that does not change the xz distance from the body
+            // Move the hand in a way that does not change the distance from the body ray
             float root2Over2 = Mathf.Cos(Mathf.PI / 4);
             Vector3 moveX = new Vector3(root2Over2, 0, root2Over2) * 0.5f;
             yield return hand.MoveTo(moveX, numHandSteps);
@@ -1031,13 +1031,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             xPos = testObject.transform.position.x - moveX.x;
 
-            Vector3 moveY = new Vector3(0, 0.5f, 0.5f);
-            yield return hand.MoveTo(moveY, numHandSteps);
+            Vector3 moveYUp = new Vector3(0, root2Over2, root2Over2) * 0.5f;
+            yield return hand.MoveTo(moveYUp, numHandSteps);
             yield return null;
 
-            yPos = testObject.transform.position.y - moveY.y;
+            yPosUp = testObject.transform.position.y - moveYUp.y;
 
-            Assert.AreEqual(xPos, yPos, 0.01f);
+            Vector3 moveYDown = new Vector3(0, -0.5f, 0.5f);
+            yield return hand.MoveTo(moveYDown, numHandSteps);
+            yield return null;
+
+            yPosDown = testObject.transform.position.y - moveYDown.y;
+
+            Assert.AreEqual(xPos, yPosUp, 0.02f);
+            Assert.AreEqual(xPos, Mathf.Abs(yPosDown), 0.02f);
 
             // Restore the input simulation profile
             iss.HandSimulationMode = oldHandSimMode;
