@@ -452,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Function to reposition the Keyboard based on target transform and collider information 
+        /// Function to reposition the keyboard based on target transform and collider information 
         /// </summary>
         /// <param name="objectTransform">Transform of target object to remain relative to</param>
         /// <param name="aCollider">Optional collider information for offset placement</param>
