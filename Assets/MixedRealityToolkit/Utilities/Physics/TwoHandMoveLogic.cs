@@ -31,16 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
-            if (pointerCentroidPose.Position.y > CameraCache.Main.transform.position.y)
-            {
-                pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, CameraCache.Main.transform.position);
-            }
-            else
-            {
-                Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
-                Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
-                pointerRefDistance = Vector2.Distance(pointerPosXZ, headPosXZ);
-            }
+            pointerRefDistance = GetDistanceToBody(pointerCentroidPose);
+
             pointerPosIndependentOfHead = pointerRefDistance != 0;
             
             Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
@@ -63,19 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
-                float currentHandDistance = 0;
-
-                if (pointerCentroidPose.Position.y > CameraCache.Main.transform.position.y)
-                {
-                    currentHandDistance = Vector3.Distance(pointerCentroidPose.Position, CameraCache.Main.transform.position);
-                }
-                else
-                {
-                    Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
-                    Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
-
-                    currentHandDistance = Vector2.Distance(pointerPosXZ, headPosXZ);
-                }
+                float currentHandDistance = GetDistanceToBody(pointerCentroidPose);
                 distanceRatio = currentHandDistance / pointerRefDistance;
             }
 
@@ -90,6 +70,25 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             else
             {
                 return pointerCentroidPose.Position + pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject * distanceRatio;
+            }
+        }
+
+        private float GetDistanceToBody(MixedRealityPose pointerCentroidPose)
+        {
+            // The body is treated as a ray, parallel to the y-axis, where the start is head position.
+            // This means that moving your hand down such that is the same distance from the body will
+            // not cause the manipulated object to move further away from your hand. However, when you
+            // move your hand upward, away from your head, the manipulated object will be pushed away.
+            if (pointerCentroidPose.Position.y > CameraCache.Main.transform.position.y)
+            {
+                return Vector3.Distance(pointerCentroidPose.Position, CameraCache.Main.transform.position);
+            }
+            else
+            {
+                Vector2 headPosXZ = new Vector2(CameraCache.Main.transform.position.x, CameraCache.Main.transform.position.z);
+                Vector2 pointerPosXZ = new Vector2(pointerCentroidPose.Position.x, pointerCentroidPose.Position.z);
+
+                return Vector2.Distance(pointerPosXZ, headPosXZ);
             }
         }
     }
