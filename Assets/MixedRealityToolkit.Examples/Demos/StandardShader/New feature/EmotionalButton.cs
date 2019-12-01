@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 
+/// </summary>
 public class EmotionalButton : MonoBehaviour
 {
     public GameObject ActiveOnOff;
     private bool act;
-
-
-
 
     // Start is called before the first frame update
     void Start()
