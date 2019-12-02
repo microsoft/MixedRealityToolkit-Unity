@@ -287,63 +287,84 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected void ResolveGridLayout(Vector3[] grid, LayoutOrder order)
         {
             int cellCounter = 0;
-            int iMax, jMax;
+            int xMax, yMax;
 
             switch (order)
             {
                 case LayoutOrder.RowThenColumn:
-                    iMax = Columns;
-                    jMax = Rows;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.ColumnThenRow:
-                    iMax = Columns;
-                    jMax = Rows;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.Vertical:
-                    iMax = 1;
-                    jMax = NodeList.Count;
+                    xMax = 1;
+                    yMax = NodeList.Count;
                     break;
                 case LayoutOrder.Horizontal:
-                    iMax = NodeList.Count;
-                    jMax = 1;
+                    xMax = NodeList.Count;
+                    yMax = 1;
                     break;
                 default:
-                    iMax = Mathf.CeilToInt((float)NodeList.Count / rows);
-                    jMax = rows;
+                    xMax = Mathf.CeilToInt((float)NodeList.Count / rows);
+                    yMax = rows;
                     break;
             }
 
-            float startOffsetX = (iMax * 0.5f) * CellWidth;
+            float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
                 startOffsetX = 0;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = iMax * CellWidth;
+                startOffsetX = xMax * CellWidth;
             }
 
-            float startOffsetY = (jMax * 0.5f) * CellHeight;
+            float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
                 startOffsetY = 0;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = jMax * CellHeight;
+                startOffsetY = yMax * CellHeight;
             }
 
-            for (int i = 0; i < iMax; i++)
+            if (layout == LayoutOrder.ColumnThenRow)
             {
-                for (int j = 0; j < jMax; j++)
-                {
-                    if (cellCounter < NodeList.Count)
+                for (int y = 0; y < yMax; y++)
+                    for (int x = 0; x < xMax; x++)
                     {
-                        grid[cellCounter].Set((-startOffsetX + (i * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                             (startOffsetY - (j * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
-                                             0.0f);
+                        {
+                            if (cellCounter < NodeList.Count)
+                            {
+                                grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                     (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                     0.0f);
+                            }
+                            cellCounter++;
+                        }
                     }
-                    cellCounter++;
+
+            }
+            else
+            {
+
+                for (int x = 0; x < xMax; x++)
+                {
+                    for (int y = 0; y < yMax; y++)
+                    {
+                        if (cellCounter < NodeList.Count)
+                        {
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                 0.0f);
+                        }
+                        cellCounter++;
+                    }
                 }
             }
         }
@@ -435,13 +456,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 #endif
         }
 
-#region asset version migration
+        #region asset version migration
 #if UNITY_EDITOR
-        private const int CurrentAssetVersion = 1;
+        private const int CurrentAssetVersion = 1;
 
-        [SerializeField]
-        [HideInInspector]
-        private int assetVersion = 0;
+        [SerializeField]
+        [HideInInspector]
+        private int assetVersion = 0;
 
         private void PerformVersionPatching()
         {
