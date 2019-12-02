@@ -13,10 +13,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     [StructLayout(LayoutKind.Sequential)]
     public struct HolographicFrameNativeData
     {
+        /// <summary>
+        /// The version number of this native data.
+        /// </summary>
         public uint VersionNumber;
+
+        /// <summary>
+        /// The number of cameras present in the IHolographicCameraPtr array.
+        /// </summary>
         public uint MaxNumberOfCameras;
-        public IntPtr ISpatialCoordinateSystemPtr; // Windows::Perception::Spatial::ISpatialCoordinateSystem
-        public IntPtr IHolographicFramePtr; // Windows::Graphics::Holographic::IHolographicFrame 
-        public IntPtr IHolographicCameraPtr; // Windows::Graphics::Holographic::IHolographicCamera
+
+        /// <summary>
+        /// The current native root <see href="https://docs.microsoft.com/uwp/api/windows.perception.spatial.spatialcoordinatesystem">ISpatialCoordinateSystem</see>).
+        /// </summary>
+        public IntPtr ISpatialCoordinateSystemPtr;
+        
+        /// <summary>
+        /// The current native <see href="https://docs.microsoft.com/uwp/api/Windows.Graphics.Holographic.HolographicFrame">IHolographicFrame</see>).
+        /// </summary>
+        public IntPtr IHolographicFramePtr;
+
+        /// <summary>
+        /// An array of IntPtr (to <see href="https://docs.microsoft.com/uwp/api/Windows.Graphics.Holographic.HolographicCamera">IHolographicCamera</see>) marshaled as UnmanagedType.ByValArray with a length equal to MaxNumberOfCameras.
+        /// </summary>
+        public IntPtr IHolographicCameraPtr;
     }
 }
