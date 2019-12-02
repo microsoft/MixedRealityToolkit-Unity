@@ -37,13 +37,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
                 serializedObject.Update();
 
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Mixed Reality Capture Settings", EditorStyles.boldLabel);
-
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
+                    EditorGUILayout.LabelField("Mixed Reality Capture Settings (Experimental)", EditorStyles.boldLabel);
                     InspectorUIUtility.RenderDocumentationButton(MRCDocURL);
                 }
+
+                EditorGUILayout.HelpBox("Render from PV Camera is supported on Unity 2018.4.13f1 or newer and 2019.3 or newer. Enabling the feature on other versions may result in incorrect capture behavior.", MessageType.Info);
+
+                EditorGUILayout.PropertyField(renderFromPVCameraForMixedRealityCapture, pvCameraRenderingTitle);
 
                 serializedObject.ApplyModifiedProperties();
             }

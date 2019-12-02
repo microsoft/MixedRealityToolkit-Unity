@@ -9,13 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Configuration profile for the Windows Mixed Reality Camera settings provider.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Windows Mixed Reality Camera Settings Profile", fileName = "DefaultWindowsMixedRealityCameraSettingsProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Windows Mixed Reality Camera Settings Profile", fileName = "WindowsMixedRealityCameraSettingsProfile", order = 100)]
     [MixedRealityServiceProfile(typeof(WindowsMixedRealityCameraSettings))]
     public class WindowsMixedRealityCameraSettingsProfile : BaseCameraSettingsProfile
     {
         [SerializeField]
         [Tooltip("If enabled, will render scene from PV camera projection matrix while MRC is active. This will ensure that holograms, such as hand meshes, remain visibly aligned in the video output.")]
-        private bool renderFromPVCameraForMixedRealityCapture = true;
+        private bool renderFromPVCameraForMixedRealityCapture = false;
 
         /// <summary>
         /// Whether to use photo/video camera rendering for Mixed Reality Capture on Windows.

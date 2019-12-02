@@ -1,15 +1,5 @@
 {
-    "scopedRegistries": [
-        {
-            "name": "MS Build for Unity",
-            "url": "https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/npm/registry",
-            "scopes": [
-                "com.microsoft"
-            ]
-        }
-    ],
   "dependencies": {
-    "com.microsoft.msbuildforunity": "0.8.1",
     "com.unity.package-manager-ui": "2.0.8",
     "com.unity.textmeshpro": "1.4.1",
     "com.unity.xr.arcore": "2.1.2",
