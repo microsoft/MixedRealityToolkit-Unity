@@ -197,6 +197,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.032
       objectReference: {fileID: 0}
+    - target: {fileID: 5909813013237261273, guid: 9db3c1f5a57fb2b40ae4b085f123abfe,
+        type: 3}
+      propertyPath: layout
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9db3c1f5a57fb2b40ae4b085f123abfe, type: 3}
 --- !u!4 &4640305556492675524 stripped
@@ -212,30 +217,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4640305556492675524}
     m_Modifications:
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: Pressable Button (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Increment
-      objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -280,10 +261,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2406973081839446391, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: Pressable Button (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 937783104, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_Mesh
@@ -296,6 +286,21 @@ PrefabInstance:
     - target: {fileID: 937783102, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_isInputParsingRequired
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2406973081839446391, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Increment
       objectReference: {fileID: 0}
     - target: {fileID: 247466359, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

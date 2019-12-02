@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Additionally, the near pointer will send focus enter and exit events when the 
     /// decorated object is the closest object to the near pointer
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Services/NearInteractionGrabbable")]
     public class NearInteractionGrabbable : MonoBehaviour
     {
         [Tooltip("Check to show a tether from the position where object was grabbed to the hand when manipulating. Useful for things like bounding boxes where resizing/rotating might be constrained.")]

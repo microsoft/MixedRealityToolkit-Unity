@@ -75,6 +75,9 @@ Specifies on which axis the object will rotate when interacted with.
 * *Y-Axis Only*
 * *Z-Axis Only*
 
+**Use Local Space For Constraint**
+A toggle to switch between applying constraints in repsect to world-space axis, or local space axis.
+
 **Constraints on Movement**
 * *None*
 * *Fix distance from head*

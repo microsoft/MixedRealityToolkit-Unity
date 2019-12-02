@@ -20,19 +20,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseInputDeviceManager(
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        protected BaseInputDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name, 
             uint priority, 
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        protected BaseInputDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
         {
             if (inputSystem == null)
             {
                 Debug.LogError($"{name} requires a valid input system instance.");
             }
             InputSystem = inputSystem;
-
         }
 
         /// <summary>
@@ -46,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected MixedRealityInputSystemProfile InputSystemProfile => InputSystem?.InputSystemProfile;
 
         /// <inheritdoc />
-        public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
+        public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
 
         /// <summary>
         /// Request an array of pointers for the controller type.

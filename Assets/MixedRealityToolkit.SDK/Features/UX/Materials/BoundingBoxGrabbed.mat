@@ -16,7 +16,7 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Transparent
+    RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -41,6 +41,7 @@ Material:
     - _AlbedoAlphaMode: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
+    - _BlendedClippingWidth: 1
     - _BorderLight: 1
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
@@ -66,6 +67,7 @@ Material:
     - _EnableHoverColorOverride: 1
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
@@ -73,8 +75,10 @@ Material:
     - _FadeBeginDistance: 0.5
     - _FadeCompleteDistance: 2
     - _FadeMinValue: 0
+    - _FluentLightIntensity: 1
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 9.4
     - _InstancedColor: 0
@@ -89,6 +93,7 @@ Material:
     - _NearPlaneFadeReverse: 1
     - _NormalMapScale: 1
     - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
     - _Reflections: 0
     - _Refraction: 0
@@ -110,6 +115,7 @@ Material:
     - _TriplanarMappingBlendSharpness: 4
     - _VertexColors: 0
     - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
@@ -117,7 +123,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
@@ -125,4 +131,7 @@ Material:
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 0, g: 0.5595665, b: 1, a: 1}
     - _InnerGlowColor: {r: 0, g: 0.45917034, b: 1, a: 1}
+    - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

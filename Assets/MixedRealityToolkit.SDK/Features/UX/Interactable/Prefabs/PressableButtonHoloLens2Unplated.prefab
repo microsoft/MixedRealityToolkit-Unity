@@ -88,8 +88,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   TouchEnd:
     m_PersistentCalls:
       m_Calls:
@@ -104,8 +102,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -132,8 +128,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
@@ -160,8 +154,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   movingButtonIconText: {fileID: 8352633413104042190}
   compressableButtonVisuals: {fileID: 3030092746254298942}
   minCompressPercentage: 0.25
@@ -193,29 +185,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 0
   CanDeselect: 0
   VoiceCommand: Select
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 329340111926477333}
     Themes:
     - {fileID: 11400000, guid: 0c4c73f326f602744bdcfff481fd6f20, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 2096017742}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
+  - Target: {fileID: 1911902818}
+    Themes:
+    - {fileID: 11400000, guid: 087b16002c2b0b445baa3ed3beae44a9, type: 2}
   OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -230,11 +219,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 156863744684443484}
@@ -248,8 +234,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: InteractableOnFocusReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver,
       Microsoft.MixedReality.Toolkit.SDK
@@ -293,12 +277,8 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 316800719}
@@ -313,8 +293,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: InteractableOnPressReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver,
       Microsoft.MixedReality.Toolkit.SDK
@@ -359,8 +337,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
       Options: []
     - Type: 5
       Label: Interaction Filter
@@ -390,14 +366,11 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
       Options:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!82 &316800719
 AudioSource:
   m_ObjectHideFlags: 0
@@ -508,11 +481,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventsToReceive: 0
   debounceThreshold: 0.01
-  touchableCollider: {fileID: 316800722}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
+  touchableCollider: {fileID: 316800722}
 --- !u!1 &937783100
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,8 +596,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1089,8 +1060,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Say "Button"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1313,11 +1282,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8608155427408040960}
     m_Modifications:
-    - target: {fileID: 37140855218128509, guid: f6511fe07b2d805478799a9830eb472b,
-        type: 3}
-      propertyPath: m_Name
-      value: LabelPlate
-      objectReference: {fileID: 0}
     - target: {fileID: 1141850491143745692, guid: f6511fe07b2d805478799a9830eb472b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1372,6 +1336,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37140855218128509, guid: f6511fe07b2d805478799a9830eb472b,
+        type: 3}
+      propertyPath: m_Name
+      value: LabelPlate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6511fe07b2d805478799a9830eb472b, type: 3}

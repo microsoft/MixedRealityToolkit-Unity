@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A simple line pointer for drawing lines from the input source origin to the current pointer position.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/LinePointer")]
     public class LinePointer : BaseControllerPointer
     {
         [Range(1, 50)]

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     public static class UwpBuildDeployPreferences
     {
         /// <summary>
-        /// The mininum Windows SDK that must be present on the build machine in order
+        /// The minimum Windows SDK that must be present on the build machine in order
         /// for a build to be successful.
         /// </summary>
         /// <remarks>
@@ -122,8 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// If true, the appx will be build with multicore support enabled in the
-        /// msbuild process.
+        /// If true, the appx will be built with multicore support enabled in the
+        /// MSBuild process.
         /// </summary>
         public static bool MulticoreAppxBuildEnabled
         {

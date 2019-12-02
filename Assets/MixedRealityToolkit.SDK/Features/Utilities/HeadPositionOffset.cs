@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Set the content around the camera height
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/HeadPositionOffset")]
     public class HeadPositionOffset : MonoBehaviour
     {
         public Vector3 HeadOffset = new Vector3(0, 0, 1f);
@@ -16,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void Start()
         {
-            transform.position = Camera.main.transform.position + HeadOffset;
+            transform.position = CameraCache.Main.transform.position + HeadOffset;
             started = true;
         }
 
@@ -24,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (started)
             {
-                transform.position = Camera.main.transform.position + HeadOffset;
+                transform.position = CameraCache.Main.transform.position + HeadOffset;
             }
         }
     }

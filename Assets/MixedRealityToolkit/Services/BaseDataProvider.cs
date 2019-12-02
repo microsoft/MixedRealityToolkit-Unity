@@ -19,14 +19,30 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="name">The friendly name of the data provider.</param>
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
-        public BaseDataProvider(
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        protected BaseDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityService service,
-            string name = null, 
-            uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base()
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this(service, name, priority, profile)
         {
             Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="service">The <see cref="IMixedRealityService"/> to which the provider is providing data.</param>
+        /// <param name="name">The friendly name of the data provider.</param>
+        /// <param name="priority">The registration priority of the data provider.</param>
+        /// <param name="profile">The configuration profile for the data provider.</param>
+        protected BaseDataProvider(
+            IMixedRealityService service,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base()
+        {
             Service = service;
             Name = name;
             Priority = priority;
@@ -36,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The service registrar instance that registered this service.
         /// </summary>
+        [System.Obsolete("The Registrar property is obsolete and will be removed in a future version of the Microsoft Mixed Reality Toolkit")]
         protected IMixedRealityServiceRegistrar Registrar { get; set; } = null;
 
         /// <summary>

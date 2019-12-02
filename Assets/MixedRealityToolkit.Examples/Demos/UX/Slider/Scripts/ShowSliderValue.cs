@@ -10,6 +10,7 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/ShowSliderValue")]
     public class ShowSliderValue : MonoBehaviour
     {
         [SerializeField]

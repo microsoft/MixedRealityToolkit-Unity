@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Scales the collider on one object relative to the transform's scale of another object
     /// </summary>
     [ExecuteInEditMode]
+    [AddComponentMenu("Scripts/MRTK/SDK/ButtonCollider")]
     public class ButtonCollider : MonoBehaviour
     {
 

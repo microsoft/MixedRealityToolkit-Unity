@@ -23,8 +23,9 @@ This section describes frequently needed features. To see how they work, look at
 1. Numbered lists
    1. Nested numbered lists with at least 3 leading blank spaces
    1. The actual number in code is irrelevant; parsing will take care of setting the correct item number.
+
 * Bullet point lists
-   * Nested bullet point lists
+  * Nested bullet point lists
 * Text in **bold** with \*\*double asterisk\*\*
 * _italic_ *text* with \_underscore\_ or \*single asterisk\*
 * Text `highlighted as code` within a sentence \`using backquotes\`
@@ -90,7 +91,7 @@ Most pages should end with a chapter called *See also*. This chapter is simply a
 ## Table of Contents (TOC)
 
 Toc files are used for generating the navigation bars in the MRTK github.io documentation.
-Whenever you're adding a new file to the documentation make sure that there's an entry for that file in one of the toc.yml files of the documentation folder. Only articles listed in the toc files will show up in the navigation of the developer docs. 
+Whenever you're adding a new file to the documentation make sure that there's an entry for that file in one of the toc.yml files of the documentation folder. Only articles listed in the toc files will show up in the navigation of the developer docs.
 There can be a toc file for every subfolder in the documentation folder which can be linked into any existing toc file to add it as a subsection to the corresponding part of the navigation.
 
 ## Style
@@ -128,7 +129,6 @@ In general, try to **avoid unnecessary text highlighting**. Special terms can be
 ### Mentioning menu entries
 
 When mentioning a menu entry that a user should click, the current convention is:
-
 *Project > Files > Create > Leaf*
 
 ### Links
@@ -175,7 +175,8 @@ Also, don't forget to finish all sentences with a period.
 1. Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.
 
 ## Source documentation
-API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following: 
+
+API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following:
 
 - [Class, struct, enum summary blocks](#class-struct-enum-summary-blocks)
 - [Property, method, event summary blocks](#property-method-event-summary-blocks)
@@ -183,29 +184,31 @@ API documentation will be generated automatically from the MRTK source files. To
 - [Serialized fields](#serialized-fields)
 - [Enumeration values](#enumeration-values)
 
-In addition to the above, the code should be well commented to allow for maintenance, bug fixes and ease of customization. 
+In addition to the above, the code should be well commented to allow for maintenance, bug fixes and ease of customization.
 
 ### Class, struct, enum summary blocks
+
 If a class, struct or enum is being added to the MRTK, it's purpose must be described. This is to take the form of a summary block above the class.
 
-```
-    /// <summary>
-    /// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
-    /// </summary>
+```c#
+/// <summary>
+/// AudioOccluder implements IAudioInfluencer to provide an occlusion effect.
+/// </summary>
 ```
 
 If there are any class level dependencies, they should be documented in a remarks block, immediately below the summary.
 
-```
-    /// <remarks>
-    /// Ensure that all sound emitting objects have an attached AudioInfluencerController. 
-    /// Failing to do so will result in the desired effect not being applied to the sound.
-    /// </remarks>
+```c#
+/// <remarks>
+/// Ensure that all sound emitting objects have an attached AudioInfluencerController.
+/// Failing to do so will result in the desired effect not being applied to the sound.
+/// </remarks>
 ```
 
-Pull Requests submitted without summaries for classes, strutures or enums will not be approved.
+Pull Requests submitted without summaries for classes, structures or enums will not be approved.
 
 ### Property, method, event summary blocks
+
 Properties, methods and events (PMEs) as well as fields are to be documented with summary blocks, regardless of code visibility (public, private, protected and internal). The documentation generation tool is responsible for filtering out and publishing only the public and protected features.
 
 NOTE: A summary block is **not** required for Unity methods (ex: Awake, Start, Update).
@@ -214,54 +217,55 @@ PME documentation is **required** for a pull request to be approved.
 
 As part of a PME summary block, the meaning and purpose of parameters and returned data is required.
 
-```
-        /// <summary>
-        /// Sets the cached native cutoff frequency of the attached low pass filter.
-        /// </summary>
-        /// <param name="frequency">The new low pass filter cutoff frequency.</param>
-        /// <returns>The new cutoff frequency value.</returns>
-
+```c#
+/// <summary>
+/// Sets the cached native cutoff frequency of the attached low pass filter.
+/// </summary>
+/// <param name="frequency">The new low pass filter cutoff frequency.</param>
+/// <returns>The new cutoff frequency value.</returns>
 ```
 
 ### Feature introduction version and dependencies
+
 As part of the API summary documentation, information regarding the MRTK version in which the feature was introduced and any dependencies should be documented in a remarks block.
 
 Dependencies should include extension and/or platform dependencies.
 
-```
-    /// <remarks>
-    /// Introduced in MRTK version: 2018.06.0
-    /// Minimum Unity version: 2018.0.0f1
-    /// Minimum Operating System: Windows 10.0.11111.0
-    /// Requires installation of: ImaginarySDK v2.1
-    /// </remarks>
+```c#
+/// <remarks>
+/// Introduced in MRTK version: 2018.06.0
+/// Minimum Unity version: 2018.0.0f1
+/// Minimum Operating System: Windows 10.0.11111.0
+/// Requires installation of: ImaginarySDK v2.1
+/// </remarks>
 ```
 
 ### Serialized fields
+
 It is a good practice to use Unity's tooltip attribute to provide runtime documentation for a script's fields in the inspector.
 
 So that configuration options are included in the API documentation, scripts are required to include *at least* the tooltip contents in a summary block.
 
-```
-        /// <summary>
-        /// The quality level of the simulated audio source (ex: AM radio).
-        /// </summary>
-        [Tooltip("The quality level of the simulated audio source.")]
+```c#
+/// <summary>
+/// The quality level of the simulated audio source (ex: AM radio).
+/// </summary>
+[Tooltip("The quality level of the simulated audio source.")]
 ```
 
 ### Enumeration values
+
 When defining and enumeration, code must also document the meaning of the enum values using a summary block. Remarks blocks can optionally be used to provide additional details to enhance understanding.
 
+```c#
+/// <summary>
+/// Full range of human hearing.
+/// </summary>
+/// <remarks>
+/// The frequency range used is a bit wider than that of human
+/// hearing. It closely resembles the range used for audio CDs.
+/// </remarks>
 ```
-        /// <summary>
-        /// Full range of human hearing.
-        /// </summary>
-        /// <remarks>
-        /// The frequency range used is a bit wider than that of human
-        /// hearing. It closely resembles the range used for audio CDs.
-        /// </remarks>
-```
-
 
 ## How-to documentation
 
@@ -273,32 +277,32 @@ When a feature is added (or the usage is changed), overview documentation must b
 
 As part of this documentation, how-to sections, including illustrations, should be provided to assist customers new to a feature or concept in getting started.
 
-
 ## Design documentation
 
 Mixed Reality provides an opportunity to create entirely new worlds. Part of this is likely to involve the creation of custom assets for use with the MRTK. To make this as friction free as possible for customers, components should provide design documentation describing any formatting or other requirements for art assets.
 
 Some examples where design documentation can be helpful:
+
 - Cursor models
 - Spatial mapping visualizations
 - Sound effect files
 
-This type of documentation is **strongly** recommended, and **may** be requested as part of a pull request review. 
+This type of documentation is **strongly** recommended, and **may** be requested as part of a pull request review.
 
 This may or may not be different from the design recommendation on the [MS Developer site](https://docs.microsoft.com/en-us/windows/mixed-reality/design)
-
 
 ## Performance notes
 
 Some important features come at a performance cost. Often this code will very depending how they are configured.
 
 For example:
-```
-When using the spatial mapping component, the performance impact will increase with the level of detail requested. It is recommended to use the least detail possible for your experience.
+
+```md
+When using the spatial mapping component, the performance impact will increase with the level of detail requested.  
+It is recommended to use the least detail possible for your experience.
 ```
 
-Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overiew documentation. 
-
+Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overview documentation.
 
 ## Breaking changes
 
@@ -307,7 +311,8 @@ Breaking changes documentation is to consist of a top level [file](BreakingChang
 The feature area BreakingChanges.md files are to contain the list of all known breaking changes for a given release **as well as** the history of breaking changes from past releases.
 
 For example:
-```
+
+```md
 Spatial sound breaking changes
 
 2018.07.2
@@ -325,7 +330,18 @@ The information contained within the feature level BreakingChanges.md files will
 
 Any breaking changes that are part of a change **must** be documented as part of a Pull Request.
 
+## Tools for editing MarkDown
+
+[Visual Studio Code](https://code.visualstudio.com/) is a great tool for editing markdown files that are part of MRTK's documentation.
+
+When writing documentation, installing the following two extensions is also highly recommended:
+
+- Docs Markdown Extension for Visual Studio Code - Use Alt+M to bring up a menu of docs authoring options.
+
+- Code Spell Checker - misspelled words will be underlined; right-click on a misspelled word to change it or save it to the dictionary.
+
+Both of these come packaged in the Microsoft published Docs Authoring Pack.
 
 ## See also
 
-* [Documentation portal generation guide](DevDocGuide.md)
+- [Documentation portal generation guide](DevDocGuide.md)

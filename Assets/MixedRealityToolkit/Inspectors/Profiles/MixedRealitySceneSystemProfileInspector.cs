@@ -87,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
             
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
+            {
+                return;
+            }
 
             MixedRealityInspectorUtility.CheckMixedRealityConfigured(true);
 
@@ -128,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     if (useManagerScene.boolValue && profile.ManagerScene.IsEmpty && !Application.isPlaying)
                     {
                         EditorGUILayout.HelpBox("You haven't created a manager scene yet. Click the button below to create one.", MessageType.Warning);
-                        var buttonRect = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(new GUILayoutOption[] { }));
+                        var buttonRect = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(System.Array.Empty<GUILayoutOption>()));
                         if (GUI.Button(buttonRect, "Create Manager Scene", EditorStyles.miniButton))
                         {
                             // Create a new manager scene and add it to build settings
@@ -157,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     if (useLightingScene.boolValue && profile.NumLightingScenes < 1 && !Application.isPlaying)
                     {
                         EditorGUILayout.HelpBox("You haven't created a lighting scene yet. Click the button below to create one.", MessageType.Warning);
-                        var buttonRect = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(new GUILayoutOption[] { }));
+                        var buttonRect = EditorGUI.IndentedRect(EditorGUILayout.GetControlRect(System.Array.Empty<GUILayoutOption>()));
                         if (GUI.Button(buttonRect, "Create Lighting Scene", EditorStyles.miniButton))
                         {
                             // Create a new lighting scene and add it to build settings

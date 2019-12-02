@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     // Example script that spawns a prefab at the pointer hit location.
+    [AddComponentMenu("Scripts/MRTK/Examples/SpawnOnPointerEvent")]
     public class SpawnOnPointerEvent : MonoBehaviour
     {
         public GameObject PrefabToSpawn;

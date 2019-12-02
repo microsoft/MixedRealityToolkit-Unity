@@ -2,7 +2,7 @@
 
 Not every single consumer of the MRTK will want it to behave the same way - some will want to have the spatial
 mesh running when on AR devices that support it. Some may want the diagnostic visualization on all the time,
-and some may only want it on when the user says a voice command. 
+and some may only want it on when the user says a voice command.
 
 The MRTK needs to be configurable in order to support a wide range of those requirements, and it uses a concept
 called 'profiles' to accomplish this.
@@ -32,7 +32,7 @@ Profile configurations are initially greyed out because they're set up with MRTK
 They can only be modified after cloning to ensure that customized profiles won't be lost after a
 MRTK version update.
 
-## Where do I modify profiles?
+## Modifying profiles
 
 While profiles can be individually modified (by going to the serialized asset of the ScriptableObject),
 they are generally accessed through the MRTK inspector of the root MixedRealityToolkit scene object.

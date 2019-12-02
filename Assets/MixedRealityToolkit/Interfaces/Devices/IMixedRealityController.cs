@@ -72,6 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Some controllers such as articulated should only be able 
         /// to invoke pointing/distant interactions in certain poses.
         /// </summary>
-        bool IsInPointingPose { get;  }
+        bool IsInPointingPose { get; }
     }
 }

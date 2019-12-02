@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [RequireComponent(typeof(Camera))]
+    [AddComponentMenu("Scripts/MRTK/Services/MixedRealityInputModule")]
     public class MixedRealityInputModule : StandaloneInputModule, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         protected class PointerData
@@ -28,23 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 eventDataLeft = new PointerEventData(eventSystem);
                 eventDataMiddle = new PointerEventData(eventSystem);
                 eventDataRight = new PointerEventData(eventSystem);
-            }
-        }
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
             }
         }
 
@@ -76,27 +60,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.ActivateModule();
 
-            if (InputSystem != null)
+            if (CoreServices.InputSystem != null)
             {
-                RaycastCamera = InputSystem.FocusProvider.UIRaycastCamera;
+                RaycastCamera = CoreServices.InputSystem.FocusProvider.UIRaycastCamera;
 
-                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
                 {
                     OnSourceDetected(inputSource);
                 }
 
-                InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
-                InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             }
         }
 
         /// <inheritdoc />
         public override void DeactivateModule()
         {
-            if (InputSystem != null)
+            if (CoreServices.InputSystem != null)
             {
-                InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
-                InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
 
                 foreach (var p in pointerDataToUpdate)
                 {

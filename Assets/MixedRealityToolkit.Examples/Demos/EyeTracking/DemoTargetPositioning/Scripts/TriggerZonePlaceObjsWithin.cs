@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/TriggerZonePlaceObjsWithin")]
     public class TriggerZonePlaceObjsWithin : MonoBehaviour
     {
         [Tooltip("Array of referenced game objects that are supposed to be placed within the collider of this target.).")]

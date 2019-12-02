@@ -50,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private static readonly Dictionary<string, string> sourceToOutputFolders = new Dictionary<string, string>
         {
+            { "MSBuild/Publish/Player/Android", "AndroidPlayer" },
+            { "MSBuild/Publish/Player/iOS", "iOSPlayer" },
             { "MSBuild/Publish/Player/WSA", "UAPPlayer" },
             { "MSBuild/Publish/Player/WindowsStandalone32", "StandalonePlayer" },
         };
@@ -62,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
 
-        [MenuItem("Assets/Retarget To DLL")]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Assets/Retarget To DLL")]
         public static void RetargetAssets()
         {
             try
@@ -372,9 +374,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 {
                                     Debug.LogError($"Encountered a MonoScript we get a null Type from: '{monoScript.name}'");
                                 }
-                                else if (type.Namespace == null || !type.Namespace.Contains("Microsoft.MixedReality.Toolkit"))
+                                // check for a namespace, MRTK or the DotNetAdapter namespace
+                                else if ((type.Namespace == null) || (!type.Namespace.Contains("Microsoft.MixedReality.Toolkit") && !type.Namespace.Contains("Microsoft.Windows.MixedReality")))
                                 {
-                                    throw new InvalidDataException($"Type {type.Name} is not a member of the Microsoft.MixedReality.Toolkit namespace");
+                                    throw new InvalidDataException($"Type {type.Name} is not a member of an approved (typically, 'Microsoft.MixedReality.Toolkit') namespace");
                                 }
                                 else
                                 {
@@ -401,7 +404,29 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             DirectoryInfo outputDirectory = new DirectoryInfo(outputPath);
             RecursiveFolderCleanup(outputDirectory);
             CopyPluginContents(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
+
+            // Special case the Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll for UNITY_WSA Editor
+            string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WSA/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
+            string pdbPath = Path.ChangeExtension(dllPath, ".pdb");
+            string editorOutputDirectory = Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer");
+
+            string dllOutputPath = Path.Combine(editorOutputDirectory, "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
+            File.Copy(dllPath, dllOutputPath, true);
+            File.Copy(pdbPath, Path.Combine(editorOutputDirectory, "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.pdb"), true);
+
+            // Update metas after copying in the special cased library
             UpdateMetaFiles(assemblyInformation);
+
+            // Patch the special cased library to have a define_constraint:
+            string dllMetaPath = $"{dllOutputPath}.meta";
+            Debug.Log($"Patching: {dllMetaPath}");
+            string contents = File.ReadAllText(dllMetaPath);
+            string searchString = "defineConstraints: []";
+            if (!contents.Contains(searchString))
+            {
+                throw new InvalidOperationException("Failed to find the defineConstraints: [] when patching WSA dll.");
+            }
+            File.WriteAllText(dllMetaPath, contents.Replace(searchString, "defineConstraints:\r\n  - UNITY_WSA"));
         }
 
         private static void CopyPluginContents(string outputPath)
@@ -495,9 +520,21 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 throw new FileNotFoundException("Could not find sample editor dll.meta template.");
             }
 
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.Android, out FileInfo androidMetaFile))
+            {
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+            }
+
+            if (!TemplateFiles.Instance.PluginMetaTemplatePaths.TryGetValue(BuildTargetGroup.iOS, out FileInfo iOSMetaFile))
+            {
+                throw new FileNotFoundException("Could not find sample editor dll.meta template.");
+            }
+
             string editorMetaFileTemplate = File.ReadAllText(editorMetaFile.FullName);
             string uapMetaFileTemplate = File.ReadAllText(uapMetaFile.FullName);
             string standaloneMetaFileTemplate = File.ReadAllText(standaloneMetaFile.FullName);
+            string androidMetaFileTemplate = File.ReadAllText(androidMetaFile.FullName);
+            string iOSMetaFileTemplate = File.ReadAllText(iOSMetaFile.FullName);
 
             Dictionary<AssemblyInformation, FileInfo[]> mappings = new DirectoryInfo(Application.dataPath.Replace("Assets", "NuGet/Plugins"))
                 .GetDirectories("*", SearchOption.AllDirectories)
@@ -513,6 +550,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 //Editor PDB is + 4
                 //Standalone PDB is +5
                 //UAP PDB is +6
+                //Android is guid + 7
+                //iOS is guid + 8
+                //Android PDB is +9
+                //iOS  PDB is +10
                 string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
@@ -522,6 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {
+                        templateToUse = editorMetaFileTemplate;
                         goto WriteMeta;
                     }
 
@@ -544,26 +586,61 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     dllGuid = CycleGuidForward(dllGuid);
 
                     // Switch to PDBs
-                    if (file.DirectoryName.EndsWith("EditorPlayer"))
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("EditorPlayer"))
                     {
+                        templateToUse = editorMetaFileTemplate;
                         goto WriteMeta;
                     }
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.DirectoryName.EndsWith("StandalonePlayer"))
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
                     }
 
-                    templateToUse = uapMetaFileTemplate;
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    // if (file.DirectoryName.EndsWith("UAP"))
-                    // Just fall through
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("UAPPlayer"))
+                    {
+                        templateToUse = uapMetaFileTemplate;
+                        goto WriteMeta;
+                    }
 
-                    WriteMeta:
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("AndroidPlayer"))
+                    {
+                        templateToUse = androidMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("iOSPlayer"))
+                    {
+                        templateToUse = iOSMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("AndroidPlayer"))
+                    {
+                        templateToUse = androidMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    if (file.Extension.Equals(".pdb") && file.DirectoryName.EndsWith("iOSPlayer"))
+                    {
+                        templateToUse = iOSMetaFileTemplate;
+                        goto WriteMeta;
+                    }
+
+                WriteMeta:
                     string metaFilePath = $"{file.FullName}.meta";
                     File.WriteAllText(metaFilePath, ProcessMetaTemplate(templateToUse, dllGuid, mapping.Key.ExecutionOrderEntries));
                 }

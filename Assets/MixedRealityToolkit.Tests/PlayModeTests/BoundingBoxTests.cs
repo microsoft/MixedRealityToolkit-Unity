@@ -200,6 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
+            yield return null;
+
             var bounds = bbox.GetComponent<BoxCollider>().bounds;
             var startCenter = new Vector3(0, 0, 1.5f);
             var startSize = new Vector3(.5f, .5f, .5f);

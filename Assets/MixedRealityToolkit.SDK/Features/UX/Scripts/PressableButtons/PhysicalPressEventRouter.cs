@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     /// The result is being able to have physical touch call Interactable.OnPointerClicked.
     ///</summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/PhysicalPressEventRouter")]
     public class PhysicalPressEventRouter : MonoBehaviour
     {
         [Tooltip("Interactable to which the press events are being routed. Defaults to the object of the component.")]

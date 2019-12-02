@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/OnSelectVisualizerInputController")]
     public class OnSelectVisualizerInputController : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
