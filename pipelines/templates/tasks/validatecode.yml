@@ -1,0 +1,8 @@
+steps:
+- task: PowerShell@2
+  displayName: 'Validate code'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validatecode.ps1
+    arguments: >
+      -Directory: '$(Build.SourcesDirectory)\Assets'

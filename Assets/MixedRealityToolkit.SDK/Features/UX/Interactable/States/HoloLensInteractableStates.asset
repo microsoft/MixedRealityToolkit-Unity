@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c33e3b76d6c5c0e48bb3b6ee686c7fd6, type: 3}
+  m_Name: HoloLensInteractableStates
+  m_EditorClassIdentifier: 
+  StateList:
+  - Name: Interactive
+    Index: 4
+    Bit: 1
+    Value: 0
+    ActiveIndex: 0
+  - Name: Observation
+    Index: 6
+    Bit: 2
+    Value: 0
+    ActiveIndex: 1
+  - Name: Targeted
+    Index: 3
+    Bit: 4
+    Value: 0
+    ActiveIndex: 2
+  - Name: ObservationTargeted
+    Index: 5
+    Bit: 8
+    Value: 0
+    ActiveIndex: 3
+  - Name: Pressed
+    Index: 2
+    Bit: 16
+    Value: 0
+    ActiveIndex: 4
+  - Name: Disabled
+    Index: 7
+    Bit: 32
+    Value: 0
+    ActiveIndex: 5
+  DefaultIndex: 0
+  StateLogicName: InteractableStates
+  AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableStates, Microsoft.MixedReality.Toolkit.SDK

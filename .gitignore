@@ -10,6 +10,7 @@
 [Aa]pp/
 UWP/
 WindowsStoreApp/
+WSA/
 UnityGenerated/
 UnityPackageManager/
 .out/
@@ -63,3 +64,38 @@ Assets/ThirdParty.meta
 Assets/TextMesh Pro.meta
 Assets/TextMesh Pro/
 --Version/
+Assets/StreamingAssets/GltfModels/
+Assets/StreamingAssets/GltfModels.meta
+Assets/StreamingAssets.meta
+Assets/MixedRealityToolkit.Generated/*
+
+/mrtk_log_mostRecentET.csv
+
+# =============== #
+# DocFX Generated #
+# =============== #
+doc/
+
+# This is only needed because docfx chooses the first alphabetically occurring
+# .cs file's folder to create an obj/xdoc cache folder inside.
+# When https://github.com/dotnet/docfx/issues/1156 is addressed, it should be
+# possible to remove the rule on the following line and update our docfx
+# configuration to place its cache in a deterministic folder.
+[Oo]bj.meta
+
+# ============================= #
+# NuGet Build Process Generated #
+# ============================= #
+/NuGet/*
+!/NuGet/BuildSource.proj
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj
+
+# ========================= #
+# MSBuildForUnity generated #
+# ========================= #
+Assets/MixedRealityToolkit.Providers/WindowsMixedReality/DotNetAdapter/Plugins*
+MSBuildForUnity.Common.props
+.obj

@@ -1,0 +1,302 @@
+fileFormatVersion: 2
+guid: 9b8d622e06b5ddc47bfd77b86d50527c
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: BackBody
+    100002: Backpack
+    100004: BottomLeftBody
+    100006: BottomRightBody
+    100008: CenterBackLeg
+    100010: CenterFrontLeg
+    100012: Cylinder01
+    100014: Cylinder02
+    100016: Cylinder03
+    100018: Cylinder04
+    100020: Cylinder05
+    100022: Cylinder06
+    100024: Cylinder07
+    100026: Cylinder08
+    100028: Face
+    100030: FrontAntenna
+    100032: Gas
+    100034: GasTank
+    100036: GoldBase
+    100038: LeftTwirler
+    100040: legs
+    100042: Light
+    100044: Nose
+    100046: Symmetry
+    100048: //RootNode
+    100050: ThrustCylinder
+    100052: TopGoldDial
+    100054: TopLeftBody
+    100056: TwirlerConnector
+    100058: Camera
+    100060: Directional Light
+    100062: GasTankGlass
+    100064: Legs1
+    100066: Legs2
+    100068: Legs3
+    100070: Legs4
+    400000: BackBody
+    400002: Backpack
+    400004: BottomLeftBody
+    400006: BottomRightBody
+    400008: CenterBackLeg
+    400010: CenterFrontLeg
+    400012: Cylinder01
+    400014: Cylinder02
+    400016: Cylinder03
+    400018: Cylinder04
+    400020: Cylinder05
+    400022: Cylinder06
+    400024: Cylinder07
+    400026: Cylinder08
+    400028: Face
+    400030: FrontAntenna
+    400032: Gas
+    400034: GasTank
+    400036: GoldBase
+    400038: LeftTwirler
+    400040: legs
+    400042: Light
+    400044: Nose
+    400046: Symmetry
+    400048: //RootNode
+    400050: ThrustCylinder
+    400052: TopGoldDial
+    400054: TopLeftBody
+    400056: TwirlerConnector
+    400058: Camera
+    400060: Directional Light
+    400062: GasTankGlass
+    400064: Legs1
+    400066: Legs2
+    400068: Legs3
+    400070: Legs4
+    2100000: BlackWindow
+    2300000: BackBody
+    2300002: Backpack
+    2300004: BottomLeftBody
+    2300006: BottomRightBody
+    2300008: CenterBackLeg
+    2300010: CenterFrontLeg
+    2300012: Cylinder01
+    2300014: Cylinder02
+    2300016: Cylinder03
+    2300018: Cylinder04
+    2300020: Cylinder05
+    2300022: Cylinder06
+    2300024: Cylinder07
+    2300026: Cylinder08
+    2300028: Face
+    2300030: FrontAntenna
+    2300032: Gas
+    2300034: GasTank
+    2300036: GoldBase
+    2300038: LeftTwirler
+    2300040: Light
+    2300042: Nose
+    2300044: ThrustCylinder
+    2300046: TopGoldDial
+    2300048: TopLeftBody
+    2300050: TwirlerConnector
+    2300052: GasTankGlass
+    2300054: Legs1
+    2300056: Legs2
+    2300058: Legs3
+    2300060: Legs4
+    3300000: BackBody
+    3300002: Backpack
+    3300004: BottomLeftBody
+    3300006: BottomRightBody
+    3300008: CenterBackLeg
+    3300010: CenterFrontLeg
+    3300012: Cylinder01
+    3300014: Cylinder02
+    3300016: Cylinder03
+    3300018: Cylinder04
+    3300020: Cylinder05
+    3300022: Cylinder06
+    3300024: Cylinder07
+    3300026: Cylinder08
+    3300028: Face
+    3300030: FrontAntenna
+    3300032: Gas
+    3300034: GasTank
+    3300036: GoldBase
+    3300038: LeftTwirler
+    3300040: Light
+    3300042: Nose
+    3300044: ThrustCylinder
+    3300046: TopGoldDial
+    3300048: TopLeftBody
+    3300050: TwirlerConnector
+    3300052: GasTankGlass
+    3300054: Legs1
+    3300056: Legs2
+    3300058: Legs3
+    3300060: Legs4
+    4300000: Light
+    4300002: TwirlerConnector
+    4300004: Backpack
+    4300006: LeftTwirler
+    4300008: GasTank
+    4300010: BottomRightBody
+    4300012: Gas
+    4300014: TopLeftBody
+    4300016: Nose
+    4300018: Face
+    4300020: BackBody
+    4300022: FrontAntenna
+    4300024: BottomLeftBody
+    4300026: GoldBase
+    4300028: ThrustCylinder
+    4300030: TopGoldDial
+    4300032: CenterFrontLeg
+    4300034: CenterBackLeg
+    4300036: Cylinder01
+    4300038: Cylinder02
+    4300040: Cylinder03
+    4300042: Cylinder04
+    4300044: Cylinder05
+    4300046: Cylinder06
+    4300048: Cylinder07
+    4300050: Cylinder08
+    4300052: GasTankGlass
+    4300054: Legs1
+    4300056: Legs2
+    4300058: Legs3
+    4300060: Legs4
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BlackWindow
+    second: {fileID: 2100000, guid: 0530d90ba2a117e4f95c7a6345e8bb14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ClearWindow
+    second: {fileID: 2100000, guid: 9921ca73d1b94b24aba7726b9df6db8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Default
+    second: {fileID: 2100000, guid: 680505b4b4f3400f9fd3ebb242751819, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gold
+    second: {fileID: 2100000, guid: 835cb4a58f172d7478801db95e510f56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreenGas
+    second: {fileID: 2100000, guid: 00665e2a669d4b0fab1965843b4c914b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RedLight
+    second: {fileID: 2100000, guid: c4a1b7475a654dd0acaa0cfdfba2e20c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White
+    second: {fileID: 2100000, guid: 680505b4b4f3400f9fd3ebb242751819, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WhiteLight
+    second: {fileID: 2100000, guid: cb74390ea57642f8b5ca0aa8f5fb38c1, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 2
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 45
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

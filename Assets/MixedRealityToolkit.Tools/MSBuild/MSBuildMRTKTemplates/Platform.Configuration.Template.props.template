@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework><!--TARGET_FRAMEWORK_TOKEN--></TargetFramework>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <Private>false</Private>
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+</Project>

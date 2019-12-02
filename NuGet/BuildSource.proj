@@ -1,0 +1,42 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <ProjectReferences  Include="..\MSBuild\Projects\MixedRealityToolkit.sln"/>
+  </ItemGroup>
+
+  <Target Name="BuildStandaloneEditor">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=InEditor;Platform=WindowsStandalone32;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildStandaloneEditorOutputs" /><!--AssembliesBuiltByChildProjects-->
+    </MSBuild>
+  </Target>
+
+  <Target Name="BuildWSAEditor">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=InEditor;Platform=WSA;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildWSAEditorOutputs" /><!--AssembliesBuiltByChildProjects-->
+    </MSBuild>
+  </Target>
+
+  <Target Name="BuildStandalonePlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WindowsStandalone32;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildStandalonePlayerOutputs" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="BuildAndroidPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=Android;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildAndroidPlayerOutputs" />
+    </MSBuild>
+  </Target>
+  
+  <Target Name="BuildIOSPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=IOS;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildIOSPlayerOutputs" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="BuildWSAPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;MSBuildExtensionsPathOverride=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildWSAPlayerOutputs" />
+    </MSBuild>
+  </Target>
+</Project>

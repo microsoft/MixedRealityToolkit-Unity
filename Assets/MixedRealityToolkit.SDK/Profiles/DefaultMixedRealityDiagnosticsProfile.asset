@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c2d00f2d26cc124caed106ffbfe3f06, type: 3}
+  m_Name: DefaultMixedRealityDiagnosticsProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  showDiagnostics: 1
+  showProfiler: 1
+  showFrameInfo: 1
+  showMemoryStats: 1
+  frameSampleRate: 0.1
+  windowAnchor: 7
+  windowOffset: {x: 0.1, y: 0.1}
+  windowScale: 1
+  windowFollowSpeed: 5
+  defaultInstancedMaterial: {fileID: 2100000, guid: 5b6fc83077d74fd4ca4c675623942a3e,
+    type: 2}

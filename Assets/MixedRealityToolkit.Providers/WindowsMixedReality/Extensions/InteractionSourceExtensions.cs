@@ -1,0 +1,49 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+#if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
+using System;
+using System.Collections.Generic;
+using UnityEngine.XR.WSA.Input;
+using Windows.Foundation;
+using Windows.Perception;
+using Windows.Storage.Streams;
+using Windows.UI.Input.Spatial;
+#endif
+
+namespace Microsoft.MixedReality.Toolkit.Windows.Input
+{
+    /// <summary>
+    /// Extensions for the InteractionSource class to expose the renderable model.
+    /// </summary>
+    public static class InteractionSourceExtensions
+    {
+#if WINDOWS_UWP
+        public static IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(this InteractionSource interactionSource)
+        {
+            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
+
+            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
+            {
+                IReadOnlyList<SpatialInteractionSourceState> sources = null;
+
+                UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                {
+                    sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                }, true);
+
+                for (var i = 0; i < sources?.Count; i++)
+                {
+                    if (sources[i].Source.Id.Equals(interactionSource.id))
+                    {
+                        returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+#endif // WINDOWS_UWP
+    }
+}

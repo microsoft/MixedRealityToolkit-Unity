@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedReality.Toolkit.Tools</id>
+    <version>$version$</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft,MixedReality</owners>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
+    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Editor and utility tooling of the Mixed Reality Toolkit</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <tags>Unity MixedReality</tags>
+    <dependencies>
+      <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
+    </dependencies>
+    <contentFiles>
+      <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tools.targets" />
+
+    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tools.*" target="Plugins\" />
+    <file src="..\..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" />
+  </files>
+</package>
