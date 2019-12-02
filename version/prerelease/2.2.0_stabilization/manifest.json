@@ -14428,7 +14428,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.html",
-          "hash": "ENQsShyF122rnonB0Y3H/Q=="
+          "hash": "EjzTIfluX7rUEuEO3/HkqA=="
         }
       },
       "is_incremental": false,
@@ -23992,7 +23992,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "tILH0qGljtrjU0uz44vbJg=="
+          "hash": "QdG5+bfonrTZbpywRSQKvw=="
         }
       },
       "is_incremental": false,
@@ -24069,17 +24069,17 @@
           "total_file_count": 142,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1422,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1422,
           "skipped_file_count": 0
         }
       }
