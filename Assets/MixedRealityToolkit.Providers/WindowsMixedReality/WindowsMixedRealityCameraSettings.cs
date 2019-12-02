@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
 
         private static readonly bool isDepthReprojectionModeSupported = ApiInformation.IsPropertyPresent("Windows.Graphics.Holographic.HolographicCameraRenderingParameters", "DepthReprojectionMethod");
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+#endif // UNITY_WSA && DOTNETWINRT_PRESENT
 
 #if WINDOWS_UWP
         private static readonly bool isTryGetViewConfigurationSupported = ApiInformation.IsMethodPresent("Windows.Graphics.Holographic.HolographicDisplay", "TryGetViewConfiguration");
