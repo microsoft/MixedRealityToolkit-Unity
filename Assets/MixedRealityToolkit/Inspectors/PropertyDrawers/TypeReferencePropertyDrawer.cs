@@ -4,9 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 using Assembly = System.Reflection.Assembly;
 
@@ -26,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent TempContent = new GUIContent();
         private static readonly Color enabledColor = Color.white;
         private static readonly Color disabledColor = Color.Lerp(Color.white, Color.clear, 0.5f);
+        private static readonly Color errorColor = Color.Lerp(Color.white, Color.red, 0.5f);
 
         #region Type Filtering
 
@@ -235,13 +234,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else
                     {
-                        var errorContent = EditorGUIUtility.IconContent("d_console.erroricon.sml");
-                        GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
-
                         Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
                         Rect buttonPosition = new Rect(position.x + position.width - 75, position.y, 75, position.height);
 
+                        Color defaultColor = GUI.color;
+                        GUI.color = errorColor;
                         property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
+                        GUI.color = defaultColor;
 
                         if (GUI.Button(buttonPosition, "Try Repair", EditorStyles.miniButton))
                         {
