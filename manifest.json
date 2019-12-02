@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/UnityArCameraSettings.html",
-          "hash": "ILDyrKwlf7C3OWVmP9xHxw=="
+          "hash": "JSg0Vbp/oNEfUhEHNa+/FA=="
         }
       },
       "is_incremental": false,
@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "7W/pLiAfi+IyhzMub0kYag=="
+          "hash": "tTOs3qhKW3+SNUwbIpVhKg=="
         }
       },
       "is_incremental": false,
@@ -606,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "GDbbVVgPn104/+NWYCdgSA=="
+          "hash": "fKXjsiTeLLNIlUBwNrG80A=="
         }
       },
       "is_incremental": false,
@@ -678,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/Roadmap.html",
-          "hash": "f8t2LaNfqY6YdqZ4LMvdLQ=="
+          "hash": "MGytjy86Wt/v2vFkS+eUQA=="
         }
       },
       "is_incremental": false,
@@ -690,7 +690,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/UnitTests.html",
-          "hash": "adpCrcJs8hfzomuVakifxQ=="
+          "hash": "UBqtsioDfeGjMa2D3qB1cA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/CrossPlatform/UsingARFoundation.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CrossPlatform/UsingARFoundation.html",
+          "hash": "WFEpN1UYB50feSvJ9vWHUw=="
         }
       },
       "is_incremental": false,
@@ -1684,6 +1696,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/CloneCameraProfileARFoundation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/CloneCameraProfileARFoundation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/CloneProfileARFoundation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/CloneProfileARFoundation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/CameraSystem/EnableCameraSystem.png",
       "output": {
         "resource": {
@@ -1728,6 +1762,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/MRTKProjectConfigurator.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/MRTKProjectConfigurator.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/CameraSystem/SelectCameraProfile.png",
       "output": {
         "resource": {
@@ -1765,6 +1810,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/CameraSystem/SelectWindowsMixedRealitySettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/UncheckStripEngineCodeiOS.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/UncheckStripEngineCodeiOS.png"
         }
       },
       "is_incremental": false,
@@ -6837,7 +6893,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "BBprMPPm0uSFP1BoPyTedQ=="
+          "hash": "AJqsdCrkr5VwgkETlFe3cg=="
         }
       },
       "is_incremental": false,
@@ -24072,23 +24128,23 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 141,
+          "total_file_count": 142,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1428,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {

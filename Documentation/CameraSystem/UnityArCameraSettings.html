@@ -83,66 +83,9 @@
 <h1 id="unity-ar-camera-settings-provider">Unity AR camera settings provider</h1>
 
 <p>The Unity AR camera settings provider is an experimental MRTK component that enables mixed reality applications to run on Android and iOS devices.</p>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>Before the Unity AR camera settings provider can be enabled in an application, the following steps need to be completed.</p>
-<ol>
-<li><p>Download and import the <strong>Microsoft.MixedReality.Toolkit.Providers.UnityAR</strong> package, from GitHub or NuGet</p>
-</li>
-<li><p>In the Unity Package Manager, ensure the following package(s) are installed:</p>
-<table>
-<thead>
-<tr>
-<th>Unity 2018.4</th>
-<th>Unity 2019.x</th>
-<th>Comments</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>AR Foundation</td>
-<td>AR Foundation</td>
-<td>For Unity 2018.4, this package is included as a preview</td>
-</tr>
-<tr>
-<td></td>
-<td>XR Legacy Input Helpers</td>
-<td></td>
-</tr>
-<tr>
-<td>AR Core</td>
-<td></td>
-<td>For Android device support</td>
-</tr>
-<tr>
-<td>AR Kit</td>
-<td></td>
-<td>For iOS device support</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p>If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the <strong>UnityEngine.SpatialTracking</strong> reference added.</p>
-<p><img src="../Images/CrossPlatform/UnityArAssemblyReferences.png" alt="Unity AR assembly definition"></p>
-</li>
-</ol>
-<h2 id="enabling-the-unity-ar-camera-settings-provider">Enabling the Unity AR camera settings provider</h2>
-<p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
-<ol>
-<li><p>Select the MixedRealityToolkit object in the scene hierarchy.</p>
-<p><img src="../Images/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
-</li>
-<li><p>Navigate the Inspector panel to the camera system section and expand the <strong>Camera Settings Providers</strong> section.</p>
-<p><img src="../Images/CameraSystem/ExpandProviders.png" alt="Expand settings providers"></p>
-</li>
-<li><p>Click <strong>Add Camera Settings Provider</strong> and expand the newly added <strong>New camera settings</strong> entry.</p>
-<p><img src="../Images/CameraSystem/ExpandNewProvider.png" alt="Expand new settings provider"></p>
-</li>
-<li><p>Select the Unity AR Camera Settings provider</p>
-<p><img src="../Images/CameraSystem/SelectUnityArSettings.png" alt="Select Unity AR settings provider"></p>
-</li>
-</ol>
-<h2 id="configuring-the-unity-ar-camera-settings-provider">Configuring the Unity AR camera settings provider</h2>
+<h2 id="unity-ar-camera-settings-provider-options">Unity AR camera settings provider options</h2>
 <p><img src="../Images/CameraSystem/UnityArSettingsConfiguration.png" alt="Unity AR camera settings configuration"></p>
+<p>For a guide on how to add the provider to your scene: <a href="../CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a></p>
 <h3 id="tracking-settings">Tracking settings</h3>
 <p>The Unity AR camera settings provider allows configuration options for how tracking is performed. These settings are specific to the Unity AR camera settings provider implementation.</p>
 <p><strong>Pose Source</strong></p>
