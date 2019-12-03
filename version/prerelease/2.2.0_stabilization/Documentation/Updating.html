@@ -94,6 +94,9 @@
 <h3 id="api-changes-in-220">API changes in 2.2.0</h3>
 <h4 id="imixedrealityboundarysystemcontains">IMixedRealityBoundarySystem.Contains</h4>
 <p>This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.</p>
+<h4 id="mixedrealityserviceprofileattribute">MixedRealityServiceProfileAttribute</h4>
+<p>To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.</p>
+<p>A second property, ExcludedTypes has also been added.</p>
 <h2 id="updating-200-to-210">Updating 2.0.0 to 2.1.0</h2>
 <ul>
 <li><a href="#api-changes-in-210">API changes</a></li>
