@@ -18,7 +18,8 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Windows Mixed Reality Immersive headsets
 - OpenVR
 - (Experimental) Mobile AR
-  - iOS
+    - Android
+    - iOS
 
 The following software is required.
 
@@ -46,7 +47,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
     > [!NOTE]
-    > If additional extensions have been installed, please make a backup prior to deleting this folder.
+    > If additional extensions have been installed, please make a backup prior to deleting these folders.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
