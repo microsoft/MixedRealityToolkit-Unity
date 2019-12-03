@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections.Generic;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -11,8 +10,6 @@ using UnityEngine.XR.WSA;
 
 #if WINDOWS_UWP
 using Windows.Foundation.Metadata;
-#elif UNITY_WSA && DOTNETWINRT_PRESENT
-using Microsoft.Windows.Foundation.Metadata;
 #endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
@@ -42,19 +39,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
+        /// <inheritdoc/>
+        public override void Enable()
+        {
+            base.Enable();
+            InitializeReprojectionUpdater();
+        }
+
+        /// <inheritdoc/>
+        public override void Disable()
+        {
+            UninitializeReprojectionUpdater();
+            base.Disable();
+        }
+
         #region IMixedRealityCameraSettings
 
         private WindowsMixedRealityCameraSettingsProfile Profile => ConfigurationProfile as WindowsMixedRealityCameraSettingsProfile;
 
-#if UNITY_WSA && DOTNETWINRT_PRESENT
-        private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
-
-        private static readonly bool isDepthReprojectionModeSupported = ApiInformation.IsPropertyPresent("Windows.Graphics.Holographic.HolographicCameraRenderingParameters", "DepthReprojectionMethod");
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
-
 #if WINDOWS_UWP
         private static readonly bool isTryGetViewConfigurationSupported = ApiInformation.IsMethodPresent("Windows.Graphics.Holographic.HolographicDisplay", "TryGetViewConfiguration");
 #endif // WINDOWS_UWP
+
+        private WindowsMixedRealityReprojectionUpdater reprojectionUpdater = null;
 
         /// <inheritdoc/>
         public override bool IsOpaque =>
@@ -81,44 +88,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 }
             }
 #endif // WINDOWS_UWP
-
-#if UNITY_WSA && DOTNETWINRT_PRESENT
-            if (Profile != null
-                && Profile.ReprojectionMethod == HolographicDepthReprojectionMethod.AutoPlanar
-                && isDepthReprojectionModeSupported)
-            {
-                Microsoft.Windows.Graphics.Holographic.HolographicFrame frame = Input.WindowsMixedRealityUtilities.CurrentHolographicFrame;
-                foreach (var cameraPose in frame?.CurrentPrediction.CameraPoses)
-                {
-                    if (CameraSupportsAutoPlanar(cameraPose.HolographicCamera))
-                    {
-                        Microsoft.Windows.Graphics.Holographic.HolographicCameraRenderingParameters renderingParams = frame.GetRenderingParameters(cameraPose);
-                        renderingParams.DepthReprojectionMethod = Microsoft.Windows.Graphics.Holographic.HolographicDepthReprojectionMethod.AutoPlanar;
-                    }
-                }
-            }
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
         }
 
-#if UNITY_WSA && DOTNETWINRT_PRESENT
-        private bool CameraSupportsAutoPlanar(Microsoft.Windows.Graphics.Holographic.HolographicCamera camera)
+        /// <summary>
+        /// todo
+        /// </summary>
+        private void InitializeReprojectionUpdater()
         {
-            bool supportsAutoPlanar;
-            if (!cameraIdToSupportsAutoPlanar.TryGetValue(camera.Id, out supportsAutoPlanar))
+            if (reprojectionUpdater == null)
             {
-                foreach (var method in camera.ViewConfiguration.SupportedDepthReprojectionMethods)
-                {
-                    if (method == Microsoft.Windows.Graphics.Holographic.HolographicDepthReprojectionMethod.AutoPlanar)
-                    {
-                        supportsAutoPlanar = true;
-                        break;
-                    }
-                }
-                cameraIdToSupportsAutoPlanar.Add(camera.Id, supportsAutoPlanar);
+                reprojectionUpdater = CameraCache.Main.EnsureComponent<WindowsMixedRealityReprojectionUpdater>();
+                reprojectionUpdater.ReprojectionMethod = Profile.ReprojectionMethod;
             }
-            return supportsAutoPlanar;
         }
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
+
+        /// <summary>
+        /// todo
+        /// </summary>
+        private void UninitializeReprojectionUpdater()
+        {
+            if (reprojectionUpdater != null)
+            {
+                UnityObjectExtensions.DestroyObject(reprojectionUpdater);
+                reprojectionUpdater = null;
+            }
+        }
 
         #endregion IMixedRealityCameraSettings
     }
