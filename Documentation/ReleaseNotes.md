@@ -208,7 +208,9 @@ MRTK adds support for articulated hands and eye tracking when running an applica
 
 **Windows Mixed Reality Depth Reprojection Settings**
 
-<< todo >>
+Developer customers can now specify the desired depth reprojection method for their Microsoft HoloLens 2 applications. Select between `Depth Reprojection` and `Auto Planar` in the `Windows Mixed Reality Camera Settings` as shown in the following image.
+
+![Depth reprojection method](Images/CameraSystem/WMRCameraSettingsReprojectionMethod.png)
 
 ### Known issues in 2.2.0
 
