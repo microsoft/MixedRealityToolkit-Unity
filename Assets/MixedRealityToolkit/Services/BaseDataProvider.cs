@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (service == null)
             {
-                Debug.LogError($"{name} requires a valid input system instance.");
+                Debug.LogError($"{name} requires a valid service instance.");
             }
 
             Service = service;
