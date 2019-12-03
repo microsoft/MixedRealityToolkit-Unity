@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             //NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < numInteractionManagerStates; i++)
             {
-                CreateController(interactionManagerStates[i]);
+                CreateOrUpdateControllerForInteractionSource(interactionManagerStates[i]);
             }
 
             if (InputSystemProfile.GesturesProfile != null &&
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        private void CreateController(InteractionSourceState interactionSourceState)
+        private void CreateOrUpdateControllerForInteractionSource(InteractionSourceState interactionSourceState)
         {
             // If this is a new detected controller, raise source detected event with input system
             // check needs to be here because GetController adds it to the activeControllers Dictionary
@@ -702,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// SDK Interaction Source Detected Event handler
         /// </summary>
         /// <param name="args">SDK source detected event arguments</param>
-        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args) => CreateController(args.state);
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args) => CreateOrUpdateControllerForInteractionSource(args.state);
 
         /// <summary>
         /// SDK Interaction Source Pressed Event handler. Used only for voice.
