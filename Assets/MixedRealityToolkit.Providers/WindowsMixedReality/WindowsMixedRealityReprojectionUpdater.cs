@@ -13,9 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// <summary>
     /// Script used to update the reprojection method for Windows Mixed Reality devices.
     /// </summary>
-    internal class WindowsMixedRealityReprojectionUpdater : MonoBehaviour
+    public class WindowsMixedRealityReprojectionUpdater : MonoBehaviour
     {
-        internal HolographicDepthReprojectionMethod ReprojectionMethod { get; set; }
+        /// <summary>
+        /// Gets or sets the reprojection method used by Windows Mixed Reality.
+        /// </summary>
+        public HolographicDepthReprojectionMethod ReprojectionMethod { get; set; }
 
 #if UNITY_WSA && DOTNETWINRT_PRESENT
         private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
