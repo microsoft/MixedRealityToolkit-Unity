@@ -363,19 +363,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             //NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < numInteractionManagerStates; i++)
             {
-                var controller = GetController(interactionManagerStates[i].source);
-
-                if (controller != null)
-                {
-                    controller.UpdateController(interactionManagerStates[i]);
-                    Service?.RaiseSourceDetected(controller.InputSource, controller);
-                }
+                CreateController(interactionManagerStates[i]);
             }
 
             if (InputSystemProfile.GesturesProfile != null &&
                 InputSystemProfile.GesturesProfile.WindowsGestureAutoStart == AutoStartBehavior.AutoStart)
             {
                 GestureRecognizerEnabled = true;
+            }
+        }
+
+        private void CreateController(InteractionSourceState interactionSourceState)
+        {
+            var controller = GetController(interactionSourceState.source);
+
+            if (controller != null)
+            {
+                controller.UpdateController(interactionSourceState);
+
+                if (!activeControllers.ContainsKey(interactionSourceState.source.id))
+                {
+                    Service?.RaiseSourceDetected(controller.InputSource, controller);
+                }
             }
         }
 
@@ -688,19 +697,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// SDK Interaction Source Detected Event handler
         /// </summary>
         /// <param name="args">SDK source detected event arguments</param>
-        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args)
-        {
-            bool raiseSourceDetected = !activeControllers.ContainsKey(args.state.source.id);
-
-            var controller = GetController(args.state.source);
-
-            if (controller != null && raiseSourceDetected)
-            {
-                Service?.RaiseSourceDetected(controller.InputSource, controller);
-            }
-
-            controller?.UpdateController(args.state);
-        }
+        private void InteractionManager_InteractionSourceDetected(InteractionSourceDetectedEventArgs args) => CreateController(args.state);
 
         /// <summary>
         /// SDK Interaction Source Pressed Event handler. Used only for voice.
