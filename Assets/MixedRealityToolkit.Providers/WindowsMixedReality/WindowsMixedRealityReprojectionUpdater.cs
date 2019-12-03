@@ -15,17 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// </summary>
     internal class WindowsMixedRealityReprojectionUpdater : MonoBehaviour
     {
+        internal HolographicDepthReprojectionMethod ReprojectionMethod { get; set; }
+
 #if UNITY_WSA && DOTNETWINRT_PRESENT
         private readonly Dictionary<uint, bool> cameraIdToSupportsAutoPlanar = new Dictionary<uint, bool>();
 
         private static readonly bool isDepthReprojectionModeSupported = ApiInformation.IsPropertyPresent("Windows.Graphics.Holographic.HolographicCameraRenderingParameters", "DepthReprojectionMethod");
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
-
-        internal HolographicDepthReprojectionMethod ReprojectionMethod { get; set; }
 
         private void OnPostRender()
         {
-#if UNITY_WSA && DOTNETWINRT_PRESENT
             // The reprojection method needs to be set each frame.
             if (isDepthReprojectionModeSupported &&
                 (ReprojectionMethod == HolographicDepthReprojectionMethod.AutoPlanar))
@@ -40,8 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     }
                 }
             }
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
-        }
+    }
 
         /// <summary>
         /// Checks the Holographic camera to see if it supports auto-planar reprojection.
@@ -54,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             bool supportsAutoPlanar = false;
 
-#if UNITY_WSA && DOTNETWINRT_PRESENT
             if (!cameraIdToSupportsAutoPlanar.TryGetValue(camera.Id, out supportsAutoPlanar))
             {
                 foreach (var method in camera.ViewConfiguration.SupportedDepthReprojectionMethods)
@@ -67,9 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 }
                 cameraIdToSupportsAutoPlanar.Add(camera.Id, supportsAutoPlanar);
             }
-#endif // UNITY_WSA && DOTNETWINRT_PRESENT
 
             return supportsAutoPlanar;
         }
+#endif // UNITY_WSA && DOTNETWINRT_PRESENT
     }
 }
