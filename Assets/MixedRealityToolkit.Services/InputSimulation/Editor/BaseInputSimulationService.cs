@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
             IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
 
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
+            var inputSource = Service?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
             switch (simulationMode)
             {
                 case HandSimulationMode.Articulated:
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 controller.InputSource.Pointers[i].Controller = controller;
             }
 
-            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            Service?.RaiseSourceDetected(controller.InputSource, controller);
 
             trackedHands.Add(handedness, controller);
             UpdateActiveControllers();
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var controller = GetHandDevice(handedness);
             if (controller != null)
             {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 trackedHands.Remove(handedness);
                 UpdateActiveControllers();
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             foreach (var controller in trackedHands.Values)
             {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                Service?.RaiseSourceLost(controller.InputSource, controller);
             }
             trackedHands.Clear();
             UpdateActiveControllers();
