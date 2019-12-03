@@ -137,12 +137,12 @@ InteractableToggleCollection now properly updates the toggle states within group
 
 **Mixed Reality Capture setting (Experimental)**
 
-The Windows Mixed Reality camera settings provider provides and experimental setting to better align holograms in mixed reality capture (MRC) recordings.
+The Windows Mixed Reality camera settings provider provides an experimental setting to better align holograms in mixed reality capture (MRC) recordings.
 
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
 > [!Note]
-> This feature is supported on Unity versions 2018.4 (.13f1 and newer) and 2019.3 (.0f1 and newer). With other Unity versions, the recording behavior may not work as expected.s
+> This feature is supported on Unity versions 2018.4 (.13f1 and newer) and 2019.3 (.0f1 and newer). With other Unity versions, the recording behavior may not work as expected.
 
 **Mobile AR (Android and iOS) support (Experimental)**
 
