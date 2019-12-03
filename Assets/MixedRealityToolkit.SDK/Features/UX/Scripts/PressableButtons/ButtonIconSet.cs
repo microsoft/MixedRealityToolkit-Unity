@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
+using UnityEngine.TextCore;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -15,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public Sprite[] SpriteIcons => spriteIcons;
 
-        public string[] CharIcons => charIconsSet;
+        public uint[] CharIcons => charIconsSet;
 
         public TMP_FontAsset CharIconFont => charIconFont;
 
@@ -26,23 +27,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private TMP_FontAsset charIconFont = null;
         [SerializeField]
-        private string[] charIconsSet = new string[]
+        private uint[] charIconsSet = new uint[]
         {
-            "\uEBD2","\uE711", "\uE8FB", "\uE76C",
-            "\uE712", "\uE840"
+            ConvertCharStringToUInt32("\uEBD2"),
+            ConvertCharStringToUInt32("\uE711"),
+            ConvertCharStringToUInt32("\uE8FB"),
+            ConvertCharStringToUInt32("\uE76C"),
+            ConvertCharStringToUInt32("\uE712"),
+            ConvertCharStringToUInt32("\uE840")
         };
+        [SerializeField]
 
 #if UNITY_EDITOR
         private const int maxButtonSize = 75;
         private const int charIconFontSize = 40;
         private const int maxButtonsPerColumn = 6;
         private Texture[] spriteIconTextures = null;
-        private GUIContent[] charIconContent = null;
-        private GUIStyle charIconStyle = null;
+        private static Material fontRenderMat;
 
-        public bool DrawCharIconSelector(string currentChar, out string newChar, int indentLevel = 0)
+        private const string noIconFontMessage = "No icon font selected. Icon fonts will be unavailable.";
+        private const string downloadIconFontMessage = "You can download the Segoe MDL2 icon font by clicking the button below.";
+        private const string hololensIconFontUrl = "https://aka.ms/SegoeFonts";
+        private const string mdl2IconFontName = "SegMDL2";
+        private const string textMeshProMenuItem = "Window/TextMeshPro/Font Asset Creator";
+
+        public bool DrawCharIconSelector(uint currentChar, out uint newChar, int indentLevel = 0)
         {
-            newChar = null;
+            newChar = 0;
 
             if (charIconFont == null)
             {
@@ -60,36 +71,49 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            if (charIconStyle == null || charIconStyle.font != charIconFont)
-            {
-                charIconStyle = new GUIStyle("button");
-                charIconStyle.font = charIconFont.sourceFontFile;
-                charIconStyle.fontSize = charIconFontSize;
-            }
-
-            charIconContent = null;
-
-            if (charIconContent == null || charIconContent.Length != charIconsSet.Length)
-            {
-                charIconContent = new GUIContent[charIconsSet.Length];
-                for (int i = 0; i < charIconsSet.Length; i++)
-                {
-                    charIconContent[i] = new GUIContent(charIconsSet[i]);
-                }
-            }
-
             using (new EditorGUI.IndentLevelScope(indentLevel))
             {
-                float height = maxButtonSize * ((float)charIconsSet.Length / maxButtonsPerColumn);
-                var maxHeight = GUILayout.MaxHeight(height);
-                int newSelection = GUILayout.SelectionGrid(currentSelection, charIconContent, maxButtonsPerColumn, charIconStyle, maxHeight);
+                int column = 0;
+                int newSelection = -1;
+
+                if (charIconsSet.Length > 0)
+                {
+                    column = 0;
+                    EditorGUILayout.BeginHorizontal();
+                    for (int i = 0; i < charIconsSet.Length; i++)
+                    {
+                        if (column >= maxButtonsPerColumn)
+                        {
+                            column = 0;
+                            EditorGUILayout.EndHorizontal();
+                            EditorGUILayout.BeginHorizontal();
+                        }
+                        if (GUILayout.Button(" ", GUILayout.MinHeight(charIconFontSize), GUILayout.MaxHeight(charIconFontSize)))
+                        {
+                            newSelection = i;
+                        }
+                        Rect textureRect = GUILayoutUtility.GetLastRect();
+                        DrawTMPGlyph(textureRect, charIconsSet[i], charIconFont);
+                        column++;
+                    }
+
+                    if (column > 0)
+                    {
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.LabelField("(No icons in set)");
+                }
+
                 if (newSelection >= 0 && newSelection != currentSelection)
                 {
                     newChar = charIconsSet[newSelection];
                 }
-            }            
+            }
 
-            return !string.IsNullOrEmpty(newChar);
+            return newChar > 0;
         }
 
         public bool DrawSpriteIconSelector(Sprite currentSprite, out Sprite newSprite, int indentLevel = 0)
@@ -157,6 +181,99 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return newTexture != null;
         }
 
+        public static uint ConvertCharStringToUInt32(string charString)
+        {
+            uint unicode = 0;
+
+            if (string.IsNullOrEmpty(charString))
+                return 0;
+
+            for (int i = 0; i < charString.Length; i++)
+            {
+                unicode = charString[i];
+                // Handle surrogate pairs
+                if (i < charString.Length - 1 && char.IsHighSurrogate((char)unicode) && char.IsLowSurrogate(charString[i + 1]))
+                {
+                    unicode = (uint)char.ConvertToUtf32(charString[i], charString[i + 1]);
+                    i += 1;
+                }
+            }
+            return unicode;
+        }
+
+        public static string ConvertUInt32ToUnicodeCharString(uint unicode)
+        {
+            byte[] bytes = System.BitConverter.GetBytes(unicode);
+            return Encoding.Unicode.GetString(bytes);
+        }
+
+        private static void DrawTMPGlyph(Rect position, uint unicode, TMP_FontAsset fontAsset)
+        {
+            TMP_Character character;
+            if (fontAsset.characterLookupTable.TryGetValue(unicode, out character))
+            {
+                DrawTMPGlyph(position, fontAsset, character);
+            }
+        }
+
+        private static void DrawTMPGlyph(Rect position, TMP_FontAsset fontAsset, TMP_Character character)
+        {
+            float iconSizeMultiplier = 0.125f;
+
+            // Get a reference to the Glyph Table
+            int glyphIndex = (int)character.glyphIndex;
+            int elementIndex = fontAsset.glyphTable.FindIndex(item => item.index == glyphIndex);
+
+            // Return if we can't find the glyph
+            if (elementIndex == -1)
+                return;
+
+            Glyph glyph = character.glyph;
+
+            // Get reference to atlas texture.
+            int atlasIndex = glyph.atlasIndex;
+            Texture2D atlasTexture = fontAsset.atlasTextures.Length > atlasIndex ? fontAsset.atlasTextures[atlasIndex] : null;
+
+            if (atlasTexture == null)
+                return;
+
+            if (fontRenderMat == null)
+                fontRenderMat = new Material(Shader.Find("Mixed Reality Toolkit/TextMeshPro"));
+
+            Material mat = fontRenderMat;
+            mat.mainTexture = atlasTexture;
+            mat.SetColor("_Color", Color.white);
+
+            // Draw glyph
+            Rect glyphDrawPosition = new Rect(
+                position.x,
+                position.y,
+                position.width,
+                position.height);
+
+            int glyphOriginX = glyph.glyphRect.x;
+            int glyphOriginY = glyph.glyphRect.y;
+            int glyphWidth = glyph.glyphRect.width;
+            int glyphHeight = glyph.glyphRect.height;
+
+            float normalizedHeight = fontAsset.faceInfo.ascentLine - fontAsset.faceInfo.descentLine;
+            float scale = glyphDrawPosition.width / normalizedHeight * iconSizeMultiplier;
+
+            // Compute the normalized texture coordinates
+            Rect texCoords = new Rect((float)glyphOriginX / atlasTexture.width, (float)glyphOriginY / atlasTexture.height, (float)glyphWidth / atlasTexture.width, (float)glyphHeight / atlasTexture.height);
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                glyphDrawPosition.x += (glyphDrawPosition.width - glyphWidth * scale) / 2;
+                glyphDrawPosition.y += (glyphDrawPosition.height - glyphHeight * scale) / 2;
+                glyphDrawPosition.width = glyphWidth * scale;
+                glyphDrawPosition.height = glyphHeight * scale;
+
+                // Could switch to using the default material of the font asset which would require passing scale to the shader.
+                Graphics.DrawTexture(glyphDrawPosition, atlasTexture, texCoords, 0, 0, 0, 0, new Color(1f, 1f, 1f), mat);
+            }
+        }
+
         [CustomEditor(typeof(ButtonIconSet))]
         private class ButtonIconSetInspector : UnityEditor.Editor
         {
@@ -166,12 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             private SerializedProperty spriteIconsProp = null;
             private SerializedProperty charIconFontProp = null;
 
-            private GUIContent[] fontGlyphContent = null;
-            private GUIContent[] charIconContent = null;
-            private string[] fontGlyphUnicode = null;
-            private GUIStyle fontGlyphStyle = null;
-            private Object lastShownFont = null;
-            
             private void OnEnable()
             {
                 quadIconsProp = serializedObject.FindProperty("quadIcons");
@@ -189,7 +300,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (charIconFontProp.objectReferenceValue == null)
                 {
-                    EditorGUILayout.HelpBox("No icon font selected. Icon fonts will be unavailable.", MessageType.Warning);
+                    EditorGUILayout.HelpBox(noIconFontMessage, MessageType.Warning);
+                    if (!CheckIfHololensIconFontExists())
+                    {
+                        EditorGUILayout.HelpBox(downloadIconFontMessage, MessageType.Info);
+                        if (GUILayout.Button("Download Icon Font"))
+                        {
+                            EditorApplication.ExecuteMenuItem(textMeshProMenuItem);
+                            Application.OpenURL(hololensIconFontUrl);
+                        }
+                    }
                 }
                 else
                 {
@@ -200,60 +320,95 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                         {
-                            if (fontGlyphContent == null || charIconFontProp.objectReferenceValue != lastShownFont)
+                            TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
+
+                            int removeIndex = -1;
+                            int addIndex = -1;
+                            int column = 0;
+
+                            if (bis.charIconsSet.Length > 0)
                             {
-                                lastShownFont = charIconFontProp.objectReferenceValue;
-                                TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
-
-                                fontGlyphContent = new GUIContent[fontAsset.characterTable.Count];
-                                fontGlyphUnicode = new string[fontAsset.characterTable.Count];
-
-                                for (int i = 0; i < fontAsset.characterTable.Count; i++)
-                                {
-                                    byte[] unicode = System.BitConverter.GetBytes(fontAsset.characterTable[i].unicode);
-                                    fontGlyphUnicode[i] = Encoding.Unicode.GetString(unicode);
-                                    fontGlyphContent[i] = new GUIContent(fontGlyphUnicode[i]);
-                                }
-
-                                fontGlyphStyle = new GUIStyle("button");
-                                fontGlyphStyle.font = fontAsset.sourceFontFile;
-                                fontGlyphStyle.fontSize = 20;
-                            }
-
-                            if (charIconContent == null || charIconContent.Length != bis.charIconsSet.Length)
-                            {
-                                charIconContent = new GUIContent[bis.charIconsSet.Length];
+                                EditorGUILayout.LabelField("Click to remove from set");
+                                column = 0;
+                                EditorGUILayout.BeginHorizontal();
                                 for (int i = 0; i < bis.charIconsSet.Length; i++)
                                 {
-                                    charIconContent[i] = new GUIContent(bis.charIconsSet[i]);
+                                    if (column >= maxButtonsPerColumn)
+                                    {
+                                        column = 0;
+                                        EditorGUILayout.EndHorizontal();
+                                        EditorGUILayout.BeginHorizontal();
+                                    }
+                                    if (GUILayout.Button(" ", GUILayout.MinHeight(charIconFontSize), GUILayout.MaxHeight(charIconFontSize)))
+                                    {
+                                        removeIndex = i;
+                                    }
+                                    Rect textureRect = GUILayoutUtility.GetLastRect();
+                                    DrawTMPGlyph(textureRect, bis.charIconsSet[i], fontAsset);
+                                    column++;
+                                }
+
+                                if (column > 0)
+                                {
+                                    EditorGUILayout.EndHorizontal();
                                 }
                             }
+                            else
+                            {
+                                EditorGUILayout.LabelField("(No icons in set)");
+                            }
 
-                            EditorGUILayout.LabelField("Click to remove from set");
-                            int removeIndex = GUILayout.SelectionGrid(-1, charIconContent, maxButtonsPerColumn, fontGlyphStyle);
                             EditorGUILayout.Space();
                             EditorGUILayout.LabelField("Click to add to set");
-                            int addIndex = GUILayout.SelectionGrid(-1, fontGlyphContent, maxButtonsPerColumn, fontGlyphStyle);
+                            column = 0;
+                            EditorGUILayout.BeginHorizontal();
+                            for (int i = 0; i < fontAsset.characterTable.Count; i++)
+                            {
+                                if (column >= maxButtonsPerColumn)
+                                {
+                                    column = 0;
+                                    EditorGUILayout.EndHorizontal();
+                                    EditorGUILayout.BeginHorizontal();
+                                }
+                                if (GUILayout.Button(" ", GUILayout.MinHeight(charIconFontSize), GUILayout.MaxHeight(charIconFontSize)))
+                                {
+                                    addIndex = i;
+                                }
+                                Rect textureRect = GUILayoutUtility.GetLastRect();
+                                DrawTMPGlyph(textureRect, fontAsset, fontAsset.characterTable[i]);
+                                column++;
+                            }
+
+                            if (column > 0)
+                            {
+                                EditorGUILayout.EndHorizontal();
+                            }
 
                             if (removeIndex >= 0)
                             {
-                                List<string> charIconsSet = new List<string>(bis.charIconsSet);
+                                List<uint> charIconsSet = new List<uint>(bis.charIconsSet);
                                 charIconsSet.RemoveAt(removeIndex);
-                                charIconsSet.Sort(delegate (string char1, string char2) { return char1.CompareTo(char2); });
+                                charIconsSet.Sort(delegate (uint char1, uint char2) { return char1.CompareTo(char2); });
                                 bis.charIconsSet = charIconsSet.ToArray();
                                 EditorUtility.SetDirty(target);
                             }
 
                             if (addIndex >= 0)
                             {
-                                List<string> charIconsSet = new List<string>(bis.charIconsSet);
-                                if (!charIconsSet.Contains(fontGlyphUnicode[addIndex]))
+                                List<uint> charIconsSet = new List<uint>(bis.charIconsSet);
+                                uint unicode = fontAsset.characterTable[addIndex].unicode;
+                                if (!charIconsSet.Contains(unicode))
                                 {
-                                    charIconsSet.Add(fontGlyphUnicode[addIndex]);
-                                    charIconsSet.Sort(delegate (string char1, string char2) { return char1.CompareTo(char2); });
+                                    charIconsSet.Add(unicode);
+                                    charIconsSet.Sort(delegate (uint char1, uint char2) { return char1.CompareTo(char2); });
                                     bis.charIconsSet = charIconsSet.ToArray();
                                     EditorUtility.SetDirty(target);
                                 }
+                            }
+
+                            if (GUILayout.Button("Open Font Editor"))
+                            {
+                                Selection.activeObject = bis.CharIconFont;
                             }
                         }
                     }
@@ -262,6 +417,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 serializedObject.ApplyModifiedProperties();
+            }
+
+            private bool CheckIfHololensIconFontExists()
+            {
+                foreach (string guid in AssetDatabase.FindAssets($"t:{typeof(UnityEngine.Font).Name}"))
+                {
+                    if (AssetDatabase.GUIDToAssetPath(guid).Contains(mdl2IconFontName))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 #endif

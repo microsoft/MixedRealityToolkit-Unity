@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [ExecuteAlways]
     public partial class ButtonConfigHelper : MonoBehaviour
     {
-        private const string defaultIconChar = "E700";
+        private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uE700");
         private const string defaultIconTextureNameID = "_MainTex";
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private TMP_FontAsset iconCharFont = null;
         [SerializeField]
-        private string iconChar = defaultIconChar;
+        private uint iconChar = defaultIconChar;
 
         [SerializeField]
         private SpriteRenderer iconSpriteRenderer = null;
@@ -94,9 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="newIconChar">Unicode string for new icon character.</param>
         /// <param name="newIconCharFont">Optional font asset. If null, the existing font asset will be used.</param>
-        public void SetCharIcon(string newIconChar, TMP_FontAsset newIconCharFont = null)
+        public void SetCharIcon(uint newIconChar, TMP_FontAsset newIconCharFont = null)
         {
-            if (string.IsNullOrEmpty(newIconChar))
+            if (newIconChar <= 0)
             {
                 return;
             }
@@ -118,9 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 iconCharLabel.font = iconCharFont;
             }
 
-            if (iconCharLabel.text != iconChar || iconCharLabel.font != iconCharFont)
+            uint labelChar = ButtonIconSet.ConvertCharStringToUInt32(iconCharLabel.text);
+            if (labelChar != iconChar || iconCharLabel.font != iconCharFont)
             {
-                iconCharLabel.text = newIconChar;
+                iconCharLabel.text = ButtonIconSet.ConvertUInt32ToUnicodeCharString(newIconChar);
             }
 
             SetIconStyle(ButtonIconStyle.Char);
@@ -233,6 +234,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 case ButtonIconStyle.Sprite:
                     SetSpriteIcon(iconSprite);
+                    break;
+
+                case ButtonIconStyle.None:
+                    SetIconStyle(ButtonIconStyle.None);
                     break;
             }
         }

@@ -307,17 +307,18 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(iconCharLabelProp);
             }
 
-            string currentIconChar = null;
+            uint currentIconChar = 0;
 
-            if (!string.IsNullOrEmpty(iconCharProp.stringValue))
+            if (iconCharProp.longValue > 0)
             {
-                currentIconChar = iconCharProp.stringValue;
+                currentIconChar = (uint)iconCharProp.longValue;
             }
             else
             {
                 if (iconCharLabelProp != null)
                 {
-                    currentIconChar = ((TextMeshPro)iconCharLabelProp.objectReferenceValue).text;
+                    string iconCharString = ((TextMeshPro)iconCharLabelProp.objectReferenceValue).text;
+                    currentIconChar = ButtonIconSet.ConvertCharStringToUInt32(iconCharString);
                 }
                 else
                 {
@@ -330,10 +331,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             EditorGUILayout.PropertyField(iconSetProp);
             if (iconSet != null)
             {
-                string newIconChar;
+                uint newIconChar;
                 if (iconSet.DrawCharIconSelector(currentIconChar, out newIconChar, 1))
                 {
-                    iconCharProp.stringValue = newIconChar;
+                    iconCharProp.longValue = newIconChar;
                     iconFontProp.objectReferenceValue = iconSet.CharIconFont;
                     cb.SetCharIcon(newIconChar, iconSet.CharIconFont);
                 }

@@ -133,15 +133,20 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4093808205752232742, guid: daa0726e9f4321044bc455f2849304f1,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.0162
-      objectReference: {fileID: 0}
     - target: {fileID: 4093808206858475129, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972499728906768620, guid: daa0726e9f4321044bc455f2849304f1,
+        type: 3}
+      propertyPath: iconStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093808205752232742, guid: daa0726e9f4321044bc455f2849304f1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.0162
       objectReference: {fileID: 0}
     - target: {fileID: 2304902699016250975, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
@@ -167,11 +172,6 @@ PrefabInstance:
         type: 3}
       propertyPath: bounds.x
       value: 0.06363275
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972499728906768620, guid: daa0726e9f4321044bc455f2849304f1,
-        type: 3}
-      propertyPath: iconStyle
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daa0726e9f4321044bc455f2849304f1, type: 3}

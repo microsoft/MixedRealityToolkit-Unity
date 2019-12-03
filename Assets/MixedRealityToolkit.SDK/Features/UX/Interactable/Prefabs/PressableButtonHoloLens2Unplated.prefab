@@ -64,8 +64,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f98e7663599230e419addf153615c144, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 1019827635}
   distanceSpaceMode: 1
   startPushDistance: -0.008
@@ -86,7 +86,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   TouchEnd:
@@ -100,7 +100,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   ButtonPressed:
@@ -114,7 +114,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 316800719}
@@ -126,7 +126,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   ButtonReleased:
@@ -140,7 +140,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 316800719}
@@ -152,7 +152,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   movingButtonIconText: {fileID: 8352633413104042190}
@@ -170,8 +170,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 881d1ff8f009f5148b9f192e6ba31223, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   routingTarget: {fileID: 7440800412470431853}
   InteractableOnClick: 1
 --- !u!114 &7440800412470431853
@@ -184,8 +184,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputActionId: 0
   isGlobal: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument:
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   Events:
@@ -232,7 +232,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument:
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnFocusReceiver
@@ -244,7 +244,7 @@ MonoBehaviour:
       Name: OnFocusOff
       Tooltip: Focus has left the object
       IntValue: 0
-      StringValue:
+      StringValue: 
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -275,7 +275,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument:
+              m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -291,7 +291,7 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument:
+            m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
     ClassName: InteractableOnPressReceiver
@@ -303,7 +303,7 @@ MonoBehaviour:
       Name: OnRelease
       Tooltip: The button is released
       IntValue: 0
-      StringValue:
+      StringValue: 
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -335,7 +335,7 @@ MonoBehaviour:
               m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument:
+              m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
       Options: []
@@ -344,7 +344,7 @@ MonoBehaviour:
       Name: InteractionFilter
       Tooltip: Specify whether press event is for near or far interaction
       IntValue: 2
-      StringValue:
+      StringValue: 
       FloatValue: 0
       BoolValue: 0
       GameObjectValue: {fileID: 0}
@@ -478,8 +478,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   eventsToReceive: 0
   debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: -1}
@@ -497,8 +497,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cf098d972aeb8b4daa70b00381af006, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   mainLabelText: {fileID: 937783102}
   interactable: {fileID: 7440800412470431853}
   seeItSayItLabel: {fileID: 329340111926477333}
@@ -506,7 +506,7 @@ MonoBehaviour:
   iconStyle: 0
   iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
   iconCharLabel: {fileID: 5182697764271180019}
-  iconCharFont: {fileID: 11400000, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
+  iconCharFont: {fileID: 0}
   iconChar: "\uEBD2"
   iconSpriteRenderer: {fileID: 7050879399563888436}
   iconSprite: {fileID: 0}
@@ -616,8 +616,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -915,8 +915,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &329340111926477333
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,8 +1163,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -1353,8 +1353,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6885485203426549952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1411,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 9140915577319219994, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1458,8 +1458,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
@@ -1468,9 +1468,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uEBD2"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
-  m_sharedMaterial: {fileID: 9140915577319219994, guid: 6351098d6b2daa043a72bb76849c79fb,
-    type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
