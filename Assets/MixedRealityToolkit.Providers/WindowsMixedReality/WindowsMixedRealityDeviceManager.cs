@@ -379,9 +379,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             if (controller != null)
             {
+                var raiseSourceDetected = !activeControllers.ContainsKey(interactionSourceState.source.id);
+
                 controller.UpdateController(interactionSourceState);
 
-                if (!activeControllers.ContainsKey(interactionSourceState.source.id))
+                if (raiseSourceDetected)
                 {
                     Service?.RaiseSourceDetected(controller.InputSource, controller);
                 }
