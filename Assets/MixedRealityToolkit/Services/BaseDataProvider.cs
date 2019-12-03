@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
@@ -9,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <remarks>
     /// Empty, but reserved for future use, in case additional <see cref="IMixedRealityDataProvider"/> properties or methods are assigned.
     /// </remarks>
-    public abstract class BaseDataProvider : BaseService, IMixedRealityDataProvider
+    public abstract class BaseDataProvider<T> : BaseService, IMixedRealityDataProvider where T : IMixedRealityService
     {
         /// <summary>
         /// Constructor.
@@ -22,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         protected BaseDataProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityService service,
+            T service,
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : this(service, name, priority, profile)
@@ -38,11 +40,16 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
         protected BaseDataProvider(
-            IMixedRealityService service,
+            T service,
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base()
         {
+            if (service == null)
+            {
+                Debug.LogError($"{name} requires a valid input system instance.");
+            }
+
             Service = service;
             Name = name;
             Priority = priority;
@@ -58,6 +65,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The service instance to which this provider is providing data.
         /// </summary>
-        protected IMixedRealityService Service { get; set; } = null;
+        protected T Service { get; set; } = default;
     }
 }

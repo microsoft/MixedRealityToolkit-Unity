@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     /// <summary>
     /// Base class for test data providers
     /// </summary>
-    public class TestBaseDataProvider : BaseDataProvider
+    public class TestBaseDataProvider : BaseDataProvider<IMixedRealityService>
     {
         public TestBaseDataProvider(
             IMixedRealityService service,
