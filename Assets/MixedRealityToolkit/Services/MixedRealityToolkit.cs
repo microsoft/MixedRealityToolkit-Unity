@@ -954,12 +954,12 @@ namespace Microsoft.MixedReality.Toolkit
             // Unregister core services (active systems)
             // We need to destroy services in backwards order as those which are initialized 
             // later may rely on those which are initialized first.
-            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
-            int length = activeSystems.Count;
+            var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority).ToArray();
 
+            int length = activeSystems.Count;
             for (int i = 0; i < length; i++)
             {
-                Type type = orderedActiveSystems.ElementAt(i).Key;
+                Type type = orderedActiveSystems[i].Key;
 
                 if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
                 {
