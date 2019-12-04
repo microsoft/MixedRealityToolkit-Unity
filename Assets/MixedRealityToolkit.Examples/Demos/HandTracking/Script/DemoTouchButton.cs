@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     [System.Obsolete("This component is no longer supported", true)]
-    [AddComponentMenu("Scripts/MRTK/Examples/DemoTouchButton")]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/DemoTouchButton")]
     public class DemoTouchButton : MonoBehaviour, IMixedRealityPointerHandler
     {
         [SerializeField]

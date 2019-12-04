@@ -174,10 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const float HALF_WIDTH = 256f;
 
-        private static float timeLastUpdatedBuilds;
-
         private string[] targetIps;
-        private List<Version> windowsSdkVersions = new List<Version>();
+        private readonly List<Version> windowsSdkVersions = new List<Version>();
 
         private Vector2 scrollPosition;
 
@@ -281,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 GUILayout.Label("Quick Options");
                 using (new EditorGUILayout.HorizontalScope())
                 {
-
                     EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
 
                     bool canInstall = CanInstall;
@@ -302,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     GUI.enabled = true;
 
                     OpenPlayerSettingsGUI();
-
                 }
             }
             GUILayout.Space(10);
@@ -1133,6 +1129,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
+        /// <summary>
+        /// Builds the open Unity project for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildUnityProject()
         {
             Debug.Assert(!isBuilding);
@@ -1146,6 +1146,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             isBuilding = false;
         }
 
+        /// <summary>
+        /// Builds an AppX for the open Unity project for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildAppx()
         {
             Debug.Assert(!isBuilding);
@@ -1173,6 +1177,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             isBuilding = false;
         }
 
+        /// <summary>
+        /// Builds the open Unity project and its AppX for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildAll(bool install = true)
         {
             Debug.Assert(!isBuilding);
@@ -1236,8 +1244,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdatePackageName();
-
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private static string CalcMostRecentBuild()

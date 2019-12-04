@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {

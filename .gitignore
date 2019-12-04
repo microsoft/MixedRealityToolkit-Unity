@@ -92,3 +92,10 @@ doc/
 /MSBuild/
 /PackagesCopy/
 !/scripts/Packaging/NuGetRestoreProject.csproj
+
+# ========================= #
+# MSBuildForUnity generated #
+# ========================= #
+Assets/MixedRealityToolkit.Providers/WindowsMixedReality/DotNetAdapter/Plugins*
+MSBuildForUnity.Common.props
+.obj

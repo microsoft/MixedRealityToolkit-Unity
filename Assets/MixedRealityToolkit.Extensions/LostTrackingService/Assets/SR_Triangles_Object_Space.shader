@@ -120,9 +120,8 @@ Shader "SR_Triangles_Object_Space" {
             #define Geo_Max_Out_Vertices 3
 
             FragmentInput vxOut[Geo_Max_Out_Vertices];
-            int stripVxCount[Geo_Max_Out_Vertices];
+            int stripVxCount;
             int vxOutCount;
-            int stripCount;
 
             //BLOCK_BEGIN Object_To_World_Pos 144
 
@@ -224,7 +223,7 @@ Shader "SR_Triangles_Object_Space" {
               HUX_GEO_SET_EXTRA1(Extra1);
               HUX_GEO_SET_EXTRA2(Extra2);
               HUX_GEO_SET_EXTRA3(Extra3);
-              vxOutCount += 1; stripVxCount[stripCount] += 1;
+              vxOutCount += 1; stripVxCount += 1;
             }
 
             void Emit_Triangle_B121(
@@ -239,11 +238,13 @@ Shader "SR_Triangles_Object_Space" {
                 float Width,
                 out bool Next)
             {
-
+                // This function can be called at most once per geometry_main invocation.
+                // If this is called multiple times, stripVxCount must be augmented as an
+                // array (see https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6609
+                // for more details).
                 emitVertex_Bid121(P1,Extra1_1,Color,float4(1.0,0.0,0.0,Width));
                 emitVertex_Bid121(P2,Extra1_2,Color,float4(0.0,1.0,0.0,Width));
                 emitVertex_Bid121(P3,Extra1_3,Color,float4(0.0,0.0,1.0,Width));
-                stripCount += 1; stripVxCount[stripCount] = 0;
                 Next = Previous;
             }
 
@@ -472,8 +473,7 @@ Shader "SR_Triangles_Object_Space" {
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(vxIn[0]);
                 vxOutCount = 0;
-                stripCount = 0;
-                stripVxCount[0] = 0;
+                stripVxCount = 0;
 
                 float3 Reference_Q129;
                 float Distance_Q129;
@@ -520,17 +520,13 @@ Shader "SR_Triangles_Object_Space" {
                 bool Root = Next_Q121;
 
                 int vxix = 0;
-                int strip = 0;
-                while (strip < stripCount) {
-                    int i = 0;
-                    while (i < stripVxCount[strip]) {
-                        UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(vxIn[0],vxOut[vxix]);
-                        triStream.Append(vxOut[vxix]);
-                        i += 1; vxix += 1;
-                    }
-                    triStream.RestartStrip();
-                    strip += 1;
+                int i = 0;
+                while (i < stripVxCount) {
+                    UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(vxIn[0],vxOut[vxix]);
+                    triStream.Append(vxOut[vxix]);
+                    i += 1; vxix += 1;
                 }
+                triStream.RestartStrip();
             }
 
             //BLOCK_BEGIN Main_Fragment 134

@@ -1,3 +1,5 @@
+# Eye Calibration
+
 ![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
 
 ## To be or not to be eye calibrated
@@ -9,8 +11,8 @@ This page covers the following:
 
 - Describes how to detect that a user is eye calibrated
 - Provides a sample for how to trigger a user notification to instruct the user to go through the eye calibration
-   - Automatically dismiss notification if eye calibration becomes valid
-   - Manually dismiss notification if user chooses to continue without calibration
+  - Automatically dismiss notification if eye calibration becomes valid
+  - Manually dismiss notification if user chooses to continue without calibration
 
 ### How to detect the eye calibration state
 

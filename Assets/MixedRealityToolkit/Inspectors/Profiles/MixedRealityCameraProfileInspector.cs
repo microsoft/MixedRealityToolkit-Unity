@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent farClipTitle = new GUIContent("Far Clip");
         private readonly GUIContent clearFlagsTitle = new GUIContent("Clear Flags");
+        private readonly GUIContent backgroundColorTitle = new GUIContent("Background Color");
 
         private const string profileTitle = "Camera Settings";
         private const string profileDescription = "The Camera Profile helps configure cross platform camera settings.";
@@ -99,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         if ((CameraClearFlags)opaqueClearFlags.intValue == CameraClearFlags.Color)
                         {
-                            opaqueBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", opaqueBackgroundColor.colorValue);
+                            EditorGUILayout.PropertyField(opaqueBackgroundColor, backgroundColorTitle);
                         }
 
                         opaqueQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", opaqueQualityLevel.intValue, QualitySettings.names);
@@ -113,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         if ((CameraClearFlags)transparentClearFlags.intValue == CameraClearFlags.Color)
                         {
-                            transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
+                            EditorGUILayout.PropertyField(transparentBackgroundColor, backgroundColorTitle);
                         }
 
                         transparentQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", transparentQualityLevel.intValue, QualitySettings.names);

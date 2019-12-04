@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -12,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
     [AddComponentMenu("Scripts/MRTK/SDK/GridObjectCollection")]
+    [ExecuteAlways]
     public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
@@ -55,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
         private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
-        public LayoutAnchor Anchor 
+        public LayoutAnchor Anchor
         {
             get { return anchor; }
             set { anchor = value; }
@@ -116,14 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public int Rows
         {
             get { return rows; }
-            set 
+            set
             {
-                if (Layout == LayoutOrder.ColumnThenRow) 
+                if (Layout == LayoutOrder.ColumnThenRow)
                 {
                     Debug.LogError("When using ColumnThenRow layout, assign Columns instead of Rows.");
-                    return;                    
+                    return;
                 }
-                rows = value; 
+                rows = value;
             }
         }
 
@@ -138,8 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public int Columns
         {
             get { return columns; }
-            set 
-            { 
+            set
+            {
                 if (Layout == LayoutOrder.RowThenColumn)
                 {
                     Debug.LogError("When using RowThenColumn layout, assign Rows instead of Columns.");
@@ -286,63 +288,84 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected void ResolveGridLayout(Vector3[] grid, LayoutOrder order)
         {
             int cellCounter = 0;
-            int iMax, jMax;
+            int xMax, yMax;
 
             switch (order)
             {
                 case LayoutOrder.RowThenColumn:
-                    iMax = Columns;
-                    jMax = Rows;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.ColumnThenRow:
-                    iMax = Columns;
-                    jMax = Rows;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.Vertical:
-                    iMax = 1;
-                    jMax = NodeList.Count;
+                    xMax = 1;
+                    yMax = NodeList.Count;
                     break;
                 case LayoutOrder.Horizontal:
-                    iMax = NodeList.Count;
-                    jMax = 1;
+                    xMax = NodeList.Count;
+                    yMax = 1;
                     break;
                 default:
-                    iMax = Mathf.CeilToInt((float)NodeList.Count / rows);
-                    jMax = rows;
+                    xMax = Mathf.CeilToInt((float)NodeList.Count / rows);
+                    yMax = rows;
                     break;
             }
 
-            float startOffsetX = (iMax * 0.5f) * CellWidth;
+            float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
                 startOffsetX = 0;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = iMax * CellWidth;
+                startOffsetX = xMax * CellWidth;
             }
 
-            float startOffsetY = (jMax * 0.5f) * CellHeight;
+            float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
                 startOffsetY = 0;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = jMax * CellHeight;
+                startOffsetY = yMax * CellHeight;
             }
 
-            for (int i = 0; i < iMax; i++)
+            if (layout == LayoutOrder.ColumnThenRow)
             {
-                for (int j = 0; j < jMax; j++)
-                {
-                    if (cellCounter < NodeList.Count)
+                for (int y = 0; y < yMax; y++)
+                    for (int x = 0; x < xMax; x++)
                     {
-                        grid[cellCounter].Set((-startOffsetX + (i * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                             (startOffsetY - (j * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
-                                             0.0f);
+                        {
+                            if (cellCounter < NodeList.Count)
+                            {
+                                grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                     (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                     0.0f);
+                            }
+                            cellCounter++;
+                        }
                     }
-                    cellCounter++;
+
+            }
+            else
+            {
+
+                for (int x = 0; x < xMax; x++)
+                {
+                    for (int y = 0; y < yMax; y++)
+                    {
+                        if (cellCounter < NodeList.Count)
+                        {
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                 0.0f);
+                        }
+                        cellCounter++;
+                    }
                 }
             }
         }
@@ -419,18 +442,53 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
-    
 
-        public void OnValidate()
+        private void Awake()
         {
-            if (Application.isPlaying)
-            {   // Don't validate during play mode
-                return;
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying)
+            {
+                if (assetVersion != CurrentAssetVersion)
+                {
+                    Undo.RecordObject(this, "version patching");
+                    PerformVersionPatching();
+                }
             }
+#endif
+        }
 
+        #region asset version migration
+#if UNITY_EDITOR
+        private const int CurrentAssetVersion = 1;
+
+        [SerializeField]
+        [HideInInspector]
+        private int assetVersion = 0;
+
+        private void PerformVersionPatching()
+        {
+            if (assetVersion == 0)
+            {
+                string friendlyName = GetUserFriendlyName();
+
+                Debug.Log($"Upgrade GridObjectCollection on {friendlyName} from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
+                // Migrate from version 0 to version 1
+                UpgradeAssetToVersion1();
+                assetVersion = 1;
+            }
+            assetVersion = CurrentAssetVersion;
+        }
+
+        /// <summary>
+        /// Version 1 of GridObjectCollection introduced in MRTK 2.2 when 
+        /// incorrect semantics of "rows" field was fixed, see
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6550
+        /// </summary>
+        private void UpgradeAssetToVersion1()
+        {
             // Check upgrade from MRTK 2.X to 2.2
-            // We used to always specify rows even when layout was column then row
-            // 
+            //
+            // Look for case when asset's layout is ColumnThenRow but # columns is specified in "row" field
             if (Layout == LayoutOrder.ColumnThenRow)
             {
                 // We count number of children this way to avoid re-laying out children without button press
@@ -444,27 +502,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                 }
 
-                // If we have an old asset, then rows could be != default value, columns would be default value
-                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols 
-                    // We actually want default # of columns
-                    && (nodeListCount <= rows * (columns - 1) || nodeListCount > rows * columns);
-                // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
-                // This will be okay unless the number of children exceeds rows * cols
-                bool upgradeScenarioB = rows == defaultValueRowsCols && columns == defaultValueRowsCols && nodeListCount > rows * columns;
-                if (upgradeScenarioA || upgradeScenarioB)
-                {
-                    // Try to guess what the desired columns would be
-                    int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                    string objectName = gameObject.name;
-                     if (gameObject.transform.parent != null) 
-                     {
-                         objectName += " (parent " + transform.parent.gameObject.name + ")";
-                     }
-                    Debug.Log("GridObjectCollection on " + objectName + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
-                    Columns = columnsGuess;
-                }
+                // Try to guess what the desired columns would be
+                int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
+                string friendlyName = GetUserFriendlyName();
+                Debug.Log($"Setting columns to {nodeListCount} / {rows} = {columnsGuess}. Check {friendlyName} to make sure GridObjectCollection has the correct values.");
+                columns = columnsGuess;
             }
         }
+
+        private string GetUserFriendlyName()
+        {
+            string objectName = gameObject.name;
+            if (gameObject.transform.parent != null)
+            {
+                objectName += " (parent " + transform.parent.gameObject.name + ")";
+            }
+
+            return objectName;
+        }
+#endif
+        #endregion
 
     }
 }

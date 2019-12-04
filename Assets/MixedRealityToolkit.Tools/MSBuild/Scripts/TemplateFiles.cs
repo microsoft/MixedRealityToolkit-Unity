@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     /// </summary>
     public class TemplateFiles
     {
-        private const string TemplateFilesFolderName = "MRTKMSBuildTemplates";
+        private const string TemplateFilesFolderName = "MSBuildMRTKTemplates";
         private const string MSBuildSolutionTemplateName = "SolutionTemplate.sln.template";
         private const string SDKProjectFileTemplateName = "SDKProjectTemplate.csproj.template";
         private const string PlatformPropsTemplateName = "Platform.Configuration.Template.props.template";

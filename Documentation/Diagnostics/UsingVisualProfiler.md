@@ -7,7 +7,7 @@ The VisualProfiler provides an easy to use, in-application view of a mixed reali
 - Windows Mixed Reality Immersive headsets
 - OpenVR
 
-While developing an application, focus on multiple parts of the scene as the Visual Profiler displays data relative to the current view. 
+While developing an application, focus on multiple parts of the scene as the Visual Profiler displays data relative to the current view.
 
 > [!IMPORTANT]
 > Focus attention on portions of the scene with complex objects, particle effects or activity. These and other factors often contribute to reduction in application performance and a less than ideal user experience.
@@ -25,7 +25,7 @@ The Visual Profiler interface includes the following components:
 
 ### Frame Rate
 
-In the upper-left corner of the interface is the frame rate, measured in frames per second. For the best user experience and comfort, this value should be as high as possible. 
+In the upper-left corner of the interface is the frame rate, measured in frames per second. For the best user experience and comfort, this value should be as high as possible.
 
 The specific platform and hardware configuration will play a significant role in the maximum achievable frame rate. Some common target values include:
 
@@ -51,7 +51,7 @@ When using the application, look for missed frames which indicate that the appli
 
 ### Memory Utilization
 
-The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption. 
+The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption.
 
 ![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
 

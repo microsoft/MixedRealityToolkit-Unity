@@ -1,21 +1,25 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if WINDOWS_UWP
-#if ENABLE_DOTNET
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+#if NETFX_CORE
 using System;
-#endif // ENABLE_DOTNET
-using System.Runtime.InteropServices;
+#endif // NETFX_CORE
 using UnityEngine.XR.WSA;
+#if WINDOWS_UWP
+using System.Runtime.InteropServices;
 using Windows.Perception.Spatial;
-#endif // WINDOWS_UWP
+#elif DOTNETWINRT_PRESENT
+using Microsoft.Windows.Perception.Spatial;
+#endif
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     public static class WindowsMixedRealityUtilities
     {
-#if WINDOWS_UWP
-#if ENABLE_DOTNET
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+#if NETFX_CORE
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
         private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
 
@@ -43,11 +47,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
             }
         }
-#else
+#elif WINDOWS_UWP
         public static SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
+#elif DOTNETWINRT_PRESENT
+        public static SpatialCoordinateSystem SpatialCoordinateSystem
+        {
+            get
+            {
+                var spatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
+                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != System.IntPtr.Zero)
+                {
+                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
+                }
+                return spatialCoordinateSystem;
+            }
+        }
 #endif
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
-#endif // WINDOWS_UWP
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
