@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         }
 
         /// <summary>
-        /// todo
+        /// Adds and initializes the reprojection updater component.
         /// </summary>
         private void InitializeReprojectionUpdater()
         {
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         }
 
         /// <summary>
-        /// todo
+        /// Uninitializes and removes the reprojection updater component.
         /// </summary>
         private void UninitializeReprojectionUpdater()
         {

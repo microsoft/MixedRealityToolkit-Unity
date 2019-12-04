@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     }
                 }
             }
-    }
+        }
 
         /// <summary>
         /// Checks the Holographic camera to see if it supports auto-planar reprojection.
