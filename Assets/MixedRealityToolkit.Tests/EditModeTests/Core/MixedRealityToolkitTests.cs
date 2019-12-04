@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Register ITestExtensionService1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
 
             // Retrieve ITestExtensionService1
             Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>());
@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Add test 2 services
             MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(CoreServices.InputSystem, "Test07-01-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2", 10, null));
 
             // Enable all test services
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(ITestService));
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Add test 2 services
             MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(CoreServices.InputSystem, "Test07-01-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2", 10, null));
 
             // Enable all test services
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(ITestService));
@@ -376,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             // service1 priority = 20
             // service2 priority = 30
             CollectionAssert.AreEqual(
-                new List<IMixedRealityService>(){ service3, service1, service2 },
+                new List<IMixedRealityService>() { service3, service1, service2 },
                 MixedRealityServiceRegistry.GetAllServices());
         }
 
@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             {
                 Scene scene = SceneManager.GetSceneAt(i);
                 SceneManager.SetActiveScene(scene);
-                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();                
+                MixedRealityToolkit newInstance = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             }
 
             MixedRealityToolkit[] instances = GameObject.FindObjectsOfType<MixedRealityToolkit>();
