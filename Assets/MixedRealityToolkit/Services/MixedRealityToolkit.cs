@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit
             CoreServices.ResetCacheReferences();
             EnsureMixedRealityRequirements();
 
-        #region Services Registration
+            #region Services Registration
 
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
@@ -462,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
 
-        #endregion Service Registration
+            #endregion Service Registration
 
             InitializeAllServices();
 
