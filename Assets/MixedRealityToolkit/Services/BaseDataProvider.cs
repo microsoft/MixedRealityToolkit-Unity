@@ -5,13 +5,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
-    /// <summary>
-    /// The base data provider implements <see cref="IMixedRealityDataProvider"/> and provides default properties for all data providers.
-    /// </summary>
-    /// <remarks>
-    /// Empty, but reserved for future use, in case additional <see cref="IMixedRealityDataProvider"/> properties or methods are assigned.
-    /// </remarks>
-    public abstract class BaseDataProvider<T> : BaseService, IMixedRealityDataProvider where T : IMixedRealityService
+    [System.Obsolete("Add a <T> of type IMixedRealityService, which defines the service type this data provider is valid for.")]
+    public abstract class BaseDataProvider : BaseDataProvider<IMixedRealityService>
     {
         /// <summary>
         /// Constructor.
@@ -24,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         protected BaseDataProvider(
             IMixedRealityServiceRegistrar registrar,
-            T service,
+            IMixedRealityService service,
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : this(service, name, priority, profile)
@@ -32,6 +27,27 @@ namespace Microsoft.MixedReality.Toolkit
             Registrar = registrar;
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="service">The <see cref="IMixedRealityService"/> to which the provider is providing data.</param>
+        /// <param name="name">The friendly name of the data provider.</param>
+        /// <param name="priority">The registration priority of the data provider.</param>
+        /// <param name="profile">The configuration profile for the data provider.</param>
+        protected BaseDataProvider(
+            IMixedRealityService service,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(service, name, priority, profile)
+        {
+        }
+    }
+
+    /// <summary>
+    /// The base data provider implements <see cref="IMixedRealityDataProvider"/> and provides default properties for all data providers.
+    /// </summary>
+    public abstract class BaseDataProvider<T> : BaseService, IMixedRealityDataProvider where T : IMixedRealityService
+    {
         /// <summary>
         /// Constructor.
         /// </summary>
