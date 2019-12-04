@@ -35,7 +35,8 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
         private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
-        #region Mixed Reality Toolkit Profile configuration
+
+#region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
@@ -123,9 +124,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Mixed Reality Toolkit Profile configuration
+#endregion Mixed Reality Toolkit Profile configuration
 
-        #region Mixed Reality runtime service registry
+#region Mixed Reality runtime service registry
 
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
@@ -146,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit
         [Obsolete("Use GetDataProvider<T> of MixedRealityService registering the desired IMixedRealityDataProvider")]
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
-        #endregion Mixed Reality runtime service registry
+#endregion Mixed Reality runtime service registry
 
-        #region IMixedRealityServiceRegistrar implementation
+#region IMixedRealityServiceRegistrar implementation
 
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
@@ -310,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit
             return GetAllServicesByNameInternal<T>(typeof(T), name);
         }
 
-        #endregion IMixedRealityServiceRegistrar implementation
+#endregion IMixedRealityServiceRegistrar implementation
 
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
@@ -323,11 +324,16 @@ namespace Microsoft.MixedReality.Toolkit
             //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                #if UNITY_EDITOR
+                if (!Application.isPlaying)
+                {
+                    // Log as warning if in edit mode. Likely user is making changes etc.
                     Debug.LogWarning(NoMRTKProfileErrorMessage);
-                #else
+                }
+                else
+                {
                     Debug.LogError(NoMRTKProfileErrorMessage);
-                #endif
+                }
+
                 return;
             }
 
