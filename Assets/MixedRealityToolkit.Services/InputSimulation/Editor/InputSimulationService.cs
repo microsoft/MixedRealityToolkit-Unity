@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 viewportDelta = Vector3.zero;
         public Vector3 worldDelta = Vector3.zero;
 
+        /// <summary>
+        /// Resets all vector contents to zero vector values
+        /// </summary>
         public void Reset()
         {
             screenDelta = Vector3.zero;
