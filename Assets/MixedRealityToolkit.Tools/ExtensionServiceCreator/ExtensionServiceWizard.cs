@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     using (new EditorGUI.DisabledGroupScope(hasErrors))
                     {
-                        if (GUILayout.Button("Create files"))
+                        if (GUILayout.Button("Create Service"))
                         {
                             // Start the async method that will wait for the service to be created
                             CreateAssetsAsync();
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawCreationLog()
         {
-            var style = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+            var style = new GUIStyle(EditorStyles.wordWrappedLabel);
             style.richText = true;
             EditorGUILayout.LabelField(creator.CreationLog, style);
         }
