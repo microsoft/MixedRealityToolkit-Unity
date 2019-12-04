@@ -48,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError($"{name} requires a valid input system instance.");
             }
+
             InputSystem = inputSystem;
         }
 
@@ -64,6 +65,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
 
+        private Dictionary<PointerOption, IMixedRealityPointer> PointerCache = new Dictionary<PointerOption, IMixedRealityPointer>();
+
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            if (InputSystemProfile != null && InputSystemProfile.PointerProfile != null)
+            {
+                for (int i = 0; i < InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                {
+                    var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
+
+                    var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+                    MixedRealityPlayspace.AddChild(pointerObject.transform);
+                    var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+
+                }
+            }
+        }
+
+        private IMixedRealityPointer CreatePointer()
+        {
+            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
+            MixedRealityPlayspace.AddChild(pointerObject.transform);
+            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+        }
+
         /// <summary>
         /// Request an array of pointers for the controller type.
         /// </summary>
@@ -74,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var pointers = new List<IMixedRealityPointer>();
 
+            /*
             if ((InputSystem != null) &&
                 (InputSystemProfile != null) &&
                 InputSystemProfile.PointerProfile != null)
@@ -99,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
-            }
+            }*/
 
             return pointers.Count == 0 ? null : pointers.ToArray();
         }
