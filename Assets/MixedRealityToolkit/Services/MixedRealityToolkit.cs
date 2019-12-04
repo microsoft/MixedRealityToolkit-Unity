@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isInitializing = false;
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
-
+        private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
         #region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
@@ -323,7 +323,11 @@ namespace Microsoft.MixedReality.Toolkit
             //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+                #if UNITY_EDITOR
+                    Debug.LogWarning(NoMRTKProfileErrorMessage);
+                #else
+                    Debug.LogError(NoMRTKProfileErrorMessage);
+                #endif
                 return;
             }
 
@@ -344,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit
             CoreServices.ResetCacheReferences();
             EnsureMixedRealityRequirements();
 
-            #region Services Registration
+#region Services Registration
 
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
@@ -452,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
 
-            #endregion Service Registration
+#endregion Service Registration
 
             InitializeAllServices();
 
@@ -513,7 +517,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #region MonoBehaviour Implementation
+#region MonoBehaviour Implementation
 
         private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
@@ -640,9 +644,9 @@ namespace Microsoft.MixedReality.Toolkit
             UnregisterInstance(this);
         }
 
-        #endregion MonoBehaviour Implementation
+#endregion MonoBehaviour Implementation
 
-        #region Instance Registration
+#region Instance Registration
 
         private const string activeInstanceGameObjectName = "MixedRealityToolkit";
         private const string inactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
@@ -781,11 +785,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Instance Registration
+#endregion Instance Registration
 
-        #region Service Container Management
+#region Service Container Management
 
-        #region Registration
+#region Registration
         // NOTE: This method intentionally does not add to the registry. This is actually mostly a helper function for RegisterServiceInternal<T>.
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
@@ -844,9 +848,9 @@ namespace Microsoft.MixedReality.Toolkit
             return false;
         }
 
-        #endregion Registration
+#endregion Registration
 
-        #region Multiple Service Management
+#region Multiple Service Management
 
         /// <summary>
         /// Enable all services in the Mixed Reality Toolkit active service registry for a given type
@@ -1016,9 +1020,9 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Multiple Service Management
+#endregion Multiple Service Management
 
-        #region Service Utilities
+#region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1179,11 +1183,11 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Service Utilities
+#endregion Service Utilities
 
-        #endregion Service Container Management
+#endregion Service Container Management
 
-        #region Core System Accessors
+#region Core System Accessors
 
         /// <summary>
         /// The current Input System registered with the Mixed Reality Toolkit.
@@ -1314,9 +1318,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Core System Accessors
+#endregion Core System Accessors
 
-        #region Application Event Listeners
+#region Application Event Listeners
         /// <summary>
         /// Registers once on startup and sets isApplicationQuitting to true when quit event is detected.
         /// </summary>
@@ -1429,6 +1433,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 #endif // UNITY_EDITOR
 
-        #endregion
+#endregion
     }
 }
