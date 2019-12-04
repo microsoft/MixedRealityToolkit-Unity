@@ -81,6 +81,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The service instance to which this provider is providing data.
         /// </summary>
-        protected T Service { get; set; } = default;
+        protected T Service { get; set; } = default(T);
     }
 }
