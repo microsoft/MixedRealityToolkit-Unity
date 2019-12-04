@@ -53,15 +53,129 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public bool UsesInspector;
             public SupportedPlatforms Platforms;
             public CreationStage Stage;
-            public string ServiceFolderPath;
-            public string InspectorFolderPath;
-            public string InterfaceFolderPath;
-            public string ProfileFolderPath;
-            public string ProfileAssetFolderPath;
+            public UnityEngine.Object ServiceFolder;
+            public UnityEngine.Object InspectorFolder;
+            public UnityEngine.Object InterfaceFolder;
+            public UnityEngine.Object ProfileFolder;
+            public UnityEngine.Object ProfileAssetFolder;
             public string Namespace;
         }
 
         #endregion
+
+        #region public properties
+
+        public string ServiceName
+        {
+            get => state.ServiceName;
+            set => state.ServiceName = value;
+        }
+
+        public bool UsesProfile
+        {
+            get => state.UsesProfile;
+            set => state.UsesProfile = value;
+        }
+
+        public bool UsesInspector
+        {
+            get => state.UsesInspector;
+            set => state.UsesInspector = value;
+        }
+
+        public SupportedPlatforms Platforms
+        {
+            get => state.Platforms;
+            set => state.Platforms = value;
+        }
+
+        public CreationStage Stage
+        {
+            get => state.Stage;
+            set => state.Stage = value;
+        }
+
+        public string Namespace
+        {
+            get => state.Namespace;
+            set => state.Namespace = value;
+        }
+
+        public IEnumerable<string> CreationLog { get => creationLog; }
+
+        public CreateResult Result { get; private set; } = CreateResult.None;
+
+        public string InterfaceName { get => "I" + ServiceName; }
+        public string ProfileName { get => ServiceName + "Profile"; }
+        public string InspectorName { get => ServiceName + "Inspector"; }
+        public string ProfileAssetName { get => "Default" + ProfileName; }
+
+        public UnityEngine.Object ServiceFolderObject
+        {
+            get => state.ServiceFolder;
+            set
+            {
+                if (IsValidFolder(value))
+                {
+                    state.ServiceFolder = value;
+                }
+            }
+        }
+
+        public UnityEngine.Object InspectorFolderObject
+        {
+            get => state.InspectorFolder;
+            set
+            {
+                if (IsValidFolder(value))
+                {
+                    state.InspectorFolder = value;
+                }
+            }
+        }
+
+        public UnityEngine.Object InterfaceFolderObject
+        {
+            get => state.InterfaceFolder;
+            set
+            {
+                if (IsValidFolder(value))
+                {
+                    state.InterfaceFolder = value;
+                }
+            }
+        }
+
+        public UnityEngine.Object ProfileFolderObject
+        {
+            get => state.ProfileFolder;
+            set
+            {
+                if (IsValidFolder(value))
+                {
+                    state.ProfileFolder = value;
+                }
+            }
+        }
+
+        public UnityEngine.Object ProfileAssetFolderObject
+        {
+            get => state.ProfileAssetFolder;
+            set
+            {
+                if (IsValidFolder(value))
+                {
+                    state.ProfileAssetFolder = value;
+                }
+            }
+        }
+
+        public Type ServiceType { get; private set; }
+        public BaseMixedRealityProfile ProfileInstance { get; private set; }
+
+        #endregion
+
+        #region private properties
 
         #region static
 
@@ -88,97 +202,35 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private string InspectorTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt");
         private string InterfaceTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt");
         private string ProfileTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt");
-        
-        #endregion
-
-        #region public properties
-
-        public string ServiceName
-        {
-            get { return state.ServiceName; }
-            set { state.ServiceName = value; }
-        }
-
-        public bool UsesProfile
-        {
-            get { return state.UsesProfile; }
-            set { state.UsesProfile = value; }
-        }
-
-        public bool UsesInspector
-        {
-            get { return state.UsesInspector; }
-            set { state.UsesInspector = value; }
-        }
-
-        public SupportedPlatforms Platforms
-        {
-            get { return state.Platforms; }
-            set { state.Platforms = value; }
-        }
-
-        public CreationStage Stage
-        {
-            get { return state.Stage; }
-            set { state.Stage = value; }
-        }
-
-        public string Namespace
-        {
-            get { return state.Namespace; }
-            set { state.Namespace = value; }
-        }
-
-        public IEnumerable<string> CreationLog { get { return creationLog; } }
-        public CreateResult Result { get; private set; } = CreateResult.None;
-        public string InterfaceName { get { return "I" + ServiceName; } }
-        public string ProfileName { get { return ServiceName + "Profile"; } }
-        public string InspectorName { get { return ServiceName + "Inspector"; } }
-        public string ServiceFieldName { get { return Char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1); } }
-        public string ProfileFieldName { get { return Char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1); } }
-        public string ProfileAssetName { get { return "Default" + ProfileName; } }
-
-        public UnityEngine.Object ServiceFolderObject { get; set; }
-        public UnityEngine.Object InspectorFolderObject { get; set; }
-        public UnityEngine.Object InterfaceFolderObject { get; set; }
-        public UnityEngine.Object ProfileFolderObject { get; set; }
-        public UnityEngine.Object ProfileAssetFolderObject { get; set; }
-
-        public Type ServiceType { get; private set; }
-        public BaseMixedRealityProfile ProfileInstance { get; private set; }
 
         #endregion
 
-        #region private properties
+        private string ServiceFieldName { get { return Char.ToLowerInvariant(ServiceName[0]) + ServiceName.Substring(1); } }
+        private string ProfileFieldName { get { return Char.ToLowerInvariant(ProfileName[0]) + ProfileName.Substring(1); } }
 
         private string ServiceFolderPath
         {
-            get { return state.ServiceFolderPath; }
-            set { state.ServiceFolderPath = value; }
+            get { return ServiceFolderObject != null ? AssetDatabase.GetAssetPath(ServiceFolderObject) : string.Empty; }
         }
 
         private string InspectorFolderPath
         {
-            get { return state.InspectorFolderPath; }
-            set { state.InspectorFolderPath = value; }
+            get { return InspectorFolderObject != null ? AssetDatabase.GetAssetPath(InspectorFolderObject) : string.Empty; }
         }
 
         private string InterfaceFolderPath
         {
-            get { return state.InterfaceFolderPath; }
-            set { state.InterfaceFolderPath = value; }
+            get { return InterfaceFolderObject != null ? AssetDatabase.GetAssetPath(InterfaceFolderObject) : string.Empty; }
         }
 
         private string ProfileFolderPath
         {
-            get { return state.ProfileFolderPath; }
-            set { state.ProfileFolderPath = value; }
+            get { return ProfileFolderObject != null ? AssetDatabase.GetAssetPath(ProfileFolderObject) : string.Empty; }
         }
 
         private string ProfileAssetFolderPath
         {
-            get { return state.ProfileAssetFolderPath; }
-            set { state.ProfileAssetFolderPath = value; }
+            get { return ProfileAssetFolderObject != null ? AssetDatabase.GetAssetPath(ProfileAssetFolderObject) : string.Empty; }
         }
 
         public string SampleCode
@@ -311,8 +363,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public bool ValidateName(List<string> errors)
         {
-            errors.Clear();
-
             if (string.IsNullOrEmpty(ServiceName))
             {
                 errors.Add("Name cannot be empty.");
@@ -332,101 +382,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return errors.Count == 0;
         }
 
-        public bool ValidateFolders(List<string> errors)
+        public bool CanBuildAsset(UnityEngine.Object folder, string fileName)
         {
-            errors.Clear();
+            string folderPath = AssetDatabase.GetAssetPath(folder);
+            return IsValidFolder(folderPath) && !AssetExists(folderPath, fileName, ScriptExtension);
+        }
 
-            if (ServiceFolderObject == null)
-            {
-                ServiceFolderObject = (UnityEngine.Object)AssetDatabase.LoadAssetAtPath(ExtensionsFolder, typeof(UnityEngine.Object));
-            }
+        public bool IsValidFolder(UnityEngine.Object folder)
+        {
+            string folderPath = AssetDatabase.GetAssetPath(folder);
+            return IsValidFolder(folderPath);
+        }
 
-            if (InspectorFolderObject == null && ServiceFolderObject != null)
-            {
-                InspectorFolderObject = ServiceFolderObject;
-            }
-
-            if (InterfaceFolderObject == null && ServiceFolderObject != null)
-            {
-                InterfaceFolderObject = ServiceFolderObject;
-            }
-
-            if (ProfileFolderObject == null && ServiceFolderObject != null)
-            {
-                ProfileFolderObject = ServiceFolderObject;
-            }
-
-            if (ProfileAssetFolderObject == null && ServiceFolderObject != null)
-            {
-                ProfileAssetFolderObject = ServiceFolderObject;
-            }
-
-            ServiceFolderPath = ServiceFolderObject != null ? AssetDatabase.GetAssetPath(ServiceFolderObject) : string.Empty;
-            InspectorFolderPath = InspectorFolderObject != null ? AssetDatabase.GetAssetPath(InspectorFolderObject) : string.Empty;
-            InterfaceFolderPath = InterfaceFolderObject != null ? AssetDatabase.GetAssetPath(InterfaceFolderObject) : string.Empty;
-            ProfileFolderPath = ProfileFolderObject != null ? AssetDatabase.GetAssetPath(ProfileFolderObject) : string.Empty;
-            ProfileAssetFolderPath = ProfileAssetFolderObject != null ? AssetDatabase.GetAssetPath(ProfileAssetFolderObject) : string.Empty;
-
-            // Make sure the folders exist and aren't other assets
-            if (!AssetDatabase.IsValidFolder(ServiceFolderPath))
-            {
-                errors.Add("Service folder is not valid.");
-            }
-
-            if (!AssetDatabase.IsValidFolder(InspectorFolderPath))
-            {
-                errors.Add("Inspector folder is not valid.");
-            }
-
-            if (!AssetDatabase.IsValidFolder(InterfaceFolderPath))
-            {
-                errors.Add("Interface folder is not valid.");
-            }
-
-            if (!AssetDatabase.IsValidFolder(ProfileFolderPath))
-            {
-                errors.Add("Profile folder is not valid.");
-            }
-
-            if (!AssetDatabase.IsValidFolder(ProfileAssetFolderPath))
-            {
-                errors.Add("Profile asset folder is not valid.");
-            }
-
-            // Make sure there aren't already assets with the same name
-            if (AssetExists(ServiceFolderPath, ServiceName, ScriptExtension))
-            {
-                errors.Add("Service script asset already exists. Delete it or choose a different service name to continue.");
-            }
-
-            if (AssetExists(InspectorFolderPath, InspectorName, ScriptExtension))
-            {
-                errors.Add("Inspector script asset already exists. Delete it or choose a different service name to continue.");
-            }
-
-            if (AssetExists(InterfaceFolderPath, InterfaceName, ScriptExtension))
-            {
-                errors.Add("Interface script asset already exists. Delete it or choose a different service name to continue.");
-            }
-
-            if (AssetExists(ProfileFolderPath, ProfileName, ScriptExtension))
-            {
-                errors.Add("Profile script asset already exists. Delete it or choose a different service name to continue.");
-            }
-
-            if (AssetExists(ProfileAssetFolderPath, ProfileAssetName, ProfileExtension))
-            {
-                errors.Add("Profile asset already exists. Delete it or choose a different service name to continue.");
-            }
-
-            return errors.Count == 0;
+        public bool IsValidFolder(string folderPath)
+        {
+            return AssetDatabase.IsValidFolder(folderPath);
         }
 
         public bool ValidatePlatforms(List<string> errors)
         {
             errors.Clear();
 
-            if ((int)Platforms == 0)
+            if (Platforms == 0)
             {
                 errors.Add("Service must support at least one platform.");
             }
@@ -436,8 +413,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public bool ValidateNamespace(List<string> errors)
         {
-            errors.Clear();
-
             if (string.IsNullOrEmpty(Namespace))
             {
                 Namespace = DefaultExtensionNamespace;
@@ -617,6 +592,26 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             state.UsesInspector = true;
             state.Stage = CreationStage.SelectNameAndPlatform;
             state.Platforms = SupportedPlatforms.LinuxStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal;
+
+            SetAllFolders(ExtensionsFolder);
+        }
+
+        public bool SetAllFolders(string path)
+        {
+            if (!AssetDatabase.IsValidFolder(path))
+            {
+                return false;
+            }
+
+            var newFolder = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
+
+            ServiceFolderObject = newFolder;
+            InterfaceFolderObject = newFolder;
+            InspectorFolderObject = newFolder;
+            ProfileFolderObject = newFolder;
+            ProfileAssetFolderObject = newFolder;
+
+            return true;
         }
 
         private bool AssetExists(string assetPath, string assetName, string extension)
@@ -636,15 +631,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scriptContents = scriptContents.Replace(ProfileFieldNameSearchString, ProfileFieldName);
             scriptContents = scriptContents.Replace(ExtensionNamespaceSearchString, Namespace);
 
-            List<string> platformValues = new List<string>();
-            foreach (SupportedPlatforms platform in Enum.GetValues(typeof(SupportedPlatforms)))
+            const int SUPPORTED_PLATFORM_EVERYTHING = -1;
+            if ((int)Platforms == SUPPORTED_PLATFORM_EVERYTHING)
             {
-                if ((platform & Platforms) != 0)
-                {
-                    platformValues.Add("SupportedPlatforms." + platform.ToString());
-                }
+                scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, "(SupportedPlatforms)(-1)");
             }
-            scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, String.Join("|", platformValues.ToArray()));
+            else
+            {
+                List<string> platformValues = new List<string>();
+
+                foreach (SupportedPlatforms platform in Enum.GetValues(typeof(SupportedPlatforms)))
+                {
+                    if (Platforms.HasFlag(platform))
+                    {
+                        platformValues.Add("SupportedPlatforms." + platform.ToString());
+                    }
+                }
+
+                scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, string.Join("|", platformValues.ToArray()));
+            }
 
             if (string.IsNullOrEmpty(scriptContents))
             {
