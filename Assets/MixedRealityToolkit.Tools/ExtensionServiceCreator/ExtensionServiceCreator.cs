@@ -686,7 +686,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 case LogType.Error:
                 case LogType.Exception:
-                    creationLog.Add("<color = red>Encountered error while compiling</color>");
+                    creationLog.Add("<color=red>Encountered error while compiling</color>");
                     creationLog.Add(condition);
                     Result = CreateResult.Error;
                     break;

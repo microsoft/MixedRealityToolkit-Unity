@@ -15,9 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class ExtensionServiceWizard : EditorWindow
     {
         private static ExtensionServiceWizard window;
-        private static readonly Color enabledColor = Color.white;
-        private static readonly Color disabledColor = Color.gray;
-        private static readonly Color readOnlyColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
         private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/ExtensionServiceCreationWizard.html";
         private static readonly Vector2 minWindowSize = new Vector2(500, 0);
         private const int docLinkWidth = 200;
