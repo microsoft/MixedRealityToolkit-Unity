@@ -2,14 +2,18 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-#if NETFX_CORE
 using System;
-#endif // NETFX_CORE
+using System.Runtime.InteropServices;
 using UnityEngine.XR.WSA;
 #if WINDOWS_UWP
-using System.Runtime.InteropServices;
 using Windows.Perception.Spatial;
+#if DOTNETWINRT_PRESENT
+using Microsoft.Windows.Graphics.Holographic;
+#else
+using Windows.Graphics.Holographic;
+#endif
 #elif DOTNETWINRT_PRESENT
+using Microsoft.Windows.Graphics.Holographic;
 using Microsoft.Windows.Perception.Spatial;
 #endif
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
@@ -22,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if NETFX_CORE
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
         private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
-
-        public static SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
 
         /// <summary>
         /// Helps marshal WinRT IInspectable objects that have been passed to managed code as an IntPtr.
@@ -47,22 +49,59 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
             }
         }
-#elif WINDOWS_UWP
-        public static SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
-#elif DOTNETWINRT_PRESENT
+#endif //NETFX_CORE
+
+        /// <summary>
+        /// Access the underlying native spatial coordinate system.
+        /// </summary>
+        /// <remarks>
+        /// Changing the state of the native objects received via this API may cause unpredictable
+        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// </remarks>
         public static SpatialCoordinateSystem SpatialCoordinateSystem
         {
             get
             {
+#if NETFX_CORE
+                return spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
+#elif WINDOWS_UWP
+                return spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
+#elif DOTNETWINRT_PRESENT
                 var spatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
-                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != System.IntPtr.Zero)
+                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != IntPtr.Zero)
                 {
                     spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
                 }
                 return spatialCoordinateSystem;
+#endif
             }
         }
+
+        /// <summary>
+        /// Access the underlying native current holographic frame.
+        /// </summary>
+        /// <remarks>
+        /// Changing the state of the native objects received via this API may cause unpredictable
+        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// </remarks>
+        public static HolographicFrame CurrentHolographicFrame
+        {
+            get
+            {
+#if DOTNETWINRT_PRESENT
+                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
+                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
+                return HolographicFrame.FromNativePtr(hfd.IHolographicFramePtr);
+#elif WINDOWS_UWP
+                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
+                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
+                return Marshal.GetObjectForIUnknown(hfd.IHolographicFramePtr) as HolographicFrame;
+#else
+                return null;
 #endif
+            }
+        }
+
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
