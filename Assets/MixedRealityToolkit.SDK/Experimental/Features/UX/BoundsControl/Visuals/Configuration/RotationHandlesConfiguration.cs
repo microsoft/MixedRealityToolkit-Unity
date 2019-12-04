@@ -1,7 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Configuration for <see cref="RotationHandles"/> used in <see cref="BoundsControl"/>

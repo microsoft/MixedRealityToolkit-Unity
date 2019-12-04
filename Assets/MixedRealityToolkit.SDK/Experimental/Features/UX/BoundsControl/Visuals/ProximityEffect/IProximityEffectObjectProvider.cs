@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// Interface for defining a proximity object provider used in <see cref="ProximityEffect" /> of <see cref="BoundsControl" />

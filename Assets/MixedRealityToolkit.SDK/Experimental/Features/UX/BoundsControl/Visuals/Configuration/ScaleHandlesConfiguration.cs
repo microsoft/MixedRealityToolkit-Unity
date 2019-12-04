@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Configuration for <see cref="ScaleHandles"/> used in <see cref="BoundsControl"/>

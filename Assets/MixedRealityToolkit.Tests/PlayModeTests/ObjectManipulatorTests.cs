@@ -21,7 +21,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
     public class ObjectManipulatorTests
     {

@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Scale handles for <see cref="BoundsControl"/> that are used for scaling the
