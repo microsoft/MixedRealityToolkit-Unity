@@ -61,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float CursorSpeed
         {
             get => cursorSpeed;
-
             set
             {
                 if (value != cursorSpeed)
@@ -77,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float WheelSpeed
         {
             get => wheelSpeed;
-
             set
             {
                 if (value != wheelSpeed)
@@ -92,22 +90,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         public MouseController Controller { get; private set; }
 
-        private void ReadProfile()
-        {
-            MixedRealityMouseInputProfile profile = ConfigurationProfile as MixedRealityMouseInputProfile;
-
-            CursorSpeed = profile.CursorSpeed;
-            WheelSpeed = profile.WheelSpeed;
-        }
-
+        /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             ReadProfile();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
+
             if (!UInput.mousePresent)
             {
                 Disable();
@@ -160,6 +155,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             if (UInput.mousePresent && Controller == null) { Enable(); }
 
             Controller?.Update();
@@ -168,11 +165,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             if (Controller != null)
             {
                 InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+
+                RecyclePointers(Controller.InputSource);
+
                 Controller = null;
             }
+        }
+
+        private void ReadProfile()
+        {
+            MixedRealityMouseInputProfile profile = ConfigurationProfile as MixedRealityMouseInputProfile;
+
+            CursorSpeed = profile.CursorSpeed;
+            WheelSpeed = profile.WheelSpeed;
         }
     }
 }

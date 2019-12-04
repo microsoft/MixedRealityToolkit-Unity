@@ -157,6 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 InputSystem?.RaiseSourceLost(controller.InputSource, controller);
 
+                RecyclePointers(controller.InputSource);
+
                 trackedHands.Remove(handedness);
                 UpdateActiveControllers();
             }
@@ -167,7 +169,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             foreach (var controller in trackedHands.Values)
             {
                 InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+
+                RecyclePointers(controller.InputSource);
             }
+
             trackedHands.Clear();
             UpdateActiveControllers();
         }

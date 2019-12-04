@@ -65,7 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
 
-        private Dictionary<PointerOption, IMixedRealityPointer> PointerCache = new Dictionary<PointerOption, IMixedRealityPointer>();
+        private struct PointerConfig
+        {
+            public PointerOption profile;
+
+            public Stack<IMixedRealityPointer> cache;
+        }
+
+        private PointerConfig[] pointerConfigurations = new PointerConfig[0];
+
+        // Active pointers associated with the config index they were spawned from
+        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig;
 
         /// <inheritdoc />
         public override void Initialize()
@@ -74,23 +84,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (InputSystemProfile != null && InputSystemProfile.PointerProfile != null)
             {
-                for (int i = 0; i < InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                var initPointerOptions = InputSystemProfile.PointerProfile.PointerOptions;
+
+                pointerConfigurations = new PointerConfig[initPointerOptions.Length];
+                activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>();
+
+                for (int i = 0; i < initPointerOptions.Length; i++)
                 {
-                    var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
-
-                    var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
-                    MixedRealityPlayspace.AddChild(pointerObject.transform);
-                    var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-
+                    pointerConfigurations[i].profile = initPointerOptions[i];
+                    pointerConfigurations[i].cache = new Stack<IMixedRealityPointer>();
                 }
             }
-        }
-
-        private IMixedRealityPointer CreatePointer()
-        {
-            var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
-            MixedRealityPlayspace.AddChild(pointerObject.transform);
-            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
         }
 
         /// <summary>
@@ -101,37 +105,93 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
-            var pointers = new List<IMixedRealityPointer>();
+            var returnPointers = new List<IMixedRealityPointer>();
 
-            /*
-            if ((InputSystem != null) &&
-                (InputSystemProfile != null) &&
-                InputSystemProfile.PointerProfile != null)
+            for (int i = 0; i < pointerConfigurations.Length; i++)
             {
-                for (int i = 0; i < InputSystemProfile.PointerProfile.PointerOptions.Length; i++)
+                var option = pointerConfigurations[i].profile;
+
+                if (option.ControllerType.HasFlag(controllerType) && option.Handedness.HasFlag(controllingHand))
                 {
-                    var pointerProfile = InputSystemProfile.PointerProfile.PointerOptions[i];
-
-                    if (((pointerProfile.ControllerType & controllerType) != 0) &&
-                        (pointerProfile.Handedness == Handedness.Any || pointerProfile.Handedness == Handedness.Both || pointerProfile.Handedness == controllingHand))
+                    var pointerCache = pointerConfigurations[i].cache;
+                    if (pointerCache.Count > 0)
                     {
-                        var pointerObject = Object.Instantiate(pointerProfile.PointerPrefab);
-                        MixedRealityPlayspace.AddChild(pointerObject.transform);
-                        var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                        var p = pointerCache.Pop();
+                        var pointerGameObject = p as MonoBehaviour;
+                        if (p != null && pointerGameObject != null)
+                        {
+                            pointerGameObject.gameObject.SetActive(true);
 
-                        if (pointer != null)
-                        {
-                            pointers.Add(pointer);
+                            // Track pointer for recycling
+                            activePointersToConfig.Add(p, (uint)i);
+
+                            returnPointers.Add(p);
+
+                            // We got pointer from cache, continue to next pointer option to review
+                            continue;
                         }
-                        else
+                    }
+                    
+                    // We couldn't obtain a pointer from our cache, resort to creating a new one
+                    var pointer = CreatePointer(in option);
+                    if (pointer != null)
+                    {
+                        // Track pointer for recycling
+                        activePointersToConfig.Add(pointer, (uint)i);
+
+                        returnPointers.Add(pointer);
+                    }
+                }
+            }
+
+            return returnPointers.Count == 0 ? null : returnPointers.ToArray();
+        }
+
+        protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
+        {
+            if (inputSource != null)
+            {
+                var pointers = inputSource.Pointers;
+                for (int i = 0; i < pointers.Length; i++)
+                {
+                    var p = pointers[i];
+                    var pGameObject = p as MonoBehaviour;
+                    if (p != null && pGameObject != null)
+                    {
+                        if (activePointersToConfig.ContainsKey(p))
                         {
-                            Debug.LogWarning($"Failed to attach {pointerProfile.PointerPrefab.name} to {controllerType}.");
+                            uint pointerOptionIndex = activePointersToConfig[p];
+
+                            p.Controller = null;
+                            pGameObject.gameObject.SetActive(false);
+
+                            // Add our pointer back to our cache
+                            pointerConfigurations[(int)pointerOptionIndex].cache.Push(p);
                         }
                     }
                 }
-            }*/
+            }
+        }
 
-            return pointers.Count == 0 ? null : pointers.ToArray();
+        /// <summary>
+        /// Instantiate the Pointer prefab with supplied PointerOption details. If there is no IMixedRealityPointer on the prefab, then destroy and log error
+        /// </summary>
+        /// <remarks>
+        /// PointerOption is passed by ref to reduce copy overhead of struct
+        /// </remarks>
+        private IMixedRealityPointer CreatePointer(in PointerOption option)
+        {
+            var pointerObject = Object.Instantiate(option.PointerPrefab);
+            MixedRealityPlayspace.AddChild(pointerObject.transform);
+            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+            if (pointer == null)
+            {
+                Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
+
+                GameObjectExtensions.DestroyGameObject(pointerObject);
+            }
+
+            return pointer;
         }
     }
 }
