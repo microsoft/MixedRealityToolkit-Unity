@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         private readonly static UnityEvent emptyOnClickEvent = new UnityEvent();
-        private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uE700");
+        private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uEBD2");
         private const string defaultIconTextureNameID = "_MainTex";
 
         [SerializeField]
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TMP_FontAsset iconCharFont = null;
         [SerializeField]
         [Tooltip("Optional unicode code for font icon. See Text Mesh Pro font asset for available unicode characters. This will be set by configuration actions.")]
-        private uint iconChar = defaultIconChar;
+        private uint iconChar = 0;
 
         [Header("Sprite Icon")]
         [SerializeField]
