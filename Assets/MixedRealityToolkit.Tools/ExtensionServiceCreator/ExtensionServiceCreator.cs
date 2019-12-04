@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -101,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             set => state.Namespace = value;
         }
 
-        public IEnumerable<string> CreationLog { get => creationLog; }
+        public string CreationLog { get => creationLog.ToString(); }
 
         public CreateResult Result { get; private set; } = CreateResult.None;
 
@@ -253,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region private fields
 
-        private List<string> creationLog = new List<string>();
+        private StringBuilder creationLog = new StringBuilder();
         private PersistentState state;
 
         #endregion
@@ -456,6 +457,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Stage = CreationStage.CreatingExtensionService;
             Result = CreateResult.Successful;
 
+            creationLog.Clear();
+
             // At this point, we're ready to store a temporary state in editor prefs
             StoreState();
 
@@ -530,7 +533,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Stage = CreationStage.Finished;
                 Result = CreateResult.Error;
-                creationLog.Add("Couldn't find type " + ServiceName + " in loaded assemblies.");
+                creationLog.AppendLine($"<color=red>Couldn't find type {ServiceName} in loaded assemblies.</color>");
                 return;
             }
 
@@ -538,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!UsesProfile)
             {
                 Stage = CreationStage.Finished;
-                creationLog.Add("Service does not use profile - skipping profile creation.");
+                creationLog.AppendLine("<color=red>Service does not use profile - skipping profile creation.</color>");
                 return;
             }
 
@@ -547,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 ScriptableObject profileInstance = ScriptableObject.CreateInstance(Namespace + "." + ProfileName);
                 if (profileInstance == null)
                 {
-                    creationLog.Add("Couldn't create instance of profile class " + Namespace + "." + ProfileName + " - aborting");
+                    creationLog.AppendLine($"<color=red>Couldn't create instance of profile class {Namespace}.{ProfileName} - aborting</color>");
                     Result = CreateResult.Error;
                     return;
                 }
@@ -567,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 ProfileInstance = AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(profilePath);
                 if (ProfileInstance == null)
                 {
-                    creationLog.Add("Couldn't load profile instance after creation!");
+                    creationLog.AppendLine("<color=red>Couldn't load profile instance after creation!</color>");
                     Stage = CreationStage.Finished;
                     Result = CreateResult.Error;
                     return;
@@ -575,8 +578,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
             catch (Exception e)
             {
-                creationLog.Add("Exception when creating profile instance");
-                creationLog.Add(e.ToString());
+                creationLog.AppendLine("<color=red>Exception when creating profile instance</color>");
+                creationLog.AppendLine(e.ToString());
                 Stage = CreationStage.Finished;
                 Result = CreateResult.Error;
                 return;
@@ -659,7 +662,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (string.IsNullOrEmpty(scriptContents))
             {
                 Result = CreateResult.Error;
-                creationLog.Add("Script contents were empty, aborting.");
+                creationLog.AppendLine("<color=red>Script contents were empty, aborting.</color>");
             }
 
             return scriptContents;
@@ -668,7 +671,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void WriteTextAssetToDisk(string contents, string assetName, string folderPath)
         {
             string localPath = folderPath + "/" + assetName + ScriptExtension;
-            creationLog.Add("Creating " + localPath);
+            creationLog.AppendLine("Creating " + localPath);
             try
             {
                 System.IO.File.WriteAllText(localPath, contents);
@@ -676,7 +679,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             catch (Exception e)
             {
                 Result = CreateResult.Error;
-                creationLog.Add(e.ToString());
+                creationLog.AppendLine($"<b><color=red>Exception throw writing to file {localPath}.</color></b>");
+                creationLog.AppendLine(e.ToString());
             }
         }
 
@@ -686,8 +690,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 case LogType.Error:
                 case LogType.Exception:
-                    creationLog.Add("<color=red>Encountered error while compiling</color>");
-                    creationLog.Add(condition);
+                    creationLog.AppendLine("<b><color=red>Encountered error while compiling</color></b>");
+                    creationLog.AppendLine(condition);
                     Result = CreateResult.Error;
                     break;
                 default:

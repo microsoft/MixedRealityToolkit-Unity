@@ -395,12 +395,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawCreationLog()
         {
-            foreach (string info in creator.CreationLog)
-            {
-                var style = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
-                style.richText = true;
-                EditorGUILayout.LabelField(info, style);
-            }
+            var style = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+            style.richText = true;
+            EditorGUILayout.LabelField(creator.CreationLog, style);
         }
 
         private void RegisterServiceWithActiveMixedRealityProfile()
