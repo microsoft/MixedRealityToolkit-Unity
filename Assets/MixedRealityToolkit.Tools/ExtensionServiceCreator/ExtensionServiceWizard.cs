@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     using (new EditorGUI.DisabledGroupScope(hasErrors))
                     {
-                        if (GUILayout.Button("Next"))
+                        if (GUILayout.Button("Create files"))
                         {
                             // Start the async method that will wait for the service to be created
                             CreateAssetsAsync();
@@ -302,8 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawCreatingAssets()
         {
-            //EditorGUILayout.LabelField("Creating assets...", EditorStyles.boldLabel);
-
             using (var progressBarRect = new EditorGUILayout.VerticalScope())
             {
                 progrssBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
@@ -312,51 +310,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 GUILayout.Space(16);
             }
 
-            //EditorGUILayout.LabelField(workingIndicator, EditorStyles.boldLabel);
-
-            switch (creator.Result)
+            if (creator.Result == ExtensionServiceCreator.CreateResult.Error)
             {
-                case ExtensionServiceCreator.CreateResult.Error:
-                    EditorGUILayout.HelpBox("There were errors while creating assets.", MessageType.Error);
-                    break;
-
-                default:
-                    break;
+                EditorGUILayout.HelpBox("There were errors while creating assets.", MessageType.Error);
             }
 
-            foreach (string info in creator.CreationLog)
-            {
-                EditorGUILayout.LabelField(info, EditorStyles.wordWrappedMiniLabel);
-            }
+            DrawCreationLog();
 
             Repaint();
         }
 
         private void DrawFinished()
         {
-            Debug.Log("FINISHED");
             EditorGUILayout.Space();
 
-            switch (creator.Result)
+            if (creator.Result == ExtensionServiceCreator.CreateResult.Error)
             {
-                case ExtensionServiceCreator.CreateResult.Successful:
-                    break;
+                EditorGUILayout.HelpBox("There were errors during the creation process:", MessageType.Error);
+                DrawCreationLog();
 
-                case ExtensionServiceCreator.CreateResult.Error:
-                    EditorGUILayout.HelpBox("There were errors during the creation process:", MessageType.Error);
-                    foreach (string info in creator.CreationLog)
-                    {
-                        EditorGUILayout.LabelField(info, EditorStyles.wordWrappedMiniLabel);
-                    }
+                EditorGUILayout.Space();
+                if (GUILayout.Button("Start over"))
+                {
+                    creator.ResetState();
+                }
 
-                    EditorGUILayout.Space();
-                    if (GUILayout.Button("Close"))
-                    {
-                        creator.ResetState();
-                        Close();
-                    }
-                    // All done, bail early
-                    return;
+                // All done, bail early
+                return;
             }
 
             EditorGUILayout.HelpBox("Your service scripts have been created.", MessageType.Info);
@@ -364,6 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!registered)
             {
                 EditorGUILayout.LabelField("Would you like to register this service in your current MixedRealityToolkit profile?", EditorStyles.miniLabel);
+                
                 // Check to see whether it's possible to register the profile
                 bool canRegisterProfile = true;
                 if (MixedRealityToolkit.Instance == null || !MixedRealityToolkit.Instance.HasActiveProfile)
@@ -380,16 +361,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.Space();
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    GUI.color = canRegisterProfile ? enabledColor : disabledColor;
-                    if (GUILayout.Button("Register") && canRegisterProfile)
+                    using (new EditorGUI.DisabledGroupScope(!canRegisterProfile))
                     {
-                        RegisterServiceWithActiveMixedRealityProfile();
+                        if (GUILayout.Button("Register"))
+                        {
+                            RegisterServiceWithActiveMixedRealityProfile();
+                        }
                     }
-                    GUI.color = enabledColor;
+
                     if (GUILayout.Button("Not Now"))
                     {
                         creator.ResetState();
-                        Close();
                     }
                 }
             }
@@ -407,11 +389,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUILayout.Space();
-                if (GUILayout.Button("Close"))
+                if (GUILayout.Button("Create new service"))
                 {
                     creator.ResetState();
-                    Close();
                 }
+            }
+        }
+
+        private void DrawCreationLog()
+        {
+            foreach (string info in creator.CreationLog)
+            {
+                var style = new GUIStyle(EditorStyles.wordWrappedMiniLabel);
+                style.richText = true;
+                EditorGUILayout.LabelField(info, style);
             }
         }
 

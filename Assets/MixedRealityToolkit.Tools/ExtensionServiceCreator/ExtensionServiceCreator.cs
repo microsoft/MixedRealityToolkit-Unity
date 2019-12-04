@@ -268,8 +268,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public void ResetState()
         {
-            Debug.Log("Resetting state");
             SessionState.EraseString(PersistentStateKey);
+
+            CreateDefaultState();
+
+            StoreState();
         }
 
         public async void LoadStoredState()
@@ -489,7 +492,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             await Task.Delay(100);
             AssetDatabase.Refresh();
             AssetDatabase.SaveAssets();
-            await Task.Delay(100);
 
             // Subscribe to Unity's log output so we can detect compilation errors
             Application.logMessageReceived += LogMessageReceived;
@@ -504,6 +506,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Application.logMessageReceived -= LogMessageReceived;
             // If we've gotten this far, it means that there was a compilation error
             // Otherwise this object would have been wiped from memory
+
+            Result = CreateResult.Error;
+            Stage = CreationStage.Finished;
         }
 
         public async Task ResumeAssetCreationProcessAfterReload()
@@ -681,11 +686,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 case LogType.Error:
                 case LogType.Exception:
-                    creationLog.Add("Encountered error while compiling");
+                    creationLog.Add("<color = red>Encountered error while compiling</color>");
                     creationLog.Add(condition);
                     Result = CreateResult.Error;
                     break;
-
                 default:
                     break;
             }
