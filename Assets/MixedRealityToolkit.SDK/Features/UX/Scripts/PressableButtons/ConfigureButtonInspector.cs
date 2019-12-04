@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (iconSet != null)
             {
                 Sprite newIconSprite;
-                if (iconSet.DrawSpriteIconSelector(currentIconSprite, out newIconSprite, 1))
+                if (iconSet.EditorDrawSpriteIconSelector(currentIconSprite, out newIconSprite, 1))
                 {
                     iconSpriteProp.objectReferenceValue = newIconSprite;
                     cb.SetSpriteIcon(newIconSprite);
@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (iconSet != null)
             {
                 Texture newIconTexture;
-                if (iconSet.DrawQuadIconSelector(currentIconTexture, out newIconTexture, 1))
+                if (iconSet.EditorDrawQuadIconSelector(currentIconTexture, out newIconTexture, 1))
                 {
                     iconQuadTextureProp.objectReferenceValue = newIconTexture;
                     cb.SetQuadIcon(newIconTexture);
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             if (iconSet != null)
             {
                 uint newIconChar;
-                if (iconSet.DrawCharIconSelector(currentIconChar, out newIconChar, 1))
+                if (iconSet.EditorDrawCharIconSelector(currentIconChar, out newIconChar, 1))
                 {
                     iconCharProp.longValue = newIconChar;
                     iconFontProp.objectReferenceValue = iconSet.CharIconFont;

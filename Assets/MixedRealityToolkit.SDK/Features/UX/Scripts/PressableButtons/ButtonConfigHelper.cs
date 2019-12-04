@@ -10,16 +10,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [ExecuteAlways]
     public partial class ButtonConfigHelper : MonoBehaviour
     {
-        private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uE700");
-        private const string defaultIconTextureNameID = "_MainTex";
-
         /// <summary>
         /// Modifies the main label text.
         /// </summary>
         public string MainLabelText
         {
-            get { return mainLabelText.text; }
-            set { mainLabelText.text = value; }
+            get { return mainLabelText?.text; }
+            set
+            {
+                if (mainLabelText == null)
+                {
+                    Debug.LogWarning("No main label set in " + name + " - not setting main label text.");
+                    return;
+                }
+
+                mainLabelText.text = value;
+            }
         }
 
         /// <summary>
@@ -27,14 +33,61 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public string SeeItSayItLabelText
         {
-            get { return seeItSatItLabelText.text; }
-            set { seeItSatItLabelText.text = value; }
+            get { return seeItSatItLabelText?.text; }
+            set
+            {
+                if (seeItSatItLabelText == null)
+                {
+                    Debug.LogWarning("No see it / say it label set in " + name + " - not setting see it / say it label text.");
+                    return;
+                }
+
+                seeItSatItLabelText.text = value;
+            }
+        }
+
+        /// <summary>
+        /// Turns the see it / say it label object on / off.
+        /// </summary>
+        public bool SeeItSayItLabelEnabled
+        {
+            get
+            {
+                if (seeItSayItLabel == null)
+                {
+                    return false;
+                }
+
+                return seeItSayItLabel.activeSelf;
+            }
+            set
+            {
+                if (seeItSayItLabel == null)
+                {
+                    Debug.LogWarning("No see it / say it label set in " + name + " - not setting see it / say it label enabled.");
+                    return;
+                }
+
+                seeItSayItLabel.SetActive(value);
+            }
         }
 
         /// <summary>
         /// Returns the Interactable's OnClick event.
         /// </summary>
-        public UnityEvent OnClick => interactable?.OnClick;
+        public UnityEvent OnClick
+        {
+            get
+            {
+                if (interactable == null)
+                {
+                    Debug.LogWarning("No interactable set in " + name + " - returning an empty OnClick event.");
+                    return emptyOnClickEvent;
+                }
+
+                return interactable.OnClick;
+            }
+        }
 
         /// <summary>
         /// Modifies the button's icon rendering style.
@@ -51,43 +104,155 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+
+        public ButtonIconSet IconSet
+        {
+            get => iconSet;
+            set => iconSet = value;
+        }
+
+        private readonly static UnityEvent emptyOnClickEvent = new UnityEvent();
+        private readonly static uint defaultIconChar = ButtonIconSet.ConvertCharStringToUInt32("\uE700");
+        private const string defaultIconTextureNameID = "_MainTex";
+
         [SerializeField]
+        [Tooltip("Optional main label used by the button.")]
         private TextMeshPro mainLabelText = null;
         [SerializeField]
+        [Tooltip("Optional interactable component used by the button. Used for its OnClick event.")]
         private Interactable interactable = null;
-        #pragma warning disable // iconSet is only used by the inspector
         [SerializeField]
+        [Tooltip("Optional see it / say it object.")]
         private GameObject seeItSayItLabel = null;
-        #pragma warning restore
         [SerializeField]
+        [Tooltip("Optional see it / say it label used by the button. Should be subsumed under the seeItSayItLabel object.")]
         private TextMeshPro seeItSatItLabelText = null;
         [SerializeField, Tooltip("How the button icon should be rendered.")]
         private ButtonIconStyle iconStyle = ButtonIconStyle.Quad;
-        #pragma warning disable // iconSet is only used by the inspector
-        [SerializeField]
-        private ButtonIconSet iconSet = null;
-        #pragma warning restore
 
+        [Header("Font Icon")]
         [SerializeField]
+        [Tooltip("Optional label used for font icon.")]
         private TextMeshPro iconCharLabel = null;
         [SerializeField]
+        [Tooltip("Optional font used for font icon. This will be set by configuration actions using the icon set.")]
         private TMP_FontAsset iconCharFont = null;
         [SerializeField]
+        [Tooltip("Optional unicode code for font icon. See Text Mesh Pro font asset for available unicode characters. This will be set by configuration actions.")]
         private uint iconChar = defaultIconChar;
 
+        [Header("Sprite Icon")]
         [SerializeField]
+        [Tooltip("Optional sprite renderer used for sprite icon.")]
         private SpriteRenderer iconSpriteRenderer = null;
         [SerializeField]
+        [Tooltip("Optional sprite used for sprite icon. This will be set by configuration actions.")]
         private Sprite iconSprite = null;
 
+        [Header("Quad Icon")]
         [SerializeField]
+        [Tooltip("Optional quad renderer used for texture icon.")]
         private MeshRenderer iconQuadRenderer = null;
         [SerializeField]
+        [Tooltip("The texture name ID. Set to " + defaultIconTextureNameID + " by default.")]
         private string iconQuadTextureNameID = defaultIconTextureNameID;
         [SerializeField]
+        [Tooltip("Optional texture used for texture icon. This will be set by configuration actions.")]
         private Texture iconQuadTexture = null;
 
+        [Header("Icon Set")]
+        [SerializeField]
+        [Tooltip("Optional icon set used to configure icon objects.")]
+        private ButtonIconSet iconSet = null;
+
         private MaterialPropertyBlock iconTexturePropertyBlock;
+
+        /// <summary>
+        /// Searches the icon set for a character matching newIconCharName.
+        /// If no icon set is avaiable, or if no texture with that name is found, no action is take.
+        /// </summary>
+        /// <param name="newIconTextureName"></param>
+        public void SetCharIconByName(string newIconCharName)
+        {
+            if (string.IsNullOrEmpty(newIconCharName))
+            {
+                Debug.LogError("Icon character name cannot be null.");
+                return;
+            }
+
+            if (iconSet == null)
+            {
+                Debug.LogWarning("No icon set in " + name + " - taking no action..");
+                return;
+            }
+
+            uint charIcon = 0;
+            if (!iconSet.TryGetCharIcon(newIconCharName, out charIcon))
+            {
+                Debug.LogWarning("Couldn't find icon character with name " + newIconCharName + " in " + name + " - taking no action..");
+                return;
+            }
+
+            SetCharIcon(charIcon);
+        }
+
+        /// <summary>
+        /// Searches the icon set for a texture matching newIconTextureName.
+        /// If no icon set is avaiable, or if no texture with that name is found, no action is take.
+        /// </summary>
+        /// <param name="newIconTextureName"></param>
+        public void SetQuadIconByName(string newIconTextureName)
+        {
+            if (string.IsNullOrEmpty(newIconTextureName))
+            {
+                Debug.LogError("Icon texture name cannot be null.");
+                return;
+            }
+
+            if (iconSet == null)
+            {
+                Debug.LogWarning("No icon set in " + name + " - taking no action..");
+                return;
+            }
+
+            Texture2D quadIcon = null;
+            if (!iconSet.TryGetQuadIcon(newIconTextureName, out quadIcon))
+            {
+                Debug.LogWarning("Couldn't find icon texture with name " + newIconTextureName + " in " + name + " - taking no action..");
+                return;
+            }
+
+            SetQuadIcon(quadIcon);
+        }
+
+        /// <summary>
+        /// Searches the icon set for a texture matching newIconSpriteName.
+        /// If no icon set is avaiable, or if no texture with that name is found, no action is take.
+        /// </summary>
+        /// <param name="newIconTextureName"></param>
+        public void SetSpriteIconByName(string newIconSpriteName)
+        {
+            if (string.IsNullOrEmpty(newIconSpriteName))
+            {
+                Debug.LogError("Icon sprite name cannot be null.");
+                return;
+            }
+
+            if (iconSet == null)
+            {
+                Debug.LogWarning("No icon set in " + name + " - taking no action..");
+                return;
+            }
+
+            Sprite spriteIcon = null;
+            if (!iconSet.TryGetSpriteIcon(newIconSpriteName, out spriteIcon))
+            {
+                Debug.LogWarning("Couldn't find icon sprite with name " + newIconSpriteName + " in " + name + " - taking no action..");
+                return;
+            }
+
+            SetSpriteIcon(spriteIcon);
+        }
 
         /// <summary>
         /// Sets the character for the button. This automatically sets the bitton icon style to Char.
