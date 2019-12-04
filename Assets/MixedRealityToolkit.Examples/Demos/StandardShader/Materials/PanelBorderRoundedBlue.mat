@@ -147,7 +147,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 3
-    - _RoundCornerMargin: 0.25
+    - _RoundCornerMargin: 0.025
     - _RoundCornerPower: 0.05
     - _RoundCornerRadius: 0.5
     - _RoundCorners: 1

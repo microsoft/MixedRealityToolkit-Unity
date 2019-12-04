@@ -16,7 +16,7 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Fade
+    RenderType: Transparent
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -147,7 +147,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 3
-    - _RoundCornerMargin: 0.25
+    - _RoundCornerMargin: 0.025
     - _RoundCornerPower: 0.4
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 1
