@@ -23843,6 +23843,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicDepthReprojectionMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicDepthReprojectionMethod.html",
+          "hash": "t6u8nXaN9fIi1WQBR/wtkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicFrameNativeData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicFrameNativeData.html",
+          "hash": "SOMK76/BjLSQBFAts8HPSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.BaseWindowsMixedRealitySource.yml",
       "output": {
         ".html": {
@@ -23967,7 +23991,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html",
-          "hash": "mfe8UgBBY6PoGHABLSBbAA=="
+          "hash": "K6nDQkq9tzvI1+Wkqn5aOA=="
         }
       },
       "is_incremental": false,
@@ -23979,7 +24003,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettingsProfile.html",
-          "hash": "JBeVKUJUiG0DIAQ90dyV5g=="
+          "hash": "X5yqUW5fhKjdIOOiz/GHPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityReprojectionUpdater.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityReprojectionUpdater.html",
+          "hash": "AieVn+L/QZ6rYBeomMRUxw=="
         }
       },
       "is_incremental": false,
@@ -23991,7 +24027,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.html",
-          "hash": "RwJUANzebfVnNSZvK/UIxw=="
+          "hash": "C4ajnp7VzPfRzz4njKZr7Q=="
         }
       },
       "is_incremental": false,
@@ -24015,7 +24051,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "L9Op2U/k2dDul+hxN61SMQ=="
+          "hash": "kiDv82xH4MzyiQlAf2aBaQ=="
         }
       },
       "is_incremental": false,
@@ -24083,7 +24119,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1422,
+          "total_file_count": 1425,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
