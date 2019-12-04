@@ -15,14 +15,14 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Class used to generate service scripts and profile instances
+    /// Class used to generate service scripts and profile instances. Primarily designed for in-editor use
     /// </summary>
     public class ExtensionServiceCreator
     {
         #region enums and types
 
         /// <summary>
-        /// Result of create operation
+        /// Result of extension service file(s) create operation
         /// </summary>
         public enum CreateResult
         {
@@ -66,51 +66,93 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region public properties
 
+        /// <summary>
+        /// The name of the new extension service to build
+        /// </summary>
         public string ServiceName
         {
             get => state.ServiceName;
             set => state.ServiceName = value;
         }
 
+        /// <summary>
+        /// Should a ScriptableObject profile class be created for new extension service
+        /// </summary>
         public bool UsesProfile
         {
             get => state.UsesProfile;
             set => state.UsesProfile = value;
         }
 
+        /// <summary>
+        /// Should a custom editor inspector class be created for new extension service
+        /// </summary>
         public bool UsesInspector
         {
             get => state.UsesInspector;
             set => state.UsesInspector = value;
         }
 
+        /// <summary>
+        /// Supported platform flags for new extension service. Added to attribute on service class
+        /// </summary>
         public SupportedPlatforms Platforms
         {
             get => state.Platforms;
             set => state.Platforms = value;
         }
 
+        /// <summary>
+        /// Current stage in UI workflow for creation
+        /// </summary>
         public CreationStage Stage
         {
             get => state.Stage;
             set => state.Stage = value;
         }
 
+        /// <summary>
+        /// Namespace to utilize for all classes
+        /// </summary>
         public string Namespace
         {
             get => state.Namespace;
             set => state.Namespace = value;
         }
 
+        /// <summary>
+        /// Log of errors and updates thus far in the create operation of the new extension service classes
+        /// </summary>
         public string CreationLog { get => creationLog.ToString(); }
 
+        /// <summary>
+        /// Current result of extension service file(s) create operation
+        /// </summary>
         public CreateResult Result { get; private set; } = CreateResult.None;
 
+        /// <summary>
+        /// Name of interface to create for new extension service. Value is ServiceName with leading "I"
+        /// </summary>
         public string InterfaceName { get => "I" + ServiceName; }
+
+        /// <summary>
+        /// Name of ScriptableObject profile class to create. Value is ServiceName concatenated with "Profile"
+        /// </summary>
         public string ProfileName { get => ServiceName + "Profile"; }
+
+        /// <summary>
+        /// Name of Unity inspector class to create. Value is ServiceName concatenated with "Inspector"
+        /// </summary>
         public string InspectorName { get => ServiceName + "Inspector"; }
+
+        /// <summary>
+        /// Name of default ScriptableObject instance asset to create. Value is "Default" concatenated with ProfileName
+        /// </summary>
         public string ProfileAssetName { get => "Default" + ProfileName; }
 
+        /// <summary>
+        /// Unity object pointing to folder asset to place Service class file
+        /// </summary>
         public UnityEngine.Object ServiceFolderObject
         {
             get => state.ServiceFolder;
@@ -123,6 +165,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Unity object pointing to folder asset to place Inspector class file, if applicable
+        /// </summary>
         public UnityEngine.Object InspectorFolderObject
         {
             get => state.InspectorFolder;
@@ -135,6 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Unity object pointing to folder asset to place interface file, if applicable
+        /// </summary>
         public UnityEngine.Object InterfaceFolderObject
         {
             get => state.InterfaceFolder;
@@ -147,6 +195,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Unity object pointing to folder asset to place ScriptableObject profile class file, if applicable
+        /// </summary>
         public UnityEngine.Object ProfileFolderObject
         {
             get => state.ProfileFolder;
@@ -159,6 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Unity object pointing to folder asset to place ScriptableObject profile asset file, if applicable
+        /// </summary>
         public UnityEngine.Object ProfileAssetFolderObject
         {
             get => state.ProfileAssetFolder;
@@ -171,8 +225,29 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// System.Type of Extension Service created
+        /// </summary>
         public Type ServiceType { get; private set; }
+
+        /// <summary>
+        /// Object instance of ScriptableObject profile class for extension service created
+        /// </summary>
         public BaseMixedRealityProfile ProfileInstance { get; private set; }
+
+        /// <summary>
+        /// Sample code string demonstrating example usage for new Extension service created
+        /// </summary>
+        public string SampleCode
+        {
+            get
+            {
+                string sampleCode = SampleCodeTemplate;
+                sampleCode = sampleCode.Replace(InterfaceNameSearchString, InterfaceName);
+                sampleCode = sampleCode.Replace(ServiceNameSearchString, ServiceFieldName);
+                return sampleCode;
+            }
+        }
 
         #endregion
 
@@ -234,26 +309,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             get { return ProfileAssetFolderObject != null ? AssetDatabase.GetAssetPath(ProfileAssetFolderObject) : string.Empty; }
         }
 
-        public string SampleCode
-        {
-            get
-            {
-                string sampleCode = SampleCodeTemplate;
-                sampleCode = sampleCode.Replace(InterfaceNameSearchString, InterfaceName);
-                sampleCode = sampleCode.Replace(ServiceNameSearchString, ServiceFieldName);
-                return sampleCode;
-            }
-        }
-
         private string ServiceTemplate;
         private string InspectorTemplate;
         private string InterfaceTemplate;
         private string ProfileTemplate;
-
-        #endregion
-
-        #region private fields
-
         private StringBuilder creationLog = new StringBuilder();
         private PersistentState state;
 
@@ -261,12 +320,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region public methods
 
+        /// <summary>
+        /// Save current creator state to session registry in Unity
+        /// </summary>
         public void StoreState()
         {
             string stateString = JsonUtility.ToJson(state);
             SessionState.SetString(PersistentStateKey, stateString);
         }
 
+        /// <summary>
+        /// Reset current creator state to default and save
+        /// </summary>
         public void ResetState()
         {
             SessionState.EraseString(PersistentStateKey);
@@ -276,6 +341,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             StoreState();
         }
 
+        /// <summary>
+        /// Load creator state from unity SessionState
+        /// </summary>
         public async void LoadStoredState()
         {
             // (We can't call SessionState from inside a constructor)
@@ -302,10 +370,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Validate template assets
+        /// </summary>
+        /// <remarks>
+        /// Adds to items to errors log field if not valid
+        /// </remarks>
+        /// <returns>true if errors encountered, false otherwise</returns>
         public bool ValidateAssets(List<string> errors)
         {
-            errors.Clear();
-
             if (ServiceTemplate == null)
             {
                 if (!ReadTemplate(ServiceTemplatePath, ref ServiceTemplate))
@@ -347,24 +420,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return errors.Count == 0;
         }
 
-        private bool ReadTemplate(string templatePath, ref string template)
-        {
-            string dataPath = Application.dataPath.Replace("/Assets", string.Empty);
-            string path = System.IO.Path.Combine(dataPath, templatePath);
-
-            try
-            {
-                template = System.IO.File.ReadAllText(path);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(e.ToString());
-                return false;
-            }
-
-            return !string.IsNullOrEmpty(template);
-        }
-
+        /// <summary>
+        /// Return true if configured Extension Service class name is valid. False otherwise
+        /// </summary>
+        /// <remarks>
+        /// Adds to items to errors log field if not valid
+        /// </remarks>
         public bool ValidateName(List<string> errors)
         {
             if (string.IsNullOrEmpty(ServiceName))
@@ -386,27 +447,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return errors.Count == 0;
         }
 
+        /// <summary>
+        /// Returns true if the asset supplied, via Folder object representing path and file name string (assumming .cs files only), does not exist. False otherwise
+        /// </summary>
         public bool CanBuildAsset(UnityEngine.Object folder, string fileName)
         {
             string folderPath = AssetDatabase.GetAssetPath(folder);
             return IsValidFolder(folderPath) && !AssetExists(folderPath, fileName, ScriptExtension);
         }
 
+        /// <summary>
+        /// Returns true if the folder path supplied by Folder object is a valid location in the Unity project, false otherwise
+        /// </summary>
         public bool IsValidFolder(UnityEngine.Object folder)
         {
             string folderPath = AssetDatabase.GetAssetPath(folder);
             return IsValidFolder(folderPath);
         }
 
+        /// <summary>
+        /// Returns true if the folder path string supplied is a valid location in the Unity project, false otherwise
+        /// </summary>
         public bool IsValidFolder(string folderPath)
         {
             return AssetDatabase.IsValidFolder(folderPath);
         }
 
+        /// <summary>
+        /// Validate that SupportedPlatforms is not zero.
+        /// </summary>
+        /// <remarks>
+        /// Adds to items to errors log field if not valid
+        /// </remarks>
         public bool ValidatePlatforms(List<string> errors)
         {
-            errors.Clear();
-
             if (Platforms == 0)
             {
                 errors.Add("Service must support at least one platform.");
@@ -415,6 +489,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return errors.Count == 0;
         }
 
+        /// <summary>
+        /// Validate namespace property with each class/interface file to be created for new extension service
+        /// </summary>
+        /// <remarks>
+        /// Adds to items to errors log field if not valid
+        /// </remarks>
+        /// <returns>true if no errors, false otherwise</returns>
         public bool ValidateNamespace(List<string> errors)
         {
             if (string.IsNullOrEmpty(Namespace))
@@ -422,34 +503,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Namespace = DefaultExtensionNamespace;
             }
 
-            // Check if a class with this name already exists
-            Type serviceType = Type.GetType(Namespace + "." + ServiceName);
-            if (serviceType != null)
+            string[] assets = { ServiceName, InspectorName, InterfaceName, ProfileName };
+            for (int i = 0; i < assets.Length; i++)
             {
-                errors.Add("The type '" + ServiceName + "' already exists in this namespace.");
-            }
-
-            Type inspectorType = Type.GetType(Namespace + ".Editor." + InspectorName);
-            if (serviceType != null)
-            {
-                errors.Add("The type '" + InspectorName + "' already exists in this namespace.");
-            }
-
-            Type interfaceType = Type.GetType(Namespace + "." + InterfaceName);
-            if (interfaceType != null)
-            {
-                errors.Add("The type '" + InterfaceName + "' already exists in this namespace.");
-            }
-
-            Type profileType = Type.GetType(Namespace + "." + ProfileName);
-            if (profileType != null)
-            {
-                errors.Add("The type '" + ProfileName + "' already exists in this namespace.");
+                Type serviceType = Type.GetType($"{Namespace}.{assets[i]}");
+                if (serviceType != null)
+                {
+                    errors.Add($"The type '{assets[i]}' already exists in this namespace.");
+                }
             }
 
             return errors.Count == 0;
         }
 
+        /// <summary>
+        /// Start the creation process for all revelant extension service files based on current creator property settings
+        /// </summary>
         public async Task BeginAssetCreationProcess()
         {
             await Task.Yield();
@@ -514,7 +583,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Stage = CreationStage.Finished;
         }
 
-        public async Task ResumeAssetCreationProcessAfterReload()
+        #endregion
+
+        #region private methods
+
+        private async Task ResumeAssetCreationProcessAfterReload()
         {
             await Task.Yield();
 
@@ -588,9 +661,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Stage = CreationStage.Finished;
         }
 
-        #endregion
+        private bool ReadTemplate(string templatePath, ref string template)
+        {
+            string dataPath = Application.dataPath.Replace("/Assets", string.Empty);
+            string path = System.IO.Path.Combine(dataPath, templatePath);
 
-        #region private methods
+            try
+            {
+                template = System.IO.File.ReadAllText(path);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e.ToString());
+                return false;
+            }
+
+            return !string.IsNullOrEmpty(template);
+        }
 
         private void CreateDefaultState()
         {

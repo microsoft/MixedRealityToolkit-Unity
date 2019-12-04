@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// <summary>
     /// Editor Window class that renders controls and logic for extension service creation walkthrough
     /// </summary>
-    public class ExtensionServiceWizard : EditorWindow
+    internal class ExtensionServiceWizard : EditorWindow
     {
         private static ExtensionServiceWizard window;
         private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/ExtensionServiceCreationWizard.html";
