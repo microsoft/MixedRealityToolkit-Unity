@@ -221,6 +221,13 @@ asset database and reconcile existing custom profiles.</li>
 <li>Bottom</li>
 </ul>
 <p><img src="https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif" alt="GridObjectCollection alignment"></p>
+<p><strong>Fixing LayoutDirection in GridObjectCollection</strong>
+In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCollection</code></a> would always lay out its content first vertically, then horizontally, regardless of whether its layout was <code>RowsThenColumns</code> or <code>ColumnsThenRows</code>. In MRTK 2.2, if the layout is <code>ColumnsThenRows</code> then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is <code>RowsThenColumns</code> it will lay out first vertically, then horizontally as before.</p>
+<p>Below: <code>RowsThenColumns</code> layout, with Rows = 3.</p>
+<p><img src="Images/ObjectCollection/MRTK_RowThenColumn.png" alt="Row then column layout"></p>
+<p>Below: <code>ColumnsThenRows</code> layout, with Columns = 3.</p>
+<p><img src="Images/ObjectCollection/MRTK_ColumnThenRow.png" alt="Column then row layout"></p>
+<p>All assets being upgraded from 2.1 to 2.2 that have <code>ColumnsThenRows</code> layout will be changed to have <code>RowsThenColumns</code> layout to ensure that layout behavior stays the same. This is because all GridObjectCollection assets prior to 2.2 were actually performing vertical, then horizontal layout.</p>
 <p><strong>InteractableToggleCollection improvements</strong></p>
 <p>InteractableToggleCollection now properly updates the toggle states within groups. A new InteractableToggleCollection inspector has also been added.</p>
 <p><img src="https://user-images.githubusercontent.com/53493796/68235326-eb1aa200-ffb7-11e9-9d34-f5c4d37ef4fb.gif" alt="Corrected toggle collection behavior"></p>
