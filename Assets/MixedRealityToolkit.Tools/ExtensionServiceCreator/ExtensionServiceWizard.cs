@@ -71,13 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
+            errors.Clear();
+
             if (!creator.ValidateAssets(errors))
             {
                 EditorGUILayout.LabelField("Validating assets...");
-                foreach (string error in errors)
-                {
-                    EditorGUILayout.HelpBox(error, MessageType.Error);
-                }
+                RenderErrorLog();
                 return;
             }
 
@@ -132,10 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool hasErrors = errors.Count > 0;
             if (hasErrors)
             {
-                foreach (string error in errors)
-                {
-                    EditorGUILayout.HelpBox(error, MessageType.Error);
-                }
+                RenderErrorLog();
             }
 
             using (new EditorGUI.DisabledGroupScope(hasErrors))
@@ -145,6 +141,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     creator.Stage = ExtensionServiceCreator.CreationStage.ChooseOutputFolders;
                     creator.StoreState();
                 }
+            }
+        }
+
+        private void RenderErrorLog()
+        {
+            for (int i = 0; i < errors.Count; i++)
+            {
+                EditorGUILayout.HelpBox(errors[i], MessageType.Error);
             }
         }
 
@@ -269,10 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 bool hasErrors = errors.Count > 0;
                 if (hasErrors)
                 {
-                    foreach (string error in errors)
-                    {
-                        EditorGUILayout.HelpBox(error, MessageType.Error);
-                    }
+                    RenderErrorLog();
                 }
 
                 EditorGUILayout.Space();

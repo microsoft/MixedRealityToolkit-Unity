@@ -383,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ReadTemplate(ServiceTemplatePath, ref ServiceTemplate))
                 {
-                    errors.Add("Script template not found in " + ServiceTemplatePath);
+                    errors.Add($"Script template not found in {ServiceTemplatePath}");
                 }
             }
 
@@ -391,7 +391,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ReadTemplate(InspectorTemplatePath, ref InspectorTemplate))
                 {
-                    errors.Add("Inspector template not found in " + InspectorTemplatePath);
+                    errors.Add($"Inspector template not found in {InspectorTemplatePath}");
                 }
             }
 
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ReadTemplate(InterfaceTemplatePath, ref InterfaceTemplate))
                 {
-                    errors.Add("Interface template not found in " + InterfaceTemplatePath);
+                    errors.Add($"Interface template not found in {InterfaceTemplatePath}");
                 }
             }
 
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ReadTemplate(ProfileTemplatePath, ref ProfileTemplate))
                 {
-                    errors.Add("Profile template not found in " + ProfileTemplatePath);
+                    errors.Add($"Profile template not found in {ProfileTemplatePath}");
                 }
             }
 
