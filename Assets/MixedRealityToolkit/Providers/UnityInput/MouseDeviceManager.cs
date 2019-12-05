@@ -132,10 +132,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     "Unexpected mouse handedness declared in MixedRealityControllerAttribute");
             }
 
-            if (InputSystem != null)
+            if (Service != null)
             {
                 var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
-                mouseInputSource = InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
+                mouseInputSource = Service.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
             Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
 
             Controller.SetupConfiguration(typeof(MouseController));
-            InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
+            Service?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
         /// <inheritdoc />
@@ -169,8 +169,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             if (Controller != null)
             {
-                InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
-
+                Service?.RaiseSourceLost(Controller.InputSource, Controller);
+                
                 RecyclePointers(Controller.InputSource);
 
                 Controller = null;

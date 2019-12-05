@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing a base implementation of the <see cref="IMixedRealitySpatialAwarenessObserver"/> interface.
     /// </summary>
-    public abstract class BaseSpatialObserver : BaseDataProvider, IMixedRealitySpatialAwarenessObserver
+    public abstract class BaseSpatialObserver : BaseDataProvider<IMixedRealitySpatialAwarenessSystem>, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
         /// Constructor.
