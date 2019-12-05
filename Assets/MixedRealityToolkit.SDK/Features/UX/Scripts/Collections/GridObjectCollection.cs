@@ -480,32 +480,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         /// <summary>
         /// Version 1 of GridObjectCollection introduced in MRTK 2.2 when 
-        /// incorrect semantics of "rows" field was fixed, see
-        /// https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6550
+        /// incorrect semantics of "ColumnsThenRows" layout was fixed.
+        /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891
+        /// for details.    
         /// </summary>
         private void UpgradeAssetToVersion1()
         {
-            // Check upgrade from MRTK 2.X to 2.2
-            //
-            // Look for case when asset's layout is ColumnThenRow but # columns is specified in "row" field
             if (Layout == LayoutOrder.ColumnThenRow)
             {
-                // We count number of children this way to avoid re-laying out children without button press
-                int nodeListCount = 0;
-                for (int i = 0; i < transform.childCount; i++)
-                {
-                    Transform child = transform.GetChild(i);
-                    if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
-                    {
-                        nodeListCount++;
-                    }
-                }
-
-                // Try to guess what the desired columns would be
-                int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
-                string friendlyName = GetUserFriendlyName();
-                Debug.Log($"Setting columns to {nodeListCount} / {rows} = {columnsGuess}. Check {friendlyName} to make sure GridObjectCollection has the correct values.");
-                columns = columnsGuess;
+                Layout = LayoutOrder.RowThenColumn;
+                var friendlyName = GetUserFriendlyName();
+                Debug.Log($"Changing LayoutOrder for {friendlyName} from ColumnThenRow to RowThenColumn. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891 for details.");
             }
         }
 
