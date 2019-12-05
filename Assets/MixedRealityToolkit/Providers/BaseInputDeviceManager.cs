@@ -68,14 +68,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private struct PointerConfig
         {
             public PointerOption profile;
-
             public Stack<IMixedRealityPointer> cache;
         }
 
-        private PointerConfig[] pointerConfigurations = new PointerConfig[0];
+        private PointerConfig[] pointerConfigurations = System.Array.Empty<PointerConfig>();
 
+        // TODO: Troy - Some reason IMixedRealityPointer keys do not return true on containskey
+        // TODO: Troy - problem with pointer/pointerids is destroyed pointers won't be cleared*
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig;
+        //private Dictionary<IMixedRealityPointer, uint> activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>();
+        private Dictionary<uint, uint> activePointersToConfig = new Dictionary<uint, uint>();
 
         /// <inheritdoc />
         public override void Initialize()
@@ -87,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var initPointerOptions = InputSystemProfile.PointerProfile.PointerOptions;
 
                 pointerConfigurations = new PointerConfig[initPointerOptions.Length];
-                activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>();
+                activePointersToConfig.Clear();
 
                 for (int i = 0; i < initPointerOptions.Length; i++)
                 {
@@ -95,6 +97,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointerConfigurations[i].cache = new Stack<IMixedRealityPointer>();
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            for (int i = 0; i < pointerConfigurations.Length; i++)
+            {
+                while (pointerConfigurations[i].cache.Count > 0)
+                {
+                    var ptr = pointerConfigurations[i].cache.Pop();
+                    var pointerComponent = ptr as MonoBehaviour;
+                    if (pointerComponent != null)
+                    {
+                        GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+                    }
+                }
+            }
+
+            // TODO: Troy also loop through activePointersToconfig and delete gameobjects there?
+
+            pointerConfigurations = System.Array.Empty<PointerConfig>();
+            activePointersToConfig.Clear();
         }
 
         /// <summary>
@@ -120,10 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         var pointerGameObject = p as MonoBehaviour;
                         if (p != null && pointerGameObject != null)
                         {
+                            Debug.Log($"{p.PointerName} retrieved from cache in request");
+
                             pointerGameObject.gameObject.SetActive(true);
 
                             // Track pointer for recycling
-                            activePointersToConfig.Add(p, (uint)i);
+                            activePointersToConfig.Add(p.PointerId, (uint)i);
 
                             returnPointers.Add(p);
 
@@ -136,8 +162,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var pointer = CreatePointer(in option);
                     if (pointer != null)
                     {
+                        Debug.Log($"{pointer.PointerId} created after cache miss in request");
+
                         // Track pointer for recycling
-                        activePointersToConfig.Add(pointer, (uint)i);
+                        activePointersToConfig.Add(pointer.PointerId, (uint)i);
 
                         returnPointers.Add(pointer);
                     }
@@ -158,12 +186,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var pGameObject = p as MonoBehaviour;
                     if (p != null && pGameObject != null)
                     {
-                        if (activePointersToConfig.ContainsKey(p))
-                        {
-                            uint pointerOptionIndex = activePointersToConfig[p];
+                        // TODO: Troy - look at reset method or other properties?
+                        p.Controller = null;
+                        pGameObject.gameObject.SetActive(false);
 
-                            p.Controller = null;
-                            pGameObject.gameObject.SetActive(false);
+                        if (activePointersToConfig.ContainsKey(p.PointerId))
+                        {
+                            uint pointerOptionIndex = activePointersToConfig[p.PointerId];
+                            activePointersToConfig.Remove(p.PointerId);
 
                             // Add our pointer back to our cache
                             pointerConfigurations[(int)pointerOptionIndex].cache.Push(p);

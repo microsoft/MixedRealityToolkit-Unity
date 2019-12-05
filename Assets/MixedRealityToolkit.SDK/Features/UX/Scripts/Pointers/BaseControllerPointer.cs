@@ -166,9 +166,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void OnDisable()
         {
-            if (IsSelectPressed && CoreServices.InputSystem != null)
+            if (IsSelectPressed)
             {
-                CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
             }
 
             base.OnDisable();
@@ -284,8 +284,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public virtual bool IsActive { get; set; }
-
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
