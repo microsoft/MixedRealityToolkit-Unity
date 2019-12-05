@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         /// <remarks>
         /// Changing the state of the native objects received via this API may cause unpredictable
-        /// behaviour and rendering artifacts, especially if Unity also reasons about that same state.
+        /// behavior and rendering artifacts, especially if Unity also reasons about that same state.
         /// </remarks>
         public static HolographicFrame CurrentHolographicFrame
         {
