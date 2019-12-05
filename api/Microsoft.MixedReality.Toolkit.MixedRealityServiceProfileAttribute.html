@@ -87,7 +87,8 @@
   <h1 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute" class="text-break">Class MixedRealityServiceProfileAttribute
   </h1>
   <div class="markdown level0 summary"><p>Attribute that defines which service a profile is meant to be consumed by.
-Only applies to profiles that are consumed by types implementing IMixedRealityService.</p>
+Only applies to profiles that are consumed by types implementing IMixedRealityService.
+A service must implement all required types and no excluded types to be considered compatible with the profile.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -106,12 +107,12 @@ Only applies to profiles that are consumed by types implementing IMixedRealitySe
   
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute__ctor_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute__ctor_Type_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.#ctor(Type)">MixedRealityServiceProfileAttribute(Type)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute__ctor_Type_Type_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.#ctor(Type,Type)">MixedRealityServiceProfileAttribute(Type, Type)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityServiceProfileAttribute(Type serviceType)</code></pre>
+    <pre><code class="lang-csharp hljs">public MixedRealityServiceProfileAttribute(Type requiredType, Type excludedType = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -125,7 +126,44 @@ Only applies to profiles that are consumed by types implementing IMixedRealitySe
     <tbody>
       <tr>
         <td><span class="xref">Type</span></td>
-        <td><span class="parametername">serviceType</span></td>
+        <td><span class="parametername">requiredType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">excludedType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute__ctor_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute__ctor_Type___Type___" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.#ctor(Type[],Type[])">MixedRealityServiceProfileAttribute(Type[], Type[])</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityServiceProfileAttribute(Type[] requiredTypes, Type[] excludedTypes = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span>[]</td>
+        <td><span class="parametername">requiredTypes</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Type</span>[]</td>
+        <td><span class="parametername">excludedTypes</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -134,13 +172,13 @@ Only applies to profiles that are consumed by types implementing IMixedRealitySe
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_ServiceType_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.ServiceType*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_ServiceType" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.ServiceType">ServiceType</h4>
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_ExcludedTypes_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.ExcludedTypes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_ExcludedTypes" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.ExcludedTypes">ExcludedTypes</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type ServiceType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Type[] ExcludedTypes { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -152,7 +190,32 @@ Only applies to profiles that are consumed by types implementing IMixedRealitySe
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Type</span></td>
+        <td><span class="xref">Type</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_RequiredTypes_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.RequiredTypes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceProfileAttribute_RequiredTypes" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.RequiredTypes">RequiredTypes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type[] RequiredTypes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span>[]</td>
         <td></td>
       </tr>
     </tbody>

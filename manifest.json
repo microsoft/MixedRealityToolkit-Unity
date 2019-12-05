@@ -1850,6 +1850,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/WMRCameraSettingsReprojectionMethod.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/WMRCameraSettingsReprojectionMethod.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Contributing/SelectIssueType.png",
       "output": {
         "resource": {
@@ -4688,6 +4699,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ColumnThenRow.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ColumnThenRow.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png",
       "output": {
         "resource": {
@@ -4835,6 +4857,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Unity.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_RowThenColumn.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_RowThenColumn.png"
         }
       },
       "is_incremental": false,
@@ -6533,7 +6566,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "wnduJ2QkWdM7qKDCQCFKQA=="
+          "hash": "sUs2z2O7zsj7bGNoaZ1xXQ=="
         }
       },
       "is_incremental": false,
@@ -6629,7 +6662,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "BRo4BVFiDd5liHhdVB3hTw=="
+          "hash": "gRq0yPg2bLyEFG7M2M5wvg=="
         }
       },
       "is_incremental": false,
@@ -6857,7 +6890,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "MxxC7Dbo9xO+LLEd2FxdNg=="
+          "hash": "OyAWtoDDCHPhtRewTPO4SA=="
         }
       },
       "is_incremental": false,
@@ -14452,7 +14485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityServiceProfileAttribute.html",
-          "hash": "ENQsShyF122rnonB0Y3H/Q=="
+          "hash": "EjzTIfluX7rUEuEO3/HkqA=="
         }
       },
       "is_incremental": false,
@@ -23916,6 +23949,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicDepthReprojectionMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicDepthReprojectionMethod.html",
+          "hash": "t6u8nXaN9fIi1WQBR/wtkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicFrameNativeData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicFrameNativeData.html",
+          "hash": "SOMK76/BjLSQBFAts8HPSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.BaseWindowsMixedRealitySource.yml",
       "output": {
         ".html": {
@@ -24040,7 +24097,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html",
-          "hash": "mfe8UgBBY6PoGHABLSBbAA=="
+          "hash": "K6nDQkq9tzvI1+Wkqn5aOA=="
         }
       },
       "is_incremental": false,
@@ -24052,7 +24109,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettingsProfile.html",
-          "hash": "JBeVKUJUiG0DIAQ90dyV5g=="
+          "hash": "X5yqUW5fhKjdIOOiz/GHPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityReprojectionUpdater.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityReprojectionUpdater.html",
+          "hash": "AieVn+L/QZ6rYBeomMRUxw=="
         }
       },
       "is_incremental": false,
@@ -24064,7 +24133,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.html",
-          "hash": "RwJUANzebfVnNSZvK/UIxw=="
+          "hash": "C4ajnp7VzPfRzz4njKZr7Q=="
         }
       },
       "is_incremental": false,
@@ -24076,7 +24145,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "sNNv1l81YHHV5a3rUyt6Ag=="
+          "hash": "DxkjHlpBFRjfgzWXGy8wQQ=="
         }
       },
       "is_incremental": false,
@@ -24088,7 +24157,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "J0KvGZXWlsKyX9MI+vDtPQ=="
+          "hash": "Kx1lggF036fjGCQBLEcnKg=="
         }
       },
       "is_incremental": false,
@@ -24143,7 +24212,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1429,
+          "total_file_count": 1432,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
