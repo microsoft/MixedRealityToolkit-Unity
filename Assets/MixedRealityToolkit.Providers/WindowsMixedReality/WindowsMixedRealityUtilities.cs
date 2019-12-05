@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     public static class WindowsMixedRealityUtilities
     {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-#if NETFX_CORE
+#if ENABLE_DOTNET
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
         private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
             }
         }
-#endif //NETFX_CORE
+#endif //ENABLE_DOTNET
 
         /// <summary>
         /// Access the underlying native spatial coordinate system.
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             get
             {
-#if NETFX_CORE
+#if ENABLE_DOTNET
                 return spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
 #elif WINDOWS_UWP
                 return spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
