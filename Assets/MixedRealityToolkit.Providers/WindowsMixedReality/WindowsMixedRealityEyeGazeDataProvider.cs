@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 var eyes = pointerPose.Eyes;
                 if (eyes != null)
                 {
-                    InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
 
                     if (eyes.Gaze.HasValue)
                     {
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                             newGaze = SmoothGaze(newGaze);
                         }
 
-                        InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
                     }
                 }
             }

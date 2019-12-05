@@ -89,7 +89,7 @@ attribute to the class. This step enables setting the default profile and platfo
 Once the class has been defined, the next step is to provide the implementation of the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) interface.
 
 > [!NOTE]
-> The [`BaseDataProvider`](xref:Microsoft.MixedReality.Toolkit.BaseDataProvider) class, via the [`BaseService`](xref:Microsoft.MixedReality.Toolkit.BaseService) class, provides empty implementations for [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) methods. The details of these methods are generally data provider specific.
+> The [`BaseDataProvider`](xref:Microsoft.MixedReality.Toolkit.BaseDataProvider`1) class, via the [`BaseService`](xref:Microsoft.MixedReality.Toolkit.BaseService) class, provides empty implementations for [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) methods. The details of these methods are generally data provider specific.
 
 The methods that should be implemented by the data provider are:
 

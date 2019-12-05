@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Class providing a base implementation of the <see cref="IMixedRealityInputDeviceManager"/> interface.
     /// </summary>
-    public abstract class BaseInputDeviceManager : BaseDataProvider, IMixedRealityInputDeviceManager
+    public abstract class BaseInputDeviceManager : BaseDataProvider<IMixedRealityInputSystem>, IMixedRealityInputDeviceManager
     {
         /// <summary>
         /// Constructor.
@@ -43,23 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             string name,
             uint priority,
             BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
-        {
-            if (inputSystem == null)
-            {
-                Debug.LogError($"{name} requires a valid input system instance.");
-            }
-            InputSystem = inputSystem;
-        }
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem { get; private set; }
+        { }
 
         /// <summary>
         /// The input system configuration profile in use in the application.
         /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile => InputSystem?.InputSystemProfile;
+        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
@@ -74,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if ((InputSystem != null) &&
+            if ((Service != null) &&
                 (InputSystemProfile != null) &&
                 InputSystemProfile.PointerProfile != null)
             {
