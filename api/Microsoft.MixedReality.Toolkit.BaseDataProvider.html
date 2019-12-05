@@ -86,18 +86,14 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_BaseDataProvider" data-uid="Microsoft.MixedReality.Toolkit.BaseDataProvider" class="text-break">Class BaseDataProvider
   </h1>
-  <div class="markdown level0 summary"><p>The base data provider implements <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a> and provides default properties for all data providers.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
-    <div class="level2"><span class="xref">BaseDataProvider</span></div>
-      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.html">BaseCameraSettingsProvider</a></div>
-      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html">BaseInputDeviceManager</a></div>
-      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html">BaseSpatialObserver</a></div>
-      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.html">TestBaseDataProvider</a></div>
+    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html">BaseDataProvider</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>&gt;</div>
+    <div class="level3"><span class="xref">BaseDataProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -107,6 +103,12 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_1_Registrar">BaseDataProvider&lt;IMixedRealityService&gt;.Registrar</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_1_Service">BaseDataProvider&lt;IMixedRealityService&gt;.Service</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_DefaultPriority">BaseService.DefaultPriority</a>
     </div>
@@ -175,11 +177,9 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_BaseDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class BaseDataProvider : BaseService, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Add a &lt;T&gt; of type IMixedRealityService, which defines the service type this data provider is valid for.&quot;)]
+public abstract class BaseDataProvider : BaseDataProvider&lt;IMixedRealityService&gt;, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_BaseDataProvider_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Empty, but reserved for future use, in case additional <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a> properties or methods are assigned.</p>
-</div>
   <h3 id="constructors">Constructors
   </h3>
   
@@ -280,61 +280,6 @@ protected BaseDataProvider(IMixedRealityServiceRegistrar registrar, IMixedRealit
         <td><span class="parametername">profile</span></td>
         <td><p>The configuration profile for the data provider.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_BaseDataProvider_Registrar_" data-uid="Microsoft.MixedReality.Toolkit.BaseDataProvider.Registrar*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_BaseDataProvider_Registrar" data-uid="Microsoft.MixedReality.Toolkit.BaseDataProvider.Registrar">Registrar</h4>
-  <div class="markdown level1 summary"><p>The service registrar instance that registered this service.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;The Registrar property is obsolete and will be removed in a future version of the Microsoft Mixed Reality Toolkit&quot;)]
-protected IMixedRealityServiceRegistrar Registrar { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_BaseDataProvider_Service_" data-uid="Microsoft.MixedReality.Toolkit.BaseDataProvider.Service*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_BaseDataProvider_Service" data-uid="Microsoft.MixedReality.Toolkit.BaseDataProvider.Service">Service</h4>
-  <div class="markdown level1 summary"><p>The service instance to which this provider is providing data.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected IMixedRealityService Service { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
