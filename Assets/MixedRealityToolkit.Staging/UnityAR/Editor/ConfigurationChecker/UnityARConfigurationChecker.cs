@@ -12,24 +12,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     {
         static UnityARConfigurationChecker()
         {
-            // Ensure we have the correct packages installed for the current version of Unity.
-            // todo
-            
             // Ensure we have the correct asmdef file for the current version of Unity.
             string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
-            FileInfo oldFile = FindAsmDefFile(asmDefFileName);
+            FileInfo oldFile = FindFile(asmDefFileName);
             if (oldFile != null)
             {
-                FileInfo newFile = GetNewAsmDefFileName(oldFile);
+                FileInfo newFile = GetNewAsmDefFile(oldFile);
                 if (newFile != null)
                 {
-                    // todo: only do this if the user gives permission
-                    OverwriteAsmDefFile(newFile, oldFile);
+                    File.Copy(newFile.FullName, oldFile.FullName, true);
                 }
             }
         }
 
-        private static FileInfo FindAsmDefFile(string fileName)
+        /// <summary>
+        /// Locates the file that matches the specified name within the application data path.
+        /// </summary>
+        /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
+        /// <returns>FileInfo object representing the file, or null if the file could not be located.</returns>
+        private static FileInfo FindFile(string fileName)
         {
             // Find the asmdef file
             DirectoryInfo assets = new DirectoryInfo(Application.dataPath);
@@ -44,11 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             return files[0];
         }
 
-        private static FileInfo GetNewAsmDefFileName(FileInfo file)
+        /// <summary>
+        /// Determines if a file update is needed and returns the replacement.
+        /// </summary>
+        /// <param name="file">The reference file used to determine the new file.</param>
+        /// <returns>FileInfo object representing the file, or null if a new file is not needed.</returns>
+        private static FileInfo GetNewAsmDefFile(FileInfo file)
         {
-
+            // Read the file.
             string fileContents = string.Empty;
-
             using (FileStream fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fs))
@@ -57,8 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 }
             }
 
-            string arFoundationReference = "Unity.XR.ARFoundation";
-            string spatialTrackingReference = "UnityEngine.SpatialTracking";
+            // Key values used to determine if a replacement is required.
+            const string arFoundationReference = "Unity.XR.ARFoundation";
+            const string spatialTrackingReference = "UnityEngine.SpatialTracking";
 
             string updateTo = string.Empty;
 #if UNITY_2018
@@ -78,11 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             return !string.IsNullOrWhiteSpace(updateTo) ?
                 new FileInfo(Path.Combine(file.DirectoryName, $"{file.Name}.{updateTo}")) :
                 null;
-        }
-
-        private static void OverwriteAsmDefFile(FileInfo newFile, FileInfo oldFile)
-        {
-            File.Copy(newFile.FullName, oldFile.FullName, true);
         }
     }
 }
