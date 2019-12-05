@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
+    /// <summary>
+    /// Class to perform checks for configuration checks for the UnityAR provider.
+    /// </summary>
     [InitializeOnLoad]
     public class UnityARConfigurationChecker
     {
