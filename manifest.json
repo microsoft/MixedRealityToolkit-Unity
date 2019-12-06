@@ -702,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CrossPlatform/UsingARFoundation.html",
-          "hash": "WFEpN1UYB50feSvJ9vWHUw=="
+          "hash": "y3komwZsqwJVj1PY137NKA=="
         }
       },
       "is_incremental": false,
@@ -10617,11 +10617,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UnityAR.UnityARConfigurationChecker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UnityAR.UnityARConfigurationChecker.html",
+          "hash": "3kRSKieJu+e88d2rb25aYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UnityAR.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UnityAR.html",
-          "hash": "XLen4bVWuor7O1G+Ooj9Og=="
+          "hash": "5E/cY2GU3j8OaRq0UX+pNg=="
         }
       },
       "is_incremental": false,
@@ -24157,7 +24169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Kx1lggF036fjGCQBLEcnKg=="
+          "hash": "f8L4kv8TdK7GBEnpv2yLBA=="
         }
       },
       "is_incremental": false,
@@ -24209,10 +24221,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1432,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -24228,11 +24241,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1433,
           "skipped_file_count": 0
         }
       }
