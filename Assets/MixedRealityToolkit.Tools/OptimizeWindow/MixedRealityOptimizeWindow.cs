@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 string typeName = typeof(T).Name;
-                EditorGUILayout.LabelField($"Num of {typeName}:", $"{itemCount.ToString("N0")}");
+                EditorGUILayout.LabelField($"{typeName}:", $"{itemCount.ToString("N0")}");
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button($"Disable Raycast Target for all {typeName}"))
                 {
