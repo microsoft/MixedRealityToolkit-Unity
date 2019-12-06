@@ -105,6 +105,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Vector3.zero;
         }
 
+        protected Vector3[] GetFingertipNormals()
+        {
+            Vector3[] fingertipNormals = new Vector3[4];
+            MixedRealityPose pose;
+
+            if (TryGetJoint(TrackedHandJoint.IndexTip, out pose))
+            {
+                fingertipNormals[0] = pose.Forward.normalized;
+            }
+
+            if (TryGetJoint(TrackedHandJoint.MiddleTip, out pose))
+            {
+                fingertipNormals[1] = pose.Forward.normalized;
+            }
+
+            if (TryGetJoint(TrackedHandJoint.RingTip, out pose))
+            {
+                fingertipNormals[2] = pose.Forward.normalized;
+            }
+
+            if (TryGetJoint(TrackedHandJoint.PinkyTip, out pose))
+            {
+                fingertipNormals[3] = pose.Forward.normalized;
+            }
+
+            return fingertipNormals;
+        }
+
         private float DistanceSqrPointToLine(Vector3 lineStart, Vector3 lineEnd, Vector3 point)
         {
             if (lineStart == lineEnd)

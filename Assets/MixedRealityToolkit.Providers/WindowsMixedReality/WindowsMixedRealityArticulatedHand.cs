@@ -83,22 +83,63 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (CursorBeamBackwardTolerance >= 0)
                 {
                     Vector3 cameraBackward = -CameraCache.Main.transform.forward;
-                    if (Vector3.Dot(palmNormal.normalized, cameraBackward) > CursorBeamBackwardTolerance)
+                    if (Vector3.Dot(palmNormal.normalized, cameraBackward.normalized) > CursorBeamBackwardTolerance)
                     {
                         valid = false;
                     }
                 }
                 if (valid && CursorBeamUpTolerance >= 0)
                 {
-                    if (Vector3.Dot(palmNormal, Vector3.up) > CursorBeamUpTolerance)
+                    if (Vector3.Dot(palmNormal.normalized, Vector3.up) > CursorBeamUpTolerance)
                     {
                         valid = false;
                     }
                 }
+                if (valid)
+                {
+                    Vector3 palmForward = (unityJointOrientations[(int)HandJointKind.Palm] * Vector3.forward).normalized;
+
+                    //if (false)
+                    //{
+                    //    Debug.Log("==========");
+                    //    Debug.Log("pf: " + palmForward.x + ", " + palmForward.y + ", " + palmForward.z);
+                    //    Debug.Log(Vector3.Dot((unityJointOrientations[(int)HandJointKind.IndexTip] * Vector3.forward).normalized, palmForward) + ", " +
+                    //        Vector3.Dot((unityJointOrientations[(int)HandJointKind.MiddleTip] * Vector3.forward).normalized, palmForward) + ", " +
+                    //        Vector3.Dot((unityJointOrientations[(int)HandJointKind.RingTip] * Vector3.forward).normalized, palmForward) + ", " +
+                    //        Vector3.Dot((unityJointOrientations[(int)HandJointKind.LittleTip] * Vector3.forward).normalized, palmForward));
+                    //}
+
+
+                    if (Vector3.Dot((unityJointOrientations[(int)HandJointKind.IndexDistal] * Vector3.forward).normalized, palmForward) < FingerPointedTolerance &&
+                        Vector3.Dot((unityJointOrientations[(int)HandJointKind.MiddleDistal] * Vector3.forward).normalized, palmForward) < FingerPointedTolerance &&
+                        Vector3.Dot((unityJointOrientations[(int)HandJointKind.RingDistal] * Vector3.forward).normalized, palmForward) < FingerPointedTolerance &&
+                        Vector3.Dot((unityJointOrientations[(int)HandJointKind.LittleDistal] * Vector3.forward).normalized, palmForward) < FingerPointedTolerance)
+                    {
+                        valid = false;
+                    }
+                }
+
+                if (valid)
+                {
+                    Vector3 palmDiagonal = 
+                        ((unityJointOrientations[(int)HandJointKind.Palm] * -Vector3.right).normalized + 
+                        (unityJointOrientations[(int)HandJointKind.Palm] * Vector3.forward).normalized +
+                        (unityJointOrientations[(int)HandJointKind.Palm] * -Vector3.up).normalized) * 0.3333f;
+
+                    if (Vector3.Dot((unityJointOrientations[(int)HandJointKind.ThumbDistal] * Vector3.forward).normalized, palmDiagonal) < 0.15f)
+                    {
+                        valid = false;
+                    }
+                }
+
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 return valid;
             }
         }
+
+        //if palm is palm up
+        //if hand is backwards
+        //
 
 #if UNITY_WSA
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
@@ -130,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private readonly float CursorBeamBackwardTolerance = 0.5f;
         private readonly float CursorBeamUpTolerance = 0.8f;
+        private readonly float FingerPointedTolerance = 0.15f;
 
         private readonly bool articulatedHandApiAvailable = false;
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
