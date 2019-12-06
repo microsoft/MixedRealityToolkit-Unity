@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -30,8 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Scene Optimizations
         private static DateTime? lastAnalyzedTime = null;
         private Light[] sceneLights;
-        private const uint TopListSize = 5;
+        private const int TopListSize = 5;
         private long totalActivePolyCount, totalInActivePolyCount = 0;
+        private int totalRaycastableUnityUI_Text = 0;
+        private int totalRaycastableUnityUI_TMP_UGUI = 0;
 
         private long TotalPolyCount
         {
@@ -53,8 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             get => $"Total PolyCount (Inactive): {totalInActivePolyCount.ToString("N0")} ";
         }
 
-        private GameObject[] LargestMeshes = new GameObject[TopListSize];
-        private int[] LargestMeshSizes = new int[TopListSize];
+        private MeshFilter[] MeshesOrderedByPolyCountDesc;
 
         // Shader Optimizations
         private bool showDiscoveredMaterials = true;
@@ -63,13 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Shader unityStandardShader;
         private Shader errorShader;
         private List<Material> discoveredMaterials = new List<Material>();
-
-        // Internal structure to easily search mesh polycounts in scene
-        private struct MeshNode
-        {
-            public int polycount;
-            public MeshFilter filter;
-        }
 
         protected enum PerformanceTarget
         {
@@ -269,6 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.Space();
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
@@ -290,6 +287,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         // Mesh Analysis
                         RenderMeshSceneAnalysisSection();
+
+                        // Unity UI Raycast Analysis
+                        RenderRaycastAnalysisSection();
                     }
                 }
             }
@@ -307,17 +307,53 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.LabelField($"Top {TopListSize} GameObjects in scene with highest polygon count");
-            for (int i = 0; i < LargestMeshes.Length; i++)
+            int length = Math.Min(MeshesOrderedByPolyCountDesc.Length, TopListSize);
+            for (int i = 0; i < length; i++)
             {
-                if (LargestMeshes[i] != null)
+                var meshFilter = MeshesOrderedByPolyCountDesc[i];
+                if (meshFilter != null)
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("Num of Polygons: " + LargestMeshSizes[i].ToString("N0"));
-                        EditorGUILayout.ObjectField(LargestMeshes[i], typeof(GameObject), true);
+                        int polyCount = meshFilter.sharedMesh.triangles.Length / 3;
+                        EditorGUILayout.LabelField($"Num of Polygons: {polyCount.ToString("N0")}");
 
-                        RenderViewAssetButton(LargestMeshes[i]);
+                        using (new EditorGUI.DisabledGroupScope(true))
+                        {
+                            EditorGUILayout.ObjectField(meshFilter, typeof(MeshFilter), true);
+                        }
+
+                        RenderViewAssetButton(meshFilter);
                     }
+                }
+            }
+
+            EditorGUILayout.Space();
+        }
+
+        private void RenderRaycastAnalysisSection()
+        {
+            EditorGUILayout.LabelField("Unity UI Raycast Analysis", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"To optimize Graphics Raycast operations, disable Raycast Target property for all elements that do not require this functionality.");
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Num of GameObjects with Raycast Target enabled", EditorStyles.miniBoldLabel);
+            RenderRaycastItem<Text>(totalRaycastableUnityUI_Text);
+            RenderRaycastItem<TextMeshProUGUI>(totalRaycastableUnityUI_TMP_UGUI);
+
+            EditorGUILayout.Space();
+        }
+
+        private void RenderRaycastItem<T>(int itemCount) where T : Graphic
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                string typeName = typeof(T).Name;
+                EditorGUILayout.LabelField($"Num of {typeName}:", $"{itemCount.ToString("N0")}");
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button($"Disable Raycast Target for all {typeName}"))
+                {
+                    DisableRaycastTargetAll<T>();
                 }
             }
         }
@@ -457,47 +493,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             sceneLights = FindObjectsOfType<Light>();
 
+            totalRaycastableUnityUI_Text = FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
+            totalRaycastableUnityUI_TMP_UGUI = FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
+
             // TODO: Consider searching for particle renderers count?
 
+            MeshesOrderedByPolyCountDesc = FindObjectsOfType<MeshFilter>()
+                            .Where(f => f != null && f.sharedMesh != null)
+                            .OrderByDescending(f => f.sharedMesh.triangles.Length)
+                            .ToArray();
+
             totalActivePolyCount = totalInActivePolyCount = 0;
-            var filters = FindObjectsOfType<MeshFilter>();
-            var meshes = new List<MeshNode>();
-            foreach (var f in filters)
+            for (int i = 0; i < MeshesOrderedByPolyCountDesc.Length; i++)
             {
-                if (f != null && f.sharedMesh != null)
+                var f = MeshesOrderedByPolyCountDesc[i];
+
+                int count = f.sharedMesh.triangles.Length / 3;
+
+                if (f.gameObject.activeInHierarchy)
                 {
-                    int count = f.sharedMesh.triangles.Length / 3;
-
-                    meshes.Add(new MeshNode
-                    {
-                        polycount = count,
-                        filter = f
-                    });
-
-                    if (f.gameObject.activeInHierarchy)
-                    {
-                        totalActivePolyCount += count;
-                    }
-                    else
-                    {
-                        totalInActivePolyCount += count;
-                    }
+                    totalActivePolyCount += count;
                 }
-            }
-
-            TotalPolyCountStr = $"Total Scene PolyCount: {TotalPolyCount.ToString("N0")} ";
-            TotalActivePolyCountStr = $"Total PolyCount (Active): {totalActivePolyCount.ToString("N0")} ";
-            TotalInactivePolyCountStr = $"Total PolyCount (Inactive): {totalInActivePolyCount.ToString("N0")} ";
-
-            var sortedMeshList = meshes.OrderByDescending(s => s.polycount).ToList();
-            for(int i = 0; i < TopListSize; i++)
-            {
-                this.LargestMeshSizes[i] = 0;
-                this.LargestMeshes[i] = null;
-                if (i < meshes.Count)
+                else
                 {
-                    this.LargestMeshSizes[i] = sortedMeshList[i].polycount;
-                    this.LargestMeshes[i] = sortedMeshList[i].filter.gameObject;
+                    totalInActivePolyCount += count;
                 }
             }
         }
@@ -550,14 +569,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         || asset.shader == errorShader);
         }
 
-        private static void BuildTitle(string title, string url, Texture titleIcon = null)
+        private static void DisableRaycastTargetAll<T>() where T : Graphic
         {
-            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
-            // Section Title
-            using (new EditorGUILayout.HorizontalScope())
+            DisableRaycastTarget(FindObjectsOfType<T>());
+        }
+
+        private static void DisableRaycastTarget(Graphic[] elements)
+        {
+            if (elements == null)
             {
-                EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocumentationButton(url);
+                return;
+            }
+
+            for (int i = 0; i < elements.Length; i++)
+            {
+                elements[i].raycastTarget = false;
             }
         }
 
@@ -618,6 +644,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space();
             EditorGUILayout.Space();
+        }
+
+
+        private static void BuildTitle(string title, string url, Texture titleIcon = null)
+        {
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+            // Section Title
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
+                InspectorUIUtility.RenderDocumentationButton(url);
+            }
         }
 
         private Texture GetTitleIcon(bool isValid)
