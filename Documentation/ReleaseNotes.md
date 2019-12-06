@@ -232,7 +232,6 @@ Once the previous steps have been performed, the following will allow running th
 1. Set the **Enumulation Mode** to **Remote to Device**.
 1. Set **Device Version** to **HoloLens 2**.
 1. Enter the IP Address displayed in the HoloLens 2.
-1. For best performance, consider unchecking **Enable Video** and **Enable Audio**
 1. Click **Connect**.
 1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
 
