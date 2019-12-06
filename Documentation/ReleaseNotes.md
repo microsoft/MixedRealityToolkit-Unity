@@ -167,9 +167,6 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
 
-> [!Important]
-> There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
-
 > [!Note]
 > Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
 
@@ -230,9 +227,12 @@ To enable hand and eye tracking via Holographic Remoting, the following one-time
 
 Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
 
+1. On the HoloLens 2, launch **Holographic Remoting**
 1. Open **Window > XR > Holographic Emulation**.
 1. Set the **Enumulation Mode** to **Remote to Device**.
 1. Set **Device Version** to **HoloLens 2**.
+1. Enter the IP Address displayed in the HoloLens 2.
+1. For best performance, consider unchecking **Enable Video** and **Enable Audio**
 1. Click **Connect**.
 1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
 
@@ -277,6 +277,14 @@ To work around this issue, please perform one of the following steps:
 
 - Switch the scripting backend to IL2CPP
 - In the Build Settings window, uncheck **Unity C# Projects"
+
+**System.IO.DirectoryNotFoundException: Could not find a part of the path**
+
+There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
+
+For the latest status of the issue, please refer to the following on GitHub.
+
+- https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810
 
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
