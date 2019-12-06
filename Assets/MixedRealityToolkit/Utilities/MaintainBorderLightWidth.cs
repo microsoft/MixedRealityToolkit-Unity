@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         private Renderer targetRenderer = null;
         private MaterialPropertyBlock properties = null;
-        private int borderWidthID = 0;
+        private static int borderWidthID = Shader.PropertyToID("_BorderWidth");
         private float initialBorderWidth = 1.0f;
         private Vector3 initialScale = Vector3.one;
         private Vector3 prevScale;
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Cache the initial border width state.
             targetRenderer = GetComponent<Renderer>();
             properties = new MaterialPropertyBlock();
-            borderWidthID = Shader.PropertyToID("_BorderWidth");
+
             initialBorderWidth = targetRenderer.sharedMaterial.GetFloat(borderWidthID);
             initialScale = transform.lossyScale;
             prevScale = initialScale;
