@@ -354,6 +354,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (GUILayout.Button($"Disable Raycast Target for all {typeName}"))
                 {
                     DisableRaycastTargetAll<T>();
+
+                    AnalyzeRaycastTargets();
                 }
             }
         }
@@ -493,15 +495,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             sceneLights = FindObjectsOfType<Light>();
 
-            totalRaycastableUnityUI_Text = FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
-            totalRaycastableUnityUI_TMP_UGUI = FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
+            AnalyzeRaycastTargets();
 
             // TODO: Consider searching for particle renderers count?
 
             MeshesOrderedByPolyCountDesc = FindObjectsOfType<MeshFilter>()
-                            .Where(f => f != null && f.sharedMesh != null)
-                            .OrderByDescending(f => f.sharedMesh.triangles.Length)
-                            .ToArray();
+                .Where(f => f != null && f.sharedMesh != null)
+                .OrderByDescending(f => f.sharedMesh.triangles.Length)
+                .ToArray();
 
             totalActivePolyCount = totalInActivePolyCount = 0;
             for (int i = 0; i < MeshesOrderedByPolyCountDesc.Length; i++)
@@ -519,6 +520,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     totalInActivePolyCount += count;
                 }
             }
+        }
+
+        private void AnalyzeRaycastTargets()
+        {
+            totalRaycastableUnityUI_Text = FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
+            totalRaycastableUnityUI_TMP_UGUI = FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
         }
 
         private void DiscoverMaterials()
