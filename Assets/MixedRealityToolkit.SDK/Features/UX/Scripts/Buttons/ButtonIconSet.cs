@@ -1,4 +1,7 @@
-﻿using TMPro;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using TMPro;
 using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
@@ -73,7 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void InitializeLookups()
         {
             if (lookupsInitialized)
+            {
                 return;
+            }
 
             try
             {
@@ -140,7 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint unicode = 0;
 
             if (string.IsNullOrEmpty(charString))
+            {
                 return 0;
+            }
 
             for (int i = 0; i < charString.Length; i++)
             {
@@ -350,7 +357,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Return if we can't find the glyph
             if (elementIndex == -1)
+            {
                 return;
+            }
 
             Glyph glyph = character.glyph;
 
