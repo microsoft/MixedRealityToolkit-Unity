@@ -273,6 +273,28 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <p><img src="https://user-images.githubusercontent.com/13754172/69566003-f6377100-0f6a-11ea-8963-a6ef93554e43.gif" alt="Surface magnetism and hand ray example"></p>
 <p><strong>Support for hand and eye tracking remoting for Microsoft HoloLens 2</strong></p>
 <p>MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.</p>
+<p>To enable hand and eye tracking via Holographic Remoting, the following one-time steps are required.</p>
+<ol>
+<li>Run the MRTK Configurator Utility (<strong>Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity Project</strong>)
+<ul>
+<li>Expand <strong>Modify Configurations</strong></li>
+<li>Ensure that <strong>Enable MSBuild for Unity</strong> is selected</li>
+<li>Click <strong>Apply</strong></li>
+</ul>
+</li>
+<li>Ensure the latest Holographic Remoting application is installed, via the Microsoft Store application, on the HoloLens.</li>
+<li>Open <strong>Window &gt; Package Manager</strong> and ensure the latest version of the <strong>Windows Mixed Reality</strong> package is installed.</li>
+</ol>
+<p>Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.</p>
+<ol>
+<li>On the HoloLens 2, launch <strong>Holographic Remoting</strong></li>
+<li>Open <strong>Window &gt; XR &gt; Holographic Emulation</strong>.</li>
+<li>Set the <strong>Enumulation Mode</strong> to <strong>Remote to Device</strong>.</li>
+<li>Set <strong>Device Version</strong> to <strong>HoloLens 2</strong>.</li>
+<li>Enter the IP Address displayed in the HoloLens 2.</li>
+<li>Click <strong>Connect</strong>.</li>
+<li>When <strong>Connection Status</strong> becomes <strong>Connected</strong>, click the Unityh Editor's play button.</li>
+</ol>
 <div class="NOTE">
 <h5>Note</h5>
 <p>This feature requires installing MSBuild for Unity, which will install the <a href="https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/">Microsoft.Windows.MixedReality.DotNetWinRT</a> package from NuGet.</p>
@@ -303,6 +325,12 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <ul>
 <li>Switch the scripting backend to IL2CPP</li>
 <li>In the Build Settings window, uncheck **Unity C# Projects&quot;</li>
+</ul>
+<p><strong>System.IO.DirectoryNotFoundException: Could not find a part of the path</strong></p>
+<p>There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.</p>
+<p>For the latest status of the issue, please refer to the following on GitHub.</p>
+<ul>
+<li><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810</a></li>
 </ul>
 <p><strong>Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'</strong></p>
 <p>If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a> article for requirements and instructions.</p>
