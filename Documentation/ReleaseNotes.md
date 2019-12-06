@@ -167,6 +167,9 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
 
+> [!Important]
+> There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
+
 > [!Note]
 > Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
 
@@ -215,6 +218,23 @@ A new example scene has been added, which demonstrates surface magnetism and the
 **Support for hand and eye tracking remoting for Microsoft HoloLens 2**
 
 MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
+
+To enable hand and eye tracking via Holographic Remoting, the following one-time steps are required.
+
+1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
+    - Expand **Modify Configurations**
+    - Ensure that **Enable MSBuild for Unity** is selected
+    - Click **Apply**
+1. Ensure the latest Holographic Remoting application is installed, via the Microsoft Store application, on the HoloLens.
+1. Open **Window > Package Manager** and ensure the latest version of the **Windows Mixed Reality** package is installed.
+
+Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
+
+1. Open **Window > XR > Holographic Emulation**.
+1. Set the **Enumulation Mode** to **Remote to Device**.
+1. Set **Device Version** to **HoloLens 2**.
+1. Click **Connect**.
+1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
 
 > [!Note]
 > This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
