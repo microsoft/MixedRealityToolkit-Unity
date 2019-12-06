@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
-using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Inspectors
 {
     [CustomEditor(typeof(ButtonConfigHelper))]
-    public class ConfigureButtonInspector : UnityEditor.Editor
+    public class ButtonConfigHelperInspector : UnityEditor.Editor
     {
         const string LabelFoldoutKey = "MRTK.ButtonConfigHelper.Label";
         const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
@@ -92,7 +91,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         if (mainLabelTextProp.objectReferenceValue != null)
                         {
                             Component mainLabelText = (Component)mainLabelTextProp.objectReferenceValue;
-                            mainLabelText.gameObject.SetActive(EditorGUILayout.Toggle("Enable Main Label", mainLabelText.gameObject.activeSelf));
+                            bool mainLabelTextActive = EditorGUILayout.Toggle("Enable Main Label", mainLabelText.gameObject.activeSelf);
+                            if (mainLabelText.gameObject.activeSelf != mainLabelTextActive)
+                            {
+                                mainLabelText.gameObject.SetActive(mainLabelTextActive);
+                                EditorUtility.SetDirty(mainLabelText.gameObject);
+                            }
                             if (mainLabelText.gameObject.activeSelf)
                             {
                                 SerializedObject labelTextObject = new SerializedObject(mainLabelText);
@@ -115,7 +119,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                         if (seeItSayItLabelProp.objectReferenceValue != null)
                         {
                             GameObject seeItSayItLabel = (GameObject)seeItSayItLabelProp.objectReferenceValue;
-                            seeItSayItLabel.SetActive(EditorGUILayout.Toggle("Enable See it / Say it Label", seeItSayItLabel.activeSelf));
+                            bool seeItSayItLabelActive = EditorGUILayout.Toggle("Enable See it / Say it Label", seeItSayItLabel.activeSelf);
+                            if (seeItSayItLabel.activeSelf != seeItSayItLabelActive)
+                            {
+                                seeItSayItLabel.SetActive(seeItSayItLabelActive);
+                                EditorUtility.SetDirty(seeItSayItLabel.gameObject);
+                            }
 
                             if (seeItSayItLabel.activeSelf)
                             {
@@ -317,7 +326,9 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             {
                 if (iconCharLabelProp != null)
                 {
-                    string iconCharString = ((TextMeshPro)iconCharLabelProp.objectReferenceValue).text;
+                    SerializedObject tmpObject = new SerializedObject(iconCharLabelProp.objectReferenceValue);
+                    SerializedProperty tmpTextProp = tmpObject.FindProperty("m_text");
+                    string iconCharString = tmpTextProp.stringValue;
                     currentIconChar = ButtonIconSet.ConvertCharStringToUInt32(iconCharString);
                 }
                 else
@@ -335,8 +346,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (iconSet.EditorDrawCharIconSelector(currentIconChar, out newIconChar, 1))
                 {
                     iconCharProp.longValue = newIconChar;
-                    iconFontProp.objectReferenceValue = iconSet.CharIconFont;
-                    cb.SetCharIcon(newIconChar, iconSet.CharIconFont);
+                    SerializedObject iconSetObject = new SerializedObject(iconSet);
+                    SerializedProperty charIconFontProp = iconSetObject.FindProperty("charIconFont");
+                    iconFontProp.objectReferenceValue = charIconFontProp.objectReferenceValue;
+                    cb.SetCharIcon(newIconChar);
                 }
             }
             else

@@ -258,8 +258,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Sets the character for the button. This automatically sets the bitton icon style to Char.
         /// </summary>
         /// <param name="newIconChar">Unicode string for new icon character.</param>
-        /// <param name="newIconCharFont">Optional font asset. If null, the existing font asset will be used.</param>
-        public void SetCharIcon(uint newIconChar, TMP_FontAsset newIconCharFont = null)
+        /// <param name="newIconCharFont">Optional TMPro font asset. If null, the existing font asset will be used.</param>
+        public void SetCharIcon(uint newIconChar, UnityEngine.Object newIconCharFont = null)
         {
             if (newIconChar <= 0)
             {
@@ -268,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (newIconCharFont != null && newIconCharFont != iconCharFont)
             {
-                iconCharFont = newIconCharFont;
+                iconCharFont = (TMP_FontAsset)newIconCharFont;
             }
 
             if (iconCharLabel == null)
