@@ -55,18 +55,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<string, Sprite> spriteIconLookup = new Dictionary<string, Sprite>();
         private bool lookupsInitialized = false;
 
+        /// <summary>
+        /// Tries to retrieve a unicode character icon by name.
+        /// </summary>
+        /// <returns>True if icon is found.</returns>
         public bool TryGetCharIcon(string iconName, out uint charIcon)
         {
             InitializeLookups();
             return charIconLookup.TryGetValue(iconName, out charIcon);
         }
 
+        /// <summary>
+        /// Tries to retrieve a texture icon by name.
+        /// </summary>
+        /// <returns>True if icon is found.</returns>
         public bool TryGetQuadIcon(string iconName, out Texture2D quadIcon)
         {
             InitializeLookups();
             return quadIconLookup.TryGetValue(iconName, out quadIcon);
         }
 
+        /// <summary>
+        /// Tries to retrieve a sprite icon by name.
+        /// </summary>
+        /// <returns>True if icon is found.</returns>
         public bool TryGetSpriteIcon(string iconName, out Sprite spriteIcon)
         {
             InitializeLookups();
