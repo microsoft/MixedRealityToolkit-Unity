@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isInitializing = false;
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
+        private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
 
         #region Mixed Reality Toolkit Profile configuration
 
@@ -324,7 +325,16 @@ namespace Microsoft.MixedReality.Toolkit
             //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+                if (!Application.isPlaying)
+                {
+                    // Log as warning if in edit mode. Likely user is making changes etc.
+                    Debug.LogWarning(NoMRTKProfileErrorMessage);
+                }
+                else
+                {
+                    Debug.LogError(NoMRTKProfileErrorMessage);
+                }
+
                 return;
             }
 

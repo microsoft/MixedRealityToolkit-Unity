@@ -186,8 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void DestroyFacades()
         {
-            foreach (var facade in ServiceFacade.ActiveFacadeObjects)
+            for (int i = ServiceFacade.ActiveFacadeObjects.Count - 1; i >= 0; i--)
             {
+                var facade = ServiceFacade.ActiveFacadeObjects[i];
                 if (facade != null)
                 {
                     GameObjectExtensions.DestroyGameObject(facade.gameObject);

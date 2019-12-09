@@ -3,12 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Eye Tracking Profile", fileName = "MixedRealityEyeTrackingProfile", order = (int)CreateProfileMenuItemIndices.EyeTracking)]
-    [MixedRealityServiceProfile(typeof(IMixedRealityEyeGazeDataProvider))]
+    [MixedRealityServiceProfile(requiredTypes: new Type[] { typeof(IMixedRealityEyeGazeDataProvider), typeof(IMixedRealityEyeSaccadeProvider) })]
     public class MixedRealityEyeTrackingProfile : BaseMixedRealityProfile
     {
         [SerializeField]
