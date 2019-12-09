@@ -262,7 +262,7 @@ To work around this issue, please perform one of the following steps:
 
 **Hang when using Holographic Remoting**
 
-There is a known issue with some versions of Unity where the editor will hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded.
+There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded.
 
 To work around the issue, please perform the following steps:
 
