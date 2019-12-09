@@ -56,4 +56,4 @@ When the session is complete, exit play mode and close the Holographic dialog.
 ## See Also
 
 - [Holographic Remoting troubleshooting and limitations](https://docs.microsoft.com/en-us/windows/mixed-reality/holographic-remoting-troubleshooting)
-- [Microsoft Holographic Remoting Software License Terms](https://docs.microsoft.com/en-us/legal/mixed-reality/microsoft-holographic-remoting-software-license-terms)
+- [Microsoft Holographic Remoting software license terms](https://docs.microsoft.com/en-us/legal/mixed-reality/microsoft-holographic-remoting-software-license-terms)
