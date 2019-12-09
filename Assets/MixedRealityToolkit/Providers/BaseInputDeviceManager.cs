@@ -61,11 +61,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private PointerConfig[] pointerConfigurations = System.Array.Empty<PointerConfig>();
 
+        private class PointerEqualityComparer : IEqualityComparer<IMixedRealityPointer>
+        {
+            private static PointerEqualityComparer defaultComparer;
+
+            internal static PointerEqualityComparer Default
+            {
+                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
+            }
+
+            public bool Equals(IMixedRealityPointer p1, IMixedRealityPointer p2)
+            {
+                return ReferenceEquals(p1, p2);
+            }
+
+            public int GetHashCode(IMixedRealityPointer pointer)
+            {
+                if (pointer is MonoBehaviour pointerObj)
+                {
+                    return pointerObj.GetInstanceID();
+                }
+                else
+                {
+                    return pointer.GetHashCode();
+                }
+            }
+        }
+
         // TODO: Troy - Some reason IMixedRealityPointer keys do not return true on containskey
         // TODO: Troy - problem with pointer/pointerids is destroyed pointers won't be cleared*
         // Active pointers associated with the config index they were spawned from
-        //private Dictionary<IMixedRealityPointer, uint> activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>();
-        private Dictionary<uint, uint> activePointersToConfig = new Dictionary<uint, uint>();
+        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
+        //private Dictionary<uint, uint> activePointersToConfig = new Dictionary<uint, uint>();
 
         /// <inheritdoc />
         public override void Initialize()
@@ -137,7 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             pointerGameObject.gameObject.SetActive(true);
 
                             // Track pointer for recycling
-                            activePointersToConfig.Add(p.PointerId, (uint)i);
+                            //activePointersToConfig.Add(p.PointerId, (uint)i);
+                            activePointersToConfig.Add(p, (uint)i);
 
                             returnPointers.Add(p);
 
@@ -153,7 +181,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.Log($"{pointer.PointerId} created after cache miss in request");
 
                         // Track pointer for recycling
-                        activePointersToConfig.Add(pointer.PointerId, (uint)i);
+                        //activePointersToConfig.Add(pointer.PointerId, (uint)i);
+                        activePointersToConfig.Add(pointer, (uint)i);
 
                         returnPointers.Add(pointer);
                     }
@@ -178,10 +207,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         p.Controller = null;
                         pGameObject.gameObject.SetActive(false);
 
-                        if (activePointersToConfig.ContainsKey(p.PointerId))
+                        if (activePointersToConfig.ContainsKey(p))
                         {
-                            uint pointerOptionIndex = activePointersToConfig[p.PointerId];
-                            activePointersToConfig.Remove(p.PointerId);
+                            uint pointerOptionIndex = activePointersToConfig[p];
+                            activePointersToConfig.Remove(p);
 
                             // Add our pointer back to our cache
                             pointerConfigurations[(int)pointerOptionIndex].cache.Push(p);
