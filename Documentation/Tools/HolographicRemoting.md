@@ -25,6 +25,7 @@ configure the project using the following steps.
 
 Once the project has been configured, a connection can be established to the HoloLens.
 
+1. In **File > Build Settings**, ensure that the project build type is set to **Universal Windows Platform**
 1. On the HoloLens, launch the **Holographic Remoting** application.
 1. In Unity, select **Window > XR > Holographic Emulation**.
 
