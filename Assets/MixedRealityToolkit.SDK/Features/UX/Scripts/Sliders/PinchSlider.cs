@@ -4,7 +4,9 @@
 //
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -33,8 +35,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Range(0, 1)]
+        #region MyValue 
+        public int MinValue = -4;
+        public int MaxValue = 4;
+
+        public bool WholeNumbers = true;
+
+        public float startValue = 0f;
+
+        [Tooltip("Automatic placement of slider's steps.")]
         [SerializeField]
+        private bool TickMarksAutoFill = true;
+
+        [HideInInspector]
+        public float Value = 0f;
+        public float MyValue
+        {
+            get { return Value; }
+            set
+            {
+                var oldSliderValue = Value;
+                Value = value;
+                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
+            }
+        }
+
+        [Range(0, 1)]
         private float sliderValue = 0.5f;
         public float SliderValue
         {
@@ -42,11 +68,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 var oldSliderValue = sliderValue;
-                sliderValue = value;
+                //Round value 
+                if (oldSliderValue != value)
+                {
+                    float temp = value * (MaxValue - MinValue);
+                    if (WholeNumbers == true)
+                    {
+                        int v = Mathf.RoundToInt(temp);
+                        if (Value != v + MinValue)
+                        {
+                            MyValue = v + MinValue;
+                            sliderValue = (float)v / ((float)MaxValue - (float)MinValue);
+                        }
+                    }
+                    else
+                    {
+                        MyValue = temp + MinValue;
+                        sliderValue = temp / ((float)MaxValue - (float)MinValue);
+                    }
+                }
+                //Change of the position
                 UpdateUI();
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
             }
         }
+        #endregion
 
         [Header("Slider Track")]
 
@@ -140,11 +185,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 throw new Exception($"Slider thumb on gameObject {gameObject.name} is not specified. Did you forget to set it?");
             }
+
+            if (startValue < MinValue || startValue > MaxValue)
+            {
+                startValue = ((MaxValue - MinValue) / 2) + MinValue;
+            }
+            SliderValue = (startValue - MinValue) / (MaxValue - MinValue);
+
             InitializeSliderThumb();
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
+
+            if (TickMarksAutoFill)
+            {
+                UpdateTickMarks();
+                StartCoroutine(LaunchUpdateTickMarks());
+            }
         }
-
-
+        IEnumerator LaunchUpdateTickMarks()
+        {
+            yield return new WaitForSeconds(0.01f);
+            tickMarks.UpdateCollection();
+        }
 
         private void OnDisable()
         {
@@ -193,6 +254,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 OnInteractionEnded.Invoke(new SliderEventData(sliderValue, sliderValue, activePointer, this));
             }
             activePointer = null;
+        }
+
+        #endregion
+
+        #region TicksMarks handler 
+        private GridObjectCollection tickMarks;
+        private GameObject point;
+        private SliderSounds sliderSounds;
+
+        private void UpdateTickMarks()
+        {
+            tickMarks = GetComponentInChildren<GridObjectCollection>();
+            sliderSounds = GetComponent<SliderSounds>();
+            Transform tickTransform = tickMarks.transform;
+
+            //Copy of the first point
+            point = tickTransform.GetChild(0).gameObject;
+            point.transform.position = Vector3.zero;
+
+            //Delete old ones
+            for (int i = 0; i < tickTransform.childCount; i++)
+            {
+                Destroy(tickTransform.GetChild(i).gameObject);
+            }
+
+            //Creation of the right number
+            for (int i = 0; i < ((MaxValue - MinValue) + 1); i++)
+            {
+                Instantiate(point, tickTransform);
+            }
+
+            //Distance beetween each point
+            tickMarks.CellWidth = (SliderEndDistance - SliderStartDistance) / (MaxValue - MinValue);
+            tickMarks.Distance = 0;
+
+            //Change TickEvery of Slider Sounds
+            sliderSounds.SetTickEvery(1 / ((MaxValue - MinValue) + 1));
         }
 
         #endregion

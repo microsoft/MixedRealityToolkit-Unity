@@ -109,6 +109,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 grabReleaseAudioSource.PlayOneShot(interactionStartSound);
             }
         }
+
+        public void SetTickEvery(float value)
+        {
+            if (value < 1.0f || value > 0.0f)
+            {
+                tickEvery = value;
+            }
+        }
     }
 
 
