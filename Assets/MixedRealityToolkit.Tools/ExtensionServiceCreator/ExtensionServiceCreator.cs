@@ -374,9 +374,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Validate template assets
         /// </summary>
         /// <remarks>
-        /// Adds to items to errors log field if not valid
+        /// Adds items to errors log field if not valid
         /// </remarks>
-        /// <returns>true if errors encountered, false otherwise</returns>
+        /// <returns>true if no errors encountered, false otherwise</returns>
         public bool ValidateAssets(List<string> errors)
         {
             if (ServiceTemplate == null)
@@ -424,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Return true if configured Extension Service class name is valid. False otherwise
         /// </summary>
         /// <remarks>
-        /// Adds to items to errors log field if not valid
+        /// Adds items to errors log field if not valid
         /// </remarks>
         public bool ValidateName(List<string> errors)
         {
@@ -477,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Validate that SupportedPlatforms is not zero.
         /// </summary>
         /// <remarks>
-        /// Adds to items to errors log field if not valid
+        /// Adds items to errors log field if not valid
         /// </remarks>
         public bool ValidatePlatforms(List<string> errors)
         {
@@ -493,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Validate namespace property with each class/interface file to be created for new extension service
         /// </summary>
         /// <remarks>
-        /// Adds to items to errors log field if not valid
+        /// Adds items to errors log field if not valid
         /// </remarks>
         /// <returns>true if no errors, false otherwise</returns>
         public bool ValidateNamespace(List<string> errors)
