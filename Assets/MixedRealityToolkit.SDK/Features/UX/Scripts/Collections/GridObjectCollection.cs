@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private LayoutOrder layout = LayoutOrder.RowThenColumn;
 
         /// <summary>
-        /// Whether to sort objects by row first or by column first
+        /// Specify direction in which children are laid out.
         /// </summary>
         public LayoutOrder Layout
         {
