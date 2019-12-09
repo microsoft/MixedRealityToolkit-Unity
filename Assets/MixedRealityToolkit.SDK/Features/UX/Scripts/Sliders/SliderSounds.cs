@@ -39,6 +39,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private float tickEvery = 0.1f;
 
+        [HideInInspector]
+        public float TickEvery
+        {
+            get
+            {
+                return tickEvery;
+            }
+            set
+            {
+                if (value <= 1.0f || value >= 0.0f)
+                {
+                    tickEvery = value;
+                }
+            }
+        }
+
         [SerializeField]
         private float startPitch = 0.75f;
 
@@ -107,14 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (interactionStartSound != null && grabReleaseAudioSource != null)
             {
                 grabReleaseAudioSource.PlayOneShot(interactionStartSound);
-            }
-        }
-
-        public void SetTickEvery(float value)
-        {
-            if (value < 1.0f || value > 0.0f)
-            {
-                tickEvery = value;
             }
         }
     }

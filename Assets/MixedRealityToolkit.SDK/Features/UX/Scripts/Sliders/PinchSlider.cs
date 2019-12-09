@@ -36,26 +36,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region MyValue 
-        public int MinValue = -4;
-        public int MaxValue = 4;
+        [SerializeField]
+        private int minValue = -4;
+        [SerializeField]
+        private int maxValue = 4;
 
-        public bool WholeNumbers = true;
+        [SerializeField]
+        private bool wholeNumbers = true;
 
-        public float startValue = 0f;
+        [SerializeField]
+        private float startValue = 0f;
 
         [Tooltip("Automatic placement of slider's steps.")]
         [SerializeField]
-        private bool TickMarksAutoFill = true;
+        private bool tickMarksAutoFill = true;
 
-        [HideInInspector]
-        public float Value = 0f;
+        private float myValue = 0f;
         public float MyValue
         {
-            get { return Value; }
+            get { return myValue; }
             set
             {
-                var oldSliderValue = Value;
-                Value = value;
+                var oldSliderValue = myValue;
+                myValue = value;
                 OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
             }
         }
@@ -71,20 +74,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 //Round value 
                 if (oldSliderValue != value)
                 {
-                    float temp = value * (MaxValue - MinValue);
-                    if (WholeNumbers == true)
+                    float temp = value * (maxValue - minValue);
+                    if (wholeNumbers == true)
                     {
                         int v = Mathf.RoundToInt(temp);
-                        if (Value != v + MinValue)
+                        if (MyValue != v + minValue)
                         {
-                            MyValue = v + MinValue;
-                            sliderValue = (float)v / ((float)MaxValue - (float)MinValue);
+                            MyValue = v + minValue;
+                            sliderValue = (float)v / ((float)maxValue - (float)minValue);
                         }
                     }
                     else
                     {
-                        MyValue = temp + MinValue;
-                        sliderValue = temp / ((float)MaxValue - (float)MinValue);
+                        MyValue = temp + minValue;
+                        sliderValue = temp / ((float)maxValue - (float)minValue);
                     }
                 }
                 //Change of the position
@@ -186,16 +189,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 throw new Exception($"Slider thumb on gameObject {gameObject.name} is not specified. Did you forget to set it?");
             }
 
-            if (startValue < MinValue || startValue > MaxValue)
+            if (startValue < minValue || startValue > maxValue)
             {
-                startValue = ((MaxValue - MinValue) / 2) + MinValue;
+                startValue = ((maxValue - minValue) / 2) + minValue;
             }
-            SliderValue = (startValue - MinValue) / (MaxValue - MinValue);
+            SliderValue = (startValue - minValue) / (maxValue - minValue);
 
             InitializeSliderThumb();
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
 
-            if (TickMarksAutoFill)
+            if (tickMarksAutoFill)
             {
                 UpdateTickMarks();
                 StartCoroutine(LaunchUpdateTickMarks());
@@ -280,17 +283,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             //Creation of the right number
-            for (int i = 0; i < ((MaxValue - MinValue) + 1); i++)
+            for (int i = 0; i < ((maxValue - minValue) + 1); i++)
             {
                 Instantiate(point, tickTransform);
             }
 
             //Distance beetween each point
-            tickMarks.CellWidth = (SliderEndDistance - SliderStartDistance) / (MaxValue - MinValue);
+            tickMarks.CellWidth = (SliderEndDistance - SliderStartDistance) / (maxValue - minValue);
             tickMarks.Distance = 0;
 
             //Change TickEvery of Slider Sounds
-            sliderSounds.SetTickEvery(1 / ((MaxValue - MinValue) + 1));
+            sliderSounds.TickEvery = 1 / ((maxValue - minValue) + 1);
         }
 
         #endregion
