@@ -216,17 +216,7 @@ A new example scene has been added, which demonstrates surface magnetism and the
 
 MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
 
-Please refer to the [Holographic Remoting](<<todo>>) article for details on how to configure and use remoting.
-
-Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
-
-1. On the HoloLens 2, launch **Holographic Remoting**
-1. Open **Window > XR > Holographic Emulation**.
-1. Set the **Enumulation Mode** to **Remote to Device**.
-1. Set **Device Version** to **HoloLens 2**.
-1. Enter the IP Address displayed in the HoloLens 2.
-1. Click **Connect**.
-1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
+Please refer to the [Holographic Remoting](Tools/HolographicRemoting.md) article for details on how to configure and use remoting.
 
 > [!Note]
 > This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
