@@ -23,9 +23,9 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 
 The following software is required.
 
-- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
-- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
-- Unity 2018.4, 2019.1 or 2019.2
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
+- [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
 
 NuGet requirements
 
@@ -115,7 +115,7 @@ The fingertip cursor's translation and alignment have been updated to better mat
 
 **GridObjectCollection supports content alignment**
 
-The GridObjectCollection UX control now supports aligning content to combinations of
+The [GridObjectCollection UX control](README_ObjectCollection.md) now supports aligning content to combinations of
 
 - Left
 - Center
@@ -150,7 +150,7 @@ InteractableToggleCollection now properly updates the toggle states within group
 
 **Mixed Reality Capture setting (Experimental)**
 
-The Windows Mixed Reality camera settings provider provides an experimental setting to better align holograms in mixed reality capture (MRC) recordings.
+The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
 
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
@@ -165,7 +165,9 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 **MSBuild for Unity**
 
-MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). 
+
+This is an optional install that can be performed with the **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** menu item and at project load time.
 
 > [!Note]
 > Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
@@ -304,7 +306,7 @@ Enabling this feature on other versions of Unity may result in incorrect capture
 
 **MRTK Configurator dialog**
 
-When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.
+When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version of the MRTK.
 
 **The type or namespace name 'TrackedPoseDriver' could not be found**
 
