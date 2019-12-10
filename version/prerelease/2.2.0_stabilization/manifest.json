@@ -5854,6 +5854,61 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/SelectDeviceVersion.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/SelectDeviceVersion.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/SelectEmulationMode.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/SelectEmulationMode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/StartHolographicEmulation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/StartHolographicEmulation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png",
       "output": {
         "resource": {
@@ -6662,7 +6717,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "y9mHF7OzLJGTrQl7/+tXbA=="
+          "hash": "30cDnlNayrK7Qrv40aXeVQ=="
         }
       },
       "is_incremental": false,
@@ -6862,6 +6917,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/HolographicRemoting.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/HolographicRemoting.html",
+          "hash": "2j7kvuWbdC9qiQVRVzG1Mg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/OptimizeWindow.md",
       "output": {
         ".html": {
@@ -6926,7 +6993,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "AJqsdCrkr5VwgkETlFe3cg=="
+          "hash": "BRG+EOfYR3GcUTHfVHWeFg=="
         }
       },
       "is_incremental": false,
@@ -24140,7 +24207,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 142,
+          "total_file_count": 143,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
