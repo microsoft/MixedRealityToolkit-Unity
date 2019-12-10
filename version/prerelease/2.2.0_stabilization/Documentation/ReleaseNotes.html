@@ -109,9 +109,9 @@
 </ul>
 <p>The following software is required.</p>
 <ul>
-<li>Microsoft Visual Studio (2017 or 2019) Community Edition or higher</li>
-<li>Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)</li>
-<li>Unity 2018.4, 2019.1 or 2019.2</li>
+<li><a href="https://visualstudio.microsoft.com">Microsoft Visual Studio</a> (2017 or 2019) Community Edition or higher</li>
+<li><a href="https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk">Windows 10 SDK</a> 18362 or later (installed by the Visual Studio Installer)</li>
+<li><a href="https://unity3d.com/get-unity/download">Unity</a> 2018.4 LTS, 2019.1 or 2019.2</li>
 </ul>
 <p>NuGet requirements</p>
 <p>If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.</p>
@@ -208,7 +208,7 @@ asset database and reconcile existing custom profiles.</li>
 <p>The fingertip cursor's translation and alignment have been updated to better match the HoloLens 2 shell behavior.</p>
 <p><img src="https://user-images.githubusercontent.com/16657884/68256795-e836a600-ffe5-11e9-9aab-ea5ae5687417.gif" alt="Fingertip cursor"></p>
 <p><strong>GridObjectCollection supports content alignment</strong></p>
-<p>The GridObjectCollection UX control now supports aligning content to combinations of</p>
+<p>The <a href="README_ObjectCollection.html">GridObjectCollection UX control</a> now supports aligning content to combinations of</p>
 <ul>
 <li>Left</li>
 <li>Center</li>
@@ -232,7 +232,7 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <p>InteractableToggleCollection now properly updates the toggle states within groups. A new InteractableToggleCollection inspector has also been added.</p>
 <p><img src="https://user-images.githubusercontent.com/53493796/68235326-eb1aa200-ffb7-11e9-9d34-f5c4d37ef4fb.gif" alt="Corrected toggle collection behavior"></p>
 <p><strong>Mixed Reality Capture setting (Experimental)</strong></p>
-<p>The Windows Mixed Reality camera settings provider provides an experimental setting to better align holograms in mixed reality capture (MRC) recordings.</p>
+<p>The Windows Mixed Reality camera settings provider provides an experimental setting to <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in">better align holograms in mixed reality capture (MRC) recordings</a>.</p>
 <p><img src="https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png" alt="MRC alignment"></p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -242,7 +242,8 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <p>An experimental camera settings provider has been added to support mobile AR on Android and iOS phones and tablets. This provider requires Unity's AR Foundation as well as AR Core or AR Kit packages to be installed into the project.</p>
 <p>The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR package on GitHub and NuGet.</p>
 <p><strong>MSBuild for Unity</strong></p>
-<p>MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, <a href="https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/">Microsoft.Windows.MixedReality.DotNetWinRT</a>). This is an optional install that can be performed with the Mixed Reality Toolkit &gt; Utilities &gt; Configure Unity menu item and at project load time.</p>
+<p>MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, <a href="https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/">Microsoft.Windows.MixedReality.DotNetWinRT</a>).</p>
+<p>This is an optional install that can be performed with the <strong>Mixed Reality Toolkit</strong> &gt; <strong>Utilities</strong> &gt; <strong>Configure Unity Project</strong> menu item and at project load time.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.</p>
@@ -325,7 +326,7 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 </ul>
 <p>Enabling this feature on other versions of Unity may result in incorrect captures (ex: missing holograms).</p>
 <p><strong>MRTK Configurator dialog</strong></p>
-<p>When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.</p>
+<p>When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version of the MRTK.</p>
 <p><strong>The type or namespace name 'TrackedPoseDriver' could not be found</strong></p>
 <p>If the Providers.UnityAR package is installed in a project created in Unity 2019.2 or newer, the following error indicates that the assembly definition file (Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef) needs to be updated to include a reference to <strong>UnityEngine.SpatialTracking</strong>. Please review the <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a> article for requirements and instructions.</p>
 <p>If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.</p>
