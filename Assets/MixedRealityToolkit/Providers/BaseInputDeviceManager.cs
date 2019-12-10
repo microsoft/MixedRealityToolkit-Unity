@@ -70,11 +70,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
             }
 
+            /// <summary>
+            /// Check that references equals for two pointers
+            /// </summary>
             public bool Equals(IMixedRealityPointer p1, IMixedRealityPointer p2)
             {
                 return ReferenceEquals(p1, p2);
             }
 
+            /// <summary>
+            /// Unity objects have unique equals comparison and to check keys in a dictionary, 
+            /// we want the hascode match to be Unity's unique InstanceID to compare objects
+            /// </summary>
             public int GetHashCode(IMixedRealityPointer pointer)
             {
                 if (pointer is MonoBehaviour pointerObj)
@@ -88,11 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // TODO: Troy - Some reason IMixedRealityPointer keys do not return true on containskey
-        // TODO: Troy - problem with pointer/pointerids is destroyed pointers won't be cleared*
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
-        //private Dictionary<uint, uint> activePointersToConfig = new Dictionary<uint, uint>();
+        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+            = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         /// <inheritdoc />
         public override void Initialize()
@@ -121,16 +126,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 while (pointerConfigurations[i].cache.Count > 0)
                 {
-                    var ptr = pointerConfigurations[i].cache.Pop();
-                    var pointerComponent = ptr as MonoBehaviour;
-                    if (pointerComponent != null)
+                    var pointer = pointerConfigurations[i].cache.Pop();
+                    if (pointer is MonoBehaviour pointerComponent)
                     {
                         GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                     }
                 }
             }
 
-            // TODO: Troy also loop through activePointersToconfig and delete gameobjects there?
+            // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
+            foreach (var pointer in activePointersToConfig.Keys)
+            {
+                if (pointer is MonoBehaviour pointerComponent)
+                {
+                    GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+                }
+            }
 
             pointerConfigurations = System.Array.Empty<PointerConfig>();
             activePointersToConfig.Clear();
@@ -156,15 +167,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (pointerCache.Count > 0)
                     {
                         var p = pointerCache.Pop();
-                        var pointerGameObject = p as MonoBehaviour;
-                        if (p != null && pointerGameObject != null)
+                        if (p != null && p is MonoBehaviour pointerGameObject)
                         {
                             Debug.Log($"{p.PointerName} retrieved from cache in request");
 
                             pointerGameObject.gameObject.SetActive(true);
 
                             // Track pointer for recycling
-                            //activePointersToConfig.Add(p.PointerId, (uint)i);
                             activePointersToConfig.Add(p, (uint)i);
 
                             returnPointers.Add(p);
@@ -181,7 +190,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Debug.Log($"{pointer.PointerId} created after cache miss in request");
 
                         // Track pointer for recycling
-                        //activePointersToConfig.Add(pointer.PointerId, (uint)i);
                         activePointersToConfig.Add(pointer, (uint)i);
 
                         returnPointers.Add(pointer);
@@ -200,12 +208,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < pointers.Length; i++)
                 {
                     var p = pointers[i];
-                    var pGameObject = p as MonoBehaviour;
-                    if (p != null && pGameObject != null)
+                    if (p != null && p is MonoBehaviour pointerComponent)
                     {
                         // TODO: Troy - look at reset method or other properties?
                         p.Controller = null;
-                        pGameObject.gameObject.SetActive(false);
+                        pointerComponent.gameObject.SetActive(false);
 
                         if (activePointersToConfig.ContainsKey(p))
                         {
