@@ -14,12 +14,12 @@ When using a HoloLens 2, support for remoting articulated hand and eye tracking 
 configure the project using the following steps.
 
 1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
-2. Expand **Modify Configurations**
+1. Expand **Modify Configurations**
 
     ![MRTK Configurator](../Images/Tools/Remoting/EnableMSBuildForUnity.png)
 
-3. Ensure that **Enable MSBuild for Unity** is selected
-4. Click **Apply**
+1. Ensure that **Enable MSBuild for Unity** is selected
+1. Click **Apply**
 
 ## Connecting to the HoloLens
 

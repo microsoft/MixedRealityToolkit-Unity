@@ -269,7 +269,6 @@ To work around the issue, please perform the following steps:
 1. With the project open, close the Holographic dialog.
 1. Close Unity
 1. Reopen Unity and open the project.
-1. Ensure that the Holographic dialog is closed before re-closing Unity.
 
 **System.IO.DirectoryNotFoundException: Could not find a part of the path**
 
