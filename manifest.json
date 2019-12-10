@@ -10425,6 +10425,90 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.AxisSlider.EAxis.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.AxisSlider.EAxis.html",
+          "hash": "XxroaCbp6lovjssZLGHU9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.AxisSlider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.AxisSlider.html",
+          "hash": "rwHKi6lQPVLuRxgywwujSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.CapsLockHighlight.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.CapsLockHighlight.html",
+          "hash": "pypkSg/Scj39MvZIBSV90g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardKeyFunc.Function.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardKeyFunc.Function.html",
+          "hash": "S4V59yMz5q9H9fKsSYDDUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardKeyFunc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardKeyFunc.html",
+          "hash": "138vcjJTHaycaDQTJG9jjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardTest.html",
+          "hash": "bDMu/ZKpoi4zsmUS0wZODA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardValueKey.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardValueKey.html",
+          "hash": "zJIfHHBrEroz4QtoyzoauQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.yml",
       "output": {
         ".html": {
@@ -10442,6 +10526,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardPreview.html",
           "hash": "VpjKn4m6o/xkWFt68+4QHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.LayoutType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.LayoutType.html",
+          "hash": "tMhMAZM1vrbNEB1mG32lOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.html",
+          "hash": "SFdPFhkxwCDeXCSJDCyiTw=="
         }
       },
       "is_incremental": false,
@@ -10509,11 +10617,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.SliderInputField.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.SliderInputField.html",
+          "hash": "UltOENON0DGxl5wElsJwIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.SymbolDisableHighlight.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.SymbolDisableHighlight.html",
+          "hash": "zOx3dUKt2sdHYMAAFa35Xw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.SymbolKeyboard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.SymbolKeyboard.html",
+          "hash": "Og/i49CNQ8CJgT1sThs8fg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.UICollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.UICollection.html",
+          "hash": "O7TMt4yvAljybWvK987mtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.html",
-          "hash": "T8JuwmRn62ZLz6jSCzBgjg=="
+          "hash": "+FaAeJJBwbFieA1xExBA/Q=="
         }
       },
       "is_incremental": false,
@@ -18985,7 +19141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.TransformExtensions.html",
-          "hash": "h/7jVbvC6EN0UNOf6fRtLw=="
+          "hash": "kPxVjs543GU0yt+bEWewYg=="
         }
       },
       "is_incremental": false,
@@ -24157,7 +24313,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "E8GQLRx9tlB5Go2/LVvZrA=="
+          "hash": "91ejYo5YRIRD6Wk0/s/DpQ=="
         }
       },
       "is_incremental": false,
@@ -24209,17 +24365,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 142,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1445,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -24229,10 +24384,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1432,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
