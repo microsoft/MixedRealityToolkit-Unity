@@ -31,7 +31,7 @@ NuGet requirements
 
 If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
 
-- [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
+- [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
 ### Upgrading projects to 2.2.0
 
