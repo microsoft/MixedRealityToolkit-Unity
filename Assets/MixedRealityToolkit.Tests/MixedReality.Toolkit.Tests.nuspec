@@ -11,7 +11,7 @@
     <description>Tests for the Mixed Reality Toolkit.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
     </dependencies>

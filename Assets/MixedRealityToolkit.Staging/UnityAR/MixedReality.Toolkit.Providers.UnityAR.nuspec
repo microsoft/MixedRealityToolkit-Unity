@@ -11,7 +11,7 @@
     <description>Mixed Reality Toolkit provider adding support for mobile (phones and tablets) AR devices. NOTE: This package requires Unity's Package Manager AR Foundation as well as AR Core and/or AR Kit packages.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
     </dependencies>

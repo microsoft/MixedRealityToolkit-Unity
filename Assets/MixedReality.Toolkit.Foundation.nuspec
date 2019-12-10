@@ -11,7 +11,7 @@
     <description>The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
     <dependencies>
       <dependency id="Microsoft.Windows.MixedReality.DotNetWinRT" version="0.5.1037" />
     </dependencies>
