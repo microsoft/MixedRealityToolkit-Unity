@@ -326,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
 
-                    using (new GUIEnabledWrapper(!isSinglePassInstancedEnabled))
+                    using (new EditorGUI.DisabledGroupScope(isSinglePassInstancedEnabled))
                     {
                         if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
                         {
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
 
-                    using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
+                    using (new EditorGUI.DisabledGroupScope(isDepthBufferSharingEnabled))
                     {
                         if (InspectorUIUtility.RenderIndentedButton("Enable Depth Buffer Sharing"))
                         {
@@ -360,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Furthermore, no stencil buffer will be created with 16-bit selected. Click the \"Documentation\" button to learn more", MessageType.Info);
 
-                    using (new GUIEnabledWrapper(!is16BitDepthFormat))
+                    using (new EditorGUI.DisabledGroupScope(is16BitDepthFormat))
                     {
                         if (InspectorUIUtility.RenderIndentedButton("Enable 16-bit depth format"))
                         {
@@ -383,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
 
-                    using (new GUIEnabledWrapper(isGIEnabled))
+                    using (new EditorGUI.DisabledGroupScope(!isGIEnabled))
                     {
                         if (InspectorUIUtility.RenderIndentedButton("Disable Real-time Global Illumination"))
                         {

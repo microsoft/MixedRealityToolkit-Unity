@@ -500,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             var subProfile = profileObject as BaseMixedRealityProfile;
-            if (subProfile != null && !subProfile.IsCustomProfile)
+            if (subProfile != null && !subProfile.IsCustomProfile && MixedRealityProjectPreferences.LockProfiles)
             {
                 EditorGUILayout.HelpBox("Clone this default profile to edit properties below", MessageType.Warning);
             }
@@ -559,7 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (property.objectReferenceValue != null)
                 {
                     // The view asset button should always be enabled.
-                    using (new GUIEnabledWrapper(true, true))
+                    using (new GUIEnabledWrapper())
                     { 
                         if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
                         {
