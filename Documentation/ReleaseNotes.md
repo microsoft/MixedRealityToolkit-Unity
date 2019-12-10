@@ -216,24 +216,7 @@ A new example scene has been added, which demonstrates surface magnetism and the
 
 MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
 
-To enable hand and eye tracking via Holographic Remoting, the following one-time steps are required.
-
-1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
-    - Expand **Modify Configurations**
-    - Ensure that **Enable MSBuild for Unity** is selected
-    - Click **Apply**
-1. Ensure the latest Holographic Remoting application is installed, via the Microsoft Store application, on the HoloLens.
-1. Open **Window > Package Manager** and ensure the latest version of the **Windows Mixed Reality** package is installed.
-
-Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
-
-1. On the HoloLens 2, launch **Holographic Remoting**
-1. Open **Window > XR > Holographic Emulation**.
-1. Set the **Enumulation Mode** to **Remote to Device**.
-1. Set **Device Version** to **HoloLens 2**.
-1. Enter the IP Address displayed in the HoloLens 2.
-1. Click **Connect**.
-1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
+Please refer to the [Holographic Remoting](Tools/HolographicRemoting.md) article for details on how to configure and use remoting.
 
 > [!Note]
 > This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
@@ -277,13 +260,15 @@ To work around this issue, please perform one of the following steps:
 - Switch the scripting backend to IL2CPP
 - In the Build Settings window, uncheck **Unity C# Projects"
 
-**System.IO.DirectoryNotFoundException: Could not find a part of the path**
+**Hang when using Holographic Remoting**
 
-There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
+There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded.
 
-For the latest status of the issue, please refer to the following on GitHub.
+To work around the issue, please perform the following steps:
 
-- https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810
+1. With the project open, close the Holographic dialog.
+1. Close Unity
+1. Reopen Unity and open the project.
 
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
