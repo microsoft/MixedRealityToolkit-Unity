@@ -1,8 +1,316 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.2.0
+
+- [Upgrading projects](#upgrading-projects-to-220)
+- [What's new](#whats-new-in-220)
+- [Known issues](#known-issues-in-220)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+- (Experimental) Mobile AR
+    - Android
+    - iOS
+
+The following software is required.
+
+- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
+- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
+- Unity 2018.4, 2019.1 or 2019.2
+
+NuGet requirements
+
+If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
+
+- [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
+
+### Upgrading projects to 2.2.0
+
+The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.1.0 to 2.2.0**](Updating.md#updating-210-to-220) article.
+
+**Updating using .unitypackage files**
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting these folders.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+**Updating from NuGet**
+
+If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Re-open the project in Unity
+
+### What's new in 2.2.0
+
+**Camera Settings Providers**
+
+MRTK has added settings providers to the camera system. These components enable customization of the camera system on a per-platform basis. Shipping in version 2.2.0 are providers for
+
+- Windows Mixed Reality (Foundation package)
+- (Experimental) UnityAR for Android and iOS (Providers.UnityAR package)
+
+> [!Note]
+> If no camera settings provider is configured for the current platform, the behavior from MRTK v2.1.0 will be used.
+
+**Cursor resizing**
+
+The DefaultCursor prefab now dynamically resizes based on the distance (to the raycast hit point) and uses angular scale to account for platform differences.
+
+**Directional Indicator Solver**
+
+The HoloToolkit directional indicator component has been re-introduced as a solver.
+
+![DirectionalIndicatorSolver](https://user-images.githubusercontent.com/25975362/67609639-9a4ab400-f742-11e9-9d50-6511aede13dc.gif)
+
+**Fingertip cursor translation and alignment**
+
+The fingertip cursor's translation and alignment have been updated to better match the HoloLens 2 shell behavior.
+
+![Fingertip cursor](https://user-images.githubusercontent.com/16657884/68256795-e836a600-ffe5-11e9-9aab-ea5ae5687417.gif)
+
+**GridObjectCollection supports content alignment**
+
+The GridObjectCollection UX control now supports aligning content to combinations of
+
+- Left
+- Center
+- Right
+
+and
+
+- Top
+- Middle
+- Bottom
+
+![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
+
+**Fixing LayoutDirection in GridObjectCollection**
+In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before. 
+
+Below: `RowsThenColumns` layout, with Rows = 3.
+
+![Row then column layout](../Documentation/Images/ObjectCollection/MRTK_RowThenColumn.png)
+
+Below: `ColumnsThenRows` layout, with Columns = 3.
+
+![Column then row layout](../Documentation/Images/ObjectCollection/MRTK_ColumnThenRow.png)
+
+All assets being upgraded from 2.1 to 2.2 that have `ColumnsThenRows` layout will be changed to have `RowsThenColumns` layout to ensure that layout behavior stays the same. This is because all GridObjectCollection assets prior to 2.2 were actually performing vertical, then horizontal layout.
+
+**InteractableToggleCollection improvements**
+
+InteractableToggleCollection now properly updates the toggle states within groups. A new InteractableToggleCollection inspector has also been added.
+
+![Corrected toggle collection behavior](https://user-images.githubusercontent.com/53493796/68235326-eb1aa200-ffb7-11e9-9d34-f5c4d37ef4fb.gif)
+
+**Mixed Reality Capture setting (Experimental)**
+
+The Windows Mixed Reality camera settings provider provides an experimental setting to better align holograms in mixed reality capture (MRC) recordings.
+
+![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
+
+> [!Note]
+> This feature is supported on Unity versions 2018.4 (.13f1 and newer) and 2019.3 (.0f1 and newer). With other Unity versions, the recording behavior may not work as expected.
+
+**Mobile AR (Android and iOS) support (Experimental)**
+
+An experimental camera settings provider has been added to support mobile AR on Android and iOS phones and tablets. This provider requires Unity's AR Foundation as well as AR Core or AR Kit packages to be installed into the project.
+
+The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR package on GitHub and NuGet.
+
+**MSBuild for Unity**
+
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
+
+> [!Note]
+> Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
+
+**New audio clips for HoloLens 2 style bounding boxes**
+
+The HoloLens 2 style bounding box UX control uses new audio clips to better match the shell experience.
+
+**PressableButtonHoloLens2 icon lift on focus**
+
+The PressableButtonHoloLens2 UX control now has improved parity with the HoloLens shell experience.
+
+![PressableButton icon lift](https://user-images.githubusercontent.com/13754172/67797289-bdc17780-fa3e-11e9-8f59-c8b8714dd6b8.gif)
+
+**Pulse shaders for spatial mesh and hand mesh (Experimental)**
+
+Experimental shaders have been added for the spatial mesh and hand mesh to replicate the HoloLens 2 shell behavior.
+
+Spatial mesh
+![Spatial mesh shader](https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif)
+
+Hand mesh
+
+> [!Note]
+> On HoloLens 2, the experience does not show an offset from the hands.
+
+![Hand mesh shader](https://user-images.githubusercontent.com/13754172/68262035-e4f7e600-fff6-11e9-9858-796afd1cabc5.gif)
+
+**Scrolling Object Collection (Experimental)**
+
+An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 intitial (out of box) experience.
+
+![Scrolling object collection](https://user-images.githubusercontent.com/13754172/65283862-f3dd1480-daec-11e9-8868-671106c6732b.gif)
+
+**Search MRTK profiles for keywords**
+
+MRTK profiles now support searching by keyword.
+
+![Profile keyword search](https://user-images.githubusercontent.com/168492/69468019-6497eb80-0d3f-11ea-8568-874db66c0099.gif)
+
+**Surface Magnetism Solver and Hand Ray example scene**
+
+A new example scene has been added, which demonstrates surface magnetism and the spatial awareness mesh.
+
+![Surface magnetism and hand ray example](https://user-images.githubusercontent.com/13754172/69566003-f6377100-0f6a-11ea-8963-a6ef93554e43.gif)
+
+**Support for hand and eye tracking remoting for Microsoft HoloLens 2**
+
+MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
+
+To enable hand and eye tracking via Holographic Remoting, the following one-time steps are required.
+
+1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
+    - Expand **Modify Configurations**
+    - Ensure that **Enable MSBuild for Unity** is selected
+    - Click **Apply**
+1. Ensure the latest Holographic Remoting application is installed, via the Microsoft Store application, on the HoloLens.
+1. Open **Window > Package Manager** and ensure the latest version of the **Windows Mixed Reality** package is installed.
+
+Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
+
+1. On the HoloLens 2, launch **Holographic Remoting**
+1. Open **Window > XR > Holographic Emulation**.
+1. Set the **Enumulation Mode** to **Remote to Device**.
+1. Set **Device Version** to **HoloLens 2**.
+1. Enter the IP Address displayed in the HoloLens 2.
+1. Click **Connect**.
+1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
+
+> [!Note]
+> This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
+
+**Windows Mixed Reality Depth Reprojection Settings**
+
+Developer customers can now specify the desired depth reprojection method for their Microsoft HoloLens 2 applications. Select between `Depth Reprojection` and `Auto Planar` in the `Windows Mixed Reality Camera Settings` as shown in the following image.
+
+![Depth reprojection method](Images/CameraSystem/WMRCameraSettingsReprojectionMethod.png)
+
+### Known issues in 2.2.0
+
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
+
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2018: .NET Backend and AR Foundation**
+
+There is an issue in Unity 2018 where, when building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail to install.
+
+To work around this issue, please perform one of the following steps:
+
+- Switch the scripting backend to IL2CPP
+- In the Build Settings window, uncheck **Unity C# Projects"
+
+**System.IO.DirectoryNotFoundException: Could not find a part of the path**
+
+There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
+
+For the latest status of the issue, please refer to the following on GitHub.
+
+- https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810
+
+**Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
+
+If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
+
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+
+**Mixed Reality Capture settings (Experimental)**
+
+The Windows Mixed Reality camera settings provider's experimental Mixed Reality Capture settings are disabled in the default profiles. This is due to some versions of Unity not properly supporting the feature of using the HoloLens photo video camera when recording captures.
+
+It is recommended to only enable this option on versions of Unity in the following list:
+
+- 2018.4 (.13f1 and later)
+- 2019.3.0f1 and later
+
+Enabling this feature on other versions of Unity may result in incorrect captures (ex: missing holograms).
+
+**MRTK Configurator dialog**
+
+When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.
+
+**The type or namespace name 'TrackedPoseDriver' could not be found**
+
+If the Providers.UnityAR package is installed in a project created in Unity 2019.2 or newer, the following error indicates that the assembly definition file (Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef) needs to be updated to include a reference to **UnityEngine.SpatialTracking**. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
+
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
 
 ## Version 2.1.0
 

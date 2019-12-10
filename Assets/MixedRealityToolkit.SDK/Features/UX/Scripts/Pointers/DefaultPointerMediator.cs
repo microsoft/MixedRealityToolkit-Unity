@@ -193,28 +193,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (pointerPreferences != null)
             {
-                Action<IMixedRealityPointer, PointerBehavior> setPointerState =
-                    (ptr, behavior) =>
-                    {
-                        if (behavior == PointerBehavior.Default)
-                        {
-                            return;
-                        }
-
-                        bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
-                        ptr.IsActive = isPointerOn;
-                        if (ptr is GenericPointer genericPtr)
-                        {
-                            genericPtr.IsInteractionEnabled = isPointerOn;
-                        }
-                        unassignedPointers.Remove(ptr);
-                    };
-
                 foreach (IMixedRealityPointer pointer in allPointers)
                 {
-                    setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
+                    ApplyPointerBehavior(pointer, pointerPreferences.GetPointerBehavior(pointer));
                 }
             }
+        }
+
+        private void ApplyPointerBehavior(IMixedRealityPointer pointer, PointerBehavior behavior)
+        {
+            if (behavior == PointerBehavior.Default)
+            {
+                return;
+            }
+
+            bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
+            pointer.IsActive = isPointerOn;
+            if (pointer is GenericPointer genericPtr)
+            {
+                genericPtr.IsInteractionEnabled = isPointerOn;
+            }
+
+            unassignedPointers.Remove(pointer);
         }
     }
 }

@@ -49,10 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
             if (layoutTypeIndex == LayoutOrder.ColumnThenRow)
             {
+                EditorGUILayout.HelpBox("ColumnThenRow will lay out content first horizontally (by column), then vertically (by row). NumColumns specifies number of columns per row.", MessageType.Info);
                 EditorGUILayout.PropertyField(cols, new GUIContent("Num Columns", "Number of columns per row."));
             }
             else if (layoutTypeIndex == LayoutOrder.RowThenColumn)
             {
+                EditorGUILayout.HelpBox("RowThenColumns will lay out content first vertically (by row), then horizontally (by column). NumRows specifies number of rows per column.", MessageType.Info);
                 EditorGUILayout.PropertyField(rows, new GUIContent("Num Rows", "Number of rows per column."));
             }
             else

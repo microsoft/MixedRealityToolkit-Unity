@@ -14,6 +14,12 @@
 
 This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.
 
+#### MixedRealityServiceProfileAttribute
+
+To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.
+
+A second property, ExcludedTypes has also been added.
+
 ## Updating 2.0.0 to 2.1.0
 
 - [API changes](#api-changes-in-210)

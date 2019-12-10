@@ -97,17 +97,8 @@ To create a **HoloLens application**, switch to Universal Windows Platform:
 
 ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
-4. In the Inspector, you will see a prompt like this:
-
-![MRTK Configure Dialog](../Documentation/Images/MRTK_NoProfileMessage.png)
-
-Click "OK".
-
-5. Select "DefaultMixedRealityToolkitConfigurationProfile" from the list.
-
-![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationProfile.png)
-
-For more information on profiles, please see the [profiles](Profiles/Profiles.md) article.
+The inspector will now show the currently active MRTK configuration profile and the profile selection dropdown, where the default profile is already preselected. 
+Profiles configure the behavior of MRTK core components and are described in more detail in the [profiles](Profiles/Profiles.md) article.
 
 > [!NOTE] 
 > If you are getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.
