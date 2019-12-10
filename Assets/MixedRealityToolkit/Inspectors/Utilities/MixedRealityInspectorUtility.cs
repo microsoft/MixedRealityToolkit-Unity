@@ -87,7 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
 
-                if (configProfile != null)
+                if (configProfile == null)
+                {
+                    // if we don't have a profile set we get the default profile
+                    newInstance.ActiveProfile = GetDefaultConfigProfile();
+                }
+                else
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
