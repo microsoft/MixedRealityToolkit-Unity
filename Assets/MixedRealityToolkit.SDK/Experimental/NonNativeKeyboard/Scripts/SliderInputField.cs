@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Override OnDeselect
         /// </summary>
-        /// <param name="eventData"></param>
         public override void OnDeselect(BaseEventData eventData)
         {
             // Do nothing for deselection
