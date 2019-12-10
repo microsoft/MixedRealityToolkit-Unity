@@ -170,9 +170,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     while (pointerCache.Count > 0)
                     {
                         var p = pointerCache.Pop();
-                        if (p != null && p is MonoBehaviour pointerGameObject)
+                        if (p != null && p is MonoBehaviour pointerComponent && pointerComponent != null)
                         {
-                            pointerGameObject.gameObject.SetActive(true);
+                            pointerComponent.gameObject.SetActive(true);
 
                             // We got pointer from cache, continue to next pointer option to review
                             requestedPointer = p;
@@ -209,8 +209,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < pointers.Length; i++)
                 {
                     var p = pointers[i];
-                    if (p != null && p is MonoBehaviour pointerComponent)
+                    if (p != null && p is MonoBehaviour pointerComponent && pointerComponent != null)
                     {
+                        // Unfortunately, it's possible gameobject source is *being* destroyed so we are not null now but will be soon.
+                        // At least if this is a controller we know about and we expect it to be destroyed, skip
+                        if (p is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
+                        {
+                            continue;
+                        }
+
                         // TODO: Troy - look at reset method or other properties?
                         p.Controller = null;
                         pointerComponent.gameObject.SetActive(false);
