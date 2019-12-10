@@ -14,7 +14,7 @@
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <!-- This is for succesful building step from dotnet cli -->
+  <!-- This is for successful building step from dotnet cli -->
   <Choose>
     <When Condition="'$(MSBuildExtensionsPathOverride)'!= ''">
       <PropertyGroup>

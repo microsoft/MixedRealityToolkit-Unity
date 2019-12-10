@@ -42,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { orientType = value; }
         }
 
-        [Tooltip("Whether to sort objects by row first or by column first")]
+        [Tooltip("Specify direction in which children are laid out.")]
         [SerializeField]
-        private LayoutOrder layout = LayoutOrder.ColumnThenRow;
+        private LayoutOrder layout = LayoutOrder.RowThenColumn;
 
         /// <summary>
-        /// Whether to sort objects by row first or by column first
+        /// Specify direction in which children are laid out.
         /// </summary>
         public LayoutOrder Layout
         {
@@ -471,7 +471,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 string friendlyName = GetUserFriendlyName();
 
-                Debug.Log($"Upgrade GridObjectCollection on {friendlyName} from version 0 to version 1 for MRTK 2.2 release. Please save scene / prefab.");
                 // Migrate from version 0 to version 1
                 UpgradeAssetToVersion1();
                 assetVersion = 1;
@@ -491,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 Layout = LayoutOrder.RowThenColumn;
                 var friendlyName = GetUserFriendlyName();
-                Debug.Log($"Changing LayoutOrder for {friendlyName} from ColumnThenRow to RowThenColumn. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891 for details.");
+                Debug.Log($"[MRTK 2.2 asset upgrade] Changing LayoutOrder for {friendlyName} from ColumnThenRow to RowThenColumn. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891 for details.");
             }
         }
 
