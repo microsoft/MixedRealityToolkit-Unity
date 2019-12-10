@@ -906,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "qFz+yNN+VZDtEeQwQZpjCg=="
+          "hash": "L2p/npYQYnOG4b8Y8QudHA=="
         }
       },
       "is_incremental": false,
@@ -6662,7 +6662,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "UjZiY10TbqBHfR7CcirU1Q=="
+          "hash": "jn1yojG+GSYiliiOlZ3Ktg=="
         }
       },
       "is_incremental": false,
@@ -22573,7 +22573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html",
-          "hash": "WVNDMfYjZ/N+Sz5OiJkd/Q=="
+          "hash": "5L73GuCpaAK4Ynqn1qC0hA=="
         }
       },
       "is_incremental": false,
@@ -24222,17 +24222,17 @@
           "total_file_count": 142,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1432,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1432,
           "skipped_file_count": 0
         }
       }
