@@ -7,7 +7,7 @@
     <owners>Microsoft,MixedReality</owners>
     <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.2.0/License.txt</licenseUrl>
     <projectUrl>https://aka.ms/MRTK</projectUrl>
-    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTKLogo_64x64.png</iconUrl>
+    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Mixed Reality Toolkit provider adding support for mobile (phones and tablets) AR devices. NOTE: This package requires Unity's Package Manager AR Foundation as well as AR Core and/or AR Kit packages.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
