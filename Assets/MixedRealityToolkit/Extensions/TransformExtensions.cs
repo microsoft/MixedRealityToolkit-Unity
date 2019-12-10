@@ -245,5 +245,30 @@ namespace Microsoft.MixedReality.Toolkit
 
             return false;
         }
+
+        /// <summary>
+        /// Walk hierarchy looking for named transform
+        /// </summary>
+        /// <param name="t">root transform to start searching from</param>
+        /// <param name="name">name to look for</param>
+        /// <returns>returns found transform or null if none found</returns>
+        public static Transform GetChildRecursive(Transform t, string name)
+        {
+            int numChildren = t.childCount;
+            for (int ii = 0; ii < numChildren; ++ii)
+            {
+                Transform child = t.GetChild(ii);
+                if (child.name == name)
+                {
+                    return child;
+                }
+                Transform foundIt = GetChildRecursive(child, name);
+                if (foundIt != null)
+                {
+                    return foundIt;
+                }
+            }
+            return null;
+        }
     }
 }
