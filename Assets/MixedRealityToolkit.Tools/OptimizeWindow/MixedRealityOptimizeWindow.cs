@@ -420,10 +420,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
 
-                EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
-
-                using (new GUIEnabledWrapper(isGIEnabled))
+                if (isGIEnabled)
                 {
+                    EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
+
                     if (InspectorUIUtility.RenderIndentedButton("Disable Real-time Global Illumination"))
                     {
                         MixedRealityOptimizeUtils.SetRealtimeGlobalIlluminationEnabled(false);
@@ -439,10 +439,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.LabelField("If sharing the depth buffer with the underlying mixed reality platform, it is generally recommended to utilize a 16-bit depth format buffer to save on performance.", EditorStyles.wordWrappedLabel);
 
-                EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Furthermore, no stencil buffer will be created with 16-bit selected. Click the \"Documentation\" button to learn more", MessageType.Info);
-
-                using (new GUIEnabledWrapper(!is16BitDepthFormat))
+                if (!is16BitDepthFormat)
                 {
+                    EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Furthermore, no stencil buffer will be created with 16-bit selected. Click the \"Documentation\" button to learn more", MessageType.Info);
+
                     if (InspectorUIUtility.RenderIndentedButton("Enable 16-bit depth format"))
                     {
                         MixedRealityOptimizeUtils.SetDepthBufferFormat(true);
@@ -458,10 +458,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
 
-                EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
-
-                using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
+                if (!isDepthBufferSharingEnabled)
                 {
+                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
+
                     if (InspectorUIUtility.RenderIndentedButton("Enable Depth Buffer Sharing"))
                     {
                         MixedRealityOptimizeUtils.SetDepthBufferSharing(true);
@@ -477,10 +477,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
-                EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
-
-                using (new GUIEnabledWrapper(!isSinglePassInstancedEnabled))
+                if (!isSinglePassInstancedEnabled)
                 {
+                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
+
                     if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
                     {
                         PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
