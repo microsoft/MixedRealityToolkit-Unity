@@ -272,6 +272,12 @@ To work around the issue, please perform the following steps:
 1. Close Unity
 1. Reopen Unity and open the project.
 
+**Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter**
+
+When remoting, the Unity Console window may display a message stating "Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter".
+
+This error most commonly occurs when a hand comes into view. There is no functional impact on the application and this issue is being tracked on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6807).
+
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
 If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
