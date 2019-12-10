@@ -314,6 +314,9 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <li>Close Unity</li>
 <li>Reopen Unity and open the project.</li>
 </ol>
+<p><strong>Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter</strong></p>
+<p>When remoting, the Unity Console window may display a message stating &quot;Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter&quot;.</p>
+<p>This error most commonly occurs when a hand comes into view. There is no functional impact on the application and this issue is being tracked on <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6807">GitHub</a>.</p>
 <p><strong>Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'</strong></p>
 <p>If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a> article for requirements and instructions.</p>
 <p>If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.</p>
