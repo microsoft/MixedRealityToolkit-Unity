@@ -270,14 +270,6 @@ To work around the issue, please perform the following steps:
 1. Close Unity
 1. Reopen Unity and open the project.
 
-**System.IO.DirectoryNotFoundException: Could not find a part of the path**
-
-There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
-
-For the latest status of the issue, please refer to the following on GitHub.
-
-- https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810
-
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
 If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
