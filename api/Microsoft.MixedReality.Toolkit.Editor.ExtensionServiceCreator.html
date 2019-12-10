@@ -86,18 +86,18 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator" class="text-break">Class ExtensionServiceCreator
   </h1>
-  <div class="markdown level0 summary"><p>Class used to generate service scripts and profile instances</p>
+  <div class="markdown level0 summary"><p>Class used to generate service scripts and profile instances. Primarily designed for in-editor use</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ExtensionServiceCreator</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
@@ -112,10 +112,10 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
     </div>
     <div>
-      <span class="xref">System.Object.GetType()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
     </div>
     <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.html">Microsoft.MixedReality.Toolkit.Editor</a></h6>
@@ -130,11 +130,12 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_CreationLog_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreationLog*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_CreationLog" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CreationLog">CreationLog</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Log of errors and updates thus far in the create operation of the new extension service classes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; CreationLog { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string CreationLog { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,7 +147,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -155,7 +156,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InspectorFolderObject_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InspectorFolderObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InspectorFolderObject" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InspectorFolderObject">InspectorFolderObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unity object pointing to folder asset to place Inspector class file, if applicable</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -180,7 +182,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InspectorName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InspectorName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InspectorName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InspectorName">InspectorName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of Unity inspector class to create. Value is ServiceName concatenated with &quot;Inspector&quot;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -196,7 +199,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -205,7 +208,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InterfaceFolderObject_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InterfaceFolderObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InterfaceFolderObject" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InterfaceFolderObject">InterfaceFolderObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unity object pointing to folder asset to place interface file, if applicable</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -230,7 +234,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InterfaceName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InterfaceName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_InterfaceName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.InterfaceName">InterfaceName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of interface to create for new extension service. Value is ServiceName with leading &quot;I&quot;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -246,7 +251,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -255,7 +260,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Namespace_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Namespace*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Namespace" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Namespace">Namespace</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Namespace to utilize for all classes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -271,7 +277,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -280,7 +286,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Platforms_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Platforms*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Platforms" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Platforms">Platforms</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Supported platform flags for new extension service. Added to attribute on service class</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -305,7 +312,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileAssetFolderObject_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileAssetFolderObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileAssetFolderObject" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileAssetFolderObject">ProfileAssetFolderObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unity object pointing to folder asset to place ScriptableObject profile asset file, if applicable</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -330,7 +338,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileAssetName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileAssetName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileAssetName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileAssetName">ProfileAssetName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of default ScriptableObject instance asset to create. Value is &quot;Default&quot; concatenated with ProfileName</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -346,32 +355,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileFieldName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileFieldName*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileFieldName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileFieldName">ProfileFieldName</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ProfileFieldName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -380,7 +364,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileFolderObject_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileFolderObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileFolderObject" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileFolderObject">ProfileFolderObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unity object pointing to folder asset to place ScriptableObject profile class file, if applicable</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -405,7 +390,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileInstance_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileInstance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileInstance" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileInstance">ProfileInstance</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Object instance of ScriptableObject profile class for extension service created</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -430,7 +416,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ProfileName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ProfileName">ProfileName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of ScriptableObject profile class to create. Value is ServiceName concatenated with &quot;Profile&quot;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -446,7 +433,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -455,7 +442,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Result_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Result*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Result" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Result">Result</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Current result of extension service file(s) create operation</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -480,7 +468,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_SampleCode_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.SampleCode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_SampleCode" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.SampleCode">SampleCode</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sample code string demonstrating example usage for new Extension service created</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -496,32 +485,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceFieldName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceFieldName*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceFieldName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceFieldName">ServiceFieldName</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string ServiceFieldName { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -530,7 +494,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceFolderObject_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceFolderObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceFolderObject" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceFolderObject">ServiceFolderObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Unity object pointing to folder asset to place Service class file</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -555,7 +520,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceName" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceName">ServiceName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The name of the new extension service to build</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -571,7 +537,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -580,7 +546,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceType_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceType*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ServiceType" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ServiceType">ServiceType</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>System.Type of Extension Service created</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -605,7 +572,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Stage_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Stage*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_Stage" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.Stage">Stage</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Current stage in UI workflow for creation</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -630,7 +598,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_UsesInspector_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.UsesInspector*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_UsesInspector" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.UsesInspector">UsesInspector</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Should a custom editor inspector class be created for new extension service</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -655,7 +624,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_UsesProfile_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.UsesProfile*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_UsesProfile" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.UsesProfile">UsesProfile</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Should a ScriptableObject profile class be created for new extension service</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -682,7 +652,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_BeginAssetCreationProcess_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.BeginAssetCreationProcess*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_BeginAssetCreationProcess" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.BeginAssetCreationProcess">BeginAssetCreationProcess()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Start the creation process for all revelant extension service files based on current creator property settings</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -705,34 +676,37 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_LoadStoredState_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.LoadStoredState*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_LoadStoredState" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.LoadStoredState">LoadStoredState()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_CanBuildAsset_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CanBuildAsset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_CanBuildAsset_UnityEngine_Object_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.CanBuildAsset(UnityEngine.Object,System.String)">CanBuildAsset(UnityEngine.Object, String)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the asset supplied, via Folder object representing path and file name string (assumming .cs files only), does not exist. False otherwise</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void LoadStoredState()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool CanBuildAsset(UnityEngine.Object folder, string fileName)</code></pre>
   </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResetState_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResetState*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResetState" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResetState">ResetState()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ResetState()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResumeAssetCreationProcessAfterReload_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResumeAssetCreationProcessAfterReload*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResumeAssetCreationProcessAfterReload" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResumeAssetCreationProcessAfterReload">ResumeAssetCreationProcessAfterReload()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task ResumeAssetCreationProcessAfterReload()</code></pre>
-  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td><span class="parametername">folder</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">fileName</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -743,7 +717,157 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_IsValidFolder_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.IsValidFolder*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_IsValidFolder_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.IsValidFolder(System.String)">IsValidFolder(String)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the folder path string supplied is a valid location in the Unity project, false otherwise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsValidFolder(string folderPath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">folderPath</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_IsValidFolder_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.IsValidFolder*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_IsValidFolder_UnityEngine_Object_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.IsValidFolder(UnityEngine.Object)">IsValidFolder(UnityEngine.Object)</h4>
+  <div class="markdown level1 summary"><p>Returns true if the folder path supplied by Folder object is a valid location in the Unity project, false otherwise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsValidFolder(UnityEngine.Object folder)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Object</span></td>
+        <td><span class="parametername">folder</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_LoadStoredState_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.LoadStoredState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_LoadStoredState" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.LoadStoredState">LoadStoredState()</h4>
+  <div class="markdown level1 summary"><p>Load creator state from unity SessionState</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void LoadStoredState()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResetState_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResetState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ResetState" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ResetState">ResetState()</h4>
+  <div class="markdown level1 summary"><p>Reset current creator state to default and save</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetState()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_SetAllFolders_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.SetAllFolders*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_SetAllFolders_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.SetAllFolders(System.String)">SetAllFolders(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SetAllFolders(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -752,7 +876,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_StoreState_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.StoreState*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_StoreState" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.StoreState">StoreState()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Save current creator state to session registry in Unity</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -762,7 +887,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateAssets_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateAssets*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateAssets_List_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateAssets(List{System.String})">ValidateAssets(List&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Validate template assets</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -779,7 +905,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">errors</span></td>
         <td></td>
       </tr>
@@ -796,57 +922,20 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>true if no errors encountered, false otherwise</p>
+</td>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateFolders_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateFolders*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateFolders_List_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateFolders(List{System.String})">ValidateFolders(List&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ValidateFolders(List&lt;string&gt; errors)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><span class="parametername">errors</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateAssets_List_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Adds items to errors log field if not valid</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateName_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateName*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateName_List_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateName(List{System.String})">ValidateName(List&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Return true if configured Extension Service class name is valid. False otherwise</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -863,7 +952,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">errors</span></td>
         <td></td>
       </tr>
@@ -884,11 +973,15 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateName_List_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Adds items to errors log field if not valid</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateNamespace_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateNamespace*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateNamespace_List_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidateNamespace(List{System.String})">ValidateNamespace(List&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Validate namespace property with each class/interface file to be created for new extension service</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -905,7 +998,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">errors</span></td>
         <td></td>
       </tr>
@@ -922,15 +1015,20 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>true if no errors, false otherwise</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidateNamespace_List_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Adds items to errors log field if not valid</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidatePlatforms_" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidatePlatforms*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidatePlatforms_List_System_String__" data-uid="Microsoft.MixedReality.Toolkit.Editor.ExtensionServiceCreator.ValidatePlatforms(List{System.String})">ValidatePlatforms(List&lt;String&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Validate that SupportedPlatforms is not zero.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -947,7 +1045,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
         <td><span class="parametername">errors</span></td>
         <td></td>
       </tr>
@@ -968,6 +1066,9 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Editor_ExtensionServiceCreator_ValidatePlatforms_List_System_String___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Adds items to errors log field if not valid</p>
+</div>
 </article>
           </div>
           
