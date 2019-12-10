@@ -226,7 +226,7 @@
     // IMixedRealitySourceStateHandler interface
     public void OnSourceDetected(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
@@ -237,12 +237,12 @@
 
     public void OnSourceLost(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
         {
-            Debug.Log(&quot;Source detected: &quot; + hand.ControllerHandedness);
+            Debug.Log(&quot;Source lost: &quot; + hand.ControllerHandedness);
         }
     }
 
