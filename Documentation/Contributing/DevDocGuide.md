@@ -20,8 +20,8 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 ### Generation
 
 * open a powershell or cmd prompt in the root of the MRTK project
-* execute docfx docfx.json (optionally with the -f option to force a rebuild of doc files)
-* execute docfx serve doc (optionally with -p *portnumber* if you don't want to use the 8888 default port)
+* execute `docfx docfx.json` (optionally with the -f option to force a rebuild of doc files)
+* execute `docfx serve doc` (optionally with -p *portnumber* if you don't want to use the 8888 default port)
 * open a web browser with localhost:*portnumber*
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
