@@ -116,7 +116,7 @@
 <p>NuGet requirements</p>
 <p>If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.</p>
 <ul>
-<li><a href="https://github.com/GlitchEnzo/NuGetForUnity">NuGet for Unity</a></li>
+<li><a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity 2.0.0 or newer</a></li>
 </ul>
 <h3 id="upgrading-projects-to-220">Upgrading projects to 2.2.0</h3>
 <p>The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-210-to-220"><strong>Updating 2.1.0 to 2.2.0</strong></a> article.</p>
@@ -347,7 +347,7 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <p>When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.</p>
 <p><strong>The type or namespace name 'TrackedPoseDriver' could not be found</strong></p>
 <p>If the Providers.UnityAR package is installed in a project created in Unity 2019.2 or newer, the following error indicates that the assembly definition file (Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef) needs to be updated to include a reference to <strong>UnityEngine.SpatialTracking</strong>. Please review the <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a> article for requirements and instructions.</p>
-<p>If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.</p>
+<p>If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.</p>
 <h2 id="version-210">Version 2.1.0</h2>
 <ul>
 <li><a href="#upgrading-projects-to-210">Upgrading projects</a></li>
@@ -445,7 +445,7 @@ asset database and reconcile existing custom profiles.</li>
 <li>Re-open the project in Unity</li>
 </ol>
 <p>After updating the packages, you may see messages similar to the following:</p>
-<pre><code>Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
+<pre><code class="lang-cmd">Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat'
 </code></pre>
 <p>The step to re-open the project in Unity resolves the issue.</p>
 <h3 id="whats-new-in-210">What's new in 2.1.0</h3>
@@ -484,7 +484,7 @@ asset database and reconcile existing custom profiles.</li>
 <p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562">change 5562</a> for more details</p>
 <p><strong>Ability to turn off hand rays and other pointers (gaze, grab, poke) from code</strong></p>
 <p>We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.</p>
-<pre><code>// Turn off all hand rays
+<pre><code class="lang-csharp">// Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
 // Turn hand rays back on
@@ -555,7 +555,7 @@ if(InputRayUtils.TryGetHandRay(Handedness.right, rightHandRay))
 <p>The <code>CollierNearInteractionTouchable</code> class is now obsolete. Replace all usages of <code>ColliderNearInteractionTouchable</code> with <code>BaseNearInteractionTouchable</code>.</p>
 <h3 id="interactable-deprecated-methods">Interactable: deprecated methods</h3>
 <p>Interactable has been upgraded to be configurable from code. The following methods in <code>Interactable</code> are now marked Obsolete:</p>
-<p>public void ResetBaseStates()
+<pre><code class="lang-csharp">public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)
 public void ForceUpdateThemes()
@@ -580,7 +580,8 @@ public virtual void SetCollision(bool collision)
 public virtual void SetCustom(bool custom)
 public virtual void SetVoiceCommand(bool voice)
 public virtual void SetPhysicalTouch(bool touch)
-public virtual void SetGrab(bool grab)</p>
+public virtual void SetGrab(bool grab)
+</code></pre>
 <p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6104">change 6104</a> for more details.</p>
 <h3 id="known-issues-in-210">Known issues in 2.1.0</h3>
 <p>The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.</p>
