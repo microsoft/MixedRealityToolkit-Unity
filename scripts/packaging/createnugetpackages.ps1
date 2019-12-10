@@ -30,7 +30,7 @@ Write-Verbose $unityEditor;
 function RunUnityTask
 {
     param([string]$taskName, [string]$methodToExecute)
-    Write-Output "Starting runing Unity task: $($taskName)"
+    Write-Output "Starting running Unity task: $($taskName)"
     $logFile = New-Item -Path "Logs\Unity.$($taskName).$($Version).log" -ItemType File -Force
     
     $ProjectLocation = Resolve-Path "$(Get-Location)\..\"
