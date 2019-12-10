@@ -49,7 +49,7 @@ Once the project has been configured, a connection can be established to the Hol
 
 With Unity connected to the HoloLens, enter play mode in the editor.
 
-When the session is complete, exit play mode and close the Holographic dialog.
+When the session is complete, exit play mode.
 
 > [!Note]
 > There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded. To ensure this issue does not occur, always close the Holographic dialog prior to exiting Unity.
