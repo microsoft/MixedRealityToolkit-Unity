@@ -310,7 +310,7 @@ When loading an MRTK based project, the MRTK Configurator dialog may display mul
 
 If the Providers.UnityAR package is installed in a project created in Unity 2019.2 or newer, the following error indicates that the assembly definition file (Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef) needs to be updated to include a reference to **UnityEngine.SpatialTracking**. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
 
-If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.
 
 ## Version 2.1.0
 
@@ -336,7 +336,7 @@ NuGet requirements
 If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
- 
+
 ### Upgrading projects to 2.1.0
 
 **Updating using .unitypackage files**
@@ -394,8 +394,8 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
 
 After updating the packages, you may see messages similar to the following:
 
-```
-Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
+```cmd
+Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat'
 ```
 
 The step to re-open the project in Unity resolves the issue.
@@ -428,7 +428,7 @@ The hand menu example has received visual updates (no code changes).
 
 **MRTK Examples Hub (Experimental)**
 
-The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package, in the Experimental folder. For information on how to build and use the sample, please see the [examples hub](README_ExampleHub.md) article. 
+The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package, in the Experimental folder. For information on how to build and use the sample, please see the [examples hub](README_ExampleHub.md) article.
 
 **Near menu control**
 
@@ -446,7 +446,7 @@ A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has b
 
 **Mesh Outlining**
 
-A component `MeshOutline` and `MeshOutlineHierarchy` to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices. 
+A component `MeshOutline` and `MeshOutlineHierarchy` to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices.
 
 See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562) for more details
 
@@ -454,7 +454,7 @@ See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/55
 
 We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
 
-```
+```csharp
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -511,7 +511,7 @@ Keys for rotating hands have been removed, hand rotation is now controlled by th
 
 **Layer Masks for Grabbable objects**
 
-We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects. 
+We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects.
 
 An object must both be on a Grabbable Layer as well as have a NearInteractionGrabbable component in order for hand rays to turn off. The Grabbable Layer is by default set to everything except Ignore Raycast and Spatial Awareness.
 
@@ -550,6 +550,7 @@ The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages 
 
 Interactable has been upgraded to be configurable from code. The following methods in `Interactable` are now marked Obsolete:
 
+```csharp
 public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)
@@ -576,6 +577,7 @@ public virtual void SetCustom(bool custom)
 public virtual void SetVoiceCommand(bool voice)
 public virtual void SetPhysicalTouch(bool touch)
 public virtual void SetGrab(bool grab)
+```
 
 Please see [change 6104](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6104) for more details.
 
