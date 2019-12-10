@@ -157,42 +157,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var returnPointers = new List<IMixedRealityPointer>();
 
+            CleanActivePointers();
+
             for (int i = 0; i < pointerConfigurations.Length; i++)
             {
                 var option = pointerConfigurations[i].profile;
-
                 if (option.ControllerType.HasFlag(controllerType) && option.Handedness.HasFlag(controllingHand))
                 {
+                    IMixedRealityPointer requestedPointer = null;
+
                     var pointerCache = pointerConfigurations[i].cache;
-                    if (pointerCache.Count > 0)
+                    while (pointerCache.Count > 0)
                     {
                         var p = pointerCache.Pop();
                         if (p != null && p is MonoBehaviour pointerGameObject)
                         {
-                            Debug.Log($"{p.PointerName} retrieved from cache in request");
-
                             pointerGameObject.gameObject.SetActive(true);
 
-                            // Track pointer for recycling
-                            activePointersToConfig.Add(p, (uint)i);
-
-                            returnPointers.Add(p);
-
                             // We got pointer from cache, continue to next pointer option to review
-                            continue;
+                            requestedPointer = p;
+                            break;
                         }
                     }
-                    
-                    // We couldn't obtain a pointer from our cache, resort to creating a new one
-                    var pointer = CreatePointer(in option);
-                    if (pointer != null)
+
+                    if (requestedPointer == null)
                     {
-                        Debug.Log($"{pointer.PointerId} created after cache miss in request");
+                        // We couldn't obtain a pointer from our cache, resort to creating a new one
+                        requestedPointer = CreatePointer(in option);
+                    }
 
+                    if (requestedPointer != null)
+                    {
                         // Track pointer for recycling
-                        activePointersToConfig.Add(pointer, (uint)i);
+                        activePointersToConfig.Add(requestedPointer, (uint)i);
 
-                        returnPointers.Add(pointer);
+                        returnPointers.Add(requestedPointer);
                     }
                 }
             }
@@ -204,6 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (inputSource != null)
             {
+                CleanActivePointers();
+
                 var pointers = inputSource.Pointers;
                 for (int i = 0; i < pointers.Length; i++)
                 {
@@ -246,6 +247,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             return pointer;
+        }
+
+        /// <summary>
+        /// This class tracks pointers that have been requested and thus are considered "active" gameobjects in the scene. 
+        /// As GameObjects, these pointers may be destroyed and thus their entry becomes "null" although the managed object is not destroyed
+        /// This helper loops through all dictionary entries and checks if it is null, if so it is removed
+        /// </summary>
+        private void CleanActivePointers()
+        {
+            var enumerator = activePointersToConfig.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var pointer = enumerator.Current.Key as MonoBehaviour;
+                if (pointer == null)
+                {
+                    activePointersToConfig.Remove(enumerator.Current.Key);
+                }
+            }
         }
     }
 }
