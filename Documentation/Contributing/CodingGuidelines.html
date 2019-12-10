@@ -395,10 +395,6 @@ public float MyValue
     set{ myValue = value }
 }
 </code></pre>
-<h4 id="do-10">Do</h4>
-<pre><code class="lang-c#">int length = items.length; // cache reference to list/array length
-for(int i=0; i &lt; length; i++)
-</code></pre>
 <h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible</h3>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
 <h4 id="dont-10">Don't</h4>
@@ -407,7 +403,7 @@ for(int i=0; i &lt; length; i++)
     gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
 }
 </code></pre>
-<h4 id="do-11">Do</h4>
+<h4 id="do-10">Do</h4>
 <pre><code class="lang-c#">[SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
@@ -437,7 +433,7 @@ private void Update()
     }
 }
 </code></pre>
-<h4 id="do-12">Do</h4>
+<h4 id="do-11">Do</h4>
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
