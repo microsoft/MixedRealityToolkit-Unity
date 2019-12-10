@@ -33,6 +33,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        [Tooltip("The gameObject that contains the trackVisuals.")]
+        [SerializeField]
+        private GameObject trackVisuals = null;
+        public GameObject TrackVisuals
+        {
+            get
+            {
+                return trackVisuals;
+            }
+            set
+            {
+                trackVisuals = value;
+                InitializeTrackVisuals();
+            }
+        }
+
+        [Tooltip("The gameObject that contains the tickMarks.")]
+        [SerializeField]
+        private GameObject tickMarks = null;
+        public GameObject TickMarks
+        {
+            get
+            {
+                return tickMarks;
+            }
+            set
+            {
+                tickMarks = value;
+                InitializeTickMarks();
+            }
+        }
+
         [Range(0, 1)]
         [SerializeField]
         private float sliderValue = 0.5f;
@@ -53,6 +85,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The axis the slider moves along")]
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
+
+        private SliderAxis previousSliderAxis { get; set; } = SliderAxis.XAxis;
+
         [Serializable]
         private enum SliderAxis
         {
@@ -153,6 +188,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 EndInteraction();
             }
         }
+
+        private void OnValidate()
+        {
+            if (previousSliderAxis != sliderAxis)
+            {
+                InitializeTrackVisuals();
+                InitializeTickMarks();
+                previousSliderAxis = sliderAxis;
+            }
+        }
+
         #endregion
 
         #region Private Methods
@@ -163,6 +209,49 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
+        }
+
+        private void InitializeTrackVisuals()
+        {
+            if (TrackVisuals)
+            {
+                var translation = TrackVisuals.transform.localPosition;
+                TrackVisuals.transform.localPosition = Vector3.zero;
+
+                switch (sliderAxis)
+                {
+                    case SliderAxis.XAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.identity;
+                        break;
+                    case SliderAxis.YAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+                        break;
+                    case SliderAxis.ZAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                        break;
+                }
+            }
+        }
+
+        private void InitializeTickMarks()
+        {
+            if (TickMarks)
+            {
+                TickMarks.transform.localPosition = Vector3.zero;
+                TickMarks.transform.localRotation = Quaternion.identity;
+
+                var grid = TickMarks.GetComponent<Utilities.GridObjectCollection>();
+                if (grid)
+                {
+                    grid.Layout = (sliderAxis == SliderAxis.YAxis) ? Utilities.LayoutOrder.Vertical : Utilities.LayoutOrder.Horizontal;
+                    grid.UpdateCollection();
+                }
+
+                if (sliderAxis == SliderAxis.ZAxis)
+                {
+                    TickMarks.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                }
+            }
         }
 
         private Vector3 GetSliderAxis()
