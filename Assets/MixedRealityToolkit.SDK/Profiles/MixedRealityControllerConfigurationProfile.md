@@ -90,7 +90,7 @@ These are different for each controller type, as shown below:
 
 The Action each input can perform, is completely up to you.
 
-> See the [Input Action]() configuration profile for more information.
+> See the [Input Action configuration profile](..\..\..\Documentation\Input\InputActions.md) for more information.
 
 ## Example Models
 ---
