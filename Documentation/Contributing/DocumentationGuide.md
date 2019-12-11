@@ -289,7 +289,7 @@ Some examples where design documentation can be helpful:
 
 This type of documentation is **strongly** recommended, and **may** be requested as part of a pull request review.
 
-This may or may not be different from the design recommendation on the [MS Developer site](https://docs.microsoft.com/en-us/windows/mixed-reality/design)
+This may or may not be different from the design recommendation on the [MS Developer site](https://docs.microsoft.com/windows/mixed-reality/design)
 
 ## Performance notes
 

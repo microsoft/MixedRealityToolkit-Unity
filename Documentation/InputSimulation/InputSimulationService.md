@@ -79,7 +79,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the __Han
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 

@@ -21,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor
         private readonly GUIContent pvCameraRenderingTitle = new GUIContent("Render from PV Camera (Align holograms)");
         private readonly GUIContent reprojectionMethodTitle = new GUIContent("HoloLens 2 Reprojection Method");
 
-        private const string MRCDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
-        private const string DepthReprojectionDocURL = "https://docs.microsoft.com/en-us/windows/mixed-reality/hologram-stability#reprojection";
+        private const string MRCDocURL = "https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in";
+        private const string DepthReprojectionDocURL = "https://docs.microsoft.com/windows/mixed-reality/hologram-stability#reprojection";
 
         protected override void OnEnable()
         {
