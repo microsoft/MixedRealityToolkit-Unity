@@ -90,8 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return sliderAxis; }
             set
             {
-                UpdateVisualsOrientation();
                 sliderAxis = value;
+                UpdateVisualsOrientation();
             }
         }
 
