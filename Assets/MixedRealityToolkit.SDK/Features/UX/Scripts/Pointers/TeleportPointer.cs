@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
-
         [SerializeField]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 

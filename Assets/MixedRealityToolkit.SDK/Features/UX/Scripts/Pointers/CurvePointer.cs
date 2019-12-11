@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Extends line pointer to support curves. Useful for teleportation or other situations where multiple raysteps need to be tested along a spline
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/CurvePointer")]
     public class CurvePointer : LinePointer
     {
@@ -14,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("This setting has a high performance cost. Values above 20 are not recommended.")]
         protected int LineCastResolution = 10;
 
+        /// <inheritdoc />
         protected override void UpdateRays()
         {
             // Make sure our array will hold
