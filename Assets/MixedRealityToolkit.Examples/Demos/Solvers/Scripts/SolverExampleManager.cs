@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SolverExampleManager")]
     public class SolverExampleManager : MonoBehaviour
     {
         [SerializeField]

@@ -9,7 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Change the color of the material on a UnityUI Graphic (ex. Image).  Useful for visualizing button presses.
     /// </summary>
-    class ColorChangerUnityUI : MonoBehaviour
+    [AddComponentMenu("Scripts/MRTK/Examples/ColorChangerUnityUI")]
+    public class ColorChangerUnityUI : MonoBehaviour
     {
         [SerializeField]
         private Graphic graphic;

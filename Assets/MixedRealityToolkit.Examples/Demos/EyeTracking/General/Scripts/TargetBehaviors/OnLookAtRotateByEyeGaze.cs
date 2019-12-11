@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// The currently looked at part will move towards the front facing the user.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/OnLookAtRotateByEyeGaze")]
     public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
     {
         #region Serialized variables

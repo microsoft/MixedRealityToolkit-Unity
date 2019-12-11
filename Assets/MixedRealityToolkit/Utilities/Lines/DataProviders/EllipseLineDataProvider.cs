@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Creates an elliptical line shape.
     /// </summary>
     /// <remarks>This line loops.</remarks>
+    [AddComponentMenu("Scripts/MRTK/Core/EllipseLineDataProvider")]
     public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]

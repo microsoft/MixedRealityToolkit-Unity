@@ -595,7 +595,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         public float? FloorHeight { get; private set; } = null;
 
         /// <inheritdoc/>
-        public bool Contains(Vector3 location, UnityBoundary.Type boundaryType = UnityBoundary.Type.TrackedArea)
+        public bool Contains(Vector3 location, BoundaryType boundaryType = BoundaryType.TrackedArea)
         {
             if (!EdgeUtilities.IsValidPoint(location))
             {
@@ -622,7 +622,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // Boundary coordinates are always "on the floor"
             Vector2 point = new Vector2(location.x, location.z);
 
-            if (boundaryType == UnityBoundary.Type.PlayArea)
+            if (boundaryType == BoundaryType.PlayArea)
             {
                 // Check the inscribed rectangle.
                 if (rectangularBounds != null)
@@ -630,7 +630,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     return rectangularBounds.IsInsideBoundary(point);
                 }
             }
-            else if (boundaryType == UnityBoundary.Type.TrackedArea)
+            else if (boundaryType == BoundaryType.TrackedArea)
             {
                 // Check the geometry
                 return EdgeUtilities.IsInsideBoundary(Bounds, point);

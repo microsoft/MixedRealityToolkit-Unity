@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
+    [AddComponentMenu("Scripts/MRTK/Core/DistorterWiggly")]
     public class DistorterWiggly : Distorter
     {
         private const float MinScaleMultiplier = 0.05f;

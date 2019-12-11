@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
     public class SpherePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;

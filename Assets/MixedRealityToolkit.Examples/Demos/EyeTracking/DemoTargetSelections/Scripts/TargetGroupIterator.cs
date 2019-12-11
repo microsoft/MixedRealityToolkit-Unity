@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// Iterates through a given set of targets based on a required TargetGroupCreator.
     /// </summary>
     [RequireComponent(typeof(TargetGroupCreatorRadial))]
+    [AddComponentMenu("Scripts/MRTK/Examples/TargetGroupIterator")]
     public class TargetGroupIterator : MonoBehaviour, IMixedRealityPointerHandler
     {
         #region Variables

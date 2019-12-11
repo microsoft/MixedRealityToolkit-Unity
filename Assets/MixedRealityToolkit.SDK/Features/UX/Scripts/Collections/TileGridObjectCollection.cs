@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     /// 
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/SDK/TileGridObjectCollection")]
     public class TileGridObjectCollection : MonoBehaviour
     {
         /// <summary>

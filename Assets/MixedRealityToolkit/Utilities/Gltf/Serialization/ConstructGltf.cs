@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 !string.IsNullOrEmpty(bufferView.Buffer.uri))
             {
                 var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
-                bufferView.Buffer.BufferData = File.ReadAllBytes($"{parentDirectory}\\{bufferView.Buffer.uri}");
+                bufferView.Buffer.BufferData = File.ReadAllBytes(Path.Combine(parentDirectory, bufferView.Buffer.uri));
             }
         }
 

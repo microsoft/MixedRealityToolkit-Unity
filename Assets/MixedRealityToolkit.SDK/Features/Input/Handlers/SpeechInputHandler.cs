@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This component handles the speech input events raised form the <see cref="IMixedRealityInputSystem"/>.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("Scripts/MRTK/SDK/SpeechInputHandler")]
     public class SpeechInputHandler : BaseInputHandler, IMixedRealitySpeechHandler
     {
         /// <summary>

@@ -20,10 +20,11 @@ namespace Microsoft.MixedReality.Toolkit
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         [SerializeField]
+        [Tooltip("Configuration objects describing the registered settings providers.")]
         private MixedRealityCameraSettingsConfiguration[] settingsConfigurations = new MixedRealityCameraSettingsConfiguration[0];
 
         /// <summary>
-        /// Configuration objectrs describing the registered settings providers.
+        /// Configuration objects describing the registered settings providers.
         /// </summary>
         public MixedRealityCameraSettingsConfiguration[] SettingsConfigurations
         {

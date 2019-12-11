@@ -87,7 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
 
-                if (configProfile != null)
+                if (configProfile == null)
+                {
+                    // if we don't have a profile set we get the default profile
+                    newInstance.ActiveProfile = GetDefaultConfigProfile();
+                }
+                else
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
@@ -553,9 +558,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Draw a button that finds the profile in the project window
                 if (property.objectReferenceValue != null)
                 {
-                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
-                    {
-                        EditorGUIUtility.PingObject(property.objectReferenceValue);
+                    // The view asset button should always be enabled.
+                    using (new GUIEnabledWrapper(true, true))
+                    { 
+                        if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
+                        {
+                            EditorGUIUtility.PingObject(property.objectReferenceValue);
+                        }
                     }
                 }
 

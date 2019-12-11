@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     [ExecuteInEditMode]
     [RequireComponent(typeof(RectTransform))]
+    [AddComponentMenu("Scripts/MRTK/SDK/RectTransformCubeScaler")]
     public class RectTransformCubeScaler : MonoBehaviour
     {
         private RectTransform rectTransform;

@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
-        #region IMixedRealityDataProvider implementation
+        #region IMixedRealityDataProvider Implementation
 
         bool autoResume = false;
 
@@ -161,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             CleanupObserver();
         }
 
-        #endregion IMixedRealityDataProvider implementation
+        #endregion IMixedRealityDataProvider Implementation
 
-        #region IMixedRealitySpatialAwarenessObserver implementation
+        #region IMixedRealitySpatialAwarenessObserver Implementation
 
         private GameObject observedObjectParent = null;
 
@@ -282,9 +282,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 handler.OnObservationRemoved(spatialEventData);
             };
 
-        #endregion IMixedRealitySpatialAwarenessObserver implementation
+        #endregion IMixedRealitySpatialAwarenessObserver Implementation
 
-        #region IMixedRealitySpatialAwarenessMeshObserver implementation
+        #region IMixedRealitySpatialAwarenessMeshObserver Implementation
 
         private SpatialAwarenessMeshDisplayOptions displayOption = SpatialAwarenessMeshDisplayOptions.Visible;
         
@@ -453,6 +453,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             }
         }
 
-        #endregion IMixedRealitySpatialAwarenessMeshObserver implementation
+        #endregion IMixedRealitySpatialAwarenessMeshObserver Implementation
     }
 }

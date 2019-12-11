@@ -153,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -272,7 +272,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 251773535}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1000013198843976, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_Name
@@ -280,15 +280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.29652783
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.136
+      value: 0.29054102
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1.0257568
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalRotation.x
@@ -308,7 +308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -334,12 +334,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6038dfbe1e1bd14dac07b1405ccda54, type: 3}
---- !u!4 &176756777 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: f6038dfbe1e1bd14dac07b1405ccda54,
-    type: 3}
-  m_PrefabInstance: {fileID: 176756776}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &208193368
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,17 +398,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList:
+  - Name: 3DTextSelawik
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1499136695}
+    Colliders: []
+  - Name: 3DTextSelawikBold
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 83666595}
+    Colliders: []
+  - Name: 3DTextSelawikLight
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 384816103}
+    Colliders: []
+  - Name: 3DTextSelawikSemibold
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1257128278}
+    Colliders: []
+  - Name: 3DTextSelawikSemilight
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1741344962}
+    Colliders: []
   ignoreInactiveTransforms: 1
-  sortType: 0
+  sortType: 1
   surfaceType: 1
   orientType: 0
   layout: 0
+  anchor: 4
   radius: 2
   radialRange: 180
-  distance: 1
+  distance: 0
   rows: 5
+  columns: 1
   cellWidth: 0.1
   cellHeight: 0.03
+  assetVersion: 1
 --- !u!4 &251773535
 Transform:
   m_ObjectHideFlags: 0
@@ -431,7 +454,6 @@ Transform:
   - {fileID: 384816103}
   - {fileID: 1257128278}
   - {fileID: 1741344962}
-  - {fileID: 176756777}
   m_Father: {fileID: 208193369}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -483,17 +505,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList:
+  - Name: New Text (1)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1093156362}
+    Colliders: []
+  - Name: New Text (2)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1404545961}
+    Colliders: []
+  - Name: New Text (3)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 759348343}
+    Colliders: []
+  - Name: New Text (4)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 626183608}
+    Colliders: []
+  - Name: New Text (5)
+    Offset: {x: 0, y: 0}
+    Radius: 0
+    Transform: {fileID: 1616684904}
+    Colliders: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
   orientType: 0
   layout: 0
+  anchor: 4
   radius: 2
   radialRange: 180
-  distance: 1
+  distance: 0
   rows: 5
+  columns: 1
   cellWidth: 0.1
   cellHeight: 0.03
+  assetVersion: 1
 --- !u!1 &334838242
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,7 +694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 670aca8db3bb6294581d6493f3e32380, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 670aca8db3bb6294581d6493f3e32380, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1267,8 +1318,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Text Prefab Examples
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -1456,7 +1505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 29877fc622b4aaa46b04a0a7c1cfcdb8, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 29877fc622b4aaa46b04a0a7c1cfcdb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1701,7 +1750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1946,7 +1995,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: e765e6ff063d7a54c8f7efa4da96fb52, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4000010330146594, guid: e765e6ff063d7a54c8f7efa4da96fb52, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2176,8 +2225,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: These Text Prefabs are optimized for the quality with proper scaling values
     and occlusion support through Text3DShader. Compare with normal Unity shader for
     the quality and occlusion.

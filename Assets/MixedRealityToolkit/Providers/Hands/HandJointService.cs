@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             leftHand = null;
             rightHand = null;
 
-            foreach (var detectedController in InputSystem.DetectedControllers)
+            foreach (var detectedController in Service.DetectedControllers)
             {
                 var hand = detectedController as IMixedRealityHand;
                 if (hand != null)

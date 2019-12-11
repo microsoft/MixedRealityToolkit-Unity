@@ -54,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string LOCAL_MACHINE = "Local Machine";
 
+        private const string HOLOLENS_USB = "HoloLens over USB";
+
         private const string LOCAL_IP_ADDRESS = "127.0.0.1";
 
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
@@ -81,9 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
         private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
-        
+
         private readonly GUIContent gazeInputCapabilityLabel =
-            new GUIContent("Gaze Input Capability", 
+            new GUIContent("Gaze Input Capability",
                            "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
         private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
@@ -172,10 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const float HALF_WIDTH = 256f;
 
-        private static float timeLastUpdatedBuilds;
-
         private string[] targetIps;
-        private List<Version> windowsSdkVersions = new List<Version>();
+        private readonly List<Version> windowsSdkVersions = new List<Version>();
 
         private Vector2 scrollPosition;
 
@@ -279,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 GUILayout.Label("Quick Options");
                 using (new EditorGUILayout.HorizontalScope())
                 {
-
                     EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
 
                     bool canInstall = CanInstall;
@@ -300,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     GUI.enabled = true;
 
                     OpenPlayerSettingsGUI();
-
                 }
             }
             GUILayout.Space(10);
@@ -370,26 +368,51 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    // If the WSA target device is HoloLens, show the checkboxes for research mode
-                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                    using (new EditorGUILayout.VerticalScope())
                     {
-                        // Enable Research Mode Capability
-                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
-                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
-
-                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+#if !UNITY_2019_1_OR_NEWER
+                        // If the WSA target device is HoloLens, show the checkboxes for research mode
+                        if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
                         {
-                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                // Enable Research Mode Capability
+                                bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                                bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
+
+                                if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+                                {
+                                    UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                                }
+
+                                // To prevent potential confusion, only show this when C# projects will be generated
+                                if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+                                    PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+                                {
+                                    // Allow unsafe code
+                                    bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                                    bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+
+                                    if (newAllowUnsafeCode != curAllowUnsafeCode)
+                                    {
+                                        UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                                    }
+                                }
+                            }
                         }
 
-                        // Allow unsafe code
-                        bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
-                        bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
-
-                        if (newAllowUnsafeCode != curAllowUnsafeCode)
+                        // Generate C# Project References for debugging	
+                        if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
                         {
-                            UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                            bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+                            bool shouldGenerateProjects = EditorGUILayout.ToggleLeft(useCSharpProjectsLabel, generateReferenceProjects);
+
+                            if (shouldGenerateProjects != generateReferenceProjects)
+                            {
+                                EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
+                            }
                         }
+#endif // !UNITY_2019_1_OR_NEWER
                     }
 
                     GUILayout.FlexibleSpace();
@@ -413,6 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         }
                     }
                 }
+
                 EditorGUILayout.Space();
 
                 // Build Unity Player
@@ -435,7 +459,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Note that this is the 'Target SDK Version' which is required to physically build the
             // code on a build machine, not the minimum platform version.
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
-            
+
             Version chosenSDKVersion = null;
             for (var i = 0; i < windowsSdkVersions.Count; i++)
             {
@@ -486,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorGUILayout.HelpBox(
                     "Minimum platform version is set to a different value from the recommended value: " +
                         $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
-                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}" ,
+                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}",
                     MessageType.Warning);
             }
 
@@ -578,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 platformToolset = PlatformToolset.Solution;
             }
-            else if(currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v141.ToString().ToLower()))
+            else if (currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v141.ToString().ToLower()))
             {
                 platformToolset = PlatformToolset.v141;
             }
@@ -606,7 +630,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 UwpBuildDeployPreferences.GazeInputCapabilityEnabled = newGazeInputCapabilityEnabled;
             }
-            
+
             GUILayout.BeginHorizontal();
 
             var prevFieldWidth = EditorGUIUtility.fieldWidth;
@@ -759,12 +783,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps);
 
-            var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+            DeviceInfo currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
 
             if (currentConnectionIsLocal)
             {
-                currentConnection.MachineName = LOCAL_MACHINE;
+                currentConnection.MachineName = IsHoloLensConnectedUsb ? HOLOLENS_USB : LOCAL_MACHINE;
+
+                if (currentConnection.MachineName != targetIps[0])
+                {
+                    UpdatePortalConnections();
+                }
             }
 
             GUI.enabled = IsValidIpAddress(currentConnection.IP);
@@ -1100,6 +1129,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
+        /// <summary>
+        /// Builds the open Unity project for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildUnityProject()
         {
             Debug.Assert(!isBuilding);
@@ -1113,6 +1146,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             isBuilding = false;
         }
 
+        /// <summary>
+        /// Builds an AppX for the open Unity project for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildAppx()
         {
             Debug.Assert(!isBuilding);
@@ -1140,6 +1177,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             isBuilding = false;
         }
 
+        /// <summary>
+        /// Builds the open Unity project and its AppX for
+        /// <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.WSAPlayer.html">BuildTarget.WSAPlayer</see>.
+        /// </summary>
         public static async void BuildAll(bool install = true)
         {
             Debug.Assert(!isBuilding);
@@ -1203,8 +1244,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdatePackageName();
-
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private static string CalcMostRecentBuild()
@@ -1235,7 +1274,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
             }
 
-            targetIps[0] = LOCAL_MACHINE;
+            targetIps[0] = IsHoloLensConnectedUsb ? HOLOLENS_USB : LOCAL_MACHINE;
             for (int i = 1; i < targetIps.Length; i++)
             {
                 if (string.IsNullOrEmpty(portalConnections.Connections[i].MachineName))

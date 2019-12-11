@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Uses the desktop mouse cursor instead of any mouse representation within the scene.
     /// It's movement is bound to screenspace.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ScreenSpaceMousePointer")]
     public class ScreenSpaceMousePointer : BaseMousePointer
     {
         private Vector2 lastMousePosition;
