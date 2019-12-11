@@ -422,6 +422,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Inspector for button icon set.
+        /// </summary>
         [CustomEditor(typeof(ButtonIconSet))]
         private class ButtonIconSetInspector : UnityEditor.Editor
         {
