@@ -44,6 +44,9 @@ Once the project has been configured, a connection can be established to the Hol
     ![Select Device Version](../Images/Tools/Remoting/SelectDeviceVersion.png)
 
 1. Click **Connect**.
+> [!Note]
+> If you cannot connect, make sure your HoloLens2 is not plugged in and restart Unity.
+
 
 ## Starting a remoting session
 
