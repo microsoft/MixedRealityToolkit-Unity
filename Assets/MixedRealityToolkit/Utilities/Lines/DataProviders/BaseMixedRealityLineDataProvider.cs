@@ -324,8 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             Vector3 lastPoint = GetUnClampedPoint(0f);
             float normalizedLength = 0f;
-            float sqrDistanceSoFar = 0f;
-            float sqrWorldLength = worldLength * worldLength;
+            float distanceSoFar = 0f;
             float normalizedSegmentLength = 1f / searchResolution;
 
             for (int i = 1; i <= searchResolution; i++)
@@ -335,12 +334,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 Vector3 currentPoint = GetUnClampedPoint(normalizedLength);
 
-                sqrDistanceSoFar += (lastPoint - currentPoint).sqrMagnitude;
+                float currDistance = Vector3.Distance(lastPoint, currentPoint);
+                distanceSoFar += currDistance;
 
-                if (sqrDistanceSoFar >= sqrWorldLength)
+                if (distanceSoFar >= worldLength)
                 {
                     // We've reached the world length, so subtract the amount we overshot
-                    normalizedLength -= (Mathf.Sqrt(sqrDistanceSoFar) - worldLength) / Vector3.Distance(lastPoint, currentPoint) * normalizedSegmentLength;
+                    normalizedLength -= (distanceSoFar - worldLength) / currDistance * normalizedSegmentLength;
                     break;
                 }
 
