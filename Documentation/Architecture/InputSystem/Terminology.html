@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="input-system">Input System</h1>
 
-<p>The input system is one of the largest systems out of all the features offered by the MRTK.
+<p>The input system is one of the largest systems out of all features offered by the MRTK.
 So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input
 system is what allows for natural interactions like grab and rotate across platforms.</p>
 <p>The input system has some of its own terminology that are worth defining:</p>
@@ -91,7 +91,7 @@ system is what allows for natural interactions like grab and rotate across platf
 <p>The input settings in the input profile have references to entities known as data providers - another word
 that describes these are device managers. These are components whose job is to extend the MRTK input system
 by interfacing with a specific underlying system. An example of a provider is the Windows Mixed Reality provider,
-whose job it is to talk with the underlying Windows Mixed Reality APIs, and then translate the data from
+whose job it is to talk with the underlying Windows Mixed Reality APIs and then translate the data from
 those APIs into MRTK-specific input concepts below. Another example would be the OpenVR provider (whose job it
 is to talk to Unity-abstracted version of OpenVR APIs and then translate that data into MRTK input concepts).</p>
 </li>
@@ -102,20 +102,20 @@ by device managers (i.e. the WMR device manager will spawn a controller and mana
 articulated hand coming into existence).</p>
 </li>
 <li><p><strong>Pointer</strong></p>
-<p>Controller use pointers to interact with game objects. For example, the near interaction pointer is
-responsible to detecting when the hand (which is a controller) is close to objects that advertise
+<p>Controllers use pointers to interact with game objects. For example, the near interaction pointer is
+responsible for detecting when the hand (which is a controller) is close to objects that advertise
 themselves as supporting ‘near interaction’. Other examples for pointers are teleportation or far
 pointers (i.e. the shell hand ray pointer) that use far raycasts to engage with content that is
-longer than arms length from the user.</p>
-<p>Pointers are created by the device manager, and then attached to an input source. To get all of the
+longer than arms-length from the user.</p>
+<p>Pointers are created by the device manager and then attached to an input source. To get all of the
 pointers for a controller, do: <code>controller.InputSource.Pointers</code></p>
-<p>Note that a controller can be associated with many different pointers at the same time – in order
+<p>Note that a controller can be associated with many different pointers at the same time. In order
 to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which
 pointers are allowed to be active (for example, the mediator will disable far interaction pointers
 when near interaction is detected).</p>
 </li>
 <li><p><strong>Focus</strong></p>
-<p>Pointer events are sent to objects in <strong>focus</strong>. Focus selection will vary by pointer type - a hand ray
+<p>Pointer events are sent to objects in <strong>focus</strong>. Focus selection will vary by pointer type; a hand ray
 pointer will use raycasts, while a poke pointer will use spherecasts. An object must implement
 IMixedRealityFocusHandler to receive focus. It's possible to globally register an object to receive
 unfiltered pointer events, but this approach is not recommended.</p>
@@ -123,7 +123,7 @@ unfiltered pointer events, but this approach is not recommended.</p>
 </li>
 <li><p><strong>Cursor</strong></p>
 <p>An entity associated with a pointer that gives additional visual cues around pointer interaction. For example,
-the FingerCursor will render a ring around your finger, and may rotate that ring when your finger is close to
+the FingerCursor will render a ring around your finger and may rotate that ring when your finger is close to
 ‘near interactable’ objects. A pointer can be associated with a single cursor at time.</p>
 </li>
 <li><p><strong>Interaction and Manipulation</strong></p>
@@ -131,7 +131,7 @@ the FingerCursor will render a ring around your finger, and may rotate that ring
 <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a>/<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html"><code>ManipulationHandler</code></a>.</p>
 <p>For example, NearInteractionGrabbable and NearInteractionTouchable allow for certain pointers (especially
 near interaction pointers) to know which objects can be focused on.</p>
-<p>Interactable and ManipulationHandler, are examples of components that listen to pointer events to modify
+<p>Interactable and ManipulationHandler are examples of components that listen to pointer events to modify
 UI visuals or move/scale/rotate game objects.</p>
 </li>
 </ul>
