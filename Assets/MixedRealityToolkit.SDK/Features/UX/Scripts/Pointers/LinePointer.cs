@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // so remain disabled until we know where to appear (not just at the origin).
                 IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
+        private Vector3 lineStartPoint;
+        private Vector3 lineEndPoint;
+
         private void CheckInitialization()
         {
             if (lineBase == null)
@@ -203,14 +206,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays = new RayStep[LineLength];
             }
 
-            Vector3 start = lineBase.FirstPoint;
-            Vector3 end = lineBase.LastPoint;
-
-            Rays[0].UpdateRayStep(ref start, ref end);
+            Rays[0].UpdateRayStep(ref lineStartPoint, ref lineEndPoint);
         }
 
         protected void SetLinePoints(Vector3 startPoint, Vector3 endPoint)
         {
+            lineStartPoint = startPoint;
+            lineEndPoint = endPoint;
+
             lineBase.FirstPoint = startPoint;
             lineBase.LastPoint = endPoint;
         }
