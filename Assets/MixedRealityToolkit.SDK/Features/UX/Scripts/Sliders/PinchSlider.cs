@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 trackVisuals = value;
-                InitializeTrackVisuals();
+                UpdateTrackVisuals();
             }
         }
 
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 tickMarks = value;
-                InitializeTickMarks();
+                UpdateTickMarks();
             }
         }
 
@@ -95,7 +95,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private SliderAxis previousSliderAxis { get; set; } = SliderAxis.XAxis;
+        private SliderAxis? previousSliderAxis = null;
+        public SliderAxis PreviousSliderAxis
+        {
+            get
+            {
+                if (previousSliderAxis == null)
+                {
+                    previousSliderAxis = CurrentSliderAxis;
+                }
+                return previousSliderAxis.Value;
+            }
+            set
+            {
+                previousSliderAxis = value;
+            }
+        }
 
         [Serializable]
         public enum SliderAxis
@@ -213,7 +228,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             UpdateUI();
         }
 
-        private void InitializeTrackVisuals()
+        /// <summary>
+        /// Update orientation of track visuals based on slider axis orientation
+        /// </summary>
+        private void UpdateTrackVisuals()
         {
             if (TrackVisuals)
             {
@@ -232,7 +250,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void InitializeTickMarks()
+        /// <summary>
+        /// Update orientation of tick marks based on slider axis orientation
+        /// </summary>
+        private void UpdateTickMarks()
         {
             if (TickMarks)
             {
@@ -252,7 +273,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void InitializeThumbRoot()
+        /// <summary>
+        /// Update orientation of thumb root based on slider axis orientation
+        /// </summary>
+        private void UpdateThumbRoot()
         {
             if (ThumbRoot)
             {
@@ -273,14 +297,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Update orientation of the visual components of pinch slider
+        /// </summary>
         private void UpdateVisualsOrientation()
         {
-            if (previousSliderAxis != sliderAxis)
+            if (PreviousSliderAxis != sliderAxis)
             {
-                InitializeThumbRoot();
-                InitializeTrackVisuals();
-                InitializeTickMarks();
-                previousSliderAxis = sliderAxis;
+                UpdateThumbRoot();
+                UpdateTrackVisuals();
+                UpdateTickMarks();
+                PreviousSliderAxis = sliderAxis;
             }
         }
 
