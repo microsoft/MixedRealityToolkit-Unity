@@ -171,11 +171,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             int maxClampLineSteps = 2;
-            foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
+            for (int i = 0; i < LineRenderers.Length; i++)
             {
                 // Renderers are enabled by default if line is enabled
-                maxClampLineSteps = Mathf.Max(maxClampLineSteps, lineRenderer.LineStepCount);
-                lineRenderer.LineColor = lineColor;
+                maxClampLineSteps = Mathf.Max(maxClampLineSteps, LineRenderers[i].LineStepCount);
+                LineRenderers[i].LineColor = lineColor;
             }
 
             // Used to ensure the line doesn't extend beyond the cursor

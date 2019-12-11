@@ -6,16 +6,23 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// TODO: Troy - comment
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ShellHandRayPointer")]
     public class ShellHandRayPointer : LinePointer
     {
-        [SerializeField]
-        [Tooltip("Used when a focus target exists, or when select is pressed")]
-        private BaseMixedRealityLineRenderer lineRendererSelected = null;
+        [Header("Shell Pointer Settings")]
 
         [SerializeField]
-        [Tooltip("Used when no focus target exists and select is not pressed")]
-        private BaseMixedRealityLineRenderer lineRendererNoTarget = null;
+        // TODO: Troy - comment
+        //[Tooltip("Used when a focus target exists, or when select is pressed")]
+        private Material lineMaterialSelected = null;
+
+        [SerializeField]
+        // TODO: Troy - comment
+        //[Tooltip("Used when a focus target exists, or when select is pressed")]
+        private Material lineMaterialNoTarget = null;
 
         [Header("Inertia Settings")]
         [SerializeField]
@@ -30,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Where to place the second control point of the bezier curve")]
         [Range(0.5f, 1f)]
         private float endPointLerp = 0.66f;
+
+        private bool wasSelectPressed = false;
 
         protected override void OnEnable()
         {
@@ -48,18 +57,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            BaseMixedRealityLineRenderer lineToShow = lineRendererNoTarget;
-
-            // Make the line solid when pressed
-            if (IsSelectPressed)
+            if (wasSelectPressed != IsSelectPressed)
             {
-                lineToShow = lineRendererSelected;
-            }
+                wasSelectPressed = IsSelectPressed;
 
-            // Hide every line renderer except the contextual one
-            foreach (BaseMixedRealityLineRenderer lineRenderer in LineRenderers)
-            {
-                lineRenderer.enabled = lineRenderer == lineToShow;
+                var currentMaterial = IsSelectPressed ? lineMaterialSelected : lineMaterialNoTarget;
+
+                for (int i = 0; i < LineRenderers.Length; i++)
+                {
+                    var lineRenderer = LineRenderers[i] as MixedRealityLineRenderer;
+                    lineRenderer.LineMaterial = currentMaterial;
+
+                    // TODO: Troy - lineRenderer.LineStepCount change?
+                }
             }
         }
 
