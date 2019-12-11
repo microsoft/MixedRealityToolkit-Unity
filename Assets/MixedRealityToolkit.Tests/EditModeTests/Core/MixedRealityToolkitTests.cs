@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.ActiveProfile = null;
 
             // Tests
-            LogAssert.Expect(LogType.Error, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+            LogAssert.Expect(LogType.Warning, "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
             Assert.IsFalse(MixedRealityToolkit.Instance.HasActiveProfile);
             Assert.IsNull(MixedRealityToolkit.Instance.ActiveProfile);
         }

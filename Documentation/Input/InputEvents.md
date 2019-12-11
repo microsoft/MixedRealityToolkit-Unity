@@ -94,7 +94,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
     // IMixedRealitySourceStateHandler interface
     public void OnSourceDetected(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
@@ -105,12 +105,12 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
     public void OnSourceLost(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
         {
-            Debug.Log("Source detected: " + hand.ControllerHandedness);
+            Debug.Log("Source lost: " + hand.ControllerHandedness);
         }
     }
 
