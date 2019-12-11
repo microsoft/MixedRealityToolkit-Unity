@@ -85,11 +85,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The axis the slider moves along")]
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
+        public SliderAxis CurrentSliderAxis
+        {
+            get { return sliderAxis; }
+            set
+            {
+                UpdateVisualsOrientation();
+                sliderAxis = value;
+            }
+        }
 
         private SliderAxis previousSliderAxis { get; set; } = SliderAxis.XAxis;
 
         [Serializable]
-        private enum SliderAxis
+        public enum SliderAxis
         {
             XAxis = 0,
             YAxis,
@@ -179,8 +188,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
         }
 
-
-
         private void OnDisable()
         {
             if (activePointer != null)
@@ -191,12 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnValidate()
         {
-            if (previousSliderAxis != sliderAxis)
-            {
-                InitializeTrackVisuals();
-                InitializeTickMarks();
-                previousSliderAxis = sliderAxis;
-            }
+            CurrentSliderAxis = sliderAxis;
         }
 
         #endregion
@@ -215,9 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (TrackVisuals)
             {
-                var translation = TrackVisuals.transform.localPosition;
-                TrackVisuals.transform.localPosition = Vector3.zero;
-
                 switch (sliderAxis)
                 {
                     case SliderAxis.XAxis:
@@ -237,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (TickMarks)
             {
-                TickMarks.transform.localPosition = Vector3.zero;
                 TickMarks.transform.localRotation = Quaternion.identity;
 
                 var grid = TickMarks.GetComponent<Utilities.GridObjectCollection>();
@@ -251,6 +249,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     TickMarks.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
                 }
+            }
+        }
+
+        private void InitializeThumbRoot()
+        {
+            if (ThumbRoot)
+            {
+                ThumbRoot.transform.localRotation = Quaternion.identity;
+
+                switch (sliderAxis)
+                {
+                    case SliderAxis.XAxis:
+                        ThumbRoot.transform.localRotation = Quaternion.identity;
+                        break;
+                    case SliderAxis.YAxis:
+                        ThumbRoot.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+                        break;
+                    case SliderAxis.ZAxis:
+                        ThumbRoot.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                        break;
+                }
+            }
+        }
+
+        private void UpdateVisualsOrientation()
+        {
+            if (previousSliderAxis != sliderAxis)
+            {
+                InitializeThumbRoot();
+                InitializeTrackVisuals();
+                InitializeTickMarks();
+                previousSliderAxis = sliderAxis;
             }
         }
 
