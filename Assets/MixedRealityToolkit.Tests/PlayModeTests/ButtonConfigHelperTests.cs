@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ButtonConfigHelperTests : BasePlayModeTests
     {
+        private static string PressableButtonHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
+
         [UnityTest]
         /// <summary>
         /// Test adding a config helper to a game object and attempting to modify it.
@@ -85,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Ensure a newly created button icon set instance contains all default textures / characters.
         /// </summary>
-        public IEnumerator TextDefaultIconSetInstance()
+        public IEnumerator TestDefaultIconSetInstance()
         {
             // Create a button icon set and insert arrays with null references
             ButtonIconSet buttonIconSet = ScriptableObject.CreateInstance<ButtonIconSet>();
@@ -112,6 +114,52 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarShow", out charIcon));
             Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarHome", out charIcon));
             yield break;
+        }
+
+        /// <summary>
+        /// Ensure one of our default button prefabs can have its label and icon configured at runtime.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPressableButtonHololens2Prefab()
+        {
+            GameObject buttonObject = InstantiateButtonFromPath(Vector3.zero, Quaternion.identity, PressableButtonHoloLens2PrefabPath);
+            ButtonConfigHelper bch = buttonObject.GetComponent<ButtonConfigHelper>();
+
+            bch.MainLabelText = "MainLabelText";
+            Assert.AreEqual(bch.MainLabelText, "MainLabelText"); 
+
+            bch.SeeItSayItLabelText = "SeeItSayItLabelText";
+            Assert.AreEqual(bch.SeeItSayItLabelText, "SeeItSayItLabelText");
+
+            bch.IconStyle = ButtonIconStyle.Char;
+            bch.IconStyle = ButtonIconStyle.None;
+            bch.IconStyle = ButtonIconStyle.Quad;
+            bch.IconStyle = ButtonIconStyle.Sprite;
+            bch.SeeItSayItLabelEnabled = false;
+            bch.SetCharIcon(0);
+            bch.SetQuadIcon(null);
+            bch.SetSpriteIcon(null);
+            bch.SetCharIconByName("EmptyIcon");
+            bch.SetQuadIconByName("EmptyIcon");
+            bch.SetSpriteIconByName("EmptyIcon");
+            bch.ForceRefresh();
+            bch.OnClick.AddListener(() => { Debug.Log("OnClick"); });
+            bch.IconSet = null;
+
+            yield break;
+        }
+
+        private GameObject InstantiateButtonFromPath(Vector3 position, Quaternion rotation, string path)
+        {
+            // Load interactable prefab
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
+            Assert.IsNotNull(result);
+
+            // Move the object into position
+            result.transform.position = position;
+            result.transform.rotation = rotation;
+            return result;
         }
     }
 }
