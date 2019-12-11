@@ -8,7 +8,7 @@ See the InputDataExample scene for an example of querying input both via iterati
 
 MRTK's [`InputRayUtils`](cref:Microsoft.MixedReality.Toolkit.Input.InputRayUtils) class provides convenience methods for accessing the hand ray, head ray, eye gaze ray, and motion controller rays.
 
-```csharp
+```c#
 // Get the head ray
 var headRay = InputRayUtils.GetHeadGazeRay();
 
@@ -26,7 +26,7 @@ else
 
 ## Example: Access position, rotation of all 6DOF controllers active in scene
 
-```csharp
+```c#
 foreach(var controller in CoreServices.InputSystem.DetectedControllers)
 {
     // Interactions for a controller is the list of inputs that this controller exposes

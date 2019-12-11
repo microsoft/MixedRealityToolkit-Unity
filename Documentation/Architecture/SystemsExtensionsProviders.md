@@ -56,7 +56,7 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.
 
-``` c#
+```c#
 if (CoreServices.InputSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
@@ -88,7 +88,7 @@ The MRTK spatial awareness system utilizes only data providers that implement th
 
 The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 
-``` c#
+```c#
 if (CoreServices.SpatialAwarenessSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess =

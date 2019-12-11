@@ -53,7 +53,7 @@ Because the pointer mediator runs every frame, it ends up controlling the active
 #### Example: Disable hand rays in MRTK
 The following code will turn off the hand rays in MRTK:
 
-```csharp
+```c#
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -63,13 +63,13 @@ PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Rig
 
 The following code will return hand rays to their default behavior in MRTK:
 
-```csharp
+```c#
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
 ```
 
 The following code will force hand rays to be on, regardless if near a grabbable:
 
-```csharp
+```c#
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOn);
 ```

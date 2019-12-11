@@ -51,7 +51,7 @@ To detect when a hologram is focused, use the _'IMixedRealityFocusHandler'_ inte
 
 Here is a simple example from [ColorTap.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap) to change a hologram's color when being looked at.
 
-```csharp
+```c#
 public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
 {
     void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
@@ -77,7 +77,7 @@ _OnPointerUp_, _OnPointerDown_, and _OnPointerClicked_.
 In the example below, we change the color of a hologram by looking at it and pinching or saying "select".
 The required action to trigger the event is defined by `eventData.MixedRealityInputAction == selectAction` whereby we can set the type of `selectAction` in the Unity Editor - by default it's the "Select" action. The types of available [MixedRealityInputActions](../Input/InputActions.md) can be configured in the MRTK Profile via _MRTK Configuration Profile_ -> _Input_ -> _Input Actions_.
 
-```csharp
+```c#
 public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
 {
     // Allow for editing the type of select action in the Unity Editor.
@@ -120,7 +120,7 @@ This is a behavior that you may not want to have active at all times and also so
 Having the [`OnLookAtRotateByEyeGaze`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze)
 attached, a GameObject will rotate while being looked at.
 
-```csharp
+```c#
 public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
 {
     ...
@@ -217,34 +217,34 @@ Similar to Example #1, we can easily create a hover feedback for our holographic
 
 1. Create a generic script that includes a public function to rotate the GameObject it is attached to. Below is an example from _RotateWithConstSpeedDir.cs_ where we can tweak the rotation direction and speed from the Unity Editor.
 
-```csharp
-using UnityEngine;
+    ```c#
+    using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
-{
-    /// <summary>
-    /// The associated GameObject will rotate when RotateTarget() is called based on a given direction and speed.
-    /// </summary>
-    public class RotateWithConstSpeedDir : MonoBehaviour
+    namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     {
-        [Tooltip("Euler angles by which the object should be rotated by.")]
-        [SerializeField]
-        private Vector3 RotateByEulerAngles = Vector3.zero;
-
-        [Tooltip("Rotation speed factor.")]
-        [SerializeField]
-        private float speed = 1f;
-
         /// <summary>
-        /// Rotate game object based on specified rotation speed and Euler angles.
+        /// The associated GameObject will rotate when RotateTarget() is called based on a given direction and speed.
         /// </summary>
-        public void RotateTarget()
+        public class RotateWithConstSpeedDir : MonoBehaviour
         {
-            transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
+            [Tooltip("Euler angles by which the object should be rotated by.")]
+            [SerializeField]
+            private Vector3 RotateByEulerAngles = Vector3.zero;
+
+            [Tooltip("Rotation speed factor.")]
+            [SerializeField]
+            private float speed = 1f;
+
+            /// <summary>
+            /// Rotate game object based on specified rotation speed and Euler angles.
+            /// </summary>
+            public void RotateTarget()
+            {
+                transform.eulerAngles = transform.eulerAngles + RotateByEulerAngles * speed;
+            }
         }
     }
-}
-```
+    ```
 
 2. Add the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
 
@@ -281,7 +281,7 @@ You could simply link the script that is attached to each of our gem templates t
 If you don't want to drag and drop GameObjects around, you can also simply add a event listener directly to your script.  
 Here's an example from how we did it in the [`HitBehaviorDestroyOnSelect`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect) script:
 
-```csharp
+```c#
 /// <summary>
 /// Destroys the game object when selected and optionally plays a sound or animation when destroyed.
 /// </summary>

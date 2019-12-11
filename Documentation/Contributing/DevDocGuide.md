@@ -40,7 +40,7 @@ For external apis that don't provide an xref service hrefs to the documentation 
 
 Examples:
 
-```csharp
+```c#
 /// Links to MRTK internal class SystemType
 ///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 

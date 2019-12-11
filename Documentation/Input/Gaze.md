@@ -46,7 +46,7 @@ bugs) as re-implementing the GazeProvider is non-trivial.
 
 This sample shows how to get the current game object that is targeted by the user gaze.
 
-```csharp
+```c#
 void LogCurrentGazeTarget()
 {
     if (CoreServices.InputSystem.GazeProvider.GazeTarget)
@@ -62,7 +62,7 @@ void LogCurrentGazeTarget()
 This sample shows how to get the Vector3 representing the direction of the user gaze
 and the origin (the point from which the direction is going).
 
-```csharp
+```c#
 void LogGazeDirectionOrigin()
 {
     Debug.Log("Gaze is looking in direction: "

@@ -24,61 +24,67 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
 ![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png)
 
 ## How to add and configure a bounding box in the code
-1. Instantiate cube gameobject
-```csharp
-   GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-```
-1. Assign `BoundingBox` script to an object with collider, using AddComponent<>()
-```csharp
-   private BoundingBox bbox;
-   bbox = cube.AddComponent<BoundingBox>();
-```
-1. Configure options (see [Inspector properties](#inspector-properties) section below)
-```csharp
-   // Make the scale handles large
-   bbox.ScaleHandleSize = 0.1f;
-   // Hide rotation handles
-   bbox.ShowRotationHandleForX = false;
-   bbox.ShowRotationHandleForY = false;
-   bbox.ShowRotationHandleForZ = false;
-```
 
-1. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded. 
+1. Instantiate cube GameObject
+
+    ```c#
+    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    ```
+
+1. Assign `BoundingBox` script to an object with collider, using AddComponent<>()
+
+    ```c#
+    private BoundingBox bbox;
+    bbox = cube.AddComponent<BoundingBox>();
+    ```
+
+1. Configure options (see [Inspector properties](#inspector-properties) section below)
+
+    ```c#
+    // Make the scale handles large
+    bbox.ScaleHandleSize = 0.1f;
+    // Hide rotation handles
+    bbox.ShowRotationHandleForX = false;
+    bbox.ShowRotationHandleForY = false;
+    bbox.ShowRotationHandleForZ = false;
+    ```
+
+1. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded.
 
 > [!NOTE]
 > Using Unity's 'Resources' folder or [Shader.Find]( https://docs.unity3d.com/ScriptReference/Shader.Find.html) for dynamically loading shaders is not recommended since shader permutations may be missing at runtime.
 
-```csharp
-   bbox.BoxMaterial = [Assign BoundingBox.mat]
-   bbox.BoxGrabbedMaterial = [Assign BoundingBoxGrabbed.mat]
-   bbox.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
-   bbox.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
-   bbox.ScaleHandlePrefab = [Assign MRTK_BoundingBox_ScaleHandle.prefab]
-   bbox.ScaleHandleSlatePrefab = [Assign MRTK_BoundingBox_ScaleHandle_Slate.prefab]
-   bbox.ScaleHandleSize = 0.016f;
-   bbox.ScaleHandleColliderPadding = 0.016f;
-   bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
-   bbox.RotationHandleSize = 0.016f;
-   bbox.RotateHandleColliderPadding = 0.016f;
+```c#
+bbox.BoxMaterial = [Assign BoundingBox.mat]
+bbox.BoxGrabbedMaterial = [Assign BoundingBoxGrabbed.mat]
+bbox.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
+bbox.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
+bbox.ScaleHandlePrefab = [Assign MRTK_BoundingBox_ScaleHandle.prefab]
+bbox.ScaleHandleSlatePrefab = [Assign MRTK_BoundingBox_ScaleHandle_Slate.prefab]
+bbox.ScaleHandleSize = 0.016f;
+bbox.ScaleHandleColliderPadding = 0.016f;
+bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
+bbox.RotationHandleSize = 0.016f;
+bbox.RotateHandleColliderPadding = 0.016f;
 ```
 
 ### Example: Set minimum, maximum bounding box scale using TransformScaleHandler
 To set the minimum and maximum scale, use the [`TransformScaleHandler`](cref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHander). You can also use TransformScaleHandler to set minimum and maximum scale for [`ManipulationHandler`](cref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
-```csharp
-   GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-   bbox = cube.AddComponent<BoundingBox>();
-   // Important: BoundingBox creates a scale handler on start if one does not exist
-   // do not use AddComponent, as that will create a  duplicate handler that will not be used 
-   TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent<TransformScaleHandler>();
-   scaleHandler.ScaleMinimum = 1f;
-   scaleHandler.ScaleMaximum = 2f;
+```c#
+GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+bbox = cube.AddComponent<BoundingBox>();
+// Important: BoundingBox creates a scale handler on start if one does not exist
+// do not use AddComponent, as that will create a  duplicate handler that will not be used
+TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent<TransformScaleHandler>();
+scaleHandler.ScaleMinimum = 1f;
+scaleHandler.ScaleMaximum = 2f;
 ```
 
 ## Example: Add bounding box around a game object
 To add a bounding box around an object, just add a bounding box component to it:
 
-```csharp
+```c#
 private void PutABoxAroundIt(GameObject target)
 {
    target.AddComponent<BoundingBox>();

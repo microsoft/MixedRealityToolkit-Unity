@@ -40,7 +40,7 @@ At the script level, input events can be consumed by implementing one of the eve
 
 The code below demonstrates use of the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface. When the user says the words "smaller" or "bigger" while focusing on a GameObject with this `ShowHideSpeechHandler` class, the GameObject will scale itself by half or twice as much.
 
-```csharp
+```c#
 public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 {
     ...
@@ -70,7 +70,7 @@ If an input event has been [marked as used](#how-to-stop-input-events), global r
 
 ### Global input registration example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler, // Handle source detected and lost
     IMixedRealityHandJointHandler // handle joint position updates for hands
@@ -132,7 +132,7 @@ Fallback input handlers are similar to registered global input handlers but are 
 
 ### Fallback input handler example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler // Handle source detected and lost
 {

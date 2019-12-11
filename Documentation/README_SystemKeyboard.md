@@ -6,33 +6,32 @@ A Unity application can invoke the system keyboard at any time. Note that the sy
 
 ## How to invoke the system keyboard ##
 
-``` csharp
-    public TouchScreenKeyboard keyboard;
+```c#
+public TouchScreenKeyboard keyboard;
 
-    ...
+...
 
-    public void OpenSystemKeyboard()
-    {
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
-    }
+public void OpenSystemKeyboard()
+{
+    keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
+}
 ```
 
 ## How to read the input ##
 
-``` csharp
+```c#
+public TouchScreenKeyboard keyboard;
 
-    public TouchScreenKeyboard keyboard;
+...
 
-    ...
-
-    private void Update()
+private void Update()
+{
+    if (keyboard != null)
     {
-        if (keyboard != null)
-        {
-            keyboardText = keyboard.text;
-            // Do stuff with keyboardText
-        }
+        keyboardText = keyboard.text;
+        // Do stuff with keyboardText
     }
+}
 ```
 
 ## System keyboard example ##
