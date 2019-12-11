@@ -686,10 +686,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                 }
 
-                if (controller.Visualizer != null &&
-                    controller.Visualizer.GameObjectProxy != null)
+                var visualizer = controller.Visualizer;
+
+                if (visualizer != null && !visualizer.Equals(null) &&
+                    visualizer.GameObjectProxy != null)
                 {
-                    controller.Visualizer.GameObjectProxy.SetActive(false);
+                    visualizer.GameObjectProxy.SetActive(false);
                 }
             }
 
