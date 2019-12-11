@@ -64,6 +64,33 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Ignore startup settings prompt
 
+        #region Auto-Enable UWP Capabilities
+
+        private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-Enable UWP Capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
+        private const string AUTO_ENABLE_CAPABILITIES_KEY = "_MixedRealityToolkit_Editor_AutoEnableUWPCapabilities";
+        private static bool autoEnabledCapabilitiesPrefLoaded;
+        private static bool autoEnabledCapabiltiiesSettingsPrompt;
+
+        /// <summary>
+        /// Should the settings prompt show on startup?
+        /// </summary>
+        public static bool AutoEnableUWPCapabilities
+        {
+            get
+            {
+                if (!autoEnabledCapabilitiesPrefLoaded)
+                {
+                    autoEnabledCapabiltiiesSettingsPrompt = EditorPrefs.GetBool(IGNORE_KEY, true);
+                    autoEnabledCapabilitiesPrefLoaded = true;
+                }
+
+                return autoEnabledCapabiltiiesSettingsPrompt;
+            }
+            set => EditorPrefs.SetBool(IGNORE_KEY, autoEnabledCapabiltiiesSettingsPrompt = value);
+        }
+
+        #endregion Auto-Enable UWP Capabilities
+
         #region Run optimal configuration analysis on Play
 
         private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis on play", "Run optimal configuration analysis for current project and log warnings on entering play mode.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
@@ -104,15 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             void GUIHandler(string searchContext)
             {
                 var prevLabelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = 200f;
+                EditorGUIUtility.labelWidth = 250f;
 
-                EditorGUI.BeginChangeCheck();
-                lockProfiles = EditorGUILayout.Toggle(LockContent, LockProfiles);
-
-                // Save the preference
-                if (EditorGUI.EndChangeCheck())
+                bool lockProfilesResult = EditorGUILayout.Toggle(LockContent, LockProfiles);
+                if (lockProfilesResult != LockProfiles)
                 {
-                    LockProfiles = lockProfiles;
+                    LockProfiles = lockProfilesResult;
                 }
 
                 if (!LockProfiles)
@@ -120,19 +144,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.HelpBox("This is only to be used to update the default SDK profiles. If any edits are made, and not checked into the Mixed Reality Toolkit - Unity repository, the changes may be lost next time you update your local copy.", MessageType.Warning);
                 }
 
-                EditorGUI.BeginChangeCheck();
-                ignoreSettingsPrompt = EditorGUILayout.Toggle(IgnoreContent, IgnoreSettingsPrompt);
-
-                // Save the preference
-                if (EditorGUI.EndChangeCheck())
+                bool ignoreResult = EditorGUILayout.Toggle(IgnoreContent, IgnoreSettingsPrompt);
+                if (IgnoreSettingsPrompt != ignoreResult)
                 {
-                    IgnoreSettingsPrompt = ignoreSettingsPrompt;
+                    IgnoreSettingsPrompt = ignoreResult;
                 }
 
-                EditorGUI.BeginChangeCheck();
-                var scriptLock = EditorGUILayout.Toggle("Is script reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
+                bool autoEnableResult = EditorGUILayout.Toggle(AutoEnableCapabilitiesContent, AutoEnableUWPCapabilities);
+                if (AutoEnableUWPCapabilities != autoEnableResult)
+                {
+                    AutoEnableUWPCapabilities = autoEnableResult;
+                }
 
-                if (EditorGUI.EndChangeCheck())
+                var scriptLock = EditorGUILayout.Toggle("Is script reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
+                if (EditorAssemblyReloadManager.LockReloadAssemblies != scriptLock)
                 {
                     EditorAssemblyReloadManager.LockReloadAssemblies = scriptLock;
                 }

@@ -30,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private TextMeshPro messageText = null;
         [SerializeField]
-        private ProgressIndicatorState state = ProgressIndicatorState.Closed;
-        [SerializeField]
         public float rotationSpeedRawDegrees = -200f;
         [SerializeField]
         public float spacingDegrees = 22f;
@@ -53,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool stopRequested;
         private float rotationWhenStopped;
         private MaterialPropertyBlock[] propertyBlocks = null;
+        private ProgressIndicatorState state = ProgressIndicatorState.Closed;
 
         /// <inheritdoc/>
         public async Task OpenAsync()

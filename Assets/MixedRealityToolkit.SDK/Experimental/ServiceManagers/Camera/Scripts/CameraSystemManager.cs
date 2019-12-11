@@ -38,9 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.CameraSystem
         private void InitializeManager()
         {
             // The camera system class takes arguments for:
-            // * The registrar
             // * The camera system profile
-            object[] args = { this, profile };
+            object[] args = { profile };
 
             Initialize<IMixedRealityCameraSystem>(CameraSystemType.Type, args: args);
         }

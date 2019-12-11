@@ -34,13 +34,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// The object that is expected to be set for the <see cref="TestPointer"/>'s <see cref="Toolkit.Input.IPointerResult.CurrentPointerTarget"/> after <see cref="Toolkit.Input.FocusProvider.Update"/>.
-        /// If the target object doeesn't match, it will fail the test.
+        /// If the target object doesn't match, it will fail the test.
         /// </summary>
         public GameObject ExpectedHitObject = null;
 
         private void Awake()
         {
-            RayLineData = RayLineData ?? GetComponent<BaseMixedRealityLineDataProvider>();
+            if (RayLineData == null)
+            {
+                RayLineData = GetComponent<BaseMixedRealityLineDataProvider>();
+            }
         }
 
         private void OnDrawGizmos()

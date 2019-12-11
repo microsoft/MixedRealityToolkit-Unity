@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -36,13 +35,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputActionHandler>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputActionHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation

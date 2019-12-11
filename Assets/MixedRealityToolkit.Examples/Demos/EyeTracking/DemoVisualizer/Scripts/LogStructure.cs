@@ -10,12 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     {
         public virtual string[] GetHeaderColumns()
         {
-            return new string[0];
+            return System.Array.Empty<string>();
         }
 
         public virtual object[] GetData(string inputType, string inputStatus, EyeTrackingTarget intTarget)
         {
-            return new object[0];
+            return System.Array.Empty<object>();
         }
     }
 }

@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Create a State Model class and initialize it with the configuration data from this States ScriptableObject
         /// </summary>
-        /// <returns>BaseStateModel or inherited class implemention object initialized with the StateList in this ScriptableObject</returns>
+        /// <returns>BaseStateModel or inherited class implementation object initialized with the StateList in this ScriptableObject</returns>
         public BaseStateModel CreateStateModel()
         {
             BaseStateModel stateLogic = (BaseStateModel)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);

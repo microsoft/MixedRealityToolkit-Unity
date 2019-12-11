@@ -153,10 +153,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
+            var eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             // Try to manually poll the eye tracking data
-            if ((InputSystem != null) && (InputSystem.EyeGazeProvider != null) && 
-                InputSystem.EyeGazeProvider.UseEyeTracking && 
-                InputSystem.EyeGazeProvider.IsEyeGazeValid)
+            if (eyeGazeProvider != null 
+                && eyeGazeProvider.UseEyeTracking 
+                && eyeGazeProvider.IsEyeGazeValid)
             {
                 UpdateHitTarget();
 
@@ -189,29 +190,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
-            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
-            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         private void UpdateHitTarget()
         {
-            if (lastEyeSignalUpdateTimeFromET != InputSystem?.EyeGazeProvider?.Timestamp)
+            var eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
+            if (eyeGazeProvider != null)
             {
-                if ((InputSystem != null) && (InputSystem.EyeGazeProvider != null))
+                if (lastEyeSignalUpdateTimeFromET != eyeGazeProvider.Timestamp)
                 {
-                    lastEyeSignalUpdateTimeFromET = (InputSystem?.EyeGazeProvider?.Timestamp).Value;
+                    lastEyeSignalUpdateTimeFromET = eyeGazeProvider.Timestamp;
                     lastEyeSignalUpdateTimeLocal = DateTime.UtcNow;
 
                     // ToDo: Handle raycasting layers
                     RaycastHit hitInfo = default(RaycastHit);
-                    Ray lookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
+                    Ray lookRay = new Ray(eyeGazeProvider.GazeOrigin, eyeGazeProvider.GazeDirection.normalized);
                     bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
 
                     if (isHit)
@@ -226,11 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         LookedAtEyeTarget = null;
                     }
                 }
-            }
-            else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
-            {
-                LookedAtTarget = null;
-                LookedAtEyeTarget = null;
+                else if ((DateTime.UtcNow - lastEyeSignalUpdateTimeLocal).TotalMilliseconds > EyeTrackingTimeoutInMilliseconds)
+                {
+                    LookedAtTarget = null;
+                    LookedAtEyeTarget = null;
+                }
             }
         }
         

@@ -64,28 +64,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             metallicMapChannel = (Channel)EditorGUILayout.EnumPopup("Input Channel", metallicMapChannel);
             GUI.enabled = true;
             metallicUniform = EditorGUILayout.Slider(new GUIContent("Metallic Uniform"), metallicUniform, defaultUniformValue, 1.0f);
-            GUILayout.Box("Output Channel: Red", EditorStyles.helpBox, new GUILayoutOption[0]);
+            GUILayout.Box("Output Channel: Red", EditorStyles.helpBox, System.Array.Empty<GUILayoutOption>());
             EditorGUILayout.Separator();
             GUI.enabled = occlusionUniform < 0.0f;
             occlusionMap = (Texture2D)EditorGUILayout.ObjectField("Occlusion Map", occlusionMap, typeof(Texture2D), false);
             occlusionMapChannel = (Channel)EditorGUILayout.EnumPopup("Input Channel", occlusionMapChannel);
             GUI.enabled = true;
             occlusionUniform = EditorGUILayout.Slider(new GUIContent("Occlusion Uniform"), occlusionUniform, defaultUniformValue, 1.0f);
-            GUILayout.Box("Output Channel: Green", EditorStyles.helpBox, new GUILayoutOption[0]);
+            GUILayout.Box("Output Channel: Green", EditorStyles.helpBox, System.Array.Empty<GUILayoutOption>());
             EditorGUILayout.Separator();
             GUI.enabled = emissionUniform < 0.0f;
             emissionMap = (Texture2D)EditorGUILayout.ObjectField("Emission Map", emissionMap, typeof(Texture2D), false);
             emissionMapChannel = (Channel)EditorGUILayout.EnumPopup("Input Channel", emissionMapChannel);
             GUI.enabled = true;
             emissionUniform = EditorGUILayout.Slider(new GUIContent("Emission Uniform"), emissionUniform, defaultUniformValue, 1.0f);
-            GUILayout.Box("Output Channel: Blue", EditorStyles.helpBox, new GUILayoutOption[0]);
+            GUILayout.Box("Output Channel: Blue", EditorStyles.helpBox, System.Array.Empty<GUILayoutOption>());
             EditorGUILayout.Separator();
             GUI.enabled = smoothnessUniform < 0.0f;
             smoothnessMap = (Texture2D)EditorGUILayout.ObjectField("Smoothness Map", smoothnessMap, typeof(Texture2D), false);
             smoothnessMapChannel = (Channel)EditorGUILayout.EnumPopup("Input Channel", smoothnessMapChannel);
             GUI.enabled = true;
             smoothnessUniform = EditorGUILayout.Slider(new GUIContent("Smoothness Uniform"), smoothnessUniform, defaultUniformValue, 1.0f);
-            GUILayout.Box("Output Channel: Alpha", EditorStyles.helpBox, new GUILayoutOption[0]);
+            GUILayout.Box("Output Channel: Alpha", EditorStyles.helpBox, System.Array.Empty<GUILayoutOption>());
             EditorGUILayout.Separator();
 
             standardMaterial = (Material)EditorGUILayout.ObjectField("Standard Material", standardMaterial, typeof(Material), false);
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Save();
             }
 
-            GUILayout.Box("Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)", EditorStyles.helpBox, new GUILayoutOption[0]);
+            GUILayout.Box("Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)", EditorStyles.helpBox, System.Array.Empty<GUILayoutOption>());
         }
 
         private void Autopopulate()

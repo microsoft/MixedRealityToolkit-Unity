@@ -4,8 +4,9 @@
 name: $(Date:yyyyMMdd)v$(Rev:r)
 
 variables:
-  UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.1.0  # Major.Minor.Patch
+  Unity2018Version: Unity2018.3.7f1
+  Unity2019Version: Unity2019.2.0f1
+  MRTKVersion: 2.2.0  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
 
 jobs:
@@ -86,6 +87,13 @@ jobs:
     parameters:
       ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKNuGetSignConfig.xml"
 
+  - task: PowerShell@2
+    displayName: 'Validate release packages are signed'
+    inputs:
+      targetType: filePath
+      filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
+      arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
+  
   - powershell: |
       Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*"
     displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"

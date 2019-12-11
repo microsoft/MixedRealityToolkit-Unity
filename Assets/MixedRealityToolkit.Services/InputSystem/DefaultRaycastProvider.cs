@@ -12,9 +12,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class DefaultRaycastProvider : BaseCoreSystem, IMixedRealityRaycastProvider
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public DefaultRaycastProvider(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public DefaultRaycastProvider(
+            MixedRealityInputSystemProfile profile) : base(profile)
         { }
 
         /// <inheritdoc/>

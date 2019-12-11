@@ -5,13 +5,14 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft,MixedReality</owners>
-    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.2.0/License.txt</licenseUrl>
+    <projectUrl>https://aka.ms/MRTK</projectUrl>
+    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Extension services and components for the Mixed Reality Toolkit</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
     </dependencies>
@@ -26,7 +27,7 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Extensions.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Extensions.*" target="Plugins\" />
-    <!--Source commented as part of 2.1 release due to lack of support for long paths in N4U, and there is support for using source publicly yet.-->
-    <!--<file src="..\..\..\Assets\MixedRealityToolkit.Extensions\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Extensions" />-->
+    <!-- commenting source packaging for the 2.2.0 release -->
+    <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Extensions\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Extensions" /> -->
   </files>
 </package>

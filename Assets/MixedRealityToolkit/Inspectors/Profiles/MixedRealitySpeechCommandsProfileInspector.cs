@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static bool showSpeechCommands = true;
         private SerializedProperty speechCommands;
-        private static GUIContent[] actionLabels = new GUIContent[0];
-        private static int[] actionIds = new int[0];
+        private static GUIContent[] actionLabels = System.Array.Empty<GUIContent>();
+        private static int[] actionIds = System.Array.Empty<int>();
         private bool isInitialized = false;
 
         protected override void OnEnable()
@@ -60,7 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input))
+            {
+                return;
+            }
 
             CheckMixedRealityInputActions();
 

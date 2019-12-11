@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -85,6 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
+            if (touchable == null)
+            {
+                // The inspector code will prompt a developer to add a touchable.
+                return;
+            }
+
             if (!VisiblePlanes)
             {
                 return;
@@ -253,8 +260,69 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             serializedObject.Update();
 
+            if (target != null)
+            {
+                var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
+                {
+                    InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
+                }
+            }
+
+            // Ensure there is a touchable.
+            if (touchable == null)
+            {
+                EditorGUILayout.HelpBox($"{target.GetType().Name} requires a {nameof(NearInteractionTouchableSurface)}-derived component on this game object to function.", MessageType.Warning);
+
+                bool isUnityUI = (button.GetComponent<RectTransform>() != null);
+                var typeToAdd = isUnityUI ? typeof(NearInteractionTouchableUnityUI) : typeof(NearInteractionTouchable);
+
+                if (GUILayout.Button($"Add {typeToAdd.Name} component"))
+                {
+                    Undo.RecordObject(target, string.Concat($"Add {typeToAdd.Name}"));
+                    var addedComponent = button.gameObject.AddComponent(typeToAdd);
+                    touchable = (NearInteractionTouchableSurface)addedComponent;
+                }
+                else
+                {
+                    // It won't work without it, return to avoid nullrefs.
+                    return;
+                }
+            }
+
+            // Ensure that the touchable has EventsToReceive set to Touch
+            if (touchable.EventsToReceive != TouchableEventType.Touch)
+            {
+                EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function properly.", MessageType.Warning);
+
+                if (GUILayout.Button("Set EventsToReceive to 'Touch'"))
+                {
+                    Undo.RecordObject(touchable, string.Concat("Set EventsToReceive to Touch on ", touchable.name));
+                    touchable.EventsToReceive = TouchableEventType.Touch;
+                }
+            }
+
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
+
+            // Ensure that there is a moving button visuals in the UnityUI case.  Even if it is not visible, it must be present to receive GraphicsRaycasts.
+            if (touchable is NearInteractionTouchableUnityUI)
+            {
+                if (movingButtonVisuals.objectReferenceValue == null)
+                {
+                    EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, a MovingButtonVisuals is required, as it receives the GraphicsRaycast that allows pressing the button with near/hand interactions.  It does not need to be visible, but it must be able to receive GraphicsRaycasts.", MessageType.Warning);
+                }
+                else
+                {
+                    var movingVisualGameObject = (GameObject)movingButtonVisuals.objectReferenceValue;
+                    var movingGraphic = movingVisualGameObject.GetComponentInChildren<UnityEngine.UI.Graphic>();
+                    if (movingGraphic == null)
+                    {
+                        EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, the MovingButtonVisuals must contain an Image, RawImage, or other Graphic element so that it can receive a GraphicsRaycast.", MessageType.Warning);
+                    }
+                }
+            }
+
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
             EditorGUI.BeginChangeCheck();

@@ -108,6 +108,7 @@ Shader "Mixed Reality Toolkit/Wireframe"
                 // Output each original vertex with its distance to the opposing line defined
                 // by the other two vertices.
                 g2f o;
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 [unroll]
                 for (uint idx = 0; idx < 3; ++idx)
@@ -136,6 +137,6 @@ Shader "Mixed Reality Toolkit/Wireframe"
         }
     }
 
-    FallBack "Diffuse"
+    FallBack "Mixed Reality Toolkit/Standard"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityWireframeShaderGUI"
 }

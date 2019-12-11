@@ -692,6 +692,7 @@ SubShader {
         [unroll]
         while (strip<stripCount) {
             int i=0;
+            [unroll]
             while (i<stripVxCount[strip]) {
                 //UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(vxOut[vxix]);
                 UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(vxIn[0],vxOut[vxix]);
@@ -806,4 +807,6 @@ SubShader {
     ENDCG
   }
  }
+
+    FallBack "Mixed Reality Toolkit/Standard"
 }

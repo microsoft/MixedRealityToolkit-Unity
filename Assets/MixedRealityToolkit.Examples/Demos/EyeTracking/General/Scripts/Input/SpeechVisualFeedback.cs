@@ -38,23 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         /// <summary>
         /// Update text to be displayed
         /// </summary>
@@ -77,10 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Update text to be displayed
                 UpdateTextMesh(msg);
 
-                if (InputSystem.GazeProvider != null)
+                if (CoreServices.InputSystem.GazeProvider != null)
                 {
                     // Show the visual feedback at 2m in the direction the user is looking
-                    visualFeedbackTemplate.transform.position = CameraCache.Main.transform.position + InputSystem.GazeProvider.GazeDirection.normalized * 2f;
+                    visualFeedbackTemplate.transform.position = CameraCache.Main.transform.position + CoreServices.InputSystem.GazeProvider.GazeDirection.normalized * 2f;
                     visualFeedbackTemplate.transform.LookAt(CameraCache.Main.transform.position);
                 }
 

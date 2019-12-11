@@ -297,11 +297,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                     {
-                        InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        CoreServices.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
+                        CoreServices.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
                     }
                 }
             }
@@ -319,12 +319,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
                 {
-                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
+                    CoreServices.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
                 }
 
                 currentTouchableObjectDown = null;
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                    CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
             }
         }

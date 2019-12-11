@@ -4,9 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using System;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-using System;
 using UnityEngine.Windows.Speech;
 using UInput = UnityEngine.Input;
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -28,12 +28,30 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsSpeechInputProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public WindowsSpeechInputProvider(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         /// <summary>
         /// The keywords to be recognized and optional keyboard shortcuts.
@@ -62,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            return (capability == MixedRealityCapability.VoiceCommand);
+            return capability == MixedRealityCapability.VoiceCommand;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
@@ -71,6 +89,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public void StartRecognition()
         {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            // try to initialize the keyword recognizer if it is null
+            if (keywordRecognizer == null && InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.ManualStart)
+            {
+                InitializeKeywordRecognizer();
+            }
+
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Start();
@@ -92,25 +116,37 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private KeywordRecognizer keywordRecognizer;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_WSA
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
-            }
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.Microphone,
+                    this.GetType());
         }
-#endif // UNITY_EDITOR
+#endif
 
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!Application.isPlaying || 
-                (Commands == null) ||
-                (Commands.Length == 0)) { return; }
+            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            {
+                InitializeKeywordRecognizer();
+                StartRecognition();
+            }
+        }
 
-            if (InputSystemProfile == null) { return; }
+        private void InitializeKeywordRecognizer()
+        {
+            if (!Application.isPlaying ||
+                (Commands == null) ||
+                (Commands.Length == 0) ||
+                InputSystemProfile == null ||
+                keywordRecognizer != null
+                )
+            {
+                return;
+            }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
@@ -125,26 +161,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             RecognitionConfidenceLevel = InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
 
-            if (keywordRecognizer == null)
+            try
             {
-                try
-                {
-                    keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
-                    keywordRecognizer = null;
-                    return;
-                }
-
-                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                keywordRecognizer = null;
+                return;
             }
 
-            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
-            {
-                StartRecognition();
-            }
+            keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
         }
 
         /// <inheritdoc />
@@ -175,17 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             keywordRecognizer = null;
         }
-
-#if UNITY_EDITOR
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
-            }
-        }
-#endif // UNITY_EDITOR
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)

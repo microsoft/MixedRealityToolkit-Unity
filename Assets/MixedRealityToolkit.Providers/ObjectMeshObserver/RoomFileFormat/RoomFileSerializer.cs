@@ -50,11 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.RoomFile
         /// <returns>Mesh object read from the stream.</returns>
         private static Mesh ReadMesh(BinaryReader reader)
         {
-            int vertexCount = 0;
-            int triangleIndexCount = 0;
-
             // Read the mesh data.
-            ReadFileHeader(reader, out vertexCount, out triangleIndexCount);
+            ReadFileHeader(reader, out int vertexCount, out int triangleIndexCount);
             Vector3[] vertices = ReadVertices(reader, vertexCount);
             int[] triangleIndices = ReadTriangleIndicies(reader, triangleIndexCount);
 

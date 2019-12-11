@@ -21,10 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (recordingService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSystem))
-                    {
-                        recordingService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
-                    }
+                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
                 }
                 return recordingService;
             }

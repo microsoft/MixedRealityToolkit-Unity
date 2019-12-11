@@ -35,10 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Update the rotation based on input.
         /// </summary>
         /// <returns>Desired rotation</returns>
-        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint)
+        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)
         {
             var handlebarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedMap));
-            return Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
+            return useLocalSpaceForConstraint
+                ? startRotation * Quaternion.FromToRotation(startHandlebar, handlebarDirection)
+                : Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
         }
 
         private static Vector3 ProjectHandlebarGivenConstraint(RotationConstraintType constraint, Vector3 handlebarRotation)

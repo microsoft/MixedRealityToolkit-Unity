@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -192,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             if (defaultMaterial == null)
             {
                 defaultMaterial = new Material(Shader.Find("Hidden/Internal-Colored"));
-                defaultMaterial.SetFloat("_ZWrite", 0.0f);
+                defaultMaterial.SetFloat("_ZWrite", 1.0f);
                 defaultMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
                 defaultMaterial.renderQueue = 5000;
             }
@@ -205,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     defaultInstancedMaterial = new Material(defaultInstancedShader);
                     defaultInstancedMaterial.enableInstancing = true;
-                    defaultInstancedMaterial.SetFloat("_ZWrite", 0.0f);
+                    defaultInstancedMaterial.SetFloat("_ZWrite", 1.0f);
                     defaultInstancedMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
                     defaultInstancedMaterial.renderQueue = 5000;
                 }
@@ -271,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update window transformation.
-            Transform cameraTransform = Camera.main ? Camera.main.transform : null;
+            Transform cameraTransform = CameraCache.Main ? CameraCache.Main.transform : null;
 
             if (isVisible && cameraTransform != null)
             {
@@ -402,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
         {
-            float windowDistance = Mathf.Max(16.0f / Camera.main.fieldOfView, Camera.main.nearClipPlane + 0.25f);
+            float windowDistance = Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
             Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
             Vector3 horizontalOffset = cameraTransform.right * windowOffset.x;
             Vector3 verticalOffset = cameraTransform.up * windowOffset.y;

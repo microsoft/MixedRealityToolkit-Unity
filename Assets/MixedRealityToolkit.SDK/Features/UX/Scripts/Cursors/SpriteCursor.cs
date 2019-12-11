@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (CursorStateData == null)
             {
-                CursorStateData = new SpriteCursorDatum[0];
+                CursorStateData = Array.Empty<SpriteCursorDatum>();
             }
 
             if (TargetRenderer == null)

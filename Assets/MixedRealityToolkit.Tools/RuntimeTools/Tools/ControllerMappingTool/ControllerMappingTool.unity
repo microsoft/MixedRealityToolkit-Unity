@@ -203,6 +203,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 7
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &43662027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -294,6 +295,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 20
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &112119952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,6 +381,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 4
+  displayType: 0
 --- !u!4 &112119956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -476,6 +479,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 10
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &218154351
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -567,6 +571,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 4
   buttonNumber: 15
+  displayType: 0
 --- !u!1 &247523147
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,17 +663,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
   orientType: 0
   layout: 1
+  anchor: 4
   radius: 1
   radialRange: 180
   distance: 1
   rows: 6
+  columns: 3
   cellWidth: 0.225
   cellHeight: 0.1
+  assetVersion: 1
 --- !u!1001 &264003338
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -760,6 +769,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &288566678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -845,6 +855,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 5
+  displayType: 0
 --- !u!4 &288566682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -942,6 +953,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 16
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &321854430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1027,6 +1039,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 6
+  displayType: 0
 --- !u!4 &321854434 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -1124,6 +1137,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 16
+  displayType: 0
 --- !u!1 &405176160
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1337,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 5
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &492380892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1414,6 +1429,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 22
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &605725409
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1505,6 +1521,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 8
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &649994034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1596,6 +1613,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 23
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &676084142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1687,6 +1705,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 8
+  displayType: 0
 --- !u!1 &688276103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,6 +1829,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &720574315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1901,6 +1921,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 9
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &779589726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1992,6 +2013,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 13
   buttonNumber: 14
+  displayType: 0
 --- !u!1 &808871985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,6 +2044,7 @@ Transform:
   - {fileID: 2124647455}
   - {fileID: 688276104}
   - {fileID: 1737223801}
+  - {fileID: 1011341391}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2116,6 +2139,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 21
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &818739926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2207,6 +2231,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 18
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &820535808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2298,6 +2323,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 1
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &829914240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2389,6 +2415,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 9
+  displayType: 0
 --- !u!1001 &877432016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2480,6 +2507,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 2
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &941276017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2571,6 +2599,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 18
+  displayType: 0
 --- !u!1001 &948653937
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2662,6 +2691,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 17
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &960035549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2753,6 +2783,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 17
+  displayType: 0
 --- !u!1 &984166811
 GameObject:
   m_ObjectHideFlags: 0
@@ -2913,6 +2944,131 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 13
+  displayType: 0
+--- !u!1 &1011341390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1011341391}
+  m_Layer: 0
+  m_Name: JoystickNamesParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1011341391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011341390}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.25, y: 0.535, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1030416043}
+  - {fileID: 1144111474}
+  m_Father: {fileID: 808871986}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1030416042
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1011341391}
+    m_Modifications:
+    - target: {fileID: 1000013198843976, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_Name
+      value: JoystickNames
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d145caa42b44bd42aac79a42eba3d7c, type: 3}
+--- !u!4 &1030416043 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1030416042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1030416044 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000013198843976, guid: 2d145caa42b44bd42aac79a42eba3d7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1030416042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!102 &1030416045 stripped
+TextMesh:
+  m_CorrespondingSourceObject: {fileID: 102000010767390410, guid: 2d145caa42b44bd42aac79a42eba3d7c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1030416042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1030416046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030416044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777074faf1a6cce45ae89a9ae1ddb2fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayTextMesh: {fileID: 1030416045}
+  inputType: 0
+  axisNumber: 1
+  buttonNumber: 0
+  displayType: 1
 --- !u!1 &1032921854
 GameObject:
   m_ObjectHideFlags: 0
@@ -3194,6 +3350,115 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 19
+  displayType: 0
+--- !u!1 &1144111473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1144111474}
+  - component: {fileID: 1144111478}
+  - component: {fileID: 1144111477}
+  - component: {fileID: 1144111476}
+  - component: {fileID: 1144111475}
+  m_Layer: 0
+  m_Name: JoystickNamesBackPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1144111474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144111473}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.01}
+  m_LocalScale: {x: 0.0100000035, y: 0.2, z: 0.75}
+  m_Children: []
+  m_Father: {fileID: 1011341391}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!54 &1144111475
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144111473}
+  serializedVersion: 2
+  m_Mass: 100
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!23 &1144111476
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144111473}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a8de2758c4b4460cae694f0d50d94fbb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &1144111477
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144111473}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1144111478
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144111473}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1302700854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3285,6 +3550,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 28
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &1314560406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3370,6 +3636,7 @@ MonoBehaviour:
   inputType: 0
   axisNumber: 1
   buttonNumber: 0
+  displayType: 0
 --- !u!4 &1314560411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -3461,6 +3728,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 2
+  displayType: 0
 --- !u!4 &1414072032 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -3558,6 +3826,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 27
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &1552258376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3649,6 +3918,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 11
+  displayType: 0
 --- !u!1001 &1562980387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3740,6 +4010,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 14
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &1612212673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3831,6 +4102,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 15
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &1640500170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3922,6 +4194,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 25
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &1650442022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4007,6 +4280,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 1
+  displayType: 0
 --- !u!4 &1650442026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -4104,6 +4378,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 24
   buttonNumber: 14
+  displayType: 0
 --- !u!1 &1737223800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4128,7 +4403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1737223800}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.45, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 247523148}
@@ -4227,6 +4502,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 19
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &1783146239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4312,6 +4588,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 0
+  displayType: 0
 --- !u!4 &1783146243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -4403,6 +4680,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 3
+  displayType: 0
 --- !u!4 &1876211388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -4494,6 +4772,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 7
+  displayType: 0
 --- !u!4 &1924901268 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000010330146594, guid: 2d145caa42b44bd42aac79a42eba3d7c,
@@ -4591,6 +4870,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 11
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &2067829696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4682,6 +4962,7 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 10
+  displayType: 0
 --- !u!1001 &2068563557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4773,6 +5054,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 6
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &2090756144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4864,6 +5146,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 12
   buttonNumber: 15
+  displayType: 0
 --- !u!1001 &2096355156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4955,6 +5238,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 26
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &2110014998
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5046,6 +5330,7 @@ MonoBehaviour:
   inputType: 3
   axisNumber: 3
   buttonNumber: 14
+  displayType: 0
 --- !u!1001 &2124647454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5149,7 +5434,7 @@ PrefabInstance:
 
         * Adding support for a new controller
 
-        * Investigating a suspected input mapping issue,
+        * Investigating a suspected input mapping issue
 
 
 
@@ -5180,7 +5465,8 @@ PrefabInstance:
       propertyPath: m_Text
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7890034368887346257, guid: 4f4e45632f741eb49a4c265afc815789, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4f4e45632f741eb49a4c265afc815789, type: 3}
 --- !u!4 &2124647455 stripped
 Transform:
@@ -5279,3 +5565,4 @@ MonoBehaviour:
   inputType: 2
   axisNumber: 1
   buttonNumber: 12
+  displayType: 0

@@ -31,13 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-        [MenuItem("MSBuild/Generate C# SDK Projects")]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Generate C# SDK Projects")]
         public static void GenerateSDKProjects()
         {
             try
             {
                 RunGenerateSDKProjects();
-                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Succesfully.");
+                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Successfully.");
             }
             catch
             {

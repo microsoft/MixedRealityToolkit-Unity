@@ -1,0 +1,42 @@
+{
+  "Registrations": [
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/microsoft/VisualProfiler-Unity/",
+          "commitHash": "02a1d74069e7f85d9af793112e7971cf28791f60"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/modesttree/Unity3dAsyncAwaitUtil",
+          "commitHash": "9f776694a35dad430dd5718238798a429118ce31"
+        }
+      }
+    },
+    {
+      "component": {
+        "type": "git",
+        "git": {
+          "repositoryUrl": "https://github.com/ValveSoftware/steamvr_unity_plugin",
+          "commitHash": "dd9b6953951f9213199b41ad43bcd843ab168828"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "other",
+        "Other": {
+          "Name": "Oculus Controller Art",
+          "Version": "1.1",
+          "DownloadUrl": "https://developer.oculus.com/downloads/package/oculus-controller-art/"
+        }
+      }
+    }
+  ],
+  "Version": 1
+}

@@ -148,24 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool GetCursorVisibility() => HideCursorOnFocus;
 
-        /// <inheritdoc />
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         public Vector3 GetModifiedPosition(IMixedRealityCursor cursor)
         {
             if (SnapCursorPosition)
@@ -181,8 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             FocusDetails focusDetails;
-            if (InputSystem?.FocusProvider != null && 
-                InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
+            if (CoreServices.InputSystem?.FocusProvider != null &&
+                CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(cursor.Pointer, out focusDetails))
             {
                 // Else, consider the modifiers on the cursor modifier, but don't snap
                 return focusDetails.Point + HostTransform.TransformVector(CursorPositionOffset);

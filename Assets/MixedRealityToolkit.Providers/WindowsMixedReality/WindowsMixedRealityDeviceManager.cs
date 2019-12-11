@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using UnityEngine;
 using System;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -35,12 +36,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsMixedRealityDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public WindowsMixedRealityDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         #region IMixedRealityCapabilityCheck Implementation
 
@@ -295,6 +313,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #endregion Gesture Settings
 
         #region IMixedRealityDeviceManager Interface
+
+        /// <inheritdoc/>
+        public override void Initialize()
+        {
+            base.Initialize();
+
+#if UNITY_EDITOR
+            // When in the editor, check for the DotNetWinRT dll and define the appropriate
+            // preprocessor sybmol
+            ScriptingUtilities.AppendScriptingDefinitions(
+                "Microsoft.Windows.MixedReality.DotNetWinRT.dll", 
+                UnityEditor.BuildTargetGroup.WSA, 
+                new string[] { "DOTNETWINRT_PRESENT" });
+#endif // UNITY_EDITOR
+        }
 
         /// <inheritdoc/>
         public override void Enable()
@@ -660,6 +693,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         pointer.Controller = null;
                     }
+                }
+
+                if (controller.Visualizer != null &&
+                    controller.Visualizer.GameObjectProxy != null)
+                {
+                    controller.Visualizer.GameObjectProxy.SetActive(false);
                 }
             }
 

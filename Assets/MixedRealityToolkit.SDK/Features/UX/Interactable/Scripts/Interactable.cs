@@ -44,10 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [FormerlySerializedAs("States")]
         [SerializeField]
+        [Tooltip("ScriptableObject to reference for basic state logic to follow when interacting and transitioning between states. Should generally be \"DefaultInteractableStates\" object")]
         private States states;
 
         /// <summary>
-        /// A collection of states and basic state logic
+        /// ScriptableObject to reference for basic state logic to follow when interacting and transitioning between states. Should generally be "DefaultInteractableStates" object
         /// </summary>
         public States States
         {
@@ -65,7 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableStates StateManager { get; protected set; }
 
         /// <summary>
-        /// Which action is this interactable listening for
+        /// The Interactable will only respond to input down events fired with the corresponding assigned Input Action.
+        /// Available input actions are populated via the Input Actions Profile under the MRTK Input System Profile assigned in the current scene
         /// </summary>
         public MixedRealityInputAction InputAction { get; set; }
 
@@ -74,13 +76,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         [HideInInspector]
         [SerializeField]
-        private int InputActionId = -1;
+        [Tooltip("The Interactable will only respond to input down events fired with the corresponding assigned Input Action." +
+        "Available input actions are populated via the Input Actions Profile under the MRTK Input System Profile assigned in the current scene.")]
+        private int InputActionId = 0;
 
         [FormerlySerializedAs("IsGlobal")]
         [SerializeField]
+        [Tooltip("If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks." +
+        "If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.")]
         protected bool isGlobal = false;
         /// <summary>
-        /// Is the interactable listening to global events (input only)
+        /// If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks.
+        /// If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.
         /// </summary>
         public bool IsGlobal
         {
@@ -103,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// A way of adding more layers of states for controls like toggles.
-        /// This is capitalized and doesn't match conventions for backwards compatability
+        /// This is capitalized and doesn't match conventions for backwards compatibility
         /// (to not break people using Interactable). We tried using FormerlySerializedAs("Dimensions)
         /// and renaming to "dimensions", however Unity did not properly pick up the former serialization,
         /// so we maintained the old value. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6169
@@ -216,12 +223,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool CanDeselect = true;
 
         /// <summary>
-        /// A voice command to fire a click event
+        /// This string keyword is the voice command that will fire a click on this Interactable.
         /// </summary>
+        [Tooltip("This string keyword is the voice command that will fire a click on this Interactable.")]
         public string VoiceCommand = "";
 
         [FormerlySerializedAs("RequiresFocus")]
         [SerializeField]
+        [Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool voiceRequiresFocus = true;
         /// <summary>
         /// Does the voice command require this to have focus?
@@ -236,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     voiceRequiresFocus = value;
 
-                    // If we are active, then change global speech registeration. 
+                    // If we are active, then change global speech registration. 
                     // Register handle if we do not require focus, unregister otherwise
                     if (gameObject.activeInHierarchy)
                     {
@@ -312,6 +321,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Field just used for serialization to save if the Interactable should start enabled or disabled
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
+        [Tooltip("Defines whether the Interactable is enabled or not internally." +
+        "This is different than the enabled property at the GameObject/Component level." +
+        "When false, Interactable will continue to run in Unity but not respond to Input." +
+        "\n\nProperty is useful for disabling UX, such as greying out a button, until a user completes some pre-mandatory step such as fill out their name, etc")]
         private bool enabledOnStart = true;
 
         /// <summary>
@@ -567,7 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
-        #region MonoBehaviorImplementation
+        #region MonoBehaviour Implementation
 
         protected virtual void Awake()
         {
@@ -576,13 +589,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 States = GetDefaultInteractableStates();
             }
 
-            IsEnabled = enabledOnStart;
-
             InputAction = ResolveInputAction(InputActionId);
 
             CurrentDimension = startDimensionIndex;
 
             RefreshSetup();
+
+            IsEnabled = enabledOnStart;
         }
 
         protected virtual void OnEnable()
@@ -678,7 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             lastState = StateManager.CurrentState();
         }
 
-        #endregion MonoBehavior Implimentation
+        #endregion MonoBehaviour Implementation
 
         #region Interactable Initiation
 
@@ -712,8 +725,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                InteractableEvents[i].Receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
-                InteractableEvents[i].Receiver.Host = this;
+                var receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
+                if (receiver != null)
+                {
+                    InteractableEvents[i].Receiver = receiver;
+                    InteractableEvents[i].Receiver.Host = this;
+                }
+                else
+                {
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
+                }
             }
         }
 
@@ -1054,8 +1075,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
             MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
-            index = Mathf.Clamp(index, 0, actions.Length - 1);
-            return actions[index];
+            if (actions?.Length > 0)
+            {
+                index = Mathf.Clamp(index, 0, actions.Length - 1);
+                return actions[index];
+            }
+
+            return default;
         }
 
         /// <summary>
@@ -1578,7 +1604,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Do oice commands require focus?
+        /// Do voice commands require focus?
         /// </summary>
         [System.Obsolete("Use VoiceRequiresFocus instead")]
         public bool RequiresFocus
@@ -1608,7 +1634,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return States.StateList.ToArray();
             }
 
-            return new State[0];
+            return System.Array.Empty<State>();
         }
 
         /// <summary>

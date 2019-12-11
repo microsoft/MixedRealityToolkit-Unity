@@ -21,7 +21,7 @@ The list below outlines all available input event interfaces to be implemented b
 
 ## Input events in action
 
-At the script level, input events can be consumed by implementing one of the event handler interfaces shown in the table above. When an input event fires via an user interaction, the following takes place:
+At the script level, input events can be consumed by implementing one of the event handler interfaces shown in the table above. When an input event fires via a user interaction, the following takes place:
 
 1. The MRTK input system recognizes that an input event has occurred.
 1. The MRTK input system fires the relevant interface function of the input event to all [registered global input handlers](#register-for-global-input-events)
@@ -77,7 +77,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
 {
     private void OnEnable()
     {
-        // Instruct Input System that we would like to receive all input events of type 
+        // Instruct Input System that we would like to receive all input events of type
         // IMixedRealitySourceStateHandler and IMixedRealityHandJointHandler
         CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);

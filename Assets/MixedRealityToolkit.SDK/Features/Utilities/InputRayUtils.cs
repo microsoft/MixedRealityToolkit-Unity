@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray assosiciated with the user's hand.
+        /// Gets the ray associated with the user's hand.
         /// </summary>
         /// <param name="hand">The handedness of the hand</param>
         /// <param name="ray">The ray being returned</param>
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray assosiciated with the motion controller.
+        /// Gets the ray associated with the motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the motion controller</param>
         /// <param name="ray">The ray being returned</param>
@@ -96,13 +96,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the <seealso cref="IMixedRealityController"/> instance matching the specified source type and hand.
+        /// Gets the first <seealso cref="IMixedRealityController"/> instance matching the specified source type and hand.
         /// </summary>
-        /// <param name="sourceType">Type type of the input source</param>
+        /// <param name="sourceType">Type of the input source</param>
         /// <param name="hand">The handedness of the controller</param>
         /// <param name="controller">The <seealso cref="IMixedRealityController"/> instance being returned</param>
         /// <returns>
-        /// True if the controller instance is beeing returned, false otherwise. 
+        /// True if the controller instance is being returned, false otherwise. 
         /// </returns>
         private static bool TryGetControllerInstance(InputSourceType sourceType, Handedness hand, out IMixedRealityController controller)
         {
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray assosiciated with the desired input source type
+        /// Gets the ray associated with the desired input source type
         /// and hand.
         /// </summary>
         /// <param name="sourceType">The type of input source</param>

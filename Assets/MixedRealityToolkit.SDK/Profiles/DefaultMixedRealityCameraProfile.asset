@@ -13,6 +13,14 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityCameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  settingsConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    componentName: Windows Mixed Reality Camera Settings
+    priority: 0
+    runtimePlatform: 8
+    settingsProfile: {fileID: 11400000, guid: b8be5b71c8e0a254c83b691d62a79ff5, type: 2}
   nearClipPlaneOpaqueDisplay: 0.1
   farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 1
@@ -22,4 +30,4 @@ MonoBehaviour:
   farClipPlaneTransparentDisplay: 50
   cameraClearFlagsTransparentDisplay: 2
   backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
-  holoLensQualityLevel: 0
+  transparentQualityLevel: 0

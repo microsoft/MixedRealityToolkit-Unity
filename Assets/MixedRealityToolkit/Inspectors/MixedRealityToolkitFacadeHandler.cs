@@ -15,13 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     [InitializeOnLoad]
     public static class MixedRealityToolkitFacadeHandler
     {
-        private static List<Transform> childrenToDelete = new List<Transform>();
+        private static readonly List<Transform> childrenToDelete = new List<Transform>();
         private static MixedRealityToolkit previousActiveInstance;
-        private static long previousFrameCount;
         private static short editorUpdateTicks;
         private const short EditorUpdateTickInterval = 15;
 
-        // While a scene save is occuring, facade creation is disabled
+        // While a scene save is occurring, facade creation is disabled
         // and currently present facades get deleted.
         private static bool sceneSaving = false;
 
@@ -187,8 +186,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void DestroyFacades()
         {
-            foreach (var facade in ServiceFacade.ActiveFacadeObjects)
+            for (int i = ServiceFacade.ActiveFacadeObjects.Count - 1; i >= 0; i--)
             {
+                var facade = ServiceFacade.ActiveFacadeObjects[i];
                 if (facade != null)
                 {
                     GameObjectExtensions.DestroyGameObject(facade.gameObject);

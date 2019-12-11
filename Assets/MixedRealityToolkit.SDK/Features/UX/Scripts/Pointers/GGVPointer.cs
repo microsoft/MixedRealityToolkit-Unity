@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Pointer")]
         [SerializeField]
         private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
+
         [SerializeField]
         private MixedRealityInputAction poseAction = MixedRealityInputAction.None;
 
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (pointerId == 0)
                 {
-                    pointerId = InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = CoreServices.InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -174,14 +175,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (isSelectPressed && IsInteractionEnabled)
             {
-                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
+                CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Controller.ControllerHandedness);
             }
         }
 
         public void OnPreSceneQuery()
         {
             Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
-            Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * InputSystem.FocusProvider.GlobalPointingExtent);
+            Vector3 endPoint = newGazeOrigin + (gazeProvider.GazePointer.Rays[0].Direction * CoreServices.InputSystem.FocusProvider.GlobalPointingExtent);
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
@@ -223,8 +224,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             c.SourceDownIds.Remove(eventData.SourceId);
                         }
-                        InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
-                        InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
+
+                        CoreServices.InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
+                        CoreServices.InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
 
                         // For GGV, the gaze pointer does not set this value itself. 
                         // See comment in OnInputDown for more details.
@@ -250,7 +252,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             c.SourceDownIds.Add(eventData.SourceId);
                         }
-                        InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
+
+                        CoreServices.InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
 
                         // For GGV, the gaze pointer does not set this value itself as it does not receive input 
                         // events from the hands. Because this value is important for certain gaze behavior, 
@@ -266,7 +269,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnEnable()
         {
             base.OnEnable();
-            gazeProvider = InputSystem.GazeProvider as GazeProvider;
+
+            gazeProvider = CoreServices.InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {
@@ -292,17 +296,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
-            InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
-            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation
@@ -326,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (isSelectPressed)
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
-                    InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
+                    CoreServices.InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
 
                     // For GGV, the gaze pointer does not set this value itself. 
                     // See comment in OnInputDown for more details.

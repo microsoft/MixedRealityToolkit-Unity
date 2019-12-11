@@ -12,12 +12,23 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
+
     /// <summary>
     /// This class has handy inspector utilities and functions.
     /// </summary>
     public static class MixedRealityInspectorUtility
     {
         #region Colors
+
+        public static Color DefaultBackgroundColor
+        {
+            get
+            {
+                return EditorGUIUtility.isProSkin
+                    ? new Color32(56, 56, 56, 255)
+                    : new Color32(194, 194, 194, 255);
+            }
+        }
 
         public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
         public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
@@ -76,7 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 MixedRealityToolkit.SetActiveInstance(newInstance);
                 Selection.activeObject = newInstance;
 
-                if (configProfile != null)
+                if (configProfile == null)
+                {
+                    // if we don't have a profile set we get the default profile
+                    newInstance.ActiveProfile = GetDefaultConfigProfile();
+                }
+                else
                 {
                     newInstance.ActiveProfile = configProfile;
                 }
@@ -453,5 +469,134 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         #endregion Handles
+
+        #region Profiles
+
+        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+        private static Dictionary<Object, UnityEditor.Editor> profileEditorCache = new Dictionary<Object, UnityEditor.Editor>();
+
+        /// <summary>
+        /// Draws an editor for a profile object.
+        /// </summary>
+        public static void DrawSubProfileEditor(Object profileObject, bool renderProfileInBox)
+        {
+            if (profileObject == null)
+            {
+                return;
+            }
+
+            UnityEditor.Editor subProfileEditor = null;
+            if (!profileEditorCache.TryGetValue(profileObject, out subProfileEditor))
+            {
+                subProfileEditor = UnityEditor.Editor.CreateEditor(profileObject);
+                profileEditorCache.Add(profileObject, subProfileEditor);
+            }
+
+            // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+            if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+            {
+                BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                configProfile.RenderAsSubProfile = true;
+            }
+
+            var subProfile = profileObject as BaseMixedRealityProfile;
+            if (subProfile != null && !subProfile.IsCustomProfile)
+            {
+                EditorGUILayout.HelpBox("Clone this default profile to edit properties below", MessageType.Warning);
+            }
+
+            if (renderProfileInBox)
+            {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            }
+            else
+            {
+                EditorGUILayout.BeginVertical();
+            }
+
+            EditorGUILayout.Space();
+            subProfileEditor.OnInspectorGUI();
+            EditorGUILayout.Space();
+
+            EditorGUILayout.EndVertical();
+        }
+
+        /// <summary>
+        /// Draws a dropdown with all available profiles of profilyType.
+        /// </summary>
+        /// <returns>True if property was changed.</returns>
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        {
+            bool changed = false;
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                // Pull profile instances and profile content from cache
+                ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
+                GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
+                // Set our selected index to our '(None)' option by default
+                int selectedIndex = 0;
+                // Find our selected index
+                for (int i = 0; i < profileInstances.Length; i++)
+                {
+                    if (profileInstances[i] == oldProfileObject)
+                    {   // Our profile content has a '(None)' option at the start
+                        selectedIndex = i + 1;
+                        break;
+                    }
+                }
+
+                int newIndex = EditorGUILayout.Popup(
+                    new GUIContent(oldProfileObject != null ? "" : property.displayName),
+                    selectedIndex, 
+                    profileContent,
+                    GUILayout.ExpandWidth(true));
+
+                property.objectReferenceValue = (newIndex > 0) ? profileInstances[newIndex - 1] : null;
+                changed = property.objectReferenceValue != oldProfileObject;
+
+                // Draw a button that finds the profile in the project window
+                if (property.objectReferenceValue != null)
+                {
+                    // The view asset button should always be enabled.
+                    using (new GUIEnabledWrapper(true, true))
+                    { 
+                        if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
+                        {
+                            EditorGUIUtility.PingObject(property.objectReferenceValue);
+                        }
+                    }
+                }
+
+                // Draw the clone button
+                if (property.objectReferenceValue == null)
+                {
+                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileType))
+                    {
+                        if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
+                        {
+                            ScriptableObject instance = ScriptableObject.CreateInstance(profileType);
+                            var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
+                            property.objectReferenceValue = newProfile;
+                            property.serializedObject.ApplyModifiedProperties();
+                            changed = true;
+                        }
+                    }
+                }
+                else
+                {
+                    var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
+                    Debug.Assert(renderedProfile != null);
+                    if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(45f)))
+                    {
+                        MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
+                    }
+                }
+            }
+
+            return changed;
+        }
+
+        #endregion
     }
 }

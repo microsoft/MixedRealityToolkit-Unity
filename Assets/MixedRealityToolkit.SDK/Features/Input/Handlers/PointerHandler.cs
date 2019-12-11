@@ -38,12 +38,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation

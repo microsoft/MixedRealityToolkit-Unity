@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -11,7 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// control panels or sets of prefab/objects.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
-    public class GridObjectCollection : BaseObjectCollection
+    [ExecuteAlways]
+    public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
@@ -39,17 +41,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { orientType = value; }
         }
 
-        [Tooltip("Whether to sort objects by row first or by column first")]
+        [Tooltip("Specify direction in which children are laid out.")]
         [SerializeField]
-        private LayoutOrder layout = LayoutOrder.ColumnThenRow;
+        private LayoutOrder layout = LayoutOrder.RowThenColumn;
 
         /// <summary>
-        /// Whether to sort objects by row first or by column first
+        /// Specify direction in which children are laid out.
         /// </summary>
         public LayoutOrder Layout
         {
             get { return layout; }
             set { layout = value; }
+        }
+
+        [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
+        private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
+        public LayoutAnchor Anchor
+        {
+            get { return anchor; }
+            set { anchor = value; }
         }
 
         [Range(0.05f, 100.0f)]
@@ -83,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         [Tooltip("Distance for plane layout")]
         [Range(0f, 100f)]
-        private float distance = 1f;
+        private float distance = 0f;
 
         /// <summary>
         /// This is the Distance for an offset for the Plane mapping and is ignored for the other mappings.
@@ -94,17 +104,50 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
+        private static readonly int defaultValueRowsCols = 3;
+
         [Tooltip("Number of rows per column")]
         [SerializeField]
-        private int rows = 3;
+        private int rows = defaultValueRowsCols;
 
         /// <summary>
-        /// Number of rows per column, column number is automatically determined
+        /// Number of rows per column. Can only be assigned when layout type is
+        /// RowsThenColumns
         /// </summary>
         public int Rows
         {
             get { return rows; }
-            set { rows = value; }
+            set
+            {
+                if (Layout == LayoutOrder.ColumnThenRow)
+                {
+                    Debug.LogError("When using ColumnThenRow layout, assign Columns instead of Rows.");
+                    return;
+                }
+                rows = value;
+            }
+        }
+
+        [Tooltip("Number of columns per row")]
+        [SerializeField]
+        private int columns = defaultValueRowsCols;
+
+        /// <summary>
+        /// Number of columns per row. Can only be assigned when layout type is 
+        /// ColumnsThenRows
+        /// </summary>
+        public int Columns
+        {
+            get { return columns; }
+            set
+            {
+                if (Layout == LayoutOrder.RowThenColumn)
+                {
+                    Debug.LogError("When using RowThenColumn layout, assign Rows instead of Columns.");
+                    return;
+                }
+                columns = value;
+            }
         }
 
         [Tooltip("Width of cell per object")]
@@ -153,8 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Mesh CylinderMesh { get; set; }
 
-        protected int Columns;
-
         protected Vector2 HalfCell;
 
         /// <summary>
@@ -166,7 +207,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 newPos;
 
             // Now lets lay out the grid
-            Columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            if (Layout == LayoutOrder.RowThenColumn)
+            {
+                columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            }
+            else if (Layout == LayoutOrder.ColumnThenRow)
+            {
+                rows = Mathf.CeilToInt((float)NodeList.Count / columns);
+            }
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
@@ -239,46 +287,84 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected void ResolveGridLayout(Vector3[] grid, LayoutOrder order)
         {
             int cellCounter = 0;
-            int iMax, jMax;
+            int xMax, yMax;
 
             switch (order)
             {
                 case LayoutOrder.RowThenColumn:
-                    iMax = Rows;
-                    jMax = Columns;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.ColumnThenRow:
-                    iMax = Columns;
-                    jMax = Rows;
+                    xMax = Columns;
+                    yMax = Rows;
                     break;
                 case LayoutOrder.Vertical:
-                    iMax = 1;
-                    jMax = NodeList.Count;
+                    xMax = 1;
+                    yMax = NodeList.Count;
                     break;
                 case LayoutOrder.Horizontal:
-                    iMax = NodeList.Count;
-                    jMax = 1;
+                    xMax = NodeList.Count;
+                    yMax = 1;
                     break;
                 default:
-                    iMax = Mathf.CeilToInt((float)NodeList.Count / rows);
-                    jMax = rows;
+                    xMax = Mathf.CeilToInt((float)NodeList.Count / rows);
+                    yMax = rows;
                     break;
             }
 
-            float startOffsetX = (iMax * 0.5f) * CellWidth;
-            float startOffsetY = (jMax * 0.5f) * CellHeight;
-
-            for (int i = 0; i < iMax; i++)
+            float startOffsetX = (xMax * 0.5f) * CellWidth;
+            if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
-                for (int j = 0; j < jMax; j++)
-                {
-                    if (cellCounter < NodeList.Count)
+                startOffsetX = 0;
+            }
+            else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
+            {
+                startOffsetX = xMax * CellWidth;
+            }
+
+            float startOffsetY = (yMax * 0.5f) * CellHeight;
+            if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
+            {
+                startOffsetY = 0;
+            }
+            else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
+            {
+                startOffsetY = yMax * CellHeight;
+            }
+
+            if (layout == LayoutOrder.ColumnThenRow)
+            {
+                for (int y = 0; y < yMax; y++)
+                    for (int x = 0; x < xMax; x++)
                     {
-                        grid[cellCounter].Set((-startOffsetX + (i * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                             (startOffsetY - (j * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
-                                             0.0f);
+                        {
+                            if (cellCounter < NodeList.Count)
+                            {
+                                grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                     (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                     0.0f);
+                            }
+                            cellCounter++;
+                        }
                     }
-                    cellCounter++;
+
+            }
+            else
+            {
+
+                for (int x = 0; x < xMax; x++)
+                {
+                    for (int y = 0; y < yMax; y++)
+                    {
+                        if (cellCounter < NodeList.Count)
+                        {
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                                                 0.0f);
+                        }
+                        cellCounter++;
+                    }
                 }
             }
         }
@@ -355,5 +441,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
+
+        private void Awake()
+        {
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying)
+            {
+                if (assetVersion != CurrentAssetVersion)
+                {
+                    Undo.RecordObject(this, "version patching");
+                    PerformVersionPatching();
+                }
+            }
+#endif
+        }
+
+        #region asset version migration
+#if UNITY_EDITOR
+        private const int CurrentAssetVersion = 1;
+
+        [SerializeField]
+        [HideInInspector]
+        private int assetVersion = 0;
+
+        private void PerformVersionPatching()
+        {
+            if (assetVersion == 0)
+            {
+                string friendlyName = GetUserFriendlyName();
+
+                // Migrate from version 0 to version 1
+                UpgradeAssetToVersion1();
+                assetVersion = 1;
+            }
+            assetVersion = CurrentAssetVersion;
+        }
+
+        /// <summary>
+        /// Version 1 of GridObjectCollection introduced in MRTK 2.2 when 
+        /// incorrect semantics of "ColumnsThenRows" layout was fixed.
+        /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891
+        /// for details.    
+        /// </summary>
+        private void UpgradeAssetToVersion1()
+        {
+            if (Layout == LayoutOrder.ColumnThenRow)
+            {
+                Layout = LayoutOrder.RowThenColumn;
+                var friendlyName = GetUserFriendlyName();
+                Debug.Log($"[MRTK 2.2 asset upgrade] Changing LayoutOrder for {friendlyName} from ColumnThenRow to RowThenColumn. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6773#issuecomment-561918891 for details.");
+            }
+        }
+
+        private string GetUserFriendlyName()
+        {
+            string objectName = gameObject.name;
+            if (gameObject.transform.parent != null)
+            {
+                objectName += " (parent " + transform.parent.gameObject.name + ")";
+            }
+
+            return objectName;
+        }
+#endif
+        #endregion
+
     }
 }

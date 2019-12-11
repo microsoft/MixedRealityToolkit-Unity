@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
         [Range(0, UnityInputButtonCount - 1)]
         private int buttonNumber = 0;
 
+        [SerializeField]
+        private DisplayType displayType = DisplayType.InputAxes;
+
         // This is defined in Unity's in-editor input axes
         // settings, under the Axis dropdown.
         private const int UnityInputAxisCount = 28;
@@ -39,19 +42,32 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
         // https://docs.unity3d.com/ScriptReference/KeyCode.html
         private const int UnityInputButtonCount = 20;
 
+        private enum DisplayType
+        {
+            InputAxes,
+            JoystickNames
+        }
+
         private void OnValidate()
         {
-            switch (inputType)
+            if (displayType == DisplayType.InputAxes)
             {
-                case AxisType.SingleAxis:
-                    name = $"{inputType}{axisNumber}";
-                    break;
-                case AxisType.Digital:
-                    name = $"{inputType}{buttonNumber}";
-                    break;
-                case AxisType.None:
-                    name = "AllActiveAxes";
-                    break;
+                switch (inputType)
+                {
+                    case AxisType.SingleAxis:
+                        name = $"{inputType}{axisNumber}";
+                        break;
+                    case AxisType.Digital:
+                        name = $"{inputType}{buttonNumber}";
+                        break;
+                    case AxisType.None:
+                        name = "AllActiveAxes";
+                        break;
+                }
+            }
+            else if (displayType == DisplayType.JoystickNames)
+            {
+                name = "JoystickNames";
             }
         }
 
@@ -62,43 +78,57 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
                 return;
             }
 
-            switch (inputType)
+            if (displayType == DisplayType.InputAxes)
             {
-                case AxisType.SingleAxis:
-                    displayTextMesh.text = $"Axis {axisNumber}: {UnityEngine.Input.GetAxis($"AXIS_{axisNumber}")}";
-                    break;
-                case AxisType.Digital:
-                    if (Enum.TryParse($"JoystickButton{buttonNumber}", out KeyCode keyCode))
-                    {
-                        displayTextMesh.text = $"Button {buttonNumber}: {UnityEngine.Input.GetKey(keyCode)}";
-                    }
-                    break;
-                case AxisType.None:
-                    displayTextMesh.text = "All active:\n";
-                    for (int i = 1; i <= UnityInputAxisCount; i++)
-                    {
-                        float reading = UnityEngine.Input.GetAxis($"AXIS_{i}");
-
-                        if (reading != 0.0)
+                switch (inputType)
+                {
+                    case AxisType.SingleAxis:
+                        displayTextMesh.text = $"Axis {axisNumber}: {UnityEngine.Input.GetAxis($"AXIS_{axisNumber}")}";
+                        break;
+                    case AxisType.Digital:
+                        if (Enum.TryParse($"JoystickButton{buttonNumber}", out KeyCode keyCode))
                         {
-                            displayTextMesh.text += $"Axis {i}: {reading}\n";
+                            displayTextMesh.text = $"Button {buttonNumber}: {UnityEngine.Input.GetKey(keyCode)}";
                         }
-                    }
-
-                    for (int i = 0; i < UnityInputButtonCount; i++)
-                    {
-
-                        if (Enum.TryParse($"JoystickButton{i}", out KeyCode buttonCode))
+                        break;
+                    case AxisType.None:
+                        displayTextMesh.text = "All active:\n";
+                        for (int i = 1; i <= UnityInputAxisCount; i++)
                         {
-                            bool isPressed = UnityEngine.Input.GetKey(buttonCode);
-                            if (isPressed)
+                            float reading = UnityEngine.Input.GetAxis($"AXIS_{i}");
+
+                            if (reading != 0.0)
                             {
-                                displayTextMesh.text += $"Button {i}: {isPressed}\n";
+                                displayTextMesh.text += $"Axis {i}: {reading}\n";
                             }
                         }
-                    }
 
-                    break;
+                        for (int i = 0; i < UnityInputButtonCount; i++)
+                        {
+
+                            if (Enum.TryParse($"JoystickButton{i}", out KeyCode buttonCode))
+                            {
+                                bool isPressed = UnityEngine.Input.GetKey(buttonCode);
+                                if (isPressed)
+                                {
+                                    displayTextMesh.text += $"Button {i}: {isPressed}\n";
+                                }
+                            }
+                        }
+
+                        break;
+                }
+            }
+            else
+            {
+                string[] joystickNames = UnityEngine.Input.GetJoystickNames();
+
+                displayTextMesh.text = $"Detected {joystickNames.Length} controller{(joystickNames.Length != 1 ? "s" : "")}:\n";
+
+                for (int i = 0; i < joystickNames.Length; i++)
+                {
+                    displayTextMesh.text += $"{joystickNames[i]}\n";
+                }
             }
         }
     }

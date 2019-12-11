@@ -44,7 +44,7 @@ bugs) as re-implementing the GazeProvider is non-trivial.
 
 ### How get the current gaze target
 
-This sample shows how to get the current game object that is targetted by the user gaze.
+This sample shows how to get the current game object that is targeted by the user gaze.
 
 ```csharp
 void LogCurrentGazeTarget()
@@ -72,4 +72,3 @@ void LogGazeDirectionOrigin()
         + CoreServices.InputSystem.GazeProvider.GazeOrigin);
 }
 ```
-

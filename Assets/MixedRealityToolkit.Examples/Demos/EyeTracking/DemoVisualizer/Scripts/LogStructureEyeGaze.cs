@@ -9,12 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
     public class LogStructureEyeGaze : LogStructure
     {
-        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
+        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
         public override string[] GetHeaderColumns()
         {
-            return new string[] {
+            return new string[] 
+            {
                 // UserId
                 "UserId",
                 // SessionType
@@ -41,23 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             };
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         public override object[] GetData(string inputType, string inputStatus, EyeTrackingTarget intTarget)
         {
             // Let's prepare all the data we wanna log
@@ -66,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             Vector3? eyeHitPos = null;
             if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsEyeGazeValid)
                 eyeHitPos = EyeTrackingProvider.HitPosition;
-
 
             object[] data = new object[]
             { 
@@ -91,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 (eyeHitPos != null) ? eyeHitPos.Value.x : float.NaN,
                 (eyeHitPos != null) ? eyeHitPos.Value.y : float.NaN,
                 (eyeHitPos != null) ? eyeHitPos.Value.z : float.NaN,
-        };
+            };
 
             return data;
         }
