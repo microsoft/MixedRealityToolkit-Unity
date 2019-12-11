@@ -63,28 +63,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
-        protected override void SetLinePoints(Vector3 startPoint, Vector3 endPoint, float distance)
+        protected override void PreUpdateLineRenderers()
         {
-            LineBase.FirstPoint = startPoint;
-            LineBase.LastPoint = endPoint;
+            base.PreUpdateLineRenderers();
 
-            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
+            bool isFocusedLock = IsFocusLocked && IsTargetPositionLockedOnFocusLock;
+
+            inertia.enabled = !isFocusedLock;
+
+            if (isFocusedLock)
             {
-                inertia.enabled = false;
+                float distance = Result != null ? Result.Details.RayDistance : DefaultPointerExtent;
+                Vector3 startPoint = LineBase.FirstPoint;
+
                 // Project forward based on pointer direction to get an 'expected' position of the first control point
                 Vector3 expectedPoint = startPoint + Rotation * Vector3.forward * distance;
+
                 // Lerp between the expected position and the expected point
                 LineBase.SetPoint(1, Vector3.Lerp(startPoint, expectedPoint, startPointLerp));
+
                 // Get our next 'expected' position by lerping between the expected point and the end point
                 // The result will be a line that starts moving in the pointer's direction then bends towards the target
-                expectedPoint = Vector3.Lerp(expectedPoint, endPoint, endPointLerp);
+                expectedPoint = Vector3.Lerp(expectedPoint, LineBase.LastPoint, endPointLerp);
+
                 LineBase.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
             }
-            else
-            {
-                inertia.enabled = true;
-            }
         }
+
     }
 }
