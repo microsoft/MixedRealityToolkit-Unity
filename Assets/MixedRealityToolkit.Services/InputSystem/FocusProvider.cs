@@ -1216,15 +1216,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             RaycastResult raycastResult = default(RaycastResult);
 
-            if (pointer.Rays == null)
+            if (pointer.Rays == null || pointer.Rays.Length <= 0)
             {
                 Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
-
-            if (pointer.Rays.Length <= 0)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
                 return;
             }
 
