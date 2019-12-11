@@ -137,18 +137,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 var eyes = pointerPose.Eyes;
                 if (eyes != null)
                 {
-                    InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
 
                     if (eyes.Gaze.HasValue)
                     {
-                        Ray newGaze = new Ray(WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Origin), WindowsMixedRealityUtilities.SystemVector3ToUnity(eyes.Gaze.Value.Direction));
+                        Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
 
                         if (SmoothEyeTracking)
                         {
                             newGaze = SmoothGaze(newGaze);
                         }
 
-                        InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
                     }
                 }
             }

@@ -167,15 +167,17 @@
     items:
     - name: Dependency Window
       href: Tools/DependencyWindow.md
-    - name: Optimize Window
-      href: Tools/OptimizeWindow.md
+    - name: Extension Service Creation Wizard
+      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Holographic Remoting
+      href: Tools/HolographicRemoting.md
     - name: Input Animation Recording
       href: InputSimulation/InputAnimationRecording.md
       items:
       - name: Input Animation File Format Specification
         href: InputSimulation/InputAnimationFileFormat.md
-    - name: Extension Service Creation Wizard
-      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Optimize Window
+      href: Tools/OptimizeWindow.md
     - name: Runtime tools
       items:
       - name: Controller Mapping tool

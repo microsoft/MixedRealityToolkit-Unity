@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// <summary>
     /// A basic lost tracking visual for HoloLens devices.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Extensions/BasicLostTrackingVisual")]
     public class BasicLostTrackingVisual : MonoBehaviour, ILostTrackingVisual
     {
         [SerializeField]

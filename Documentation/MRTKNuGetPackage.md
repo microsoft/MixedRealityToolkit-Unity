@@ -8,7 +8,8 @@ Mixed Reality Toolkit (MRTK) is now available as a NuGet package on NuGet.org. T
 
 Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to your project.
 
-1. Download the latest [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest) .unitypackage
+1. Download the latest [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest) .unitypackage.
+    1. If you already have NuGetForUnity installed, please ensure you're using version 2.0.0 or newer.
 1. Import the package into your Unity project, [instructions](https://docs.unity3d.com/Manual/AssetPackages.html).
 1. In the Unity menu bar, click on **NuGet > Manage NuGet Packages**.
 

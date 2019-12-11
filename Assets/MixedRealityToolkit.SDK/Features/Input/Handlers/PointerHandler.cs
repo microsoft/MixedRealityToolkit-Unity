@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Script used to raise Unity Events in response to pointer events.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/PointerHandler")]
     public class PointerHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
         [SerializeField]

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     /// Base class providing service registration and management functionality. This class can be used to implement a
     /// custom service management component for one or more services, similar to the MixedRealityToolkit object.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/BaseServiceManager")]
     public class BaseServiceManager : MonoBehaviour, IMixedRealityServiceRegistrar
     {
         /// <summary>

@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     /// SDK component handling teleportation to a specific position &amp; orientation when a user focuses
     /// this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> and triggers the teleport action.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/TeleportHotSpot")]
     public class TeleportHotSpot : BaseFocusHandler, IMixedRealityTeleportHotSpot
     {
         #region IMixedRealityFocusHandler Implementation

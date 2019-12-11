@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Script used to start and stop recording sessions in the current dictation system and report the transcribed text via UnityEvents.
     /// For this script to work, a dictation system like 'Windows Dictation Input Provider' must be added to the Data Providers in the Input System profile.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/DictationHandler")]
     public class DictationHandler : BaseInputHandler, IMixedRealityDictationHandler
     {
         [SerializeField]

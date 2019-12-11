@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/LaunchUri")]
     public class LaunchUri : MonoBehaviour
     {
         /// <summary>

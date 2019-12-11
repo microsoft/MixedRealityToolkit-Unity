@@ -95,6 +95,17 @@ For namespaces with a large amount of types, it is acceptable to create a limite
 
 Omitting the namespace for an interface, class or data type will cause your change to be blocked.
 
+### Adding new MonoBehaviour scripts
+
+When adding new MonoBehaviour scripts with a pull-request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+
+In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
+
+```csharp
+[AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
+public class MyNewComponent : MonoBehaviour
+```
+
 ### Spaces vs Tabs
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
@@ -429,13 +440,6 @@ Always use private fields and public properties if access to the field is needed
      get{ return myValue; }
      set{ myValue = value }
  }
- ```
-
-#### Do
-
- ```c#
-int length = items.length; // cache reference to list/array length
-for(int i=0; i < length; i++)
  ```
 
 ### Cache values and serialize them in the scene/prefab whenever possible

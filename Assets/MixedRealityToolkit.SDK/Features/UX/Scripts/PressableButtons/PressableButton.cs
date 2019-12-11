@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You can use <see cref="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter"/> to route these events to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     ///</summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/PressableButton")]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";

@@ -67,6 +67,7 @@ Assets/TextMesh Pro/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
 Assets/StreamingAssets.meta
+Assets/MixedRealityToolkit.Generated/*
 
 /mrtk_log_mostRecentET.csv
 

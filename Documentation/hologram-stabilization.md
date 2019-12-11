@@ -26,7 +26,7 @@ Depending on the device endpoint and OS version running on a Windows Mixed Reali
 
 ##### Per-pixel depth-based
 
-Per-pixel depth-based reprojection involves utilizing the depth buffer to modify the image output per pixel and thus stabilize holograms at various distances. For example, a sphere 1m away may be in front of a pillar that is 10m away. The pixels representing the sphere will have a different transform than the far away pixels representing the pillar if the user has titled their head slightly. Per-pixel reprojection will take into account this distance difference at every pixel for more accurate reprojection.
+Per-pixel depth-based reprojection involves utilizing the depth buffer to modify the image output per pixel and thus stabilize holograms at various distances. For example, a sphere 1m away may be in front of a pillar that is 10m away. The pixels representing the sphere will have a different transform than the far away pixels representing the pillar if the user has tilted their head slightly. Per-pixel reprojection will take into account this distance difference at every pixel for more accurate reprojection.
 
 ##### Stabilization plane
 

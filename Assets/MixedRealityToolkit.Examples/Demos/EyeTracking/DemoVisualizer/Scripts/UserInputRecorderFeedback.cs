@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorderFeedback")]
     public class UserInputRecorderFeedback : MonoBehaviour
     {
         [SerializeField]

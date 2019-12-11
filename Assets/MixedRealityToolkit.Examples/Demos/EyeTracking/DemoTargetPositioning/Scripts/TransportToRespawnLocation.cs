@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// The associated GameObject acts as a teleporter to a referenced respawn location.  
     /// </summary>
     [RequireComponent (typeof(Collider))]
+    [AddComponentMenu("Scripts/MRTK/Examples/TransportToRespawnLocation")]
     public class TransportToRespawnLocation : MonoBehaviour
     {
         [SerializeField]

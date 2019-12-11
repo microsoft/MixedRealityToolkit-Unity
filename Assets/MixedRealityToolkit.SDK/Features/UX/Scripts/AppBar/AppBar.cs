@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Logic for the App Bar. Generates buttons, manages states.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/AppBar")]
     public class AppBar : MonoBehaviour
     {
         private const float backgroundBarMoveSpeed = 5;

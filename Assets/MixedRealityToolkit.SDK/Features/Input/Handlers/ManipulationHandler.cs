@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/ManipulationHandler")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums

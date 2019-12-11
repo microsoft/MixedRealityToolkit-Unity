@@ -200,6 +200,37 @@ function CheckHardcodedPath(
     return $containsIssue
 }
 
+function CheckForMetaFile(
+    [string]$FileName
+) {
+    <#
+    .SYNOPSIS
+        Checks if the file has a corresponding meta checked in.
+        Returns true if the meta is missing.
+    #>
+    if (-not (Test-Path ($FileName + ".meta"))) {
+        Write-Host "Meta file missing for $FileName. Please be sure to check it in alongside this file."
+        return $true;
+    }
+    return $false;
+}
+
+function CheckForActualFile(
+    [string]$FileName
+) {
+    <#
+    .SYNOPSIS
+        Checks if the file has a corresponding meta checked in.
+        Returns true if the meta is missing.
+    #>
+    # Remove .meta from path
+    if (-not (Test-Path $FileName.Substring(0, $FileName.LastIndexOf('.')))) {
+        Write-Host "Actual file missing for meta file $FileName. Please be sure to check it in or remove this meta."
+        return $true;
+    }
+    return $false;
+}
+
 function CheckScript(
     [string]$FileName
 ) {
@@ -225,6 +256,10 @@ function CheckScript(
         $containsIssue = $true
     }
 
+    if (CheckForMetaFile $FileName) {
+        $containsIssue = $true
+    }
+
     return $containsIssue
 }
 
@@ -245,6 +280,11 @@ function CheckAsset(
             $containsIssue = $true
         }
     }
+
+    if (CheckForMetaFile $FileName) {
+        $containsIssue = $true
+    }
+
     return $containsIssue
 }
 
@@ -263,6 +303,10 @@ function CheckUnityScene(
     }
 
     if (CheckHardcodedPath $FileName) {
+        $containsIssue = $true
+    }
+
+    if (CheckForMetaFile $FileName) {
         $containsIssue = $true
     }
 
@@ -290,6 +334,20 @@ foreach ($codeFile in $codeFiles) {
 $codeFiles = Get-ChildItem $Directory *.unity -Recurse | Select-Object FullName
 foreach ($codeFile in $codeFiles) {
     if (CheckUnityScene $codeFile.FullName) {
+        $containsIssue = $true
+    }
+}
+
+$folders = Get-ChildItem $Directory -Directory -Recurse | Select-Object FullName
+foreach ($folder in $folders) {
+    if (CheckForMetaFile $folder.FullName) {
+        $containsIssue = $true
+    }
+}
+
+$metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
+foreach ($meta in $metas) {
+    if (CheckForActualFile $meta.FullName) {
         $containsIssue = $true
     }
 }

@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit
     public abstract class BaseMixedRealityProfile : ScriptableObject
     {
         [SerializeField]
+        [HideInInspector]
         private bool isCustomProfile = true;
 
         internal bool IsCustomProfile => isCustomProfile;

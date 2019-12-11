@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// Sample for allowing a GameObject to follow the user's eye gaze
     /// at a given distance of "DefaultDistanceInMeters".
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/FollowEyeGaze")]
     public class FollowEyeGaze : MonoBehaviour
     {
         [Tooltip("Display the game object along the eye gaze ray at a default distance (in meters).")]
