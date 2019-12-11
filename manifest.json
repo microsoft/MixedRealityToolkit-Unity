@@ -618,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DevDocGuide.html",
-          "hash": "Ktf8NaB0ERoVTMoPFhuJ7w=="
+          "hash": "MM24FFJe0ZQP1qbVuD3OmA=="
         }
       },
       "is_incremental": false,
@@ -5865,6 +5865,61 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/SelectDeviceVersion.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/SelectDeviceVersion.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/SelectEmulationMode.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/SelectEmulationMode.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/StartHolographicEmulation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/StartHolographicEmulation.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png",
       "output": {
         "resource": {
@@ -6337,7 +6392,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "9NTFZxULGFpFe86HHEEKDA=="
+          "hash": "PxrhE+gbjtcCVqyJiGnDQA=="
         }
       },
       "is_incremental": false,
@@ -6673,7 +6728,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "jn1yojG+GSYiliiOlZ3Ktg=="
+          "hash": "JwTJfz15m25tLH4mQMuD5Q=="
         }
       },
       "is_incremental": false,
@@ -6873,6 +6928,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/HolographicRemoting.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/HolographicRemoting.html",
+          "hash": "LINUtFs34r+cMnSQ1QCF/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/OptimizeWindow.md",
       "output": {
         ".html": {
@@ -6937,7 +7004,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "AJqsdCrkr5VwgkETlFe3cg=="
+          "hash": "BRG+EOfYR3GcUTHfVHWeFg=="
         }
       },
       "is_incremental": false,
@@ -24376,6 +24443,18 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 143,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1445,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -24383,23 +24462,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 142,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1445,
           "skipped_file_count": 0
         }
       }
