@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -30,18 +32,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Scene Optimizations
         private static DateTime? lastAnalyzedTime = null;
         private Light[] sceneLights;
-        private const uint TopListSize = 5;
+        private const int TopListSize = 5;
         private long totalActivePolyCount, totalInActivePolyCount = 0;
-        private long totalPolyCount
+        private int totalRaycastableUnityUI_Text = 0;
+        private int totalRaycastableUnityUI_TMP_UGUI = 0;
+
+        private long TotalPolyCount
         {
-            get
-            {
-                return totalActivePolyCount + totalInActivePolyCount;
-            }
+            get => totalActivePolyCount + totalInActivePolyCount;
         }
-        private string TotalPolyCountStr, TotalActivePolyCountStr, TotalInactivePolyCountStr;
-        private GameObject[] LargestMeshes = new GameObject[TopListSize];
-        private int[] LargestMeshSizes = new int[TopListSize];
+
+        private string TotalPolyCountStr
+        {
+            get => $"Total Scene PolyCount: {TotalPolyCount.ToString("N0")} ";
+        }
+
+        private string TotalActivePolyCountStr
+        {
+            get => $"Total PolyCount (Active): {totalActivePolyCount.ToString("N0")} ";
+        }
+
+        private string TotalInactivePolyCountStr
+        {
+            get => $"Total PolyCount (Inactive): {totalInActivePolyCount.ToString("N0")} ";
+        }
+
+        private MeshFilter[] MeshesOrderedByPolyCountDesc;
 
         // Shader Optimizations
         private bool showDiscoveredMaterials = true;
@@ -51,19 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private Shader errorShader;
         private List<Material> discoveredMaterials = new List<Material>();
 
-        // Internal structure to easily search mesh polycounts in scene
-        private struct MeshNode
-        {
-            public int polycount;
-            public MeshFilter filter;
-        }
-
         protected enum PerformanceTarget
         {
             AR_Headsets,
             VR_Standalone,
             VR_Tethered,
         };
+
+        private static readonly GUIContent ViewAssetLabel = new GUIContent("View", "Selects & view this asset in inspector");
+        private static readonly GUIContent ConvertMaterialLabel = new GUIContent("Convert", "Converts this material's shader to the replacement shader");
+        private static readonly GUIContent UseMRTKStandardShaderLabel = new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader");
 
         // NOTE: These array must match the number of enums in PerformanceTarget
         private readonly string[] PerformanceTargetEnums = { "AR Headsets", "VR Standalone", "VR Tethered" };
@@ -148,80 +161,89 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndScrollView();
         }
 
+        #region Shader Optimizations
+
         private void RenderShaderOptimizations()
         {
-            GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
-            using (new EditorGUI.IndentLevelScope())
+            using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
-                + "This tool allows developers to discover and automatically convert materials in their project to the replacement shader option below. It is recommended to utilize the MRTK Standard Shader."
-                    , EditorStyles.wordWrappedLabel);
-                EditorGUILayout.Space();
-
-                replacementShader = (Shader)EditorGUILayout.ObjectField("Replacement Shader", replacementShader, typeof(Shader), false);
-                if (replacementShader == null)
+                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Shader], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.HelpBox("Please set a replacement shader to utilize this tool", MessageType.Error);
-                    if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Use MRTK Standard Shader", "Set Replacement Shader to MRKT Standard Shader"), EditorStyles.miniButton, GUILayout.Width(200f)))
-                    {
-                        FindShaders();
-                    }
-                }
-                else
-                {
-                    onlyUnityShader = EditorGUILayout.ToggleLeft("Only Discover Materials with Unity Standard Shader", onlyUnityShader);
+                    EditorGUILayout.LabelField("The Unity standard shader is generally not performant or optimized for Mixed Reality development. The MRTK Standard shader can be a more performant option. "
+                    + "This tool allows developers to discover and automatically convert materials in their project to the replacement shader option below. It is recommended to utilize the MRTK Standard Shader."
+                        , EditorStyles.wordWrappedLabel);
                     EditorGUILayout.Space();
 
-                    using (new EditorGUILayout.HorizontalScope())
+                    replacementShader = (Shader)EditorGUILayout.ObjectField("Replacement Shader", replacementShader, typeof(Shader), false);
+                    if (replacementShader == null)
                     {
-                        if (GUILayout.Button("Discover Materials in Assets"))
+                        EditorGUILayout.HelpBox("Please set a replacement shader to utilize this tool", MessageType.Error);
+                        if (InspectorUIUtility.RenderIndentedButton(UseMRTKStandardShaderLabel, EditorStyles.miniButton, GUILayout.Width(200f)))
                         {
-                            DiscoverMaterials();
+                            FindShaders();
                         }
-
-                        bool wasGUIEnabled = GUI.enabled;
-                        GUI.enabled = wasGUIEnabled && discoveredMaterials.Count > 0;
-                        if (GUILayout.Button("Convert All Discovered Materials"))
-                        {
-                            ConvertMaterials();
-                        }
-                        GUI.enabled = wasGUIEnabled;
                     }
-
-                    if (discoveredMaterials.Count > 0)
+                    else
                     {
-                        showDiscoveredMaterials = EditorGUILayout.Foldout(showDiscoveredMaterials, "Discovered Materials", true);
-                        if (showDiscoveredMaterials)
-                        {
-                            using (new EditorGUI.IndentLevelScope())
-                            {
-                                EditorGUILayout.LabelField("Discovered " + discoveredMaterials.Count + " materials to convert");
+                        onlyUnityShader = EditorGUILayout.ToggleLeft("Only Discover Materials with Unity Standard Shader", onlyUnityShader);
+                        EditorGUILayout.Space();
 
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            if (GUILayout.Button("Discover Materials in Assets"))
+                            {
+                                DiscoverMaterials();
+                            }
+
+                            using (new EditorGUI.DisabledGroupScope(discoveredMaterials.Count == 0))
+                            {
+                                if (GUILayout.Button("Convert All Discovered Materials"))
+                                {
+                                    ConvertMaterials();
+                                }
+                            }
+                        }
+
+                        RenderDiscoveredMaterials();
+                    }
+                }
+            }
+            EditorGUILayout.Space();
+        }
+
+        private void RenderDiscoveredMaterials()
+        {
+            if (discoveredMaterials.Count > 0)
+            {
+                showDiscoveredMaterials = EditorGUILayout.Foldout(showDiscoveredMaterials, "Discovered Materials", true);
+                if (showDiscoveredMaterials)
+                {
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        EditorGUILayout.LabelField($"Discovered {discoveredMaterials.Count} materials to convert");
+
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            EditorGUILayout.LabelField("Current Shader", EditorStyles.boldLabel);
+                            EditorGUILayout.LabelField("Material Asset", EditorStyles.boldLabel);
+                        }
+
+                        for (int i = 0; i < discoveredMaterials.Count; i++)
+                        {
+                            if (discoveredMaterials[i] != null)
+                            {
                                 using (new EditorGUILayout.HorizontalScope())
                                 {
-                                    EditorGUILayout.LabelField("Current Shader", EditorStyles.boldLabel);
-                                    EditorGUILayout.LabelField("Material Asset", EditorStyles.boldLabel);
-                                }
+                                    EditorGUILayout.LabelField(discoveredMaterials[i].shader.name);
+                                    discoveredMaterials[i] = (Material)EditorGUILayout.ObjectField(discoveredMaterials[i], typeof(Material), false);
 
-                                for (int i = 0; i < discoveredMaterials.Count; i++)
-                                {
-                                    if (discoveredMaterials[i] != null)
+                                    RenderViewAssetButton(discoveredMaterials[i]);
+
+                                    if (GUILayout.Button(ConvertMaterialLabel, EditorStyles.miniButton, GUILayout.Width(64f)))
                                     {
-                                        using (new EditorGUILayout.HorizontalScope())
-                                        {
-                                            EditorGUILayout.LabelField(discoveredMaterials[i].shader.name);
-                                            discoveredMaterials[i] = (Material)EditorGUILayout.ObjectField(discoveredMaterials[i], typeof(Material), false);
-                                            if (GUILayout.Button(new GUIContent("View", "Selects & views this asset in inspector"), EditorStyles.miniButton, GUILayout.Width(42f)))
-                                            {
-                                                Selection.activeObject = this.discoveredMaterials[i];
-                                            }
-                                            if (GUILayout.Button(new GUIContent("Convert", "Converts this material's shader to the replacement shader"), EditorStyles.miniButton, GUILayout.Width(64f)))
-                                            {
-                                                Undo.RecordObject(this.discoveredMaterials[i], "Convert to MRTK Standard shader");
-                                                ConvertMaterial(this.discoveredMaterials[i]);
-                                            }
-                                        }
+                                        Undo.RecordObject(discoveredMaterials[i], "Convert to MRTK Standard shader");
+                                        ConvertMaterial(discoveredMaterials[i]);
                                     }
                                 }
                             }
@@ -229,220 +251,281 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
-            GUILayout.EndVertical();
-            EditorGUILayout.Space();
         }
+
+        #endregion
+
+        #region Render Scene Optimization Sections
 
         private void RenderSceneOptimizations()
         {
-            GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
-            using (new EditorGUI.IndentLevelScope())
+            using (new GUILayout.VerticalScope("Box"))
             {
-                EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
-
-                BuildSection("Live Scene Analysis", null, null, () =>
+                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Scene], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.LabelField(lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + GetRelativeTime(lastAnalyzedTime));
+                    EditorGUILayout.LabelField("This section provides controls and performance information for the currently opened scene. Any optimizations performed are only for the active scene at any moment.", EditorStyles.wordWrappedLabel);
+                    EditorGUILayout.Space();
 
-                    if (GUILayout.Button("Analyze Scene", GUILayout.Width(160f)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        AnalyzeScene();
-                        lastAnalyzedTime = DateTime.UtcNow;
+                        string analysisTimeLabel = lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + GetRelativeTime(lastAnalyzedTime);
+                        EditorGUILayout.LabelField(analysisTimeLabel);
+
+                        if (GUILayout.Button("Analyze Scene", GUILayout.Width(160f)))
+                        {
+                            AnalyzeScene();
+                            lastAnalyzedTime = DateTime.UtcNow;
+                        }
                     }
-                    EditorGUILayout.EndHorizontal();
                     EditorGUILayout.Space();
 
                     if (lastAnalyzedTime != null)
                     {
                         // Lighting analysis
-                        bool showNumOfSceneLights = this.sceneLights != null && this.sceneLights.Length > SceneLightCountMax[(int)PerfTarget];
-                        bool showDisableShadows = this.PerfTarget == PerformanceTarget.AR_Headsets;
-                        if (showNumOfSceneLights || showDisableShadows)
-                        {
-                            EditorGUILayout.LabelField("Lighting Analysis", EditorStyles.boldLabel);
-                            if (showNumOfSceneLights)
-                            {
-                                EditorGUILayout.LabelField(this.sceneLights.Length + " lights in the scene. Consider reducing the number of lights.");
-                            }
-
-                            if (showDisableShadows)
-                            {
-                                foreach (var l in this.sceneLights)
-                                {
-                                    if (l != null && l.shadows != LightShadows.None)
-                                    {
-                                        EditorGUILayout.ObjectField("Disable shadows", l, typeof(Light), true);
-                                    }
-                                }
-                            }
-                            EditorGUILayout.Space();
-                        }
+                        RenderLightingSceneAnalysisSection();
 
                         // Mesh Analysis
-                        EditorGUILayout.LabelField("Polygon Count Analysis", EditorStyles.boldLabel);
+                        RenderMeshSceneAnalysisSection();
 
-                        using (new EditorGUILayout.HorizontalScope())
-                        {
-                            EditorGUILayout.LabelField(TotalPolyCountStr);
-                            EditorGUILayout.LabelField(TotalActivePolyCountStr);
-                            EditorGUILayout.LabelField(TotalInactivePolyCountStr);
-                        }
-
-                        EditorGUILayout.LabelField("Top " + TopListSize + " GameObjects in scene with highest polygon count");
-                        for (int i = 0; i < LargestMeshes.Length; i++)
-                        {
-                            if (LargestMeshes[i] != null)
-                            {
-                                using (new EditorGUILayout.HorizontalScope())
-                                {
-                                    EditorGUILayout.LabelField("Num of Polygons: " + this.LargestMeshSizes[i].ToString("N0"));
-                                    EditorGUILayout.ObjectField(this.LargestMeshes[i], typeof(GameObject), true);
-                                    if (GUILayout.Button(new GUIContent("View", "Selects & view this asset in inspector"), EditorStyles.miniButton, GUILayout.Width(42f)))
-                                    {
-                                        Selection.activeObject = this.LargestMeshes[i];
-                                    }
-                                }
-                            }
-                        }
+                        // Unity UI Raycast Analysis
+                        RenderRaycastAnalysisSection();
                     }
-                });
+                }
             }
-
-            GUILayout.EndVertical();
         }
 
-        private void RenderSettingOptimizations()
+        private void RenderMeshSceneAnalysisSection()
         {
-            GUILayout.BeginVertical("Box");
-            EditorGUILayout.LabelField(this.ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
-            using (new EditorGUI.IndentLevelScope())
+            EditorGUILayout.LabelField("Polygon Count Analysis", EditorStyles.boldLabel);
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
-                BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
-                {
-                    EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+                EditorGUILayout.LabelField(TotalPolyCountStr);
+                EditorGUILayout.LabelField(TotalActivePolyCountStr);
+                EditorGUILayout.LabelField(TotalInactivePolyCountStr);
+            }
 
-                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
-
-                    using (new GUIEnabledWrapper(!isSinglePassInstancedEnabled))
-                    {
-                        if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
-                        {
-                            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
-                        }
-                    }
-                });
-
-                // TODO: Put in Quality settings section
-
-                bool isDepthBufferSharingEnabled = MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled();
-                BuildSection("Depth Buffer Sharing", DepthBufferSharing_URL, GetTitleIcon(isDepthBufferSharingEnabled), () =>
-                {
-                    EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
-
-                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
-
-                    using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
-                    {
-                        if (InspectorUIUtility.RenderIndentedButton("Enable Depth Buffer Sharing"))
-                        {
-                            MixedRealityOptimizeUtils.SetDepthBufferSharing(true);
-                        }
-                    }
-                });
-
-                bool is16BitDepthFormat = MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit();
-                BuildSection("Depth Buffer Format", DepthBufferFormat_URL, GetTitleIcon(is16BitDepthFormat), () =>
-                {
-                    EditorGUILayout.LabelField("If sharing the depth buffer with the underlying mixed reality platform, it is generally recommended to utilize a 16-bit depth format buffer to save on performance.", EditorStyles.wordWrappedLabel);
-
-                    EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Furthermore, no stencil buffer will be created with 16-bit selected. Click the \"Documentation\" button to learn more", MessageType.Info);
-
-                    using (new GUIEnabledWrapper(!is16BitDepthFormat))
-                    {
-                        if (InspectorUIUtility.RenderIndentedButton("Enable 16-bit depth format"))
-                        {
-                            MixedRealityOptimizeUtils.SetDepthBufferFormat(true);
-                        }
-                    }
-                });
-
-                bool isGIEnabled = MixedRealityOptimizeUtils.IsRealtimeGlobalIlluminationEnabled();
-                BuildSection("Real-time Global Illumination", GlobalIllumination_URL, GetTitleIcon(!isGIEnabled), () =>
+            EditorGUILayout.LabelField($"Top {TopListSize} GameObjects in scene with highest polygon count");
+            int length = Math.Min(MeshesOrderedByPolyCountDesc.Length, TopListSize);
+            for (int i = 0; i < length; i++)
+            {
+                var meshFilter = MeshesOrderedByPolyCountDesc[i];
+                if (meshFilter != null)
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorGUILayout.LabelField("Real-time Global Illumination can produce great visual results but at great expense. It is recommended to disable this feature in lighting settings.", EditorStyles.wordWrappedLabel);
-                        if (GUILayout.Button(new GUIContent("View Lighting Settings", "Open Lighting Settings"), EditorStyles.miniButton, GUILayout.Width(160f)))
-                        {
-                            EditorApplication.ExecuteMenuItem("Window/Rendering/Lighting Settings");
-                        }
-                    }
+                        int polyCount = meshFilter.sharedMesh.triangles.Length / 3;
+                        EditorGUILayout.LabelField($"Num of Polygons: {polyCount.ToString("N0")}");
 
-                    EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
-
-                    using (new GUIEnabledWrapper(isGIEnabled))
-                    {
-                        if (InspectorUIUtility.RenderIndentedButton("Disable Real-time Global Illumination"))
+                        using (new EditorGUI.DisabledGroupScope(true))
                         {
-                            MixedRealityOptimizeUtils.SetRealtimeGlobalIlluminationEnabled(false);
+                            EditorGUILayout.ObjectField(meshFilter, typeof(MeshFilter), true);
                         }
+
+                        RenderViewAssetButton(meshFilter);
                     }
-                });
+                }
             }
 
-            GUILayout.EndVertical();
+            EditorGUILayout.Space();
         }
+
+        private void RenderRaycastAnalysisSection()
+        {
+            EditorGUILayout.LabelField("Unity UI Raycast Analysis", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField($"To optimize Graphics Raycast operations, disable Raycast Target property for all elements that do not require this functionality.");
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Num of GameObjects with Raycast Target enabled", EditorStyles.miniBoldLabel);
+            RenderRaycastItem<Text>(totalRaycastableUnityUI_Text);
+            RenderRaycastItem<TextMeshProUGUI>(totalRaycastableUnityUI_TMP_UGUI);
+
+            EditorGUILayout.Space();
+        }
+
+        private void RenderRaycastItem<T>(int itemCount) where T : Graphic
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                string typeName = typeof(T).Name;
+                EditorGUILayout.LabelField($"{typeName}:", $"{itemCount.ToString("N0")}");
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button($"Disable Raycast Target for all {typeName}"))
+                {
+                    DisableRaycastTargetAll<T>();
+
+                    AnalyzeRaycastTargets();
+                }
+            }
+        }
+
+        private void RenderLightingSceneAnalysisSection()
+        {
+            bool showNumOfSceneLights = sceneLights != null && sceneLights.Length > SceneLightCountMax[(int)PerfTarget];
+            bool showDisableShadows = PerfTarget == PerformanceTarget.AR_Headsets;
+            if (showNumOfSceneLights || showDisableShadows)
+            {
+                EditorGUILayout.LabelField("Lighting Analysis", EditorStyles.boldLabel);
+                if (showNumOfSceneLights)
+                {
+                    EditorGUILayout.LabelField(this.sceneLights.Length + " lights in the scene. Consider reducing the number of lights.");
+                }
+
+                if (showDisableShadows)
+                {
+                    foreach (var l in sceneLights)
+                    {
+                        if (l != null && l.shadows != LightShadows.None)
+                        {
+                            EditorGUILayout.ObjectField("Disable shadows", l, typeof(Light), true);
+                        }
+                    }
+                }
+                EditorGUILayout.Space();
+            }
+        }
+
+        #endregion
+
+        private void RenderSettingOptimizations()
+        {
+            using (new GUILayout.VerticalScope("Box"))
+            {
+                EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    RenderSinglePassSection();
+
+                    RenderDepthBufferSharingSection();
+
+                    RenderDepthBufferFormatSection();
+
+                    RenderGlobalIlluminationSection();
+                }
+            }
+        }
+
+        private void RenderGlobalIlluminationSection()
+        {
+            bool isGIEnabled = MixedRealityOptimizeUtils.IsRealtimeGlobalIlluminationEnabled();
+            BuildSection("Real-time Global Illumination", GlobalIllumination_URL, GetTitleIcon(!isGIEnabled), () =>
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Real-time Global Illumination can produce great visual results but at great expense. It is recommended to disable this feature in lighting settings.", EditorStyles.wordWrappedLabel);
+                    if (GUILayout.Button(new GUIContent("View Lighting Settings", "Open Lighting Settings"), EditorStyles.miniButton, GUILayout.Width(160f)))
+                    {
+                        EditorApplication.ExecuteMenuItem("Window/Rendering/Lighting Settings");
+                    }
+                }
+
+                if (isGIEnabled)
+                {
+                    EditorGUILayout.HelpBox("Note: Real-time Global Illumination is a per-scene setting.", MessageType.Info);
+
+                    if (InspectorUIUtility.RenderIndentedButton("Disable Real-time Global Illumination"))
+                    {
+                        MixedRealityOptimizeUtils.SetRealtimeGlobalIlluminationEnabled(false);
+                    }
+                }
+            });
+        }
+
+        private void RenderDepthBufferFormatSection()
+        {
+            bool is16BitDepthFormat = MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit();
+            BuildSection("Depth Buffer Format", DepthBufferFormat_URL, GetTitleIcon(is16BitDepthFormat), () =>
+            {
+                EditorGUILayout.LabelField("If sharing the depth buffer with the underlying mixed reality platform, it is generally recommended to utilize a 16-bit depth format buffer to save on performance.", EditorStyles.wordWrappedLabel);
+
+                if (!is16BitDepthFormat)
+                {
+                    EditorGUILayout.HelpBox("Although 16-bit depth format is better performing, it can result in z-fighting if the far clip plane is too far. Furthermore, no stencil buffer will be created with 16-bit selected. Click the \"Documentation\" button to learn more", MessageType.Info);
+
+                    if (InspectorUIUtility.RenderIndentedButton("Enable 16-bit depth format"))
+                    {
+                        MixedRealityOptimizeUtils.SetDepthBufferFormat(true);
+                    }
+                }
+            });
+        }
+
+        private void RenderDepthBufferSharingSection()
+        {
+            bool isDepthBufferSharingEnabled = MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled();
+            BuildSection("Depth Buffer Sharing", DepthBufferSharing_URL, GetTitleIcon(isDepthBufferSharingEnabled), () =>
+            {
+                EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
+
+                if (!isDepthBufferSharingEnabled)
+                {
+                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
+
+                    if (InspectorUIUtility.RenderIndentedButton("Enable Depth Buffer Sharing"))
+                    {
+                        MixedRealityOptimizeUtils.SetDepthBufferSharing(true);
+                    }
+                }
+            });
+        }
+
+        private void RenderSinglePassSection()
+        {
+            bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+            BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
+            {
+                EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+
+                if (!isSinglePassInstancedEnabled)
+                {
+                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
+
+                    if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
+                    {
+                        PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+                    }
+                }
+            });
+        }
+
+        #region Utility Helpers
 
         private void AnalyzeScene()
         {
-            this.sceneLights = FindObjectsOfType<Light>();
+            sceneLights = FindObjectsOfType<Light>();
+
+            AnalyzeRaycastTargets();
 
             // TODO: Consider searching for particle renderers count?
 
+            MeshesOrderedByPolyCountDesc = FindObjectsOfType<MeshFilter>()
+                .Where(f => f != null && f.sharedMesh != null)
+                .OrderByDescending(f => f.sharedMesh.triangles.Length)
+                .ToArray();
+
             totalActivePolyCount = totalInActivePolyCount = 0;
-            var filters = FindObjectsOfType<MeshFilter>();
-            var meshes = new List<MeshNode>();
-            foreach(var f in filters)
+            for (int i = 0; i < MeshesOrderedByPolyCountDesc.Length; i++)
             {
-                if (f != null && f.sharedMesh != null)
+                var f = MeshesOrderedByPolyCountDesc[i];
+
+                int count = f.sharedMesh.triangles.Length / 3;
+
+                if (f.gameObject.activeInHierarchy)
                 {
-                    int count = f.sharedMesh.triangles.Length / 3;
-
-                    meshes.Add(new MeshNode
-                    {
-                        polycount = count,
-                        filter = f
-                    });
-
-                    if (f.gameObject.activeInHierarchy)
-                    {
-                        totalActivePolyCount += count;
-                    }
-                    else
-                    {
-                        totalInActivePolyCount += count;
-                    }
+                    totalActivePolyCount += count;
+                }
+                else
+                {
+                    totalInActivePolyCount += count;
                 }
             }
+        }
 
-            TotalPolyCountStr = "Total Scene PolyCount: " + totalPolyCount.ToString("N0") + " ";
-            TotalActivePolyCountStr = "Total PolyCount (Active): " + totalActivePolyCount.ToString("N0") + " ";
-            TotalInactivePolyCountStr = "Total PolyCount (Inactive): "+ totalInActivePolyCount.ToString("N0") + " ";
-
-            var sortedMeshList = meshes.OrderByDescending(s => s.polycount).ToList();
-            for(int i = 0; i < TopListSize; i++)
-            {
-                this.LargestMeshSizes[i] = 0;
-                this.LargestMeshes[i] = null;
-                if (i < meshes.Count)
-                {
-                    this.LargestMeshSizes[i] = sortedMeshList[i].polycount;
-                    this.LargestMeshes[i] = sortedMeshList[i].filter.gameObject;
-                }
-            }
+        private void AnalyzeRaycastTargets()
+        {
+            totalRaycastableUnityUI_Text = FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
+            totalRaycastableUnityUI_TMP_UGUI = FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
         }
 
         private void DiscoverMaterials()
@@ -464,6 +547,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
         }
+
         private void ConvertMaterials()
         {
             Undo.RecordObjects(this.discoveredMaterials.ToArray(), "Convert to MRTK Standard shader");
@@ -492,26 +576,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         || asset.shader == errorShader);
         }
 
-        private static void BuildTitle(string title, string url, Texture titleIcon = null)
+        private static void DisableRaycastTargetAll<T>() where T : Graphic
         {
-            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
-            // Section Title
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocumentationButton(url);
-            }
+            DisableRaycastTarget(FindObjectsOfType<T>());
         }
 
-        private static void BuildSection(string title, string url, Texture titleIcon = null, Action renderContent = null)
+        private static void DisableRaycastTarget(Graphic[] elements)
         {
-            EditorGUILayout.BeginVertical();
-                // Section Title
-                BuildTitle(title, url, titleIcon);
-                renderContent?.Invoke();
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
+            if (elements == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < elements.Length; i++)
+            {
+                elements[i].raycastTarget = false;
+            }
         }
 
         private void FindShaders()
@@ -524,11 +604,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool IsHololensTargeted()
         {
             return PerfTarget == PerformanceTarget.AR_Headsets && MixedRealityOptimizeUtils.IsBuildTargetUWP();
-        }
-
-        private Texture GetTitleIcon(bool isValid)
-        {
-            return isValid ? InspectorUIUtility.SuccessIcon: InspectorUIUtility.WarningIcon;
         }
 
         private static string GetRelativeTime(DateTime? time)
@@ -554,5 +629,47 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return (int)Math.Abs(delta.TotalSeconds) + " seconds ago";
             }
         }
+
+        #endregion
+
+        #region Render Helpers
+
+        private static void RenderViewAssetButton(UnityEngine.Object asset)
+        {
+            if (GUILayout.Button(ViewAssetLabel, EditorStyles.miniButton, GUILayout.Width(42f)))
+            {
+                Selection.activeObject = asset;
+            }
+        }
+
+        private static void BuildSection(string title, string url, Texture titleIcon = null, Action renderContent = null)
+        {
+            EditorGUILayout.BeginVertical();
+            // Section Title
+            BuildTitle(title, url, titleIcon);
+            renderContent?.Invoke();
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+        }
+
+
+        private static void BuildTitle(string title, string url, Texture titleIcon = null)
+        {
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+            // Section Title
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
+                InspectorUIUtility.RenderDocumentationButton(url);
+            }
+        }
+
+        private Texture GetTitleIcon(bool isValid)
+        {
+            return isValid ? InspectorUIUtility.SuccessIcon : InspectorUIUtility.WarningIcon;
+        }
+
+        #endregion
     }
 }
