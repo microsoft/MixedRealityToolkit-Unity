@@ -10,10 +10,10 @@ Screenshots can be easily capture while in the editor by selecting *Mixed Realit
 
 By default, all screenshots are saved to your [temporary cache path](https://docs.unity3d.com/ScriptReference/Application-temporaryCachePath.html), the path to the screenshot will be displayed in the Unity console.
 
-![](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png)
+![Screenshot utility menu item](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Menu_Item.png)
 
 ### Example Screenshot Capture
 
 The below screenshot was captured with the *"4x Resolution (Transparent Background)"* option. This outputs a high-resolution image with whatever pixels normally represented by the clear color saved as transparent pixels. This technique helps developers showcase their application for the store, or other media outlets, by overlaying this image on top of other imagery.
 
-![](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png)
+![Screenshot utility capture example](../../Documentation/Images/ScreenshotUtility/MRTK_ScreenshotUtility_Example_Capture.png)

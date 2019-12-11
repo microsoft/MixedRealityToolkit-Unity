@@ -2,15 +2,15 @@
 
 When you need to use input controllers for your Mixed Reality project, they are registered and configured centrally within the Controller configuration profile as you can see here:
 
-![](../../../Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png)
+![Configuration profile inspector](../../../Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png)
 
 This enables you to very quickly define which SDK's / controllers you want to support in your project and configure how each are intended to work.
 
 The configuration is broken down in to several key components, as detailed below:
 
 ## Main Controller Template definition
----
-![](../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png)
+
+![Controller model definition](../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png)
 
 In the first section of the configuration, the options are detailed as follows:
 
@@ -33,10 +33,10 @@ To alter the position and rotation of the displayed model in relation to the Con
 This enables you to add a new controller definition (detailed below) to the profile to add another supported SDK.
 
 ## Controller Template
----
-![](../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png)
 
-Each controller template allows you to configure any of the supported controllers for the various SDK's that have been enabled through the Mixed Reality Toolkit.
+![Controller template](../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png)
+
+Each controller template allows you to configure any of the supported controllers for the various SDKs that have been enabled through the Mixed Reality Toolkit.
 Each controller is added by SDK and the prevailing hand.
 
 > Any SDK Controller types or hands NOT configured will not be detected or used in a running project.
@@ -84,7 +84,7 @@ These are different for each controller type, as shown below:
 
 | Motion Controller | Oculus Touch | Vive Wand |
 |---|---|---|
-|![](../../../Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png)|![](../../../Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png)|![](../../../Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png)|
+|![Windows Mixed Reality interactions](../../../Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png)|![Oculus Touch interactions](../../../Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png)|![Vive Wand interactions](../../../Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png)|
 
 > In the future custom mappings may become available, for now they are defined per the devices own specification according to the input definitions set out by Unity
 
