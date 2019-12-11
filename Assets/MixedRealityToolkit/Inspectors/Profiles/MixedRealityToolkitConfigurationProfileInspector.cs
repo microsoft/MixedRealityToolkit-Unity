@@ -446,14 +446,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (systemType?.Type == null || !validProfile)
             {
-                EditorGUILayout.HelpBox(service + " is enabled but will not be initialized because the System Type and/or Profile is not set.", MessageType.Warning);
+                EditorGUILayout.HelpBox($"{service} is enabled but will not be initialized because the System Type and/or Profile is not set.", MessageType.Warning);
             }
         }
 
         protected static void RenderSystemDisabled(string service)
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox("The " + service + " is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
+            EditorGUILayout.HelpBox($"The {service} is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
             EditorGUILayout.Space();
         }
 
