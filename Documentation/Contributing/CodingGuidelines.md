@@ -335,33 +335,33 @@ public enum SDKType
 #### Do
 
  ```c#
+/// <summary>
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// </summary>
+public enum SDKType
+{
     /// <summary>
-    /// The SDKType lists the VR SDKs that are supported by the MRTK
-    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// No specified type or Standalone / non-VR type
     /// </summary>
-    public enum SDKType
-    {
-        /// <summary>
-        /// No specified type or Standalone / non-VR type
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other,
-        /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
-        /// </summary>
-        WindowsMR,
-        /// <summary>
-        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-        /// </summary>
-        OpenVR,
-        /// <summary>
-        /// The OpenXR platform. SDK to be determined once released.
-        /// </summary>
-        OpenXR
-    }
+    None = 0,
+    /// <summary>
+    /// Undefined SDK.
+    /// </summary>
+    Other,
+    /// <summary>
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// </summary>
+    WindowsMR,
+    /// <summary>
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// </summary>
+    OpenVR,
+    /// <summary>
+    /// The OpenXR platform. SDK to be determined once released.
+    /// </summary>
+    OpenXR
+}
 ```
 
 ### Review Enum use for Bitfields
