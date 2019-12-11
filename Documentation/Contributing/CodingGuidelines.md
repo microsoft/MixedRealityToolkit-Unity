@@ -442,13 +442,6 @@ Always use private fields and public properties if access to the field is needed
  }
  ```
 
-#### Do
-
- ```c#
-int length = items.length; // cache reference to list/array length
-for(int i=0; i < length; i++)
- ```
-
 ### Cache values and serialize them in the scene/prefab whenever possible
 
 With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.
