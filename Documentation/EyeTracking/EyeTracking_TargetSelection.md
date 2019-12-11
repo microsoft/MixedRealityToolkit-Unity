@@ -246,9 +246,9 @@ Similar to Example #1, we can easily create a hover feedback for our holographic
     }
     ```
 
-2. Add the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
+1. Add the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget) script to your target GameObject and reference the _RotateTarget()_ function in the UnityEvent trigger as shown the screenshot below:
 
-![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
+    ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
 ### Example #3: Pop those gems aka _multimodal eye-gaze-supported target selection_
 

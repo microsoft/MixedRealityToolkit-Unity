@@ -50,7 +50,7 @@ When a [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/Material
 ```c#
 public class MyBehaviour : MonoBehaviour
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()
@@ -61,12 +61,13 @@ public class MyBehaviour : MonoBehaviour
     }
 }
 ```
+
 If multiple objects need ownership of the material instance it's best to take explicit ownership for reference tracking. (An optional interface called [`IMaterialInstanceOwner`](xref:Microsoft.MixedReality.Toolkit.Rendering.IMaterialInstanceOwner) exists to aide with ownership.) Below is example usage:
 
 ```c#
 public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()

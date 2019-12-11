@@ -24,7 +24,7 @@ The default MRTK Pointer Profile configuration includes the following pointer cl
 Each Pointer entry is defined by the following set of data:
 
 - *Controller Type* - The set of controllers that a pointer is valid for.
-    * For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
+  - For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
 
 - *Handedness* - allows for a pointer to only being instantiated for a specific hand (left/right)
 
@@ -266,6 +266,7 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
 ### Disable Pointers
+
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
 ```c#
