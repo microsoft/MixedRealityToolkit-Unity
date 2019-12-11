@@ -5,9 +5,10 @@
 Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. Tooltips can be used to annotate objects in the physical environment.
 
 ## How to use a tooltip ##
+
 A tooltip can be added directly to the hierarchy and targeted to an object.
 
-To use this method simply add a game object and one of the [tooltip prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) to the scene hierarchy. In the prefab's inspector panel, expand the *Tool Tip* (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the *ToolTipConnector* (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled *Target*. This attaches the tooltip to the object. 
+To use this method simply add a game object and one of the [tooltip prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) to the scene hierarchy. In the prefab's inspector panel, expand the *Tool Tip* (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the *ToolTipConnector* (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled *Target*. This attaches the tooltip to the object.
 ![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png)
 
 

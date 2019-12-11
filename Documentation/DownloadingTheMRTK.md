@@ -11,9 +11,11 @@ You can download the packaged [Unity assets from here](https://github.com/Micros
 There are two Unity packages available for each release:
 
 ### Foundation
+
 This package contains the MRTK itself and all of the code and materials needed to build Mixed Reality experiences.
 
 ### Examples
+
 This is an optional package which contains example scenes and samples. This package is dependent on the Foundation package.
 
 ## GitHub submodule (advanced users)

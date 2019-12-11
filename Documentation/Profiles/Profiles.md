@@ -12,7 +12,7 @@ For example, the Input system's behavior is governed by an [input system profile
 
 ## Default Profile
 
-The MRTK provides a set of default profiles which cover most platforms and scenarios that the MRTK supports. For example, when you select the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) you will be able to try out scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2). 
+The MRTK provides a set of default profiles which cover most platforms and scenarios that the MRTK supports. For example, when you select the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) you will be able to try out scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2).
 
 Note that because this is a general use profile, it's not optimized for any particular use case. If you want to have
 more performant/specific settings that are better on other platforms, see the other profiles below, which are slightly tweaked to be better on their respective platforms.
@@ -37,7 +37,7 @@ The key differences between the HoloLens2 profile and the Default Profile are:
 **Enabled** Systems:
 
 - The [Eye Tracking provider](../EyeTracking/EyeTracking_Main.md)
-- Eye input simulation 
+- Eye input simulation
 
 Camera profile settings are set to match so that the editor quality and player quality are the same. This is different from the default camera profile where Opaque displays are set to a higher quality. This change means that in-editor quality will be lower, which will more closely match what will be rendered on the device.
   

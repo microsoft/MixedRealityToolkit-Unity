@@ -6,7 +6,7 @@ The fingertip affordance helps the user recognize the distance from the target o
 
 ## How to use the fingertip visualization ##
 
-By default the fingertip visualization will work in any Unity scene that is configured to spawn a FingerCursor. Spawning of the FingerCursor occurs in the *DefaultMixedRealityToolkitConfigurationProfile* under: 
+By default the fingertip visualization will work in any Unity scene that is configured to spawn a FingerCursor. Spawning of the FingerCursor occurs in the *DefaultMixedRealityToolkitConfigurationProfile* under:
 
 *DefaultMixedRealityInputSystemProfile > DefaultMixedRealityInputPointerProfile > PokePointer > FingerCursor*
 

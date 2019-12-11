@@ -1,3 +1,5 @@
+# Pressable buttons
+
 This folder contains the scripts necessary for making Interactable buttons that support Speech, Far Interaction and Near Interaction (Physical hand pressing)
 
 ## High Level Description
@@ -11,10 +13,10 @@ It tracks the position of both index tip fingers and uses this to move the butto
 
 It then calls into a PhysicalPressEventRouter and calls events related to Touch, Press, Unpress (Default Click), and Untouch.
 
- * 	Touch: When a finger is contacting with the button.
- * 	Press: After the button has been pressed more than a threshhold amount.
- * 	Unpress/Click: When the button has been released while in Press state.
- * 	Untouch: When the finger is no longer touching the button.
+* Touch: When a finger is contacting with the button.
+* Press: After the button has been pressed more than a threshold amount.
+* Unpress/Click: When the button has been released while in Press state.
+* Untouch: When the finger is no longer touching the button.
 
 The PhysicalPressEventRouter receives events and sets Interactable's InteractableState accordingly.
 It also calls OnPointerClicked events, allowing for the PhysicalButtonMovement script to trigger Interactable.OnClicked UnityEvents (which speech/far interaction also execute)
@@ -35,6 +37,7 @@ A Prefab is provide in MRTK.Examples/Demos/HandTracking/Prefabs/PressableButtons
 ## PhysicalButtonMovement Customization
 
 You can customize variables within the PressableButtons, such as the dimensions of the detection box collider.
+
 - PhysicalButtonMovement's box collider can have a variety of dimensions. It usually wants to be several times deeper than the button itself (whose box collider dimensions matter for gaze/far interaction)
 - PhysicalButtonMovement's box collider can be larger on the X and Y axes if you want to have a more generous pressable region. This can result in close neighbor buttons getting pressed simultaneously, so be sure to avoid that case.
 - PhysicalButtonMovement's Z size controls how deep the user can press before the button is released (a continuous depth press does not trigger a default click). **Be sure to update ButtonSizeRelativeToCollider in PhysicalButtonMovement.cs**
