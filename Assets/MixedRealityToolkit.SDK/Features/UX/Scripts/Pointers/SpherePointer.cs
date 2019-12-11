@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -240,6 +241,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 queryRadius = radius;
             }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="layerMask"></param>
+            /// <param name="pointerPosition"></param>
+            /// <param name="triggerInteraction"></param>
+            /// <returns></returns>
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
             {
                 grabbable = null;
@@ -257,7 +265,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < numColliders; i++)
                 {
-                    grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>();
+                    Collider collider = queryBuffer[i];
+                    grabbable = collider.GetComponent<NearInteractionGrabbable>();
+                    // Additional check: is grabbable in the camera frustrum
+                    if (grabbable != null)
+                    {
+                        if (!isInFOV(collider))
+                        {
+                            grabbable = null;
+                        }
+                    }
                     if (grabbable != null)
                     {
                         return true;
@@ -265,6 +282,46 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 return false;
             }
+
+
+            /// <summary>
+            /// Returns true if a collider's bounds is within the camera FOV
+            /// </summary>
+            /// <param name="myCollider">The collider to test</param>
+            /// <returns></returns>
+            private bool isInFOV(Collider myCollider)
+            {
+                Bounds b = myCollider.bounds;
+                var corners = new List<Vector3>();
+                BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
+                foreach (var pt in corners)
+                {
+                    if (isPointInFrustrum(pt))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            /// <summary>
+            /// Returns true if a point is in the camera's frustrum
+            /// </summary>
+            /// <param name="pt">Point to test</param>
+            private bool isPointInFrustrum(Vector3 pt)
+            {
+                Camera mainCam = CameraCache.Main;
+                Vector3 screenPos = mainCam.WorldToScreenPoint(pt);
+                // pixel buffer around screen
+                float screenBuffer = 10;
+                // distance buffer in front of camera, in meters
+                float cameraBuffer = 0.05f;
+                bool inX = -screenBuffer < screenPos.x && screenPos.x < mainCam.pixelWidth + screenBuffer;
+                bool inY = -screenBuffer < screenPos.y && screenPos.y < mainCam.pixelHeight + screenBuffer;
+                bool inZ = screenPos.z > cameraBuffer;
+                return inZ && inY && inX;
+            }
+
             /// <summary>
             /// Returns true if any of the objects inside QueryBuffer contain a grabbable
             /// </summary>
