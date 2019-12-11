@@ -213,16 +213,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var tickMarks = slider.TickMarks;
             var trackVisuals = slider.TrackVisuals;
-            var thumbRoot = slider.ThumbRoot;
 
             slider.CurrentSliderAxis = PinchSlider.SliderAxis.XAxis;
 
             yield return null;
-
-            if (thumbRoot)
-            {
-                Debug.Assert(thumbRoot.transform.localRotation == Quaternion.identity, "ThumbRoot should have local rotation equal to Quaternion.identity");
-            }
 
             if (trackVisuals)
             {
@@ -239,11 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
-            if (thumbRoot)
-            {
-                Debug.Assert(thumbRoot.transform.localRotation == Quaternion.Euler(0.0f, 0.0f, 90.0f), "ThumbRoot should have local rotation equal to Quaternion.Euler(0.0f, 0.0f, 90.0f)");
-            }
-
             if (trackVisuals)
             {
                 Debug.Assert(trackVisuals.transform.localRotation == Quaternion.Euler(0.0f, 0.0f, 90.0f), "TrackVisuals should have local rotation equal to Quaternion.Euler(0.0f, 0.0f, 90.0f)");
@@ -258,11 +247,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             slider.CurrentSliderAxis = PinchSlider.SliderAxis.ZAxis;
 
             yield return null;
-
-            if (thumbRoot)
-            {
-                Debug.Assert(thumbRoot.transform.localRotation == Quaternion.Euler(0.0f, 90.0f, 0.0f), "ThumbRoot should have local rotation equal to Quaternion.Euler(0.0f, 90.0f, 0.0f)");
-            }
 
             if (trackVisuals)
             {

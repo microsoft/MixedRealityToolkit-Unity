@@ -274,37 +274,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Update orientation of thumb root based on slider axis orientation
-        /// </summary>
-        private void UpdateThumbRoot()
-        {
-            if (ThumbRoot)
-            {
-                ThumbRoot.transform.localRotation = Quaternion.identity;
-
-                switch (sliderAxis)
-                {
-                    case SliderAxis.XAxis:
-                        ThumbRoot.transform.localRotation = Quaternion.identity;
-                        break;
-                    case SliderAxis.YAxis:
-                        ThumbRoot.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
-                        break;
-                    case SliderAxis.ZAxis:
-                        ThumbRoot.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
         /// Update orientation of the visual components of pinch slider
         /// </summary>
         private void UpdateVisualsOrientation()
         {
             if (PreviousSliderAxis != sliderAxis)
             {
-                UpdateThumbRoot();
                 UpdateTrackVisuals();
                 UpdateTickMarks();
                 PreviousSliderAxis = sliderAxis;
