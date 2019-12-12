@@ -102,7 +102,7 @@ Devices such as HoloLens are constantly scanning and learning about the environm
 > [!NOTE]
 > Once a WorldAnchor component has been added to a GameObject, it is not possible to modify that GameObject's transform (i.e transform.position = x). A developer must remove the WorldAnchor to edit the transform.
 
-```csharp
+```c#
 WorldAnchor m_anchor;
 
 public void AddAnchor()

@@ -132,7 +132,7 @@ For example, if there are a 100 cubes in a scene, a developer may want to assign
 
 To overcome this obstacle and still assign a unique color per cube, developers should leverage [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html).
 
-```csharp
+```c#
 private PropertyBlock m_PropertyBlock ;
 private Renderer myRenderer;
 

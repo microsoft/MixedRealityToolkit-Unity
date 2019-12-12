@@ -116,7 +116,7 @@ To create a new play mode test:
 - Right click, Create > Testing > C# Test Script
 - Replace the default template with the skeleton below
 
-``` csharp
+```c#
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // The assembly that this file is part of is still built for the player,
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 Edit mode tests are executed in Unity's edit mode and can be added under the **MixedRealityToolkit.Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:
 
-``` csharp
+```c#
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:
 
-```csharp
+```c#
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 Consider naming the test
 
-```csharp
+```c#
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
@@ -285,7 +285,7 @@ There are two Utility classes that help with setting up MRTK and testing interac
 
 TestUtilities provide the following methods to set up your MRTK scene and GameObjects:
 
-``` csharp
+```c#
 /// creates the mrtk GameObject and sets the default profile if passed param is true
 TestUtilities.InitializeMixedRealityToolkit()
 

@@ -40,7 +40,7 @@ For external apis that don't provide an xref service hrefs to the documentation 
 
 Examples:
 
-```csharp
+```c#
 /// Links to MRTK internal class SystemType
 ///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
@@ -122,10 +122,10 @@ Multiple versions of developer docs are supported and can be switched by the ver
 Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
 ```json
- "_gitContribute": {
-        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
-        "branch": "mrtk_development"
-      }
+"_gitContribute": {
+    "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
+    "branch": "mrtk_development"
+}
 ```
 
 If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.

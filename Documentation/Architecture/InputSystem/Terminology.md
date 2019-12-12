@@ -31,7 +31,7 @@ The input system has some of its own terminology that are worth defining:
     longer than arms-length from the user.
 
     Pointers are created by the device manager and then attached to an input source. To get all of the
-    pointers for a controller, do: ```controller.InputSource.Pointers```
+    pointers for a controller, do: `controller.InputSource.Pointers`
 
     Note that a controller can be associated with many different pointers at the same time. In order
     to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which

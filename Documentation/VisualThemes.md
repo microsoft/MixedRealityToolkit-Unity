@@ -59,7 +59,7 @@ To help expedite development, the following helper methods are useful for simpli
 
 [`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
 
-```csharp
+```c#
 // This code example builds a Theme ScriptableObject that can be used with an Interactable component.
 // A random color is selected for the on pressed state every time this code is executed.
 
@@ -158,7 +158,7 @@ If the custom Theme Engine can support targeting shader properties. It is recomm
 
 The class below is an example of a custom new Theme Engine. This implementation will find a [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html) component on the initialized host object and control it's visibility based on the current state.
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
@@ -236,7 +236,7 @@ Extending off of the custom Theme Engine defined in the earlier section, the cod
 > [!NOTE]
 > `theme.OnUpdate(state,force)` should generally be called in the Update() method to support Theme Engines that utilize easing/lerping between values.
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;

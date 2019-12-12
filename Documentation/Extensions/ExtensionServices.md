@@ -43,7 +43,7 @@ The component name and priority can also be adjusted.
 Extension services are accessed, in code, using the [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry)
 as shown in the example below.
 
-``` c#
+```c#
 INewService service = null;
 if (MixedRealityServiceRegistry.TryGetService<INewService>(out service))
 {
