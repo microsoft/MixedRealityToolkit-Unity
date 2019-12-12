@@ -178,7 +178,7 @@
 </div>
 <h3 id="input-event-interface-example">Input event interface example</h3>
 <p>The code below demonstrates use of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a> interface. When the user says the words &quot;smaller&quot; or &quot;bigger&quot; while focusing on a GameObject with this <code>ShowHideSpeechHandler</code> class, the GameObject will scale itself by half or twice as much.</p>
-<pre><code class="lang-csharp">public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
+<pre><code class="lang-c#">public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 {
     ...
 
@@ -203,7 +203,7 @@
 <p>To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehavior will receive input events along with any GameObject(s) currently in focus and other global registered listeners.</p>
 <p>If an input event has been <a href="#how-to-stop-input-events">marked as used</a>, global registered handlers will still all receive callbacks. However, no focused GameObjects will receive the event.</p>
 <h3 id="global-input-registration-example">Global input registration example</h3>
-<pre><code class="lang-csharp">public class GlobalHandListenerExample : MonoBehaviour,
+<pre><code class="lang-c#">public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler, // Handle source detected and lost
     IMixedRealityHandJointHandler // handle joint position updates for hands
 {
@@ -260,7 +260,7 @@
 <h2 id="register-for-fallback-input-events">Register for fallback input events</h2>
 <p>Fallback input handlers are similar to registered global input handlers but are treated as a last resort for input event handling. Only if no global input handlers were found and no GameObjects are in focus will fallback input handlers be leveraged.</p>
 <h3 id="fallback-input-handler-example">Fallback input handler example</h3>
-<pre><code class="lang-csharp">public class GlobalHandListenerExample : MonoBehaviour,
+<pre><code class="lang-c#">public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler // Handle source detected and lost
 {
     private void OnEnable()

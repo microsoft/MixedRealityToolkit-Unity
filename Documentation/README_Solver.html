@@ -142,7 +142,7 @@
 <h2 id="how-to-create-a-new-solver">How to create a new Solver</h2>
 <p>All solvers must inherit from the abstract base class, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html"><code>Solver</code></a>. The primary requirements of a Solver extension involves overriding the <code>SolverUpdate</code> method. In this method, developers should update the inherited <code>GoalPosition</code>, <code>GoalRotation</code> and <code>GoalScale</code> properties to the desired values. Furthermore, it is generally valuable to leverage <code>SolverHandler.TransformTarget</code> as the frame of reference desired by the consumer.</p>
 <p>The code provided below gives an example of a new Solver component called <code>InFront</code> that places the attached object 2m in front of the <code>SolverHandler.TransformTarget</code>. If the <code>SolverHandler.TrackedTargetType</code> is set by the consumer as <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>, then the <code>SolverHandler.TransformTarget</code> will be the camera transform and thus this Solver will place the attached GameObject 2m in front of the users' gaze every frame.</p>
-<pre><code class="lang-csharp">/// &lt;summary&gt;
+<pre><code class="lang-c#">/// &lt;summary&gt;
 /// InFront solver positions an object 2m in front of the tracked transform target
 /// &lt;/summary&gt;
 public class InFront : Solver

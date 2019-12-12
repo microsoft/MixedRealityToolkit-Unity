@@ -117,7 +117,7 @@ visualization turned off in player (because they incur a performance hit).</p>
 <p>A specific hand controller is often available, e.g. when handling input events. In this case the joint data can be requested directly from the device, using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> interface.</p>
 <h4 id="polling-joint-pose-from-controller">Polling Joint Pose from Controller</h4>
 <p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityHand_TryGetJoint_"><code>TryGetJoint</code></a> function returns <code>false</code> if the requested joint is not available for some reason. In that case the resulting pose will be <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html#Microsoft_MixedReality_Toolkit_Utilities_MixedRealityPose_ZeroIdentity"><code>MixedRealityPose.ZeroIdentity</code></a>.</p>
-<pre><code class="lang-csharp">public void OnSourceDetected(SourceStateEventData eventData)
+<pre><code class="lang-c#">public void OnSourceDetected(SourceStateEventData eventData)
 {
   var hand = eventData.Controller as IMixedRealityHand;
   if (hand != null)
@@ -131,7 +131,7 @@ visualization turned off in player (because they incur a performance hit).</p>
 </code></pre>
 <h4 id="joint-transform-from-hand-visualizer">Joint Transform from Hand Visualizer</h4>
 <p>Joint objects can be requested from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityController_Visualizer">controller visualizer</a>.</p>
-<pre><code class="lang-csharp">public void OnSourceDetected(SourceStateEventData eventData)
+<pre><code class="lang-c#">public void OnSourceDetected(SourceStateEventData eventData)
 {
   var handVisualizer = eventData.Controller.Visualizer as IMixedRealityHandVisualizer;
   if (handVisualizer != null)
@@ -147,65 +147,64 @@ visualization turned off in player (because they incur a performance hit).</p>
 <p>If no specific controller is given then utility classes are provided for convenient access to hand joint data. These functions request joint data from the first available hand device currently tracked.</p>
 <h4 id="polling-joint-pose-from-handjointutils">Polling Joint Pose from HandJointUtils</h4>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html"><code>HandJointUtils</code></a> is a static class that queries the first active hand device.</p>
-<pre><code class="lang-csharp">  if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
-  {
+<pre><code class="lang-c#">if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
+{
     // ...
-  }
+}
 </code></pre>
 <h4 id="joint-transform-from-hand-joint-service">Joint Transform from Hand Joint Service</h4>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService.html"><code>IMixedRealityHandJointService</code></a> keeps a persistent set of <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> for tracking joints.</p>
-<pre><code class="lang-csharp">  var handJointService = MixedRealityToolkit.Instance.GetService&lt;IMixedRealityHandJointService&gt;();
-  if (handJointService != null)
-  {
+<pre><code class="lang-c#">var handJointService = MixedRealityToolkit.Instance.GetService&lt;IMixedRealityHandJointService&gt;();
+if (handJointService != null)
+{
     Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);
     // ...
-  }
 }
 </code></pre>
 <h3 id="hand-tracking-events">Hand Tracking Events</h3>
 <p>The input system provides events as well, if polling data from controllers directly is not desirable.</p>
 <h4 id="joint-events">Joint Events</h4>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler.html"><code>IMixedRealityHandJointHandler</code></a> handles updates of joint positions.</p>
-<pre><code class="lang-csharp">public class MyHandJointEventHandler : IMixedRealityHandJointHandler
+<pre><code class="lang-c#">public class MyHandJointEventHandler : IMixedRealityHandJointHandler
 {
-  public Handedness myHandedness;
+    public Handedness myHandedness;
 
-  void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)
-  {
-    if (eventData.Handedness == myHandedness)
+    void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)
     {
-      if (eventData.InputData.TryGetValue(TrackedHandJoint.IndexTip, out MixedRealityPose pose))
-      {
-        // ...
-      }
+        if (eventData.Handedness == myHandedness)
+        {
+            if (eventData.InputData.TryGetValue(TrackedHandJoint.IndexTip, out MixedRealityPose pose))
+            {
+                // ...
+            }
+        }
     }
-  }
 }
 </code></pre>
 <h4 id="mesh-events">Mesh Events</h4>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler.html"><code>IMixedRealityHandMeshHandler</code></a> handles changes of the articulated hand mesh.</p>
 <p>Note that hand meshes are not enabled by default.</p>
-<pre><code class="lang-csharp">public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
+<pre><code class="lang-c#">public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
 {
-  public Handedness myHandedness;
-  public Mesh myMesh;
+    public Handedness myHandedness;
+    public Mesh myMesh;
 
-  public void OnHandMeshUpdated(InputEventData&lt;HandMeshInfo&gt; eventData)
-  {
-    if (eventData.Handedness == myHandedness)
+    public void OnHandMeshUpdated(InputEventData&lt;HandMeshInfo&gt; eventData)
     {
-      myMesh.vertices = eventData.InputData.vertices;
-      myMesh.normals = eventData.InputData.normals;
-      myMesh.triangles = eventData.InputData.triangles;
+        if (eventData.Handedness == myHandedness)
+        {
+            myMesh.vertices = eventData.InputData.vertices;
+            myMesh.normals = eventData.InputData.normals;
+            myMesh.triangles = eventData.InputData.triangles;
 
-      if (eventData.InputData.uvs != null &amp;&amp; eventData.InputData.uvs.Length &gt; 0)
-      {
-          myMesh.uv = eventData.InputData.uvs;
-      }
+            if (eventData.InputData.uvs != null &amp;&amp; eventData.InputData.uvs.Length &gt; 0)
+            {
+                myMesh.uv = eventData.InputData.uvs;
+            }
 
-      // ...
+            // ...
+        }
     }
-  }
 }
 </code></pre>
 <h2 id="known-issues">Known Issues</h2>

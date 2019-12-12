@@ -103,7 +103,7 @@
 </ol>
 <h3 id="grab-code-example">Grab code example</h3>
 <p>Below is a script that will print if an event is a touch or grab. In the relevant <em>IMixedRealityPointerHandler</em> interface function, one can look at the type of pointer that triggers that event via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerEventData.html"><code>MixedRealityPointerEventData</code></a>. If the pointer is a <em>SpherePointer</em>, the interaction is a grab.</p>
-<pre><code class="lang-csharp">public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
+<pre><code class="lang-c#">public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 {
     public void OnPointerDown(MixedRealityPointerEventData eventData)
     {
@@ -164,7 +164,7 @@
 </div>
 <h4 id="touch-code-example">Touch code example</h4>
 <p>The code below demonstrates a MonoBehavior that can be attached to a GameObject with a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> variant component and respond to touch input events.</p>
-<pre><code class="lang-csharp">public class TouchEventsExample : MonoBehaviour, IMixedRealityTouchHandler
+<pre><code class="lang-c#">public class TouchEventsExample : MonoBehaviour, IMixedRealityTouchHandler
 {
     public void OnTouchStarted(HandTrackingInputEventData eventData)
     {
@@ -178,7 +178,7 @@
 <h2 id="near-interaction-script-examples">Near interaction script examples</h2>
 <h3 id="touch-events">Touch events</h3>
 <p>This example creates a cube, makes it touchable, and changes color on touch.</p>
-<pre><code class="lang-csharp">public static void MakeChangeColorOnTouch(GameObject target)
+<pre><code class="lang-c#">public static void MakeChangeColorOnTouch(GameObject target)
 {
     // Add and configure the touchable
     var touchable = target.AddComponent&lt;NearInteractionTouchableVolume&gt;();
@@ -193,7 +193,7 @@
 </code></pre>
 <h3 id="grab-events">Grab events</h3>
 <p>The below example shows how to make a GameObject draggable. Assumes that the game object has a collider on it.</p>
-<pre><code class="lang-csharp">public static void MakeNearDraggable(GameObject target)
+<pre><code class="lang-c#">public static void MakeNearDraggable(GameObject target)
 {
     // Instantiate and add grabbable
     target.AddComponent&lt;NearInteractionGrabbable&gt;();

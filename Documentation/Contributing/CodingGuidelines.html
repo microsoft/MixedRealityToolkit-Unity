@@ -112,16 +112,16 @@
 </code></pre>
 <h3 id="function--method-summary-headers">Function / Method summary headers</h3>
 <p>All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:</p>
-<pre><code class="lang-c#">    /// &lt;summary&gt;
-    /// The Controller definition defines the Controller as defined by the SDK / Unity.
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// The Controller definition defines the Controller as defined by the SDK / Unity.
+/// &lt;/summary&gt;
+public struct Controller
+{
+    /// &lt;summary&gt;
+    /// The ID assigned to the Controller
     /// &lt;/summary&gt;
-    public struct Controller
-    {
-        /// &lt;summary&gt;
-        /// The ID assigned to the Controller
-        /// &lt;/summary&gt;
-        public string ID;
-    }
+    public string ID;
+}
 </code></pre>
 <p>This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.</p>
 <p>Any script files submitted without proper summary tags will be rejected.</p>
@@ -143,7 +143,7 @@
 <h3 id="adding-new-monobehaviour-scripts">Adding new MonoBehaviour scripts</h3>
 <p>When adding new MonoBehaviour scripts with a pull-request, ensure the <a href="https://docs.unity3d.com/ScriptReference/AddComponentMenu.html"><code>AddComponentMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the <em>Add Component</em> button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
 <p>In the example below, the <em>Package here</em> should be filled with the package location of the component. If placing an item in <em>MixedRealityToolkit.SDK</em> folder, then the package will be <em>SDK</em>. If placing an item in the <em>MixedRealityToolkit</em> folder, then use <em>Core</em> as the string to insert.</p>
-<pre><code class="lang-csharp">[AddComponentMenu(&quot;Scripts/MRTK/{Package here}/MyNewComponent&quot;)]
+<pre><code class="lang-c#">[AddComponentMenu(&quot;Scripts/MRTK/{Package here}/MyNewComponent&quot;)]
 public class MyNewComponent : MonoBehaviour
 </code></pre>
 <h3 id="spaces-vs-tabs">Spaces vs Tabs</h3>
@@ -245,12 +245,12 @@ protected virtual void FooBar() { }
 }
 </code></pre>
 <h4 id="do-4">Do</h4>
-<pre><code class="lang-c#">// Private references for use inside the class only
+<pre><code class="lang-c#"> // Private references for use inside the class only
 public class MyClass
 {
-   private struct MyStruct() { }
-   private enum MyEnumType() { }
-   private class MyNestedClass() { }
+    private struct MyStruct() { }
+    private enum MyEnumType() { }
+    private class MyNestedClass() { }
 }
 </code></pre>
 <h4 id="do-5">Do</h4>
@@ -258,8 +258,8 @@ public class MyClass
 <pre><code class="lang-c#">// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
 {
-   public string Var1;
-   public string Var2;
+    public string Var1;
+    public string Var2;
 }
 </code></pre>
 <p>MyEnumType.cs</p>
@@ -289,9 +289,9 @@ public struct MyStruct
 <h4 id="do-6">Do</h4>
 <pre><code class="lang-c#">public enum ValueType
 {
-   Value1 = 0,
-   Value2,
-   Value3
+    Value1 = 0,
+    Value2,
+    Value3
 }
 </code></pre>
 <h3 id="order-enums-for-appropriate-extension">Order Enums for appropriate extension</h3>
@@ -307,33 +307,33 @@ public struct MyStruct
 }
 </code></pre>
 <h4 id="do-7">Do</h4>
-<pre><code class="lang-c#">   /// &lt;summary&gt;
-   /// The SDKType lists the VR SDKs that are supported by the MRTK
-   /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
-   /// &lt;/summary&gt;
-   public enum SDKType
-   {
-       /// &lt;summary&gt;
-       /// No specified type or Standalone / non-VR type
-       /// &lt;/summary&gt;
-       None = 0,
-       /// &lt;summary&gt;
-       /// Undefined SDK.
-       /// &lt;/summary&gt;
-       Other,
-       /// &lt;summary&gt;
-       /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
-       /// &lt;/summary&gt;
-       WindowsMR,
-       /// &lt;summary&gt;
-       /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-       /// &lt;/summary&gt;
-       OpenVR,
-       /// &lt;summary&gt;
-       /// The OpenXR platform. SDK to be determined once released.
-       /// &lt;/summary&gt;
-       OpenXR
-   }
+<pre><code class="lang-c#">/// &lt;summary&gt;
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// &lt;/summary&gt;
+public enum SDKType
+{
+    /// &lt;summary&gt;
+    /// No specified type or Standalone / non-VR type
+    /// &lt;/summary&gt;
+    None = 0,
+    /// &lt;summary&gt;
+    /// Undefined SDK.
+    /// &lt;/summary&gt;
+    Other,
+    /// &lt;summary&gt;
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// &lt;/summary&gt;
+    WindowsMR,
+    /// &lt;summary&gt;
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// &lt;/summary&gt;
+    OpenVR,
+    /// &lt;summary&gt;
+    /// The OpenXR platform. SDK to be determined once released.
+    /// &lt;/summary&gt;
+    OpenXR
+}
 </code></pre>
 <h3 id="review-enum-use-for-bitfields">Review Enum use for Bitfields</h3>
 <p>If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left &amp; Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly</p>
@@ -347,13 +347,13 @@ public struct MyStruct
 }
 </code></pre>
 <h3 id="do-8">Do</h3>
-<pre><code class="lang-c#">[flags]
+<pre><code class="lang-c#">[Flags]
 public enum Handedness
 {
-   None = 0 &lt;&lt; 0,
-   Left = 1 &lt;&lt; 0,
-   Right = 1 &lt;&lt; 1,
-   Both = Left | Right
+    None = 0 &lt;&lt; 0,
+    Left = 1 &lt;&lt; 0,
+    Right = 1 &lt;&lt; 1,
+    Both = Left | Right
 }
 </code></pre>
 <h2 id="best-practices-including-unity-recommendations">Best Practices, including Unity recommendations</h2>
@@ -437,22 +437,22 @@ private void Update()
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
-   private Material cachedMaterial;
+    private Material cachedMaterial;
 
-   private void Awake()
-   {
-       cachedMaterial = GetComponent&lt;Renderer&gt;().material;
-   }
+    private void Awake()
+    {
+        cachedMaterial = GetComponent&lt;Renderer&gt;().material;
+    }
 
-   void Update()
-   {
-       cachedMaterial.SetColor(&quot;_Color&quot;, Color.White);
-   }
+    void Update()
+    {
+        cachedMaterial.SetColor(&quot;_Color&quot;, Color.White);
+    }
 
-   private void OnDestroy()
-   {
-       Destroy(cachedMaterial);
-   }
+    private void OnDestroy()
+    {
+        Destroy(cachedMaterial);
+    }
 }
 </code></pre>
 <div class="NOTE">

@@ -83,13 +83,13 @@
 <h1 id="lighting-scene-operations">Lighting Scene Operations</h1>
 
 <p>The default lighting scene defined in your profile is loaded on startup. That lighting scene remains loaded until <code>SetLightingScene</code> is called.</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 sceneSystem.SetLightingScene(&quot;MorningLighting&quot;);
 </code></pre>
 <h2 id="lighting-setting-transitions">Lighting Setting Transitions</h2>
 <p><code>transitionType</code> controls the style of the transition to new lighting scene.</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 sceneSystem.SetLightingScene(&quot;MiddayLighting&quot;, LightingSceneTransitionType.CrossFade);
 </code></pre>

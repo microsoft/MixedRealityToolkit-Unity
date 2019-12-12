@@ -91,7 +91,7 @@ be enabled.</p>
 This can be done by selecting the MixedRealityToolkit object in the scene, clicking
 &quot;Teleport&quot; and then toggling the &quot;Enable Teleport System&quot; checkbox.</p>
 <p>This can also be done at runtime:</p>
-<pre><code class="lang-csharp">void DisableTeleportSystem()
+<pre><code class="lang-c#">void DisableTeleportSystem()
 {
     CoreServices.TeleportSystem.Disable();
 }
@@ -110,7 +110,7 @@ and their associated payload.</p>
 <h3 id="how-to-register-for-teleportation-events">How to register for teleportation events</h3>
 <p>The code below shows how to create a MonoBehaviour that will listen for teleportation
 events. This code assumes that the teleport system is enabled.</p>
-<pre><code class="lang-csharp">using Microsoft.MixedReality.Toolkit;
+<pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using UnityEngine;
 

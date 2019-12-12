@@ -96,7 +96,7 @@ implement <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedR
 <p>The MixedRealityServiceRegistry is implemented as a static C# class and is the recommended pattern to
 use to acquire service instances in application code.</p>
 <p>The following snippet demonstrates acquiring an IMixedRealityInputSystem instance.</p>
-<pre><code>IMixedRealityInputSystem inputSystem = null;
+<pre><code class="lang-c#">IMixedRealityInputSystem inputSystem = null;
 
 if (!MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem))
 {

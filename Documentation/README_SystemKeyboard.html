@@ -85,29 +85,28 @@
 <p><img src="Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png" alt="System keyboard"></p>
 <p>A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gaze">1</a></sup>.</p>
 <h2 id="how-to-invoke-the-system-keyboard">How to invoke the system keyboard</h2>
-<pre><code class="lang-csharp">    public TouchScreenKeyboard keyboard;
+<pre><code class="lang-c#">public TouchScreenKeyboard keyboard;
 
-    ...
+...
 
-    public void OpenSystemKeyboard()
-    {
-        keyboard = TouchScreenKeyboard.Open(&quot;&quot;, TouchScreenKeyboardType.Default, false, false, false, false);
-    }
+public void OpenSystemKeyboard()
+{
+    keyboard = TouchScreenKeyboard.Open(&quot;&quot;, TouchScreenKeyboardType.Default, false, false, false, false);
+}
 </code></pre>
 <h2 id="how-to-read-the-input">How to read the input</h2>
-<pre><code class="lang-csharp">
-    public TouchScreenKeyboard keyboard;
+<pre><code class="lang-c#">public TouchScreenKeyboard keyboard;
 
-    ...
+...
 
-    private void Update()
+private void Update()
+{
+    if (keyboard != null)
     {
-        if (keyboard != null)
-        {
-            keyboardText = keyboard.text;
-            // Do stuff with keyboardText
-        }
+        keyboardText = keyboard.text;
+        // Do stuff with keyboardText
     }
+}
 </code></pre>
 <h2 id="system-keyboard-example">System keyboard example</h2>
 <p>You can see simple example of how to bring up system keyboard in

@@ -110,7 +110,7 @@ In the <strong>LoadContentScene</strong> script's Inspector, you can define the 
 <br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem7.png" width="450"></p>
 <p>The script uses the Scene System's LoadContent() function to load the scene.
 Please refer to the <a href="SceneSystem/SceneSystemGettingStarted.html">Scene System</a> page for more details.</p>
-<pre><code class="lang-csharp">MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
+<pre><code class="lang-c#">MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 </code></pre>
 <h2 id="returning-to-the-main-menu-scene">Returning to the main menu scene</h2>
 <p>To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the same Scene System <code>LoadContent()</code> method. The <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> provides the 'Home' button which contains the <strong>LoadContentScene</strong> script. Use this prefab or provide a custom home button in each scene to allow the user to return to the main scene. One can put the <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> in the <strong>MRTKExamplesHub</strong> scene to make it always visible since <strong>MRTKExamplesHub</strong> is a shared container scene. Make sure to hide/deactivate <strong>ToggleFeaturesPanel.prefab</strong> in each example scene.</p>

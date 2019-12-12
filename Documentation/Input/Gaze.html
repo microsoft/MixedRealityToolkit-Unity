@@ -114,7 +114,7 @@ bugs) as re-implementing the GazeProvider is non-trivial.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="how-get-the-current-gaze-target">How get the current gaze target</h3>
 <p>This sample shows how to get the current game object that is targeted by the user gaze.</p>
-<pre><code class="lang-csharp">void LogCurrentGazeTarget()
+<pre><code class="lang-c#">void LogCurrentGazeTarget()
 {
     if (CoreServices.InputSystem.GazeProvider.GazeTarget)
     {
@@ -126,7 +126,7 @@ bugs) as re-implementing the GazeProvider is non-trivial.</p>
 <h3 id="how-to-get-the-current-gaze-direction-and-origin">How to get the current gaze direction and origin</h3>
 <p>This sample shows how to get the Vector3 representing the direction of the user gaze
 and the origin (the point from which the direction is going).</p>
-<pre><code class="lang-csharp">void LogGazeDirectionOrigin()
+<pre><code class="lang-c#">void LogGazeDirectionOrigin()
 {
     Debug.Log(&quot;Gaze is looking in direction: &quot;
         + CoreServices.InputSystem.GazeProvider.GazeDirection);

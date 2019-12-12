@@ -253,7 +253,7 @@ GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisua
 <li>If you have been inheriting from <code>BaseInputHandler</code>, implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods (same as for <code>InputSystemGlobalListener</code>).</li>
 </ul>
 <p><strong><em>Examples of migration</em></strong></p>
-<pre><code class="lang-csharp">// Old
+<pre><code class="lang-c#">// Old
 class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
 {
     private void OnEnable()
@@ -283,7 +283,7 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
     }
 }
 </code></pre>
-<pre><code class="lang-csharp">// Old
+<pre><code class="lang-c#">// Old
 class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {
 }

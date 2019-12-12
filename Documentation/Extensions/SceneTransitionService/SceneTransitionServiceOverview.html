@@ -129,7 +129,7 @@
 <p>You use the transition service by passing Tasks that are run while the camera is faded out.</p>
 <h3 id="using-scene-system-tasks">Using Scene System Tasks</h3>
 <p>In most cases you will be using Tasks supplied by the SceneSystem service:</p>
-<pre><code class="lang-csharp">private async void TransitionToScene()
+<pre><code class="lang-c#">private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService&lt;ISceneTransitionService&gt;();
@@ -144,7 +144,7 @@
 </code></pre>
 <h3 id="using-custom-tasks">Using Custom Tasks</h3>
 <p>In other cases you may want to perform a transition without actually loading a scene:</p>
-<pre><code class="lang-csharp">private async void TransitionToScene()
+<pre><code class="lang-c#">private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService&lt;ISceneTransitionService&gt;();
 
@@ -162,7 +162,7 @@ private async Task ResetScene()
 }
 </code></pre>
 <p>Or you may want to load a scene without using the SceneSystem service:</p>
-<pre><code class="lang-csharp">private async void TransitionToScene()
+<pre><code class="lang-c#">private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService&lt;ISceneTransitionService&gt;();
 
@@ -185,7 +185,7 @@ private async Task LoadScene(string sceneName)
 </code></pre>
 <h3 id="using-multiple-tasks">Using Multiple Tasks</h3>
 <p>You can also supply multiple tasks, which will be executed in order:</p>
-<pre><code class="lang-csharp">private async void TransitionToScene()
+<pre><code class="lang-c#">private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService&lt;ISceneTransitionService&gt;();
@@ -227,7 +227,7 @@ private async Task FadeAudio(float targetVolume, float duration)
 <h2 id="using-the-progress-indicator">Using the Progress Indicator</h2>
 <p>A progress indicator is anything that implements the <code>IProgressIndicator</code> interface. This can take the form of a splash screen, a 3D tagalong loading indicator, or anything else that provides feedback about transition progress.</p>
 <p>If <code>UseDefaultProgressIndicator</code> is checked in the SceneTransitionService profile, a progress indicator will be instantiated when a transition begins. For the duration of the transition this indicator's <code>Progress</code> and <code>Message</code> properties can be accessed via that service's <code>SetProgressValue</code> and <code>SetProgressMessage</code> methods.</p>
-<pre><code class="lang-csharp">private async void TransitionToScene()
+<pre><code class="lang-c#">private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService&lt;ISceneTransitionService&gt;();

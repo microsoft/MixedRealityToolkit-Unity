@@ -469,7 +469,7 @@ asset database and reconcile existing custom profiles.</li>
 <p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562">change 5562</a> for more details</p>
 <p><strong>Ability to turn off hand rays and other pointers (gaze, grab, poke) from code</strong></p>
 <p>We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.</p>
-<pre><code class="lang-csharp">// Turn off all hand rays
+<pre><code class="lang-c#">// Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
 // Turn hand rays back on
@@ -485,7 +485,7 @@ PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
 <p><strong>Easily access hand, head, eye position, rotation from code</strong></p>
 <p>We had feedback that it's difficult to find out where the hand is pointing, or where eyes / head is looking. This change adds methods to make it easy for application code to acquire the position and rotation of head, hands, eyes, and motion controllers.</p>
 <p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944">change 5944</a> for details.</p>
-<pre><code class="lang-csharp">// Get the head ray
+<pre><code class="lang-c#">// Get the head ray
 var headRay = InputRayUtils.GetHeadGazeRay();
 
 // Get the right hand ray
@@ -499,7 +499,7 @@ if(InputRayUtils.TryGetHandRay(Handedness.right, rightHandRay))
 <p>This release we focused a lot of energy on making <code>Interactable</code> configurable from code.</p>
 <p>It's now possible to instantiate and configure interactable from code. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5967">change 5967</a> and <a href="README_Interactable.html">Interactable</a> for more information</p>
 <p>It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:</p>
-<pre><code class="lang-csharp">public static void AddFocusEvents(Interactable interactable)
+<pre><code class="lang-c#">public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver&lt;InteractableOnFocusReceiver&gt;();
     onFocusReceiver.OnFocusOn.AddListener(() =&gt; Debug.Log(&quot;Focus on&quot;));
@@ -540,7 +540,7 @@ if(InputRayUtils.TryGetHandRay(Handedness.right, rightHandRay))
 <p>The <code>CollierNearInteractionTouchable</code> class is now obsolete. Replace all usages of <code>ColliderNearInteractionTouchable</code> with <code>BaseNearInteractionTouchable</code>.</p>
 <h3 id="interactable-deprecated-methods">Interactable: deprecated methods</h3>
 <p>Interactable has been upgraded to be configurable from code. The following methods in <code>Interactable</code> are now marked Obsolete:</p>
-<pre><code class="lang-csharp">public void ResetBaseStates()
+<pre><code class="lang-c#">public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)
 public void ForceUpdateThemes()

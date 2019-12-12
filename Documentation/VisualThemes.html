@@ -116,7 +116,7 @@
 <p>To help expedite development, the following helper methods are useful for simplifying setup.</p>
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>Interactable.GetDefaultInteractableStates()</code></a> - creates a new States ScriptableObject with the four default state values used in the <a href="README_Interactable.html">Interactable</a> component.</p>
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html"><code>ThemeDefinition.GetDefaultThemeDefinition&lt;T&gt;()</code></a> - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.</p>
-<pre><code class="lang-csharp">// This code example builds a Theme ScriptableObject that can be used with an Interactable component.
+<pre><code class="lang-c#">// This code example builds a Theme ScriptableObject that can be used with an Interactable component.
 // A random color is selected for the on pressed state every time this code is executed.
 
 // Use the default states utilized in the Interactable component
@@ -191,7 +191,7 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 </div>
 <h3 id="custom-theme-engine-example">Custom Theme Engine example</h3>
 <p>The class below is an example of a custom new Theme Engine. This implementation will find a <a href="https://docs.unity3d.com/ScriptReference/MeshRenderer.html">MeshRenderer</a> component on the initialized host object and control it's visibility based on the current state.</p>
-<pre><code class="lang-csharp">using Microsoft.MixedReality.Toolkit.UI;
+<pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -266,7 +266,7 @@ public class MeshVisibilityTheme : InteractableThemeBase
 <h5>Note</h5>
 <p><code>theme.OnUpdate(state,force)</code> should generally be called in the Update() method to support Theme Engines that utilize easing/lerping between values.</p>
 </div>
-<pre><code class="lang-csharp">using Microsoft.MixedReality.Toolkit.UI;
+<pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

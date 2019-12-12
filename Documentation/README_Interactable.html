@@ -184,13 +184,13 @@
 </ol>
 <h4 id="example-of-extending-receiverbase">Example of extending <code>ReceiverBase</code></h4>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.html"><code>CustomInteractablesReceiver</code></a> class under <code>MixedRealityToolkit.Examples</code> displays status information about an <em>Interactable</em> and is an example how to create a custom Event Receiver.</p>
-<pre><code class="lang-csharp">public CustomInteractablesReceiver(UnityEvent ev) : base(ev, &quot;CustomEvent&quot;)
+<pre><code class="lang-c#">public CustomInteractablesReceiver(UnityEvent ev) : base(ev, &quot;CustomEvent&quot;)
 {
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
 }
 </code></pre>
 <p>The following methods are useful to override/implement when creating a custom Event Receiver. <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html"><code>ReceiverBase.OnUpdate()</code></a> is an abstract method that can be used to detect state patterns/transitions. Furthermore, the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html"><code>ReceiverBase.OnVoiceCommand()</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html"><code>ReceiverBase.OnClick()</code></a> methods are useful for creating custom event logic when the <em>Interactable</em> is selected.</p>
-<pre><code class="lang-csharp">public override void OnUpdate(InteractableStates state, Interactable source)
+<pre><code class="lang-c#">public override void OnUpdate(InteractableStates state, Interactable source)
 {
     if (state.CurrentState() != lastState)
     {
@@ -217,7 +217,7 @@ public virtual void OnClick(InteractableStates state,
 </code></pre>
 <h5 id="displaying-custom-event-receiver-fields-in-the-inspector">Displaying custom Event Receiver fields in the inspector</h5>
 <p><em>ReceiverBase</em> scripts use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField.html"><code>InspectorField</code></a> attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an <em>Interactable</em> GameObject is selected and has the associated <em>Event Receiver</em> type added.</p>
-<pre><code class="lang-csharp">[InspectorField(Label = &quot;&lt;Property label&gt;&quot;,Tooltip = &quot;&lt;Insert tooltip info&gt;&quot;,Type = InspectorField.FieldTypes.Vector3)]
+<pre><code class="lang-c#">[InspectorField(Label = &quot;&lt;Property label&gt;&quot;,Tooltip = &quot;&lt;Insert tooltip info&gt;&quot;,Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 </code></pre>
 <h2 id="how-to-use-interactable">How to use Interactable</h2>
@@ -235,7 +235,7 @@ public Vector3 EffectOffset = Vector3.zero;
 <p><em>CanSelect</em> means the the <em>Interactable</em> can go from <em>off</em> to <em>on</em> while the <em>CanDeselect</em> means the inverse.</p>
 <p><img src="Images/Interactable/Profile_toggle.png" alt="Profile Toggle Visual Themes Example"></p>
 <p>Developers can utilize the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>SetToggled</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>IsToggled</code></a> interfaces to get/set the toggle state of an <em>Interactable</em> via code.</p>
-<pre><code class="lang-csharp">// If using SelectionMode = Toggle (i.e Dimensions == 2)
+<pre><code class="lang-c#">// If using SelectionMode = Toggle (i.e Dimensions == 2)
 
 // Make the Interactable selected and toggled on
 myInteractable.IsToggled = true;
@@ -261,7 +261,7 @@ bool isSelected = myInteractable.IsToggled;
 <p>Every click event will advance the <code>DimensionIndex</code> by 1 at runtime until the <code>Dimensions</code> value is reached then the cycle will reset to 0.</p>
 <p><img src="Images/Interactable/Profile_multiDimensions.png" alt="Multi-Dimensional profile example"></p>
 <p>Developers can assess the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>DimensionIndex</code></a> to determine which dimension is currently active.</p>
-<pre><code class="lang-csharp">// If using SelectionMode = Multi-dimension (i.e Dimensions &gt;= 3)
+<pre><code class="lang-c#">// If using SelectionMode = Multi-dimension (i.e Dimensions &gt;= 3)
 
 //Access the current DimensionIndex
 int currentDimension = myInteractable.CurrentDimension;
@@ -274,7 +274,7 @@ myInteractable.IncreaseDimension();
 </code></pre>
 <h3 id="create-interactable-at-runtime">Create Interactable at runtime</h3>
 <p><em>Interactable</em> can be easily added to any GameObject at runtime. The following example demonstrates how to assign a profile with a <a href="VisualThemes.html">visual theme</a>.</p>
-<pre><code class="lang-csharp">var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+<pre><code class="lang-c#">var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 var interactable = interactableObject.AddComponent&lt;Interactable&gt;();
 
 // Get the default configuration for the Theme engine InteractableColorTheme
@@ -306,14 +306,14 @@ interactable.TriggerOnClick()
 </code></pre>
 <h3 id="interactable-events-via-code">Interactable Events via code</h3>
 <p>One can add an action to the base <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_OnClick"><code>Interactable.OnClick</code></a> event via code with the following example.</p>
-<pre><code class="lang-csharp">public static void AddOnClick(Interactable interactable)
+<pre><code class="lang-c#">public static void AddOnClick(Interactable interactable)
 {
     interactable.OnClick.AddListener(() =&gt; Debug.Log(&quot;Interactable clicked&quot;));
 }
 </code></pre>
 <p>Use the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>Interactable.AddReceiver&lt;T&gt;()</code></a> function to add event receivers dynamically at runtime.</p>
 <p>The example code below demonstrates how to add an <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnFocusReceiver</a>, which listens for focus enter/exit, and furthermore define action code to perform when the event instances fire.</p>
-<pre><code class="lang-csharp">public static void AddFocusEvents(Interactable interactable)
+<pre><code class="lang-c#">public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver&lt;InteractableOnFocusReceiver&gt;();
 
@@ -322,7 +322,7 @@ interactable.TriggerOnClick()
 }
 </code></pre>
 <p>The example code below demonstrates how to add an <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnToggleReceiver</a>, which listens for selected/deselected state transitions on toggle-able <em>Interactables</em>, and furthermore define action code to perform when the event instances fire.</p>
-<pre><code class="lang-csharp">public static void AddToggleEvents(Interactable interactable)
+<pre><code class="lang-c#">public static void AddToggleEvents(Interactable interactable)
 {
     var toggleReceiver = interactable.AddReceiver&lt;InteractableOnToggleReceiver&gt;();
 

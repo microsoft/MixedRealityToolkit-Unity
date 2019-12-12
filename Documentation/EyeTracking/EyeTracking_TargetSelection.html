@@ -123,7 +123,7 @@ In your app, a user can use far hand rays to manipulate some holographic mechani
 <h3 id="focusing-on-a-hologram">Focusing on a hologram</h3>
 <p>To detect when a hologram is focused, use the <em>'IMixedRealityFocusHandler'</em> interface that provides you with two interface members: <em>OnFocusEnter</em> and <em>OnFocusExit</em>.</p>
 <p>Here is a simple example from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.ColorTap.html">ColorTap.cs</a> to change a hologram's color when being looked at.</p>
-<pre><code class="lang-csharp">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
+<pre><code class="lang-c#">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler
 {
     void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
     {
@@ -144,7 +144,7 @@ The <em>IMixedRealityPointerHandler</em> interface requires implementing the fol
 <em>OnPointerUp</em>, <em>OnPointerDown</em>, and <em>OnPointerClicked</em>.</p>
 <p>In the example below, we change the color of a hologram by looking at it and pinching or saying &quot;select&quot;.
 The required action to trigger the event is defined by <code>eventData.MixedRealityInputAction == selectAction</code> whereby we can set the type of <code>selectAction</code> in the Unity Editor - by default it's the &quot;Select&quot; action. The types of available <a href="../Input/InputActions.html">MixedRealityInputActions</a> can be configured in the MRTK Profile via <em>MRTK Configuration Profile</em> -&gt; <em>Input</em> -&gt; <em>Input Actions</em>.</p>
-<pre><code class="lang-csharp">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+<pre><code class="lang-c#">public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
 {
     // Allow for editing the type of select action in the Unity Editor.
     [SerializeField]
@@ -181,7 +181,7 @@ If the right side is looked at, then that part will slowly move to the front.
 This is a behavior that you may not want to have active at all times and also something that you may not want to accidentally trigger by a hand ray or head gaze.
 Having the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.OnLookAtRotateByEyeGaze.html"><code>OnLookAtRotateByEyeGaze</code></a>
 attached, a GameObject will rotate while being looked at.</p>
-<pre><code class="lang-csharp">public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
+<pre><code class="lang-c#">public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
 {
     ...
 
@@ -271,9 +271,8 @@ Otherwise this can quickly feel extremely overwhelming.</p>
 <h3 id="example-2-holographic-gem-rotates-slowly-when-looking-at-it">Example #2: Holographic gem rotates slowly when looking at it</h3>
 <p>Similar to Example #1, we can easily create a hover feedback for our holographic gems in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a> scene that will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above) when being looked at. All you need is to trigger the rotation of the holographic gem from the <em>EyeTrackingTarget</em>'s <em>WhileLookingAtTarget()</em> event. Here are a few more details:</p>
 <ol>
-<li>Create a generic script that includes a public function to rotate the GameObject it is attached to. Below is an example from <em>RotateWithConstSpeedDir.cs</em> where we can tweak the rotation direction and speed from the Unity Editor.</li>
-</ol>
-<pre><code class="lang-csharp">using UnityEngine;
+<li><p>Create a generic script that includes a public function to rotate the GameObject it is attached to. Below is an example from <em>RotateWithConstSpeedDir.cs</em> where we can tweak the rotation direction and speed from the Unity Editor.</p>
+<pre><code class="lang-c#">using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -300,8 +299,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     }
 }
 </code></pre>
-<ol start="2">
-<li>Add the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html"><code>EyeTrackingTarget</code></a> script to your target GameObject and reference the <em>RotateTarget()</em> function in the UnityEvent trigger as shown the screenshot below:</li>
+</li>
+<li><p>Add the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget.html"><code>EyeTrackingTarget</code></a> script to your target GameObject and reference the <em>RotateTarget()</em> function in the UnityEvent trigger as shown the screenshot below:</p>
+</li>
 </ol>
 <p><img src="../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg" alt="EyeTrackingTarget sample"></p>
 <h3 id="example-3-pop-those-gems-aka-multimodal-eye-gaze-supported-target-selection">Example #3: Pop those gems aka <em>multimodal eye-gaze-supported target selection</em></h3>
@@ -344,7 +344,7 @@ You could simply link the script that is attached to each of our gem templates t
 If you don't want to drag and drop GameObjects around, you can also simply add a event listener directly to your script.<br>
 Here's an example from how we did it in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.HitBehaviorDestroyOnSelect.html"><code>HitBehaviorDestroyOnSelect</code></a> script:</li>
 </ul>
-<pre><code class="lang-csharp">/// &lt;summary&gt;
+<pre><code class="lang-c#">/// &lt;summary&gt;
 /// Destroys the game object when selected and optionally plays a sound or animation when destroyed.
 /// &lt;/summary&gt;
 [RequireComponent(typeof(EyeTrackingTarget))] // This helps to ensure that the EyeTrackingTarget is attached

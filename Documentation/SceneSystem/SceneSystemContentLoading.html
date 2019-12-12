@@ -85,7 +85,7 @@
 <p>All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see <a href="SceneSystemLoadProgress.html">Monitoring Content Loading.</a></p>
 <h2 id="loading-content">Loading Content</h2>
 <p>To load content scenes use the <code>LoadContent</code> method:</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 // Additively load a single content scene
 await sceneSystem.LoadContent(&quot;MyContentScene&quot;);
@@ -95,7 +95,7 @@ await sceneSystem.LoadContent(new string[] { &quot;MyContentScene1&quot;, &quot;
 </code></pre>
 <h2 id="single-scene-loading">Single Scene Loading</h2>
 <p>The equivalent of a single scene load can be achieved via the optional <code>mode</code> argument. <code>LoadSceneMode.Single</code> will first unload all loaded content scenes before proceeding with the load.</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 // ContentScene1, ContentScene2 and ContentScene3 will be loaded additively
 await sceneSystem.LoadContent(&quot;ContentScene1&quot;);
@@ -110,9 +110,9 @@ await sceneSystem.LoadContent(&quot;SingleContentScene&quot;, LoadSceneMode.Sing
 <p>Content can be singly loaded in order of build index. This is useful for showcase applications that take users through a set of demonstration scenes one-by-one.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemBuildSettings.png" alt="MRTK_SceneSystemBuildSettings"></p>
 <p>Note that next / prev content loading uses LoadSceneMode.Single by default to ensure that the previous content is unloaded.</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
-if (nextSceneRequested &amp;&amp; sceneSystem.NextContentExists) 
+if (nextSceneRequested &amp;&amp; sceneSystem.NextContentExists)
 {
     await sceneSystem.LoadNextContent();
 }
@@ -124,9 +124,9 @@ if (prevSceneRequested &amp;&amp; sceneSystem.PrevContentExists)
 </code></pre>
 <p><code>PrevContentExists</code> will return true if there is at least one content scene that has a lower build index than the lowest build index currently loaded. <code>NextContentExists</code> will return true if there is at least one content scene that has a higher build index than the highest build index currently loaded.</p>
 <p>If the <code>wrap</code> argument is true, content will loop back to the first / last build index. This removes the need to check for next / previous content:</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
-if (nextSceneRequested) 
+if (nextSceneRequested)
 {
     await sceneSystem.LoadNextContent(true);
 }
@@ -139,7 +139,7 @@ if (prevSceneRequested)
 <h2 id="loading-by-tag">Loading by Tag</h2>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png" alt="MRTK_SceneSystemLoadingByTag"></p>
 <p>It's sometimes desirable to load content scenes in groups. Eg, a stage of an experience may be composed of multiple scenes, all of which must be loaded simultaneously to function. To facilitate this, you can tag your scenes and then load them or unload them with that tag.</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 await LoadContentByTag(&quot;Stage1&quot;);
 
@@ -149,7 +149,7 @@ await UnloadContentByTag(&quot;Stage1&quot;);
 await LoadContentByTag(&quot;Stage2);
 </code></pre>
 <p>Loading by tag can also be useful if artists want to incorporate / remove elements from an experience without having to modify scripts. For instance, running this script with the following two sets of tags produces different results:</p>
-<pre><code>IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
+<pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 
 await LoadContentByTag(&quot;Terrain&quot;);
 await LoadContentByTag(&quot;Structures&quot;);

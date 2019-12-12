@@ -110,7 +110,7 @@ Please make sure whenever you perform changes on any of the documentation files 
 External xref services for resolving links to external libraries/apis can be added to the docfx.json build settings file in the property <em>xrefService</em>.</p>
 <p>For external apis that don't provide an xref service hrefs to the documentation website can be added to the comments.</p>
 <p>Examples:</p>
-<pre><code class="lang-csharp">/// Links to MRTK internal class SystemType
+<pre><code class="lang-c#">/// Links to MRTK internal class SystemType
 ///&lt;see cref=&quot;Microsoft.MixedReality.Toolkit.Utilities.SystemType&quot;/&gt;
 
 /// Links to external API - link provided by xref service
@@ -177,10 +177,10 @@ toc.yml files can be used for structuring and there can be any amount of those f
 <li>Optional: Adjusting your docfx.json<br>
 Depending on whether you want to have the &quot;Improve this doc&quot; to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:</li>
 </ol>
-<pre><code class="lang-json"> &quot;_gitContribute&quot;: {
-        &quot;repo&quot;: &quot;https://github.com/Microsoft/MixedRealityToolkit-Unity.git&quot;,
-        &quot;branch&quot;: &quot;mrtk_development&quot;
-      }
+<pre><code class="lang-json">&quot;_gitContribute&quot;: {
+    &quot;repo&quot;: &quot;https://github.com/Microsoft/MixedRealityToolkit-Unity.git&quot;,
+    &quot;branch&quot;: &quot;mrtk_development&quot;
+}
 </code></pre>
 <p>If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.</p>
 <ol start="2">

@@ -165,7 +165,7 @@ attribute to the class. This step enables setting the default profile and platfo
 <p>In the Mixed Reality Toolkit, data providers are configured using <a href="../Profiles/Profiles.html">profiles</a>.</p>
 <h3 id="define-the-profile">Define the profile</h3>
 <p>Profile contents should mirror the developer selectable configuration options. Any user configurable properties defined in each interface should also be contained with the profile.</p>
-<pre><code class="lang-csharp">using UnityEngine.SpatialTracking;
+<pre><code class="lang-c#">using UnityEngine.SpatialTracking;
 
 namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -208,7 +208,7 @@ namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 <h3 id="implement-the-inspector">Implement the inspector</h3>
 <p>Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html"><code>BaseMixedRealityToolkitConfigurationProfileInspector</code></a> class.</p>
 <p>The <code>CustomEditor</code> attribute informs Unity the type of asset to which the inspector applies.</p>
-<pre><code class="lang-csharp">namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
+<pre><code class="lang-c#">namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     [CustomEditor(typeof(UnityARCameraSettingsProfile))]
     public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector

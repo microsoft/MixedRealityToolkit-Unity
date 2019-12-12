@@ -125,7 +125,7 @@ enumeration, which defines a set of capabilities for which an application can qu
 </tbody>
 </table>
 <p>The example code below checks to see if the input system has loaded a data provider with support for articulated hands.</p>
-<pre><code class="lang-C#">bool supportsArticulatedHands = false;
+<pre><code class="lang-c#">bool supportsArticulatedHands = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
 if (capabilityCheck != null)
@@ -158,7 +158,7 @@ if (capabilityCheck != null)
 </tbody>
 </table>
 <p>This example checks to see if the spatial awareness system has loaded a data provider with support for spatial meshes.</p>
-<pre><code class="lang-C#">bool supportsSpatialMesh = false;
+<pre><code class="lang-c#">bool supportsSpatialMesh = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.SpatialAwarenessSystem as IMixedRealityCapabilityCheck;
 if (capabilityCheck != null)

@@ -179,7 +179,7 @@ example <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAw
 <li><code>OnObservationUpdated()</code></li>
 </ul>
 <p>The following code from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> examples demonstrates raising and event when mesh data is added.</p>
-<pre><code class="lang-csharp">// The data to be sent when mesh observation events occur.
+<pre><code class="lang-c#">// The data to be sent when mesh observation events occur.
 // This member variable is initialized as part of the Initialize() method.
 private MixedRealitySpatialAwarenessEventData&lt;SpatialAwarenessMeshObject&gt; meshEventData = null;
 
@@ -230,7 +230,7 @@ private void SendMeshObjects()
 <h3 id="define-the-profile">Define the profile</h3>
 <p>Profile contents should mirror the accessible properties of the data provider (ex: update interval). All of the user configurable properties defined in each interface should be contained with the profile.</p>
 <p>Base classes are encouraged if a new data provider extends an existing provider. For example, the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile.html"><code>SpatialObjectMeshObserverProfile</code></a> extends the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html"><code>MixedRealitySpatialAwarenessMeshObserverProfile</code></a> to enable customers to provide a 3D model to be used as the environment data.</p>
-<pre><code class="lang-csharp">[CreateAssetMenu(
+<pre><code class="lang-c#">[CreateAssetMenu(
     menuName = &quot;Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile&quot;,
     fileName = &quot;SpatialObjectMeshObserverProfile&quot;,
     order = 100)]
@@ -250,7 +250,7 @@ public class SpatialObjectMeshObserverProfile : MixedRealitySpatialAwarenessMesh
 <h3 id="implement-the-inspector">Implement the inspector</h3>
 <p>Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html"><code>BaseMixedRealityToolkitConfigurationProfileInspector</code></a> class.</p>
 <p>The <code>CustomEditor</code> attribute informs Unity the type of asset to which the inspector applies.</p>
-<pre><code class="lang-csharp">[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
+<pre><code class="lang-c#">[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
 public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }
 </code></pre>

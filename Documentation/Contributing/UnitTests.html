@@ -159,7 +159,7 @@ public IEnumerator MyTest() {...}
 <li>Right click, Create &gt; Testing &gt; C# Test Script</li>
 <li>Replace the default template with the skeleton below</li>
 </ul>
-<pre><code class="lang-csharp">#if !WINDOWS_UWP
+<pre><code class="lang-c#">#if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // The assembly that this file is part of is still built for the player,
 // even though the assembly itself is marked as a test assembly (this is not
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 <h3 id="edit-mode-tests">Edit mode tests</h3>
 <p>Edit mode tests are executed in Unity's edit mode and can be added under the <strong>MixedRealityToolkit.Tests</strong> &gt; <strong>EditModeTests</strong> folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:</p>
-<pre><code class="lang-csharp">// Copyright (c) Microsoft Corporation.
+<pre><code class="lang-c#">// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using NUnit.Framework;
@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 <h3 id="test-naming-conventions">Test naming conventions</h3>
 <p>Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:</p>
-<pre><code class="lang-csharp">namespace Microsoft.MixedReality.Toolkit.Input
+<pre><code class="lang-c#">namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
     {
@@ -274,7 +274,7 @@ For example, given a to-be-tested class:</p>
 }
 </code></pre>
 <p>Consider naming the test</p>
-<pre><code class="lang-csharp">namespace Microsoft.MixedReality.Toolkit.Tests.Input
+<pre><code class="lang-c#">namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
     {
@@ -306,7 +306,7 @@ or play mode test folder.</p>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html"><code>PlayModeTestUtilities</code></a></li>
 </ul>
 <p>TestUtilities provide the following methods to set up your MRTK scene and GameObjects:</p>
-<pre><code class="lang-csharp">/// creates the mrtk GameObject and sets the default profile if passed param is true
+<pre><code class="lang-c#">/// creates the mrtk GameObject and sets the default profile if passed param is true
 TestUtilities.InitializeMixedRealityToolkit()
 
 /// creates an empty scene prior to adding the mrtk GameObject to it
