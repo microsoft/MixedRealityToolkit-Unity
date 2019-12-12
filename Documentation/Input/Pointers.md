@@ -161,7 +161,7 @@ Pointer input events are recognized and handled by the MRTK input system in a si
 
 Below is an example script that changes the color of the attached renderer when a pointer takes or leaves focus or when a pointer selects the object.
 
-```csharp
+```c#
 public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
 {
     private Color color_IdleState = Color.cyan;
@@ -201,7 +201,7 @@ public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityP
 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
 
-```csharp
+```c#
 var pointers = new HashSet<IMixedRealityPointer>();
 
 // Find all valid pointers
@@ -221,7 +221,7 @@ foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
 
 Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.
 
-```csharp
+```c#
 private void OnEnable()
 {
     var focusProvider = CoreServices.InputSystem?.FocusProvider;
@@ -251,7 +251,7 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
-```csharp
+```c#
 private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
 {
     var result = eventData.Pointer.Result;
@@ -268,7 +268,7 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 ### Disable Pointers
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
-```csharp
+```c#
 // Disable the hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 

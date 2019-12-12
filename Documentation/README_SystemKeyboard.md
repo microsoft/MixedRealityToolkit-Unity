@@ -2,37 +2,36 @@
 
 ![System keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
 
-A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup>[1](https://docs.microsoft.com/en-us/windows/mixed-reality/gaze)</sup>.
+A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup>[1](https://docs.microsoft.com/windows/mixed-reality/gaze)</sup>.
 
 ## How to invoke the system keyboard ##
 
-``` csharp
-    public TouchScreenKeyboard keyboard;
+```c#
+public TouchScreenKeyboard keyboard;
 
-    ...
+...
 
-    public void OpenSystemKeyboard()
-    {
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
-    }
+public void OpenSystemKeyboard()
+{
+    keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
+}
 ```
 
 ## How to read the input ##
 
-``` csharp
+```c#
+public TouchScreenKeyboard keyboard;
 
-    public TouchScreenKeyboard keyboard;
+...
 
-    ...
-
-    private void Update()
+private void Update()
+{
+    if (keyboard != null)
     {
-        if (keyboard != null)
-        {
-            keyboardText = keyboard.text;
-            // Do stuff with keyboardText
-        }
+        keyboardText = keyboard.text;
+        // Do stuff with keyboardText
     }
+}
 ```
 
 ## System keyboard example ##

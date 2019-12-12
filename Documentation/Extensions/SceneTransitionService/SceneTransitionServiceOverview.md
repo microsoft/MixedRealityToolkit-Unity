@@ -49,7 +49,7 @@ You use the transition service by passing Tasks that are run while the camera is
 
 In most cases you will be using Tasks supplied by the SceneSystem service:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -68,7 +68,7 @@ private async void TransitionToScene()
 
 In other cases you may want to perform a transition without actually loading a scene:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
@@ -89,7 +89,7 @@ private async Task ResetScene()
 
 Or you may want to load a scene without using the SceneSystem service:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
@@ -116,7 +116,7 @@ private async Task LoadScene(string sceneName)
 
 You can also supply multiple tasks, which will be executed in order:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -163,7 +163,7 @@ A progress indicator is anything that implements the `IProgressIndicator` interf
 
 If `UseDefaultProgressIndicator` is checked in the SceneTransitionService profile, a progress indicator will be instantiated when a transition begins. For the duration of the transition this indicator's `Progress` and `Message` properties can be accessed via that service's `SetProgressValue` and `SetProgressMessage` methods.
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();

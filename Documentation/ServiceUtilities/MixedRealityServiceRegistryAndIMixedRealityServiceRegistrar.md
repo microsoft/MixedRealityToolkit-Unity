@@ -19,7 +19,7 @@ use to acquire service instances in application code.
 
 The following snippet demonstrates acquiring an IMixedRealityInputSystem instance.
 
-```
+```c#
 IMixedRealityInputSystem inputSystem = null;
 
 if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))
