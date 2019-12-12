@@ -120,6 +120,9 @@ Each controller is added by SDK and the prevailing hand.</p>
 <li>Windows Mixed Reality
 <ul>
 <li>Motion Controllers</li>
+<li>HoloLens 2 articulated hands</li>
+<li>HoloLens 1 hands</li>
+<li>HoloLens 1 clicker</li>
 </ul>
 </li>
 <li>OpenVR
@@ -127,23 +130,14 @@ Each controller is added by SDK and the prevailing hand.</p>
 <li>Default (fallback) controllers</li>
 <li>Oculus Touch</li>
 <li>Vive Wand</li>
-<li>Vive Knuckles (experimental as no one has any, using Unity spec)</li>
+<li>Vive Knuckles (experimental)</li>
 </ul>
 </li>
-<li>OpenXR
+<li>Windows Gaming
 <ul>
-<li>To be supported when there is an OpenXR specification</li>
+<li>Gamepad (like Xbox)</li>
 </ul>
 </li>
-<li>Windows Gaming (these are coming soon*)
-<ul>
-<li>Arcade stick</li>
-<li>Gamepad</li>
-<li>Joystick</li>
-<li>Racing Wheel</li>
-</ul>
-</li>
-<li>Simulator (coming soon)</li>
 </ul>
 <h3 id="handedness">Handedness</h3>
 <p>Which hand is configured for this controller definition</p>
@@ -151,15 +145,13 @@ Each controller is added by SDK and the prevailing hand.</p>
 <p>Both does not configure all controllers at this time.</p>
 </blockquote>
 <h3 id="use-default-model">Use Default model</h3>
-<p>For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model.</p>
-<blockquote>
-<p>This overrides the Global Model setting</p>
-</blockquote>
+<p>For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model. This overrides the Global Model setting.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This is currently supported on both Windows Mixed Reality and OpenVR, loading any controller models provided by the platform API.</p>
+</div>
 <h3 id="override-model">Override Model</h3>
-<p>Like the Global Model options, allows you to provide a model to be drawn for this specific controller.</p>
-<blockquote>
-<p>This overrides the Global Model setting</p>
-</blockquote>
+<p>Like the Global Model options, allows you to provide a model to be drawn for this specific controller. This overrides the Global Model setting.</p>
 <h3 id="interaction-mappings">Interaction Mappings</h3>
 <p>The interaction mappings allow you to map logical input actions for use in your project to the various controller inputs available from the physical device.</p>
 <p>These are different for each controller type, as shown below:</p>

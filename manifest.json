@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Profiles/MixedRealityControllerConfigurationProfile.html",
-          "hash": "JOkg1A5Njjr8OtKO60XCbQ=="
+          "hash": "rNKDOq+8pyh9NYpeLb0Lgw=="
         }
       },
       "is_incremental": false,
@@ -6416,7 +6416,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "MJQoYsy9Zgcbf/eb7Z77DA=="
+          "hash": "zs39g0LKANEh2WJ/zDKeFQ=="
         }
       },
       "is_incremental": false,

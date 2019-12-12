@@ -334,10 +334,7 @@ or later programmatically as well as setting the extents for the field of view.<
 <h2 id="controller-visualization-settings">Controller visualization settings</h2>
 <p>In addition to the controller mapping, a separate configuration profile is provided to customize how your controllers are presented within your scenes.</p>
 <p>This can be configured at a &quot;Global&quot; (all instances of a controller for a specific hand) or specific to an individual controller type / hand.</p>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>The MRTK does not currently support native SDK's controller models as Unity does not yet provide the capability to load / render gLTF models, which is the default type of models provided by most SDKs. This will be enhanced when this is available.</p>
-</div>
+<p>The MRTK also supports native SDK controller models for Windows Mixed Reality and OpenVR. These are loaded as GameObjects in your scene and positioned using the platform's controller tracking.</p>
 <p>If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab (e.g. setting the transform position of the controller prefab with an offset position).</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
 <p><a name="editor-utilities"></a></p>
