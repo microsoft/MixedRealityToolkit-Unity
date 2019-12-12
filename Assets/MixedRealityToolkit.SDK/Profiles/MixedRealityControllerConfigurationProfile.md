@@ -71,7 +71,7 @@ Which hand is configured for this controller definition
 For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model. This overrides the Global Model setting.
 
 > [!NOTE]
-> This is currently supported on both Windows Mixed Reality and OpenVR, loading any controllers those platforms provide models for through their API.
+> This is currently supported on both Windows Mixed Reality and OpenVR, loading any controller models provided by the platform API.
 
 ### Override Model
 
