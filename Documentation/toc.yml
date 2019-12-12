@@ -210,7 +210,7 @@
       href: README_Solver.md
   - name: Example Scenes
     items:
-    - name: MRTK Examples Hub
+    - name: Examples Hub
       href: README_ExampleHub.md
     - name: Hand Interaction Example
       href: README_HandInteractionExamples.md
