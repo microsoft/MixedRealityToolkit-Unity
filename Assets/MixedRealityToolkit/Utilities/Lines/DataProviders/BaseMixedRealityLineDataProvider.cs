@@ -31,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float LineStartClamp
         {
-            get { return lineStartClamp; }
-            set { lineStartClamp = Mathf.Clamp01(value); }
+            get => lineStartClamp;
+            set => lineStartClamp = Mathf.Clamp01(value);
         }
 
         [Range(0f, 1f)]
@@ -45,8 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float LineEndClamp
         {
-            get { return lineEndClamp; }
-            set { lineEndClamp = Mathf.Clamp01(value); }
+            get => lineEndClamp;
+            set => lineEndClamp = Mathf.Clamp01(value);
         }
 
         [SerializeField]
@@ -58,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Transform LineTransform
         {
-            get { return customLineTransform != null ? customLineTransform : transform; }
-            set { customLineTransform = value; }
+            get => customLineTransform != null ? customLineTransform : transform;
+            set => customLineTransform = value;
         }
 
         [SerializeField]
@@ -72,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>Some classes override this setting.</remarks>
         public virtual bool Loops
         {
-            get { return loops; }
-            set { loops = value; }
+            get => loops;
+            set => loops = value;
         }
 
         [SerializeField]
@@ -85,8 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public LinePointTransformMode TransformMode
         {
-            get { return transformMode; }
-            set { transformMode = value; }
+            get => transformMode;
+            set => transformMode = value;
         }
 
         [SerializeField]
@@ -98,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public LineRotationMode RotationMode
         {
-            get { return rotationMode; }
-            set { rotationMode = value; }
+            get => rotationMode;
+            set => rotationMode = value;
         }
 
         [SerializeField]
@@ -111,8 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public bool FlipUpVector
         {
-            get { return flipUpVector; }
-            set { flipUpVector = value; }
+            get => flipUpVector;
+            set => flipUpVector = value;
         }
 
         [SerializeField]
@@ -124,8 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Vector3 OriginOffset
         {
-            get { return originOffset; }
-            set { originOffset = value; }
+            get => originOffset;
+            set => originOffset = value;
         }
 
         [Range(0f, 1f)]
@@ -178,21 +178,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// A list of distorters that apply to this line
         /// </summary>
-        public List<Distorter> Distorters
+        public IReadOnlyList<Distorter> Distorters
         {
             get
             {
                 if (distorters.Count == 0)
                 {
-                    var newDistorters = GetComponents<Distorter>();
-
-                    for (int i = 0; i < newDistorters.Length; i++)
-                    {
-                        distorters.Add(newDistorters[i]);
-                    }
+                    distorters.AddRange(GetComponents<Distorter>());
+                    distorters.Sort();
                 }
 
-                distorters.Sort();
                 return distorters;
             }
         }
@@ -301,7 +296,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected virtual void OnEnable()
         {
             UpdateMatrix();
-            distorters.Sort();
         }
 
         protected virtual void LateUpdate()
@@ -477,7 +471,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            SetPointInternal(pointIndex, InverseTransformPoint(point));
+            InverseTransformPoint(ref point);
+            SetPointInternal(pointIndex, point);
         }
 
         /// <summary>
@@ -495,19 +490,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public float GetNormalizedLengthFromWorldPos(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
         {
             int iteration = 0;
-            float length = GetNormalizedLengthFromWorldPosInternal(worldPosition, 0f, ref iteration, resolution, maxIterations, 0f, 1f);
-            return length;
+            return GetNormalizedLengthFromWorldPosInternal(worldPosition, 0f, ref iteration, resolution, maxIterations, 0f, 1f);
         }
 
-        private Vector3 InverseTransformPoint(Vector3 point)
+        private void InverseTransformPoint(ref Vector3 point)
         {
             switch (transformMode)
             {
                 case LinePointTransformMode.UseTransform:
                 default:
-                    return LineTransform.InverseTransformPoint(point);
+                    point = LineTransform.InverseTransformPoint(point);
+                    return;
                 case LinePointTransformMode.UseMatrix:
-                    return worldToLocalMatrix.MultiplyPoint3x4(point);
+                    point = worldToLocalMatrix.MultiplyPoint3x4(point);
+                    return;
             }
         }
 
@@ -527,21 +523,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public void UpdateMatrix()
         {
-            switch (transformMode)
+            if (transformMode == LinePointTransformMode.UseMatrix)
             {
-                case LinePointTransformMode.UseTransform:
-                default:
-                    return;
-                case LinePointTransformMode.UseMatrix:
-                    break;
-            }
-
-            Transform t = LineTransform;
-            if (t.hasChanged)
-            {
-                t.hasChanged = false;
-                localToWorldMatrix = LineTransform.localToWorldMatrix;
-                worldToLocalMatrix = LineTransform.worldToLocalMatrix;
+                Transform t = LineTransform;
+                if (t.hasChanged)
+                {
+                    t.hasChanged = false;
+                    localToWorldMatrix = LineTransform.localToWorldMatrix;
+                    worldToLocalMatrix = LineTransform.worldToLocalMatrix;
+                }
             }
         }
 

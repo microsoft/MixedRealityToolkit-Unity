@@ -15,13 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Shell Pointer Settings")]
 
         [SerializeField]
-        // TODO: Troy - comment
-        //[Tooltip("Used when a focus target exists, or when select is pressed")]
+        [Tooltip("Used when a focus target exists, or when select is pressed")]
         private Material lineMaterialSelected = null;
 
         [SerializeField]
         // TODO: Troy - comment
-        //[Tooltip("Used when a focus target exists, or when select is pressed")]
+        [Tooltip("Used when a no focus target exists and select is not pressed")]
         private Material lineMaterialNoTarget = null;
 
         [Header("Inertia Settings")]

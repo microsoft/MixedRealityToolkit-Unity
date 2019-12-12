@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [Range(1, 50)]
         [SerializeField]
-        [Tooltip("This setting has a high performance cost. Values above 20 are not recommended.")]
+        [Tooltip("Number of ray steps to utilize in raycast operation along curve defined in LineBase. This setting has a high performance cost. Values above 20 are not recommended.")]
         protected int LineCastResolution = 10;
 
         /// <inheritdoc />
