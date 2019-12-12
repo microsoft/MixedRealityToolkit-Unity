@@ -344,6 +344,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(object1);
             yield return null;
         }
+
+        /// <summary>
+        /// Test input system catches exception thrown in global listener responding to input event and that
+        /// the input system does not crash accordingly as well
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestGlobalListenerExceptionThrown()
+        {
+            var inputSystem = CoreServices.InputSystem;
+
+            var object1 = new GameObject("Object");
+            var listener = object1.AddComponent<TestInputGlobalListenerException>();
+
+            yield return null;
+
+            // Emit pointer event, which should be received by global handler
+            inputSystem.RaisePointerClicked(inputSystem.GazeProvider.GazePointer, MixedRealityInputAction.None, 1);
+
+            LogAssert.Expect(LogType.Exception, $"Exception: {TestInputGlobalListenerException.ExceptionMessage}");
+
+            Object.Destroy(object1);
+
+            yield return null;
+        }
     }
 }
 #endif

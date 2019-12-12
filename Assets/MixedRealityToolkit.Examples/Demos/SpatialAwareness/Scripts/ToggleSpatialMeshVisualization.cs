@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// This class controls the visualization of the spatial mesh.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ToggleSpatialMeshVisualization")]
     public class ToggleSpatialMeshVisualization : MonoBehaviour
     {
         /// <summary>

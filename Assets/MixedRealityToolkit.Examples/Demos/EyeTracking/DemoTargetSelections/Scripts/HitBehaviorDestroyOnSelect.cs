@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// Destroys the game object when selected and optionally plays a sound or animation when destroyed.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/HitBehaviorDestroyOnSelect")]
     public class HitBehaviorDestroyOnSelect : MonoBehaviour
     {
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]

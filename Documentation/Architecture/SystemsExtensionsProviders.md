@@ -9,7 +9,7 @@ Systems are services that provide the core functionality of the Mixed Reality To
 [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface.
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
-- CameraSystem
+- [CameraSystem](../CameraSystem/CameraSystemOverview.md)
 - [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md)
 - [InputSystem](../Input/Overview.md)
 - [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md)
@@ -39,7 +39,7 @@ they implement the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Too
 > Not all services will require data providers. Of the MixedRealityToolkit's systems, the Input and Spatial Awareness systems are the
 only services to utilize data providers.
 
-To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile. 
+To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile.
 
 Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) interface.
 
@@ -56,11 +56,11 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.
 
-``` c#
+```c#
 if (CoreServices.InputSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-    
+
     if (dataProviderAccess != null)
     {
         IInputSimulationService inputSimulation =
@@ -75,7 +75,7 @@ if (CoreServices.InputSystem != null)
 ```
 
 > [!Note]
-> The input system returns only data providers that are supported for the platform on which the 
+> The input system returns only data providers that are supported for the platform on which the
 application is running.
 
 For information on writing a data provider for the MRTK input system, please see [creating an input system data provider](../Input/CreateDataProvider.md).
@@ -84,16 +84,16 @@ For information on writing a data provider for the MRTK input system, please see
 
 The MRTK spatial awareness system utilizes only data providers that implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver) interface.
 
-![Spatial awarenss system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
+![Spatial awareness system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
 The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 
-``` c#
+```c#
 if (CoreServices.SpatialAwarenessSystem != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = 
+    IMixedRealityDataProviderAccess dataProviderAccess =
         CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-    
+
     if (dataProviderAccess != null)
     {
         IReadOnlyList<IMixedRealitySpatialAwarenessMeshObserver> observers =

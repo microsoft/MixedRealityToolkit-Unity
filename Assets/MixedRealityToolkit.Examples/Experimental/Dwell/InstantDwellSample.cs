@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     /// <summary>
     /// Dwell sample with no DwellIntended delay
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InstantDwellSample")]
     public class InstantDwellSample : BaseDwellSample
     {
         [SerializeField]

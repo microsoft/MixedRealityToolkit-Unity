@@ -45,11 +45,23 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             get
             {
                 currentDisplayType = DisplayType.Opaque;
+
+                IReadOnlyList<IMixedRealityCameraSettingsProvider> dataProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
+                if (dataProviders.Count > 0)
+                {
+                    // Takes the first settings provider's setting.
+                    if (!dataProviders[0].IsOpaque)
+                    {
+                        currentDisplayType = DisplayType.Transparent;
+                    }
+                }
 #if UNITY_WSA
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {
                     currentDisplayType = DisplayType.Transparent;
                 }
+
+                Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
 #endif
                 return currentDisplayType == DisplayType.Opaque;
             }
@@ -62,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public string SourceName { get; } = "Mixed Reality Camera System";
 
         /// <inheritdoc/>
-        public MixedRealityCameraProfile CameraProfile =>  ConfigurationProfile as MixedRealityCameraProfile;
+        public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
@@ -101,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     {
                         // Apply the display settings
                         IMixedRealityCameraSettingsProvider provider = GetDataProvider<IMixedRealityCameraSettingsProvider>(configuration.ComponentName);
-                        provider?.ApplyDisplaySettings();
+                        provider?.ApplyConfiguration();
                     }
                 }
             }
@@ -111,8 +123,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             if (useFallbackBehavior)
             {
-                Debug.Log("No settings providers were loaded for this platform. Using default camera system behavior.");
-
                 cameraOpaqueLastFrame = IsOpaque;
 
                 if (IsOpaque)

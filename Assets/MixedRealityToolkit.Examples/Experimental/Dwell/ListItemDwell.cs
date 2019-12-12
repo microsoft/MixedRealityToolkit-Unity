@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     /// <summary>
     /// Dwell sample to work on a list of dwell targets
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ListItemDwell")]
     public class ListItemDwell : BaseDwellSample
     {
         [SerializeField]

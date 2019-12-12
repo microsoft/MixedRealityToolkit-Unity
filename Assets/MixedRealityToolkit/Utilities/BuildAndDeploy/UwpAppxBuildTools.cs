@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Assume package version always has a '.' between each number.
-            // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
+            // According to https://msdn.microsoft.com/library/windows/apps/br211441.aspx
             // Package versions are always of the form Major.Minor.Build.Revision.
             // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
             var version = PlayerSettings.WSA.packageVersion;
@@ -535,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         /// <remarks>
         /// This is only for research projects and should not be used in production.
-        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
         /// take a dependency on this function.
         /// </remarks>
@@ -573,7 +573,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// This is not required by the research mode, but not using unsafe code with
         /// direct memory access results in poor performance. So its kinda recommended
         /// to use unsafe code.
-        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
         /// take a dependency on this function.
         /// </remarks>
@@ -619,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             public string pathSuffix;
         }
 
-        private static VSWhereFindOption[] VSWhereFindOptions =
+        private static readonly VSWhereFindOption[] VSWhereFindOptions =
         {
             // This find option corresponds to the version of vswhere that ships with VS2019.
             new VSWhereFindOption(

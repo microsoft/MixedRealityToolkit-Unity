@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             for (int i = 0; i < 4; i++)
             {
-                viewportCorners[i] = Camera.main.WorldToViewportPoint(worldCorners[i]);
+                viewportCorners[i] = CameraCache.Main.WorldToViewportPoint(worldCorners[i]);
             }
 
             return viewportCorners;
@@ -86,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             for (int i = 0; i < 4; i++)
             {
-                screenCorners[i] = Camera.main.WorldToScreenPoint(worldCorners[i]);
+                screenCorners[i] = CameraCache.Main.WorldToScreenPoint(worldCorners[i]);
             }
 
             return screenCorners;

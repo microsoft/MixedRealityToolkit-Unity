@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This class demonstrates how to query input data either by using InputUtils or
     /// by directly accessing InteractionMappings from all active controllers.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InputDataExample")]
     public class InputDataExample : MonoBehaviour
     {
         public TextMesh inputUtilsText;

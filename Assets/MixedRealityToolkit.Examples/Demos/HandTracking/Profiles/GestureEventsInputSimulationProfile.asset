@@ -38,7 +38,7 @@ MonoBehaviour:
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
   simulateEyePosition: 0
-  defaultHandSimulationMode: 2
+  defaultHandSimulationMode: 1
   toggleLeftHandKey:
     bindingType: 2
     code: 116

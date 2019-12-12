@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseDataProviderAccessCoreSystem : BaseCoreSystem, IMixedRealityDataProviderAccess
     {
-        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
+        private readonly List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         public override void Reset()
         {
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>
         [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public BaseDataProviderAccessCoreSystem(
+        protected BaseDataProviderAccessCoreSystem(
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : this(profile)
         {
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        public BaseDataProviderAccessCoreSystem(
+        protected BaseDataProviderAccessCoreSystem(
             BaseMixedRealityProfile profile = null) : base(profile)
         { }
 

@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     [MixedRealityExtensionService(
         SupportedPlatforms.WindowsUniversal,
         "Tracking Lost Service",
-        "LostTrackingService/DefaultLostTrackingServiceProfile.asset",
+        "LostTrackingService/Profiles/DefaultLostTrackingServiceProfile.asset",
         "MixedRealityToolkit.Extensions")]
     public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
     {

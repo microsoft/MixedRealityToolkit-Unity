@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// InBetween solver positions an object in-between two tracked transforms.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InBetween")]
     public class InBetween : Solver
     {
         [SerializeField]

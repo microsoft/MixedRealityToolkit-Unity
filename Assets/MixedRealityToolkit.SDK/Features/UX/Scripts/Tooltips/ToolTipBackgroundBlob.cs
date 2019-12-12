@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// A background with 'fake' inertia
     /// Useful for soft or liquid objects
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ToolTipBackgroundBlob")]
     public class ToolTipBackgroundBlob : MonoBehaviour, IToolTipBackground
     {
         // Which transforms to use for each type of distortion

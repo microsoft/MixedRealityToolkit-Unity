@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     /// <summary>
     /// Example to demonstrate DwellHandler override
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/CustomDwellHandler")]
     public class CustomDwellHandler : DwellHandler
     {
         protected override void UpdateFillTimer()

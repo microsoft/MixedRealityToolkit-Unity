@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// A helper class to provide hooks into the Unity camera exclusive Lifecycle events
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/CameraEventRouter")]
     public class CameraEventRouter : MonoBehaviour
     {
         /// <summary>

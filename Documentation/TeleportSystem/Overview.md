@@ -13,7 +13,7 @@ This can be done by selecting the MixedRealityToolkit object in the scene, click
 
 This can also be done at runtime:
 
-```csharp
+```c#
 void DisableTeleportSystem()
 {
     CoreServices.TeleportSystem.Disable();
@@ -39,7 +39,7 @@ and their associated payload.
 The code below shows how to create a MonoBehaviour that will listen for teleportation
 events. This code assumes that the teleport system is enabled.
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using UnityEngine;

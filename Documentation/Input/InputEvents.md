@@ -40,7 +40,7 @@ At the script level, input events can be consumed by implementing one of the eve
 
 The code below demonstrates use of the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface. When the user says the words "smaller" or "bigger" while focusing on a GameObject with this `ShowHideSpeechHandler` class, the GameObject will scale itself by half or twice as much.
 
-```csharp
+```c#
 public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 {
     ...
@@ -70,14 +70,14 @@ If an input event has been [marked as used](#how-to-stop-input-events), global r
 
 ### Global input registration example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler, // Handle source detected and lost
     IMixedRealityHandJointHandler // handle joint position updates for hands
 {
     private void OnEnable()
     {
-        // Instruct Input System that we would like to receive all input events of type 
+        // Instruct Input System that we would like to receive all input events of type
         // IMixedRealitySourceStateHandler and IMixedRealityHandJointHandler
         CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
@@ -94,7 +94,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
     // IMixedRealitySourceStateHandler interface
     public void OnSourceDetected(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
@@ -105,12 +105,12 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
     public void OnSourceLost(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
         {
-            Debug.Log("Source detected: " + hand.ControllerHandedness);
+            Debug.Log("Source lost: " + hand.ControllerHandedness);
         }
     }
 
@@ -132,7 +132,7 @@ Fallback input handlers are similar to registered global input handlers but are 
 
 ### Fallback input handler example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler // Handle source detected and lost
 {
