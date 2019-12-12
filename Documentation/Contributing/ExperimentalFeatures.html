@@ -113,6 +113,15 @@ if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Uti
 <p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">this PR</a> for an example.</p>
 <h3 id="experimental-features-should-have-an-experimental-attribute">Experimental features should have an [Experimental] attribute</h3>
 <p>Add an <code>[Experimental]</code> attribute above one of your fields to have a small dialog appear in the component editor that mentions your feature is experimental and subject to significant changes.</p>
+<h3 id="menus-for-experimental-features-should-go-under-experimental-sub-menu">Menus for experimental features should go under &quot;Experimental&quot; sub-menu</h3>
+<p>Ensure that experimental features are under &quot;experimental&quot; sub-menus when adding commands to menus in the editor. Here are a few examples:</p>
+<p>Adding a top-level menu command:</p>
+<pre><code class="lang-csharp">[MenuItem(&quot;Mixed Reality Toolkit/Experimental/MyCommand&quot;)]
+public static void MyCommand()
+</code></pre>
+<p>Adding a component menu:</p>
+<pre><code class="lang-csharp">[AddComponentMenu(&quot;MRTK/Experimental/MyCommand&quot;)]
+</code></pre>
 <h3 id="minimize-impact-to-mrtk-code">Minimize impact to MRTK code</h3>
 <p>While your MRTK change might get your experiment to work, it could impact other people in ways you do not expect.
 Any regressions you make to the MRTK core code would result in your pull request getting reverted.</p>
