@@ -16,7 +16,7 @@ Input Actions catalogue for your project, defining the logical actions your proj
 
 Central configuration file for controllers to be used in your project. Allows the registration of controllers for various SDKs and map the inputs of those controllers to the logical actions used in your project.
 
-Additionally, allows you to set the models to be used for those controllers, whether they are the SDKs default, a single generic model per hand or specific models for each controller type.
+Additionally, allows you to set the models to be used for those controllers, whether they are the SDK's default, a single generic model per hand or specific models for each controller type.
 
 ## [MixedRealityCameraProfile](../../../Documentation/CameraSystem/CameraSystemOverview.md)
 

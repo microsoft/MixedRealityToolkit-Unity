@@ -29,7 +29,7 @@ These allow you at the top level to define the default model that will be drawn 
 
 To alter the position and rotation of the displayed model in relation to the Controller pose, then update the controllers Model Prefab transform values.
 
-> See the "Example Models" section below for the controller models and their recommended transform settings provided in the SDKs "**Standard Assets**" folder.
+> See the "Example Models" section below for the controller models and their recommended transform settings provided in the SDK's "**Standard Assets**" folder.
 
 ### Add a New Controller Template
 
