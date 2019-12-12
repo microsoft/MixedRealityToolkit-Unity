@@ -12,8 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public class SliderInputField : TMP_InputField
     {
+#pragma warning disable 0169
         [Experimental]
         private object experimentalAttributeHolder;
+#pragma warning restore 0169
 
         /// <summary>
         /// Override OnDeselect
