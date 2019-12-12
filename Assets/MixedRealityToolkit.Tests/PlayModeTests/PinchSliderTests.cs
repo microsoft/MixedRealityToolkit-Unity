@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var tickMarks = slider.TickMarks;
             var trackVisuals = slider.TrackVisuals;
 
-            slider.CurrentSliderAxis = PinchSlider.SliderAxis.XAxis;
+            slider.CurrentSliderAxis = SliderAxis.XAxis;
 
             yield return null;
 
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Debug.Assert(tickMarks.GetComponent<GridObjectCollection>().Layout == LayoutOrder.Horizontal, "TickMarks GridObjectCollection Layout should be Horizontal");
             }
 
-            slider.CurrentSliderAxis = PinchSlider.SliderAxis.YAxis;
+            slider.CurrentSliderAxis = SliderAxis.YAxis;
 
             yield return null;
 
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Debug.Assert(tickMarks.GetComponent<GridObjectCollection>().Layout == LayoutOrder.Vertical, "TickMarks GridObjectCollection Layout should be Vertical");
             }
 
-            slider.CurrentSliderAxis = PinchSlider.SliderAxis.ZAxis;
+            slider.CurrentSliderAxis = SliderAxis.ZAxis;
 
             yield return null;
 

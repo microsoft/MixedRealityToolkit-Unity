@@ -112,14 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Serializable]
-        public enum SliderAxis
-        {
-            XAxis = 0,
-            YAxis,
-            ZAxis
-        }
-
         [SerializeField]
         [Tooltip("Where the slider track starts, as distance from center along slider axis, in local space units.")]
         private float sliderStartDistance = -.5f;
