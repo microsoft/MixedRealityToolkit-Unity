@@ -16,4 +16,4 @@ The hand simulation has two modes:
 
 The simulation mode can be switched for the left/right hand individually by pressing the T/Y keys respectively.
 
-Detailed settings for hand simulation can be found in the SimulatedHandAPI prefab, which is instantiated through the Hand Tracking profile. This includes key bindings for hand movement and mouse button bindings for gestures.
+Detailed settings for hand simulation can be found in the SimulatedHandAPI prefab, which is instantiated through the hand tracking profile. This includes key bindings for hand movement and mouse button bindings for gestures.
