@@ -10407,11 +10407,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Inspectors.SliderInputFieldInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Inspectors.SliderInputFieldInspector.html",
+          "hash": "dIEpOIjizmPp/LO5ZFCk0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Inspectors.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Inspectors.html",
-          "hash": "YmezJP07C2hn6JoeXMjRoQ=="
+          "hash": "CHOz5UlRtxisIdY1nKP1Ww=="
         }
       },
       "is_incremental": false,
@@ -24391,7 +24403,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "91ejYo5YRIRD6Wk0/s/DpQ=="
+          "hash": "1Y4fiW1etpZdKJbpG0MKwA=="
         }
       },
       "is_incremental": false,
@@ -24456,17 +24468,17 @@
           "total_file_count": 143,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1446,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1445,
           "skipped_file_count": 0
         }
       }
