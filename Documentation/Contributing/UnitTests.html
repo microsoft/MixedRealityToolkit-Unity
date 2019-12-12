@@ -100,7 +100,7 @@ integration of <a href="https://nunit.org/">NUnit</a>. This guide will provide a
 <h3 id="unity-editor">Unity editor</h3>
 <p>The <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> can be found under <strong>Window</strong> &gt; <strong>General</strong> &gt; <strong>Test Runner</strong> and will show all available MRTK play and edit mode tests.</p>
 <h3 id="command-line">Command line</h3>
-<p>Tests can also be run by a <a href="https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6">powershell</a> script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script</p>
+<p>Tests can also be run by a <a href="https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6">powershell</a> script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script</p>
 <p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1</p>
 <pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot;
 </code></pre>
@@ -121,7 +121,7 @@ integration of <a href="https://nunit.org/">NUnit</a>. This guide will provide a
 <pre><code class="lang-c#">[UnityTest]
 public IEnumerator MyTest() {...}
 </code></pre>
-<p>Run the following from a command line (<a href="https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core">PowerShell</a> is recommended)</p>
+<p>Run the following from a command line (<a href="https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core">PowerShell</a> is recommended)</p>
 <pre><code class="lang-ps">cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest

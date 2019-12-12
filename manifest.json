@@ -414,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/InputSystem/ControllersPointersAndFocus.html",
-          "hash": "S4cV2U/j0WWg1/yZAChOQA=="
+          "hash": "kEVkLLbwWhYnAyXna9wQJw=="
         }
       },
       "is_incremental": false,
@@ -522,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/BuildAndDeploy.html",
-          "hash": "IQBQ0/Y0jNXS19GN6b0XQw=="
+          "hash": "FQA/+9DjRSFYko5k7nTdyQ=="
         }
       },
       "is_incremental": false,
@@ -582,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/BreakingChanges.html",
-          "hash": "mgfA5oYq/Gorak9vFK3czQ=="
+          "hash": "88eh7F5ME//rXGg8hXZdFQ=="
         }
       },
       "is_incremental": false,
@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "XmH9GnT/7r0yG2IJY+aCNQ=="
+          "hash": "wPT56vDej90Aw1M4Hva0OQ=="
         }
       },
       "is_incremental": false,
@@ -606,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "5CivJsm11lVAUxs2uPmEdQ=="
+          "hash": "O6j53Ljanr3exPHt1bmOuw=="
         }
       },
       "is_incremental": false,
@@ -630,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "HJqTy/viquU4HiTbV83vhQ=="
+          "hash": "dYj0rPdNzn7HQxggoLQ2bg=="
         }
       },
       "is_incremental": false,
@@ -690,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/UnitTests.html",
-          "hash": "wKF1paOeji/+CJpuP6dKFQ=="
+          "hash": "i8jHM2PDdgTRoCvrEiqoCA=="
         }
       },
       "is_incremental": false,
@@ -858,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Main.html",
-          "hash": "2v4QYTAL0+FFE1A5KEyxdw=="
+          "hash": "jcw0V8R4W1S2ezTVDE4rWw=="
         }
       },
       "is_incremental": false,
@@ -906,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "L2p/npYQYnOG4b8Y8QudHA=="
+          "hash": "EbMqzqITwFSD4DhioESHyw=="
         }
       },
       "is_incremental": false,
@@ -6212,7 +6212,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "lFVwbY0E7CW2aj6jo3Y/wA=="
+          "hash": "QAxhun5SekU3crpFqz7XCw=="
         }
       },
       "is_incremental": false,
@@ -6224,7 +6224,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Gaze.html",
-          "hash": "Xw6i+5yV8EUSMMRxrLa1sg=="
+          "hash": "YMtkKdnD/oFI7HlvD4X8FA=="
         }
       },
       "is_incremental": false,
@@ -6236,7 +6236,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Gestures.html",
-          "hash": "XIBXcUZ1wSuX+eIIuD41iw=="
+          "hash": "UbvRQrynnNi5TnBIbyLGYg=="
         }
       },
       "is_incremental": false,
@@ -6380,7 +6380,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "EsU4JNBxUN9RU0QdJTNorg=="
+          "hash": "O7rQJ/vcxDsGVeLn0h5AaA=="
         }
       },
       "is_incremental": false,
@@ -6464,7 +6464,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Performance/PerfGettingStarted.html",
-          "hash": "ojp8TGgKKpqV7Ma7ea6Wig=="
+          "hash": "SnPUGmEufvxTeuDTOzXnHg=="
         }
       },
       "is_incremental": false,
@@ -6500,7 +6500,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "jMkJoYMIICijfPK0TB+HLg=="
+          "hash": "+s78rRwgfHiyrodpRW3YNQ=="
         }
       },
       "is_incremental": false,
@@ -6548,7 +6548,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandInteractionExamples.html",
-          "hash": "SAo1L8f0IYdMbfH1WEk9Jg=="
+          "hash": "mpk+x++QFIP11NxVgsLzHA=="
         }
       },
       "is_incremental": false,
@@ -6692,7 +6692,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_SystemKeyboard.html",
-          "hash": "6nUbPsHkjYzyyyNncHCDwg=="
+          "hash": "lR8dO6MElsQwShWw6LTkzA=="
         }
       },
       "is_incremental": false,
@@ -6704,7 +6704,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_TextPrefab.html",
-          "hash": "uHTiS62cROBmVq3gJ4Ep3A=="
+          "hash": "vq3r2PGTru1CJ9MfiiXJZg=="
         }
       },
       "is_incremental": false,
@@ -6728,7 +6728,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "wcVtWnnmbplw1kzY1AitwA=="
+          "hash": "zvH5GxDRdOYbFG8DdnZ6Rg=="
         }
       },
       "is_incremental": false,
@@ -6848,7 +6848,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "Poov696LPdXyt9J69YmVoQ=="
+          "hash": "nQ7L8HW8i0STSj0Ec98Eqw=="
         }
       },
       "is_incremental": false,
@@ -6860,7 +6860,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.html",
-          "hash": "of/c0Z5STkmSwpnqVG6n7w=="
+          "hash": "rbbZCY53Vg3JYYxlzSEFag=="
         }
       },
       "is_incremental": false,
@@ -6932,7 +6932,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "LINUtFs34r+cMnSQ1QCF/g=="
+          "hash": "6TFBq5sjFBfSpfvdYs1FvQ=="
         }
       },
       "is_incremental": false,
@@ -6992,7 +6992,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/hologram-stabilization.html",
-          "hash": "BhJIxm6DozE4idintHLsIw=="
+          "hash": "1lMchZYwJMdCqU0pc2qjSw=="
         }
       },
       "is_incremental": false,
@@ -7028,7 +7028,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "uC++m6Td3E/7ea5uNk46SA=="
+          "hash": "huCIF6CpqaYOktapYUBkSw=="
         }
       },
       "is_incremental": false,
@@ -7507,7 +7507,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.html",
-          "hash": "9gxKYZPFLk9YqY5JFN43nA=="
+          "hash": "0CJ8K7VmRMg56p+djujUAA=="
         }
       },
       "is_incremental": false,
@@ -9787,7 +9787,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.LaunchUri.html",
-          "hash": "PkHKvHDuiXUFbwrzPkzddQ=="
+          "hash": "+Wl8sGn7wS7LNv0J6omOeQ=="
         }
       },
       "is_incremental": false,
@@ -10219,7 +10219,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dwell.DwellHandler.html",
-          "hash": "w52NWM+RegxoBxEGoS2Qgg=="
+          "hash": "Pn2XI3w/obyyTe2c56oq0w=="
         }
       },
       "is_incremental": false,
@@ -10339,7 +10339,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dwell.html",
-          "hash": "wfE/Z83IZI+Qj83LUfg0nw=="
+          "hash": "wg8rvyArK8qdBRRCQ9Ud5A=="
         }
       },
       "is_incremental": false,
@@ -13915,7 +13915,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html",
-          "hash": "d/GllN9Dv9Wimgul8fDrkw=="
+          "hash": "ogWmLfpk2K6VsqrNCvOB6Q=="
         }
       },
       "is_incremental": false,
@@ -23839,7 +23839,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html",
-          "hash": "lKj+5qEUF3ZYDzt80NvTsw=="
+          "hash": "mmVsWuLT6oXv70nhcJVsmg=="
         }
       },
       "is_incremental": false,
@@ -24199,7 +24199,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.HolographicFrameNativeData.html",
-          "hash": "gIjPqX/2nNApnCwndyuTLg=="
+          "hash": "VrSIOgL0CIK6vPtcAqKbGA=="
         }
       },
       "is_incremental": false,
@@ -24443,10 +24443,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1445,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -24462,11 +24463,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1445,
           "skipped_file_count": 0
         }
       }
