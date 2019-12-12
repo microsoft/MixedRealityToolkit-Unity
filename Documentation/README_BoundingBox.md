@@ -69,7 +69,8 @@ bbox.RotateHandleColliderPadding = 0.016f;
 ```
 
 ### Example: Set minimum, maximum bounding box scale using TransformScaleHandler
-To set the minimum and maximum scale, use the [`TransformScaleHandler`](cref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHander). You can also use TransformScaleHandler to set minimum and maximum scale for [`ManipulationHandler`](cref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
+
+To set the minimum and maximum scale, use the [`TransformScaleHandler`](xref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler). You can also use TransformScaleHandler to set minimum and maximum scale for [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
 ```c#
 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

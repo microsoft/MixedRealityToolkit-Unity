@@ -42,7 +42,7 @@ Examples:
 
 ```c#
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
+/// <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>

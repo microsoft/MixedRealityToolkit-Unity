@@ -9,7 +9,7 @@ Systems are services that provide the core functionality of the Mixed Reality To
 [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface.
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
-- CameraSystem
+- [CameraSystem](../CameraSystem/CameraSystemOverview.md)
 - [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md)
 - [InputSystem](../Input/Overview.md)
 - [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md)
