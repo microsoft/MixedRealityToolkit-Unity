@@ -6640,18 +6640,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/README_Pointers.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/README_Pointers.html",
-          "hash": "oKVOQF2FQzkMTNWzr+u3yw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/README_Slate.md",
       "output": {
         ".html": {
@@ -24465,7 +24453,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 143,
+          "total_file_count": 142,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
