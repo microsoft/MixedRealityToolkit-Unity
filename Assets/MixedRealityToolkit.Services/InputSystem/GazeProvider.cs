@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
                + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         [FormerlySerializedAs("preferEyeTracking")]
-        private bool useEyeTracking = true;
+        private bool useEyeTracking = false;
 
         /// <inheritdoc />
         public bool UseEyeTracking
