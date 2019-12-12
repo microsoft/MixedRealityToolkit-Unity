@@ -1,47 +1,29 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
+using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// A set of utilities to configure script compilation. 
     /// </summary>
-    public class ScriptingUtilities
+    public static class ScriptingUtilities
     {
         /// <summary>
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
         /// specified build target group.
         /// </summary>
-        /// </summary>
-        /// <param name="fileName">The name of an optional file locate before appending.</param>
-        /// <returns>
         /// <param name="targetGroup">The build target group for which the sybmols are to be defined.</param>
         /// <param name="symbols">Array of symbols to define.</param>
-        /// <remarks>
-        /// To always append the symbols, pass null (or the empty string) for the fileName parameter.
-        /// </remarks>
         public static void AppendScriptingDefinitions(
-            string fileName, 
             BuildTargetGroup targetGroup, 
             string[] symbols)
         {
             if (symbols == null || symbols.Length == 0) { return; }
-
-            bool appendSymbols = true;
-
-            if (!string.IsNullOrWhiteSpace(fileName))
-            {
-                DirectoryInfo assets = new DirectoryInfo(Application.dataPath);
-                FileInfo[] files = assets.GetFiles(fileName, SearchOption.AllDirectories);
-                appendSymbols = (files.Length > 0);
-            }
-
-            if (!appendSymbols) { return; }
 
             string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
             foreach (string symbol in symbols)
@@ -60,6 +42,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, defines);
         }
+
+        /// <summary>
+        /// Removes a set of symbolic constant definitions to Unity's Scripting Define Symbols from the
+        /// specified build target group.
+        /// </summary>
+        /// <param name="targetGroup">The build target group for which the sybmols are to be removed.</param>
+        /// <param name="symbols">Array of symbols to remove.</param>
+        public static void RemoveScriptingDefinitions(
+            BuildTargetGroup targetGroup,
+            string[] symbols)
+        {
+            if (symbols == null || symbols.Length == 0) { return; }
+            List<string> toRemove = new List<string>(symbols);
+
+            string[] oldDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';');
+            List<string> defines = new List<string>();
+
+            foreach (string s in oldDefines)
+            {
+                if (!toRemove.Contains(s))
+                {
+                    defines.Add(s);
+                }
+            }
+
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.ToArray()));
+        }
     }
 }
-#endif // UNITY_EDITOR
