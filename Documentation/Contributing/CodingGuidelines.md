@@ -57,7 +57,7 @@ All Microsoft employees contributing new files should add the following standard
 
 ### Function / Method summary headers
 
-All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to its purpose and use, exactly as shown below:
 
 ```c#
 /// <summary>

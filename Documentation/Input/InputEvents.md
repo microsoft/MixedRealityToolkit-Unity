@@ -163,7 +163,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
 Every input event interface provides a [`BaseInputEventData`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputEventData) data object as a parameter to each function on the interface. This event data object extends from Unity's own [`AbstractEventData`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html).
 
-In order to stop an input event from propagating through it's execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.
+In order to stop an input event from propagating through its execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.
 
 > [!NOTE]
 > A component that calls the `Use()` method will stop other GameObjects from receiving it. However, other components on the current GameObject will still receive the input event and fire any related interface functions.

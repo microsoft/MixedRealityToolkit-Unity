@@ -1,6 +1,6 @@
 # Profiles
 
-One of the main ways that the MRTK is configured is through the many profiles available in the foundation package. The main [`MixedRealityToolkit`](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit) object in a scene will have the active profile, which is essentially a ScriptableObject. The top level MRTK Configuration Profile contains sub-profile data for each core of the primary core systems, each of which are designed to configure the behavior of their corresponding sub-systems. Furthermore, these sub-profiles are also Scriptable Objects and thus can contain references to other profile objects one level below them. There is essentially an entire tree of connected profiles that make up the configuration information for how to intialize the MRTK sub-systems and features.
+One of the main ways that the MRTK is configured is through the many profiles available in the foundation package. The main [`MixedRealityToolkit`](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit) object in a scene will have the active profile, which is essentially a ScriptableObject. The top level MRTK Configuration Profile contains sub-profile data for each core of the primary core systems, each of which are designed to configure the behavior of their corresponding sub-systems. Furthermore, these sub-profiles are also Scriptable Objects and thus can contain references to other profile objects one level below them. There is essentially an entire tree of connected profiles that make up the configuration information for how to initialize the MRTK sub-systems and features.
 
 For example, the Input system's behavior is governed by an [input system profile object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset). It's highly recommended to always modify the profile ScriptableObject assets via the in-editor inspector.
 
@@ -44,4 +44,4 @@ Camera profile settings are set to match so that the editor quality and player q
 > [!NOTE]
 > The Spatial Awareness system is turned off by default based on client feedback - it is an interesting visualization to see
   initially but is typically turned off to avoid the visual distraction and the additional performance hit of
-  having it on. The system can be re-eanbled by following the [instructions here](../SpatialAwareness/SpatialAwarenessGettingStarted.md).
+  having it on. The system can be re-enabled by following the [instructions here](../SpatialAwareness/SpatialAwarenessGettingStarted.md).
