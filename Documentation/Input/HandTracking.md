@@ -107,7 +107,16 @@ if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, 
 [`IMixedRealityHandJointService`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) keeps a persistent set of [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) for tracking joints.
 
 ```c#
-var handJointService = MixedRealityToolkit.Instance.GetService<IMixedRealityHandJointService>();
+IMixedRealityHandJointService handJointService = null;
+if (CoreServices.InputSystem != null)
+{
+    var dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+    if (dataProviderAccess != null)
+    {
+        handJointService = dataProviderAccess.GetDataProvider<IMixedRealityHandJointService>();
+    }
+}
+
 if (handJointService != null)
 {
     Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);
