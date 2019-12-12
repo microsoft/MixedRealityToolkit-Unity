@@ -84,7 +84,9 @@
 
 <p><img src="Images/MRTK_Logo_Rev.png" alt="MRTK logo"></p>
 <p>The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime &quot;things&quot;).</p>
+<blockquote>
 <p><strong>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit</strong></p>
+</blockquote>
 <h2 id="the-main-mixed-reality-toolkit-configuration-profile">The main Mixed Reality Toolkit configuration profile</h2>
 <p>The main configuration profile, which is attached to the <em>MixedRealityToolkit</em> GameObject in your Scene, provides the main entry point for the Toolkit in your project.</p>
 <div class="NOTE">
@@ -191,8 +193,8 @@ or later programmatically as well as setting the extents for the field of view.<
 <p><a name="services"></a></p>
 <h2 id="additional-services-settings">Additional services settings</h2>
 <p>One of the more advanced areas of the Mixed Reality Toolkit is its <a href="https://en.wikipedia.org/wiki/Service_locator_pattern">service locator pattern</a> implementation which allows the registering of any &quot;Service&quot; with the framework. This allows the framework to be both extended with new features / systems easily but also allows for projects to take advantage of these capabilities to register their own runtime components.</p>
-<p>Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.</p>
-<img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
+<p>Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime game logic, or practically anything else.</p>
+<img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProvidersProfile.png" width="650px" style="display:block;">
 <hr>
 <p><a name="inputactions"></a></p>
 <h2 id="input-actions-settings">Input actions settings</h2>
@@ -300,7 +302,7 @@ or later programmatically as well as setting the extents for the field of view.<
 <h2 id="speech-commands">Speech Commands</h2>
 <p>Like gestures, some runtime platforms also provide intelligent &quot;Speech to Text&quot; functionality with the ability to generate commands that can be received by a Unity project. This configuration profile allows you to configure the following:</p>
 <ol>
-<li>General Settings - &quot;Start Behavior&quot; set to Auto Start or Manual Start determines whether to initialize KeywordRecognizer at input system startuo or let the project decide when to initialize the KeywordRecognizer. &quot;Recognition Confidence Level&quot; is used to initialize Unity's <a href="https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer-ctor.html">KeywordRecognizer API</a></li>
+<li>General Settings - &quot;Start Behavior&quot; set to Auto Start or Manual Start determines whether to initialize KeywordRecognizer at input system startup or let the project decide when to initialize the KeywordRecognizer. &quot;Recognition Confidence Level&quot; is used to initialize Unity's <a href="https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer-ctor.html">KeywordRecognizer API</a></li>
 <li>Speech Commands - Registers &quot;words&quot; and translates them in to input actions that can be received by your project. They can also be attached to keyboard actions if required.</li>
 </ol>
 <div class="IMPORTANT">

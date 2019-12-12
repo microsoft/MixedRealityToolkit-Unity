@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.html",
-          "hash": "dE8F2oGJwe4DIJHS+FX40g=="
+          "hash": "iwvWpCc+F9Ln2WLMYWPdZg=="
         }
       },
       "is_incremental": false,
@@ -198,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Profiles/README.html",
-          "hash": "pXn/JG0JMcxVB5+1G/efnQ=="
+          "hash": "EXDbmTbPsXvBpBotwrC6hQ=="
         }
       },
       "is_incremental": false,
@@ -402,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/FrameworkAndRuntime.html",
-          "hash": "ooa+aPj/EIWWOtd6hk03gQ=="
+          "hash": "hkakeM4rSxZ75OXOhVPRMw=="
         }
       },
       "is_incremental": false,
@@ -606,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "0Lm31ngaHE+AGUaokl0Gyw=="
+          "hash": "mwM13Kr4reyL9XfLEOWZQQ=="
         }
       },
       "is_incremental": false,
@@ -618,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DevDocGuide.html",
-          "hash": "7OKBFYGZE+vur3p2JmHCsg=="
+          "hash": "Of9UXMB60jnOnqPR3g6pqw=="
         }
       },
       "is_incremental": false,
@@ -630,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "dYj0rPdNzn7HQxggoLQ2bg=="
+          "hash": "eGvVhnoA9fddw1KgHJt6Cw=="
         }
       },
       "is_incremental": false,
@@ -894,7 +894,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
-          "hash": "M2N/kqW/zTOfRC145ZMgiw=="
+          "hash": "GqZEYqiCwr9v0TmVcLEkrg=="
         }
       },
       "is_incremental": false,
@@ -2103,17 +2103,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamlesHub_BuildSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamlesHub_BuildSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHub.png",
       "output": {
         "resource": {
@@ -2140,6 +2129,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHub_BuildSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHub_BuildSettings.png"
         }
       },
       "is_incremental": false,
@@ -4457,10 +4457,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProvidersProfile.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png"
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProvidersProfile.png"
         }
       },
       "is_incremental": false,
@@ -6260,7 +6260,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/HowToAddNearInteractivity.html",
-          "hash": "lyWPjyER5LHnFUQ5s/Cv8A=="
+          "hash": "ZsMqoScUIdcUNRhxsw719g=="
         }
       },
       "is_incremental": false,
@@ -6284,7 +6284,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputEvents.html",
-          "hash": "BXPRf5GcQFOCm8tdiwgZKA=="
+          "hash": "LSXp5opmbRcuJeTDEFebKA=="
         }
       },
       "is_incremental": false,
@@ -6332,7 +6332,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Pointers.html",
-          "hash": "auJps9YBGeFY2r0FoSPwDg=="
+          "hash": "ffwPW7PuvJBzVNxNSbUImg=="
         }
       },
       "is_incremental": false,
@@ -6392,7 +6392,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "PxrhE+gbjtcCVqyJiGnDQA=="
+          "hash": "T31VHMDj/5SZx+7bkjcWQg=="
         }
       },
       "is_incremental": false,
@@ -6416,7 +6416,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "l/sm5Hvx1gvROg5CBBTgGA=="
+          "hash": "MSukWsAA8zh0SOpwiRUtsQ=="
         }
       },
       "is_incremental": false,
@@ -6464,7 +6464,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Performance/PerfGettingStarted.html",
-          "hash": "SnPUGmEufvxTeuDTOzXnHg=="
+          "hash": "mfr62IbS/BL2zDN4a7f8bA=="
         }
       },
       "is_incremental": false,
@@ -6476,7 +6476,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Profiles/Profiles.html",
-          "hash": "F0rW9yqNxc1USOF6lEopNQ=="
+          "hash": "2kUkvvQhipqMAc88bf8JbA=="
         }
       },
       "is_incremental": false,
@@ -6512,7 +6512,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "DPaJv3BTuy+GoDZj6lCmaA=="
+          "hash": "WMK91E5Jwj2jr9JpqM+rHQ=="
         }
       },
       "is_incremental": false,
@@ -6524,7 +6524,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ExampleHub.html",
-          "hash": "m6bRgln+wKmAoqDdq9QLMg=="
+          "hash": "k0ax0uKMq0B+vpqakyiDFQ=="
         }
       },
       "is_incremental": false,
@@ -6572,7 +6572,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Interactable.html",
-          "hash": "hCUcgw6MuWX7lBsbgm/sVw=="
+          "hash": "4tTwRe98lzMwAZ3vBqhOzA=="
         }
       },
       "is_incremental": false,
@@ -6596,7 +6596,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "v+y34Enymi8dcLFnFdab2Q=="
+          "hash": "RLb0hSyErBu+VaOM+Gswvg=="
         }
       },
       "is_incremental": false,
@@ -6608,7 +6608,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ManipulationHandler.html",
-          "hash": "c07sFsESxmDCx/NfAo1MdQ=="
+          "hash": "528jLpsqKspkc8MGJK5new=="
         }
       },
       "is_incremental": false,
@@ -6668,7 +6668,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "bLEKTBd6+JZqd3xCpu3sVg=="
+          "hash": "f283pyMmdjFC1esriCGZmg=="
         }
       },
       "is_incremental": false,
@@ -6716,7 +6716,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "CFpF8QXP2mj/cUNlC3TunA=="
+          "hash": "A09vYmlkciHOVCF45tGjUg=="
         }
       },
       "is_incremental": false,
@@ -6776,7 +6776,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemLoadProgress.html",
-          "hash": "3B61TzHlCj6Ky0IzCZnLmw=="
+          "hash": "2Tm5eojNgtEecV9JuNw7eA=="
         }
       },
       "is_incremental": false,
@@ -6824,7 +6824,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/CreateDataProvider.html",
-          "hash": "kDYBxtDiwgG6Q2dFCDdP3w=="
+          "hash": "QruXJzxM79YvupH6Z1/63w=="
         }
       },
       "is_incremental": false,
@@ -6956,7 +6956,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "MgsyFxy60aufm+H+YGf73Q=="
+          "hash": "YFowbEmX+F0ipDbR8BJSXg=="
         }
       },
       "is_incremental": false,
@@ -6968,7 +6968,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/VisualThemes.html",
-          "hash": "/mk35mBAlsOrMnVuq6y5Dw=="
+          "hash": "D+JIl8uQb5sXlgVfPhwVDA=="
         }
       },
       "is_incremental": false,

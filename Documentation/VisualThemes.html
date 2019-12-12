@@ -165,7 +165,7 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 <h4 id="mandatory-implementations">Mandatory implementations</h4>
 <p><code>public abstract void SetValue(ThemeStateProperty property, int index, float percentage)</code>
 (xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue)</p>
-<p>For the given property, which can be identified by <code>ThemeStateProperty.Name</code>, set it's current state value on the targeted GameObject host (i.e set the material color, etc). The <em>index</em> indicates the current state value to access and the <em>percentage</em>, a float between 0 and 1, is used for easing/lerping between values.</p>
+<p>For the given property, which can be identified by <code>ThemeStateProperty.Name</code>, set its current state value on the targeted GameObject host (i.e set the material color, etc). The <em>index</em> indicates the current state value to access and the <em>percentage</em>, a float between 0 and 1, is used for easing/lerping between values.</p>
 <p><code>public abstract ThemePropertyValue GetProperty(ThemeStateProperty property)</code>(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty)</p>
 <p>For the given property, which can be identified by <code>ThemeStateProperty.Name</code>, return the current value set on the targeted Host  GameObject (i.e the current material color, the current local position offset, etc). This is primarily used for caching the start value when easing between states.</p>
 <p><code>public abstract ThemeDefinition GetDefaultThemeDefinition()</code>(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetDefaultThemeDefinition)</p>
@@ -190,7 +190,7 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 </ul>
 </div>
 <h3 id="custom-theme-engine-example">Custom Theme Engine example</h3>
-<p>The class below is an example of a custom new Theme Engine. This implementation will find a <a href="https://docs.unity3d.com/ScriptReference/MeshRenderer.html">MeshRenderer</a> component on the initialized host object and control it's visibility based on the current state.</p>
+<p>The class below is an example of a custom new Theme Engine. This implementation will find a <a href="https://docs.unity3d.com/ScriptReference/MeshRenderer.html">MeshRenderer</a> component on the initialized host object and control its visibility based on the current state.</p>
 <pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;

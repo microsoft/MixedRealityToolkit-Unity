@@ -127,7 +127,7 @@
 <h2 id="nuget-package-considerations">NuGet package considerations</h2>
 <p>The release of MRTK as NuGet package is a new delivery mechanism being explored and there are a couple of key benefits and considerations one must make when choosing whether to consume the NuGet version of MRTK.</p>
 <h3 id="migrating-to-nuget-from-unitypackage-or-source-not-yet-supported">Migrating to NuGet from .unitypackage or source (not yet supported)</h3>
-<p>NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target it's assets as well, and although there is code for it this is not a supported scenario, yet.</p>
+<p>NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target its assets as well, and although there is code for it this is not a supported scenario, yet.</p>
 <p><em>Thereby, there is no currently supported way of migrating to NuGet from .unitypackage or source. This will change as we continue development on this delivery mechanism.</em></p>
 <h3 id="compiled-binaries-nuget-vs-source-files-unitypackage">Compiled binaries (NuGet) vs source files (.unitypackage)</h3>
 <p>Since the NuGet package contains the compiled binaries instead of scripts, this has two major advantages:</p>

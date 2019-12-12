@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="input-events">Input events</h1>
 
-<p>The list below outlines all available input event interfaces to be implemented by a custom MonoBehavior component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. <a href="Pointers.html#pointer-event-interfaces">Pointer input events</a> are handled slightly differently than the standard input event types below.</p>
+<p>The list below outlines all available input event interfaces to be implemented by a custom MonoBehaviour component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. <a href="Pointers.html#pointer-event-interfaces">Pointer input events</a> are handled slightly differently than the standard input event types below.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>By default, a script will receive input events only if it is the GameObject in focus by a pointer or parent of a GameObject in focus.</p>
@@ -178,7 +178,7 @@
 </div>
 <h3 id="input-event-interface-example">Input event interface example</h3>
 <p>The code below demonstrates use of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a> interface. When the user says the words &quot;smaller&quot; or &quot;bigger&quot; while focusing on a GameObject with this <code>ShowHideSpeechHandler</code> class, the GameObject will scale itself by half or twice as much.</p>
-<pre><code class="lang-c#">public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
+<pre><code class="lang-c#">public class ShowHideSpeechHandler : MonoBehaviour, IMixedRealitySpeechHandler
 {
     ...
 
@@ -200,7 +200,7 @@
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html"><code>IMixedRealitySpeechHandler</code></a> input events require that the desired keywords are pre-registered in the <a href="Speech.html">MRTK Speech Commands Profile</a>.</p>
 </div>
 <h2 id="register-for-global-input-events">Register for global input events</h2>
-<p>To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehavior will receive input events along with any GameObject(s) currently in focus and other global registered listeners.</p>
+<p>To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehaviour will receive input events along with any GameObject(s) currently in focus and other global registered listeners.</p>
 <p>If an input event has been <a href="#how-to-stop-input-events">marked as used</a>, global registered handlers will still all receive callbacks. However, no focused GameObjects will receive the event.</p>
 <h3 id="global-input-registration-example">Global input registration example</h3>
 <pre><code class="lang-c#">public class GlobalHandListenerExample : MonoBehaviour,
@@ -287,7 +287,7 @@
 </code></pre>
 <h2 id="how-to-stop-input-events">How to stop input events</h2>
 <p>Every input event interface provides a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html"><code>BaseInputEventData</code></a> data object as a parameter to each function on the interface. This event data object extends from Unity's own <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html"><code>AbstractEventData</code></a>.</p>
-<p>In order to stop an input event from propagating through it's execution <a href="#input-events-in-action">as outlined</a>, a component can call <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html"><code>AbstractEventData.Use()</code></a> to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.</p>
+<p>In order to stop an input event from propagating through its execution <a href="#input-events-in-action">as outlined</a>, a component can call <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html"><code>AbstractEventData.Use()</code></a> to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>A component that calls the <code>Use()</code> method will stop other GameObjects from receiving it. However, other components on the current GameObject will still receive the input event and fire any related interface functions.</p>
