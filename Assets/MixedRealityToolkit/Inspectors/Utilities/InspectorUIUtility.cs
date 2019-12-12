@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 };
 
                 // The documentation button should always be enabled.
-                using (new GUIEnabledWrapper(true, true))
+                using (new GUIEnabledWrapper())
                 {
                     if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
                     {

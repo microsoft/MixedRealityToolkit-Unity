@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             CheckMixedRealityInputActions();
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderList(SerializedProperty list)
         {
             // Disable speech commands if we could not initialize successfully
-            using (new GUIEnabledWrapper(isInitialized, false))
+            using (new EditorGUI.DisabledGroupScope(!isInitialized))
             {
                 EditorGUILayout.Space();
                 using (new EditorGUILayout.VerticalScope())
