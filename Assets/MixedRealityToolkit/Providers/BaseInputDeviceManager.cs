@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -12,6 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class BaseInputDeviceManager : BaseDataProvider<IMixedRealityInputSystem>, IMixedRealityInputDeviceManager
     {
+        /// <summary>
+        /// Temporary control mechanism to enable/disable use of Pointer Cache in request/recycling of pointers by Input System
+        /// </summary>
+        public bool EnablePointerCache = true;
+
+        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -155,48 +163,54 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
-            var returnPointers = new List<IMixedRealityPointer>();
-
-            CleanActivePointers();
-
-            for (int i = 0; i < pointerConfigurations.Length; i++)
+            using (RequestPointersPerfMarker.Auto())
             {
-                var option = pointerConfigurations[i].profile;
-                if (option.ControllerType.HasFlag(controllerType) && option.Handedness.HasFlag(controllingHand))
+                var returnPointers = new List<IMixedRealityPointer>();
+
+                CleanActivePointers();
+
+                for (int i = 0; i < pointerConfigurations.Length; i++)
                 {
-                    IMixedRealityPointer requestedPointer = null;
-
-                    var pointerCache = pointerConfigurations[i].cache;
-                    while (pointerCache.Count > 0)
+                    var option = pointerConfigurations[i].profile;
+                    if (option.ControllerType.HasFlag(controllerType) && option.Handedness.HasFlag(controllingHand))
                     {
-                        var p = pointerCache.Pop();
-                        if (p != null && p is MonoBehaviour pointerComponent && pointerComponent != null)
-                        {
-                            pointerComponent.gameObject.SetActive(true);
+                        IMixedRealityPointer requestedPointer = null;
 
-                            // We got pointer from cache, continue to next pointer option to review
-                            requestedPointer = p;
-                            break;
+                        if (EnablePointerCache)
+                        {
+                            var pointerCache = pointerConfigurations[i].cache;
+                            while (pointerCache.Count > 0)
+                            {
+                                var p = pointerCache.Pop();
+                                if (p != null && p is MonoBehaviour pointerComponent && pointerComponent != null)
+                                {
+                                    pointerComponent.gameObject.SetActive(true);
+
+                                    // We got pointer from cache, continue to next pointer option to review
+                                    requestedPointer = p;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (requestedPointer == null)
+                        {
+                            // We couldn't obtain a pointer from our cache, resort to creating a new one
+                            requestedPointer = CreatePointer(in option);
+                        }
+
+                        if (requestedPointer != null)
+                        {
+                            // Track pointer for recycling
+                            activePointersToConfig.Add(requestedPointer, (uint)i);
+
+                            returnPointers.Add(requestedPointer);
                         }
                     }
-
-                    if (requestedPointer == null)
-                    {
-                        // We couldn't obtain a pointer from our cache, resort to creating a new one
-                        requestedPointer = CreatePointer(in option);
-                    }
-
-                    if (requestedPointer != null)
-                    {
-                        // Track pointer for recycling
-                        activePointersToConfig.Add(requestedPointer, (uint)i);
-
-                        returnPointers.Add(requestedPointer);
-                    }
                 }
-            }
 
-            return returnPointers.Count == 0 ? null : returnPointers.ToArray();
+                return returnPointers.Count == 0 ? null : returnPointers.ToArray();
+            }
         }
 
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
@@ -222,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         p.Controller = null;
                         pointerComponent.gameObject.SetActive(false);
 
-                        if (activePointersToConfig.ContainsKey(p))
+                        if (EnablePointerCache && activePointersToConfig.ContainsKey(p))
                         {
                             uint pointerOptionIndex = activePointersToConfig[p];
                             activePointersToConfig.Remove(p);
