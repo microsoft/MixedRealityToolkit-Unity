@@ -117,7 +117,7 @@ We recommend applying the following Prefab transform values to align the control
 
 ## Additional models available to download
 
-### Oculus Hands (provided via the Oculus open source project)
+### Oculus hands (provided via the Oculus open source project)
 
 Oculus provide two basic hand models, including animation (although not available through the visualizer currently).
 
