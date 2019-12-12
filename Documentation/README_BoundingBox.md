@@ -4,7 +4,7 @@
 
 The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. 
 
-For more information please see [Bounding Box and App Bar](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
+For more information please see [Bounding Box and App Bar](https://docs.microsoft.com/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
 ## Example scene
 You can find examples of Bounding Box configurations in the `BoundingBoxExamples` scene.
