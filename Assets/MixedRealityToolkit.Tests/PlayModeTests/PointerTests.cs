@@ -36,7 +36,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
-        #region Tests
+    #region Tests
+
+        /// <summary>
+        /// Tests that sphere pointer behaves correctly when hand is near grabbable on when near a grabbable
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestSpherePointerNearGrabbable()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionGrabbable>();
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
+            Assert.IsNotNull(spherePointer, "Right hand does not have a sphere pointer");
+            Assert.IsTrue(spherePointer.IsInteractionEnabled, "Sphere pointer should be enabled because it is near grabbable cube and visible.");
+            
+            // Move forward so that cube is no longer visible
+            CameraCache.Main.transform.Translate(Vector3.forward);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsFalse(spherePointer.IsInteractionEnabled, "Sphere pointer should NOT be enabled because hand is near grabbable but the grabbable is not visible.");
+
+            // Move camera back so that cube is visible again
+            CameraCache.Main.transform.Translate(-2f * Vector3.forward);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsTrue(spherePointer.IsInteractionEnabled, "Sphere pointer should be enabled because it is near grabbable cube and visible.");
+        }
 
         /// <summary>
         /// Tests that right after being instantiated, the pointer's direction 
