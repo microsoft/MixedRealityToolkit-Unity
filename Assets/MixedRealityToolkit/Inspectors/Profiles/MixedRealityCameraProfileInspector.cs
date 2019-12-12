@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             return new ServiceConfigurationProperties()
             {
-                Name = providerEntry.FindPropertyRelative("componentName"),
-                Type = providerEntry.FindPropertyRelative("componentType"),
+                componentName = providerEntry.FindPropertyRelative("componentName"),
+                componentType = providerEntry.FindPropertyRelative("componentType"),
                 providerProfile = providerEntry.FindPropertyRelative("settingsProfile"),
                 runtimePlatform = providerEntry.FindPropertyRelative("runtimePlatform"),
             };

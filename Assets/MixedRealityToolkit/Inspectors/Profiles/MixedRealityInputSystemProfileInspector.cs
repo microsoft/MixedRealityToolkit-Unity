@@ -195,8 +195,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             return new ServiceConfigurationProperties()
             {
-                Name = providerEntry.FindPropertyRelative("componentName"),
-                Type = providerEntry.FindPropertyRelative("componentType"),
+                componentName = providerEntry.FindPropertyRelative("componentName"),
+                componentType = providerEntry.FindPropertyRelative("componentType"),
                 providerProfile = providerEntry.FindPropertyRelative("deviceManagerProfile"),
                 runtimePlatform = providerEntry.FindPropertyRelative("runtimePlatform"),
             };

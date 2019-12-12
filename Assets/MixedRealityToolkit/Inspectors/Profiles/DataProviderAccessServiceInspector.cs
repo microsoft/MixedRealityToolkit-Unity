@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         protected class ServiceConfigurationProperties
         {
-            public SerializedProperty Name;
-            public SerializedProperty Type;
+            public SerializedProperty componentName;
+            public SerializedProperty componentType;
             public SerializedProperty providerProfile;
             public SerializedProperty runtimePlatform;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(providerConfigurations.arraySize - 1);
 
             var providerProperties = GetDataProviderConfigurationProperties(provider);
-            providerProperties.Name.stringValue = $"New data provider {providerConfigurations.arraySize - 1}";
+            providerProperties.componentName.stringValue = $"New data provider {providerConfigurations.arraySize - 1}";
             providerProperties.runtimePlatform.intValue = -1;
             providerProperties.providerProfile.objectReferenceValue = null;
 
@@ -77,13 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(dataProviderType) as MixedRealityDataProviderAttribute;
                 if (providerAttribute != null)
                 {
-                    providerProperties.Name.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : dataProviderType.Name;
+                    providerProperties.componentName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : dataProviderType.Name;
                     providerProperties.providerProfile.objectReferenceValue = providerAttribute.DefaultProfile;
                     providerProperties.runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
                 }
                 else
                 {
-                    providerProperties.Name.stringValue = dataProviderType.Name;
+                    providerProperties.componentName.stringValue = dataProviderType.Name;
                 }
 
                 serializedObject.ApplyModifiedProperties();
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    providerFoldouts[index] = EditorGUILayout.Foldout(providerFoldouts[index], providerProperties.Name.stringValue, true);
+                    providerFoldouts[index] = EditorGUILayout.Foldout(providerFoldouts[index], providerProperties.componentName.stringValue, true);
 
                     if (GUILayout.Button(removeContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                     {
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     using (var c = new EditorGUI.ChangeCheckScope())
                     {
-                        EditorGUILayout.PropertyField(providerProperties.Type, ComponentTypeLabel);
+                        EditorGUILayout.PropertyField(providerProperties.componentType, ComponentTypeLabel);
                         if (c.changed)
                         {
                             serializedObject.ApplyModifiedProperties();
