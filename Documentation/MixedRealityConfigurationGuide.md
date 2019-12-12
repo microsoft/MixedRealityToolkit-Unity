@@ -297,8 +297,7 @@ In addition to the controller mapping, a separate configuration profile is provi
 
 This can be configured at a "Global" (all instances of a controller for a specific hand) or specific to an individual controller type / hand.
 
-> [!IMPORTANT]
-> The MRTK does not currently support native SDK's controller models as Unity does not yet provide the capability to load / render gLTF models, which is the default type of models provided by most SDKs. This will be enhanced when this is available.
+The MRTK also supports native SDK controller models for Windows Mixed Reality and OpenVR. These are loaded as GameObjects in your scene and positioned using the platform's controller tracking.
 
 If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab (e.g. setting the transform position of the controller prefab with an offset position).
 

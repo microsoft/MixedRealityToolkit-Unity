@@ -50,32 +50,32 @@ Your custom name for the controller, just for easy reference
 A drop down list of supported controllers by the Mixed Reality Toolkit, namely:
 
 * Windows Mixed Reality
-    * Motion Controllers
+  * Motion Controllers
+  * HoloLens 2 articulated hands
+  * HoloLens 1 hands
+  * HoloLens 1 clicker
 * OpenVR
-    * Default (fallback) controllers
-    * Oculus Touch
-    * Vive Wand 
-    * Vive Knuckles (experimental as no one has any, using Unity spec)
-* OpenXR
-    * To be supported when there is an OpenXR specification
-* Windows Gaming (these are coming soon*)
-    * Arcade stick
-    * Gamepad
-    * Joystick
-    * Racing Wheel
-* Simulator (coming soon)
+  * Default (fallback) controllers
+  * Oculus Touch
+  * Vive Wand
+  * Vive Knuckles (experimental)
+* Windows Gaming
+  * Gamepad (like Xbox)
 
 ### Handedness
 Which hand is configured for this controller definition
 > Both does not configure all controllers at this time.
 
 ### Use Default model
-For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model.
-> This overrides the Global Model setting
+
+For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model. This overrides the Global Model setting.
+
+> [!NOTE]
+> This is currently supported on both Windows Mixed Reality and OpenVR, loading any controller models provided by the platform API.
 
 ### Override Model
-Like the Global Model options, allows you to provide a model to be drawn for this specific controller.
-> This overrides the Global Model setting
+
+Like the Global Model options, allows you to provide a model to be drawn for this specific controller. This overrides the Global Model setting.
 
 ### Interaction Mappings
 The interaction mappings allow you to map logical input actions for use in your project to the various controller inputs available from the physical device.  
