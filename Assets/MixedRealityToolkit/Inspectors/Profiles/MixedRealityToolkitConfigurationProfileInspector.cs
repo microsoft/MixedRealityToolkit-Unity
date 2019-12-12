@@ -450,6 +450,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Render helpbox that provided service string is disabled and none of it's functionality will be loaded at runtime
+        /// </summary>
         protected static void RenderSystemDisabled(string service)
         {
             EditorGUILayout.Space();
