@@ -42,21 +42,21 @@ Near Menu prefabs are made with following MRTK components.
 
 **1. Add/Remove Buttons**
 
-Under `ButtonCollection` object, add or remove buttons.
-<br/><img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom0.png" width="450">
+Under `ButtonCollection` object, add or remove buttons.  
+<img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom0.png" width="450">
 
 **2. Update the Grid Object Collection**
 
-Click `Update Collection` button in the Inspector of the `ButtonCollection` object. It will update the grid layout.
-<br/><img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom1.png">
+Click `Update Collection` button in the Inspector of the `ButtonCollection` object. It will update the grid layout.  
+<img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom1.png">
 
-You can configure the number of rows using `Rows` property of the Grid Object Collection.
-<br/><img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom2.png">
+You can configure the number of rows using `Rows` property of the Grid Object Collection.  
+<img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom2.png">
 
 **3. Adjust the backplate size**
 
-Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be 0.032 * [Number of the buttons + 1]. For example, if you have 3 x 2 buttons, the width of the backplate is 0.032 * 4 and the height is 0.032 * 3. You can directly put this expression into the Unity's field.
-<br/><img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png" width="450">
+Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be 0.032 * [Number of the buttons + 1]. For example, if you have 3 x 2 buttons, the width of the backplate is 0.032 * 4 and the height is 0.032 * 3. You can directly put this expression into the Unity's field.  
+<img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png" width="450">
 
 *Default size of the HoloLens 2 button is 3.2x3.2 cm (0.032m)
 
