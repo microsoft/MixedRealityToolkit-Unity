@@ -461,10 +461,8 @@ public class MyClass
 </div>
 <h3 id="use-platform-dependent-compilation-to-ensure-the-toolkit-wont-break-the-build-on-another-platform">Use <a href="https://docs.unity3d.com/Manual/PlatformDependentCompilation.html">platform dependent compilation</a> to ensure the Toolkit won't break the build on another platform</h3>
 <ul>
-<li><p>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</p>
-</li>
-<li><p>Use <code>UNITY_WSA</code> to use UWP-specific Unity APIs, such as the <code>UnityEngine.XR.WSA</code> namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.</p>
-</li>
+<li>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</li>
+<li>Use <code>UNITY_WSA</code> to use UWP-specific Unity APIs, such as the <code>UnityEngine.XR.WSA</code> namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.</li>
 </ul>
 <p>This chart can help you decide which <code>#if</code> to use, depending on your use cases and the build settings you expect.</p>
 <table>

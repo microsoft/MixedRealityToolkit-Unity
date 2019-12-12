@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>High Level Description | Mixed Reality Toolkit Documentation </title>
+    <title>Pressable buttons | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="High Level Description | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Pressable buttons | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../../../../../Documentation/Images/favicon.ico">
@@ -80,6 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+<h1 id="pressable-buttons">Pressable buttons</h1>
 
 <p>This folder contains the scripts necessary for making Interactable buttons that support Speech, Far Interaction and Near Interaction (Physical hand pressing)</p>
 <h2 id="high-level-description">High Level Description</h2>
@@ -91,7 +92,7 @@ It tracks the position of both index tip fingers and uses this to move the butto
 <p>It then calls into a PhysicalPressEventRouter and calls events related to Touch, Press, Unpress (Default Click), and Untouch.</p>
 <ul>
 <li>Touch: When a finger is contacting with the button.</li>
-<li>Press: After the button has been pressed more than a threshhold amount.</li>
+<li>Press: After the button has been pressed more than a threshold amount.</li>
 <li>Unpress/Click: When the button has been released while in Press state.</li>
 <li>Untouch: When the finger is no longer touching the button.</li>
 </ul>

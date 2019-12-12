@@ -174,20 +174,23 @@ toc.yml files can be used for structuring and there can be any amount of those f
 <h2 id="releasing-a-new-version">Releasing a new version</h2>
 <p>Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.</p>
 <ol>
-<li>Optional: Adjusting your docfx.json<br>
-Depending on whether you want to have the &quot;Improve this doc&quot; to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:</li>
-</ol>
+<li><p>Optional: Adjusting your docfx.json<br>
+Depending on whether you want to have the &quot;Improve this doc&quot; to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:</p>
 <pre><code class="lang-json">&quot;_gitContribute&quot;: {
     &quot;repo&quot;: &quot;https://github.com/Microsoft/MixedRealityToolkit-Unity.git&quot;,
     &quot;branch&quot;: &quot;mrtk_development&quot;
 }
 </code></pre>
 <p>If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.</p>
-<ol start="2">
-<li>Create your docfx docs by calling docfx docfx.json in the root of the repo</li>
-<li>Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
-<li>Add your version number into the versionArray in web/version.js</li>
-<li>Push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
+</li>
+<li><p>Create your docfx docs by calling docfx docfx.json in the root of the repo</p>
+</li>
+<li><p>Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</p>
+</li>
+<li><p>Add your version number into the versionArray in web/version.js</p>
+</li>
+<li><p>Push the modified version.js to mrtk_development branch and the changes in gh-pages branch</p>
+</li>
 </ol>
 <p>CI will pick up the changes done to the version.js file and update the version dropdown automatically.</p>
 <h3 id="supporting-development-branches-on-ci">Supporting development branches on CI</h3>

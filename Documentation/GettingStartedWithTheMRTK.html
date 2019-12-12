@@ -168,8 +168,6 @@ when building for OpenVR.</p>
 <li><p>Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following <a href="#import-mrtk-packages-into-your-unity-project">the steps above</a>.</p>
 </li>
 <li><p>From the menu bar, select Mixed Reality Toolkit -&gt; Add to Scene and Configure</p>
-</li>
-</ol>
 <p><img src="Images/MRTK_ConfigureScene.png" alt="Configure to scene"></p>
 <p>The inspector will now show the currently active MRTK configuration profile and the profile selection dropdown, where the default profile is already preselected.
 Profiles configure the behavior of MRTK core components and are described in more detail in the <a href="Profiles/Profiles.html">profiles</a> article.</p>
@@ -190,8 +188,9 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 <h5>Note</h5>
 <p>While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the <strong>MixedRealityPlayspace</strong>) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
 </div>
-<ol start="6">
-<li>Hit play and test out hand simulation by pressing the <strong>spacebar</strong>.</li>
+</li>
+<li><p>Hit play and test out hand simulation by pressing the <strong>spacebar</strong>.</p>
+</li>
 </ol>
 <p>You are now ready to build and deploy to device! Follow the steps instructions at <a href="BuildAndDeploy.html">Build and Deploy MRTK</a>.</p>
 <h3 id="getting-started-tutorials">Getting started tutorials</h3>
@@ -206,11 +205,9 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 <li><p>Open the <strong>HandInteractionExamples</strong> scene under <code>Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples</code></p>
 </li>
 <li><p>You may get a prompt asking you to import &quot;TMP Essentials&quot;.</p>
-</li>
-</ol>
 <p><img src="Images/getting_started/MRTK_GettingStarted_TMPro.png" alt="TMP Essentials"></p>
 <p>If you get such a prompt, select &quot;Import TMP essentials&quot; button. &quot;TMP Essentials&quot; refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See <a href="https://docs.microsoft.com/windows/mixed-reality/text-in-unity">Text in Unity</a> for more detailed information)</p>
-<ol start="3">
+</li>
 <li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.</p>
 </li>
 <li><p>Press the play button.</p>
