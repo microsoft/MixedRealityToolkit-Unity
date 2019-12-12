@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
-    #region Tests
+        #region Tests
 
         /// <summary>
         /// Tests that sphere pointer behaves correctly when hand is near grabbable on when near a grabbable

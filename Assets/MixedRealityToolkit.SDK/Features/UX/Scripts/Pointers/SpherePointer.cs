@@ -242,11 +242,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// 
+            /// Intented to be called once per frame, this method performs a sphere intersection test against
+            /// all collidables in the layers defined by layerMask at the given pointer position.
+            /// All colliders intersecting the sphere at queryRadius and pointerPosition are stored in queryBuffer,
+            /// and the first grabbable in the list of returned colliders is stored.
             /// </summary>
-            /// <param name="layerMask"></param>
-            /// <param name="pointerPosition"></param>
-            /// <param name="triggerInteraction"></param>
+            /// <param name="layerMask">Filter to only perform sphere cast on these layers.</param>
+            /// <param name="pointerPosition">The position of the pointer to query against.</param>
+            /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call</param>
             /// <returns></returns>
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
             {
