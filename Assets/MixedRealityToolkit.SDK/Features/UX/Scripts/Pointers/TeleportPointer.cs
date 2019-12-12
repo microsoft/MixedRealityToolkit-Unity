@@ -10,12 +10,15 @@ using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
+    /// <summary>
+    /// Implementation for teleportation pointer to support movement based on teleport raycasts and requests with the MRTK Teleport system
+    /// </summary>
     [RequireComponent(typeof(DistorterGravity))]
     [AddComponentMenu("Scripts/MRTK/SDK/TeleportPointer")]
     public class TeleportPointer : CurvePointer, IMixedRealityTeleportPointer, IMixedRealityTeleportHandler
     {
         /// <summary>
-        /// TODO: Troy - fill in comments
+        /// True if a teleport request is being raised, false otherwise
         /// </summary>
         public bool TeleportRequestRaised { get; private set; } = false;
 

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// TODO: Troy - comment
+    /// Implementation for default hand ray pointers shipped with MRTK. Primariliy used with hands and motion controllers
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ShellHandRayPointer")]
     public class ShellHandRayPointer : LinePointer
@@ -65,8 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var lineRenderer = LineRenderers[i] as MixedRealityLineRenderer;
                     lineRenderer.LineMaterial = currentMaterial;
-
-                    // TODO: Troy - lineRenderer.LineStepCount change?
                 }
             }
         }
