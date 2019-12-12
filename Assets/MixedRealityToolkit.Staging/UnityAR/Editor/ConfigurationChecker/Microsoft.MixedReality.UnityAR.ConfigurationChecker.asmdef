@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.UnityAR.ConfigCheck.asmdef",
+    "name": "Microsoft.MixedReality.UnityAR.ConfigCheck",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [
