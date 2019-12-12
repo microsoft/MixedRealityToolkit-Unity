@@ -51,7 +51,7 @@ class can be used as a base class.
 > [!Note]
 > The `BaseInputDeviceManager` and `UnityJoystickManager` classes provide the required `IMixedRealityInputDeviceManager` implementation.
 
-``` c#
+```c#
 public class WindowsMixedRealityDeviceManager :
     BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
@@ -66,7 +66,7 @@ gaze-gesture-voice hands and motion controllers.
 A key step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
 attribute to the class. This step enables setting the default profile and platform(s) for the provider, when selected in the input system profile.
 
-``` c#
+```c#
 [MixedRealityDataProvider(
     typeof(IMixedRealityInputSystem),
     SupportedPlatforms.WindowsUniversal,
@@ -116,7 +116,7 @@ The next step is to add the logic for managing the input devices, including any 
 Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute) attribute to the class. This attribute specifies the type of controller
 (ex: articulated hand), the handedness (ex: left or right) and an optional controller image.
 
-``` c#
+```c#
 [MixedRealityController(
     SupportedControllerType.WindowsMixedReality,
     new[] { Handedness.Left, Handedness.Right },
@@ -152,7 +152,7 @@ the [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMix
 
 For digital (button) type controls, raise the OnInputDown and OnInputUp events.
 
-``` c#
+```c#
 // inputAction is the input event that is to be raised.
 if (interactionSourceState.touchpadPressed)
 {
@@ -166,7 +166,7 @@ else
 
 For analog controls (ex: touchpad position) the InputChanged event should be raised.
 
-``` c#
+```c#
 InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
 ```
 
@@ -184,7 +184,7 @@ customers to modify the behavior to best suit the needs of the application.
 Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
 interface should be contained with the profile.
 
-``` c#
+```c#
 [CreateAssetMenu(
     menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile",
     fileName = "MixedRealityInputSimulationProfile",
@@ -201,7 +201,7 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
 [`BaseMixedRealityToolkitConfigurationProfileInspector](xref:Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector) class.
 
-``` c#
+```c#
 [CustomEditor(typeof(MixedRealityInputSimulationProfile))]
 public class MixedRealityInputSimulationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }

@@ -34,7 +34,7 @@ This section describes frequently needed features. To see how they work, look at
 
 For code samples we use the blocks with three backticks \`\`\` and specify *csharp* as the language for syntax highlighting:
 
-``` csharp
+```c#
 int SampleFunction(int i)
 {
    return i + 42;
@@ -45,7 +45,7 @@ When mentioning code within a sentence `use a single backtick`.
 
 ### TODOs
 
-Avoid using TODOS in docs, as over time these TODOs (like code TODOs) tend to accumulate
+Avoid using TODOs in docs, as over time these TODOs (like code TODOs) tend to accumulate
 and information about how they should be updated and why gets lost.
 
 If it is absolutely necessary to add a TODO, follow these steps:
@@ -289,7 +289,7 @@ Some examples where design documentation can be helpful:
 
 This type of documentation is **strongly** recommended, and **may** be requested as part of a pull request review.
 
-This may or may not be different from the design recommendation on the [MS Developer site](https://docs.microsoft.com/en-us/windows/mixed-reality/design)
+This may or may not be different from the design recommendation on the [MS Developer site](https://docs.microsoft.com/windows/mixed-reality/design)
 
 ## Performance notes
 

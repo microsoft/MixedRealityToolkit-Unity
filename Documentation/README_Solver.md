@@ -65,7 +65,7 @@ All solvers must inherit from the abstract base class, [`Solver`](xref:Microsoft
 
 The code provided below gives an example of a new Solver component called `InFront` that places the attached object 2m in front of the `SolverHandler.TransformTarget`. If the `SolverHandler.TrackedTargetType` is set by the consumer as [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head), then the `SolverHandler.TransformTarget` will be the camera transform and thus this Solver will place the attached GameObject 2m in front of the users' gaze every frame.
 
-```csharp
+```c#
 /// <summary>
 /// InFront solver positions an object 2m in front of the tracked transform target
 /// </summary>

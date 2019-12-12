@@ -60,16 +60,16 @@ All Microsoft employees contributing new files should add the following standard
 All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
 
 ```c#
+/// <summary>
+/// The Controller definition defines the Controller as defined by the SDK / Unity.
+/// </summary>
+public struct Controller
+{
     /// <summary>
-    /// The Controller definition defines the Controller as defined by the SDK / Unity.
+    /// The ID assigned to the Controller
     /// </summary>
-    public struct Controller
-    {
-        /// <summary>
-        /// The ID assigned to the Controller
-        /// </summary>
-        public string ID;
-    }
+    public string ID;
+}
 ```
 
 This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
@@ -101,7 +101,7 @@ When adding new MonoBehaviour scripts with a pull-request, ensure the [`AddCompo
 
 In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
 
-```csharp
+```c#
 [AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
 public class MyNewComponent : MonoBehaviour
 ```
@@ -148,11 +148,11 @@ private string MyProperty; // <- Starts with an uppercase case letter
 
 #### Do
 
- ```c#
+```c#
 public string MyProperty;
 protected string MyProperty;
 private string myProperty;
- ```
+```
 
 ### Access Modifiers
 
@@ -180,13 +180,13 @@ void Bar() { }
 
 #### Do
 
- ```c#
+```c#
 public int MyVariable { get; protected set; } = 0;
 
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
- ```
+```
 
 ### Use Braces
 
@@ -246,7 +246,7 @@ public class MyClass
 
 #### Do
 
- ```c#
+```c#
  // Private references for use inside the class only
 public class MyClass
 {
@@ -254,14 +254,14 @@ public class MyClass
     private enum MyEnumType() { }
     private class MyNestedClass() { }
 }
- ```
+```
 
 #### Do
 
- MyStruct.cs
+MyStruct.cs
 
- ```c#
- // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
+```c#
+// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
 {
     public string Var1;
@@ -287,7 +287,7 @@ public class MyClass
     private MyStruct myStructReference;
     private MyEnumType myEnumReference;
 }
- ```
+```
 
 ### Initialize Enums
 
@@ -306,14 +306,14 @@ public enum Value
 
 #### Do
 
- ```c#
+```c#
 public enum ValueType
 {
     Value1 = 0,
     Value2,
     Value3
 }
- ```
+```
 
 ### Order Enums for appropriate extension
 
@@ -334,34 +334,34 @@ public enum SDKType
 
 #### Do
 
- ```c#
+```c#
+/// <summary>
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// </summary>
+public enum SDKType
+{
     /// <summary>
-    /// The SDKType lists the VR SDKs that are supported by the MRTK
-    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// No specified type or Standalone / non-VR type
     /// </summary>
-    public enum SDKType
-    {
-        /// <summary>
-        /// No specified type or Standalone / non-VR type
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other,
-        /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
-        /// </summary>
-        WindowsMR,
-        /// <summary>
-        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-        /// </summary>
-        OpenVR,
-        /// <summary>
-        /// The OpenXR platform. SDK to be determined once released.
-        /// </summary>
-        OpenXR
-    }
+    None = 0,
+    /// <summary>
+    /// Undefined SDK.
+    /// </summary>
+    Other,
+    /// <summary>
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// </summary>
+    WindowsMR,
+    /// <summary>
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// </summary>
+    OpenVR,
+    /// <summary>
+    /// The OpenXR platform. SDK to be determined once released.
+    /// </summary>
+    OpenXR
+}
 ```
 
 ### Review Enum use for Bitfields
@@ -383,8 +383,8 @@ public enum Handedness
 
 ### Do
 
- ```c#
- [flags]
+```c#
+[Flags]
 public enum Handedness
 {
     None = 0 << 0,
@@ -392,7 +392,7 @@ public enum Handedness
     Right = 1 << 1,
     Both = Left | Right
 }
- ```
+```
 
 ## Best Practices, including Unity recommendations
 
@@ -407,40 +407,40 @@ Always use private fields and public properties if access to the field is needed
 
 #### Don't
 
- ```c#
- private float myValue1;
- private float myValue2;
+```c#
+private float myValue1;
+private float myValue2;
 
- public float MyValue1
- {
-     get{ return myValue1; }
-     set{ myValue1 = value }
- }
+public float MyValue1
+{
+    get{ return myValue1; }
+    set{ myValue1 = value }
+}
 
- public float MyValue2
- {
-     get{ return myValue2; }
-     set{ myValue2 = value }
- }
+public float MyValue2
+{
+    get{ return myValue2; }
+    set{ myValue2 = value }
+}
 ```
 
 #### Do
 
- ```c#
- // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField]
- [ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
- private float myValue; // <- Notice we co-located the backing field above our corresponding property.
+```c#
+// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+[SerializeField]
+[ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
+private float myValue; // <- Notice we co-located the backing field above our corresponding property.
 
- /// <summary>
- /// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
- /// </summary>
- public float MyValue
- {
-     get{ return myValue; }
-     set{ myValue = value }
- }
- ```
+/// <summary>
+/// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+/// </summary>
+public float MyValue
+{
+    get{ return myValue; }
+    set{ myValue = value }
+}
+```
 
 ### Cache values and serialize them in the scene/prefab whenever possible
 
@@ -474,7 +474,7 @@ private void Update()
 {
     myRenderer.Foo(Bar);
 }
- ```
+```
 
 ### Cache references to materials, do not call the ".material" each time
 
@@ -495,8 +495,8 @@ public class MyClass
 
 #### Do
 
- ```c#
- // Private references for use inside the class only
+```c#
+// Private references for use inside the class only
 public class MyClass
 {
     private Material cachedMaterial;
@@ -516,7 +516,7 @@ public class MyClass
         Destroy(cachedMaterial);
     }
 }
- ```
+```
 
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
@@ -546,4 +546,4 @@ Prefer using DateTime.UtcNow unless you actually need the localized times (a leg
 
 ## See also
 
- [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+ [C# coding conventions from MSDN](https://docs.microsoft.com/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
