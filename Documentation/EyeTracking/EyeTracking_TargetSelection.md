@@ -250,7 +250,7 @@ Similar to Example #1, we can easily create a hover feedback for our holographic
 
     ![EyeTrackingTarget sample](../Images/EyeTracking/mrtk_et_EyeTrackingTargetSample.jpg)
 
-### Example #3: Pop those gems aka _multimodal eye-gaze-supported target selection_
+### Example #3: Pop those gems aka _multi-modal eye-gaze-supported target selection_
 
 In the previous example, we have shown how easy it is to detect whether a target is looked at and how to trigger a reaction to that. Next, let's make the gems explode using the _OnSelected()_ event from the [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget). The interesting part is *how* the selection is triggered. The [`EyeTrackingTarget`](xref:Microsoft.MixedReality.Toolkit.Input.EyeTrackingTarget)
 allows for quickly assigning different ways to invoke a selection:

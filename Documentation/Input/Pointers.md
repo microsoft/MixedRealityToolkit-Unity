@@ -132,7 +132,7 @@ it's possible to add different pointer types to these platforms. For example, yo
 
 ### Pointer event interfaces
 
-MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
+MonoBehaviours that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
 
 | Event | Description | Handler |
 | --- | --- | --- |

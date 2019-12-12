@@ -11,7 +11,7 @@ Simply drop these prefabs into a scene, add the desired objects, and press "Upda
 ### Prerequisites
 
 - All objects in collection must use the MRTK standard shader
-- Every object in the collection must have a collider with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable). All collision testing is currently done using these collidables, ScrollingObjectCollection does not yet support a static/nonmoving backing collider.
+- Every object in the collection must have a collider with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable). All collision testing is currently done using these colliders; ScrollingObjectCollection does not yet support a static/nonmoving backing collider.
 - All objects in collection need to be the same size currently, additionally you may get unexpected results if your objects aren't centered in a gameObject.
 - For a seamless touchable surface, the 'cell size' in the scrolling collection should match the size of every object in the collection.
 

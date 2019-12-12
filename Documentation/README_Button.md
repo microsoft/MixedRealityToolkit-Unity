@@ -111,7 +111,7 @@ Drag and drop newly created PNG texture onto the *Albedo* property in the materi
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate3.png">
 
-Assgin the material to the *UIButtonSquareIcon* object.
+Assign the material to the *UIButtonSquareIcon* object.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate4.png">
 
