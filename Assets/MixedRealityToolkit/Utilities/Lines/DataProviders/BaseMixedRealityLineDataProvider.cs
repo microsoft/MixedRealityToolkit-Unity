@@ -14,17 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
-        protected const int UnclampedWorldLengthSearchSteps = 10;
-        private const float MinRotationMagnitude = 0.0001f;
-        private const float MinLineStartClamp = 0.0001f;
-        private const float MaxLineEndClamp = 0.9999f;
+        #region Properties
 
-        public float UnClampedWorldLength => GetUnClampedWorldLengthInternal();
-
-        [Range(0f, 1f)]
+        [Range(MinLineStartClamp, MaxLineEndClamp)]
         [SerializeField]
         [Tooltip("Clamps the line's normalized start point. This setting will affect line renderers.")]
-        private float lineStartClamp = 0f;
+        private float lineStartClamp = MinLineStartClamp;
 
         /// <summary>
         /// Clamps the line's normalized start point. This setting will affect line renderers.
@@ -32,13 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public float LineStartClamp
         {
             get => lineStartClamp;
-            set => lineStartClamp = Mathf.Clamp01(value);
+            set => lineStartClamp = Mathf.Clamp(value, MinLineStartClamp, MaxLineEndClamp);
         }
 
-        [Range(0f, 1f)]
+        [Range(MinLineStartClamp, MaxLineEndClamp)]
         [SerializeField]
         [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
-        private float lineEndClamp = 1f;
+        private float lineEndClamp = MaxLineEndClamp;
 
         /// <summary>
         /// Clamps the line's normalized end point. This setting will affect line renderers.
@@ -46,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public float LineEndClamp
         {
             get => lineEndClamp;
-            set => lineEndClamp = Mathf.Clamp01(value);
+            set => lineEndClamp = Mathf.Clamp(value, MinLineStartClamp, MaxLineEndClamp);
         }
 
         [SerializeField]
@@ -219,8 +214,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [SerializeField]
+        [Tooltip("Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength")]
         private AnimationCurve distortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+        /// <summary>
+        /// Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength
+        /// </summary>
         public AnimationCurve DistortionStrength
         {
             get => distortionStrength;
@@ -228,26 +227,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [Range(0f, 1f)]
+        [Tooltip("Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform")]
         [SerializeField]
         private float uniformDistortionStrength = 1f;
 
+        /// <summary>
+        /// Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform
+        /// </summary>
         public float UniformDistortionStrength
         {
             get => uniformDistortionStrength;
             set => uniformDistortionStrength = Mathf.Clamp01(value);
         }
 
+        /// <summary>
+        /// Returns world position of first point along line as defined by this data provider
+        /// </summary>
         public Vector3 FirstPoint
         {
             get => GetPoint(0);
             set => SetPoint(0, value);
         }
 
+        /// <summary>
+        /// Returns world position of last point along line as defined by this data provider
+        /// </summary>
         public Vector3 LastPoint
         {
             get => GetPoint(PointCount - 1);
             set => SetPoint(PointCount - 1, value);
         }
+
+        public float UnClampedWorldLength => GetUnClampedWorldLengthInternal();
+
+        #endregion
 
         #region BaseMixedRealityLineDataProvider Abstract Declarations
 
@@ -288,6 +301,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private Matrix4x4 localToWorldMatrix;
         private Matrix4x4 worldToLocalMatrix;
+
+        protected const int UnclampedWorldLengthSearchSteps = 10;
+        private const float MinRotationMagnitude = 0.0001f;
+        private const float MinLineStartClamp = 0.0001f;
+        private const float MaxLineEndClamp = 0.9999f;
 
         #endregion BaseMixedRealityLineDataProvider Abstract Declarations
 
@@ -424,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Vector3 GetPoint(float normalizedLength)
         {
-            normalizedLength = ClampedLength(normalizedLength);
+            normalizedLength = Mathf.Lerp(lineStartClamp, lineEndClamp, Mathf.Clamp01(normalizedLength));
             Vector3 point = GetPointInternal(normalizedLength);
             TransformPoint(ref point);
             DistortPoint(ref point, normalizedLength);
@@ -597,32 +615,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = 0; i <distorters.Count; i++)
             {
                 Distorter distorter = distorters[i];
-
-                if (!distorter.DistortionEnabled)
-                    continue;
-
-                point = distorter.DistortPoint(point, strength);
+                if (distorter.DistortionEnabled)
+                {
+                    point = distorter.DistortPoint(point, strength);
+                }
             }
-        }
-
-        private float ClampedLength(float normalizedLength)
-        {
-            if (lineStartClamp < MinLineStartClamp)
-                lineStartClamp = MinLineStartClamp;
-            else if (lineStartClamp > MaxLineEndClamp)
-                lineStartClamp = MaxLineEndClamp;
-
-            if (lineEndClamp < MinLineStartClamp)
-                lineEndClamp = MinLineStartClamp;
-            else if (lineEndClamp > MaxLineEndClamp)
-                lineEndClamp = MaxLineEndClamp;
-
-            if (normalizedLength > 1)
-                return 1;
-            else if (normalizedLength < 0)
-                return 0;
-
-            return Mathf.Lerp(lineStartClamp, lineEndClamp, normalizedLength);
         }
 
         private void OnDrawGizmos()
