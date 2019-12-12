@@ -83,12 +83,11 @@
 <h1 id="mixed-reality-controller-configuration-profile">Mixed Reality Controller Configuration Profile</h1>
 
 <p>When you need to use input controllers for your Mixed Reality project, they are registered and configured centrally within the Controller configuration profile as you can see here:</p>
-<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png" alt=""></p>
+<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png" alt="Configuration profile inspector"></p>
 <p>This enables you to very quickly define which SDK's / controllers you want to support in your project and configure how each are intended to work.</p>
 <p>The configuration is broken down in to several key components, as detailed below:</p>
 <h2 id="main-controller-template-definition">Main Controller Template definition</h2>
-<hr>
-<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png" alt=""></p>
+<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png" alt="Controller model definition"></p>
 <p>In the first section of the configuration, the options are detailed as follows:</p>
 <h3 id="render-motion-controllers">Render Motion Controllers</h3>
 <p>This defines whether or not controllers should be rendered or not.  By not adding a ControllerVisualizer in to the scene also has the same effect.</p>
@@ -106,9 +105,8 @@
 <h3 id="add-a-new-controller-template">Add a New Controller Template</h3>
 <p>This enables you to add a new controller definition (detailed below) to the profile to add another supported SDK.</p>
 <h2 id="controller-template">Controller Template</h2>
-<hr>
-<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png" alt=""></p>
-<p>Each controller template allows you to configure any of the supported controllers for the various SDK's that have been enabled through the Mixed Reality Toolkit.
+<p><img src="../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png" alt="Controller template"></p>
+<p>Each controller template allows you to configure any of the supported controllers for the various SDKs that have been enabled through the Mixed Reality Toolkit.
 Each controller is added by SDK and the prevailing hand.</p>
 <blockquote>
 <p>Any SDK Controller types or hands NOT configured will not be detected or used in a running project.</p>
@@ -175,9 +173,9 @@ Each controller is added by SDK and the prevailing hand.</p>
 </thead>
 <tbody>
 <tr>
-<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png" alt=""></td>
-<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png" alt=""></td>
-<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png" alt=""></td>
+<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/04-WMRInteractions.png" alt="Windows Mixed Reality interactions"></td>
+<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/05-OculusTouchInteractions.png" alt="Oculus Touch interactions"></td>
+<td><img src="../../../Documentation/Images/ControllerConfigurationProfile/06-ViveWandInteractions.png" alt="Vive Wand interactions"></td>
 </tr>
 </tbody>
 </table>
@@ -186,7 +184,7 @@ Each controller is added by SDK and the prevailing hand.</p>
 </blockquote>
 <p>The Action each input can perform, is completely up to you.</p>
 <blockquote>
-<p>See the <a href="">Input Action</a> configuration profile for more information.</p>
+<p>See the <a href="../../../Documentation/Input/InputActions.html">Input Action configuration profile</a> for more information.</p>
 </blockquote>
 <h2 id="example-models">Example Models</h2>
 <hr>
