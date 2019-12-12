@@ -2,7 +2,6 @@
 
 This folder contains example MRTK profiles used to configure your solution.
 
-
 This includes:
 
 ## [MixedRealityConfigurationProfile](../../../Documentation/MixedRealityConfigurationGuide.md)

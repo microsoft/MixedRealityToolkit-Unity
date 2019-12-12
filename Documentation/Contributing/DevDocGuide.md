@@ -121,19 +121,19 @@ Multiple versions of developer docs are supported and can be switched by the ver
 1. Optional: Adjusting your docfx.json  
 Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
-```json
-"_gitContribute": {
-    "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
-    "branch": "mrtk_development"
-}
-```
+    ```json
+    "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
+        "branch": "mrtk_development"
+    }
+    ```
 
-If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
+    If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
 
-2. Create your docfx docs by calling docfx docfx.json in the root of the repo
-3. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
-4. Add your version number into the versionArray in web/version.js
-5. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
+1. Create your docfx docs by calling docfx docfx.json in the root of the repo
+1. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
+1. Add your version number into the versionArray in web/version.js
+1. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
 
 CI will pick up the changes done to the version.js file and update the version dropdown automatically.
 

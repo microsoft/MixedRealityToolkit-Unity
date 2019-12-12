@@ -35,5 +35,5 @@ private void Update()
 ```
 
 ## System keyboard example ##
-You can see simple example of how to bring up system keyboard in 
-[`MixedRealityKeyboard.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/UX/MixedRealityKeyboard.cs)
+
+You can see a simple example of how to bring up system keyboard in [`MixedRealityKeyboard.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/UX/MixedRealityKeyboard.cs)

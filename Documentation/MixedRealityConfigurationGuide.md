@@ -71,7 +71,6 @@ The camera settings define how the camera will be setup for your Mixed Reality p
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
-
 ---
 <a name="inputsystem"></a>
 
@@ -96,7 +95,6 @@ Each of the individual profiles are detailed below:
 * [Controller mapping configuration](#mapping)
 * [Controller visualization settings](#visualization)
 
-
 ---
 <a name="boundary"></a>
 
@@ -105,7 +103,6 @@ Each of the individual profiles are detailed below:
 The boundary system translates the perceived boundary reported by the underlying platforms boundary / guardian system. The Boundary visualizer configuration gives you the ability to automatically show the recorded boundary within your scene relative to the user's position.The boundary will also react / update based on where the user teleports within the scene.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="teleportation"></a>
@@ -129,7 +126,7 @@ You can view the architecture behind the [MRTK Spatial awareness system here](..
 The Mixed Reality Toolkit spatial awareness configuration lets you tailor how the system starts, whether it is automatically when the application starts
 or later programmatically as well as setting the extents for the field of view.
 
-It also lets you configure the mesh and surface settings, further customizing how your project understands the environment around you. 
+It also lets you configure the mesh and surface settings, further customizing how your project understands the environment around you.
 
 This is only applicable for devices that can provide a scanned environment.
 
@@ -147,7 +144,6 @@ An optional but highly useful feature of the MRTK is the plugin diagnostics func
 The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display panel in the scene.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="scenesystem"></a>
@@ -168,7 +164,6 @@ One of the more advanced areas of the Mixed Reality Toolkit is its [service loca
 Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="inputactions"></a>
@@ -222,7 +217,6 @@ Pointers are used to drive interactivity in the scene from any input device, giv
 Pointers can also be visualized within the active scene using one of the many line components provided by the Mixed Reality Toolkit, or any of your own if they implement the MRTK IMixedRealityPointer interface.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
-
 
 * Pointing Extent: Determines the global pointing extent for all pointers, including gaze.
 * Pointing Raycast Layer Masks: Determines which layers pointers will raycast against.
@@ -321,7 +315,7 @@ You can enable service inspectors by checking *Use Service Inspectors* under *Ed
 
 ### Depth Buffer Renderer
 
-Sharing the depth buffer with some mixed reality platforms can improve [hologram stabilization](hologram-stabilization.md). For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user. 
+Sharing the depth buffer with some mixed reality platforms can improve [hologram stabilization](hologram-stabilization.md). For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user.
 
 To ensure a scene renders all necessary data to the depth buffer, developers can toggle the *Render Depth Buffer* feature under *Editor Settings* in the Configuration Profile. This will take the current depth buffer and render it as color to the scene view by applying a post-processing effect, [`DepthBufferRenderer`](xref:Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer), to the main camera.
 
@@ -330,4 +324,4 @@ To ensure a scene renders all necessary data to the depth buffer, developers can
 
 ## See Also
 
-- [Hologram Stabilization](hologram-stabilization.md).
+* [Hologram Stabilization](hologram-stabilization.md)

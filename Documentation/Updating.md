@@ -104,11 +104,11 @@ The input simulation system has been upgraded, which changes a few settings in t
 
 1. All KeyCode and mouse button bindings in the profile have been replaced with a generic `KeyBinding` struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
 
-    * FastControlKey
-    * ToggleLeftHandKey
-    * ToggleRightHandKey
-    * LeftHandManipulationKey
-    * RightHandManipulationKey
+    - FastControlKey
+    - ToggleLeftHandKey
+    - ToggleRightHandKey
+    - LeftHandManipulationKey
+    - RightHandManipulationKey
 
 1. `MouseLookToggle` was previously included in the `MouseLookButton` enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
 1. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.

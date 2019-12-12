@@ -12,7 +12,9 @@ Near Menu is a UX control which provides a collection of buttons or other UI com
 <img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Grab.png">
 
 ## Prefabs ##
+
 Near Menu prefabs are designed to demonstrate how to use MRTK's various components to build menus for near interactions.
+
 - **NearMenuExample3x1.prefab**
 - **NearMenuExample3x2.prefab**
 - **NearMenuExample3x3.prefab**
@@ -20,19 +22,21 @@ Near Menu prefabs are designed to demonstrate how to use MRTK's various componen
 - **NearMenuExample4x2.prefab**
 
 ## Example scene ##
+
 You can find examples of Near Menu prefabs in the `NearMenuExamples` scene.
 
 <img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Examples.png">
 
 ## Structure ##
+## Structure
 Near Menu prefabs are made with following MRTK components.
+
 - [**PressableButtonHoloLens2**](README_Button.md) prefab
 - [**Grid Object Collection**](README_ObjectCollection.md): Multiple button layout in grid
 - [**Manipulation Handler**](README_ManipulationHandler.md): Grab and move the menu
 - [**RadialView Solver**](README_Solver.md): Follow Me(tag-along) behavior
 
 ![Near Menu Prefab](../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Structure.png)
-
 
 ## How to customize ##
 
@@ -51,7 +55,7 @@ You can configure the number of rows using `Rows` property of the Grid Object Co
 
 **3. Adjust the backplate size**
 
-Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be 0.032 * [Number of the buttons + 1]. For example, if you have 3 x 2 buttons, the width of the backplate is 0.032 * 4 and the height is 0.032 * 3. You can directly put this expression into the Unity's field. 
+Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be 0.032 * [Number of the buttons + 1]. For example, if you have 3 x 2 buttons, the width of the backplate is 0.032 * 4 and the height is 0.032 * 3. You can directly put this expression into the Unity's field.
 <br/><img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png" width="450">
 
 *Default size of the HoloLens 2 button is 3.2x3.2 cm (0.032m)
@@ -64,4 +68,3 @@ Adjust the size of the `Quad` under `Backplate` object. The width and height of 
 - [**Grid Object Collection**](README_ObjectCollection.md)
 - [**Manipulation Handler**](README_ManipulationHandler.md)
 - [**RadialView Solver**](README_Solver.md)
-
