@@ -147,7 +147,7 @@ Custom events can be created in two main ways:
 
 The [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) class under `MixedRealityToolkit.Examples` displays status information about an *Interactable* and is an example how to create a custom Event Receiver.
 
-``` csharp
+```c#
 public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 {
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
@@ -156,7 +156,7 @@ public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 
 The following methods are useful to override/implement when creating a custom Event Receiver. [`ReceiverBase.OnUpdate()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) is an abstract method that can be used to detect state patterns/transitions. Furthermore, the [`ReceiverBase.OnVoiceCommand()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) and [`ReceiverBase.OnClick()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) methods are useful for creating custom event logic when the *Interactable* is selected.
 
-``` csharp
+```c#
 public override void OnUpdate(InteractableStates state, Interactable source)
 {
     if (state.CurrentState() != lastState)
@@ -187,7 +187,7 @@ public virtual void OnClick(InteractableStates state,
 
 *ReceiverBase* scripts use [`InspectorField`](xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField) attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an *Interactable* GameObject is selected and has the associated *Event Receiver* type added.
 
-```csharp
+```c#
 [InspectorField(Label = "<Property label>",Tooltip = "<Insert tooltip info>",Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 ```
@@ -217,7 +217,7 @@ While the [`SelectionMode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionMode
 
 Developers can utilize the [`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) and [`IsToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) interfaces to get/set the toggle state of an *Interactable* via code.
 
-```csharp
+```c#
 // If using SelectionMode = Toggle (i.e Dimensions == 2)
 
 // Make the Interactable selected and toggled on
@@ -255,7 +255,7 @@ Every click event will advance the `DimensionIndex` by 1 at runtime until the `D
 
 Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) to determine which dimension is currently active.
 
-```csharp
+```c#
 // If using SelectionMode = Multi-dimension (i.e Dimensions >= 3)
 
 //Access the current DimensionIndex
@@ -272,7 +272,7 @@ myInteractable.IncreaseDimension();
 
 *Interactable* can be easily added to any GameObject at runtime. The following example demonstrates how to assign a profile with a [visual theme](visualthemes.md).
 
-```csharp
+```c#
 var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 var interactable = interactableObject.AddComponent<Interactable>();
 
@@ -308,7 +308,7 @@ interactable.TriggerOnClick()
 
 One can add an action to the base [`Interactable.OnClick`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.OnClick) event via code with the following example.
 
-```csharp
+```c#
 public static void AddOnClick(Interactable interactable)
 {
     interactable.OnClick.AddListener(() => Debug.Log("Interactable clicked"));
@@ -319,7 +319,7 @@ Use the [`Interactable.AddReceiver<T>()`](xref:Microsoft.MixedReality.Toolkit.UI
 
 The example code below demonstrates how to add an [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver), which listens for focus enter/exit, and furthermore define action code to perform when the event instances fire.
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -331,7 +331,7 @@ public static void AddFocusEvents(Interactable interactable)
 
 The example code below demonstrates how to add an [InteractableOnToggleReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver), which listens for selected/deselected state transitions on toggle-able *Interactables*, and furthermore define action code to perform when the event instances fire.
 
-```csharp
+```c#
 public static void AddToggleEvents(Interactable interactable)
 {
     var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();

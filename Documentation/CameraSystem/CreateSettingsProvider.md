@@ -60,7 +60,7 @@ All camera settings providers must implement the [`IMixedRealityCameraSettingsPr
 interface, which specifies the minimum functionality required by the camera system. The MRTK foundation includes the [`BaseCameraSettingsProvider`](xref:Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider)
 class which provides a default implementation of the required functionality.
 
-``` c#
+```c#
 namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     public class UnityARCameraSettings : BaseCameraSettingsProvider
@@ -73,7 +73,7 @@ namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 A key step in creating a camera settings provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
 attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the Camera System profile as well as name, folder path, and more.
 
-``` c#
+```c#
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
@@ -115,7 +115,7 @@ In the Mixed Reality Toolkit, data providers are configured using [profiles](../
 
 Profile contents should mirror the developer selectable configuration options. Any user configurable properties defined in each interface should also be contained with the profile.
 
-```csharp
+```c#
 using UnityEngine.SpatialTracking;
 
 namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
@@ -164,7 +164,7 @@ Profile inspectors are the user interface for configuring and viewing profile co
 
 The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
-```csharp
+```c#
 namespace namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     [CustomEditor(typeof(UnityARCameraSettingsProfile))]

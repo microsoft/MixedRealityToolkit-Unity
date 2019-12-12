@@ -211,7 +211,7 @@ New API `RegisterHandler` and `UnregisterHandler`:
 
 **_Examples of migration_**
 
-```csharp
+```c#
 // Old
 class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
 {
@@ -243,7 +243,7 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 }
 ```
 
-```csharp
+```c#
 // Old
 class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {

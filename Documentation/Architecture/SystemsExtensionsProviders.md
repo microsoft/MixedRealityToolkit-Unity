@@ -9,7 +9,7 @@ Systems are services that provide the core functionality of the Mixed Reality To
 [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface.
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
-- CameraSystem
+- [CameraSystem](../CameraSystem/CameraSystemOverview.md)
 - [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md)
 - [InputSystem](../Input/Overview.md)
 - [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md)
@@ -56,7 +56,7 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.
 
-``` c#
+```c#
 if (CoreServices.InputSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
@@ -88,7 +88,7 @@ The MRTK spatial awareness system utilizes only data providers that implement th
 
 The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 
-``` c#
+```c#
 if (CoreServices.SpatialAwarenessSystem != null)
 {
     IMixedRealityDataProviderAccess dataProviderAccess =

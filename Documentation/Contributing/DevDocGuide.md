@@ -20,8 +20,8 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 ### Generation
 
 * open a powershell or cmd prompt in the root of the MRTK project
-* execute docfx docfx.json (optionally with the -f option to force a rebuild of doc files)
-* execute docfx serve doc (optionally with -p *portnumber* if you don't want to use the 8888 default port)
+* execute `docfx docfx.json` (optionally with the -f option to force a rebuild of doc files)
+* execute `docfx serve doc` (optionally with -p *portnumber* if you don't want to use the 8888 default port)
 * open a web browser with localhost:*portnumber*
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
@@ -40,9 +40,9 @@ For external apis that don't provide an xref service hrefs to the documentation 
 
 Examples:
 
-```csharp
+```c#
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
+/// <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
@@ -122,10 +122,10 @@ Multiple versions of developer docs are supported and can be switched by the ver
 Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
 ```json
- "_gitContribute": {
-        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
-        "branch": "mrtk_development"
-      }
+"_gitContribute": {
+    "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
+    "branch": "mrtk_development"
+}
 ```
 
 If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.

@@ -23,15 +23,15 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 
 The following software is required.
 
-- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
-- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
-- Unity 2018.4, 2019.1 or 2019.2
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
 
 NuGet requirements
 
 If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
 
-- [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
+- [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
 ### Upgrading projects to 2.2.0
 
@@ -115,7 +115,7 @@ The fingertip cursor's translation and alignment have been updated to better mat
 
 **GridObjectCollection supports content alignment**
 
-The GridObjectCollection UX control now supports aligning content to combinations of
+The [GridObjectCollection UX control](README_ObjectCollection.md) now supports aligning content to combinations of
 
 - Left
 - Center
@@ -150,7 +150,7 @@ InteractableToggleCollection now properly updates the toggle states within group
 
 **Mixed Reality Capture setting (Experimental)**
 
-The Windows Mixed Reality camera settings provider provides an experimental setting to better align holograms in mixed reality capture (MRC) recordings.
+The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
 
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
@@ -165,7 +165,9 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 **MSBuild for Unity**
 
-MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). This is an optional install that can be performed with the Mixed Reality Toolkit > Utilities > Configure Unity menu item and at project load time.
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)).
+
+This is an optional install that can be performed with the **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** menu item and at project load time.
 
 > [!Note]
 > Some new MRTK features (ex: HoloLens 2 hand and eye remoting) require installing MSBuild for Unity.
@@ -216,24 +218,7 @@ A new example scene has been added, which demonstrates surface magnetism and the
 
 MRTK adds support for articulated hands and eye tracking when running an application via Holographic Remoting on a HoloLens 2.
 
-To enable hand and eye tracking via Holographic Remoting, the following one-time steps are required.
-
-1. Run the MRTK Configurator Utility (**Mixed Reality Toolkit > Utilities > Configure Unity Project**)
-    - Expand **Modify Configurations**
-    - Ensure that **Enable MSBuild for Unity** is selected
-    - Click **Apply**
-1. Ensure the latest Holographic Remoting application is installed, via the Microsoft Store application, on the HoloLens.
-1. Open **Window > Package Manager** and ensure the latest version of the **Windows Mixed Reality** package is installed.
-
-Once the previous steps have been performed, the following will allow running the application on a HoloLens 2 from within the Unity Editor.
-
-1. On the HoloLens 2, launch **Holographic Remoting**
-1. Open **Window > XR > Holographic Emulation**.
-1. Set the **Enumulation Mode** to **Remote to Device**.
-1. Set **Device Version** to **HoloLens 2**.
-1. Enter the IP Address displayed in the HoloLens 2.
-1. Click **Connect**.
-1. When **Connection Status** becomes **Connected**, click the Unityh Editor's play button.
+Please refer to the [Holographic Remoting](Tools/HolographicRemoting.md) article for details on how to configure and use remoting.
 
 > [!Note]
 > This feature requires installing MSBuild for Unity, which will install the [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/) package from NuGet.
@@ -277,13 +262,21 @@ To work around this issue, please perform one of the following steps:
 - Switch the scripting backend to IL2CPP
 - In the Build Settings window, uncheck **Unity C# Projects"
 
-**System.IO.DirectoryNotFoundException: Could not find a part of the path**
+**Hang when using Holographic Remoting**
 
-There has been an issue discovered related to projects with a space in the folder path (ex: C:\New Project). This may manifest as a failure to load one or more Package Manager packages. If you encounter this situation, please close Unity and rename the folder containing the spaces.
+There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded.
 
-For the latest status of the issue, please refer to the following on GitHub.
+To work around the issue, please perform the following steps:
 
-- https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6810
+1. With the project open, close the Holographic dialog.
+1. Close Unity
+1. Reopen Unity and open the project.
+
+**Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter**
+
+When remoting, the Unity Console window may display a message stating "Failed to get IHolographicCameraRenderingParameters from main camera for updating rendering parameter".
+
+This error most commonly occurs when a hand comes into view. There is no functional impact on the application and this issue is being tracked on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6807).
 
 **Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation'**
 
@@ -304,13 +297,13 @@ Enabling this feature on other versions of Unity may result in incorrect capture
 
 **MRTK Configurator dialog**
 
-When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version oF the MRTK.
+When loading an MRTK based project, the MRTK Configurator dialog may display multiple times. This is related to MRTK detecting multiple loads of the project. This issue will be investigated and addressed in a future version of the MRTK.
 
 **The type or namespace name 'TrackedPoseDriver' could not be found**
 
 If the Providers.UnityAR package is installed in a project created in Unity 2019.2 or newer, the following error indicates that the assembly definition file (Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef) needs to be updated to include a reference to **UnityEngine.SpatialTracking**. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
 
-If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.
 
 ## Version 2.1.0
 
@@ -336,7 +329,7 @@ NuGet requirements
 If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
- 
+
 ### Upgrading projects to 2.1.0
 
 **Updating using .unitypackage files**
@@ -394,8 +387,8 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
 
 After updating the packages, you may see messages similar to the following:
 
-```
-Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
+```cmd
+Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat'
 ```
 
 The step to re-open the project in Unity resolves the issue.
@@ -428,7 +421,7 @@ The hand menu example has received visual updates (no code changes).
 
 **MRTK Examples Hub (Experimental)**
 
-The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package, in the Experimental folder. For information on how to build and use the sample, please see the [examples hub](README_ExampleHub.md) article. 
+The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package, in the Experimental folder. For information on how to build and use the sample, please see the [examples hub](README_ExampleHub.md) article.
 
 **Near menu control**
 
@@ -446,7 +439,7 @@ A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has b
 
 **Mesh Outlining**
 
-A component `MeshOutline` and `MeshOutlineHierarchy` to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices. 
+A component `MeshOutline` and `MeshOutlineHierarchy` to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices.
 
 See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562) for more details
 
@@ -454,7 +447,7 @@ See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/55
 
 We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
 
-```
+```c#
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -476,7 +469,7 @@ We had feedback that it's difficult to find out where the hand is pointing, or w
 
 Please see [change 5944](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944) for details.
 
-```csharp
+```c#
 // Get the head ray
 var headRay = InputRayUtils.GetHeadGazeRay();
 
@@ -496,7 +489,7 @@ It's now possible to instantiate and configure interactable from code. See [chan
 
 It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -511,7 +504,7 @@ Keys for rotating hands have been removed, hand rotation is now controlled by th
 
 **Layer Masks for Grabbable objects**
 
-We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects. 
+We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects.
 
 An object must both be on a Grabbable Layer as well as have a NearInteractionGrabbable component in order for hand rays to turn off. The Grabbable Layer is by default set to everything except Ignore Raycast and Spatial Awareness.
 
@@ -550,6 +543,7 @@ The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages 
 
 Interactable has been upgraded to be configurable from code. The following methods in `Interactable` are now marked Obsolete:
 
+```c#
 public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)
@@ -576,6 +570,7 @@ public virtual void SetCustom(bool custom)
 public virtual void SetVoiceCommand(bool voice)
 public virtual void SetPhysicalTouch(bool touch)
 public virtual void SetGrab(bool grab)
+```
 
 Please see [change 6104](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6104) for more details.
 
