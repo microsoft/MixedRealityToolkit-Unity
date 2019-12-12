@@ -315,7 +315,7 @@ public class HitBehaviorDestroyOnSelect : MonoBehaviour
 }
 ```
 
-### Example #4: Use hand rays and eye gaze input together!
+### Example #4: Use hand rays and eye gaze input together
 
 Hand rays take priority over head and eye gaze targeting. This means, if hand rays are enabled, the moment the hands come into view, the hand ray will act as the primary pointer.
 However, there might be situations in which you want to use hand rays while still detecting whether a user is looking at a certain hologram. Easy! Essentially you require two steps:

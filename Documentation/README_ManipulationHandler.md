@@ -1,10 +1,10 @@
-# Manipulation handler #
+# Manipulation handler
 
 ![Manipulation handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
 
 The *ManipulationHandler* script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation. The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens (1st gen) gesture input, and immersive headset motion controller input.
 
-## How to use the manipulation handler ##
+## How to use the manipulation handler
 
 Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) component to a GameObject.
 
@@ -14,7 +14,7 @@ If you wish to set minimum or maximum values for the object's scale, you can add
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
-## Inspector properties ##
+## Inspector properties
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
@@ -89,7 +89,7 @@ Specifies whether smoothing is active.
 **Smoothing Amount One Hand**
 Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
 
-## Events ##
+## Events
 
 Manipulation handler provides the following events:
 

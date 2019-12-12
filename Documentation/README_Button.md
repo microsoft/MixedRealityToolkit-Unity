@@ -189,7 +189,7 @@ You will see the object responds to both far(hand ray or gaze cursor) and near(h
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
-## Custom Button Examples ##
+## Custom Button Examples
 
 In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`.
 
