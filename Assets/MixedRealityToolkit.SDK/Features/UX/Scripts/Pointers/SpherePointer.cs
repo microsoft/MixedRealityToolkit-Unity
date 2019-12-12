@@ -294,12 +294,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Bounds b = myCollider.bounds;
                 var corners = new List<Vector3>();
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
+                float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
+                float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
                 foreach (var pt in corners)
                 {
                     if (isPointInFrustrum(pt))
                     {
                         return true;
                     }
+
+                    xMin = Mathf.Min(xMin, pt.x);
+                    yMin = Mathf.Min(yMin, pt.y);
+                    zMin = Mathf.Min(zMin, pt.z);
+                    xMax = Mathf.Max(xMax, pt.x);
+                    yMax = Mathf.Max(yMax, pt.y);
+                    zMax = Mathf.Max(zMax, pt.z);
+                }
+
+                // edge case: check if camera is inside the entire bounds of the collider;
+                var cameraPos = CameraCache.Main.transform.position;
+                if (xMin <= cameraPos.x && cameraPos.x <= xMax 
+                    && yMin <= cameraPos.y && cameraPos.y <= yMax
+                    && zMin <= cameraPos.z && cameraPos.z <= zMax)
+                {
+                    return true;
                 }
                 return false;
             }
