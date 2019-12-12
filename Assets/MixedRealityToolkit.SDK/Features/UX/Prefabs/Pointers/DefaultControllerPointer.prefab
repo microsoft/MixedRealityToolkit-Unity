@@ -174,8 +174,8 @@ LineRenderer:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0.52746874}
-      key3: {r: 0, g: 0, b: 0, a: 0.52746874}
+      key2: {r: 0, g: 0, b: 0, a: 0.29010782}
+      key3: {r: 0, g: 0, b: 0, a: 0.29010782}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -224,8 +224,8 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-    key2: {r: 0, g: 0, b: 0, a: 0.52746874}
-    key3: {r: 0, g: 0, b: 0, a: 0.52746874}
+    key2: {r: 0, g: 0, b: 0, a: 0.29010782}
+    key3: {r: 0, g: 0, b: 0, a: 0.29010782}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -279,7 +279,7 @@ MonoBehaviour:
   stepMode: 0
   lineStepCount: 10
   pointDistributionMode: 1
-  customPointDistributionLength: 0.2
+  customPointDistributionLength: 0.1
   customPointDistributionCurve:
     serializedVersion: 2
     m_Curve:

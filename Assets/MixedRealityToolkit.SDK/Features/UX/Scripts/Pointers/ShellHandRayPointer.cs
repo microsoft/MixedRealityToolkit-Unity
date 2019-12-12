@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Material lineMaterialSelected = null;
 
         [SerializeField]
-        // TODO: Troy - comment
         [Tooltip("Used when a no focus target exists and select is not pressed")]
         private Material lineMaterialNoTarget = null;
 
