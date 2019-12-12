@@ -87,7 +87,7 @@
   <h1 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper" class="text-break">Class GUIEnabledWrapper
   </h1>
   <div class="markdown level0 summary"><p>Similar to the scope classes in Unity (i.e VerticalScope),
-this class is a helper class designed to manage GUI.enabled over some lifetime
+This class is a helper class designed to force enable GUI.enabled over some lifetime
 Should be utilized with using{} code block</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -107,39 +107,14 @@ Should be utilized with using{} code block</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper__ctor_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.#ctor(System.Boolean,System.Boolean)">GUIEnabledWrapper(Boolean, Boolean)</h4>
-  <div class="markdown level1 summary"><p>If overwrite is true, then whatever enable value is provided will be set for lifetime of exec action
-If overwrite is false, then will only enable GUI if already was enabled</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_GUIEnabledWrapper__ctor" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.GUIEnabledWrapper.#ctor">GUIEnabledWrapper()</h4>
+  <div class="markdown level1 summary"><p>Captures whether the Unity editor GUI state was enabled or not. Then forces enable to true</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GUIEnabledWrapper(bool enable, bool overwrite = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public GUIEnabledWrapper()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">enable</span></td>
-        <td><p>desired GUI.enabled value</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">overwrite</span></td>
-        <td><p>control to disregard whether GUI.enabled was already set</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
