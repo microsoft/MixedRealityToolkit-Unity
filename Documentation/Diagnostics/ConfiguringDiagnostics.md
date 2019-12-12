@@ -42,7 +42,7 @@ The speed at which to move the profiler window to maintain visibility within the
 
 It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime. For example, the code below will hide the diagnostics system and profiler.
 
-```C#
+```c#
 CoreServices.DiagnosticsSystem.ShowDiagnostics = false;
 
 CoreServices.DiagnosticsSystem.ShowProfiler = false;

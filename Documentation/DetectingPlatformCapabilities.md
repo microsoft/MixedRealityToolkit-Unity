@@ -24,7 +24,7 @@ The default MRTK Input System supports querying the following capabilities:
 
 The example code below checks to see if the input system has loaded a data provider with support for articulated hands.
 
-``` C#
+```c#
 bool supportsArticulatedHands = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
@@ -46,7 +46,7 @@ The default MRTK Spatial Awareness system supports querying the following capabi
 
 This example checks to see if the spatial awareness system has loaded a data provider with support for spatial meshes.
 
-``` C#
+```c#
 bool supportsSpatialMesh = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.SpatialAwarenessSystem as IMixedRealityCapabilityCheck;

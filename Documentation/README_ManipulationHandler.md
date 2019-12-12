@@ -8,7 +8,7 @@ The *ManipulationHandler* script allows for an object to be made movable, scalab
 
 Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) component to a GameObject.
 
-Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well. 
+Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
 
 If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
 
@@ -40,7 +40,7 @@ Specifies whether the object can be manipulated using one hand, two hands, or bo
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
 
 **Allow Far Manipulation**
-Specifies whether manipulation can be done using far interaction with pointers. 
+Specifies whether manipulation can be done using far interaction with pointers.
 
 **One Hand Rotation Mode Near**
 Specifies how the object will behave when it is being grabbed with one hand / controller near.
@@ -79,6 +79,7 @@ Specifies on which axis the object will rotate when interacted with.
 A toggle to switch between applying constraints in repsect to world-space axis, or local space axis.
 
 **Constraints on Movement**
+
 * *None*
 * *Fix distance from head*
 
@@ -89,6 +90,7 @@ Specifies whether smoothing is active.
 Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
 
 ## Events ##
+
 Manipulation handler provides the following events:
 
 * *OnManipulationStarted*: Fired when manipulation starts.

@@ -20,15 +20,15 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 1. Select the MixedRealityToolkit object in the scene hierarchy.
 
-![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+    ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
 1. Navigate the Inspector panel to the Boundary System section and check Enable
 
-![Enable the Boundary System](../../Documentation/Images/Boundary/MRTKConfig_Boundary.png)
+    ![Enable the Boundary System](../../Documentation/Images/Boundary/MRTKConfig_Boundary.png)
 
 1. Select the Boundary System implementation. The default class implementation provided by the MRTK is the [`MixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem)
 
-![Select the Boundary System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
+    ![Select the Boundary System Implementation](../../Documentation/Images/Boundary/BoundarySelectSystemType.png)
 
 > [!NOTE]
 > All Boundary System implementation must extend the [`IMixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem)
@@ -53,7 +53,7 @@ Once the boundary system is configured with the desired visualization options, t
 
 If enabled and configured, the Boundary System can be accessed via the CoreServices static helper class. The reference can then be used to dynamically change the Boundary parameters and access related GameObjects managed by the system.
 
-```csharp
+```c#
 // Hide Boundary Walls at runtime
 CoreServices.BoundarySystem.ShowBoundaryWalls = false;
 

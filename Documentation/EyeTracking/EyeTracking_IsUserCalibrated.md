@@ -16,7 +16,7 @@ This page covers the following:
 
 ### How to detect the eye calibration state
 
-The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a ```bool?``` property called ```IsEyeGazeValid```.
+The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
@@ -40,9 +40,9 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
       - The app gets restarted
       - A valid user has been detected and then a new uncalibrated user has put the device on
 
-   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a ```bool editorTestUserIsCalibrated``` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
+   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a `bool editorTestUserIsCalibrated` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
 
-```csharp
+```c#
     private bool? prevCalibrationStatus = null;
     ...
 

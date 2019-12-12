@@ -1,14 +1,18 @@
 # Lighting Scene Operations
+
 The default lighting scene defined in your profile is loaded on startup. That lighting scene remains loaded until `SetLightingScene` is called.
 
-```
+```c#
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 sceneSystem.SetLightingScene("MorningLighting");
 ```
+
 ## Lighting Setting Transitions
+
 `transitionType` controls the style of the transition to new lighting scene.
-```
+
+```c#
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 sceneSystem.SetLightingScene("MiddayLighting", LightingSceneTransitionType.CrossFade);

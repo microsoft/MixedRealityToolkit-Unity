@@ -2,16 +2,16 @@
 
 ## Getting started
 
-The easiest way to rationalize performance is via framerate or how many times your application can render an image per second. It is important to meet the target framerate, as outlined by the platform being targeted (i.e [Windows Mixed Reality](https://docs.microsoft.com/en-us/windows/mixed-reality/understanding-performance-for-mixed-reality), [Oculus](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/), etc). For example, on HoloLens, the target framerate is 60 FPS. Low framerate applications can result in deteriorated user experiences such as worsened [hologram stabilization](../hologram-Stabilization.md), world tracking, hand tracking, and more. To help developers track and achieve quality framerate, the Mixed Reality Toolkit provides a variety of tools and scripts.
+The easiest way to rationalize performance is via framerate or how many times your application can render an image per second. It is important to meet the target framerate, as outlined by the platform being targeted (i.e [Windows Mixed Reality](https://docs.microsoft.com/windows/mixed-reality/understanding-performance-for-mixed-reality), [Oculus](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/), etc). For example, on HoloLens, the target framerate is 60 FPS. Low framerate applications can result in deteriorated user experiences such as worsened [hologram stabilization](../hologram-Stabilization.md), world tracking, hand tracking, and more. To help developers track and achieve quality framerate, the Mixed Reality Toolkit provides a variety of tools and scripts.
 
 ### Visual Profiler
 
 To continuously track performance over the lifetime of development, it is highly recommended to always show a framerate visual while running & debugging an application. The Mixed Reality Toolkit provides the [Visual Profiler](../Diagnostics/UsingVisualProfiler.md) diagnostic tool which gives real-time information about the current FPS and memory usage in application view. The Visual Profiler can be configured via the [Diagnostics System Settings](../Diagnostics/DiagnosticsSystemGettingStarted.md) under the [MRTK Profiles Inspector](../MixedRealityConfigurationGuide.md).
 
-Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on the device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on the device with [Release configuration builds](https://docs.microsoft.com/en-us/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019).
+Furthermore, it is particularly important to utilize the Visual Profiler to track framerate when running on the device as opposed to running in Unity editor or an emulator. The most accurate performance results will be depicted when running on the device with [Release configuration builds](https://docs.microsoft.com/visualstudio/debugger/how-to-set-debug-and-release-configurations?view=vs-2019).
 
 > [!NOTE]
-> If building for Windows Mixed Reality, deploy with [MASTER configuration builds](https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution)
+> If building for Windows Mixed Reality, deploy with [MASTER configuration builds](https://docs.microsoft.com/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution#building_and_deploying_a_unity_visual_studio_solution)
 
 ![Visual Profiler Interface](../../Documentation/Images/Diagnostics/VisualProfiler.png)
 
@@ -90,7 +90,7 @@ If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lowe
 > If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead, which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
 
 > [!NOTE]
-> To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the [*Render Depth Buffer* utility](../MixedRealityConfigurationGuide.md#editor-utilities) under the *Editor Settings* in the MRTK Configuration profile. 
+> To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the [*Render Depth Buffer* utility](../MixedRealityConfigurationGuide.md#editor-utilities) under the *Editor Settings* in the MRTK Configuration profile.
 
 ## General Recommendations
 
@@ -132,7 +132,7 @@ For example, if there are a 100 cubes in a scene, a developer may want to assign
 
 To overcome this obstacle and still assign a unique color per cube, developers should leverage [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html).
 
-```csharp
+```c#
 private PropertyBlock m_PropertyBlock ;
 private Renderer myRenderer;
 
@@ -184,9 +184,9 @@ MRTK Standard shader statistics example
 
 ### Windows Mixed Reality
 
-- [Recommended Settings for Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/recommended-settings-for-unity)
-- [Understanding Performance for Mixed Reality](https://docs.microsoft.com/en-us/windows/mixed-reality/understanding-performance-for-mixed-reality)
-- [Performance recommendations for Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/performance-recommendations-for-unity)
+- [Recommended Settings for Unity](https://docs.microsoft.com/windows/mixed-reality/recommended-settings-for-unity)
+- [Understanding Performance for Mixed Reality](https://docs.microsoft.com/windows/mixed-reality/understanding-performance-for-mixed-reality)
+- [Performance recommendations for Unity](https://docs.microsoft.com/windows/mixed-reality/performance-recommendations-for-unity)
 - [Event Tracing for Windows Unity Guide](https://docs.unity3d.com/uploads/ExpertGuides/Analyzing_your_game_performance_using_Event_Tracing_for_Windows.pdf)
 
 ### Oculus

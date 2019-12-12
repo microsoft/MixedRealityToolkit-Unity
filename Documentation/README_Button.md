@@ -36,6 +36,7 @@ The [`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blo
 ### Unity UI based buttons
 
 Create a Canvas in your scene (GameObject -> UI -> Canvas). In the Inspector panel for your Canvas:
+
 * Click "Convert to MRTK Canvas"
 * Click "Add NearInteractionTouchableUnityUI"
 * Set the Rect Transform component's X, Y, and Z scale to 0.001
@@ -96,15 +97,15 @@ The *ButtonContent* object contains front plate, text label and icon. The *Fron
 
 ## How to change the icon and text
 
-To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned. 
+To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate1.png">
 
-To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder. 
+To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate2.png"  width="350">
 
-Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. ``MixedRealityToolkit.SDK/Features/UX/Interactable/Textures`` 
+Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. ``MixedRealityToolkit.SDK/Features/UX/Interactable/Textures``
 
 Drag and drop newly created PNG texture onto the *Albedo* property in the material.
 
@@ -113,7 +114,6 @@ Drag and drop newly created PNG texture onto the *Albedo* property in the materi
 Assgin the material to the *UIButtonSquareIcon* object.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate4.png">
-
 
 ## Voice command ('See-it, Say-it')
 
@@ -191,7 +191,7 @@ You will see the object responds to both far(hand ray or gaze cursor) and near(h
 
 ## Custom Button Examples ##
 
-In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`. 
+In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`.
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom1.png" width="450">
 
