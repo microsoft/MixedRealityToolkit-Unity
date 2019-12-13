@@ -6,7 +6,7 @@ The *Boundary Visualization Profile* provides options for configuring the visual
 
 ![Boundary Visualization General Settings](../../Documentation/Images/Boundary/BoundaryVisualizationGeneralSettings.png)
 
-**Boundary Height**
+### Boundary Height
 
 The boundary height indicates the distance above the floor plane at which the boundary ceiling should be rendered. The default value is 3 meters.
 
