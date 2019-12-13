@@ -84,8 +84,8 @@
 
 <p>One of the main ways that the MRTK is configured is through the many profiles available in the foundation package. The main <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html"><code>MixedRealityToolkit</code></a> object in a scene will have the active profile, which is essentially a ScriptableObject. The top level MRTK Configuration Profile contains sub-profile data for each core of the primary core systems, each of which are designed to configure the behavior of their corresponding sub-systems. Furthermore, these sub-profiles are also Scriptable Objects and thus can contain references to other profile objects one level below them. There is essentially an entire tree of connected profiles that make up the configuration information for how to initialize the MRTK sub-systems and features.</p>
 <p>For example, the Input system's behavior is governed by an <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset">input system profile object</a>. It's highly recommended to always modify the profile ScriptableObject assets via the in-editor inspector.</p>
-<p><img src="../Images/Profiles/input_profile.png" width="650px" style="display:block;"><br>
-<sup>Profile Inspector</sup></p>
+<img src="../Images/Profiles/input_profile.png" width="650px" style="display:block;">
+<sup>Profile Inspector</sup>
 <div class="NOTE">
 <h5>Note</h5>
 <p>While it is intended that profiles can be swapped out at runtime, this <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">currently does not work</a></p>

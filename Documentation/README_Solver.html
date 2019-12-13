@@ -129,8 +129,7 @@
 <h5>Note</h5>
 <p>For both <em>ControllerRay</em> and <em>HandJoint</em> types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the <code>TrackedHandedness</code> property specifies otherwise.</p>
 </div>
-<p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver">
-<br>
+<p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver"><br>
 <em>Example of various properties associated with each TrackedTargetType</em></p>
 <h2 id="how-to-chain-solvers">How to chain Solvers</h2>
 <p>It is possible to add multiple <code>Solver</code> components to the same GameObject thus chaining their algorithms. The <code>SolverHandler</code> components handles updating all solvers on the same GameObject. By default the <code>SolverHandler</code> calls <code>GetComponents&lt;Solver&gt;()</code> on Start which will return the Solvers in the order that they appear in the inspector.</p>
@@ -164,29 +163,25 @@ public class InFront : Solver
 <p>Every Solver component has a core-set of identical properties that control the core Solver behavior.</p>
 <p>If <em>Smoothing</em> is enabled, then the Solver will gradually update the transform of the GameObject over time to the calculated values. The speed of this change is determined by every transform component's <em>LerpTime</em> property. For example, a higher <em>MoveLerpTime</em> value will result in slower increments in movement between frames.</p>
 <p>If <em>MaintainScale</em> is enabled, then the Solver will utilize the GameObject's default local scale.</p>
-<p><img src="Images/Solver/GeneralSolverProperties.png" alt="Core Solver Properties">
-<br>
+<p><img src="Images/Solver/GeneralSolverProperties.png" alt="Core Solver Properties"><br>
 <em>Common properties inherited by all Solver components</em></p>
 <h3 id="orbital">Orbital</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital.html"><code>Orbital</code></a> class is a tag-along component that behaves like planets in a solar system. This Solver will ensure the attached GameObject orbits around the tracked transform. Thus, if the <em>Tracked Target Type</em> of the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> is set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>, then the GameObject will orbit around the user's head with a fixed offset applied.</p>
 <p>Developers can modify this fixed offset to keep menus or other scene components at eye-level or at waist level etc. around a user. This is done by modifying the <em>Local Offset</em> and <em>World Offset</em> properties. The <em>Orientation Type</em> property determines the rotation applied to the object if it should maintain its original rotation or always face the camera or face whatever transform is driving its position etc.</p>
-<p><img src="Images/Solver/OrbitalExample.png" alt="Orbital Example">
-<br>
+<p><img src="Images/Solver/OrbitalExample.png" alt="Orbital Example"><br>
 <em>Orbital example</em></p>
 <h3 id="radialview">RadialView</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> is another tag-along component that keeps a particular portion of a GameObject within the frustum of the user's view.</p>
 <p>The <em>Min &amp; Max View Degrees</em> properties determines how large of a portion of the GameObject must always be in view.</p>
 <p>The <em>Min &amp; Max Distance</em> properties determines how far the GameObject should be kept from the user. For example, walking towards the GameObject with a <em>Min Distance</em> of 1m will push the GameObject away to ensure it is never closer than 1m to the user.</p>
 <p>Generally, the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> is used in conjunction with <em>Tracked Target Type</em> set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a> so that the component follows the user's gaze. However, this component can function to be kept in <em>&quot;view&quot;</em> of any <em>Tracked Target Type</em>.</p>
-<p><img src="Images/Solver/RadialViewExample.png" alt="RadialView Example">
-<br>
+<p><img src="Images/Solver/RadialViewExample.png" alt="RadialView Example"><br>
 <em>RadialView example</em></p>
 <h3 id="inbetween">InBetween</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html"><code>InBetween</code></a> class will keep the attached GameObject between two transforms. These two transform endpoints are defined by the GameObject's own <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> <em>Tracked Target Type</em> and the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html"><code>InBetween</code></a> component's <em>Second Tracked Target Type</em> property. Generally, both types will be set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_CustomOverride"><code>CustomOverride</code></a> and the resulting <code>SolverHandler.TransformOverride</code> and <code>InBetween.SecondTransformOverride</code> values set to the two tracked endpoints.</p>
 <p>At runtime, the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html"><code>InBetween</code></a> component will create another <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> component based on the <em>Second Tracked Target Type</em> and <em>Second Transform Override</em> properties.</p>
 <p>The <code>PartwayOffset</code> defines where along the line between two transforms the object shall be placed with 0.5 as halfway, 1.0 at the first transform, and 0.0 at the second transform.</p>
-<p><img src="Images/Solver/InBetweenExample.png" alt="InBetween Example">
-<br>
+<p><img src="Images/Solver/InBetweenExample.png" alt="InBetween Example"><br>
 <em>Example of using InBetween solver to keep object between two transforms</em></p>
 <h3 id="surfacemagnetism">SurfaceMagnetism</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> works by performing a raycast against a set LayerMask of surfaces and placing the GameObject at that point of contact.</p>
@@ -239,8 +234,7 @@ public class InFront : Solver
 <li><em>Visibility Scale Factor</em> - Multiplier to increase or decrease the FOV that determines if the <em>Directional Target</em> point is viewable or not</li>
 <li><em>View Offset</em> - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.</li>
 </ul>
-<p><img src="Images/Solver/DirectionalIndicatorExample.png" alt="Directional Indicator properties">
-<br>
+<p><img src="Images/Solver/DirectionalIndicatorExample.png" alt="Directional Indicator properties"><br>
 <em>Directional Indicator properties</em></p>
 <p><img src="Images/Solver/DirectionalIndicatorExampleScene.gif" alt="Directional Indicator example scene"></p>
 <p><em><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity">Directional Indicator Example Scene</a></em></p>

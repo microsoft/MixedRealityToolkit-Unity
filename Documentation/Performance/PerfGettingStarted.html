@@ -135,9 +135,9 @@ v2f vert (appdata v)
 </code></pre>
 <h3 id="quality-settings">Quality settings</h3>
 <p>Unity provides <a href="https://docs.unity3d.com/Manual/class-QualitySettings.html">presets to control quality</a> of rendering for each platform endpoint. These presets control what graphical features can be enabled such as shadows, anti-aliasing, global illumination, and more. It is recommended to lower these settings and optimize the number of calculations performed during rendering.</p>
-<p><em>Step 1:</em> Update mixed reality Unity projects to use the <em>Low Quality</em> level setting <br>
+<p><em>Step 1:</em> Update mixed reality Unity projects to use the <em>Low Quality</em> level setting<br>
 <strong>Edit</strong> &gt; <strong>Project Settings</strong>, then select the <strong>Quality</strong> category &gt;  Select <em>Low Quality</em> for the UWP Platform</p>
-<p><em>Step 2:</em> For every Unity scene file, disable <a href="https://docs.unity3d.com/Manual/LightMode-Realtime.html">real-time Global Illumination</a> <br>
+<p><em>Step 2:</em> For every Unity scene file, disable <a href="https://docs.unity3d.com/Manual/LightMode-Realtime.html">real-time Global Illumination</a><br>
 <strong>Window</strong> &gt; <strong>Rendering</strong> &gt; <strong>Lighting Settings</strong> &gt; <a href="https://docs.unity3d.com/Manual/GlobalIllumination.html">Uncheck <em>Real-time Global Illumination</em></a></p>
 <h3 id="depth-buffer-sharing-hololens">Depth buffer sharing (HoloLens)</h3>
 <p>If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling <em>Depth Buffer Sharing</em> under <em>XR Settings</em> can help with <a href="../hologram-stabilization.html">hologram stabilization</a>. However, processing of the depth buffer can incur a performance cost, particularly if using <a href="https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html">24-bit depth format</a>. Thus, it is <em>highly recommended</em> to configure the depth buffer to 16-bit precision.</p>
