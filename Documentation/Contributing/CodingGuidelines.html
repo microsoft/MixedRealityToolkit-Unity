@@ -191,7 +191,7 @@ private string myProperty;
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get { return myVariable; } }
+public int MyVariable =&gt; myVariable;
 
 // No public / private access modifiers
 void Foo() { }
@@ -391,8 +391,24 @@ private float myValue; // &lt;- Notice we co-located the backing field above our
 /// &lt;/summary&gt;
 public float MyValue
 {
-    get{ return myValue; }
-    set{ myValue = value }
+    get =&gt; myValue;
+    set =&gt; myValue = value;
+}
+
+/// &lt;summary&gt;
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// &lt;/summary&gt;
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue &lt; 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
 }
 </code></pre>
 <h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible</h3>
