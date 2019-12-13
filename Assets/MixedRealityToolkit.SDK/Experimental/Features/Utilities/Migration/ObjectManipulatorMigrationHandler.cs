@@ -109,11 +109,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             Object.DestroyImmediate(manipHandler);
         }
 
-        private void MigrateOneHandRotationModes(ref ObjectManipulator objManip, ManipulationHandler.RotateInOneHandType mode, ManipulationProximityFlags proximity)
+        private void MigrateOneHandRotationModes(ref ObjectManipulator objManip, ManipulationHandler.RotateInOneHandType oldMode, ManipulationProximityFlags proximity)
         {
             ObjectManipulator.RotateInOneHandType newMode = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
 
-            switch (mode)
+            switch (oldMode)
             {
                 case ManipulationHandler.RotateInOneHandType.MaintainRotationToUser:
                     {
