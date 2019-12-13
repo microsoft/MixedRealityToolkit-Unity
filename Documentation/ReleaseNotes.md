@@ -1,9 +1,44 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.3.0](#version-220)
 - [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.3.0
+
+- [Upgrading projects](#upgrading-projects-to-230)
+- [What's new](#whats-new-in-230)
+- [Known issues](#known-issues-in-230)
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+- (Experimental) Mobile AR
+    - Android
+    - iOS
+
+The following software is required.
+
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
+
+NuGet requirements
+
+If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
+
+- [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
+
+### Upgrading projects to 2.3.0
+
+The 2.3.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.2.0 to 2.3.0**](Updating.md#updating-220-to-230) article.
+
+### What's new in 2.3.0
+
+### Known issues in 2.3.0
 
 ## Version 2.2.0
 
