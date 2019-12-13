@@ -224,28 +224,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var pointers = inputSource.Pointers;
                 for (int i = 0; i < pointers.Length; i++)
                 {
-                    var p = pointers[i];
-                    var pointerComponent = p as MonoBehaviour;
+                    var pointer = pointers[i];
+                    var pointerComponent = pointer as MonoBehaviour;
                     if (!UnityObjectExtensions.IsNull(pointerComponent))
                     {
                         // Unfortunately, it's possible gameobject source is *being* destroyed so we are not null now but will be soon.
                         // At least if this is a controller we know about and we expect it to be destroyed, skip
-                        if (p is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
+                        if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
                         {
                             continue;
                         }
 
-                        // TODO: Troy - look at reset method or other properties?
-                        p.Controller = null;
+                        pointer.Reset();
                         pointerComponent.gameObject.SetActive(false);
 
-                        if (EnablePointerCache && activePointersToConfig.ContainsKey(p))
+                        if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
                         {
-                            uint pointerOptionIndex = activePointersToConfig[p];
-                            activePointersToConfig.Remove(p);
+                            uint pointerOptionIndex = activePointersToConfig[pointer];
+                            activePointersToConfig.Remove(pointer);
 
                             // Add our pointer back to our cache
-                            pointerConfigurations[(int)pointerOptionIndex].cache.Push(p);
+                            pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
                         }
                     }
                 }

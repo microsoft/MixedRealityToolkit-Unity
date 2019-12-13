@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override IMixedRealityController Controller
         {
-            get { return base.Controller; }
+            get => base.Controller;
             set
             {
                 base.Controller = value;
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public string PointerName
         {
-            get { return pointerName; }
+            get => pointerName;
             set
             {
                 pointerName = value;
@@ -336,8 +336,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float DefaultPointerExtent
         {
-            get { return Mathf.Min(defaultPointerExtent, PointerExtent); }
-            set { defaultPointerExtent = value; }
+            get => Mathf.Min(defaultPointerExtent, PointerExtent);
+            set => defaultPointerExtent = value;
         }
 
         /// <inheritdoc />
@@ -367,8 +367,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public float SphereCastRadius
         {
-            get { return sphereCastRadius; }
-            set { sphereCastRadius = value; }
+            get => sphereCastRadius;
+            set => sphereCastRadius = value;
         }
 
         /// <inheritdoc />
@@ -389,8 +389,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        ///  <inheritdoc />
+        /// <inheritdoc />
         public virtual void OnPreCurrentPointerTargetChange() { }
+
+        /// <inheritdoc />
+        public virtual void Reset()
+        {
+            Controller = null;
+            BaseCursor = null;
+            IsActive = false;
+            IsFocusLocked = false;
+        }
 
         #endregion IMixedRealityPointer Implementation
 

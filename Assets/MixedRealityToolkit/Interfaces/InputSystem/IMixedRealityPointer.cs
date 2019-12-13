@@ -125,5 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Called during the scene query just before the current pointer target changes.
         /// </summary>
         void OnPreCurrentPointerTargetChange();
+
+        /// <summary>
+        /// Resets pointer to initial state
+        /// </summary>
+        void Reset();
     }
 }
