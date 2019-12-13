@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (isCursorInstantiatedFromPrefab)
             {
                 // Manually reset base cursor before destroying it
-                BaseCursor.Destroy();
+                BaseCursor?.Destroy();
                 DestroyCursorInstance();
                 isCursorInstantiatedFromPrefab = false;
             }
@@ -396,7 +396,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void Reset()
         {
             Controller = null;
-            BaseCursor = null;
             IsActive = false;
             IsFocusLocked = false;
         }
