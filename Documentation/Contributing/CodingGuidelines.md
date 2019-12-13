@@ -171,7 +171,7 @@ Always declare an access modifier for all fields, properties and methods.
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get { return myVariable; } }
+public int MyVariable => myVariable;
 
 // No public / private access modifiers
 void Foo() { }
@@ -437,8 +437,24 @@ private float myValue; // <- Notice we co-located the backing field above our co
 /// </summary>
 public float MyValue
 {
-    get{ return myValue; }
-    set{ myValue = value }
+    get => myValue;
+    set => myValue = value;
+}
+
+/// <summary>
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// </summary>
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue < 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
 }
 ```
 
