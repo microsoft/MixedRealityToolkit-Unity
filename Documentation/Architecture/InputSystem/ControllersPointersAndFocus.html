@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Controllers, Pointers, and Focus | Mixed Reality Toolkit Documentation </title>
+    <title>Controllers, pointers, and focus | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Controllers, Pointers, and Focus | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Controllers, pointers, and focus | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../../Documentation/Images/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="controllers-pointers-and-focus">Controllers, Pointers, and Focus</h1>
+<h1 id="controllers-pointers-and-focus">Controllers, pointers, and focus</h1>
 
 <p>Controllers, pointers, and focus are higher-level concepts that build upon the foundation established by the core input system. Together, they provide a large portion of the mechanism for interacting with objects in the scene.</p>
 <h2 id="controllers">Controllers</h2>
@@ -110,7 +110,7 @@
 <p>These types of pointers plug into the teleportation system to handle moving the user to the location targeted by the pointer.</p>
 </li>
 </ul>
-<h2 id="pointer-mediation">Pointer Mediation</h2>
+<h2 id="pointer-mediation">Pointer mediation</h2>
 <p>Because a single controller can have multiple pointers (for example, the articulated hand can have both near and far interaction pointers), there exists a component that is responsible for mediating which pointer should be active.</p>
 <p>For example, as the user’s hand approaches a pressable button, the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html"><code>ShellHandRayPointer</code></a> should stop showing, and the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a> should be engaged.</p>
 <p>This is handled by the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html"><code>DefaultPointerMediator</code></a>,

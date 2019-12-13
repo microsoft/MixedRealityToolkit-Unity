@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Mixed Reality Controller Configuration Profile | Mixed Reality Toolkit Documentation </title>
+    <title>Mixed reality controller configuration profile | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Mixed Reality Controller Configuration Profile | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Mixed reality controller configuration profile | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../../Documentation/Images/favicon.ico">
@@ -80,31 +80,31 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="mixed-reality-controller-configuration-profile">Mixed Reality Controller Configuration Profile</h1>
+<h1 id="mixed-reality-controller-configuration-profile">Mixed reality controller configuration profile</h1>
 
 <p>When you need to use input controllers for your Mixed Reality project, they are registered and configured centrally within the Controller configuration profile as you can see here:</p>
 <p><img src="../../../Documentation/Images/ControllerConfigurationProfile/01-MixedRealityControllerConfigurationProfileInspector.png" alt="Configuration profile inspector"></p>
 <p>This enables you to very quickly define which SDKs / controllers you want to support in your project and configure how each are intended to work.</p>
 <p>The configuration is broken down in to several key components, as detailed below:</p>
-<h2 id="main-controller-template-definition">Main Controller Template definition</h2>
+<h2 id="main-controller-template-definition">Main controller template definition</h2>
 <p><img src="../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png" alt="Controller model definition"></p>
 <p>In the first section of the configuration, the options are detailed as follows:</p>
-<h3 id="render-motion-controllers">Render Motion Controllers</h3>
+<h3 id="render-motion-controllers">Render motion controllers</h3>
 <p>This defines whether or not controllers should be rendered or not.  By not adding a ControllerVisualizer in to the scene also has the same effect.</p>
 <blockquote>
 <p>This also disabled the Global Model options below.</p>
 </blockquote>
-<h3 id="use-default-models-for-future-implementation">Use Default Models (for future implementation)</h3>
+<h3 id="use-default-models">Use default models</h3>
 <p>This option will use the models for the controller direct from the SDK (where available), so that you don't have to configure a custom model.</p>
-<h3 id="global-left--right-hand-models">Global Left / Right hand models</h3>
+<h3 id="global-left--right-hand-models">Global left / right hand models</h3>
 <p>These allow you at the top level to define the default model that will be drawn for each controlling hand.  If no hand is available, the Left most model will be used by default.</p>
-<p>To alter the position and rotation of the displayed model in relation to the Controller pose, then update the controllers Model Prefab transform values.</p>
+<p>To alter the position and rotation of the displayed model in relation to the controller pose, then update the controller's ModelPrefab transform values.</p>
 <blockquote>
 <p>See the &quot;Example Models&quot; section below for the controller models and their recommended transform settings provided in the SDK's &quot;<strong>Standard Assets</strong>&quot; folder.</p>
 </blockquote>
-<h3 id="add-a-new-controller-template">Add a New Controller Template</h3>
+<h3 id="add-a-new-controller-template">Add a new controller template</h3>
 <p>This enables you to add a new controller definition (detailed below) to the profile to add another supported SDK.</p>
-<h2 id="controller-template">Controller Template</h2>
+<h2 id="controller-template">Controller template</h2>
 <p><img src="../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png" alt="Controller template"></p>
 <p>Each controller template allows you to configure any of the supported controllers for the various SDKs that have been enabled through the Mixed Reality Toolkit.
 Each controller is added by SDK and the prevailing hand.</p>
@@ -114,7 +114,7 @@ Each controller is added by SDK and the prevailing hand.</p>
 <p>The options for configuring a template are detailed as follows:</p>
 <h3 id="controller">Controller</h3>
 <p>Your custom name for the controller, just for easy reference</p>
-<h3 id="controller-type-work-in-progress-see-list-for-enabled-devices">Controller Type (Work in progress, see list for enabled devices)</h3>
+<h3 id="controller-type">Controller type</h3>
 <p>A drop down list of supported controllers by the Mixed Reality Toolkit, namely:</p>
 <ul>
 <li>Windows Mixed Reality
@@ -144,15 +144,15 @@ Each controller is added by SDK and the prevailing hand.</p>
 <blockquote>
 <p>Both does not configure all controllers at this time.</p>
 </blockquote>
-<h3 id="use-default-model">Use Default model</h3>
+<h3 id="use-default-model">Use default model</h3>
 <p>For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model. This overrides the Global Model setting.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>This is currently supported on both Windows Mixed Reality and OpenVR, loading any controller models provided by the platform API.</p>
 </div>
-<h3 id="override-model">Override Model</h3>
+<h3 id="override-model">Override model</h3>
 <p>Like the Global Model options, allows you to provide a model to be drawn for this specific controller. This overrides the Global Model setting.</p>
-<h3 id="interaction-mappings">Interaction Mappings</h3>
+<h3 id="interaction-mappings">Interaction mappings</h3>
 <p>The interaction mappings allow you to map logical input actions for use in your project to the various controller inputs available from the physical device.</p>
 <p>These are different for each controller type, as shown below:</p>
 <table>
@@ -178,12 +178,12 @@ Each controller is added by SDK and the prevailing hand.</p>
 <blockquote>
 <p>See the <a href="../../../Documentation/Input/InputActions.html">Input Action configuration profile</a> for more information.</p>
 </blockquote>
-<h2 id="example-models">Example Models</h2>
+<h2 id="example-models">Example models</h2>
 <p>The models provided in the Mixed Reality Toolkit &quot;Standard Assets&quot; folder are as follows:</p>
 <blockquote>
 <p>These can be found in &quot;Mixed Reality Toolkit SDK / Standard Assets / Controllers&quot;</p>
 </blockquote>
-<h3 id="debug-controllers">Debug Controllers</h3>
+<h3 id="debug-controllers">Debug controllers</h3>
 <p>The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.</p>
 <blockquote>
 <p>Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.</p>
