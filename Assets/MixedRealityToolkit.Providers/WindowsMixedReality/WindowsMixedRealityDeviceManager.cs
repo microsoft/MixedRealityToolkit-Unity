@@ -693,14 +693,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 Service?.RaiseSourceLost(controller.InputSource, controller);
 
                 RecyclePointers(controller.InputSource);
-                /*
-                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
-                {
-                    if (pointer != null)
-                    {
-                        pointer.Controller = null;
-                    }
-                }*/
 
                 var visualizer = controller.Visualizer;
 

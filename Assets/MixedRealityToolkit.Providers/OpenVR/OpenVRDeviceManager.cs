@@ -151,15 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             {
                 RecyclePointers(controller.InputSource);
 
-                /*
-                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
-                {
-                    if (pointer != null)
-                    {
-                        pointer.Controller = null;
-                    }
-                }*/
-
                 if (controller.Visualizer != null &&
                     controller.Visualizer.GameObjectProxy != null)
                 {
