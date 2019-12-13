@@ -59,7 +59,7 @@ To leverage specific articulated hand input state information, you can use press
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
-## Interaction States
+## Interaction states
 
 In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip. When the fingertip touches the surface of the front plate, it shows a subtle pulse effect to give visual feedback of the touch point.
 
@@ -89,7 +89,7 @@ Unity audio source for the audio feedback clips.
 *NearInteractionTouchable.cs*
 Required to make any object touchable with articulated hand input.
 
-## Prefab Layout
+## Prefab layout
 
 The *ButtonContent* object contains front plate, text label and icon. The *FrontPlate* responds to the proximity of the index fingertip using the *Button_Box* shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. *SeeItSayItLabel*'s visibility is controlled by [Interactable](README_Interactable.md)'s theme.
 
@@ -115,7 +115,7 @@ Assign the material to the *UIButtonSquareIcon* object.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate4.png">
 
-## Voice command ('See-it, Say-it')
+## Voice command ('see-it, say-it')
 
 **Speech Input Handler**
 The [Interactable](README_Interactable.md) script in Pressable Button already implements `IMixedRealitySpeechHandler`. A voice command keyword can be set here.
@@ -138,7 +138,7 @@ You can find the examples of these buttons in the **PressableButtonExample** sce
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
 
-### 1. Creating a Pressable Button with Cube (Near interaction only)
+### 1. Creating a pressable button with cube (near interaction only)
 
 1. Create a Unity Cube (GameObject > 3D Object > Cube)
 2. Add `PressableButton.cs` script
@@ -189,7 +189,7 @@ You will see the object responds to both far(hand ray or gaze cursor) and near(h
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
-## Custom Button Examples
+## Custom button examples
 
 In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`.
 

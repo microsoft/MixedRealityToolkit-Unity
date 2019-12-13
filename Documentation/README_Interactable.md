@@ -92,7 +92,7 @@ The selection modes available are:
 
 The current Selection Mode can be queried at runtime via [`Interactable.ButtonMode`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.ButtonMode). Updating the mode at runtime can be achieved by setting the  [`Interactable.Dimensions`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.Dimensions) property to match the desired functionality. Furthermore, the current dimension, useful for *Toggle* and *Multi-Dimension* modes, can be accessed via [`Interactable.CurrentDimension`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.CurrentDimension).
 
-### Interactable Profiles
+### Interactable profiles
 
 *Profiles* are items that create a relationship between a GameObject and a [Visual Theme](VisualThemes.md). The profile defines what content will be manipulated by a theme when a [state change occurs](#general-input-settings).
 
@@ -125,7 +125,7 @@ A custom receiver can be created by making a new class that extends [`ReceiverBa
 
 *Example of a Toggle Event Receiver*
 
-### Interactable Receivers
+### Interactable receivers
 
  The [`InteractableReceiver`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiver) component allows for events to be defined outside of the source *Interactable* component. The *InteractableReceiver* will listen for a filtered event type fired by another *Interactable*. If the *Interactable* property is not directly assigned, then the *Search Scope* property defines the direction the *InteractableReceiver* listens for events which is either on itself, in a parent, or in a child GameObject.
 
@@ -183,7 +183,7 @@ public virtual void OnClick(InteractableStates state,
 }
 ```
 
-##### Displaying custom Event Receiver fields in the inspector
+##### Displaying custom event receiver fields in the inspector
 
 *ReceiverBase* scripts use [`InspectorField`](xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField) attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an *Interactable* GameObject is selected and has the associated *Event Receiver* type added.
 
@@ -203,7 +203,7 @@ Take the button one step further, by creating a new profile, assigning the GameO
 > [!NOTE]
 > Making a [button pressable](README_Button.md) requires the`PressableButton` component. Additionally, the `PhysicalPressEventRouter` component is needed to funnel press events to the *Interactable* component.
 
-### Creating Toggle and Multi-Dimension buttons
+### Creating toggle and multi-dimension buttons
 
 #### Toggle button
 
@@ -243,7 +243,7 @@ To create a custom radial button group:
 
 <img src="../Documentation/Images/Interactable/InteractableToggleCollection.png" width="450">
 
-#### Multi-Dimensional button
+#### Multi-dimensional button
 
 Multi-Dimension selection mode is used to create sequential buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).
 
@@ -304,7 +304,7 @@ interactable.Profiles = new List<InteractableProfileItem>()
 interactable.TriggerOnClick()
 ```
 
-### Interactable Events via code
+### Interactable events via code
 
 One can add an action to the base [`Interactable.OnClick`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.OnClick) event via code with the following example.
 
