@@ -72,10 +72,10 @@ v2f vert (appdata v)
 
 Unity provides [presets to control quality](https://docs.unity3d.com/Manual/class-QualitySettings.html) of rendering for each platform endpoint. These presets control what graphical features can be enabled such as shadows, anti-aliasing, global illumination, and more. It is recommended to lower these settings and optimize the number of calculations performed during rendering.
 
-*Step 1:* Update mixed reality Unity projects to use the *Low Quality* level setting <br/>
+*Step 1:* Update mixed reality Unity projects to use the *Low Quality* level setting  
 **Edit** > **Project Settings**, then select the **Quality** category >  Select *Low Quality* for the UWP Platform
 
-*Step 2:* For every Unity scene file, disable [real-time Global Illumination](https://docs.unity3d.com/Manual/LightMode-Realtime.html) <br/>
+*Step 2:* For every Unity scene file, disable [real-time Global Illumination](https://docs.unity3d.com/Manual/LightMode-Realtime.html)  
 **Window** > **Rendering** > **Lighting Settings** > [Uncheck *Real-time Global Illumination*](https://docs.unity3d.com/Manual/GlobalIllumination.html)
 
 ### Depth buffer sharing (HoloLens)

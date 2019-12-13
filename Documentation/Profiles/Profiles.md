@@ -4,7 +4,7 @@ One of the main ways that the MRTK is configured is through the many profiles av
 
 For example, the Input system's behavior is governed by an [input system profile object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset). It's highly recommended to always modify the profile ScriptableObject assets via the in-editor inspector.
 
-<img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;"><br/>
+<img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;">
 <sup>Profile Inspector</sup>
 
 > [!NOTE]
