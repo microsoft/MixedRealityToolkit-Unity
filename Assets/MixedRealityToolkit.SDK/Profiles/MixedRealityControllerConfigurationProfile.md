@@ -1,4 +1,4 @@
-# Mixed Reality Controller Configuration Profile
+# Mixed reality controller configuration profile
 
 When you need to use input controllers for your Mixed Reality project, they are registered and configured centrally within the Controller configuration profile as you can see here:
 
@@ -8,34 +8,34 @@ This enables you to very quickly define which SDKs / controllers you want to sup
 
 The configuration is broken down in to several key components, as detailed below:
 
-## Main Controller Template definition
+## Main controller template definition
 
 ![Controller model definition](../../../Documentation/Images/ControllerConfigurationProfile/02-ControllerTemplateDefinition.png)
 
 In the first section of the configuration, the options are detailed as follows:
 
-### Render Motion Controllers
+### Render motion controllers
 
 This defines whether or not controllers should be rendered or not.  By not adding a ControllerVisualizer in to the scene also has the same effect.
 > This also disabled the Global Model options below.
 
-### Use Default Models (for future implementation)
+### Use default models
 
 This option will use the models for the controller direct from the SDK (where available), so that you don't have to configure a custom model.
 
-### Global Left / Right hand models
+### Global left / right hand models
 
 These allow you at the top level to define the default model that will be drawn for each controlling hand.  If no hand is available, the Left most model will be used by default.
 
-To alter the position and rotation of the displayed model in relation to the Controller pose, then update the controllers Model Prefab transform values.
+To alter the position and rotation of the displayed model in relation to the controller pose, then update the controller's ModelPrefab transform values.
 
 > See the "Example Models" section below for the controller models and their recommended transform settings provided in the SDK's "**Standard Assets**" folder.
 
-### Add a New Controller Template
+### Add a new controller template
 
 This enables you to add a new controller definition (detailed below) to the profile to add another supported SDK.
 
-## Controller Template
+## Controller template
 
 ![Controller template](../../../Documentation/Images/ControllerConfigurationProfile/03-ControllerTemplate.png)
 
@@ -50,7 +50,7 @@ The options for configuring a template are detailed as follows:
 
 Your custom name for the controller, just for easy reference
 
-### Controller Type (Work in progress, see list for enabled devices)
+### Controller type
 
 A drop down list of supported controllers by the Mixed Reality Toolkit, namely:
 
@@ -72,18 +72,18 @@ A drop down list of supported controllers by the Mixed Reality Toolkit, namely:
 Which hand is configured for this controller definition
 > Both does not configure all controllers at this time.
 
-### Use Default model
+### Use default model
 
 For this controller only, use the model for the controller direct from the SDK (where available), so that you don't have to configure a custom model. This overrides the Global Model setting.
 
 > [!NOTE]
 > This is currently supported on both Windows Mixed Reality and OpenVR, loading any controller models provided by the platform API.
 
-### Override Model
+### Override model
 
 Like the Global Model options, allows you to provide a model to be drawn for this specific controller. This overrides the Global Model setting.
 
-### Interaction Mappings
+### Interaction mappings
 
 The interaction mappings allow you to map logical input actions for use in your project to the various controller inputs available from the physical device.  
 
@@ -99,13 +99,13 @@ The Action each input can perform, is completely up to you.
 
 > See the [Input Action configuration profile](../../../Documentation/Input/InputActions.md) for more information.
 
-## Example Models
+## Example models
 
 The models provided in the Mixed Reality Toolkit "Standard Assets" folder are as follows:
 
 > These can be found in "Mixed Reality Toolkit SDK / Standard Assets / Controllers"
 
-### Debug Controllers
+### Debug controllers
 
 The Mixed Reality Toolkit provides a set of basic Gizmo style controllers, used to help align your models to the controller position output by the SDK, to help with offset settings.
 > Note, the ability to display BOTH the Gizmo and the controller models isn't supported as yet. This will be included in a future release.

@@ -1,4 +1,4 @@
-# Controllers, Pointers, and Focus
+# Controllers, pointers, and focus
 
 Controllers, pointers, and focus are higher-level concepts that build upon the foundation established by the core input system. Together, they provide a large portion of the mechanism for interacting with objects in the scene.
 
@@ -36,7 +36,7 @@ Pointers generally fall into one of the following categories:
 
   These types of pointers plug into the teleportation system to handle moving the user to the location targeted by the pointer.
 
-## Pointer Mediation
+## Pointer mediation
 
 Because a single controller can have multiple pointers (for example, the articulated hand can have both near and far interaction pointers), there exists a component that is responsible for mediating which pointer should be active.
 

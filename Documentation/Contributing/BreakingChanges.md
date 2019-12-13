@@ -1,4 +1,4 @@
-# Breaking Changes
+# Breaking changes
 
 Consumers of the MRTK depend on having a stable release-to-release API surface, so that they can take updates to the MRTK without having large breaking changes each time.
 

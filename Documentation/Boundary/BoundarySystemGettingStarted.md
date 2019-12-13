@@ -1,10 +1,10 @@
-# Boundary System
+# Boundary system
 
 The Boundary system provides support for visualizing Virtual Reality boundary components in mixed reality applications. Boundaries define the area in which users can safely move around while wearing a VR headset. Boundaries are an important component of a mixed reality experience to help users avoid unseen obstacles while wearing a VR headset.
 
 Many Virtual Reality platforms provide an automatic display, for example a white outline superimposed on the virtual world as the user or their controller nears the boundary. The Mixed Reality Toolkit's Boundary System extends this feature to enable the display of an outline of the tracked area, a floor plane and other features that can be used to provide additional information to users.
 
-## Getting Started
+## Getting started
 
 Adding support for boundaries requires two key components of the Mixed Reality Toolkit: the Boundary System and a Virtual Reality platform configured with a boundary.
 
@@ -12,7 +12,7 @@ Adding support for boundaries requires two key components of the Mixed Reality T
 2. [Configure](#configure-boundary-visualization) the boundary visualization
 3. [Build and deploy](#build-and-deploy) to a VR platform with a configured boundary
 
-## Enable Boundary System
+## Enable boundary system
 
 The Boundary System is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component).
 
@@ -33,7 +33,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 > [!NOTE]
 > All Boundary System implementation must extend the [`IMixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem)
 
-## Configure Boundary Visualization
+## Configure boundary visualization
 
 The [Boundary System uses a configuration profile](ConfiguringBoundaryVisualization.md) to specify which boundary components are to be displayed and to configure their appearance.
 
@@ -42,14 +42,14 @@ The [Boundary System uses a configuration profile](ConfiguringBoundaryVisualizat
 > [!NOTE]
 > Users of the default profile ([DefaultMixedRealityBoundaryVisualizationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityBoundaryVisualizationProfile.asset)) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.
 
-## Build and Deploy
+## Build and deploy
 
 Once the boundary system is configured with the desired visualization options, the project can be built deployed to the target platform.
 
 > [!NOTE]
 > Unity Play Mode enables in-editor visualization of the configured boundary. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using an built and deployed version of the application, running on the target hardware and platform.
 
-## Accessing Boundary System via code
+## Accessing boundary system via code
 
 If enabled and configured, the Boundary System can be accessed via the CoreServices static helper class. The reference can then be used to dynamically change the Boundary parameters and access related GameObjects managed by the system.
 
@@ -61,7 +61,7 @@ CoreServices.BoundarySystem.ShowBoundaryWalls = false;
 GameObject floorVisual = CoreServices.BoundarySystem.GetFloorVisualization();
 ```
 
-## See Also
+## See also
 
 - [Boundary API documentation](xref:Microsoft.MixedReality.Toolkit.Boundary)
 - [Configuring the Boundary Visualization](ConfiguringBoundaryVisualization.md)

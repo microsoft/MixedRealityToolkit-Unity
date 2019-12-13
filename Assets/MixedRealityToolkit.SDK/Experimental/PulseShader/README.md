@@ -1,4 +1,4 @@
-# Pulse Shader
+# Pulse shader
 
 ![MRTK_SpatialMesh_Pulse](https://user-images.githubusercontent.com/13754172/68261851-3489e200-fff6-11e9-9f6c-5574a7dd8db7.gif)
 

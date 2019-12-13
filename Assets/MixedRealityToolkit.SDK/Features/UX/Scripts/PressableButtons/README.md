@@ -2,14 +2,14 @@
 
 This folder contains the scripts necessary for making Interactable buttons that support Speech, Far Interaction and Near Interaction (Physical hand pressing)
 
-## High Level Description
+## High level description
 
 PhysicalButtonMovement is similar to HandInteractionPress.
 It uses External Object Targeting (EOT) to move an Interactable element along a press direction vector.
 PhysicalButtonMovement needs a large BoxCollider on the Ignore Raycast layer (which it sets automatically)
 It tracks the position of both index tip fingers and uses this to move the button as needed.
 
-## States and Events
+## States and events
 
 It then calls into a PhysicalPressEventRouter and calls events related to Touch, Press, Unpress (Default Click), and Untouch.
 
@@ -23,7 +23,7 @@ It also calls OnPointerClicked events, allowing for the PhysicalButtonMovement s
 
 If PhysicalPressEventRouter does not satisfy your use case, you can write your own and utilize it instead.
 
-## Touch Button & Button Cage
+## Touch button & button cage
 
 Pressable buttons feature a normally invisible mesh called a 'Button Cage' or a 'Button Box'
 This mesh has one direction as the button face (Negative Z).
@@ -34,7 +34,7 @@ TouchButton triggers the glow splash when the joint positions enter into a colli
 
 A Prefab is provide in MRTK.Examples/Demos/HandTracking/Prefabs/PressableButtons.
 
-## PhysicalButtonMovement Customization
+## PhysicalButtonMovement customization
 
 You can customize variables within the PressableButtons, such as the dimensions of the detection box collider.
 
