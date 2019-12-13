@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Gets the package cache folder of this project.
         /// </summary>
         /// <returns>
-        /// A <see href="https://docs.microsoft.com/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> object that describes the package cache folder.
+        /// A DirectoryInfo object that describes the package cache folder.
         /// </returns>
         public static DirectoryInfo GetPackageCache()
         {
