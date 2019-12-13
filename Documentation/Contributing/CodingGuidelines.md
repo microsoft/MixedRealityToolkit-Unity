@@ -440,6 +440,22 @@ public float MyValue
     get => myValue;
     set => myValue = value;
 }
+
+/// <summary>
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// </summary>
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue < 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
+}
 ```
 
 ### Cache values and serialize them in the scene/prefab whenever possible
