@@ -250,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="layerMask">Filter to only perform sphere cast on these layers.</param>
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call</param>
-            /// <returns></returns>
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
             {
                 grabbable = null;
@@ -270,14 +269,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Collider collider = queryBuffer[i];
                     grabbable = collider.GetComponent<NearInteractionGrabbable>();
-                    // Additional check: is grabbable in the camera frustrum
-                    if (grabbable != null)
+                    if (grabbable != null && !isInFOV(collider))
                     {
-                        if (!isInFOV(collider))
-                        {
-                            grabbable = null;
-                        }
+                        // Additional check: is grabbable in the camera frustrum
+                        // We do this so that if grabbable is not visible it is not accidentally grabbed
+                        // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
+                        grabbable = null;
                     }
+
                     if (grabbable != null)
                     {
                         return true;
@@ -294,8 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <returns></returns>
             private bool isInFOV(Collider myCollider)
             {
-                Bounds b = myCollider.bounds;
-                var corners = new List<Vector3>();
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
                 float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
                 float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
