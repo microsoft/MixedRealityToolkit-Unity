@@ -291,7 +291,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Returns true if a collider's bounds is within the camera FOV
             /// </summary>
             /// <param name="myCollider">The collider to test</param>
-            /// <returns></returns>
             private bool isInFOV(Collider myCollider)
             {
                 Bounds b = myCollider.bounds;
