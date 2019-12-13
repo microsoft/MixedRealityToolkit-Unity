@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
                 float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
                 float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-                foreach (var pt in corners)
+                foreach (var corner in corners)
                 {
                     if (isPointInFrustrum(pt))
                     {
