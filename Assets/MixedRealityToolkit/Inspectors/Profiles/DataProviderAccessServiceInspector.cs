@@ -88,7 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Removed given index item from <see cref="IMixedRealityServiceConfiguration"/> array list.
         /// Utilizes GetDataProviderConfigurationList() to get <see cref="SerializedProperty"/> object that represents array to delete against.
         /// </summary>
-        /// <param name="index"></param>
         protected virtual void RemoveDataProvider(int index)
         {
             providerConfigurations.DeleteArrayElementAtIndex(index);

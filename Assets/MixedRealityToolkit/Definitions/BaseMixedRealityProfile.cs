@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Base abstract class for all Mixed Reality profile configurations. 
+    /// Extends ScriptableObject and used as a property container to initialize MRTK services.
+    /// </summary>
     [Serializable]
     public abstract class BaseMixedRealityProfile : ScriptableObject
     {

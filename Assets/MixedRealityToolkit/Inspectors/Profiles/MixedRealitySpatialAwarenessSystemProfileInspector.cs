@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 {
+    /// <summary>
+    /// Class handles rendering inspector view of MixedRealitySpatialAwarenessSystemProfile object
+    /// </summary>
     [CustomEditor(typeof(MixedRealitySpatialAwarenessSystemProfile))]
-    internal class MixedRealitySpatialAwarenessSystemProfileInspector : BaseDataProviderServiceInspector
+    public class MixedRealitySpatialAwarenessSystemProfileInspector : BaseDataProviderServiceInspector
     {
         private const string ObserverErrorMsg = "The Mixed Reality Spatial Awareness System requires one or more observers.";
         private static readonly GUIContent AddObserverContent = new GUIContent("+ Add Spatial Observer", "Add Spatial Observer");

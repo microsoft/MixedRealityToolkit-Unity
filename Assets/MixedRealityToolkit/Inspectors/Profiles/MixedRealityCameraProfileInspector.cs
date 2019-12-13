@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// Class handles rendering inspector view of MixedRealityCameraProfile object
+    /// </summary>
     [CustomEditor(typeof(MixedRealityCameraProfile))]
-    internal class MixedRealityCameraProfileInspector : BaseDataProviderServiceInspector
+    public class MixedRealityCameraProfileInspector : BaseDataProviderServiceInspector
     {
         private bool showProviders = false;
         private const string showProvidersPreferenceKey = "ShowCameraSystem_DataProviders_PreferenceKey";

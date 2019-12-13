@@ -7,8 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
+    /// <summary>
+    /// Class handles rendering inspector view of MixedRealityInputSystemProfile object
+    /// </summary>
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
-    internal class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector
+    public class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector
     {
         private const string DataProviderErrorMsg = "The Mixed Reality Input System requires one or more data providers.";
         private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
