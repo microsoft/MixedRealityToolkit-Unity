@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -15,16 +16,44 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     {
         static UnityARConfigurationChecker()
         {
+            EnsureArFoundationDefine();
+
             // Ensure we have the correct asmdef file for the current version of Unity.
             string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
-            FileInfo oldFile = FindFile(asmDefFileName);
-            if (oldFile != null)
+            FileInfo[] oldFile = FileUtilities.FindFilesInAssets(asmDefFileName);
+            if (oldFile.Length > 0)
             {
-                FileInfo newFile = GetNewAsmDefFile(oldFile);
+                if (oldFile.Length > 1) 
+                {
+                    Debug.LogWarning($"More than one copy of {asmDefFileName} found in the project. The first instance will be updated.");
+                }
+
+                FileInfo newFile = GetNewAsmDefFile(oldFile[0]);
                 if (newFile != null)
                 {
-                    File.Copy(newFile.FullName, oldFile.FullName, true);
+                    File.Copy(newFile.FullName, oldFile[0].FullName, true);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the appropriate symbolic constant is defined based on the presence of the DotNetWinRT binary.
+        /// </summary>
+        private static void EnsureArFoundationDefine()
+        {
+            const string fileName = "Unity.XR.ARFoundation.asmdef";
+            string[] defintions = { "ARFOUNDATION_PRESENT" };
+
+            FileInfo[] files = FileUtilities.FindFilesInPackageCache(fileName);
+            if (files.Length > 0)
+            {
+                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, defintions);
+                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, defintions);
+            }
+            else
+            {
+                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, defintions);
+                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, defintions);
             }
         }
 
