@@ -16,30 +16,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     {
         static UnityARConfigurationChecker()
         {
-            EnsureArFoundationDefine();
-
-            // Ensure we have the correct asmdef file for the current version of Unity.
             string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
-            FileInfo[] oldFile = FileUtilities.FindFilesInAssets(asmDefFileName);
-            if (oldFile.Length > 0)
-            {
-                if (oldFile.Length > 1) 
-                {
-                    Debug.LogWarning($"More than one copy of {asmDefFileName} found in the project. The first instance will be updated.");
-                }
+            FileInfo[] asmDefFiles = FileUtilities.FindFilesInAssets(asmDefFileName);
 
-                FileInfo newFile = GetNewAsmDefFile(oldFile[0]);
-                if (newFile != null)
-                {
-                    File.Copy(newFile.FullName, oldFile[0].FullName, true);
-                }
+            if (EnsureArFoundationDefine())
+            {
+               if (asmDefFiles.Length > 1)
+               {
+                   Debug.LogWarning($"More than one copy of {asmDefFileName} found in the project. The first instance will be updated.");
+               }
+
+               // Ensure we have the correct asmdef files for the current version of Unity.
+               FileInfo newAsmDefFile = GetNewAsmDefFile(asmDefFiles[0]);
+               if (newAsmDefFile != null)
+               {
+                   File.Copy(newAsmDefFile.FullName, asmDefFiles[0].FullName, true);
+               }
+
+            }
+            else
+            {
+               // Remove the assembly definition files, if present.
+               if ( (asmDefFiles.Length != 0) && asmDefFiles[0].Exists)
+               {
+                   File.Copy(asmDefFiles[0].FullName, $"{asmDefFiles[0]}.norefs");
+               }
             }
         }
 
         /// <summary>
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the DotNetWinRT binary.
         /// </summary>
-        private static void EnsureArFoundationDefine()
+        /// <returns>True if the define was added, false otherwise.</returns>
+        private static bool EnsureArFoundationDefine()
         {
             const string fileName = "Unity.XR.ARFoundation.asmdef";
             string[] defintions = { "ARFOUNDATION_PRESENT" };
@@ -49,32 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             {
                 ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, defintions);
                 ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, defintions);
+                return true;
             }
             else
             {
                 ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, defintions);
                 ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, defintions);
+                return false;
             }
-        }
-
-        /// <summary>
-        /// Locates the file that matches the specified name within the application data path.
-        /// </summary>
-        /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
-        /// <returns>FileInfo object representing the file, or null if the file could not be located.</returns>
-        private static FileInfo FindFile(string fileName)
-        {
-            // Find the asmdef file
-            DirectoryInfo assets = new DirectoryInfo(Application.dataPath);
-            FileInfo[] files = assets.GetFiles(fileName, SearchOption.AllDirectories);
-            if (files.Length == 0) { return null; }
-            if (files.Length > 1)
-            {
-                Debug.LogWarning($"More than one copy of {fileName} found in the project. Please ensure there are no duplicate resources and reload the project.");
-                return null;
-            }
-
-            return files[0];
         }
 
         /// <summary>
@@ -113,9 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
 #endif
 
-            return !string.IsNullOrWhiteSpace(updateTo) ?
-                new FileInfo(Path.Combine(file.DirectoryName, $"{file.Name}.{updateTo}")) :
-                null;
+            FileInfo fi = new FileInfo(Path.Combine(file.DirectoryName, $"{file.Name}.{updateTo}"));
+            return fi.Exists ? fi : null;
         }
     }
 }
