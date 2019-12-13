@@ -1,5 +1,5 @@
 {
-    "name": "osoft.MixedReality.UnityAR.ConfigCheckheck",
+    "name": "Microsoft.MixedReality.UnityAR.ConfigCheck",
     "references": [
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
