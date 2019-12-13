@@ -1,12 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine.TextCore;
 using System;
+using UnityEngine.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -55,30 +53,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<string, Sprite> spriteIconLookup = new Dictionary<string, Sprite>();
         private bool lookupsInitialized = false;
 
-        /// <summary>
-        /// Tries to retrieve a unicode character icon by name.
-        /// </summary>
-        /// <returns>True if icon is found.</returns>
         public bool TryGetCharIcon(string iconName, out uint charIcon)
         {
             InitializeLookups();
             return charIconLookup.TryGetValue(iconName, out charIcon);
         }
 
-        /// <summary>
-        /// Tries to retrieve a texture icon by name.
-        /// </summary>
-        /// <returns>True if icon is found.</returns>
         public bool TryGetQuadIcon(string iconName, out Texture2D quadIcon)
         {
             InitializeLookups();
             return quadIconLookup.TryGetValue(iconName, out quadIcon);
         }
 
-        /// <summary>
-        /// Tries to retrieve a sprite icon by name.
-        /// </summary>
-        /// <returns>True if icon is found.</returns>
         public bool TryGetSpriteIcon(string iconName, out Sprite spriteIcon)
         {
             InitializeLookups();
@@ -88,9 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void InitializeLookups()
         {
             if (lookupsInitialized)
-            {
                 return;
-            }
 
             try
             {
@@ -157,9 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             uint unicode = 0;
 
             if (string.IsNullOrEmpty(charString))
-            {
                 return 0;
-            }
 
             for (int i = 0; i < charString.Length; i++)
             {
@@ -369,9 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Return if we can't find the glyph
             if (elementIndex == -1)
-            {
                 return;
-            }
 
             Glyph glyph = character.glyph;
 
@@ -422,13 +402,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        /// <summary>
-        /// Inspector for button icon set.
-        /// </summary>
         [CustomEditor(typeof(ButtonIconSet))]
         private class ButtonIconSetInspector : UnityEditor.Editor
         {
-            private const string ShowIconFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowIconFoldout";
+            private const string ShowQuadIconsFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowQuadFoldout";
+            private const string ShowSpriteIconsFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowSpriteFoldout";
+            private const string ShowCharIconsFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowIconFoldout";
+            private const string AvailableIconsFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowAvailableIcons";
+            private const string SelectedIconsFoldoutKey = "MixedRealityToolkit.ButtonIconSet.ShowSelectedIcons";
 
             private SerializedProperty quadIconsProp = null;
             private SerializedProperty spriteIconsProp = null;
@@ -447,13 +428,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 ButtonIconSet bis = (ButtonIconSet)target;
 
-                EditorGUILayout.PropertyField(quadIconsProp, true);
-                EditorGUILayout.PropertyField(spriteIconsProp, true);
+                bool showQuadIconFoldout = SessionState.GetBool(ShowQuadIconsFoldoutKey, false);
+                bool showSpriteIconFoldout = SessionState.GetBool(ShowSpriteIconsFoldoutKey, false);
+                bool showCharIconFoldout = SessionState.GetBool(ShowCharIconsFoldoutKey, false);
+                bool showAvailableIcons = SessionState.GetBool(AvailableIconsFoldoutKey, true);
+                bool showSelectedIcons = SessionState.GetBool(SelectedIconsFoldoutKey, true);
 
-                bool showIconFoldout = SessionState.GetBool(ShowIconFoldoutKey, false);
-                showIconFoldout = EditorGUILayout.Foldout(showIconFoldout, "Choose Font Icons", true);
+                showQuadIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showQuadIconFoldout, "Quad Icons");
+                if (showQuadIconFoldout)
+                {
+                    using (new EditorGUI.IndentLevelScope(1))
+                    {
+                        quadIconsProp.isExpanded = true;
+                        EditorGUILayout.PropertyField(quadIconsProp, true);
+                    }
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
 
-                if (showIconFoldout)
+                showSpriteIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showSpriteIconFoldout, "Sprite Icons");
+                if (showSpriteIconFoldout)
+                {
+                    using (new EditorGUI.IndentLevelScope(1))
+                    {
+                        spriteIconsProp.isExpanded = true;
+                        EditorGUILayout.PropertyField(spriteIconsProp, true);
+                    }
+                }
+                EditorGUILayout.EndFoldoutHeaderGroup();
+
+                showCharIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showCharIconFoldout, "Font Icons");
+
+                EditorGUILayout.EndFoldoutHeaderGroup();
+
+                if (showCharIconFoldout)
                 {
                     EditorGUILayout.PropertyField(charIconFontProp);
 
@@ -472,17 +479,99 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-                        {
-                            TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
+                        TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
 
+                        showAvailableIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showAvailableIcons, "Available Icons");
+
+                        if (showAvailableIcons)
+                        {
+                            if (fontAsset.characterTable.Count == 0)
+                            {
+                                EditorGUILayout.HelpBox("No icons are available in this font. The font may be configured incorrectly.", MessageType.Warning);
+                                if (GUILayout.Button("Open Font Editor"))
+                                {
+                                    Selection.activeObject = bis.CharIconFont;
+                                }
+                            }
+                            else
+                            {
+                                EditorGUILayout.HelpBox("Click an icon to add it to your selected icons.", MessageType.Info);
+                                if (GUILayout.Button("Open Font Editor"))
+                                {
+                                    Selection.activeObject = bis.CharIconFont;
+                                }
+
+                                int removeIndex = -1;
+                                int addIndex = -1;
+                                int column = 0;
+
+                                column = 0;
+                                EditorGUILayout.BeginHorizontal();
+                                for (int i = 0; i < fontAsset.characterTable.Count; i++)
+                                {
+                                    if (column >= maxButtonsPerColumn)
+                                    {
+                                        column = 0;
+                                        EditorGUILayout.EndHorizontal();
+                                        EditorGUILayout.BeginHorizontal();
+                                    }
+                                    if (GUILayout.Button(" ", GUILayout.MinHeight(maxButtonSize), GUILayout.MaxHeight(maxButtonSize)))
+                                    {
+                                        addIndex = i;
+                                    }
+                                    Rect textureRect = GUILayoutUtility.GetLastRect();
+                                    EditorDrawTMPGlyph(textureRect, fontAsset, fontAsset.characterTable[i]);
+                                    column++;
+                                }
+
+                                if (column > 0)
+                                {
+                                    EditorGUILayout.EndHorizontal();
+                                }
+
+                                if (removeIndex >= 0)
+                                {
+                                    List<CharIcon> charIconsSet = new List<CharIcon>(bis.charIcons);
+                                    charIconsSet.RemoveAt(removeIndex);
+                                    bis.charIcons = charIconsSet.ToArray();
+                                    EditorUtility.SetDirty(target);
+                                }
+
+                                if (addIndex >= 0)
+                                {
+                                    uint unicode = fontAsset.characterTable[addIndex].unicode;
+                                    bool alreadyContainsIcon = false;
+                                    foreach (CharIcon c in bis.charIcons)
+                                    {
+                                        if (c.Character == unicode)
+                                        {
+                                            alreadyContainsIcon = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!alreadyContainsIcon)
+                                    {
+                                        List<CharIcon> charIconsSet = new List<CharIcon>(bis.charIcons);
+                                        charIconsSet.Add(new CharIcon { Character = unicode, Name = "Icon " + charIconsSet.Count.ToString() });
+                                        bis.charIcons = charIconsSet.ToArray();
+                                        EditorUtility.SetDirty(target);
+                                    }
+                                }
+                            }
+                            EditorGUILayout.Space(); 
+                        }
+                        EditorGUILayout.EndFoldoutHeaderGroup();
+
+                        showSelectedIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showSelectedIcons, "Selected Icons");
+
+                        if (showSelectedIcons)
+                        {
                             int removeIndex = -1;
-                            int addIndex = -1;
-                            int column = 0;
 
                             if (bis.charIcons.Length > 0)
                             {
-                                EditorGUILayout.LabelField("Click icon to remove from set");
+                                EditorGUILayout.HelpBox("These icons will appear in the button config helper inspector. Click an icons to remove it from this list.", MessageType.Info);
 
                                 using (new EditorGUILayout.VerticalScope())
                                 {
@@ -508,75 +597,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             else
                             {
-                                EditorGUILayout.LabelField("(No icons in set)");
-                            }
-
-                            EditorGUILayout.Space();
-                            EditorGUILayout.Space();
-                            EditorGUILayout.LabelField("Click icon to add to set");
-                            column = 0;
-                            EditorGUILayout.BeginHorizontal();
-                            for (int i = 0; i < fontAsset.characterTable.Count; i++)
-                            {
-                                if (column >= maxButtonsPerColumn)
-                                {
-                                    column = 0;
-                                    EditorGUILayout.EndHorizontal();
-                                    EditorGUILayout.BeginHorizontal();
-                                }
-                                if (GUILayout.Button(" ", GUILayout.MinHeight(maxButtonSize), GUILayout.MaxHeight(maxButtonSize)))
-                                {
-                                    addIndex = i;
-                                }
-                                Rect textureRect = GUILayoutUtility.GetLastRect();
-                                EditorDrawTMPGlyph(textureRect, fontAsset, fontAsset.characterTable[i]);
-                                column++;
-                            }
-
-                            if (column > 0)
-                            {
-                                EditorGUILayout.EndHorizontal();
-                            }
-
-                            if (removeIndex >= 0)
-                            {
-                                List<CharIcon> charIconsSet = new List<CharIcon>(bis.charIcons);
-                                charIconsSet.RemoveAt(removeIndex);
-                                bis.charIcons = charIconsSet.ToArray();
-                                EditorUtility.SetDirty(target);
-                            }
-
-                            if (addIndex >= 0)
-                            {
-                                uint unicode = fontAsset.characterTable[addIndex].unicode;
-                                bool alreadyContainsIcon = false;
-                                foreach (CharIcon c in bis.charIcons)
-                                {
-                                    if (c.Character == unicode)
-                                    {
-                                        alreadyContainsIcon = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!alreadyContainsIcon)
-                                {
-                                    List<CharIcon> charIconsSet = new List<CharIcon>(bis.charIcons);
-                                    charIconsSet.Add(new CharIcon { Character = unicode, Name = "Icon " + charIconsSet.Count.ToString() });
-                                    bis.charIcons = charIconsSet.ToArray();
-                                    EditorUtility.SetDirty(target);
-                                }
-                            }
-
-                            if (GUILayout.Button("Open Font Editor"))
-                            {
-                                Selection.activeObject = bis.CharIconFont;
+                                EditorGUILayout.HelpBox("No icons added yet. Click avaialable icons to add.", MessageType.Info);
                             }
                         }
+
+                        EditorGUILayout.EndFoldoutHeaderGroup();
                     }
                 }
 
-                SessionState.SetBool(ShowIconFoldoutKey, showIconFoldout);
+                SessionState.SetBool(ShowQuadIconsFoldoutKey, showQuadIconFoldout);
+                SessionState.SetBool(ShowSpriteIconsFoldoutKey, showSpriteIconFoldout);
+                SessionState.SetBool(ShowCharIconsFoldoutKey, showCharIconFoldout);
+                SessionState.SetBool(AvailableIconsFoldoutKey, showAvailableIcons);
+                SessionState.SetBool(SelectedIconsFoldoutKey, showSelectedIcons);
+
                 serializedObject.ApplyModifiedProperties();
             }
 
