@@ -16,10 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         protected class ServiceConfigurationProperties
         {
-            public SerializedProperty componentName;
-            public SerializedProperty componentType;
-            public SerializedProperty providerProfile;
-            public SerializedProperty runtimePlatform;
+            internal SerializedProperty componentName;
+            internal SerializedProperty componentType;
+            internal SerializedProperty providerProfile;
+            internal SerializedProperty runtimePlatform;
         }
 
         protected abstract SerializedProperty GetDataProviderConfigurationList();
