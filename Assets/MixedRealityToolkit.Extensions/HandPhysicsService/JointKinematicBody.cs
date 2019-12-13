@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
     /// <summary>
-    /// Updates a Rigidbody Transform against another Transform.
+    /// Updates a rigidbody transform against another transform.
     /// </summary>
     public class JointKinematicBody : MonoBehaviour
     {
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         public Transform Joint { get; set; }
 
         /// <summary>
-        /// What hand this component lives one.
+        /// What hand this component lives on.
         /// </summary>
         public Handedness HandednessType { get; set; }
 

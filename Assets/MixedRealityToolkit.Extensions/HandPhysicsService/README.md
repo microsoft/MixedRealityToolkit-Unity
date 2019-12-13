@@ -1,9 +1,9 @@
-# Hand Physics Extension Service
+# Hand physics extension service
 
-The Hand Physics service enables rigid body collision events and interactions with articulated hands.
+The hand physics service enables rigid body collision events and interactions with articulated hands.
 
-## Getting started with Hand Physics Extension Service
-Add the Hand Physics service to the list of extension services and use the default profile.
+## Getting started with hand physics extension service
+Add the hand physics service to the list of extension services and use the default profile.
 
 Once enabled, use any collider's IsTrigger property to receive collision events from all 10 digits (and palms if they're enabled).
 

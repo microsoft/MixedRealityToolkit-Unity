@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
 {
     /// <summary>
-    /// Writes Collider Trigger from Articulated hands events to a TextMeshPro object
+    /// Writes collider trigger from articulated hands events to a TextMeshPro object
     /// </summary>
     public class PhysicsTriggerEventReadout : MonoBehaviour
     {
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
             {
                 text.Append(joint.name + " is touching. <br>");
             }
-                textField.text = text + "<br>";
+            textField.text = text + "<br>";
         }
     }
 }

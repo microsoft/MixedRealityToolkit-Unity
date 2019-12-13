@@ -49,6 +49,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
                 {
                     CreateKinematicBodies();
                 }
+                else
+                {
+                    DestroyKinematicBodies();
+                }
                 fingerTipKinematicBodyPrefab = value;
             }
         }
@@ -64,6 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
                 if(value != null)
                 {
                     CreateKinematicBodies();
+                }
+                else
+                {
+                    DestroyKinematicBodies();
                 }
 
                 palmKinematicBodyPrefab = value;
@@ -146,14 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         /// </summary>
         private void CreateKinematicBodies()
         {
-            if(jointKinematicBodies.Count > 0)
-            {
-                //Tear down the old kinematicBodies
-                foreach (JointKinematicBody jointKinematicBody in jointKinematicBodies)
-                {
-                    UnityEngine.Object.Destroy(jointKinematicBody.gameObject);
-                }
-            }
+            DestroyKinematicBodies();
 
             // Create joint kinematic bodies.
             for (int i = 0; i < handednessTypes.Length; ++i)
@@ -179,15 +180,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         }
 
         /// <summary>
+        /// Destroys the existing joints
+        /// </summary>
+        private void DestroyKinematicBodies()
+        {
+            if(jointKinematicBodies.Count > 0)
+            {
+                //Tear down the old kinematicBodies
+                foreach (JointKinematicBody jointKinematicBody in jointKinematicBodies)
+                {
+                    UnityEngine.Object.Destroy(jointKinematicBody.gameObject);
+                }
+            }
+        }
+
+        /// <summary>
         /// Instantiates <see cref="FingerTipKinematicBodyPrefab"/>s for all <see cref="fingerTipTypes"/>.
         /// </summary>
         /// <remarks>
         /// Optionally instantiates <see cref="PalmKinematicBodyPrefab"/>.
         /// </remarks>
-        /// <param name="rigidBodyPrefab">The prefab to intantiate.</param>
+        /// <param name="rigidBodyPrefab">The prefab to instantiate.</param>
         /// <param name="layer">the layer to put the prefab on.</param>
         /// <param name="handednessType">the specified <see cref="Handedness"/> for the joint.</param>
-        /// <param name="jointType">the specified <see cref="TrackedHandJoint"/> to intantiate against.</param>
+        /// <param name="jointType">the specified <see cref="TrackedHandJoint"/> to instantiate against.</param>
         /// <param name="parent">The root <see href="https://docs.unity3d.com/ScriptReference/GameObject.html"> for the joints.</param>
         /// <param name="jointKinematicBody">When successful, the generated <see cref="JointKinematicBody"/>.</param>
         /// <returns>True when able to successfully intantiate and create a <see cref="JointKinematicBody"/>.</returns>
