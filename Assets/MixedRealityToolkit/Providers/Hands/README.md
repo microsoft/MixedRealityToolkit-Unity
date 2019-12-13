@@ -1,8 +1,8 @@
-# Hand Devices
+# Hand devices
 
 Base class for all hand devices, to act be implemented by all backends that want to provide hand input in MRTK. Simulated hands can be used if no hand tracking device is available.
 
-## Simulated Hands
+## Simulated hands
 
 Hand input can be simulated in Unity using the "In-Editor Input Simulation" service. This service is enabled by default.
 

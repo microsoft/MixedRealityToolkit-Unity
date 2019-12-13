@@ -1,4 +1,4 @@
-# Creating a Camera Settings Provider
+# Creating a camera settings provider
 
 The Camera system is an extensible system for providing support for platform specific camera configurations. To add support for a new camera configuration, a custom settings provider may be required.
 
@@ -14,7 +14,7 @@ Data providers can be distributed in one of two ways:
 
 The approval process for submissions of new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal. Proposals can be submitted by creating a new [*Feature Request* type issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
-### Third Party add-on
+### Third party add-ons
 
 **Namespace**
 
