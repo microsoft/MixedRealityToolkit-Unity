@@ -15,13 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     {
         static WindowsMixedRealityConfigurationChecker()
         {
-            EnsureDotNetWinRT();
+            EnsureDotNetWinRTDefine();
         }
 
         /// <summary>
-        /// Ensures that the appropriate value is defined based on the presence of the DotNetWinRT binary.
+        /// Ensures that the appropriate symbolic constant is defined based on the presence of the DotNetWinRT binary.
         /// </summary>
-        private static void EnsureDotNetWinRT()
+        private static void EnsureDotNetWinRTDefine()
         {
             const string fileName = "Microsoft.Windows.MixedReality.DotNetWinRT.dll";
             string[] defintions = { "DOTNETWINRT_PRESENT" };
