@@ -171,7 +171,7 @@ Always declare an access modifier for all fields, properties and methods.
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get => myVariable; }
+public int MyVariable => myVariable;
 
 // No public / private access modifiers
 void Foo() { }
