@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(MixedRealityCameraProfile))]
-    public class MixedRealityCameraProfileInspector : BaseDataProviderServiceInspector
+    internal class MixedRealityCameraProfileInspector : BaseDataProviderServiceInspector
     {
         private bool showProviders = false;
         private const string showProvidersPreferenceKey = "ShowCameraSystem_DataProviders_PreferenceKey";
@@ -41,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string profileTitle = "Camera Settings";
         private const string profileDescription = "The Camera Profile helps configure cross platform camera settings.";
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             transparentQualityLevel = serializedObject.FindProperty("transparentQualityLevel");
         }
 
+        /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
             if (!RenderProfileHeader(profileTitle, profileDescription, target))
@@ -118,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <inheritdoc/>
         protected override bool IsProfileInActiveInstance()
         {
             var profile = target as BaseMixedRealityProfile;
@@ -128,11 +130,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region DataProvider Inspector Utilities
 
+        /// <inheritdoc/>
         protected override SerializedProperty GetDataProviderConfigurationList()
         {
             return serializedObject.FindProperty("settingsConfigurations");
         }
 
+        /// <inheritdoc/>
         protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)
         {
             return new ServiceConfigurationProperties()
@@ -144,6 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             };
         }
 
+        /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
             var configurations = (target as MixedRealityCameraProfile)?.SettingsConfigurations;

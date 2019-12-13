@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
+    /// <summary>
+    /// Abstract class that provides base profile information for Spatial Awareness Observers and their configuration
+    /// </summary>
     [Serializable]
     public abstract class BaseSpatialAwarenessObserverProfile : BaseMixedRealityProfile
     {

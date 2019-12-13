@@ -2,14 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
-    public class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector
+    internal class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector
     {
         private const string DataProviderErrorMsg = "The Mixed Reality Input System requires one or more data providers.";
         private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
@@ -54,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private const string ProfileTitle = "Input System Settings";
         private const string ProfileDescription = "The Input System Profile helps developers configure input for cross-platform applications.";
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -73,9 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             handTrackingProfile = serializedObject.FindProperty("handTrackingProfile");
         }
 
+        /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, string.Empty, target))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
             {
                 return;
             }
@@ -176,6 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
         }
 
+        /// <inheritdoc/>
         protected override bool IsProfileInActiveInstance()
         {
             var profile = target as BaseMixedRealityProfile;
@@ -186,11 +188,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         #region DataProvider Inspector Utilities
 
+        /// <inheritdoc/>
         protected override SerializedProperty GetDataProviderConfigurationList()
         {
             return serializedObject.FindProperty("dataProviderConfigurations");
         }
 
+        /// <inheritdoc/>
         protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)
         {
             return new ServiceConfigurationProperties()
@@ -202,6 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             };
         }
 
+        /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
             var configurations = (target as MixedRealityInputSystemProfile)?.DataProviderConfigurations;

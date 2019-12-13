@@ -11,9 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// Abstract class providing base functionality for data provider management in inspector. Useful for core systems that follow dataprovider access model.
+    /// Designed to target ScriptableObject profile classes that configure services who support data providers. 
+    /// These profile ScriptableObject classes should contain an array of IMixedRealityServiceConfigurations that configure a list of data providers for this service configuration
     /// </summary>
     public abstract class BaseDataProviderServiceInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        /// <summary>
+        /// Container class used to store references to serialized properties on a <see cref="IMixedRealityServiceConfiguration"/> target
+        /// </summary>
         protected class ServiceConfigurationProperties
         {
             internal SerializedProperty componentName;
@@ -22,8 +27,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             internal SerializedProperty runtimePlatform;
         }
 
+        /// <summary>
+        /// Returns <see cref="SerializedProperty"/> object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object
+        /// </summary>
         protected abstract SerializedProperty GetDataProviderConfigurationList();
+
+        /// <summary>
+        /// Builds <see cref="ServiceConfigurationProperties"/> container object with <see cref="SerializedProperty"/> references to associated properties on the supplied <see cref="IMixedRealityServiceConfiguration"/> reference
+        /// </summary>
+        /// <param name="providerEntry"><see cref="SerializedProperty"/> reference pointing to <see cref="IMixedRealityServiceConfiguration"/> instance</param>
         protected abstract ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry);
+
+        /// <summary>
+        /// Returns direct <see cref="IMixedRealityServiceConfiguration"/> instance at provided index in target object's array of <see cref="IMixedRealityServiceConfiguration"/> configurations
+        /// </summary>
         protected abstract IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index);
 
         private SerializedProperty providerConfigurations;
@@ -32,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent ComponentTypeLabel = new GUIContent("Type");
         private static readonly GUIContent SupportedPlatformsLabel = new GUIContent("Supported Platform(s)");
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -44,6 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Adds a new data provider profile entry (i.e <see cref="IMixedRealityServiceConfiguration"/>) to array list of target object
+        /// Utilizes GetDataProviderConfigurationList() to get <see cref="SerializedProperty"/> object that represents array to insert against
+        /// </summary>
         protected virtual void AddDataProvider()
         {
             providerConfigurations.InsertArrayElementAtIndex(providerConfigurations.arraySize);
@@ -62,6 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             providerFoldouts.Add(false);
         }
 
+        /// <summary>
+        /// Removed given index item from <see cref="IMixedRealityServiceConfiguration"/> array list.
+        /// Utilizes GetDataProviderConfigurationList() to get <see cref="SerializedProperty"/> object that represents array to delete against.
+        /// </summary>
+        /// <param name="index"></param>
         protected virtual void RemoveDataProvider(int index)
         {
             providerConfigurations.DeleteArrayElementAtIndex(index);
@@ -70,6 +97,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             providerFoldouts.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Applies the given concrete dataprovider type properties to the provided <see cref="IMixedRealityServiceConfiguration"/> instance (as represented by <see cref="ServiceConfigurationProperties"/>).
+        /// Requires <see cref="MixedRealityDataProviderAttribute"/> on concrete type class to pull initial values 
+        /// that will be applied to the <see cref="ServiceConfigurationProperties"/> container SerializedProperties
+        /// </summary>
         protected virtual void ApplyProviderConfiguration(Type dataProviderType, ServiceConfigurationProperties providerProperties)
         {
             if (dataProviderType != null)
@@ -90,6 +122,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Render list of data provider configuration profiles in inspector. Use provided add and remove content labels for the insert/remove buttons
+        /// Returns true if any property has changed in this render pass, false otherwise
+        /// </summary>
         protected bool RenderDataProviderList(GUIContent addContentLabel, GUIContent removeContentLabel, string errorMsg, Type dataProviderProfileType = null)
         {
             bool changed = false;
@@ -116,6 +152,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Renders properties of <see cref="IMixedRealityServiceConfiguration"/> instance at provided index in inspector.
+        /// Also renders inspector view of data provider's profile object and it's contents if applicable and foldout is expanded.
+        /// </summary>
+        /// <returns></returns>
         protected bool RenderDataProviderEntry(int index, GUIContent removeContent, System.Type dataProviderProfileType = null)
         {
             bool changed = false;
