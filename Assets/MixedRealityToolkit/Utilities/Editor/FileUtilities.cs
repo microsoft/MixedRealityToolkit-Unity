@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -23,30 +24,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Locates the files that match the specified name within the Library folder structure.
+        /// Locates the files that match the specified name within the package cache folder structure.
         /// </summary>
         /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
         /// <returns>Array of FileInfo objects representing the located file(s).</returns>
-        public static FileInfo[] FindFilesInLibrary(string fileName)
+        public static FileInfo[] FindFilesInPackageCache(string fileName)
         {
-            // todo
-            return new FileInfo[0];
+            DirectoryInfo root = GetPackageCache();
+            return FindFiles(fileName, root);
         }
 
         /// <summary>
-        /// Finds files in the specified folder structure.
+        /// Gets the package cache folder of this project.
         /// </summary>
-        /// <param name="fileName">The name of the file to find.</param>
-        /// <param name="rootFolder">The folder in which to search for files.</param>
-        /// <returns>Array of FileInfo objects representing the located file(s).</returns>
-        private static FileInfo[] FindFiles(
-            string fileName,
-            DirectoryInfo rootFolder)
+        /// <returns>
+        /// A <see href="https://docs.microsoft.com/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> object that describes the package cache folder.
+        /// </returns>
+        public static DirectoryInfo GetPackageCache()
         {
-            if (string.IsNullOrWhiteSpace(fileName)) { return new FileInfo[0]; }
+            string packageCacheFolderName = @"Library\PackageCache";
 
-            DirectoryInfo assets = new DirectoryInfo(Application.dataPath);
-            return assets.GetFiles(fileName, SearchOption.AllDirectories);
+            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
+            return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
+        }
+
+        /// <summary>
+        /// Finds all files matching the specified name.
+        /// </summary>
+        /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
+        /// <param name="root">The folder in which to perform the search.</param>
+        /// <returns>Array of FileInfo objects containing the search results.</returns>
+        private static FileInfo[] FindFiles(string fileName, DirectoryInfo root)
+        {
+            return root.GetFiles(fileName, SearchOption.AllDirectories);
         }
     }
 }
