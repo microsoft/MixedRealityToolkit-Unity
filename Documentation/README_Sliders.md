@@ -9,7 +9,7 @@ Sliders are UI components that allow you to continuously change a value by movin
 You can find examples in the **SliderExample** scene under:
 [MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
 
-## How to use Sliders
+## How to use sliders
 
 Drag and drop the **PinchSlider** prefab into the scene hierarchy. If you want to modify or create your own slider, remember to do the following:
 
@@ -23,7 +23,7 @@ We also recommend using the following hierarchy
   - TrackVisuals - Containing the track and any other visuals
   - OtherVisuals - Containing any other visuals
 
-## Slider Events
+## Slider events
 
 Sliders expose the following events:
 
@@ -33,7 +33,7 @@ Sliders expose the following events:
 - OnHoverEntered - Called when the user's hand / controller hovers over the slider, using either near or far interaction.
 - OnHoverExited - Called when the user's hand / controller is no longer near the slider.
 
-## Configuring Slider Bound and Axis
+## Configuring slider bound and axis
 
 You can directly move the starting and end points of the slider by moving the handles in the Scene:
 

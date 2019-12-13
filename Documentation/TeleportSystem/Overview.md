@@ -1,4 +1,4 @@
-# Teleport System
+# Teleport system
 
 The teleport system is a sub-system of the MRTK that handles teleporting the user when the
 application is using an opaque display. For AR experiences (like HoloLens), the teleportation

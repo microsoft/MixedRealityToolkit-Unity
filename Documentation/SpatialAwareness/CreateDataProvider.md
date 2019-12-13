@@ -1,4 +1,4 @@
-# Creating a Spatial Awareness system data provider
+# Creating a spatial awareness system data provider
 
 The Spatial Awareness system is an extensible system for providing applications with data about real world environments. To add support for a new hardware platform or a new form of Spatial Awareness data, a custom data provider may be required.
 
@@ -16,7 +16,7 @@ Data providers can be distributed in one of two ways:
 
 The approval process for submissions of new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal. Proposals can be submitted by creating a new [*Feature Request* type issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
-### Third Party add-on
+### Third party add-on
 
 **Namespace**
 

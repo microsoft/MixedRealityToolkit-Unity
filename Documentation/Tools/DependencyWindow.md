@@ -1,5 +1,5 @@
 
-# Dependency Window
+# Dependency window
 
 Often in Unity it is difficult to gleam which assets are being used, and what is referencing them. The "Find References in Scene" option works great when you are only concerned with the current scene, but what about your entire Unity project? This is where the [Dependency Window](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Tools/DependencyWindow) can be useful.
 
