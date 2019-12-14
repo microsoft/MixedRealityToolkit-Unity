@@ -120,45 +120,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 asmDef.Save(asmDefFiles[0].FullName);
             }
         }
-
-//        /// <summary>
-//        /// Determines if a file update is needed and returns the replacement.
-//        /// </summary>
-//        /// <param name="file">The reference file used to determine the new file.</param>
-//        /// <returns>FileInfo object representing the file, or null if a new file is not needed.</returns>
-//        private static FileInfo GetNewAsmDefFile(FileInfo file)
-//        {
-//            // Read the file.
-//            string fileContents = string.Empty;
-//            using (FileStream fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
-//            {
-//                using (StreamReader reader = new StreamReader(fs))
-//                {
-//                    fileContents = reader.ReadToEnd();
-//                }
-//            }
-
-//            // Key values used to determine if a replacement is required.
-//            const string arFoundationReference = "Unity.XR.ARFoundation";
-//            const string spatialTrackingReference = "UnityEngine.SpatialTracking";
-
-//            string updateTo = string.Empty;
-//#if UNITY_2018
-//            if (!fileContents.Contains(arFoundationReference) ||
-//                fileContents.Contains(spatialTrackingReference))
-//            {
-//                updateTo = "2018";
-//            }
-//#elif UNITY_2019_2_OR_NEWER
-//            if (!fileContents.Contains(arFoundationReference) ||
-//                !fileContents.Contains(spatialTrackingReference))
-//            {
-//                updateTo = "2019";
-//            }
-//#endif
-
-//            FileInfo fi = new FileInfo(Path.Combine(file.DirectoryName, $"{file.Name}.{updateTo}"));
-//            return fi.Exists ? fi : null;
-//        }
     }
 }
