@@ -49,7 +49,7 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 ![Solver](Images/Solver/TrackedObjectType-Example.gif)  
 *Example of various properties associated with each TrackedTargetType*
 
-## How to chain Solvers
+## How to chain solvers
 
 It is possible to add multiple `Solver` components to the same GameObject thus chaining their algorithms. The `SolverHandler` components handles updating all solvers on the same GameObject. By default the `SolverHandler` calls `GetComponents<Solver>()` on Start which will return the Solvers in the order that they appear in the inspector.
 
@@ -58,7 +58,7 @@ Furthermore, setting the *Updated Linked Transform* property to true will instru
 > [!NOTE]
 > Developers can modify the order of execution of Solvers by setting the `SolverHandler.Solvers` property directly.
 
-## How to create a new Solver
+## How to create a new solver
 
 All solvers must inherit from the abstract base class, [`Solver`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver). The primary requirements of a Solver extension involves overriding the `SolverUpdate` method. In this method, developers should update the inherited `GoalPosition`, `GoalRotation` and `GoalScale` properties to the desired values. Furthermore, it is generally valuable to leverage `SolverHandler.TransformTarget` as the frame of reference desired by the consumer.
 
@@ -85,7 +85,7 @@ public class InFront : Solver
 
 ## Solver implementation guides
 
-### Common Solver properties
+### Common solver properties
 
 Every Solver component has a core-set of identical properties that control the core Solver behavior.
 
@@ -159,7 +159,7 @@ Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities
 
 Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the `SurfaceMagnetism` raycasts.
 
-### Hand Menu with HandConstraint and HandConstraintPalmUp
+### Hand menu with HandConstraint and HandConstraintPalmUp
 
 ![Hand Menu UX Example](Images/Solver/MRTK_UX_HandMenu.png)
 
@@ -180,11 +180,11 @@ Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.Mi
     * *OnFirstHandDetected*: occurs when the hand tracking state changes from no hands in view, to the first hand in view.
     * *OnLastHandLost*: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
 
-## Experimental Solvers
+## Experimental solvers
 
 These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.
 
-### Directional Indicator
+### Directional indicator
 
 The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator) class is a tag-along component that orients itself to the direction of a desired point in space.
 

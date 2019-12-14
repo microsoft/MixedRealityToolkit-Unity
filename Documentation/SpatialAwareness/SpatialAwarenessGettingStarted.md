@@ -1,4 +1,4 @@
-# Spatial Awareness
+# Spatial awareness
 
 ![Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
 
@@ -7,7 +7,7 @@ The Spatial Awareness system provides real-world environmental awareness in mixe
 > [!NOTE]
 > At this time, the Mixed Reality Toolkit does not ship with Spatial Understanding algorithms as originally packaged in the HoloToolkit. Spatial Understanding generally involves transforming Spatial Mesh data to create simplified and/or grouped Mesh data such as planes, walls, floors, ceilings, etc.
 
-## Getting Started
+## Getting started
 
 Adding support for Spatial Awareness requires two key components of the Mixed Reality Toolkit: the Spatial Awareness system and a supported platform provider.
 
@@ -15,7 +15,7 @@ Adding support for Spatial Awareness requires two key components of the Mixed Re
 2. [Register](#register-observers) and [configure](ConfiguringSpatialAwarenessMeshObserver.md) one or more spatial observers to provide mesh data
 3. [Build and deploy](#build-and-deploy) to a platform that supports Spatial Awareness
 
-### Enable the Spatial Awareness system
+### Enable the spatial awareness system
 
 The Spatial Awareness system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). Follow the steps below to enable or disable the *Spatial Awareness system* in the *MixedRealityToolkit* profile.
 
@@ -60,7 +60,7 @@ The Spatial Awareness system is similar in that data providers supply the system
 > Users of the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
 the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class.
 
-### Build and Deploy
+### Build and deploy
 
 Once the Spatial Awareness system is configured with the desired observer(s), the project can be built and deployed to the target platform.
 
@@ -84,7 +84,7 @@ Information for controlling and extending observers via code:
 - [Configuring Observers via Code](UsageGuide.md)
 - [Creating a custom Observer](CreateDataProvider.md)
 
-## See Also
+## See also
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
 - [Spatial Mapping Overview WMR](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping)

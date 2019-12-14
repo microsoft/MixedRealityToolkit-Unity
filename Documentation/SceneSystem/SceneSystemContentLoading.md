@@ -1,8 +1,8 @@
-# Content Scene Loading
+# Content scene loading
 
-All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see [Monitoring Content Loading.](SceneSystemLoadProgress.md)
+All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see [Monitoring Content Loading](SceneSystemLoadProgress.md).
 
-## Loading Content
+## Loading content
 
 To load content scenes use the `LoadContent` method:
 
@@ -16,7 +16,7 @@ await sceneSystem.LoadContent("MyContentScene");
 await sceneSystem.LoadContent(new string[] { "MyContentScene1", "MyContentScene2", "MyContentScene3" });
 ```
 
-## Single Scene Loading
+## Single scene loading
 
 The equivalent of a single scene load can be achieved via the optional `mode` argument. `LoadSceneMode.Single` will first unload all loaded content scenes before proceeding with the load.
 
@@ -33,7 +33,7 @@ await sceneSystem.LoadContent("ContentScene3");
 await sceneSystem.LoadContent("SingleContentScene", LoadSceneMode.Single);
 ```
 
-## Next / Previous Scene Loading
+## Next / previous scene loading
 
 Content can be singly loaded in order of build index. This is useful for showcase applications that take users through a set of demonstration scenes one-by-one.
 
@@ -73,7 +73,7 @@ if (prevSceneRequested)
 }
 ```
 
-## Loading by Tag
+## Loading by tag
 
 ![MRTK_SceneSystemLoadingByTag](../Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png)
 
@@ -124,7 +124,7 @@ Trees | Vegetation | •
 
 ---
 
-## Editor Behavior
+## Editor behavior
 
 You can perform all these operations in editor and in play mode by using the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#editor-utilities) In edit mode scene loads will be instantaneous, while in play mode you can observe loading progress and use [activation tokens.](SceneSystemLoadProgress.md)
 

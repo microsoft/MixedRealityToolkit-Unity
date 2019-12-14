@@ -1,4 +1,4 @@
-# Near Menu
+# Near menu
 
 ![Near Menu](../Documentation/Images/NearMenu/MRTK_UX_NearMenu.png)
 

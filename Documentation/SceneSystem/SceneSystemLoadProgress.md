@@ -1,6 +1,6 @@
-# Monitoring Content Loading
+# Monitoring content loading
 
-## Scene Operation Progress
+## Scene operation progress
 
 When content is being loaded or unloaded, the `SceneOperationInProgress` property will return true. You can monitor the progress of this operation via the `SceneOperationProgress` property.
 
@@ -25,7 +25,7 @@ await sceneSystem.LoadContent("ContentScene1");
 sceneSystem.LoadContent("ContentScene2", LoadSceneMode.Single)
 ```
 
-### Progress Examples
+### Progress examples
 
 `SceneOperationInProgress` can be useful if activity should be suspended while content is being loaded:
 
@@ -73,7 +73,7 @@ public class ProgressDialog : MonoBehaviour
 
 ---
 
-## Monitoring With Actions
+## Monitoring with actions
 
 The Scene System provides several actions to let you know when scenes are being loaded or unloaded. Each action relays the name of the affected scene.
 
@@ -96,7 +96,7 @@ Action | When it's invoked | Content Scenes | Lighting Scenes | Manager Scenes
 `OnWillUnloadScene` | Just prior to a scene unload | • | • | •
 `OnSceneUnloaded` | After a scene is fully unloaded |  • | • | •
 
-### Action Examples
+### Action examples
 
 Another progress dialog example using actions and a coroutine instead of Update:
 
@@ -145,7 +145,7 @@ public class ProgressDialog : MonoBehaviour
 
 ---
 
-## Controlling Scene Activation
+## Controlling scene activation
 
 By default content scenes are set to activate when loaded. If you want to control scene activation manually, you can pass a `SceneActivationToken` to any content load method. If multiple content scenes are being loaded by a single operation, this activation token will apply to all scenes.
 

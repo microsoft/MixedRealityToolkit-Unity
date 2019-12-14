@@ -1,10 +1,10 @@
-# Scene Types
+# Scene types
 
 Scenes have been divided into three types, and each type has a different function.
 
 ![Scene system in the hierarchy](../Images/SceneSystem/MRTK_SceneSystemEditorSceneHierarchy.png)
 
-## Content Scenes
+## Content scenes
 
 These are the scenes you're used to dealing with. Any kind of content can be stored in them, and they can be loaded or unloaded in any combination.
 
@@ -20,7 +20,7 @@ To enable this feature, check `Use Manager Scene` in your profile and drag a sce
 
 ___
 
-## Lighting Scenes
+## Lighting scenes
 
 A set of scenes which store lighting information and lighting objects. Only one can be loaded at a time, and their settings can be blended during loads for smooth lighting transitions.
 
@@ -32,13 +32,13 @@ The Scene System uses lighting scenes to ensure that these settings remain consi
 
 To enable this feature, check `Use Lighting Scene` in your profile and populate the `Lighting Scenes` array.
 
-### Cached Lighting Settings
+### Cached lighting settings
 
 Your profile stores cached copies of the lighting settings kept in your lighting scenes. If those settings change in your lighting scenes, you will need to update your cache to ensure lighting appears as expected in play mode. Your profile will display a warning when it suspects your cached settings are out of date. Clicking `Update Cached Lighting Settings` will load each of your lighting scenes, extract their settings, then store them in your profile.
 
 ![Scene system lighting settings](../Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.png)
 
-### Editor Behavior
+### Editor behavior
 
 One benefit of using lighting scenes is knowing your content is lit correctly while editing. To this end, the Scene Service will keep a lighting scene loaded at all times, and will copy that scene's lighting settings to the current active scene.\*
 

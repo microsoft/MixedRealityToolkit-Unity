@@ -1,4 +1,4 @@
-# Material Instance
+# Material instance
 
 The [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. This utility component can be used as a replacement to [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") or 
 [Renderer.materials]("https://docs.unity3d.com/ScriptReference/Renderer-materials.html").
@@ -92,6 +92,6 @@ public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 
 For more information please see the example usage demonstrated within the [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) behavior.
 
-## See Also
+## See also
 
 * [MRTK Standard Shader](../README_MRTKStandardShader.md)
