@@ -95,7 +95,7 @@ After the upgrade occurs the MRTK/Standard shader will be altered and any magent
 
 ## UGUI Support
 
-The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of it's parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
+The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of its parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
 
 Note, when using a Unity Image component it is recommended to specify "None (Sprite)" for the Source Image to prevent Unity UI from generating extra vertices.
 

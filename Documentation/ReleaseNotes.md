@@ -165,7 +165,7 @@ and
 ![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
 
 **Fixing LayoutDirection in GridObjectCollection**
-In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before. 
+In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before.
 
 Below: `RowsThenColumns` layout, with Rows = 3.
 
@@ -233,7 +233,7 @@ Hand mesh
 
 **Scrolling Object Collection (Experimental)**
 
-An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 intitial (out of box) experience.
+An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 initial (out of box) experience.
 
 ![Scrolling object collection](https://user-images.githubusercontent.com/13754172/65283862-f3dd1480-daec-11e9-8868-671106c6732b.gif)
 
@@ -317,7 +317,7 @@ This error most commonly occurs when a hand comes into view. There is no functio
 
 If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
 
-If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.
 
 **Mixed Reality Capture settings (Experimental)**
 
@@ -432,7 +432,7 @@ The step to re-open the project in Unity resolves the issue.
 
 **NuGet package distribution**
 
-MRTK 2.1.0 now ships packages on nuget.org. The following steps can be used to import the desired packages.
+MRTK 2.1.0 now ships packages on NuGet.org. The following steps can be used to import the desired packages.
 
 1. Install [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
 1. Select **NuGet > Manage NuGet Packages**
@@ -553,17 +553,17 @@ The input simulation system has been upgraded, which changes a few settings in t
 
 1. All KeyCode and mouse button bindings in the profile have been replaced with a generic KeyBinding struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
 
-- FastControlKey
-- ToggleLeftHandKey
-- ToggleRightHandKey
-- LeftHandManipulationKey
-- RightHandManipulationKey
+    - FastControlKey
+    - ToggleLeftHandKey
+    - ToggleRightHandKey
+    - LeftHandManipulationKey
+    - RightHandManipulationKey
 
-2. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
+1. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
 
-3. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
+1. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
 
-4. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
+1. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
 
 A new axis "UpDown" has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.
 
@@ -572,6 +572,7 @@ For more information on these changes, please see the [input simulation service]
 Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
 
 ### Replace ColliderNearInteractionTouchable with BaseNearInteractionTouchable
+
 The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages of `ColliderNearInteractionTouchable` with `BaseNearInteractionTouchable`.
 
 ### Interactable: deprecated methods

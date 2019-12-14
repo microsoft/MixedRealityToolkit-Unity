@@ -24,7 +24,7 @@ The default MRTK Pointer Profile configuration includes the following pointer cl
 Each Pointer entry is defined by the following set of data:
 
 - *Controller Type* - The set of controllers that a pointer is valid for.
-    * For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
+  - For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
 
 - *Handedness* - allows for a pointer to only being instantiated for a specific hand (left/right)
 
@@ -71,8 +71,7 @@ The *TouchPointer* is responsible for working with Unity Touch input (i.e. touch
 
 The *MousePointer* powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
-<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
-<br/>
+![Mouse pointer](../../Documentation/Images/Pointers/MRTK_MousePointer.png)
 
 > [!NOTE]
 > Mouse support is not available by default in MRTK but can be enabled by adding a new *Input Data Provider* of type [`MouseDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager) to the MRTK input profile and assigning the [`MixedRealityMouseInputProfile`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityMouseInputProfile) to the data provider.
@@ -132,7 +131,7 @@ it's possible to add different pointer types to these platforms. For example, yo
 
 ### Pointer event interfaces
 
-MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
+MonoBehaviours that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
 
 | Event | Description | Handler |
 | --- | --- | --- |
@@ -266,6 +265,7 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
 ### Disable Pointers
+
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
 ```c#

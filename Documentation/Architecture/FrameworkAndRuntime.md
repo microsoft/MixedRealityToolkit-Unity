@@ -19,7 +19,7 @@ Apart from adding the MRTK GameObject to the scene the menu option will also:
 
 The MRTK has several core services. Some coordinate with one another; others are independent.
 All share the same life cycle - startup, registration, update and teardown - and this life
-cycle stands apart from Unity's MonoBehavior life cycle. This
+cycle stands apart from Unity's MonoBehaviour life cycle. This
 [medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2) explains
 some of the background and motivation behind this approach. MRTK has a single
 object that manages life and runtime of its services.

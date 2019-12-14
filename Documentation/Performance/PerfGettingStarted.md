@@ -72,10 +72,10 @@ v2f vert (appdata v)
 
 Unity provides [presets to control quality](https://docs.unity3d.com/Manual/class-QualitySettings.html) of rendering for each platform endpoint. These presets control what graphical features can be enabled such as shadows, anti-aliasing, global illumination, and more. It is recommended to lower these settings and optimize the number of calculations performed during rendering.
 
-*Step 1:* Update mixed reality Unity projects to use the *Low Quality* level setting <br/>
+*Step 1:* Update mixed reality Unity projects to use the *Low Quality* level setting  
 **Edit** > **Project Settings**, then select the **Quality** category >  Select *Low Quality* for the UWP Platform
 
-*Step 2:* For every Unity scene file, disable [real-time Global Illumination](https://docs.unity3d.com/Manual/LightMode-Realtime.html) <br/>
+*Step 2:* For every Unity scene file, disable [real-time Global Illumination](https://docs.unity3d.com/Manual/LightMode-Realtime.html)  
 **Window** > **Rendering** > **Lighting Settings** > [Uncheck *Real-time Global Illumination*](https://docs.unity3d.com/Manual/GlobalIllumination.html)
 
 ### Depth buffer sharing (HoloLens)
@@ -90,7 +90,7 @@ If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lowe
 > If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead, which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
 
 > [!NOTE]
-> To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the [*Render Depth Buffer* utility](../MixedRealityConfigurationGuide.md#editor-utilities) under the *Editor Settings* in the MRTK Configuration profile. 
+> To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the [*Render Depth Buffer* utility](../MixedRealityConfigurationGuide.md#editor-utilities) under the *Editor Settings* in the MRTK Configuration profile.
 
 ## General Recommendations
 
@@ -128,7 +128,7 @@ This is one of the primary reasons for leveraging the [MRTK Standard shader](../
 
 One of the most common mistakes in Unity that reduces performance is cloning materials at runtime. If GameObjects share the same material and/or are the same mesh, they can be optimized into single draw calls via techniques such as *[static batching](https://docs.unity3d.com/Manual/DrawCallBatching.html)*, *[dynamic batching](https://docs.unity3d.com/Manual/DrawCallBatching.html)*, and *[GPU Instancing](https://docs.unity3d.com/Manual/GPUInstancing.html)*. However, if developer's modify properties of a [Renderer's material](https://docs.unity3d.com/ScriptReference/Renderer-material.html) at runtime, Unity will create a clone copy of the assigned material.
 
-For example, if there are a 100 cubes in a scene, a developer may want to assign a unique color to each at runtime. The access of [*renderer.material.color*](https://docs.unity3d.com/ScriptReference/Material-color.html) in C# will make Unity create a new material in memory for this particular renderer/GameObject. Each of the 100 cubes will have it's own material and thus they cannot be merged together into one draw call, but instead will become 100 draw call requests from the CPU to the GPU.
+For example, if there are a 100 cubes in a scene, a developer may want to assign a unique color to each at runtime. The access of [*renderer.material.color*](https://docs.unity3d.com/ScriptReference/Material-color.html) in C# will make Unity create a new material in memory for this particular renderer/GameObject. Each of the 100 cubes will have its own material and thus they cannot be merged together into one draw call, but instead will become 100 draw call requests from the CPU to the GPU.
 
 To overcome this obstacle and still assign a unique color per cube, developers should leverage [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html).
 

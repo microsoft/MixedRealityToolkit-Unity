@@ -31,11 +31,11 @@ The Windows Mixed Reality Camera Settings also supports a profile. This profile 
 
 ![Windows Mixed Reality camera settings configuration](../Images/CameraSystem/WMRCameraSettingsProfile.png)
 
-### Render Mixed Reality Capture from the photo/video camera
+### Render mixed reality capture from the photo/video camera
 
 With this setting on HoloLens 2, you can enable hologram alignment in your mixed reality captures. If enabled, the platform will provide an additional HolographicCamera to the app when a mixed reality capture photo or video is taken. This HolographicCamera provides view matrices corresponding to the photo/video camera location, and it provides projection matrices using the photo/video camera field of view. This will ensure that holograms, such as hand meshes, remain visibly aligned in the video output.
 
-## See Also
+## See also
 
 - [Camera System Overview](CameraSystemOverview.md)
 - [Creating a Camera Settings Provider](CreateSettingsProvider.md)

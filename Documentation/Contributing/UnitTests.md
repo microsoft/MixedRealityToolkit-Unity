@@ -112,9 +112,9 @@ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.
 
 To create a new play mode test:
 
-- Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
-- Right click, Create > Testing > C# Test Script
-- Replace the default template with the skeleton below
+* Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
+* Right click, Create > Testing > C# Test Script
+* Replace the default template with the skeleton below
 
 ```c#
 #if !WINDOWS_UWP

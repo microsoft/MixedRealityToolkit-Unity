@@ -118,7 +118,7 @@ As stated, a Theme Engine is defined as a class that extends from the [`Interact
 `public abstract void SetValue(ThemeStateProperty property, int index, float percentage)`
 (xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue)
 
-For the given property, which can be identified by `ThemeStateProperty.Name`, set it's current state value on the targeted GameObject host (i.e set the material color, etc). The *index* indicates the current state value to access and the *percentage*, a float between 0 and 1, is used for easing/lerping between values.
+For the given property, which can be identified by `ThemeStateProperty.Name`, set its current state value on the targeted GameObject host (i.e set the material color, etc). The *index* indicates the current state value to access and the *percentage*, a float between 0 and 1, is used for easing/lerping between values.
 
 `public abstract ThemePropertyValue GetProperty(ThemeStateProperty property)`(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty)
 
@@ -156,7 +156,7 @@ If the custom Theme Engine can support targeting shader properties. It is recomm
 
 ### Custom Theme Engine example
 
-The class below is an example of a custom new Theme Engine. This implementation will find a [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html) component on the initialized host object and control it's visibility based on the current state.
+The class below is an example of a custom new Theme Engine. This implementation will find a [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html) component on the initialized host object and control its visibility based on the current state.
 
 ```c#
 using Microsoft.MixedReality.Toolkit.UI;
@@ -263,7 +263,7 @@ public class MeshVisibilityController : MonoBehaviour
 
     private void Update()
     {
-        // Update the theme engine to set our MeshRenderer visibility 
+        // Update the theme engine to set our MeshRenderer visibility
         // based on our current state (i.e the hideMesh variable)
         themeEngine.OnUpdate(Convert.ToInt32(hideMesh));
     }

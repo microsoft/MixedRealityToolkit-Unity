@@ -65,7 +65,7 @@ The Mixed Reality Toolkit foundation provides the following spatial objects that
 ### Specify interface and/or base class inheritance
 
 All Spatial Awareness data providers must implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
-interface, which specifies the minimium functionality required by the Spatial Awareness system. The MRTK foundation includes the [`BaseSpatialObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
+interface, which specifies the minimum functionality required by the Spatial Awareness system. The MRTK foundation includes the [`BaseSpatialObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
 class which provides a default implementation of this required functionality.
 
 ```c#

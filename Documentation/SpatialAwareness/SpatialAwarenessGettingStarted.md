@@ -70,11 +70,22 @@ Once the Spatial Awareness system is configured with the desired observer(s), th
 > [!WARNING]
 > Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using a built and deployed version of the application, running on the target hardware and platform.
 
+## Next steps
+
+After following the procedures above to enable the Spatial Awareness system, the system can be configured and controlled in more detail.
+
+Information for configuring observers in inspector:
+
+- [Configuring Observers for on device usage](ConfiguringSpatialAwarenessMeshObserver.md)
+- [Configuring Observers for in-editor usage](SpatialObjectMeshObserver.md)
+
+Information for controlling and extending observers via code:
+
+- [Configuring Observers via Code](UsageGuide.md)
+- [Creating a custom Observer](CreateDataProvider.md)
+
 ## See Also
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
-- [Configuring Observer for Device](ConfiguringSpatialAwarenessMeshObserver.md)
-- [Configuring Observer for Editor](SpatialObjectMeshObserver.md)
-- [Creating a custom Observer](CreateDataProvider.md)
 - [Spatial Mapping Overview WMR](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping)
 - [Spatial Mapping in Unity WMR](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping-in-unity)
