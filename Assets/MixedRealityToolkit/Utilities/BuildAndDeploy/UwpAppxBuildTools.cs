@@ -174,6 +174,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // have VS2017 or VS2019 installed.
             foreach (VSWhereFindOption findOption in VSWhereFindOptions)
             {
+                string version = "";
+                if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaUWPVisualStudioVersion))
+                {
+                    version = "-latest";
+                }
+                else
+                {
+                    version = $"-version {EditorUserBuildSettings.wsaUWPVisualStudioVersion}";
+                }
+
                 var result = await new Process().StartProcessAsync(
                 new ProcessStartInfo
                 {
@@ -182,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = findOption.arguments,
+                    Arguments = string.Format(findOption.arguments, version),
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
@@ -623,12 +633,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // This find option corresponds to the version of vswhere that ships with VS2019.
             new VSWhereFindOption(
-                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
+                @"/C vswhere -all -products * {0} -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                 ""),
             // This find option corresponds to the version of vswhere that ships with VS2017 - this doesn't have
             // support for the -find command switch.
             new VSWhereFindOption(
-                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                @"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
                 "\\MSBuild\\15.0\\Bin\\MSBuild.exe"),
         };
     }
