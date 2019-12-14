@@ -214,6 +214,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private class SpherePointerQueryInfo
         {
+            // List of corners shared across all sphere pointer query instances --
+            // used to store list of corners for a bounds. Shared and static
+            // to avoid allocating memory each frame
+            private static List<Vector3> corners = new List<Vector3>();
+
             /// <summary>
             /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
             /// </summary>
@@ -293,51 +298,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <returns></returns>
             private bool isInFOV(Collider myCollider)
             {
+                corners.Clear();
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
                 float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
                 float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-                foreach (var pt in corners)
+                foreach (var corner in corners)
                 {
-                    if (isPointInFrustrum(pt))
+                    if (isPointInFrustrumWithBuffer(corner))
                     {
                         return true;
                     }
 
-                    xMin = Mathf.Min(xMin, pt.x);
-                    yMin = Mathf.Min(yMin, pt.y);
-                    zMin = Mathf.Min(zMin, pt.z);
-                    xMax = Mathf.Max(xMax, pt.x);
-                    yMax = Mathf.Max(yMax, pt.y);
-                    zMax = Mathf.Max(zMax, pt.z);
+                    xMin = Mathf.Min(xMin, corner.x);
+                    yMin = Mathf.Min(yMin, corner.y);
+                    zMin = Mathf.Min(zMin, corner.z);
+                    xMax = Mathf.Max(xMax, corner.x);
+                    yMax = Mathf.Max(yMax, corner.y);
+                    zMax = Mathf.Max(zMax, corner.z);
                 }
 
                 // edge case: check if camera is inside the entire bounds of the collider;
                 var cameraPos = CameraCache.Main.transform.position;
-                if (xMin <= cameraPos.x && cameraPos.x <= xMax 
+                return xMin <= cameraPos.x && cameraPos.x <= xMax 
                     && yMin <= cameraPos.y && cameraPos.y <= yMax
-                    && zMin <= cameraPos.z && cameraPos.z <= zMax)
-                {
-                    return true;
-                }
-                return false;
+                    && zMin <= cameraPos.z && cameraPos.z <= zMax;
             }
 
             /// <summary>
-            /// Returns true if a point is in the camera's frustrum
+            /// Returns true if a point is in the camera's frustrum, given a small buffer around
+            /// the camera's view in x, y, as well as distance form camera (distanceBuffer)
             /// </summary>
-            /// <param name="pt">Point to test</param>
-            private bool isPointInFrustrum(Vector3 pt)
+            /// <param name="point">Point to test</param>
+            /// <param name="inFrontOfcamera">Minimum distance point must be from camera to be considered in frustrum, in meters. Defaults to 5 cm.</param>
+            /// <param name="fieldOfViewBufferVertical">Additional buffer around camera field of view (horizontal and vertical, in degrees </param>
+            /// <param name="fieldOfViewBufferHorizontal">Additional buffer around camera field of view (horizontal and vertical, in degrees </param>
+            private bool isPointInFrustrumWithBuffer(Vector3 point, float fieldOfViewBufferVertical = 1, float fieldOfViewBufferHorizontal = 1, float inFrontOfcamera = 0.05f)
             {
                 Camera mainCam = CameraCache.Main;
-                Vector3 screenPos = mainCam.WorldToScreenPoint(pt);
-                // pixel buffer around screen
-                float screenBuffer = 10;
-                // distance buffer in front of camera, in meters
-                float cameraBuffer = 0.05f;
-                bool inX = -screenBuffer < screenPos.x && screenPos.x < mainCam.pixelWidth + screenBuffer;
-                bool inY = -screenBuffer < screenPos.y && screenPos.y < mainCam.pixelHeight + screenBuffer;
-                bool inZ = screenPos.z > cameraBuffer;
-                return inZ && inY && inX;
+                return MathUtilities.IsInFOV(
+                    point,
+                    mainCam.transform,
+                    mainCam.fieldOfView + fieldOfViewBufferVertical,
+                    mainCam.GetHorizontalFieldOfViewDegrees() + fieldOfViewBufferHorizontal,
+                    inFrontOfcamera,
+                    mainCam.farClipPlane);
             }
 
             /// <summary>
