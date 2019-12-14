@@ -177,11 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 string version = "";
                 if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaUWPVisualStudioVersion))
                 {
-                    version = "-latest";
+                    version = " -latest";
                 }
                 else
                 {
-                    version = $"-version {EditorUserBuildSettings.wsaUWPVisualStudioVersion}";
+                    // Add version number with brackets to find only the specified version
+                    version = $" -version [{EditorUserBuildSettings.wsaUWPVisualStudioVersion}]";
                 }
 
                 var result = await new Process().StartProcessAsync(
@@ -192,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = string.Format(findOption.arguments, version),
+                    Arguments = $"{findOption.arguments}{version}",
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
@@ -633,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // This find option corresponds to the version of vswhere that ships with VS2019.
             new VSWhereFindOption(
-                @"/C vswhere -all -products * {0} -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
+                @"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                 ""),
             // This find option corresponds to the version of vswhere that ships with VS2017 - this doesn't have
             // support for the -find command switch.
