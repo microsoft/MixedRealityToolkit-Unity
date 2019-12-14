@@ -74,6 +74,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.html",
+          "hash": "C7Lrf8urnbDxeFMrrlRa4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md",
       "output": {
         ".html": {
@@ -775,6 +787,18 @@
         ".html": {
           "relative_path": "Documentation/Extensions/ExtensionServices.html",
           "hash": "DxsXqsz7Q2TwEQtVpqmIDA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Extensions/HandPhysicsService/HandPhysicsServiceOverview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Extensions/HandPhysicsService/HandPhysicsServiceOverview.html",
+          "hash": "3jag5sQDgFk4bsRBYP4Z0A=="
         }
       },
       "is_incremental": false,
@@ -6992,7 +7016,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "r8kW5lt6HYoV0OJouij9bA=="
+          "hash": "j/TSwQ35wk7l+smkjVkjnQ=="
         }
       },
       "is_incremental": false,
@@ -7219,7 +7243,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseExtensionService.html",
-          "hash": "CqAmvejuJtRzVRA0t4GBvA=="
+          "hash": "dZTbrh43wbno2WoKT+igpg=="
         }
       },
       "is_incremental": false,
@@ -7231,7 +7255,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "6a+pBYAdHlh8zeKBT51FFg=="
+          "hash": "cw1JxX/IGFC+12Y1cIGy7w=="
         }
       },
       "is_incremental": false,
@@ -10964,6 +10988,90 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.ExtendsAttribute.html",
           "hash": "cd/71akSLKiW14ayGwhwEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples.PhysicsTriggerEventReadout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples.PhysicsTriggerEventReadout.html",
+          "hash": "Jr1OSkcXfIVryZB5rh+OIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples.html",
+          "hash": "x5HovHVSx4jJke4Dx3tAQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.HandPhysicsService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.HandPhysicsService.html",
+          "hash": "DBIJ2AHJOc3cP+GGqIMHLg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.HandPhysicsServiceProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.HandPhysicsServiceProfile.html",
+          "hash": "nfOyRCO3SKmaTn1R5u7PMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.IHandPhysicsService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.IHandPhysicsService.html",
+          "hash": "CooYBcHAYqpXa3RIYPS78g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.JointKinematicBody.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.JointKinematicBody.html",
+          "hash": "diARKKmUrUNZ7yHuX5I0gw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.html",
+          "hash": "fc5bgcA5OowYOZqFW/bNKw=="
         }
       },
       "is_incremental": false,
@@ -24391,7 +24499,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "1Y4fiW1etpZdKJbpG0MKwA=="
+          "hash": "EUb/Zk4ZSS3QRKNSKtPw/A=="
         }
       },
       "is_incremental": false,
@@ -24443,28 +24551,28 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1446,
+          "total_file_count": 1453,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 142,
+          "total_file_count": 144,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
