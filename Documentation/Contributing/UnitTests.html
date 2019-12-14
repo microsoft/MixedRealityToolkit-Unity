@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Writing and Running Tests in MRTK | Mixed Reality Toolkit Documentation </title>
+    <title>Writing and running tests in MRTK | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Writing and Running Tests in MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Writing and running tests in MRTK | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="writing-and-running-tests-in-mrtk">Writing and Running Tests in MRTK</h1>
+<h1 id="writing-and-running-tests-in-mrtk">Writing and running tests in MRTK</h1>
 
 <p>To ensure MRTK is reliable, MRTK has a set of tests to ensure that changes to the code does not regress existing behavior. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when making changes.</p>
 <p>MRTK uses the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> which uses a Unity
@@ -110,7 +110,7 @@ integration of <a href="https://nunit.org/">NUnit</a>. This guide will provide a
 <p>It's also possible to run the playmode tests multiple times via the <code>run_repeat_tests.ps1</code> script. All parameters used in <code>run_playmode_tests.ps1</code> may be used.</p>
 <pre><code class="lang-ps">.\run_repeat_tests.ps1 -Times 5
 </code></pre>
-<h3 id="pull-request-validation">Pull Request Validation</h3>
+<h3 id="pull-request-validation">Pull request validation</h3>
 <p>MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR <code>/azp run mrtk_pr</code> if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.</p>
 <p>Only after all of the tests have passed successfully can the PR be merged into mrtk_development.</p>
 <h3 id="stress-tests--bulk-tests">Stress tests / bulk tests</h3>
@@ -122,12 +122,12 @@ integration of <a href="https://nunit.org/">NUnit</a>. This guide will provide a
 public IEnumerator MyTest() {...}
 </code></pre>
 <p>Run the following from a command line (<a href="https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core">PowerShell</a> is recommended)</p>
-<pre><code class="lang-ps">cd scripts\tests
+<pre><code class="lang-powershell">cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest
 </code></pre>
 <p>Copy and paste the output into your test file. The following script is for running multiple tests in sequence:</p>
-<pre><code class="lang-ps">cd scripts\tests
+<pre><code class="lang-powershell">cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest MySecondTest
 </code></pre>

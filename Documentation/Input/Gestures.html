@@ -94,7 +94,7 @@
 </ul>
 <p>Both of these input sources use the <em>Gesture Settings</em> profile to translate Unity's Touch and Gesture events respectively into MRTK's <a href="InputActions.html">Input Actions</a>. This profile can be found under the <em>Input System Settings</em> profile.</p>
 <img src="../Images/Input/GestureProfile.png" style="max-width:100%;">
-<h2 id="gesture-events">Gesture Events</h2>
+<h2 id="gesture-events">Gesture events</h2>
 <p>Gesture events are received by implementing one of the gesture handler interfaces: <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler.html"><code>IMixedRealityGestureHandler</code></a> or <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler-1.html"><code>IMixedRealityGestureHandler&lt;TYPE&gt;</code></a> (see table of <a href="InputEvents.html">event handlers</a>).</p>
 <p>See <a href="#example-scene">Example Scene</a> for an example implementation of a gesture event handler.</p>
 <p>When implementing the generic version, the <em>OnGestureCompleted</em> and <em>OnGestureUpdated</em> events can receive typed data of the following types:</p>
@@ -159,7 +159,7 @@
 </ol>
 </li>
 </ul>
-<h2 id="example-scene">Example Scene</h2>
+<h2 id="example-scene">Example scene</h2>
 <p>The <strong>HandInteractionGestureEventsExample</strong> scene in <code>MixedRealityToolkit.Examples\Demos\HandTracking\Scenes</code> shows how to use the pointer Result to spawn an object at the hit location.</p>
 <p><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/GestureTester.cs">Gesture Tester script</a> is an example implementation to visualize gesture events via GameObjects. The handler functions change the color of indicator objects and display the last recorded event in text objects in the scene.</p>
 </article>
