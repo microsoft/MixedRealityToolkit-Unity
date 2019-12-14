@@ -27,19 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         private static bool EnsureArFoundationDefine()
         {
             const string fileName = "Unity.XR.ARFoundation.asmdef";
-            string[] defintions = { "ARFOUNDATION_PRESENT" };
+            string[] definitions = { "ARFOUNDATION_PRESENT" };
 
             FileInfo[] files = FileUtilities.FindFilesInPackageCache(fileName);
             if (files.Length > 0)
             {
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, defintions);
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, defintions);
+                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, definitions);
+                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, definitions);
                 return true;
             }
             else
             {
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, defintions);
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, defintions);
+                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, definitions);
+                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, definitions);
                 return false;
             }
         }

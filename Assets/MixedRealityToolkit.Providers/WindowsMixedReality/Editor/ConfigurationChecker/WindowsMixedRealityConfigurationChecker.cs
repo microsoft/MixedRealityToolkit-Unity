@@ -24,16 +24,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static void EnsureDotNetWinRTDefine()
         {
             const string fileName = "Microsoft.Windows.MixedReality.DotNetWinRT.dll";
-            string[] defintions = { "DOTNETWINRT_PRESENT" };
+            string[] definitions = { "DOTNETWINRT_PRESENT" };
 
             FileInfo[] files = FileUtilities.FindFilesInAssets(fileName);
             if (files.Length > 0)
             {
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, defintions);
+                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, definitions);
             }
             else
             {
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, defintions);
+                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, definitions);
             }
         }
     }
