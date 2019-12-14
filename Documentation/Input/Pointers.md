@@ -114,7 +114,7 @@ Useful Sphere Pointer properties:
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
 
-## Pointer support for Mixed Reality Platforms
+## Pointer support for mixed reality platforms
 
 The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
 it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer.
@@ -196,7 +196,7 @@ public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityP
 }
 ```
 
-### Query Pointers
+### Query pointers
 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
 
@@ -216,7 +216,7 @@ foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
 }
 ```
 
-#### Primary Pointer
+#### Primary pointer
 
 Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.
 
@@ -246,7 +246,7 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 
 <img src="../../Documentation/Images/Pointers/PrimaryPointerExample.png" style="max-width:100%;">
 
-### Pointer Result
+### Pointer result
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
@@ -264,7 +264,7 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
-### Disable Pointers
+### Disable pointers
 
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
@@ -297,7 +297,7 @@ For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.Mix
 
 <img src="../../Documentation/Images/Pointers/PointerHandler.png" style="max-width:100%;">
 
-## Pointer Extent
+## Pointer extent
 
 Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
 By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
@@ -312,7 +312,7 @@ fields:
 *Default Pointer Extent* - This controls the length of the pointer ray/line that will
 render when the pointer is not interacting with anything.
 
-## See Also
+## See also
 
 - [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
 - [Input Events](InputEvents.md)

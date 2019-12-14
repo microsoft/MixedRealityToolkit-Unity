@@ -1,4 +1,4 @@
-# Input Animation Recording
+# Input animation recording
 
 MRTK features an recording system by which head movement and hand tracking data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulationService.md).
 
@@ -12,11 +12,11 @@ Recording input is a useful tool in a variety of situations:
   The recording system supports a "rolling buffer" concept that allows recording recent input in the background.
   See [Input Recording Service](#input-recording-service).
 
-## Recording and Playback services
+## Recording and playback services
 
 Two input system services are provided to record and play back input respectively.
 
-### Input Recording Service
+### Input recording service
 
 [`InputRecordingService`](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) takes data from the main camera transform and active hand controllers and stores it in an internal buffer. When requested this data is then serialized into binary files for storage and later replay.
 
@@ -32,7 +32,7 @@ The data in the recording buffer can be saved in a binary file using the [SaveIn
 
 For details on the binary file format see [Input Animation File Format Specification](InputAnimationFileFormat.md).
 
-### Input Playback Service
+### Input playback service
 
 [`InputPlaybackService`](xref:Microsoft.MixedReality.Toolkit.Input.InputPlaybackService) reads a binary file with input animation data and then applies this data through the [InputSimulationService](xref:Microsoft.MixedReality.Toolkit.Input.InputSimulationService) to recreate the recorded movements.
 

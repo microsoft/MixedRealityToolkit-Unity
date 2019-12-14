@@ -96,15 +96,15 @@ private void PutABoxAroundIt(GameObject target)
 
 ## Inspector properties
 
-### Target Object
+### Target object
 
 This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
 
-### Bounds Override
+### Bounds override
 
 Sets a box collider from the object for bounds computation.
 
-### Activation Behavior
+### Activation behavior
 
 There are several options to activate the bounding box interface.
 
@@ -113,15 +113,15 @@ There are several options to activate the bounding box interface.
 * *Activate By Pointer*: Bounding Box becomes visible when it is targeted by a hand-ray pointer.
 * *Activate Manually*: Bounding Box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.
 
-### Scale Minimum
+### Scale minimum
 
 The minimum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.
 
-### Scale Maximum
+### Scale maximum
 
 The maximum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.
 
-### Box Display
+### Box display
 
 Various bounding box visualization options.
 
