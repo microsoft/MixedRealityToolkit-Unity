@@ -65,6 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
+        /// <summary>
+        /// Grabbables must be within camera frustrum for sphere pointer to grab them.
+        /// Specify additional buffer to expand the vertical camera frustrum, in degrees.
+        /// </summary>
+        private const float frustrumCheckVerticalBufferDegrees = 0f;
+
+        /// <summary>
+        /// Grabbables must be within camera frustrum for sphere pointer to grab them.
+        /// Specify additional buffer to expand the horizontal camera frustrum, in degrees.
+        /// </summary>
+        private const float frustrumCheckHorizontalBufferDegrees = -5f;
 
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
@@ -303,7 +314,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < corners.Count; i++)
                 {
                     var corner = corners[i];
-                    if (isPointInFrustrumWithBuffer(corner))
+                    if (isPointInFrustrumWithBuffer(corner, 
+                        frustrumCheckVerticalBufferDegrees, 
+                        frustrumCheckHorizontalBufferDegrees))
                     {
                         return true;
                     }
@@ -329,9 +342,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="point">Point to test</param>
             /// <param name="inFrontOfcamera">Minimum distance point must be from camera to be considered in frustrum, in meters. Defaults to 5 cm.</param>
-            /// <param name="fieldOfViewBufferVertical">Additional buffer around camera field of view (horizontal and vertical, in degrees </param>
-            /// <param name="fieldOfViewBufferHorizontal">Additional buffer around camera field of view (horizontal and vertical, in degrees </param>
-            private bool isPointInFrustrumWithBuffer(Vector3 point, float fieldOfViewBufferVertical = 1, float fieldOfViewBufferHorizontal = 1, float inFrontOfcamera = 0.05f)
+            /// <param name="fieldOfViewBufferVertical">Additional buffer around camera field of view (horizontal and vertical, in degrees. Defaults to 1. </param>
+            /// <param name="fieldOfViewBufferHorizontal">Additional buffer around camera field of view (horizontal and vertical, in degrees. Defaults to 1. </param>
+            private static bool isPointInFrustrumWithBuffer(Vector3 point, float fieldOfViewBufferVertical = 1, float fieldOfViewBufferHorizontal = 1, float inFrontOfcamera = 0.05f)
             {
                 Camera mainCam = CameraCache.Main;
                 return MathUtilities.IsInFOV(
