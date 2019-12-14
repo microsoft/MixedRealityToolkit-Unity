@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -302,8 +301,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
                 float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
                 float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-                foreach (var corner in corners)
+                for (int i = 0; i < corners.Count; i++)
                 {
+                    var corner = corners[i];
                     if (isPointInFrustrumWithBuffer(corner))
                     {
                         return true;
