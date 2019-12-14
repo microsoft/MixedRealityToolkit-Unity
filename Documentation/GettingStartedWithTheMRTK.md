@@ -1,4 +1,4 @@
-# Getting Started with MRTK
+# Getting started with MRTK
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
@@ -18,16 +18,16 @@ To get started with the Mixed Reality Toolkit you will need:
   This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
   when building for OpenVR.
 
-## Add MRTK to your Unity Project
+## Add MRTK to your Unity project
 
-**Required**
+### Required
 
 1. [Get the latest MRTK Unity packages](#get-the-latest-mrtk-unity-packages)
 1. [Import MRTK packages into your Unity project](#import-mrtk-packages-into-your-unity-project)
 1. [Switch your Unity project to the target platform](#switch-your-unity-project-to-the-target-platform)
 1. [Add MRTK to a new scene or new project](#add-mrtk-to-a-new-scene-or-new-project)
 
-**Optional**
+### Optional
 
 * [Getting started tutorials](#get-the-latest-mrtk-unity-packages)
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
@@ -149,7 +149,7 @@ To try the hand interaction scene, do the following steps.
 
 1. Press the play button.
 
-## Using the In-Editor Hand Input Simulation to test a scene
+## Using the in-editor hand input simulation to test a scene
 
 The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
 
