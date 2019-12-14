@@ -174,15 +174,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // have VS2017 or VS2019 installed.
             foreach (VSWhereFindOption findOption in VSWhereFindOptions)
             {
-                string version = "";
+                string arguments = findOption.arguments;
                 if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaUWPVisualStudioVersion))
                 {
-                    version = " -latest";
+                    arguments += " -latest";
                 }
                 else
                 {
                     // Add version number with brackets to find only the specified version
-                    version = $" -version [{EditorUserBuildSettings.wsaUWPVisualStudioVersion}]";
+                    arguments += $" -version [{EditorUserBuildSettings.wsaUWPVisualStudioVersion}]";
                 }
 
                 var result = await new Process().StartProcessAsync(
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = $"{findOption.arguments}{version}",
+                    Arguments = arguments,
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
