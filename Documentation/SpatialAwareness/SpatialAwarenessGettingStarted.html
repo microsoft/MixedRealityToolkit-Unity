@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Spatial Awareness | Mixed Reality Toolkit Documentation </title>
+    <title>Spatial awareness | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Spatial Awareness | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Spatial awareness | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="spatial-awareness">Spatial Awareness</h1>
+<h1 id="spatial-awareness">Spatial awareness</h1>
 
 <p><img src="../Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png" alt="Spatial Awareness"></p>
 <p>The Spatial Awareness system provides real-world environmental awareness in mixed reality applications. When introduced on Microsoft HoloLens, Spatial Awareness provided a collection of meshes, representing the geometry of the environment, which allowed for compelling interactions between holograms and the real-world.</p>
@@ -88,14 +88,14 @@
 <h5>Note</h5>
 <p>At this time, the Mixed Reality Toolkit does not ship with Spatial Understanding algorithms as originally packaged in the HoloToolkit. Spatial Understanding generally involves transforming Spatial Mesh data to create simplified and/or grouped Mesh data such as planes, walls, floors, ceilings, etc.</p>
 </div>
-<h2 id="getting-started">Getting Started</h2>
+<h2 id="getting-started">Getting started</h2>
 <p>Adding support for Spatial Awareness requires two key components of the Mixed Reality Toolkit: the Spatial Awareness system and a supported platform provider.</p>
 <ol>
 <li><a href="#enable-the-spatial-awareness-system">Enable</a> the Spatial Awareness system</li>
 <li><a href="#register-observers">Register</a> and <a href="ConfiguringSpatialAwarenessMeshObserver.html">configure</a> one or more spatial observers to provide mesh data</li>
 <li><a href="#build-and-deploy">Build and deploy</a> to a platform that supports Spatial Awareness</li>
 </ol>
-<h3 id="enable-the-spatial-awareness-system">Enable the Spatial Awareness system</h3>
+<h3 id="enable-the-spatial-awareness-system">Enable the spatial awareness system</h3>
 <p>The Spatial Awareness system is managed by the MixedRealityToolkit object (or another <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component). Follow the steps below to enable or disable the <em>Spatial Awareness system</em> in the <em>MixedRealityToolkit</em> profile.</p>
 <p>The Mixed Reality Toolkit ships with a few default pre-configured profiles. Some of these have the Spatial Awareness system enabled OR disabled by default. The intent of this pre-configuration, particularly for when disabled, is to avoid the visual overhead of calculating and rendering the meshes.</p>
 <table>
@@ -151,7 +151,7 @@
 <p>Users of the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset">DefaultMixedRealityToolkitConfigurationProfile</a> will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
 the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html"><code>WindowsMixedRealitySpatialMeshObserver</code></a> class.</p>
 </div>
-<h3 id="build-and-deploy">Build and Deploy</h3>
+<h3 id="build-and-deploy">Build and deploy</h3>
 <p>Once the Spatial Awareness system is configured with the desired observer(s), the project can be built and deployed to the target platform.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -173,7 +173,7 @@ the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedR
 <li><a href="UsageGuide.html">Configuring Observers via Code</a></li>
 <li><a href="CreateDataProvider.html">Creating a custom Observer</a></li>
 </ul>
-<h2 id="see-also">See Also</h2>
+<h2 id="see-also">See also</h2>
 <ul>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html">Spatial Awareness API documentation</a></li>
 <li><a href="https://docs.microsoft.com/windows/mixed-reality/spatial-mapping">Spatial Mapping Overview WMR</a></li>

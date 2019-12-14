@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Input Animation Recording | Mixed Reality Toolkit Documentation </title>
+    <title>Input animation recording | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Input Animation Recording | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Input animation recording | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="input-animation-recording">Input Animation Recording</h1>
+<h1 id="input-animation-recording">Input animation recording</h1>
 
 <p>MRTK features an recording system by which head movement and hand tracking data can be stored in animation files. The recorded data can then be played back using the <a href="InputSimulationService.html">input simulation system</a>.</p>
 <p>Recording input is a useful tool in a variety of situations:</p>
@@ -93,9 +93,9 @@ Showing users how to interact with buttons and other objects can smooth the lear
 The recording system supports a &quot;rolling buffer&quot; concept that allows recording recent input in the background.
 See <a href="#input-recording-service">Input Recording Service</a>.</li>
 </ul>
-<h2 id="recording-and-playback-services">Recording and Playback services</h2>
+<h2 id="recording-and-playback-services">Recording and playback services</h2>
 <p>Two input system services are provided to record and play back input respectively.</p>
-<h3 id="input-recording-service">Input Recording Service</h3>
+<h3 id="input-recording-service">Input recording service</h3>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputRecordingService.html"><code>InputRecordingService</code></a> takes data from the main camera transform and active hand controllers and stores it in an internal buffer. When requested this data is then serialized into binary files for storage and later replay.</p>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputAnimation_RecordingDiagram.png">
   <img src="../Images/InputSimulation/MRTK_InputAnimation_RecordingDiagram.png" title="Recording input animation" width="80%" class="center">
@@ -104,7 +104,7 @@ See <a href="#input-recording-service">Input Recording Service</a>.</li>
 <p>By default the size of the recording buffer is limited to 30 seconds. This allows the recording service to keep recording in the background without accumulating too much data, and then save the last 30 seconds when required. The time interval can be changed using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_RecordingBufferTimeLimit"><code>RecordingBufferTimeLimit</code></a> property, or recording can be unlimited using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_UseBufferTimeLimit"><code>UseBufferTimeLimit</code></a> option.</p>
 <p>The data in the recording buffer can be saved in a binary file using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputRecordingService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputRecordingService_SaveInputAnimation_">SaveInputAnimation</a> function.</p>
 <p>For details on the binary file format see <a href="InputAnimationFileFormat.html">Input Animation File Format Specification</a>.</p>
-<h3 id="input-playback-service">Input Playback Service</h3>
+<h3 id="input-playback-service">Input playback service</h3>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.html"><code>InputPlaybackService</code></a> reads a binary file with input animation data and then applies this data through the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html">InputSimulationService</a> to recreate the recorded movements.</p>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png">
   <img src="../Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png" title="Playing back input animation" width="80%" class="center">

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Input Simulation Service | Mixed Reality Toolkit Documentation </title>
+    <title>Input simulation service | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Input Simulation Service | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Input simulation service | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,7 +80,7 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="input-simulation-service">Input Simulation Service</h1>
+<h1 id="input-simulation-service">Input simulation service</h1>
 
 <p>The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:</p>
 <ul>
@@ -94,7 +94,7 @@
 <h5>Warning</h5>
 <p>This does not work when using Unity's XR Holographic Emulation &gt; Emulation Mode = &quot;Simulate in Editor&quot;. Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = <em>&quot;None&quot;</em></p>
 </div>
-<h2 id="enabling-the-input-simulation-service">Enabling the Input Simulation Service</h2>
+<h2 id="enabling-the-input-simulation-service">Enabling the input simulation service</h2>
 <p>Input simulation is enabled by default in MRTK.</p>
 <p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../Input/InputProviders.html">Input System profile</a>.</p>
 <ul>
@@ -103,7 +103,7 @@
 </ul>
 <h2 id="input-simulation-tools-window">Input simulation tools window</h2>
 <p>Enable the input simulation tools window from the  <em>Mixed Reality Toolkit &gt; Utilities &gt; Input Simulation</em> menu. This window provides access to the state of input simulation during play mode.</p>
-<h2 id="viewport-buttons">Viewport Buttons</h2>
+<h2 id="viewport-buttons">Viewport buttons</h2>
 <p>A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under <strong>Indicators Prefab</strong>. This is an optional utility, the same features can be accessed in the <a href="#input-simulation-tools-window">input simulation tools window</a>.</p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -116,7 +116,7 @@
 <li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png" alt="Controlled hand icon" title="Controlled hand icon"> The hand is tracked and controlled by the user. Click to hide the hand.</li>
 <li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png" alt="Reset hand icon" title="Reset hand icon"> Click to reset the hand to default position.</li>
 </ul>
-<h2 id="camera-control">Camera Control</h2>
+<h2 id="camera-control">Camera control</h2>
 <p>Head movement can be emulated by the Input Simulation Service.</p>
 <h3 id="rotating-the-camera">Rotating the camera</h3>
 <ol>
@@ -132,9 +132,9 @@
 <p>Use the <strong>Move Horizontal</strong>/<strong>Move Vertical</strong> axes to move the camera (default: WASD keys or game controller left thumbstick).</p>
 <p>Camera position and rotation angles can be set explicitly in the tools window, as well. The camera can be reset to its default using the <strong>Reset</strong> button.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h2 id="hand-simulation">Hand Simulation</h2>
+<h2 id="hand-simulation">Hand simulation</h2>
 <p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.</p>
-<h3 id="hand-simulation-mode">Hand Simulation Mode</h3>
+<h3 id="hand-simulation-mode">Hand simulation mode</h3>
 <p>In the <a href="#input-simulation-tools-window">input simulation tools window</a> the <strong>Hand Simulation Mode</strong> setting switches between two distinct input models. The default mode can also be set in the input simulation profile.</p>
 <ul>
 <li><p><em>Articulated Hands</em>: Simulates a fully articulated hand device with joint position data.</p>
@@ -159,7 +159,7 @@
 <li><strong>Hand Jitter Amount</strong> adds random motion to hands. This feature can be used to simulate inaccurate hand tracking on the device, and ensure that interactions work well with noisy input.</li>
 </ul>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h3 id="hand-gestures">Hand Gestures</h3>
+<h3 id="hand-gestures">Hand gestures</h3>
 <p>Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.</p>
 <ol>
 <li><p>Enable hand control using the <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>)</p>
@@ -173,7 +173,7 @@
 <h5>Note</h5>
 <p>The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</p>
 </div>
-<h3 id="one-hand-manipulation">One-Hand Manipulation</h3>
+<h3 id="one-hand-manipulation">One-hand manipulation</h3>
 <ol>
 <li>Press and  <strong>Left/Right Hand Control Key</strong> (<em>Left Shift</em> or <em>Space</em>)</li>
 <li>Point at object</li>
@@ -182,7 +182,7 @@
 <li>Release the mouse button to stop interaction</li>
 </ol>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h3 id="two-hand-manipulation">Two-Hand Manipulation</h3>
+<h3 id="two-hand-manipulation">Two-hand manipulation</h3>
 <p>For manipulating objects with two hands at the same time, the persistent hand mode is recommended.</p>
 <ol>
 <li>Toggle on both hands by pressing the toggle keys (T/Y).</li>
@@ -197,7 +197,7 @@
 <li>Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.</li>
 </ol>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-<h3 id="ggv-interaction">GGV Interaction</h3>
+<h3 id="ggv-interaction">GGV interaction</h3>
 <ol>
 <li>Enable GGV simulation by switching <strong>Hand Simulation Mode</strong> to <em>Gestures</em> in the <a href="#enabling-the-input-simulation-service">Input Simulation Profile</a></li>
 <li>Rotate the camera to point the gaze cursor at the interactable object (right mouse button)</li>

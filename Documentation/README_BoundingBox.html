@@ -157,11 +157,11 @@ scaleHandler.ScaleMaximum = 2f;
 }
 </code></pre>
 <h2 id="inspector-properties">Inspector properties</h2>
-<h3 id="target-object">Target Object</h3>
+<h3 id="target-object">Target object</h3>
 <p>This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.</p>
-<h3 id="bounds-override">Bounds Override</h3>
+<h3 id="bounds-override">Bounds override</h3>
 <p>Sets a box collider from the object for bounds computation.</p>
-<h3 id="activation-behavior">Activation Behavior</h3>
+<h3 id="activation-behavior">Activation behavior</h3>
 <p>There are several options to activate the bounding box interface.</p>
 <ul>
 <li><em>Activate On Start</em>: Bounding Box becomes visible once the scene is started.</li>
@@ -169,11 +169,11 @@ scaleHandler.ScaleMaximum = 2f;
 <li><em>Activate By Pointer</em>: Bounding Box becomes visible when it is targeted by a hand-ray pointer.</li>
 <li><em>Activate Manually</em>: Bounding Box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.</li>
 </ul>
-<h3 id="scale-minimum">Scale Minimum</h3>
+<h3 id="scale-minimum">Scale minimum</h3>
 <p>The minimum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.</p>
-<h3 id="scale-maximum">Scale Maximum</h3>
+<h3 id="scale-maximum">Scale maximum</h3>
 <p>The maximum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.</p>
-<h3 id="box-display">Box Display</h3>
+<h3 id="box-display">Box display</h3>
 <p>Various bounding box visualization options.</p>
 <p>If Flatten Axis is set to <em>Flatten Auto</em>, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.</p>
 <h3 id="handles">Handles</h3>

@@ -159,7 +159,7 @@
 <img src="Images/Button/MRTK_Button_HowTo_Events.png" width="450">
 <p>To leverage specific articulated hand input state information, you can use pressable buttons events - <em>Touch Begin</em>, <em>Touch End</em>, <em>Button Pressed</em>, <em>Button Released</em>. These events will not fire in response to air-tap, hand-ray, or eye inputs, however.</p>
 <img src="Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
-<h2 id="interaction-states">Interaction States</h2>
+<h2 id="interaction-states">Interaction states</h2>
 <p>In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip. When the fingertip touches the surface of the front plate, it shows a subtle pulse effect to give visual feedback of the touch point.</p>
 <img src="Images/Button/MRTK_Button_InteractionStates.png" width="600">
 <p>The subtle pulse effect is triggered by the pressable button, which looks for <em>ProximityLight(s)</em> that live on the currently interacting pointer. If any proximity lights are found, the <code>ProximityLight.Pulse</code> method is called, which automatically animates shader parameters to display a pulse.</p>
@@ -177,7 +177,7 @@ This script sends events from hand press interaction to <a href="README_Interact
 Unity audio source for the audio feedback clips.</p>
 <p><em>NearInteractionTouchable.cs</em>
 Required to make any object touchable with articulated hand input.</p>
-<h2 id="prefab-layout">Prefab Layout</h2>
+<h2 id="prefab-layout">Prefab layout</h2>
 <p>The <em>ButtonContent</em> object contains front plate, text label and icon. The <em>FrontPlate</em> responds to the proximity of the index fingertip using the <em>Button_Box</em> shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. <em>SeeItSayItLabel</em>'s visibility is controlled by <a href="README_Interactable.html">Interactable</a>'s theme.</p>
 <p><img src="Images/Button/MRTK_Button_Layout.png" alt="Button"></p>
 <h2 id="how-to-change-the-icon-and-text">How to change the icon and text</h2>
@@ -190,7 +190,7 @@ Required to make any object touchable with articulated hand input.</p>
 <img src="Images/Button/MRTK_Button_IconUpdate3.png">
 <p>Assign the material to the <em>UIButtonSquareIcon</em> object.</p>
 <img src="Images/Button/MRTK_Button_IconUpdate4.png">
-<h2 id="voice-command-see-it-say-it">Voice command ('See-it, Say-it')</h2>
+<h2 id="voice-command-see-it-say-it">Voice command ('see-it, say-it')</h2>
 <p><strong>Speech Input Handler</strong>
 The <a href="README_Interactable.html">Interactable</a> script in Pressable Button already implements <code>IMixedRealitySpeechHandler</code>. A voice command keyword can be set here.</p>
 <img src="Images/Button/MRTK_Button_Speech1.png" width="450">
@@ -203,7 +203,7 @@ The pressable button prefab has a placeholder TextMesh Pro label under the <em>S
 <h2 id="how-to-make-a-button-from-scratch">How to make a button from scratch</h2>
 <p>You can find the examples of these buttons in the <strong>PressableButtonExample</strong> scene.</p>
 <img src="Images/Button/MRTK_PressableButtonCube0.png">
-<h3 id="1-creating-a-pressable-button-with-cube-near-interaction-only">1. Creating a Pressable Button with Cube (Near interaction only)</h3>
+<h3 id="1-creating-a-pressable-button-with-cube-near-interaction-only">1. Creating a pressable button with cube (near interaction only)</h3>
 <ol>
 <li>Create a Unity Cube (GameObject &gt; 3D Object &gt; Cube)</li>
 <li>Add <code>PressableButton.cs</code> script</li>
@@ -232,7 +232,7 @@ The pressable button prefab has a placeholder TextMesh Pro label under the <em>S
 <p>You will see the object responds to both far(hand ray or gaze cursor) and near(hand) interactions.</p>
 <img src="Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="Images/Button/MRTK_PressableButtonCubeRun4.jpg">
-<h2 id="custom-button-examples">Custom Button Examples</h2>
+<h2 id="custom-button-examples">Custom button examples</h2>
 <p>In the <a href="README_HandInteractionExamples.html">HandInteractionExample scene</a>, you can take a look at the piano and round button examples which are both using <code>PressableButton</code>.</p>
 <img src="Images/Button/MRTK_Button_Custom1.png" width="450">
 <img src="Images/Button/MRTK_Button_Custom2.png" width="450">

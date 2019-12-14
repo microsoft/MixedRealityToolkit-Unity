@@ -131,14 +131,14 @@
 </div>
 <p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver"><br>
 <em>Example of various properties associated with each TrackedTargetType</em></p>
-<h2 id="how-to-chain-solvers">How to chain Solvers</h2>
+<h2 id="how-to-chain-solvers">How to chain solvers</h2>
 <p>It is possible to add multiple <code>Solver</code> components to the same GameObject thus chaining their algorithms. The <code>SolverHandler</code> components handles updating all solvers on the same GameObject. By default the <code>SolverHandler</code> calls <code>GetComponents&lt;Solver&gt;()</code> on Start which will return the Solvers in the order that they appear in the inspector.</p>
 <p>Furthermore, setting the <em>Updated Linked Transform</em> property to true will instruct that <code>Solver</code> to save its calculated position, orientation, &amp; scale to an intermediary variable accessible by all Solvers (i.e <code>GoalPosition</code>). When false, the <code>Solver</code> will update the GameObject's transform directly. By saving the transform properties to an intermediary location, other Solvers are able to perform their calculations starting from the intermediary variable. This is because Unity does not allow updates to gameObject.transform to stack within the same frame.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Developers can modify the order of execution of Solvers by setting the <code>SolverHandler.Solvers</code> property directly.</p>
 </div>
-<h2 id="how-to-create-a-new-solver">How to create a new Solver</h2>
+<h2 id="how-to-create-a-new-solver">How to create a new solver</h2>
 <p>All solvers must inherit from the abstract base class, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html"><code>Solver</code></a>. The primary requirements of a Solver extension involves overriding the <code>SolverUpdate</code> method. In this method, developers should update the inherited <code>GoalPosition</code>, <code>GoalRotation</code> and <code>GoalScale</code> properties to the desired values. Furthermore, it is generally valuable to leverage <code>SolverHandler.TransformTarget</code> as the frame of reference desired by the consumer.</p>
 <p>The code provided below gives an example of a new Solver component called <code>InFront</code> that places the attached object 2m in front of the <code>SolverHandler.TransformTarget</code>. If the <code>SolverHandler.TrackedTargetType</code> is set by the consumer as <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>, then the <code>SolverHandler.TransformTarget</code> will be the camera transform and thus this Solver will place the attached GameObject 2m in front of the users' gaze every frame.</p>
 <pre><code class="lang-c#">/// &lt;summary&gt;
@@ -159,7 +159,7 @@ public class InFront : Solver
 }
 </code></pre>
 <h2 id="solver-implementation-guides">Solver implementation guides</h2>
-<h3 id="common-solver-properties">Common Solver properties</h3>
+<h3 id="common-solver-properties">Common solver properties</h3>
 <p>Every Solver component has a core-set of identical properties that control the core Solver behavior.</p>
 <p>If <em>Smoothing</em> is enabled, then the Solver will gradually update the transform of the GameObject over time to the calculated values. The speed of this change is determined by every transform component's <em>LerpTime</em> property. For example, a higher <em>MoveLerpTime</em> value will result in slower increments in movement between frames.</p>
 <p>If <em>MaintainScale</em> is enabled, then the Solver will utilize the GameObject's default local scale.</p>
@@ -204,7 +204,7 @@ public class InFront : Solver
 <p>When adding a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component to a GameObject, it is important to consider the layer of the GameObject and its children, if any have colliders. The component works by performing various types of raycasts to determine what surface to &quot;magnet&quot; itself against. If the solver GameObject has a collider on one of the layers listed in the <code>MagneticSurfaces</code> property of <code>SurfaceMagnetism</code>, then the raycast will likely hit itself resulting in the GameObject attaching to its own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the <em>Ignore Raycast</em> layer or modifying the <code>MagneticSurfaces</code> LayerMask array appropriately.</p>
 <p>Conversely, a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> GameObject will not collide with surfaces on a layer not listed in the <code>MagneticSurfaces</code> property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e <em>Surfaces</em>) and setting the <code>MagneticSurfaces</code> property to just this layer.  Using <em>default</em> or <em>everything</em> may result in UI components or cursors contributing to the solver.</p>
 <p>Finally, surfaces farther than the <code>MaxRaycastDistance</code> property setting will be ignored by the <code>SurfaceMagnetism</code> raycasts.</p>
-<h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand Menu with HandConstraint and HandConstraintPalmUp</h3>
+<h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand menu with HandConstraint and HandConstraintPalmUp</h3>
 <p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt="Hand Menu UX Example"></p>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
@@ -223,9 +223,9 @@ public class InFront : Solver
 </ul>
 </li>
 </ul>
-<h2 id="experimental-solvers">Experimental Solvers</h2>
+<h2 id="experimental-solvers">Experimental solvers</h2>
 <p>These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.</p>
-<h3 id="directional-indicator">Directional Indicator</h3>
+<h3 id="directional-indicator">Directional indicator</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator.html"><code>DirectionalIndicator</code></a> class is a tag-along component that orients itself to the direction of a desired point in space.</p>
 <p>Most commonly used when the <em>Tracked Target Type</em> of the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> is set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>. In this fashion, a UX component with the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator.html"><code>DirectionalIndicator</code></a>  solver will direct a user to look at the desired point in space.</p>
 <p>The desired point in space is determined via the <em>Directional Target</em> property.</p>

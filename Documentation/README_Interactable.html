@@ -147,7 +147,7 @@
 </ul>
 <p><em>Interactable</em> also allows for multiple Themes to be defined per <em>Dimension</em>. For example when <em>SelectionMode=Toggle</em>, one theme may be applied when the <em>Interactable</em> is <em>deselected</em> and another theme applied when the component is <em>selected</em>.</p>
 <p>The current Selection Mode can be queried at runtime via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_ButtonMode"><code>Interactable.ButtonMode</code></a>. Updating the mode at runtime can be achieved by setting the  <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_Dimensions"><code>Interactable.Dimensions</code></a> property to match the desired functionality. Furthermore, the current dimension, useful for <em>Toggle</em> and <em>Multi-Dimension</em> modes, can be accessed via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_CurrentDimension"><code>Interactable.CurrentDimension</code></a>.</p>
-<h3 id="interactable-profiles">Interactable Profiles</h3>
+<h3 id="interactable-profiles">Interactable profiles</h3>
 <p><em>Profiles</em> are items that create a relationship between a GameObject and a <a href="VisualThemes.html">Visual Theme</a>. The profile defines what content will be manipulated by a theme when a <a href="#general-input-settings">state change occurs</a>.</p>
 <p>Themes work a lot like materials. They are scriptable objects that contain a list of properties that will be assigned to an object based on the current state. Themes are also re-usable and can be assigned across multiple <em>Interactable</em> UX objects.</p>
 <p><img src="Images/Interactable/Profiles_Themes.png" alt="Interactable Profiles"></p>
@@ -169,7 +169,7 @@
 <p>A custom receiver can be created by making a new class that extends <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html"><code>ReceiverBase</code></a>.</p>
 <p><img src="Images/Interactable/Event_toggle.png" alt="Event Toggle Receiver Example"></p>
 <p><em>Example of a Toggle Event Receiver</em></p>
-<h3 id="interactable-receivers">Interactable Receivers</h3>
+<h3 id="interactable-receivers">Interactable receivers</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableReceiver.html"><code>InteractableReceiver</code></a> component allows for events to be defined outside of the source <em>Interactable</em> component. The <em>InteractableReceiver</em> will listen for a filtered event type fired by another <em>Interactable</em>. If the <em>Interactable</em> property is not directly assigned, then the <em>Search Scope</em> property defines the direction the <em>InteractableReceiver</em> listens for events which is either on itself, in a parent, or in a child GameObject.</p>
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableReceiverList.html"><code>InteractableReceiverList</code></a> acts in a similar fashion but for a list of matching events.</p>
 <img src="Images/Interactable/InteractableReceiver.png" width="450">
@@ -215,7 +215,7 @@ public virtual void OnClick(InteractableStates state,
     // click called, perform some action
 }
 </code></pre>
-<h5 id="displaying-custom-event-receiver-fields-in-the-inspector">Displaying custom Event Receiver fields in the inspector</h5>
+<h5 id="displaying-custom-event-receiver-fields-in-the-inspector">Displaying custom event receiver fields in the inspector</h5>
 <p><em>ReceiverBase</em> scripts use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField.html"><code>InspectorField</code></a> attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an <em>Interactable</em> GameObject is selected and has the associated <em>Event Receiver</em> type added.</p>
 <pre><code class="lang-c#">[InspectorField(Label = &quot;&lt;Property label&gt;&quot;,Tooltip = &quot;&lt;Insert tooltip info&gt;&quot;,Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
@@ -228,7 +228,7 @@ public Vector3 EffectOffset = Vector3.zero;
 <h5>Note</h5>
 <p>Making a <a href="README_Button.html">button pressable</a> requires the<code>PressableButton</code> component. Additionally, the <code>PhysicalPressEventRouter</code> component is needed to funnel press events to the <em>Interactable</em> component.</p>
 </div>
-<h3 id="creating-toggle-and-multi-dimension-buttons">Creating Toggle and Multi-Dimension buttons</h3>
+<h3 id="creating-toggle-and-multi-dimension-buttons">Creating toggle and multi-dimension buttons</h3>
 <h4 id="toggle-button">Toggle button</h4>
 <p>To make a button Toggle-able, change the the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.SelectionModes.html"><code>Selection Mode</code></a> field to type <code>Toggle</code>. In the <em>Profiles</em> section, a new toggled theme is added for each profile that is used when the <em>Interactable</em> is toggled on.</p>
 <p>While the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.SelectionModes.html"><code>SelectionMode</code></a> is set to Toggle, the <em>IsToggled</em> check box can be used to set the default value of the control at runtime initialization.</p>
@@ -255,7 +255,7 @@ bool isSelected = myInteractable.IsToggled;
 <li>Set the <em>InteractableToggleCollection.CurrentIndex</em> property to determine which button is selected by default at start</li>
 </ol>
 <img src="Images/Interactable/InteractableToggleCollection.png" width="450">
-<h4 id="multi-dimensional-button">Multi-Dimensional button</h4>
+<h4 id="multi-dimensional-button">Multi-dimensional button</h4>
 <p>Multi-Dimension selection mode is used to create sequential buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).</p>
 <p>With dimensions being a numeric value, up to 9 themes can be added to control the text label or texture of the button for each speed setting, using a different theme for each of step.</p>
 <p>Every click event will advance the <code>DimensionIndex</code> by 1 at runtime until the <code>Dimensions</code> value is reached then the cycle will reset to 0.</p>
@@ -304,7 +304,7 @@ interactable.Profiles = new List&lt;InteractableProfileItem&gt;()
 // Force the Interactable to be clicked
 interactable.TriggerOnClick()
 </code></pre>
-<h3 id="interactable-events-via-code">Interactable Events via code</h3>
+<h3 id="interactable-events-via-code">Interactable events via code</h3>
 <p>One can add an action to the base <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_OnClick"><code>Interactable.OnClick</code></a> event via code with the following example.</p>
 <pre><code class="lang-c#">public static void AddOnClick(Interactable interactable)
 {

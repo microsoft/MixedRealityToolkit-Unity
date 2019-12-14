@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Scene Types | Mixed Reality Toolkit Documentation </title>
+    <title>Scene types | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Scene Types | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Scene types | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,11 +80,11 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="scene-types">Scene Types</h1>
+<h1 id="scene-types">Scene types</h1>
 
 <p>Scenes have been divided into three types, and each type has a different function.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemEditorSceneHierarchy.PNG" alt="Scene system in the hierarchy"></p>
-<h2 id="content-scenes">Content Scenes</h2>
+<h2 id="content-scenes">Content scenes</h2>
 <p>These are the scenes you're used to dealing with. Any kind of content can be stored in them, and they can be loaded or unloaded in any combination.</p>
 <p>Content scenes are enabled by default. Any scenes included in your profile's <code>Content Scenes</code> array can be loaded / unloaded by the service.</p>
 <hr>
@@ -92,16 +92,16 @@
 <p>A single scene with a required MixedRealityToolkit instance. This scene will be loaded first on launch and will remain loaded for the lifetime of the app. The manager scene can also host other objects that should never be destroyed. This is the preferred alternative to DontDestroyOnLoad.</p>
 <p>To enable this feature, check <code>Use Manager Scene</code> in your profile and drag a scene object into the <code>Manager Scene</code> field.</p>
 <hr>
-<h2 id="lighting-scenes">Lighting Scenes</h2>
+<h2 id="lighting-scenes">Lighting scenes</h2>
 <p>A set of scenes which store lighting information and lighting objects. Only one can be loaded at a time, and their settings can be blended during loads for smooth lighting transitions.</p>
 <p>Unity's lighting settings - ambient light, skyboxes, etc - can be tricky to manage when using additive loading because they're tied to individual scenes and override behavior is not straightforward. In practice this can cause confusion when assets are authored in lighting conditions that don't obtain at runtime.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemLightingSettings.PNG" alt="Scene system lighting settings"></p>
 <p>The Scene System uses lighting scenes to ensure that these settings remain consistent regardless of what scenes are loaded or active, both in edit mode and in play mode.</p>
 <p>To enable this feature, check <code>Use Lighting Scene</code> in your profile and populate the <code>Lighting Scenes</code> array.</p>
-<h3 id="cached-lighting-settings">Cached Lighting Settings</h3>
+<h3 id="cached-lighting-settings">Cached lighting settings</h3>
 <p>Your profile stores cached copies of the lighting settings kept in your lighting scenes. If those settings change in your lighting scenes, you will need to update your cache to ensure lighting appears as expected in play mode. Your profile will display a warning when it suspects your cached settings are out of date. Clicking <code>Update Cached Lighting Settings</code> will load each of your lighting scenes, extract their settings, then store them in your profile.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.PNG" alt="Scene system lighting settings"></p>
-<h3 id="editor-behavior">Editor Behavior</h3>
+<h3 id="editor-behavior">Editor behavior</h3>
 <p>One benefit of using lighting scenes is knowing your content is lit correctly while editing. To this end, the Scene Service will keep a lighting scene loaded at all times, and will copy that scene's lighting settings to the current active scene.*</p>
 <p>You can change which lighting scene is loaded by opening the Scene System's <a href="../MixedRealityConfigurationGuide.html#editor-utilities">service inspector.</a> In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG" alt="Scene system inspector"></p>

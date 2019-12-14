@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Monitoring Content Loading | Mixed Reality Toolkit Documentation </title>
+    <title>Monitoring content loading | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Monitoring Content Loading | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Monitoring content loading | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,9 +80,9 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="monitoring-content-loading">Monitoring Content Loading</h1>
+<h1 id="monitoring-content-loading">Monitoring content loading</h1>
 
-<h2 id="scene-operation-progress">Scene Operation Progress</h2>
+<h2 id="scene-operation-progress">Scene operation progress</h2>
 <p>When content is being loaded or unloaded, the <code>SceneOperationInProgress</code> property will return true. You can monitor the progress of this operation via the <code>SceneOperationProgress</code> property.</p>
 <p>The <code>SceneOperationProgress</code> value is the average of all current async scene operations. At the start of a content load, <code>SceneOperationProgress</code> will be zero. Once fully completed, <code>SceneOperationProgress</code> will be set to 1 and will remain at 1 until the next operation takes place. Note that only content scene operations affect these properties.</p>
 <p>These properties reflect the state of an <em>entire operation</em> from start to finish, even if that operation includes multiple steps:</p>
@@ -101,7 +101,7 @@ await sceneSystem.LoadContent(&quot;ContentScene1&quot;);
 // SceneOperationProgress will show 0-1 as it completes
 sceneSystem.LoadContent(&quot;ContentScene2&quot;, LoadSceneMode.Single)
 </code></pre>
-<h3 id="progress-examples">Progress Examples</h3>
+<h3 id="progress-examples">Progress examples</h3>
 <p><code>SceneOperationInProgress</code> can be useful if activity should be suspended while content is being loaded:</p>
 <pre><code class="lang-c#">public class FooManager : MonoBehaviour
 {
@@ -141,7 +141,7 @@ sceneSystem.LoadContent(&quot;ContentScene2&quot;, LoadSceneMode.Single)
 }
 </code></pre>
 <hr>
-<h2 id="monitoring-with-actions">Monitoring With Actions</h2>
+<h2 id="monitoring-with-actions">Monitoring with actions</h2>
 <p>The Scene System provides several actions to let you know when scenes are being loaded or unloaded. Each action relays the name of the affected scene.</p>
 <p>If a load or unload operation involves multiple scenes, the relevant actions will be invoked once per affected scene. They are also invoked all at once when the load or unload operation is <em>fully completed.</em> For this reason it's recommended that you use <em>OnWillUnload</em> actions to detect content that <em>will</em> be destroyed, as opposed to using <em>OnUnloaded</em> actions to detect destroyed content after the fact.</p>
 <p>On the flip side, because <em>OnLoaded</em> actions are only invoked when all scenes are activated and fully loaded, using <em>OnLoaded</em> actions to detect and use new content is guaranteed to be safe.</p>
@@ -242,7 +242,7 @@ sceneSystem.LoadContent(&quot;ContentScene2&quot;, LoadSceneMode.Single)
 </tr>
 </tbody>
 </table>
-<h3 id="action-examples">Action Examples</h3>
+<h3 id="action-examples">Action examples</h3>
 <p>Another progress dialog example using actions and a coroutine instead of Update:</p>
 <pre><code class="lang-c#">public class ProgressDialog : MonoBehaviour
 {
@@ -286,7 +286,7 @@ sceneSystem.LoadContent(&quot;ContentScene2&quot;, LoadSceneMode.Single)
 }
 </code></pre>
 <hr>
-<h2 id="controlling-scene-activation">Controlling Scene Activation</h2>
+<h2 id="controlling-scene-activation">Controlling scene activation</h2>
 <p>By default content scenes are set to activate when loaded. If you want to control scene activation manually, you can pass a <code>SceneActivationToken</code> to any content load method. If multiple content scenes are being loaded by a single operation, this activation token will apply to all scenes.</p>
 <pre><code class="lang-c#">IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService&lt;IMixedRealitySceneSystem&gt;();
 

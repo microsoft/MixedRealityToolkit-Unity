@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Configuring Mesh Observers for Device | Mixed Reality Toolkit Documentation </title>
+    <title>Configuring mesh observers for device | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Configuring Mesh Observers for Device | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Configuring mesh observers for device | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.0.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,10 +80,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="configuring-mesh-observers-for-device">Configuring Mesh Observers for Device</h1>
+<h1 id="configuring-mesh-observers-for-device">Configuring mesh observers for device</h1>
 
 <p>This guide will walk through configuring the out-of-box Spatial Mesh Observer in MRTK which supports the Windows Mixed Reality platform (i.e HoloLens). The default implementation provided by the Mixed Reality Toolkit is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver.html">WindowsMixedRealitySpatialMeshObserver</a> class. Many of the properties in this article though apply for other <a href="CreateDataProvider.html">custom Observer implementations</a>.</p>
-<h2 id="profile-settings">Profile Settings</h2>
+<h2 id="profile-settings">Profile settings</h2>
 <p>The following two items must be defined first when configuring a Spatial Mesh Observer profile for the <a href="SpatialAwarenessGettingStarted.html">Spatial Awareness system</a>.</p>
 <ol>
 <li>The concrete observer type implementation</li>
@@ -94,7 +94,7 @@
 <p>All observers must extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface.</p>
 </div>
 <p><img src="../Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png" alt="Mesh Observer General Settings"></p>
-<h3 id="general-settings">General Settings</h3>
+<h3 id="general-settings">General settings</h3>
 <p><img src="../Images/SpatialAwareness/MeshObserverGeneralSettings.png" alt="Mesh Observer General Settings"></p>
 <p><strong>Startup Behavior</strong></p>
 <p>The startup behavior specifies whether the observer will begin running when first instantiated. The two options are:</p>
@@ -117,7 +117,7 @@
 </ul>
 <p><strong>Observation Extents</strong></p>
 <p>The observation extents define the distance from the observation point that meshes will be observed.</p>
-<h3 id="physics-settings">Physics Settings</h3>
+<h3 id="physics-settings">Physics settings</h3>
 <p><img src="../Images/SpatialAwareness/MeshObserverPhysicsSettings.png" alt="Mesh Observer Physics Settings"></p>
 <p><strong>Physics Layer</strong></p>
 <p>The physics layer on which spatial mesh objects will be placed in order to interact with the Unity Physics and RayCast systems.</p>
@@ -127,7 +127,7 @@
 </div>
 <p><strong>Recalculate Normals</strong></p>
 <p>Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.</p>
-<h3 id="level-of-detail-settings">Level of Detail Settings</h3>
+<h3 id="level-of-detail-settings">Level of detail settings</h3>
 <p><img src="../Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png" alt="Mesh Observer Level of Detail Settings"></p>
 <p><strong>Level of Detail</strong></p>
 <p>Specifies the level of detail (LOD) of the spatial mesh data. Currently defined values are Coarse, Fine and Custom.</p>
@@ -147,7 +147,7 @@
 </div>
 <p><strong>Triangles per Cubic Meter</strong></p>
 <p>Valid when using the <em>Custom</em> setting for the <strong>Level of Detail</strong> property and specifies the triangle density for the spatial mesh.</p>
-<h3 id="display-settings">Display Settings</h3>
+<h3 id="display-settings">Display settings</h3>
 <p><img src="../Images/SpatialAwareness/MeshObserverDisplaySettings.png" alt="Mesh Observer Display Settings"></p>
 <p><strong>Display Option</strong></p>
 <p>Specifies how spatial meshes are to be displayed by the observer. Supported values are:</p>
@@ -165,7 +165,7 @@
 <p>Indicates the material to be used when visualizing the spatial mesh.</p>
 <p><strong>Occlusion Material</strong></p>
 <p>Indicates the material to be used to cause the spatial mesh to occlude holograms.</p>
-<h2 id="see-also">See Also</h2>
+<h2 id="see-also">See also</h2>
 <ul>
 <li><a href="SpatialAwarenessGettingStarted.html">Spatial Awareness System</a></li>
 <li><a href="UsageGuide.html">Configuring Spatial Awareness system via Code</a></li>
