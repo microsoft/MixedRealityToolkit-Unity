@@ -246,8 +246,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// Intented to be called once per frame, this method performs a sphere intersection test against
-            /// all collidables in the layers defined by layerMask at the given pointer position.
+            /// Intended to be called once per frame, this method performs a sphere intersection test against
+            /// all colliders in the layers defined by layerMask at the given pointer position.
             /// All colliders intersecting the sphere at queryRadius and pointerPosition are stored in queryBuffer,
             /// and the first grabbable in the list of returned colliders is stored.
             /// </summary>
@@ -294,7 +294,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Returns true if a collider's bounds is within the camera FOV
             /// </summary>
             /// <param name="myCollider">The collider to test</param>
-            /// <returns></returns>
             private bool isInFOV(Collider myCollider)
             {
                 corners.Clear();
