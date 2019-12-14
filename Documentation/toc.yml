@@ -71,6 +71,8 @@
       href: Tools/ExtensionServiceCreationWizard.md
     - name: Scene Transition Service Overview
       href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+    - name: Hand Physics Service Overview
+      href: Extensions/HandPhysicsService/HandPhysicsServiceOverview.md
   - name: Input System
     items:
     - name: Input Overview
