@@ -28,14 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Returns <see cref="SerializedProperty"/> object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object
+        /// Returns SerializedProperty object that wraps references to array of <see cref="IMixedRealityServiceConfiguration"/> stored on the inspected target object
         /// </summary>
         protected abstract SerializedProperty GetDataProviderConfigurationList();
 
         /// <summary>
-        /// Builds <see cref="ServiceConfigurationProperties"/> container object with <see cref="SerializedProperty"/> references to associated properties on the supplied <see cref="IMixedRealityServiceConfiguration"/> reference
+        /// Builds <see cref="ServiceConfigurationProperties"/> container object with SerializedProperty references to associated properties on the supplied <see cref="IMixedRealityServiceConfiguration"/> reference
         /// </summary>
-        /// <param name="providerEntry"><see cref="SerializedProperty"/> reference pointing to <see cref="IMixedRealityServiceConfiguration"/> instance</param>
+        /// <param name="providerEntry">SerializedProperty reference pointing to <see cref="IMixedRealityServiceConfiguration"/> instance</param>
         protected abstract ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry);
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <summary>
         /// Adds a new data provider profile entry (i.e <see cref="IMixedRealityServiceConfiguration"/>) to array list of target object
-        /// Utilizes GetDataProviderConfigurationList() to get <see cref="SerializedProperty"/> object that represents array to insert against
+        /// Utilizes GetDataProviderConfigurationList() to get SerializedProperty object that represents array to insert against
         /// </summary>
         protected virtual void AddDataProvider()
         {
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <summary>
         /// Removed given index item from <see cref="IMixedRealityServiceConfiguration"/> array list.
-        /// Utilizes GetDataProviderConfigurationList() to get <see cref="SerializedProperty"/> object that represents array to delete against.
+        /// Utilizes GetDataProviderConfigurationList() to get SerializedProperty object that represents array to delete against.
         /// </summary>
         protected virtual void RemoveDataProvider(int index)
         {
