@@ -151,13 +151,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_MixedRealityToolkitConfigurationProfileInspector_CheckSystemConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.CheckSystemConfiguration*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_MixedRealityToolkitConfigurationProfileInspector_CheckSystemConfiguration_System_String_System_Boolean_SystemType_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.CheckSystemConfiguration(System.String,System.Boolean,SystemType,System.Boolean)">CheckSystemConfiguration(String, Boolean, SystemType, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_MixedRealityToolkitConfigurationProfileInspector_CheckSystemConfiguration_System_String_SystemType_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.CheckSystemConfiguration(System.String,SystemType,System.Boolean)">CheckSystemConfiguration(String, SystemType, Boolean)</h4>
   <div class="markdown level1 summary"><p>Checks if a system is enabled and the service type or validProfile is null, then displays warning message to the user</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void CheckSystemConfiguration(string service, bool systemEnabled, SystemType systemType, bool validProfile)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void CheckSystemConfiguration(string service, SystemType systemType, bool validProfile)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,12 +173,6 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">service</span></td>
         <td><p>name of service being tested</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">systemEnabled</span></td>
-        <td><p>true if checkbox enabled, false otherwise</p>
 </td>
       </tr>
       <tr>
@@ -244,6 +238,34 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void OnInspectorGUI()</code></pre>
   </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_MixedRealityToolkitConfigurationProfileInspector_RenderSystemDisabled_" data-uid="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.RenderSystemDisabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_MixedRealityToolkitConfigurationProfileInspector_RenderSystemDisabled_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.RenderSystemDisabled(System.String)">RenderSystemDisabled(String)</h4>
+  <div class="markdown level1 summary"><p>Render helpbox that provided service string is disabled and none of it's functionality will be loaded at runtime</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static void RenderSystemDisabled(string service)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">service</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

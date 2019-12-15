@@ -7255,7 +7255,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "cw1JxX/IGFC+12Y1cIGy7w=="
+          "hash": "NPthiOsrgjYUyU17m5rBOg=="
         }
       },
       "is_incremental": false,
@@ -7651,7 +7651,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSettingsConfiguration.html",
-          "hash": "Gusl/PcTEC4EkfMcSXx5hw=="
+          "hash": "fwKuT/L0gDGqnrIDx9aBVQ=="
         }
       },
       "is_incremental": false,
@@ -7923,6 +7923,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.BaseDataProviderServiceInspector.ServiceConfigurationProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.BaseDataProviderServiceInspector.ServiceConfigurationProperties.html",
+          "hash": "EwuPtVH3xnPZiiLwbE98ww=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.BaseDataProviderServiceInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.BaseDataProviderServiceInspector.html",
+          "hash": "1s7LwdO7j+cJH+FnQ/pbFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.yml",
       "output": {
         ".html": {
@@ -7963,7 +7987,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html",
-          "hash": "yW1fYMpMgY8Byl12muMh+Q=="
+          "hash": "KDfNmhYxFNpSZOyJPZK15w=="
         }
       },
       "is_incremental": false,
@@ -8191,7 +8215,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityCameraProfileInspector.html",
-          "hash": "ISPhhn8an0FAiY1HIBkehQ=="
+          "hash": "Lu5+sVXtuKsPvyKgQifd6g=="
         }
       },
       "is_incremental": false,
@@ -8419,7 +8443,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.html",
-          "hash": "Xae0WhIlvG9LyDGwtC5zzw=="
+          "hash": "Yo25W+D89LIPN2SSMEsUZQ=="
         }
       },
       "is_incremental": false,
@@ -8743,7 +8767,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "72Ei7UJEVM/RNgKZxZAIig=="
+          "hash": "nKuSCz+QrdzMGZnyqAtA9A=="
         }
       },
       "is_incremental": false,
@@ -11419,7 +11443,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html",
-          "hash": "oovtzOVph8tCNqTL4m+OsA=="
+          "hash": "BigCeJ3vDxf2cRJZKaElIw=="
         }
       },
       "is_incremental": false,
@@ -12007,7 +12031,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.html",
-          "hash": "ingwin1t8d2XtEdfnzDSDg=="
+          "hash": "8RRDiE6TWT/bubK1uI58Tw=="
         }
       },
       "is_incremental": false,
@@ -12055,7 +12079,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.Editor.html",
-          "hash": "D9xdzg87oIdsNGGIa9/4vg=="
+          "hash": "4F4NyfppZDO3HRCTfD3CjQ=="
         }
       },
       "is_incremental": false,
@@ -13519,7 +13543,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputDataProviderConfiguration.html",
-          "hash": "JKGXESQM+FDm70n2CVuFow=="
+          "hash": "QBcVEEhLoAeo1+aPX3MXgA=="
         }
       },
       "is_incremental": false,
@@ -14803,7 +14827,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityServiceConfiguration.html",
-          "hash": "LD7QDdYaUYYKJg1mUqxU2A=="
+          "hash": "sO8dyrdsiQLlrnEX9NY8eg=="
         }
       },
       "is_incremental": false,
@@ -17983,7 +18007,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObserverProfile.html",
-          "hash": "Ti/kpzUayGlgK5c1joHWtQ=="
+          "hash": "MQP4a9RNw8JdZ8MlOmyQyQ=="
         }
       },
       "is_incremental": false,
@@ -18007,7 +18031,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.MixedRealitySpatialAwarenessSystemProfileInspector.html",
-          "hash": "SGShJafOY2EGokbUd4IW6A=="
+          "hash": "p+SbjLbv+PBsOaGHurK0Xw=="
         }
       },
       "is_incremental": false,
@@ -18019,7 +18043,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor.html",
-          "hash": "t6FNB6lIWMdED2FnD8LuEg=="
+          "hash": "qTp23n1AEKzzfu8vgYTlHQ=="
         }
       },
       "is_incremental": false,
@@ -18151,7 +18175,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialObserverConfiguration.html",
-          "hash": "LipvF3bVbkcH5z2MPdXwTQ=="
+          "hash": "P551T637WginNZ7VuaZzbg=="
         }
       },
       "is_incremental": false,
@@ -18247,7 +18271,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.html",
-          "hash": "Sj0iBBsgiFzqseo+THfiWQ=="
+          "hash": "OK2gFhX70F4eQRgWOiSG3A=="
         }
       },
       "is_incremental": false,
@@ -24487,7 +24511,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "YYLTQkZRprVrw4l9e1KcGA=="
+          "hash": "5D2sZN3X5wXt0pXOJNTf0A=="
         }
       },
       "is_incremental": false,
@@ -24499,7 +24523,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EUb/Zk4ZSS3QRKNSKtPw/A=="
+          "hash": "D3xICdnU7QGdNLCsa+FQ/w=="
         }
       },
       "is_incremental": false,
@@ -24558,16 +24582,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1453,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 144,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1455,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

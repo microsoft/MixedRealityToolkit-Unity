@@ -115,7 +115,9 @@
       <section><p>The base extension service implements <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a> and provides default properties for all extension services.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></h4>
-      <section></section>
+      <section><p>Base abstract class for all Mixed Reality profile configurations.
+Extends ScriptableObject and used as a property container to initialize MRTK services.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></h4>
       <section><p>The base service implements <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a> and provides default properties for all services.</p>
 </section>
@@ -337,7 +339,8 @@ that supply services with required information (ex: input controller state).</p>
       <section><p>Generic interface for all Mixed Reality Services</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html">IMixedRealityServiceConfiguration</a></h4>
-      <section><p>Defines a system, feature, or manager to be registered with as a <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a> on startup.</p>
+      <section><p>Defines configuration data for to be registered for a <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a> on startup.
+Generally, used for configuring the extended interface, <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></h4>
       <section><p>Interface for Mixed Reality Toolkit service registration.</p>

@@ -86,7 +86,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector" class="text-break">Class MixedRealityInputSystemProfileInspector
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Class handles rendering inspector view of MixedRealityInputSystemProfile object</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -97,10 +98,119 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector</code></pre>
+    <pre><code class="lang-csharp hljs">public class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfiguration_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfiguration*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfiguration_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfiguration(System.Int32)">GetDataProviderConfiguration(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html">IMixedRealityServiceConfiguration</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfigurationList_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfigurationList*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfigurationList" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfigurationList">GetDataProviderConfigurationList()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override SerializedProperty GetDataProviderConfigurationList()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfigurationProperties_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfigurationProperties*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_GetDataProviderConfigurationProperties_SerializedProperty_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.GetDataProviderConfigurationProperties(SerializedProperty)">GetDataProviderConfigurationProperties(SerializedProperty)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializedProperty</span></td>
+        <td><span class="parametername">providerEntry</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ServiceConfigurationProperties</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_Editor_MixedRealityInputSystemProfileInspector_IsProfileInActiveInstance_" data-uid="Microsoft.MixedReality.Toolkit.Input.Editor.MixedRealityInputSystemProfileInspector.IsProfileInActiveInstance*"></a>
