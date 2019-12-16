@@ -39,6 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             x86 = 0,
             x64 = 1,
             ARM = 2,
+#if UNITY_2019_1_OR_NEWER
+            ARM64 = 3
+#endif // UNITY_2019_1_OR_NEWER
         }
 
         private enum PlatformToolset
@@ -584,6 +587,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 buildArchitecture = Architecture.ARM;
             }
+#if UNITY_2019_1_OR_NEWER
+            else if (currentArchitectureString.ToLower().Equals("arm64"))
+            {
+                buildArchitecture = Architecture.ARM64;
+            }
+#endif // UNITY_2019_1_OR_NEWER
 
             buildArchitecture = (Architecture)EditorGUILayout.EnumPopup("Build Platform", buildArchitecture, GUILayout.Width(HALF_WIDTH));
 
