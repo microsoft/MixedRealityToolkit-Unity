@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Slider Axis Visuals")]
 
-        [Tooltip("The gameObject that contains the thumb visual.")]
+        [Tooltip("The gameObject that contains the thumb visual. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject thumbVisual = null;
         public GameObject ThumbVisual
