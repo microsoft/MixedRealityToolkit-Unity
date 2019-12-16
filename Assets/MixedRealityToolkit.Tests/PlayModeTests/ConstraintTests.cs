@@ -682,7 +682,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that different constraints can apply for near and far manipulation
         /// </summary>
         [UnityTest]
-        public IEnumerator ConstrainByProximity()
+        public IEnumerator CombinedConstraintFarNear()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
             
