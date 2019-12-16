@@ -55,7 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly string[] TARGET_DEVICE_OPTIONS = { "Any Device", "PC", "Mobile", "HoloLens" };
 
-        private static readonly string[] ARCHITECTURE_OPTIONS = { "x86", "x64", "arm" };
+        private static readonly string[] ARCHITECTURE_OPTIONS = { 
+            "x86", 
+            "x64", 
+            "ARM",
+            #if UNITY_2019_1_OR_NEWER
+            "ARM64"
+            #endif // UNITY_2019_1_OR_NEWER
+        };
 
         private static readonly string[] PLATFORM_TOOLSET_VALUES = { string.Empty, "v141", "v142" };
 
@@ -142,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 bool canInstall = true;
                 if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
                 {
-                    canInstall = DevicePortalConnectionEnabled && IsHoloLensConnectedUsb;
+                    canInstall = DevicePortalConnectionEnabled;
                 }
 
                 return canInstall && Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(PackageName);
@@ -939,9 +946,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             DeviceInfo currentConnection = CurrentConnection;
             var machineName = await DevicePortal.GetMachineNameAsync(currentConnection);
-            currentConnection.MachineName = machineName?.ComputerName;
-            UpdatePortalConnections();
-            Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
+            if (machineName != null)
+            {
+                currentConnection.MachineName = machineName?.ComputerName;
+                UpdatePortalConnections();
+                Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
+            }
         }
 
         /// <summary>
@@ -1104,8 +1114,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static bool IsLocalConnection(DeviceInfo connection)
         {
-            return connection.IP.Equals(LOCAL_MACHINE, StringComparison.OrdinalIgnoreCase) ||
-                   connection.IP.Equals(LOCAL_IP_ADDRESS);
+            return connection.IP.Contains(LOCAL_MACHINE) ||
+                   connection.IP.Contains(LOCAL_IP_ADDRESS);
         }
 
         private static bool AreCredentialsValid(DeviceInfo connection)
@@ -1115,14 +1125,32 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                    !string.IsNullOrEmpty(connection.Password);
         }
 
-        private static bool IsIPAddress(string ip)
-        {
-            return IPAddress.TryParse(ip, out IPAddress address);
-        }
-
         private static bool IsValidIpAddress(string ip)
         {
-            return IsIPAddress(ip) || ip.Contains(LOCAL_MACHINE);
+            if (string.IsNullOrEmpty(ip))
+            {
+                return false;
+            }
+
+            string ipAddr = ip;
+
+            var portSegments = ip.Split(':');
+            if (portSegments.Length > 2)
+            {
+                return false;
+            }
+            else if (portSegments.Length == 2)
+            {
+                if (!UInt16.TryParse(portSegments[1], out UInt16 result))
+                {
+                    return false;
+                }
+
+                ipAddr = portSegments[0];
+            }
+
+            return ipAddr.Split('.').Length == 4 && !ipAddr.Contains(EMPTY_IP_ADDRESS) && 
+                (IPAddress.TryParse(ipAddr, out IPAddress address) || ipAddr.Contains(LOCAL_MACHINE));
         }
 
         private static string UpdatePackageName()
@@ -1184,9 +1212,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             windowsSdkVersions.Sort();
         }
 
-#endregion Utilities
+        #endregion Utilities
 
-#region Device Portal Commands
+        #region Device Portal Commands
 
         private static void OpenDevicePortal()
         {
@@ -1431,6 +1459,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-#endregion Device Portal Commands
+        #endregion Device Portal Commands
     }
 }
