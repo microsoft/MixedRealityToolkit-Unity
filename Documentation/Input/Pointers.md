@@ -24,7 +24,7 @@ The default MRTK Pointer Profile configuration includes the following pointer cl
 Each Pointer entry is defined by the following set of data:
 
 - *Controller Type* - The set of controllers that a pointer is valid for.
-    * For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
+  - For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
 
 - *Handedness* - allows for a pointer to only being instantiated for a specific hand (left/right)
 
@@ -71,8 +71,7 @@ The *TouchPointer* is responsible for working with Unity Touch input (i.e. touch
 
 The *MousePointer* powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
-<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
-<br/>
+![Mouse pointer](../../Documentation/Images/Pointers/MRTK_MousePointer.png)
 
 > [!NOTE]
 > Mouse support is not available by default in MRTK but can be enabled by adding a new *Input Data Provider* of type [`MouseDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager) to the MRTK input profile and assigning the [`MixedRealityMouseInputProfile`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityMouseInputProfile) to the data provider.
@@ -115,7 +114,7 @@ Useful Sphere Pointer properties:
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
 
-## Pointer support for Mixed Reality Platforms
+## Pointer support for mixed reality platforms
 
 The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
 it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer.
@@ -132,7 +131,7 @@ it's possible to add different pointer types to these platforms. For example, yo
 
 ### Pointer event interfaces
 
-MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
+MonoBehaviours that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
 
 | Event | Description | Handler |
 | --- | --- | --- |
@@ -161,7 +160,7 @@ Pointer input events are recognized and handled by the MRTK input system in a si
 
 Below is an example script that changes the color of the attached renderer when a pointer takes or leaves focus or when a pointer selects the object.
 
-```csharp
+```c#
 public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
 {
     private Color color_IdleState = Color.cyan;
@@ -197,11 +196,11 @@ public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityP
 }
 ```
 
-### Query Pointers
+### Query pointers
 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
 
-```csharp
+```c#
 var pointers = new HashSet<IMixedRealityPointer>();
 
 // Find all valid pointers
@@ -217,11 +216,11 @@ foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
 }
 ```
 
-#### Primary Pointer
+#### Primary pointer
 
 Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.
 
-```csharp
+```c#
 private void OnEnable()
 {
     var focusProvider = CoreServices.InputSystem?.FocusProvider;
@@ -247,11 +246,11 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 
 <img src="../../Documentation/Images/Pointers/PrimaryPointerExample.png" style="max-width:100%;">
 
-### Pointer Result
+### Pointer result
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
-```csharp
+```c#
 private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
 {
     var result = eventData.Pointer.Result;
@@ -265,10 +264,11 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
-### Disable Pointers
+### Disable pointers
+
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
-```csharp
+```c#
 // Disable the hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -297,7 +297,7 @@ For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.Mix
 
 <img src="../../Documentation/Images/Pointers/PointerHandler.png" style="max-width:100%;">
 
-## Pointer Extent
+## Pointer extent
 
 Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
 By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
@@ -312,7 +312,7 @@ fields:
 *Default Pointer Extent* - This controls the length of the pointer ray/line that will
 render when the pointer is not interacting with anything.
 
-## See Also
+## See also
 
 - [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
 - [Input Events](InputEvents.md)

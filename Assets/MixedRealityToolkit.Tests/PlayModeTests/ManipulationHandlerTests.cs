@@ -987,8 +987,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// This test first moves the hand a set amount along the x-axis, records its x position, then moves
-        /// it the same amount along the y-axis and records its y position. Given no constraints on manipulation,
+        /// This test first moves the hand a set amount along the x-axis, records its x distance from the hand, then moves
+        /// it the same amount along the y-axis and records its y distance from the hand. Given no constraints on manipulation,
         /// we expect these values to be the same.
         /// This test was added as a change to pointer behaviour made GGV manipulation along the y-axis sluggish.
         /// </summary>
@@ -1010,29 +1010,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ManipulationHandler.RotateInOneHandType.FaceAwayFromUser;
 
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
 
-            float moveBy = 0.5f;
-            float xPos, yPos;
+            float xPos, yPosUp, yPosDown;
 
             // Grab the object
             yield return hand.Show(new Vector3(0, 0, 0.5f));
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
 
-            yield return hand.Move(Vector3.right * moveBy, numHandSteps);
+            // Move the hand in a way that does not change the distance from the body ray
+            float root2Over2 = Mathf.Cos(Mathf.PI / 4);
+            Vector3 moveX = new Vector3(root2Over2, 0, root2Over2) * 0.5f;
+            yield return hand.MoveTo(moveX, numHandSteps);
             yield return null;
 
-            xPos = testObject.transform.position.x;
+            xPos = testObject.transform.position.x - moveX.x;
 
-            yield return hand.Move((Vector3.left + Vector3.up) * moveBy, numHandSteps);
+            Vector3 moveYUp = new Vector3(0, root2Over2, root2Over2) * 0.5f;
+            yield return hand.MoveTo(moveYUp, numHandSteps);
             yield return null;
 
-            yPos = testObject.transform.position.y;
+            yPosUp = testObject.transform.position.y - moveYUp.y;
 
-            Assert.AreEqual(xPos, yPos, 0.02f);
+            Vector3 moveYDown = new Vector3(0, -0.5f, 0.5f);
+            yield return hand.MoveTo(moveYDown, numHandSteps);
+            yield return null;
+
+            yPosDown = testObject.transform.position.y - moveYDown.y;
+
+            Assert.AreEqual(xPos, yPosUp, 0.02f);
+            Assert.AreEqual(xPos, Mathf.Abs(yPosDown), 0.02f);
 
             // Restore the input simulation profile
             iss.HandSimulationMode = oldHandSimMode;

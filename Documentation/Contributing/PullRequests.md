@@ -1,4 +1,4 @@
-# Pull Requests
+# Pull requests
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ A comment in the PR will let you know if you do.
 > [!IMPORTANT]
 > If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft), please link your Microsoft and GitHub accounts on corpnet by visiting [Open Source at Microsoft](https://opensource.microsoft.com/) before you start your pull request. There's some process stuff you'll need to do ahead of time.
 
-## Creating a Pull Request
+## Creating a pull request
 
 When you are ready to submit a pull request, [create a pull request](https://github.com/microsoft/MixedRealityToolkit-Unity/compare/mrtk_development...mrtk_development?expand=1) targeting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch.
 
@@ -25,7 +25,7 @@ The project maintainers will review your changes. We aim to review all changes w
 > [!NOTE]
 > All PR's submitted to the project will also be vetted according to the [MRTK coding standards guide](CodingGuidelines.md), so please review these before submitting your PR to ensure a smooth process.
 
-## Pull Request Guidelines
+## Pull request guidelines
 
 These guidelines are based off of the [Google's engineering practices](https://google.github.io/eng-practices/review/developer/small-cls.html).
 

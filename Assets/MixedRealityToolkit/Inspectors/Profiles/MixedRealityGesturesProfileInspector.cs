@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             CheckMixedRealityInputActions();
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private void RenderList(SerializedProperty list)
         {
             // Disable gestures list if we could not initialize successfully
-            using (new GUIEnabledWrapper(isInitialized, false))
+            using (new EditorGUI.DisabledGroupScope(!isInitialized))
             {
                 EditorGUILayout.Space();
                 using (new EditorGUILayout.VerticalScope())

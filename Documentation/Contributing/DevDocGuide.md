@@ -5,7 +5,7 @@ The current state of the developer documentation can be found on the [MRTK githu
 
 Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found [here](https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
 
-Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into it's html equivalent. Therefor it's important to only use relative paths when referring to other local files.
+Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into its html equivalent. Therefor it's important to only use relative paths when referring to other local files.
 
 ## Building docfx locally
 
@@ -20,8 +20,8 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 ### Generation
 
 * open a powershell or cmd prompt in the root of the MRTK project
-* execute docfx docfx.json (optionally with the -f option to force a rebuild of doc files)
-* execute docfx serve doc (optionally with -p *portnumber* if you don't want to use the 8888 default port)
+* execute `docfx docfx.json` (optionally with the -f option to force a rebuild of doc files)
+* execute `docfx serve doc` (optionally with -p *portnumber* if you don't want to use the 8888 default port)
 * open a web browser with localhost:*portnumber*
 
 Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
@@ -40,9 +40,9 @@ For external apis that don't provide an xref service hrefs to the documentation 
 
 Examples:
 
-```csharp
+```c#
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
+/// <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
@@ -121,19 +121,19 @@ Multiple versions of developer docs are supported and can be switched by the ver
 1. Optional: Adjusting your docfx.json  
 Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
-```json
- "_gitContribute": {
+    ```json
+    "_gitContribute": {
         "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
         "branch": "mrtk_development"
-      }
-```
+    }
+    ```
 
-If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
+    If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
 
-2. Create your docfx docs by calling docfx docfx.json in the root of the repo
-3. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
-4. Add your version number into the versionArray in web/version.js
-5. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
+1. Create your docfx docs by calling docfx docfx.json in the root of the repo
+1. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
+1. Add your version number into the versionArray in web/version.js
+1. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
 
 CI will pick up the changes done to the version.js file and update the version dropdown automatically.
 

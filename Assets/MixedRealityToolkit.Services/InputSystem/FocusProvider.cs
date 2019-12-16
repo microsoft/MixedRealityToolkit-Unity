@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -724,7 +723,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void RegisterPointers(IMixedRealityInputSource inputSource)
         {
             // If our input source does not have any pointers, then skip.
-            if (inputSource.Pointers == null) { return; }
+            if (inputSource.Pointers == null)
+            {
+                return;
+            }
 
             IMixedRealityPointerMediator mediator = null;
 
@@ -734,15 +736,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 try
                 {
                     // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
-                    mediator = Activator.CreateInstance(
-                    CoreServices.InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type,
-                    this) as IMixedRealityPointerMediator;
+                    mediator = Activator.CreateInstance(mediatorType, this) as IMixedRealityPointerMediator;
                 }
                 catch (MissingMethodException)
                 {
                     // We are using custom mediator not provided by MRTK, instantiate with empty constructor
-                    mediator = Activator.CreateInstance(
-                        CoreServices.InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                    mediator = Activator.CreateInstance(mediatorType) as IMixedRealityPointerMediator;
                 }
             }
 
@@ -1217,15 +1216,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             RaycastResult raycastResult = default(RaycastResult);
 
-            if (pointer.Rays == null)
+            if (pointer.Rays == null || pointer.Rays.Length <= 0)
             {
                 Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
-
-            if (pointer.Rays.Length <= 0)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
                 return;
             }
 

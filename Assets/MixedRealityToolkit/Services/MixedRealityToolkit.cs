@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isInitializing = false;
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
+        private const string NoMRTKProfileErrorMessage = "No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit";
 
         #region Mixed Reality Toolkit Profile configuration
 
@@ -324,7 +325,16 @@ namespace Microsoft.MixedReality.Toolkit
             //If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
-                Debug.LogError("No Mixed Reality Configuration Profile found, cannot initialize the Mixed Reality Toolkit");
+                if (!Application.isPlaying)
+                {
+                    // Log as warning if in edit mode. Likely user is making changes etc.
+                    Debug.LogWarning(NoMRTKProfileErrorMessage);
+                }
+                else
+                {
+                    Debug.LogError(NoMRTKProfileErrorMessage);
+                }
+
                 return;
             }
 
@@ -447,7 +457,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        object[] args = { configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        object[] args = { configuration.ComponentName, configuration.Priority, configuration.Profile };
                         RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                 }
@@ -956,9 +966,9 @@ namespace Microsoft.MixedReality.Toolkit
             // later may rely on those which are initialized first.
             var orderedActiveSystems = activeSystems.OrderByDescending(m => m.Value.Priority);
 
-            foreach (var system in orderedActiveSystems)
+            foreach (var service in orderedActiveSystems)
             {
-                Type type = system.Key;
+                Type type = service.Key;
 
                 if (typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type))
                 {
@@ -997,23 +1007,36 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices();
-            return ExecuteOnAllServices(orderedSystems, execute);
+            if (!HasProfileAndIsInitialized)
+            {
+                return false;
+            }
+
+            var services = MixedRealityServiceRegistry.GetAllServices();
+            int length = services.Count;
+            for (int i = 0; i < length; i++)
+            {
+                execute(services[i]);
+            }
+
+            return true;
         }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().Reverse();
-            return ExecuteOnAllServices(orderedSystems, execute);
-        }
-
-        private bool ExecuteOnAllServices(IEnumerable<IMixedRealityService> services, Action<IMixedRealityService> execute)
-        {
-            if (!HasProfileAndIsInitialized) { return false; }
-            foreach (var system in services)
+            if (!HasProfileAndIsInitialized)
             {
-                execute(system);
+                return false;
             }
+
+            var services = MixedRealityServiceRegistry.GetAllServices();
+            int length = services.Count;
+
+            for (int i = length - 1; i >= 0; i--)
+            {
+                execute(services[i]);
+            }
+
             return true;
         }
 
@@ -1107,9 +1130,13 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (!CanGetService(interfaceType)) { return new List<T>() as IReadOnlyList<T>; }
 
-            foreach (var service in MixedRealityServiceRegistry.GetAllServices())
+            bool isNullServiceName = string.IsNullOrEmpty(serviceName);
+            var systems = MixedRealityServiceRegistry.GetAllServices();
+            int length = systems.Count;
+            for (int i = 0; i < length; i++)
             {
-                if (service is T && (string.IsNullOrEmpty(serviceName) || service.Name == serviceName))
+                IMixedRealityService service = systems[i];
+                if (service is T && (isNullServiceName || service.Name == serviceName))
                 {
                     services.Add((T)service);
                 }
