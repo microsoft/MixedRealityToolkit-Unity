@@ -17,7 +17,7 @@ From here you file:
 - **Documentation issue** - Issue with the Mixed Reality Toolkit [documentation](https://microsoft.github.io/MixedRealityToolkit-Unity)
 - **Feature request** - Proposal for a new Mixed Reality Toolkit feature
 
-## Proposing Feature Requests
+## Proposing feature requests
 
 When requesting a new Mixed Reality Toolkit feature, it is important to document the customer benefit / problem to be solved. Once submitted, a feature request will be reviewed and discussed on GitHub. We encourage open and constructive discussion of each feature proposal to ensure that the work is beneficial to a large segment of customers.
 
@@ -42,5 +42,5 @@ When adding a bug fix or feature, follow these steps:
 1. If adding an experimental feature, then writing tests and documentation are not necessary. Instead, follow [experimental feature guidelines](ExperimentalFeatures.md).
 1. Add tests to verify the bug fix / feature. Instructions for writing and running tests are at [UnitTests](UnitTests.md).
 1. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
-1. Ensure the code works as intended on all platforms. Please see [Release notes](../ReleaseNotes.md) for the list of supported platforms. For Windows UWP projects, code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; **Store** > **Create App Packages**. Follow the prompts and run WACK tests. Make sure they all succeed.
+1. Ensure the code works as intended on all platforms. Please see [Release notes](../ReleaseNotes.md) for the list of supported platforms. For Windows UWP projects, code must be [WACK compliant](https://developer.microsoft.com/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; **Store** > **Create App Packages**. Follow the prompts and run WACK tests. Make sure they all succeed.
 1. Follow the instructions at [Pull Requests](PullRequests.md) when making a pull request.

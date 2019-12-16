@@ -1,4 +1,4 @@
-# Feature Contribution Process
+# Feature contribution process
 
 > [!WARNING]
 > 10/1/2019: This page is deprecated because it provides guidelines for contributing very large systems to MRTK before the 2.0 release. After the 2.0 release, large changes need to be performed more carefully, and the process for this is not yet decided. We expect most MRTK contributions to have much smaller changes than what is covered here.
@@ -16,13 +16,13 @@ The following process has been drafted to ensure all new work complies to the up
 5. [Submit a PR Implementing any required SDK components](#sdk-implementation)
 6. [Submit a PR Implementing feature demos or full scale Examples](#example-implementation)
 
-### New Proposal
+### New proposal
 
 Start by opening a new Proposal or Task describing the feature or the problem you want to solve. Describe the approach and how it fits into the version of the Mixed Reality Toolkit you're targeting. This will enable everyone have a discussion about the proposal and, hopefully, identify some potential pitfalls before any work is started.
 
 New Proposals will be reviewed and discussed during our weekly ship room meetings and if a proposal is accepted, supplemental tasks will then be created and assigned.
 
-### Architecture Draft
+### Architecture draft
 
 The first task once the initial proposal has been accepted, will be to draft the initial architecture document for the feature or work to be done. This document should typically be one or two pages long and include a high level overview of the feature and how it will relate to other parts of the Mixed Reality Toolkit.
 
@@ -36,7 +36,7 @@ Ensure that the architecture of the feature complies with the [New Feature Requi
 
 Once the draft is completed, this can be appended to the Proposal / Task issue on GitHub for final public review.
 
-### Architecture Documentation
+### Architecture documentation
 
 Once the draft architecture is accepted, additional pull requests can be made to submit the final full architecture documents to the repository.
 
@@ -46,7 +46,7 @@ Once the architecture document is approved, only then can the first code submiss
 
 Development can begin in your own private branch and complete as normal, however, the PR's submitted back to the core MRTK project should be submitted in stages to ensure the review and approval is as smooth as it can be (and ensure core changes do not impact other features)
 
-### Core Implementation
+### Core implementation
 
 The initial work that should be submitted, is to implement:
 
@@ -59,18 +59,18 @@ If needed, the architectural document can be updated to align with any changes t
 
 Please ensure that all existing Unit Tests and any new tests are all passing prior to submission.
 
-### SDK Implementation
+### SDK implementation
 
 Once the core interfaces and events are merged in to development, work can then be submitted for the SDK components.  Adding the concrete implementation of the feature and testing against the supported platforms and unit tests.
 
-### Example Implementation
+### Example implementation
 
 Once the SDK components are merged, then any demo scenes or updates to the example scenes can be submitted.
 
 * Demos are for specific feature highlighting and demonstration
 * Examples are full working scene learning examples
 
-## New Feature Requirements
+## New feature requirements
 
 Most feature implementations can be broken down into 3 main parts:
 
@@ -78,7 +78,7 @@ Most feature implementations can be broken down into 3 main parts:
 2. [The Event Data](#event-data-implementation-requirements) (Optional)
 3. [The Feature Handler](#handler-implementation-requirements) (Optional)
 
-### Manager Implementation Requirements
+### Manager implementation requirements
 
 * Assembly Definitions for code outside of the `MixedRealityToolkit` folder.
   * This ensures features are self-contained and have no dependencies to other features.
@@ -95,14 +95,14 @@ Most feature implementations can be broken down into 3 main parts:
 * Have a default implementation located in `MixedRealityToolkit.Services/<FeatureName>`
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
-### Event Data Implementation Requirements
+### Event data implementation requirements
 
 The Event Data defines exactly what data the handler is expected to receive from the event.
 
 * All Event Datum for the feature should be defined in `MixedRealityToolkit/EventDatum/<FeatureName>`.
 * All new Event Data classes should inherit from `GenericBaseEventData`
 
-### Handler Implementation Requirements
+### Handler implementation requirements
 
 The Handler Interface defines each event a component should be listening for and the types of data passed. End users will implement the interface to execute logic based on the event data received.
 

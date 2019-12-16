@@ -2,13 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
+    /// Defines configuration data for to be registered for a <see cref="IMixedRealityService"/> on startup. 
+    /// Generally, used for configuring the extended interface, <see cref="IMixedRealityDataProvider"/>
     /// </summary>
     public interface IMixedRealityServiceConfiguration
     {
@@ -31,5 +30,10 @@ namespace Microsoft.MixedReality.Toolkit
         /// The runtime platform(s) to run this service.
         /// </summary>
         SupportedPlatforms RuntimePlatform { get; }
+
+        /// <summary>
+        /// Profile configuration associated with the service
+        /// </summary>
+        BaseMixedRealityProfile Profile { get; }
     }
 }

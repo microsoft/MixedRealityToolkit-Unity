@@ -1,4 +1,4 @@
-# Input Simulation Service
+# Input simulation service
 
 The Input Simulation Service emulates the behaviour of devices and platforms that may not be available in the Unity editor. Examples include:
 
@@ -12,7 +12,7 @@ Users can use a conventional keyboard and mouse combination to control simulated
 > [!WARNING]
 > This does not work when using Unity's XR Holographic Emulation > Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = *"None"*
 
-## Enabling the Input Simulation Service
+## Enabling the input simulation service
 
 Input simulation is enabled by default in MRTK.
 
@@ -25,7 +25,7 @@ Input simulation is an optional [Mixed Reality service](../MixedRealityServices.
 
 Enable the input simulation tools window from the  _Mixed Reality Toolkit > Utilities > Input Simulation_ menu. This window provides access to the state of input simulation during play mode.
 
-## Viewport Buttons
+## Viewport buttons
 
 A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [input simulation tools window](#input-simulation-tools-window).
 
@@ -39,7 +39,7 @@ Hand icons show the state of the simulated hands:
 * ![Controlled hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png "Controlled hand icon") The hand is tracked and controlled by the user. Click to hide the hand.
 * ![Reset hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png "Reset hand icon") Click to reset the hand to default position.
 
-## Camera Control
+## Camera control
 
 Head movement can be emulated by the Input Simulation Service.
 
@@ -63,11 +63,11 @@ Camera position and rotation angles can be set explicitly in the tools window, a
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## Hand Simulation
+## Hand simulation
 
 The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
 
-### Hand Simulation Mode
+### Hand simulation mode
 
 In the [input simulation tools window](#input-simulation-tools-window) the __Hand Simulation Mode__ setting switches between two distinct input models. The default mode can also be set in the input simulation profile.
 
@@ -79,7 +79,7 @@ In the [input simulation tools window](#input-simulation-tools-window) the __Han
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
@@ -103,7 +103,7 @@ All hand placement can also changed in the [input simulation tools window](#inpu
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-### Hand Gestures
+### Hand gestures
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
@@ -118,7 +118,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 > [!NOTE]
 > The _Pinch_ gesture is the only gesture that performs the "Select" action at this point.
 
-### One-Hand Manipulation
+### One-hand manipulation
 
 1. Press and  __Left/Right Hand Control Key__ (*Left Shift* or *Space*)
 2. Point at object
@@ -128,7 +128,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-### Two-Hand Manipulation
+### Two-hand manipulation
 
 For manipulating objects with two hands at the same time, the persistent hand mode is recommended.
 
@@ -142,7 +142,7 @@ For manipulating objects with two hands at the same time, the persistent hand mo
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-### GGV Interaction
+### GGV interaction
 
 1. Enable GGV simulation by switching __Hand Simulation Mode__ to _Gestures_ in the [Input Simulation Profile](#enabling-the-input-simulation-service)
 1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)

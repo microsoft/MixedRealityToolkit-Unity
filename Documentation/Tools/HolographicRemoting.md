@@ -1,4 +1,4 @@
-# Getting Started with Holographic Remoting
+# Getting started with Holographic Remoting
 
 Holographic remoting streams holographic content from a PC to your Microsoft HoloLens in real-time, using a Wi-Fi connection. This feature can significantly increase developer productivity when developing mixed reality applications.
 
@@ -57,7 +57,7 @@ When the session is complete, exit play mode.
 > [!Note]
 > There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded. To ensure this issue does not occur, always close the Holographic dialog prior to exiting Unity.
 
-## See Also
+## See also
 
-- [Holographic Remoting troubleshooting and limitations](https://docs.microsoft.com/en-us/windows/mixed-reality/holographic-remoting-troubleshooting)
-- [Microsoft Holographic Remoting software license terms](https://docs.microsoft.com/en-us/legal/mixed-reality/microsoft-holographic-remoting-software-license-terms)
+- [Holographic Remoting troubleshooting and limitations](https://docs.microsoft.com/windows/mixed-reality/holographic-remoting-troubleshooting)
+- [Microsoft Holographic Remoting software license terms](https://docs.microsoft.com/legal/mixed-reality/microsoft-holographic-remoting-software-license-terms)

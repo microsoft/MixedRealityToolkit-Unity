@@ -71,6 +71,8 @@
       href: Tools/ExtensionServiceCreationWizard.md
     - name: Scene Transition Service Overview
       href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+    - name: Hand Physics Service Overview
+      href: Extensions/HandPhysicsService/HandPhysicsServiceOverview.md
   - name: Input System
     items:
     - name: Input Overview
@@ -208,6 +210,10 @@
       href: README_Tooltip.md
     - name: Solvers
       href: README_Solver.md
+  - name: Example Scenes
+    items:
+    - name: Examples Hub
+      href: README_ExampleHub.md
     - name: Hand Interaction Example
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example

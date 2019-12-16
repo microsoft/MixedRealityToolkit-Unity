@@ -1,4 +1,4 @@
-# Optimize Window
+# Optimize window
 
 The MRTK Optimize Window is a utility to help automate and inform in the process of configuring a mixed reality project for best [performance](../Performance/PerfGettingStarted.md) in Unity. This tool generally focuses on rendering configurations that when set to the correct preset can save milliseconds of processing.
 
@@ -20,7 +20,7 @@ A green check icon means that an optimal value has been configured in the projec
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_Settings.png)
 
-### Single Pass Instanced Rendering
+### Single Pass Instanced rendering
 
 [Single Pass instanced rendering](https://docs.unity3d.com/Manual/SinglePassInstancing.html) is the most efficient rendering path for mixed reality applications. This configuration ensures the render pipeline is executed only once for both eyes and that draw calls are instanced across both eyes.
 
@@ -70,7 +70,7 @@ The *Shader Analysis* tab scans the current project's Asset folder for materials
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png)
 
-## See Also
+## See also
 
 - [Performance](../Performance/PerfGettingStarted.md)
 - [Hologram Stabilization](../hologram-stabilization.md)

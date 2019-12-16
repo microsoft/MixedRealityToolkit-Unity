@@ -1,6 +1,7 @@
 # Scene system overview
 
 ## When to use the scene system
+
 If your project consists of a single scene, the Scene System probably isn't necessary. It is most useful when one or more of the following are true:
 
 - Your project has multiple scenes.
@@ -16,7 +17,8 @@ If your project consists of a single scene, the Scene System probably isn't nece
 - [Monitoring Content Loading](SceneSystemLoadProgress.md)
 - [Lighting Scene Loading](SceneSystemLightingScenes.md)
 
-# Editor settings
+## Editor settings
+
 By default, the Scene System enforces several behaviors in the Unity editor. If you find any of these behaviors heavy-handed, they can be disabled in the **Editor Settings** section of your Scene System profile.
 
 - `Editor Manage Build Settings:` If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.
@@ -27,4 +29,4 @@ By default, the Scene System enforces several behaviors in the Unity editor. If 
 
 - `Editor Enforce Lighting Scene Types:` If true, the service will ensure that only the lighting-related components defined in `PermittedLightingSceneComponentTypes` are allowed in lighting scenes. Disable if you want total control over the content of lighting scenes.
 
-![](../Images/SceneSystem/MRTK_SceneSystemProfileEditorSettings.PNG)
+![Scene system editor settings](../Images/SceneSystem/MRTK_SceneSystemProfileEditorSettings.PNG)

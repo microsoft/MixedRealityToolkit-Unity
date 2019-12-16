@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             serializedObject.Update();
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 EditorGUILayout.PropertyField(indicatorsPrefab);
 
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.PropertyField(isCameraControlEnabled);
                 {
                     EditorGUILayout.BeginVertical("Label");
-                    using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
+                    using (new EditorGUI.DisabledGroupScope(!isCameraControlEnabled.boolValue))
                     {
                         EditorGUILayout.PropertyField(mouseLookSpeed);
                         EditorGUILayout.PropertyField(mouseLookButton);
