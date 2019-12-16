@@ -83,14 +83,14 @@
 <h1 id="pointers">Pointers</h1>
 
 <p><img src="../Images/Pointers/MRTK_Pointer_Main.png" alt="Pointer"></p>
-<p>This article discusses how to configure and respond to Pointer input in practice, compared to <a href="../Architecture/InputSystem/ControllersPointersAndFocus.html">Pointer Architecture</a></p>
+<p>This article explains how to configure and respond to Pointer input in practice, compared to <a href="../Architecture/InputSystem/ControllersPointersAndFocus.html">Pointer Architecture</a></p>
 <p>Pointers are instanced automatically at runtime when a new controller is detected. More than one pointer can be attached to a controller. For example, with the default pointer profile, Windows Mixed Reality controllers get both a line and a parabolic pointer for normal selection and teleportation respectively.</p>
 <h2 id="pointer-configuration">Pointer configuration</h2>
 <p>Pointers are configured as part of the Input System in MRTK via a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.html"><code>MixedRealityPointerProfile</code></a>. This type of profile is assigned to a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystemProfile.html"><code>MixedRealityInputSystemProfile</code></a> in the MRTK Configuration inspector. The Pointer profile determines the cursor, types of Pointers available at runtime, and how those pointers communicate with each other to decide which one is active.</p>
 <ul>
 <li><p><em>Pointing Extent</em> - Defines the max distance for which a Pointer can interact with a GameObject.</p>
 </li>
-<li><p><em>Pointing Raycast Layer Masks</em> - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
+<li><p><em>Pointing Raycast Layer Masks</em> - This is a prioritized array of LayerMasks to determine which possible GameObjects any given Pointer can interact with and the order of interaction to attempt. This may be useful to ensure Pointers interact with UI elements first before other scene objects.
 <img src="../Images/Input/Pointers/PointerProfile.PNG" alt="Pointer Profile Example"></p>
 </li>
 </ul>
@@ -121,7 +121,7 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <p>MRTK provides a set of pointer prefabs in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em>. A new custom prefab can be built as long as it contains one of the pointer scripts in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html"><code>IMixedRealityPointer</code></a>.</p>
 </div>
 <h3 id="default-pointer-classes">Default pointer classes</h3>
-<p>The following classes are the out-of-box MRTK pointers available and defined in the default <em>MRTK Pointer Profile</em> outlined above. Each pointer prefab provided under <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em> contains one of these pointer components attached.</p>
+<p>The following classes are the out-of-box MRTK pointers available and defined in the default <em>MRTK Pointer Profile</em> outlined above. Each pointer prefab provided under <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em> contains one of the pointer components attached.</p>
 <p><img src="../Images/Input/Pointers/MRTK_Pointers.png" alt="MRTK Default Pointers"></p>
 <h4 id="far-pointers">Far pointers</h4>
 <h5 id="linepointer"><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.LinePointer.html"><code>LinePointer</code></a></h5>
@@ -147,14 +147,14 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <p>When configuring the GameObject with the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> component, make sure to configure the <em>localForward</em> parameter to point out of the front of the button or other object that should be made touchable. Also make sure that the touchable's <em>bounds</em> matches the bounds of the touchable object.</p>
 <p>Useful Poke Pointer properties:</p>
 <ul>
-<li><em>TouchableDistance</em>: Maximum distance a which a touchable surface can be interacted with</li>
+<li><em>TouchableDistance</em>: Maximum distance in which a touchable surface can be interacted with</li>
 <li><em>Visuals</em>: Game object used to render finger tip visual (the ring on finger, by default).</li>
 <li><em>Line</em>: Optional line to draw from fingertip to the active input surface.</li>
 <li><em>Poke Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionTouchable</code> component in order to interact with a poke pointer.</li>
 </ul>
 <img src="../Images/Pointers/MRTK_PokePointer.png" width="400">
 <h5 id="spherepointer"><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html"><code>SpherePointer</code></a></h5>
-<p>The <em><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html">SpherePointer</a></em> uses <a href="https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html">UnityEngine.Physics.OverlapSphere</a> in order to identify the closest <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> object for interaction which is useful for &quot;grabbable&quot; input like the <code>ManipulationHandler</code>. Similar to the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a>/<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> script.</p>
+<p>The <em><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html">SpherePointer</a></em> uses <a href="https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html">UnityEngine.Physics.OverlapSphere</a> in order to identify the closest <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> object for interaction, which is useful for &quot;grabbable&quot; input like the <code>ManipulationHandler</code>. Similar to the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a>/<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> script.</p>
 <p>Useful Sphere Pointer properties:</p>
 <ul>
 <li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
@@ -261,7 +261,7 @@ it's possible to add different pointer types to these platforms. For example, yo
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a> should be handled in the objects they are raised on. It is possible to receive focus events globally but, unlike other input events, global event handler won't block receiving events based on focus (the event will be received by both global handler and a corresponding object in focus).</p>
 </div>
 <h4 id="pointer-input-events-in-action">Pointer input events in action</h4>
-<p>Pointer input events are recognized and handled by the MRTK input system in a similar way as <a href="InputEvents.html#input-events-in-action">regular input events</a>. The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.</p>
+<p>Pointer input events are recognized and handled by the MRTK input system in a similar way as <a href="InputEvents.html#input-events-in-action">regular input events</a>. The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event, as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.</p>
 <ol>
 <li>The MRTK input system recognizes an input event has occurred</li>
 <li>The MRTK input system fires the relevant interface function for the input event to all registered global input handlers</li>
@@ -331,7 +331,7 @@ foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
 }
 </code></pre>
 <h4 id="primary-pointer">Primary pointer</h4>
-<p>Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.</p>
+<p>Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or another input source.</p>
 <pre><code class="lang-c#">private void OnEnable()
 {
     var focusProvider = CoreServices.InputSystem?.FocusProvider;
@@ -389,7 +389,7 @@ public void SetHoloLens1()
 </code></pre>
 <p>See <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerUtils.html"><code>PointerUtils</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.DisablePointersExample.html"><code>TurnPointersOnOff</code></a> for more examples.</p>
 <h2 id="pointer-interactions-via-editor">Pointer interactions via editor</h2>
-<p>For pointer events handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, MRTK provides further convenience in the form of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a> component which allows pointer events to be handled directly via Unity Events.</p>
+<p>For pointer events handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, MRTK provides further convenience in the form of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a> component, which allows pointer events to be handled directly via Unity Events.</p>
 <img src="../Images/Pointers/PointerHandler.png" style="max-width:100%;">
 <h2 id="pointer-extent">Pointer extent</h2>
 <p>Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
