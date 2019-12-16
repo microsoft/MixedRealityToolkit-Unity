@@ -65,8 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 UpdateThumbVisuals();
             }
         }
-
-        [Tooltip("The gameObject that contains the trackVisuals.")]
+    
+        [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject trackVisuals = null;
         public GameObject TrackVisuals
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Tooltip("The gameObject that contains the tickMarks.")]
+        [Tooltip("The gameObject that contains the tickMarks.  This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject tickMarks = null;
         public GameObject TickMarks
