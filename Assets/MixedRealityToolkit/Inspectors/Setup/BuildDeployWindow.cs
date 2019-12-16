@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -207,17 +208,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static int CurrentRemoteConnectionIndex
         {
-            get => currentConnectionInfoIndex;
+            get => portalConnections != null ? portalConnections.CurrentConnectionIndex : -1;
             set
             {
                 var connections = portalConnections?.Connections;
                 if (connections != null && value >= 0 && value < connections.Count)
                 {
-                    currentConnectionInfoIndex = value;
+                    portalConnections.CurrentConnectionIndex = value;
                 }
             }
         }
 
+        /// <summary>
+        /// Tracks whether the current UI preference is to target the local machine or remote machine for deployment. 
+        /// Saves state for duration of current Unity session
+        /// </summary>
         private static bool UseRemoteTarget
         {
             get => SessionState.GetBool(UseRemoteTargetSessionKey, false);
@@ -241,7 +246,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static bool isBuilding;
         private static bool isAppRunning;
 
-        private static int currentConnectionInfoIndex = 0;
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
         private static DeviceInfo localConnection;
@@ -1002,7 +1006,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private void AddRemoteConnection()
         {
             DeviceInfo currentConnection = CurrentRemoteConnection;
-            portalConnections.Connections.Add(new DeviceInfo(EMPTY_IP_ADDRESS, currentConnection.User, currentConnection.Password));
+            AddRemoteConnection(new DeviceInfo(EMPTY_IP_ADDRESS, currentConnection.User, currentConnection.Password));
+        }
+
+        private void AddRemoteConnection(DeviceInfo newDevice)
+        {
+            portalConnections.Connections.Add(newDevice);
             CurrentRemoteConnectionIndex = portalConnections.Connections.Count - 1;
             SaveRemotePortalConnections();
         }
@@ -1025,7 +1034,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             {
                                 Debug.Log($"Adding new IP {ipAddress} for local hololens {machineName.ComputerName} to remote connection list");
 
-                                portalConnections.Connections.Add(new DeviceInfo(ipAddress,
+                                AddRemoteConnection(new DeviceInfo(ipAddress,
                                     localConnection.User,
                                     localConnection.Password,
                                     machineName.ComputerName));
