@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
             Vector3 directionToTarget = transform.Position - CameraCache.Main.transform.position;
-            transform.Rotation = Quaternion.LookRotation(faceAway ? -directionToTarget : directionToTarget);
+            transform.Rotation = Quaternion.LookRotation(faceAway ? directionToTarget : -directionToTarget);
         }
 
         #endregion Public Methods
