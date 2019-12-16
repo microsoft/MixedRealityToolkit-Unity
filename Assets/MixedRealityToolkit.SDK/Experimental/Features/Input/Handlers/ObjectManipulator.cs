@@ -23,19 +23,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
-        [System.Flags]
-        public enum HandMovementType
-        {
-            OneHanded = 1 << 0,
-            TwoHanded = 1 << 1,
-        }
+
+        /// <summary>
+        /// Describes what pivot the manipulated object will rotate about when
+        /// you rotate your hand. This is not a description of any limits or 
+        /// additional rotation logic. If no other factors (such as constraints)
+        /// are involved, rotating your hand by an amount should rotate the object
+        /// by the same amount.
+        /// For example a possible future value here is RotateAboutUserDefinedPoint
+        /// where the user could specify a pivot that the object is to rotate
+        /// around.
+        /// An example of a value that should not be found here is MaintainRotationToUser
+        /// as this restricts rotation of the object when we rotate the hand.
+        /// </summary>
         public enum RotateInOneHandType
         {
-            MaintainRotationToUser,
-            GravityAlignedMaintainRotationToUser,
-            FaceUser,
-            FaceAwayFromUser,
-            MaintainOriginalRotation,
             RotateAboutObjectCenter,
             RotateAboutGrabPoint
         };
@@ -73,12 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
-        private HandMovementType manipulationType = HandMovementType.OneHanded | HandMovementType.TwoHanded;
+        private ManipulationHandFlags manipulationType = ManipulationHandFlags.OneHanded | ManipulationHandFlags.TwoHanded;
 
         /// <summary>
         /// Can manipulation be done only with one hand, only with two hands, or with both?
         /// </summary>
-        public HandMovementType ManipulationType
+        public ManipulationHandFlags ManipulationType
         {
             get => manipulationType;
             set => manipulationType = value;
@@ -291,7 +293,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
-        private Quaternion objectToHandRotation;
         private Quaternion objectToGripRotation;
         private bool isNearManipulation;
         private bool isManipulationStarted;
@@ -299,14 +300,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Rigidbody rigidBody;
         private bool wasKinematic = false;
 
-        private Quaternion startObjectRotationCameraSpace;
-        private Quaternion startObjectRotationFlatCameraSpace;
-        private Quaternion hostWorldRotationOnManipulationStart;
-
         private ConstraintManager constraints;
 
-        private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.OneHanded) && pointerIdToPointerMap.Count == 1;
-        private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.TwoHanded) && pointerIdToPointerMap.Count > 1;
+        private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.OneHanded) && pointerIdToPointerMap.Count == 1;
+        private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && pointerIdToPointerMap.Count > 1;
 
         #endregion
 
@@ -442,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             // If we only allow one handed manipulations, check there is no hand interacting yet. 
-            if (manipulationType != HandMovementType.OneHanded || pointerIdToPointerMap.Count == 0)
+            if (manipulationType != ManipulationHandFlags.OneHanded || pointerIdToPointerMap.Count == 0)
             {
                 uint id = eventData.Pointer.PointerId;
                 // Ignore poke pointer events
@@ -509,9 +506,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             // Call manipulation ended handlers
             var handsPressedCount = pointerIdToPointerMap.Count;
-            if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount == 1)
+            if (manipulationType.HasFlag(ManipulationHandFlags.TwoHanded) && handsPressedCount == 1)
             {
-                if (manipulationType.HasFlag(HandMovementType.OneHanded))
+                if (manipulationType.HasFlag(ManipulationHandFlags.OneHanded))
                 {
                     HandleOneHandMoveStarted();
                 }
@@ -560,18 +557,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
             {
                 targetTransform.Scale = scaleLogic.UpdateMap(handPositionArray);
-                constraints.ApplyScaleConstraints(ref targetTransform);
+                constraints.ApplyScaleConstraints(ref targetTransform, false, IsNearManipulation());
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
             {
                 targetTransform.Rotation = rotateLogic.Update(handPositionArray, targetTransform.Rotation);
-                constraints.ApplyRotationConstraints(ref targetTransform);
+                constraints.ApplyRotationConstraints(ref targetTransform, false, IsNearManipulation());
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
                 MixedRealityPose pose = GetPointersPose();
                 targetTransform.Position = moveLogic.Update(pose, targetTransform.Rotation, targetTransform.Scale, true);
-                constraints.ApplyTranslationConstraints(ref targetTransform);
+                constraints.ApplyTranslationConstraints(ref targetTransform, false, IsNearManipulation());
             }
 
             ApplyTargetTransform(targetTransform);
@@ -583,15 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
 
-            // cache objects rotation on start to have a reference for constraint calculations
-            // if we don't cache this on manipulation start the near rotation might drift off the hand
-            // over time
-            hostWorldRotationOnManipulationStart = HostTransform.rotation;
-
-            // Calculate relative transform from object to hand.
-            Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
-            objectToHandRotation = worldToPalmRotation * HostTransform.rotation;
-
             // Calculate relative transform from object to grip.
             Quaternion gripRotation;
             TryGetGripRotation(pointer, out gripRotation);
@@ -600,15 +588,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
-            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, HostTransform.localScale);
-
-            startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * HostTransform.rotation;
-            var cameraFlat = CameraCache.Main.transform.forward;
-            cameraFlat.y = 0;
-            var hostForwardFlat = HostTransform.forward;
-            hostForwardFlat.y = 0;
-            var hostRotFlat = Quaternion.LookRotation(hostForwardFlat, Vector3.up);
-            startObjectRotationFlatCameraSpace = Quaternion.Inverse(Quaternion.LookRotation(cameraFlat, Vector3.up)) * hostRotFlat;
+            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, HostTransform.localScale);            
         }
 
         private void HandleOneHandMoveUpdated()
@@ -619,49 +599,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-            constraints.ApplyScaleConstraints(ref targetTransform);
+            constraints.ApplyScaleConstraints(ref targetTransform, true, IsNearManipulation());
+
+            Quaternion gripRotation;
+            TryGetGripRotation(pointer, out gripRotation);
+            targetTransform.Rotation = gripRotation * objectToGripRotation;
+
+            constraints.ApplyRotationConstraints(ref targetTransform, true, IsNearManipulation());
 
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
-            switch (rotateInOneHandType)
-            {
-                case RotateInOneHandType.MaintainOriginalRotation:
-                    targetTransform.Rotation = HostTransform.rotation;
-                    break;
-                case RotateInOneHandType.MaintainRotationToUser:
-                    Vector3 euler = CameraCache.Main.transform.rotation.eulerAngles;
-                    // don't use roll (feels awkward) - just maintain yaw / pitch angle
-                    targetTransform.Rotation = Quaternion.Euler(euler.x, euler.y, 0) * startObjectRotationCameraSpace;
-                    break;
-                case RotateInOneHandType.GravityAlignedMaintainRotationToUser:
-                    var cameraForwardFlat = CameraCache.Main.transform.forward;
-                    cameraForwardFlat.y = 0;
-                    targetTransform.Rotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
-                    break;
-                case RotateInOneHandType.FaceUser:
-                {
-                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    // Vector3 directionToTarget = HostTransform.position - CameraCache.Main.transform.position;
-                    targetTransform.Rotation = Quaternion.LookRotation(-directionToTarget);
-                    break;
-                }
-                case RotateInOneHandType.FaceAwayFromUser:
-                {
-                    Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    targetTransform.Rotation = Quaternion.LookRotation(directionToTarget);
-                    break;
-                }
-                case RotateInOneHandType.RotateAboutObjectCenter:
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    Quaternion gripRotation;
-                    TryGetGripRotation(pointer, out gripRotation);
-                    targetTransform.Rotation = gripRotation * objectToGripRotation;
-                    break;
-            }
-            constraints.ApplyRotationConstraints(ref targetTransform);
-
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             targetTransform.Position = moveLogic.Update(pointerPose, targetTransform.Rotation, targetTransform.Scale, rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter);
-            constraints.ApplyTranslationConstraints(ref targetTransform);
+
+            constraints.ApplyTranslationConstraints(ref targetTransform, true, IsNearManipulation());
 
             ApplyTargetTransform(targetTransform);
         }
@@ -834,7 +784,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
         {
-
             for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
             {
                 if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)

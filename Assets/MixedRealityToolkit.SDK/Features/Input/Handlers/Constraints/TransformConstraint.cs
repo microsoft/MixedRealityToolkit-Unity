@@ -26,6 +26,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => targetTransform = value;
         }
 
+        [SerializeField]
+        [EnumFlags]
+        [Tooltip("What type of manipulation this constraint applies to. Defaults to One Handed and Two Handed.")]
+        private ManipulationHandFlags handType = ManipulationHandFlags.OneHanded | ManipulationHandFlags.TwoHanded;
+
+        /// <summary>
+        /// Whether this constraint applies to one hand manipulation, two hand manipulation or both
+        /// </summary>
+        public ManipulationHandFlags HandType
+        {
+            get => handType;
+            set => handType = value;
+        }
+
+        [SerializeField]
+        [EnumFlags]
+        [Tooltip("What type of manipulation this constraint applies to. Defaults to Near and Far.")]
+        private ManipulationProximityFlags proximityType = ManipulationProximityFlags.Near | ManipulationProximityFlags.Far;
+
+        /// <summary>
+        /// Whether this constraint applies to near manipulation, far manipulation or both
+        /// </summary>
+        public ManipulationProximityFlags ProximityType
+        {
+            get => proximityType;
+            set => proximityType = value;
+        }
+
         protected MixedRealityPose worldPoseOnManipulationStart;
 
         public abstract TransformFlags ConstraintType { get; }

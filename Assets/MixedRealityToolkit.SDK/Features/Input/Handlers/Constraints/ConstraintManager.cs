@@ -21,37 +21,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             constraints = gameObject.GetComponents<TransformConstraint>().ToList();
         }
 
-        public void ApplyScaleConstraints(ref MixedRealityTransform transform)
+        public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
-            foreach (var constraint in constraints)
-            {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Scale)
-                {
-                    constraint.ApplyConstraint(ref transform);
-                }
-            }
+            ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Scale);
         }
 
-        public void ApplyRotationConstraints(ref MixedRealityTransform transform)
+        public void ApplyRotationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
-            foreach (var constraint in constraints)
-            {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Rotate)
-                {
-                    constraint.ApplyConstraint(ref transform);
-                }
-            }
+            ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Rotate);
         }
 
-        public void ApplyTranslationConstraints(ref MixedRealityTransform transform)
+        public void ApplyTranslationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
-            foreach (var constraint in constraints)
-            {
-                if (constraint.ConstraintType == Utilities.TransformFlags.Move)
-                {
-                    constraint.ApplyConstraint(ref transform);
-                }
-            }
+            ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Move);
         }
 
         public void Initialize(MixedRealityPose worldPose)
@@ -59,6 +41,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             foreach (var constraint in constraints)
             {
                 constraint.Initialize(worldPose);
+            }
+        }
+
+        private void ApplyConstraintsForType(ref MixedRealityTransform transform, bool isOneHanded, bool isNear, TransformFlags transformType)
+        {
+            ManipulationHandFlags handMode = isOneHanded ? ManipulationHandFlags.OneHanded : ManipulationHandFlags.TwoHanded;
+            ManipulationProximityFlags proximityMode = isNear ? ManipulationProximityFlags.Near : ManipulationProximityFlags.Far;
+
+            foreach (var constraint in constraints)
+            {
+                if (constraint.ConstraintType == transformType &&
+                    constraint.HandType.HasFlag(handMode) &&
+                    constraint.ProximityType.HasFlag(proximityMode))
+                {
+                    constraint.ApplyConstraint(ref transform);
+                }
             }
         }
     }

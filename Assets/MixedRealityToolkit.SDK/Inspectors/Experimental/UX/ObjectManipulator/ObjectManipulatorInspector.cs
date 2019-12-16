@@ -4,8 +4,13 @@
 //
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
@@ -40,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
         bool oneHandedFoldout = true;
         bool twoHandedFoldout = true;
+        bool constraintsFoldout = true;
         bool physicsFoldout = true;
         bool smoothingFoldout = true;
         bool eventsFoldout = true;
@@ -80,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
 
-            var handedness = (ObjectManipulator.HandMovementType)manipulationType.intValue;
+            var handedness = (ManipulationHandFlags)manipulationType.intValue;
 
             EditorGUILayout.Space();
             GUIStyle style = EditorStyles.foldout;
@@ -90,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness.HasFlag(ObjectManipulator.HandMovementType.OneHanded))
+                if (handedness.HasFlag(ManipulationHandFlags.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -106,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness.HasFlag(ObjectManipulator.HandMovementType.TwoHanded))
+                if (handedness.HasFlag(ManipulationHandFlags.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }
@@ -118,6 +124,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             var mh = (ObjectManipulator)target;
             var rb = mh.HostTransform.GetComponent<Rigidbody>();
+
+            EditorGUILayout.Space();
+            constraintsFoldout = EditorGUILayout.Foldout(constraintsFoldout, "Constraints", true);
+
+            if (constraintsFoldout)
+            {
+                if (EditorGUILayout.DropdownButton(new GUIContent("Add Constraint"), FocusType.Keyboard))
+                {
+                    // create the menu and add items to it
+                    GenericMenu menu = new GenericMenu();
+
+                    var type = typeof(TransformConstraint);
+                    var types = AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany(s => s.GetLoadableTypes())
+                        .Where(p => type.IsAssignableFrom(p));
+
+                    foreach (var derivedType in types)
+                    {
+                        menu.AddItem(new GUIContent(derivedType.Name), false, t => mh.gameObject.AddComponent((Type)t), derivedType);
+                    }
+
+                    menu.ShowAsContext();
+                }
+
+                var constraints = mh.GetComponents<TransformConstraint>();
+
+                foreach (var constraint in constraints)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    string constraintName = constraint.GetType().Name;
+                    EditorGUILayout.LabelField(constraintName);
+                    if (GUILayout.Button("Go to component"))
+                    {
+                        Debug.Log($"Highlighting {ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);
