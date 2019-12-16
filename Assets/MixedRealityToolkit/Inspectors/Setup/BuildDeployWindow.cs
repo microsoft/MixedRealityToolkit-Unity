@@ -607,8 +607,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             bool newUseSSL = EditorGUILayout.ToggleLeft(UseSSLLabel, useSSL);
             if (newUseSSL != useSSL)
             {
-                UwpBuildDeployPreferences.UseSSL = useSSL;
-                Rest.UseSSL = useSSL;
+                UwpBuildDeployPreferences.UseSSL = newUseSSL;
+                Rest.UseSSL = newUseSSL;
             }
 
             RenderConnectionInfoView();
