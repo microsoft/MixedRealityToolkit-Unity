@@ -39,9 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         #region Constants and Readonly Values
 
+        private const string UseRemoteTargetSessionKey = "DeployWindow_UseRemoteTarget";
+
         private const string HOLOLENS_USB = "HoloLens over USB";
 
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
+
+        private const string WifiAdapterType = "IEEE 802";
 
         private static readonly string[] TAB_NAMES = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
@@ -184,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static DeviceInfo CurrentConnection
         {
-            get => useRemoteTarget ? CurrentRemoteConnection : LocalConnection;
+            get => UseRemoteTarget ? CurrentRemoteConnection : localConnection;
         }
 
         private static DeviceInfo CurrentRemoteConnection
@@ -214,9 +218,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static DeviceInfo LocalConnection
+        private static bool UseRemoteTarget
         {
-            get => localConnection ?? (localConnection = new DeviceInfo(DeviceInfo.LocalIPAddress, string.Empty, string.Empty));
+            get => SessionState.GetBool(UseRemoteTargetSessionKey, false);
+            set => SessionState.SetBool(UseRemoteTargetSessionKey, value);
         }
 
         #endregion Properties
@@ -236,13 +241,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static bool isBuilding;
         private static bool isAppRunning;
 
-        [SerializeField]
-        private int lastSessionConnectionInfoIndex;
         private static int currentConnectionInfoIndex = 0;
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
         private static DeviceInfo localConnection;
-        private static bool useRemoteTarget = true;
 
         #endregion Fields
 
@@ -271,14 +273,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             LoadWindowsSdkPaths();
             UpdateBuilds();
 
-            CurrentRemoteConnectionIndex = lastSessionConnectionInfoIndex;
-            portalConnections = JsonUtility.FromJson<DevicePortalConnections>(UwpBuildDeployPreferences.DevicePortalConnections);
-            UpdatePortalConnections();
-        }
+            localConnection = JsonUtility.FromJson<DeviceInfo>(UwpBuildDeployPreferences.LocalConnectionInfo);
 
-        private void OnDestroy()
-        {
-            lastSessionConnectionInfoIndex = CurrentRemoteConnectionIndex;
+            portalConnections = JsonUtility.FromJson<DevicePortalConnections>(UwpBuildDeployPreferences.DevicePortalConnections);
+
+            SaveRemotePortalConnections();
         }
 
         private void OnGUI()
@@ -618,13 +617,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(TargetTypeLabel, GUILayout.Width(75));
-                useRemoteTarget = EditorGUILayout.Popup(useRemoteTarget ? 1 : 0, LocalRemoteOptions, GUILayout.Width(100)) != 0;
+                UseRemoteTarget = EditorGUILayout.Popup(UseRemoteTarget ? 1 : 0, LocalRemoteOptions, GUILayout.Width(100)) != 0;
                 GUILayout.FlexibleSpace();
             }
 
             using (new GUILayout.VerticalScope("box"))
             {
-                if (useRemoteTarget)
+                if (UseRemoteTarget)
                 {
                     RenderRemoteConnections();
 
@@ -639,6 +638,20 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 else
                 {
                     RenderLocalConnection();
+
+                    if (IsHoloLensConnectedUsb)
+                    {
+                        using (new EditorGUI.DisabledGroupScope(!AreCredentialsValid(localConnection)))
+                        {
+                            if (GUILayout.Button("Discover Hololens Wifi IP", GUILayout.Width(HALF_WIDTH)))
+                            {
+                                EditorApplication.delayCall += () =>
+                                {
+                                    DiscoverLocalHololensIP();
+                                };
+                            }
+                        }
+                    }
                 }
 
                 RenderConnectionButtons();
@@ -655,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 DeviceInfo currentConnection = CurrentConnection;
 
-                bool canTestConnection = (!useRemoteTarget || IsValidIpAddress(currentConnection.IP)) && AreCredentialsValid(currentConnection);
+                bool canTestConnection = (!UseRemoteTarget || IsValidIpAddress(currentConnection.IP)) && AreCredentialsValid(currentConnection);
                 using (new EditorGUI.DisabledGroupScope(!canTestConnection))
                 {
                     if (GUILayout.Button("Test Connection"))
@@ -681,14 +694,22 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderLocalConnection()
         {
-            string target = IsHoloLensConnectedUsb ? HOLOLENS_USB : DeviceInfo.LocalMachine;
-            EditorGUILayout.LabelField(target, GUILayout.Width(HALF_WIDTH));
+            using (var c = new EditorGUI.ChangeCheckScope())
+            {
+                string target = IsHoloLensConnectedUsb ? HOLOLENS_USB : DeviceInfo.LocalMachine;
+                EditorGUILayout.LabelField(target, GUILayout.Width(HALF_WIDTH));
 
-            EditorGUILayout.LabelField(IPAddressLabel, new GUIContent(LocalConnection.IP), GUILayout.Width(HALF_WIDTH));
+                EditorGUILayout.LabelField(IPAddressLabel, new GUIContent(localConnection.IP), GUILayout.Width(HALF_WIDTH));
 
-            LocalConnection.User = EditorGUILayout.TextField(UsernameLabel, LocalConnection.User, GUILayout.Width(HALF_WIDTH));
+                localConnection.User = EditorGUILayout.TextField(UsernameLabel, localConnection.User, GUILayout.Width(HALF_WIDTH));
 
-            LocalConnection.Password = EditorGUILayout.PasswordField(PasswordLabel, LocalConnection.Password, GUILayout.Width(HALF_WIDTH));
+                localConnection.Password = EditorGUILayout.PasswordField(PasswordLabel, localConnection.Password, GUILayout.Width(HALF_WIDTH));
+
+                if (c.changed)
+                {
+                    SaveLocalConnection();
+                }
+            }
         }
 
         private void RenderRemoteConnections()
@@ -735,7 +756,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 if (c.changed)
                 {
-                    UpdatePortalConnections();
+                    SaveRemotePortalConnections();
                 }
             }
         }
@@ -974,7 +995,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 portalConnections.Connections.RemoveAt(CurrentRemoteConnectionIndex);
                 CurrentRemoteConnectionIndex--;
-                UpdatePortalConnections();
+                SaveRemotePortalConnections();
             }
         }
 
@@ -983,7 +1004,40 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             DeviceInfo currentConnection = CurrentRemoteConnection;
             portalConnections.Connections.Add(new DeviceInfo(EMPTY_IP_ADDRESS, currentConnection.User, currentConnection.Password));
             CurrentRemoteConnectionIndex = portalConnections.Connections.Count - 1;
-            UpdatePortalConnections();
+            SaveRemotePortalConnections();
+        }
+
+        private async void DiscoverLocalHololensIP()
+        {
+            var machineName = await DevicePortal.GetMachineNameAsync(localConnection);
+            var networkInfo = await DevicePortal.GetIpConfigInfoAsync(localConnection);
+            if (machineName != null && networkInfo != null)
+            {
+                foreach (var adapter in networkInfo.Adapters)
+                {
+                    if (adapter.Type.Contains(WifiAdapterType))
+                    {
+                        foreach (var address in adapter.IpAddresses)
+                        {
+                            string ipAddress = address.IpAddress;
+                            if (IsValidIpAddress(ipAddress) 
+                                && !portalConnections.Connections.Any(connection => connection.IP == ipAddress))
+                            {
+                                Debug.Log($"Adding new IP {ipAddress} for local hololens {machineName.ComputerName} to remote connection list");
+
+                                portalConnections.Connections.Add(new DeviceInfo(ipAddress,
+                                    localConnection.User,
+                                    localConnection.Password,
+                                    machineName.ComputerName));
+
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                Debug.Log($"No new or valid Wifi IP Addresses found for local hololens {machineName.ComputerName}");
+            }
         }
 
         private async void ConnectToDevice()
@@ -993,7 +1047,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (machineName != null)
             {
                 currentConnection.MachineName = machineName?.ComputerName;
-                UpdatePortalConnections();
+                SaveRemotePortalConnections();
                 Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
             }
         }
@@ -1135,7 +1189,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return mostRecentBuild;
         }
 
-        private void UpdatePortalConnections()
+        private void SaveLocalConnection()
+        {
+            UwpBuildDeployPreferences.LocalConnectionInfo = JsonUtility.ToJson(localConnection);
+        }
+
+        private void SaveRemotePortalConnections()
         {
             targetIps = new string[portalConnections.Connections.Count];
 
@@ -1154,7 +1213,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UwpBuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
-            lastSessionConnectionInfoIndex = CurrentRemoteConnectionIndex;
             Repaint();
         }
 
