@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
                     var type = typeof(TransformConstraint);
                     var types = AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(s => s.GetTypes())
+                        .SelectMany(s => s.GetLoadableTypes())
                         .Where(p => type.IsAssignableFrom(p));
 
                     foreach (var derivedType in types)
