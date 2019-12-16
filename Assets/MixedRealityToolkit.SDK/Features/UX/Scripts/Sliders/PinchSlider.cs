@@ -31,6 +31,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 thumbRoot = value;
                 InitializeSliderThumb();
             }
+        } 
+
+        [Range(0, 1)]
+        [SerializeField]
+        private float sliderValue = 0.5f;
+        public float SliderValue
+        {
+            get { return sliderValue; }
+            set
+            {
+                var oldSliderValue = sliderValue;
+                sliderValue = value;
+                UpdateUI();
+                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
+            }
+        }
+
+        [Header("Slider Axis Visuals")]
+
+        [Tooltip("The gameObject that contains the thumb visual.")]
+        [SerializeField]
+        private GameObject thumbVisual = null;
+        public GameObject ThumbVisual
+        {
+            get
+            {
+                return thumbVisual;
+            }
+            set
+            {
+                thumbVisual = value;
+                UpdateThumbVisuals();
+            }
         }
 
         [Tooltip("The gameObject that contains the trackVisuals.")]
@@ -65,20 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Range(0, 1)]
-        [SerializeField]
-        private float sliderValue = 0.5f;
-        public float SliderValue
-        {
-            get { return sliderValue; }
-            set
-            {
-                var oldSliderValue = sliderValue;
-                sliderValue = value;
-                UpdateUI();
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value, activePointer, this));
-            }
-        }
 
         [Header("Slider Track")]
 
@@ -221,12 +240,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Update orientation of thumb visuals based on slider axis orientation
+        /// </summary>
+        private void UpdateThumbVisuals()
+        {
+            if (ThumbVisual)
+            {
+                ThumbVisual.transform.localPosition = Vector3.zero;
+
+                switch (sliderAxis)
+                {
+                    case SliderAxis.XAxis:
+                        ThumbVisual.transform.rotation = Quaternion.identity;
+                        break;
+                    case SliderAxis.YAxis:
+                        ThumbVisual.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+                        break;
+                    case SliderAxis.ZAxis:
+                        ThumbVisual.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Update orientation of track visuals based on slider axis orientation
         /// </summary>
         private void UpdateTrackVisuals()
         {
             if (TrackVisuals)
             {
+                TrackVisuals.transform.localPosition = Vector3.zero;
+
                 switch (sliderAxis)
                 {
                     case SliderAxis.XAxis:
@@ -249,11 +294,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (TickMarks)
             {
+                TickMarks.transform.localPosition = Vector3.zero;
                 TickMarks.transform.localRotation = Quaternion.identity;
 
                 var grid = TickMarks.GetComponent<Utilities.GridObjectCollection>();
                 if (grid)
                 {
+                    // Update cellwidth or cellheight depending on what was the previous axis set to
+                    var previousAxis = grid.Layout;
+                    if (previousAxis == Utilities.LayoutOrder.Vertical)
+                    {
+                        grid.CellWidth = grid.CellHeight;
+                    }
+                    else
+                    {
+                        grid.CellHeight = grid.CellWidth;
+                    }
+
                     grid.Layout = (sliderAxis == SliderAxis.YAxis) ? Utilities.LayoutOrder.Vertical : Utilities.LayoutOrder.Horizontal;
                     grid.UpdateCollection();
                 }
@@ -274,6 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 UpdateTrackVisuals();
                 UpdateTickMarks();
+                UpdateThumbVisuals();
                 PreviousSliderAxis = sliderAxis;
             }
         }
