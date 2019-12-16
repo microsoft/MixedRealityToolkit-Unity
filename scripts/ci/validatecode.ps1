@@ -17,12 +17,22 @@
     Returns 0 if there are no issues, non-zero if there are.
 .PARAMETER Directory
     The directory containing the code to validate. 
+.PARAMETER ChangesFile
+    The filename containing the list of files to scope the code validation
+    to. This is useful in pull request validation when there isn't a need
+    to check every single file in the repo for changes (i.e. only the list
+    of changed files)
+
+    If ChangesFile doesn't exist (i.e. not specified, null, is specified but
+    the actual file doesn't exist), then this defaults to checking for everything
+    in the repo.
 .EXAMPLE
     .\validatecode.ps1 -Directory c:\path\to\MRTK\Assets
 #>
 param(
     [Parameter(Mandatory=$true)]
-    [string]$Directory
+    [string]$Directory,
+    [string]$ChangesFile
 )
 
 function CheckBooLang(
