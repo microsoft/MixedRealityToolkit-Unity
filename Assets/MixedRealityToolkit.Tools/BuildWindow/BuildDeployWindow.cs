@@ -125,6 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UninstallAppXLabel = new GUIContent("Uninstall AppX", "Uninstall listed AppX item to either currently selected device or all devices.");
 
+        private readonly GUIContent KillAppLabel = new GUIContent("Kill App", "Kill listed app on either currently selected device or all devices.");
+
         private readonly GUIContent LaunchAppLabel = new GUIContent("Launch App", "Launch listed app on either currently selected device or all devices.");
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
@@ -826,7 +828,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
-                                            InstallApp(fullBuildLocation);
+                                            ExecuteAction((DeviceInfo connection) 
+                                                => InstallAppOnDeviceAsync(fullBuildLocation, connection));
                                         };
                                     }
 
@@ -834,7 +837,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
-                                            UninstallApp();
+                                            ExecuteAction((DeviceInfo connection) 
+                                                => UninstallAppOnDeviceAsync(connection));
                                         };
                                     }
                                 }
@@ -846,35 +850,25 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                 bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
                                 using (new EditorGUI.DisabledGroupScope(!launchAppEnabled))
                                 {
-                                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
+                                    if (isAppRunning)
                                     {
-                                        EditorApplication.delayCall += () =>
+                                        if (GUILayout.Button(KillAppLabel, GUILayout.Width(96)))
                                         {
-                                            if (isAppRunning)
-                                            {
-                                                if (processAll)
-                                                {
-                                                    KillAppOnDeviceList(portalConnections);
-                                                    isAppRunning = false;
-                                                }
-                                                else
-                                                {
-                                                    KillAppOnTargetDevice(currentConnection);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (processAll)
-                                                {
-                                                    LaunchAppOnDeviceList(portalConnections);
-                                                    isAppRunning = true;
-                                                }
-                                                else
-                                                {
-                                                    LaunchAppOnTargetDevice(currentConnection);
-                                                }
-                                            }
-                                        };
+                                            ExecuteAction((DeviceInfo connection)
+                                                => KillAppOnDeviceAsync(connection));
+
+                                            isAppRunning = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (GUILayout.Button(LaunchAppLabel, GUILayout.Width(96)))
+                                        {
+                                            ExecuteAction((DeviceInfo connection)
+                                                => LaunchAppOnDeviceAsync(connection));
+
+                                            isAppRunning = true;
+                                        }
                                     }
                                 }
 
@@ -889,14 +883,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
-                                            if (processAll)
-                                            {
-                                                OpenLogFilesOnDeviceList(portalConnections, localLogPath);
-                                            }
-                                            else
-                                            {
-                                                OpenLogFileForTargetDevice(currentConnection, localLogPath);
-                                            }
+                                            ExecuteAction((DeviceInfo connection)
+                                                => OpenLogFileForDeviceAsync(connection, localLogPath));
                                         };
                                     }
                                 }
@@ -1128,14 +1116,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     string fullBuildLocation = CalcMostRecentBuild();
 
-                    if (UwpBuildDeployPreferences.TargetAllConnections)
-                    {
-                        await InstallAppOnDeviceListAsync(fullBuildLocation, portalConnections.Connections);
-                    }
-                    else
-                    {
-                        await InstallAppOnDeviceAsync(fullBuildLocation, CurrentConnection);
-                    }
+                    await ExecuteActionAsync((DeviceInfo connection) 
+                        => InstallAppOnDeviceAsync(fullBuildLocation, connection));
                 }
             }
 
@@ -1334,21 +1316,37 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             DevicePortal.OpenWebPortal(CurrentConnection);
         }
 
-        private static void InstallApp(string buildPath)
+        private static async void ExecuteAction(Func<DeviceInfo, Task> exec)
         {
+            await ExecuteActionAsync(exec);
+        }
+
+        private static async Task ExecuteActionAsync(Func<DeviceInfo, Task> exec)
+        {
+            List<DeviceInfo> targetDevices;
+
             if (UwpBuildDeployPreferences.TargetAllConnections)
             {
-                InstallAppOnDeviceList(buildPath, portalConnections.Connections);
+                targetDevices = new List<DeviceInfo>() { localConnection };
+                targetDevices.AddRange(portalConnections.Connections);
             }
             else
             {
-                InstallAppOnDevice(buildPath, CurrentConnection);
+                targetDevices = new List<DeviceInfo>() { CurrentConnection };
             }
+
+            await ExecuteActionOnDevicesAsync(exec, targetDevices);
         }
 
-        private static async void InstallAppOnDevice(string buildPath, DeviceInfo targetDevice)
+        private static async Task ExecuteActionOnDevicesAsync(Func<DeviceInfo, Task> exec, List<DeviceInfo> devices)
         {
-            await InstallAppOnDeviceAsync(buildPath, targetDevice);
+            var installTasks = new List<Task>();
+            for (int i = 0; i < devices.Count; i++)
+            {
+                installTasks.Add(exec(devices[i]));
+            }
+
+            await Task.WhenAll(installTasks);
         }
 
         private static async Task InstallAppOnDeviceAsync(string buildPath, DeviceInfo targetDevice)
@@ -1406,48 +1404,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             await DevicePortal.InstallAppAsync(files[0].FullName, targetDevice);
         }
 
-        private static async void InstallAppOnDeviceList(string buildPath, List<DeviceInfo> devices)
+        private static async Task UninstallAppOnDeviceAsync(DeviceInfo currentConnection)
         {
-            await InstallAppOnDeviceListAsync(buildPath, devices);
-        }
+            isAppRunning = false;
 
-        private static async Task InstallAppOnDeviceListAsync(string buildPath, List<DeviceInfo> devices)
-        {
             if (string.IsNullOrEmpty(PackageName))
             {
                 Debug.LogWarning("No Package Name Found");
                 return;
             }
 
-            var installTasks = new List<Task>();
-            for (int i = 0; i < devices.Count; i++)
-            {
-                installTasks.Add(InstallAppOnDeviceAsync(buildPath, devices[i]));
-            }
-
-            await Task.WhenAll(installTasks);
-        }
-
-        private static void UninstallApp()
-        {
-            if (UwpBuildDeployPreferences.TargetAllConnections)
-            {
-                UninstallAppOnDevicesList(portalConnections.Connections);
-            }
-            else
-            {
-                UninstallAppOnDevice(CurrentConnection);
-            }
-        }
-
-        private static async void UninstallAppOnDevice(DeviceInfo currentConnection)
-        {
-            isAppRunning = false;
-            await UninstallAppOnDeviceAsync(currentConnection);
-        }
-
-        private static async Task UninstallAppOnDeviceAsync(DeviceInfo currentConnection)
-        {
             if (IsLocalConnection(currentConnection) && !IsHoloLensConnectedUsb)
             {
                 var pInfo = new ProcessStartInfo
@@ -1469,23 +1435,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static async void UninstallAppOnDevicesList(List<DeviceInfo> devices)
-        {
-            if (string.IsNullOrEmpty(PackageName))
-            {
-                return;
-            }
-
-            var uninstallTasks = new List<Task>();
-            for (int i = 0; i < devices.Count; i++)
-            {
-                uninstallTasks.Add(UninstallAppOnDeviceAsync(devices[i]));
-            }
-
-            await Task.WhenAll(uninstallTasks);
-        }
-
-        private static async void LaunchAppOnTargetDevice(DeviceInfo targetDevice)
+        private static async Task LaunchAppOnDeviceAsync(DeviceInfo targetDevice)
         {
             if (string.IsNullOrEmpty(PackageName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
@@ -1499,15 +1449,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void LaunchAppOnDeviceList(DevicePortalConnections targetDevices)
-        {
-            for (int i = 0; i < targetDevices.Connections.Count; i++)
-            {
-                LaunchAppOnTargetDevice(targetDevices.Connections[i]);
-            }
-        }
-
-        private static async void KillAppOnTargetDevice(DeviceInfo targetDevice)
+        private static async Task KillAppOnDeviceAsync(DeviceInfo targetDevice)
         {
             if (string.IsNullOrEmpty(PackageName) ||
                 IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb)
@@ -1521,15 +1463,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void KillAppOnDeviceList(DevicePortalConnections targetDevices)
-        {
-            for (int i = 0; i < targetDevices.Connections.Count; i++)
-            {
-                KillAppOnTargetDevice(targetDevices.Connections[i]);
-            }
-        }
-
-        private static async void OpenLogFileForTargetDevice(DeviceInfo targetDevice, string localLogPath)
+        private static async Task OpenLogFileForDeviceAsync(DeviceInfo targetDevice, string localLogPath)
         {
             if (string.IsNullOrEmpty(PackageName))
             {
@@ -1562,14 +1496,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             Debug.Log("No Log Found");
-        }
-
-        private static void OpenLogFilesOnDeviceList(DevicePortalConnections targetDevices, string localLogPath)
-        {
-            for (int i = 0; i < targetDevices.Connections.Count; i++)
-            {
-                OpenLogFileForTargetDevice(targetDevices.Connections[i], localLogPath);
-            }
         }
 
         #endregion Device Portal Commands
