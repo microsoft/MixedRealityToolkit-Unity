@@ -681,6 +681,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderLocalConnection()
         {
+            string target = IsHoloLensConnectedUsb ? HOLOLENS_USB : DeviceInfo.LocalMachine;
+            EditorGUILayout.LabelField(target, GUILayout.Width(HALF_WIDTH));
+
             EditorGUILayout.LabelField(IPAddressLabel, new GUIContent(LocalConnection.IP), GUILayout.Width(HALF_WIDTH));
 
             LocalConnection.User = EditorGUILayout.TextField(UsernameLabel, LocalConnection.User, GUILayout.Width(HALF_WIDTH));
@@ -1139,13 +1142,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             for (int i = 0; i < targetIps.Length; i++)
             {
                 var connection = portalConnections.Connections[i];
-                string machineName = connection.MachineName;
-                if (string.IsNullOrEmpty(machineName) && IsLocalConnection(connection))
-                {
-                    connection.MachineName = IsHoloLensConnectedUsb ? HOLOLENS_USB : DeviceInfo.LocalMachine;
-                }
 
-                targetIps[i] = machineName + " - " + connection.IP;
+                if (string.IsNullOrEmpty(connection.MachineName))
+                {
+                    targetIps[i] = connection.IP;
+                }
+                else
+                {
+                    targetIps[i] = $"{connection.MachineName} - {connection.IP}";
+                }
             }
 
             UwpBuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
