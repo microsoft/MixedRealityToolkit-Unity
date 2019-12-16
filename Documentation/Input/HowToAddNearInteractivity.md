@@ -88,7 +88,7 @@ The default MRTK profile and the default HoloLens 2 profile already contain a *P
 
 #### Touch code example
 
-The code below demonstrates a MonoBehavior that can be attached to a GameObject with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) variant component and respond to touch input events.
+The code below demonstrates a MonoBehaviour that can be attached to a GameObject with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) variant component and respond to touch input events.
 
 ```c#
 public class TouchEventsExample : MonoBehaviour, IMixedRealityTouchHandler

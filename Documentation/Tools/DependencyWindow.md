@@ -1,12 +1,11 @@
 
-# Dependency Window
+# Dependency window
 
 Often in Unity it is difficult to gleam which assets are being used, and what is referencing them. The "Find References in Scene" option works great when you are only concerned with the current scene, but what about your entire Unity project? This is where the [Dependency Window](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Tools/DependencyWindow) can be useful.
 
 The Dependency Window displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files (note, script to script dependencies are not considered).
 
-
-### Usage
+## Usage
 
 To open the window select *Mixed Reality Toolkit->Utilities->Dependency Window* this will open the window and automatically begin building your project's dependency graph. Once the dependency graph is built you can select assets in the project tab to inspect their dependencies.
 

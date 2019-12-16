@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
         private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
+        private const string PressableHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
         private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
         private static string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
 
@@ -65,9 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out translateTargetObject);
 
@@ -142,9 +145,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Transform translateTargetObject;
 
             // Place out of the way of any pointers
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(10f, 0.0f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out translateTargetObject);
 
@@ -323,9 +328,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out translateTargetObject);
 
@@ -382,9 +389,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out translateTargetObject);
 
@@ -503,9 +512,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform innerCylinderTransform;
 
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out innerCylinderTransform);
 
@@ -588,9 +599,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform innerCylinderTransform;
 
-            InstantiatePressButtonPrefab(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 DefaultRotation,
+                DefaultInteractablePrefabAssetPath,
+                "Cylinder",
                 out interactable,
                 out innerCylinderTransform);
 
@@ -681,9 +694,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Interactable interactable;
             Transform frontPlateTransform;
 
-            InstantiatePressableButtonHoloLens2Toggle(
+            InstantiatePressableButtonPrefab(
                 new Vector3(0.0f, 0.1f, 0.4f),
                 DefaultRotationToggle,
+                PressableHoloLens2TogglePrefabPath,
+                "CompressableButtonVisuals/FrontPlate",
                 out interactable,
                 out frontPlateTransform);
 
@@ -760,6 +775,87 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             //Cleanup
             GameObject.Destroy(interactableToggleCollection.gameObject);
+        }
+
+        /// <summary>
+        /// Test if Button state is reset when it goes out of focus from a pressed state
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestButtonStateResetWhenFocusLostAfterPinch()
+        {
+            Interactable interactable;
+            Transform interactableTransform;
+
+            InstantiatePressableButtonPrefab(
+                new Vector3(0.0f, 0.1f, 0.4f),
+                DefaultRotationToggle,
+                PressableHoloLens2PrefabPath,
+                "CompressableButtonVisuals/FrontPlate",
+                out interactable,
+                out interactableTransform);
+
+            Assert.True(interactable.IsEnabled);
+
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 focusPosition = new Vector3(0.015f, 0.015f, 0.3f);
+            Vector3 releaseDelta = new Vector3(0.05f, 0, 0);
+
+            // Focus the hand on the Button using the far ray pointer
+            yield return rightHand.Show(focusPosition);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.True(interactable.HasFocus);
+            Assert.False(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Focus, "Interactable State is not Focus");
+
+            // While keeping focus on the Button, engage the pinch gesture
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.True(interactable.HasFocus);
+            Assert.True(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Pressed, "Interactable State is not Pressed");
+
+            // Move Hand to remove focus. Button should go to Default State
+            yield return rightHand.Move(releaseDelta);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.False(interactable.HasFocus);
+            Assert.False(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Default, "Interactable State is not Default");
+
+            // Open hand. Button should stay on Default State
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.False(interactable.HasFocus);
+            Assert.False(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Default, "Interactable State is not Default");
+
+            // Move Hand back to Initial position and Pinch. Button should go to Pressed State
+            yield return rightHand.Move(-releaseDelta);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.True(interactable.HasFocus);
+            Assert.True(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Pressed, "Interactable State is not Pressed");
+
+            // Open Hand. Button should go to Focus State
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            Assert.True(interactable.HasFocus);
+            Assert.False(interactable.HasPress);
+            Assert.False(interactable.HasGesture);
+            Assert.True(interactable.StateManager.CurrentState().Index == (int)InteractableStates.InteractableStateEnum.Focus, "Interactable State is not Focus");
+
+            GameObject.Destroy(interactable.gameObject);
         }
 
         #region Test Helpers
@@ -867,34 +963,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates HoloLens2PressableToggle
+        /// Instantiates Hololens Pressable Button from different Prefabs
         /// </summary>
-        private void InstantiatePressableButtonHoloLens2Toggle(Vector3 position, Quaternion rotation, out Interactable interactable, out Transform frontPlateTransform)
+        private void InstantiatePressableButtonPrefab(Vector3 position, Quaternion rotation, string prefabPath, string translateTargetPath, out Interactable interactable, out Transform translateTargetTransform)
         {
             // Load interactable prefab
-            var interactableObject = InstantiateInteractableFromPath(position, rotation, PressableHoloLens2TogglePrefabPath);
+            var interactableObject = InstantiateInteractableFromPath(position, rotation, prefabPath);
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
 
             // Find the target object for the interactable transformation
-            frontPlateTransform = interactableObject.transform.Find("CompressableButtonVisuals/FrontPlate");
+            translateTargetTransform = interactableObject.transform.Find(translateTargetPath);
 
-            Assert.IsNotNull(frontPlateTransform, "Object 'FrontPlate' could not be found under PressableButtonHoloLens2Toggle.");
-        }
-
-        /// <summary>
-        /// Instantiates the default interactable button.
-        /// </summary>
-        private void InstantiatePressButtonPrefab(Vector3 position, Quaternion rotation, out Interactable interactable, out Transform pressButtonCylinder)
-        {
-            // Load interactable prefab
-            var interactableObject = InstantiateInteractableFromPath(position, rotation, DefaultInteractablePrefabAssetPath);
-            interactable = interactableObject.GetComponent<Interactable>();
-            Assert.IsNotNull(interactable);
-
-            // Find the target object for the interactable transformation
-            pressButtonCylinder = interactableObject.transform.Find("Cylinder");
-            Assert.IsNotNull(pressButtonCylinder, "Object 'Cylinder' could not be found under example object Model_PushButton.");
+            Assert.IsNotNull(translateTargetTransform, $"Object {translateTargetPath} could not be found under Button instantiated from {prefabPath}.");
         }
 
         private IEnumerator CheckButtonTranslation(Vector3 targetStartPosition, Transform translateTarget, bool shouldTranslate = true)

@@ -1,4 +1,4 @@
-# Material Instance
+# Material instance
 
 The [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. This utility component can be used as a replacement to [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") or 
 [Renderer.materials]("https://docs.unity3d.com/ScriptReference/Renderer-materials.html").
@@ -50,7 +50,7 @@ When a [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/Material
 ```c#
 public class MyBehaviour : MonoBehaviour
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()
@@ -61,12 +61,13 @@ public class MyBehaviour : MonoBehaviour
     }
 }
 ```
+
 If multiple objects need ownership of the material instance it's best to take explicit ownership for reference tracking. (An optional interface called [`IMaterialInstanceOwner`](xref:Microsoft.MixedReality.Toolkit.Rendering.IMaterialInstanceOwner) exists to aide with ownership.) Below is example usage:
 
 ```c#
 public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()
@@ -91,6 +92,6 @@ public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 
 For more information please see the example usage demonstrated within the [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) behavior.
 
-## See Also
+## See also
 
 * [MRTK Standard Shader](../README_MRTKStandardShader.md)

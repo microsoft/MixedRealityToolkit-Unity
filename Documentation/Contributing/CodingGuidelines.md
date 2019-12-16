@@ -26,7 +26,7 @@ MRTK supports a diverse set of users – people who prefer to configure componen
 
 All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.
 
-### Play-In-Editor is your first and primary target platform
+### Play-in-editor is your first and primary target platform
 
 Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.
 
@@ -44,7 +44,7 @@ MRTK is a community project, modified by a diverse range of contributors. These 
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
-## Coding Conventions
+## Coding conventions
 
 ### Script license information headers
 
@@ -55,9 +55,9 @@ All Microsoft employees contributing new files should add the following standard
 // Licensed under the MIT License.
 ```
 
-### Function / Method summary headers
+### Function / method summary headers
 
-All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to its purpose and use, exactly as shown below:
 
 ```c#
 /// <summary>
@@ -106,7 +106,7 @@ In the example below, the *Package here* should be filled with the package locat
 public class MyNewComponent : MonoBehaviour
 ```
 
-### Spaces vs Tabs
+### Spaces vs tabs
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
@@ -135,7 +135,7 @@ private Foo()
 }
 ```
 
-### Naming Conventions
+### Naming conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
@@ -154,7 +154,7 @@ protected string MyProperty;
 private string myProperty;
 ```
 
-### Access Modifiers
+### Access modifiers
 
 Always declare an access modifier for all fields, properties and methods.
 
@@ -171,7 +171,7 @@ Always declare an access modifier for all fields, properties and methods.
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get { return myVariable; } }
+public int MyVariable => myVariable;
 
 // No public / private access modifiers
 void Foo() { }
@@ -188,7 +188,7 @@ public void Bar() { }
 protected virtual void FooBar() { }
 ```
 
-### Use Braces
+### Use braces
 
 Always use braces after each statement block, and place them on the next line.
 
@@ -289,7 +289,7 @@ public class MyClass
 }
 ```
 
-### Initialize Enums
+### Initialize enums
 
 To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
@@ -315,7 +315,7 @@ public enum ValueType
 }
 ```
 
-### Order Enums for appropriate extension
+### Order enums for appropriate extension
 
 It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.
 
@@ -364,7 +364,7 @@ public enum SDKType
 }
 ```
 
-### Review Enum use for Bitfields
+### Review enum use for bitfields
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
 
@@ -394,7 +394,7 @@ public enum Handedness
 }
 ```
 
-## Best Practices, including Unity recommendations
+## Best practices, including Unity recommendations
 
 Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.
 
@@ -437,8 +437,24 @@ private float myValue; // <- Notice we co-located the backing field above our co
 /// </summary>
 public float MyValue
 {
-    get{ return myValue; }
-    set{ myValue = value }
+    get => myValue;
+    set => myValue = value;
+}
+
+/// <summary>
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// </summary>
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue < 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
 }
 ```
 
@@ -523,9 +539,8 @@ public class MyClass
 
 ### Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
 
-* Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
-
-* Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
+- Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+- Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
 
 This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
 
