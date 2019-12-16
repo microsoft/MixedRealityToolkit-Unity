@@ -28,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Align parallel to the direction the camera is facing 
         /// </summary>
-        CameraAligned
+        CameraAligned,
+        /// <summary>
+        /// Leave the current goal rotation  
+        /// </summary>
+        MaintainGoal
     }
 }
