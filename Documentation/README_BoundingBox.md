@@ -69,18 +69,18 @@ bbox.RotationHandleSize = 0.016f;
 bbox.RotateHandleColliderPadding = 0.016f;
 ```
 
-### Example: Set minimum, maximum bounding box scale using TransformScaleHandler
+### Example: Set minimum, maximum bounding box scale using MinMaxScaleConstraint
 
-To set the minimum and maximum scale, use the [`TransformScaleHandler`](xref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler). You can also use TransformScaleHandler to set minimum and maximum scale for [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
+To set the minimum and maximum scale, use the [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint). You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
 ```c#
 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 bbox = cube.AddComponent<BoundingBox>();
 // Important: BoundingBox creates a scale handler on start if one does not exist
 // do not use AddComponent, as that will create a  duplicate handler that will not be used
-TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent<TransformScaleHandler>();
-scaleHandler.ScaleMinimum = 1f;
-scaleHandler.ScaleMaximum = 2f;
+MinMaxScaleConstraint scaleConstraint = bbox.gameObject.GetComponent<MinMaxScaleConstraint>();
+scaleConstraint.ScaleMinimum = 1f;
+scaleConstraint.ScaleMaximum = 2f;
 ```
 
 ## Example: Add bounding box around a game object
@@ -115,11 +115,11 @@ There are several options to activate the bounding box interface.
 
 ### Scale minimum
 
-The minimum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.
+The minimum allowed scale. This property is deprecated and it is preferable to add a [`MinMaxScaleConstraint`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs) script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.
 
 ### Scale maximum
 
-The maximum allowed scale. This property is deprecated and it is preferable to add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.
+The maximum allowed scale. This property is deprecated and it is preferable to add a [`MinMaxScaleConstraint`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs) script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.
 
 ### Box display
 
