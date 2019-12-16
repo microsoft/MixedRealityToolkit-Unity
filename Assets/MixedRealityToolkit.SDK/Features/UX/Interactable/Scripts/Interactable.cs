@@ -479,7 +479,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// State that corresponds to Gesture reaching max threshold or limits
-        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasGestureMax
         {
@@ -489,7 +488,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// State that corresponds to Interactable is touching another object 
-        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasCollision
         {
@@ -654,6 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (rollOffTimer >= rollOffTime)
                 {
                     HasPress = false;
+                    HasGesture = false;
                 }
             }
 

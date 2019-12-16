@@ -1,8 +1,8 @@
-# Configuring Mesh Observers for Device
+# Configuring mesh observers for device
 
 This guide will walk through configuring the out-of-box Spatial Mesh Observer in MRTK which supports the Windows Mixed Reality platform (i.e HoloLens). The default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class. Many of the properties in this article though apply for other [custom Observer implementations](CreateDataProvider.md).
 
-## Profile Settings
+## Profile settings
 
 The following two items must be defined first when configuring a Spatial Mesh Observer profile for the [Spatial Awareness system](SpatialAwarenessGettingStarted.md).
 
@@ -14,7 +14,7 @@ The following two items must be defined first when configuring a Spatial Mesh Ob
 
 ![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png)
 
-### General Settings
+### General settings
 
 ![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/MeshObserverGeneralSettings.png)
 
@@ -49,7 +49,7 @@ The observer shape defines the type of volume that the mesh observer will use wh
 
 The observation extents define the distance from the observation point that meshes will be observed.
 
-### Physics Settings
+### Physics settings
 
 ![Mesh Observer Physics Settings](../../Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png)
 
@@ -64,7 +64,7 @@ The physics layer on which spatial mesh objects will be placed in order to inter
 
 Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.
 
-### Level of Detail Settings
+### Level of detail settings
 
 ![Mesh Observer Level of Detail Settings](../../Documentation/Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
 
@@ -87,7 +87,7 @@ Specifies the level of detail (LOD) of the spatial mesh data. Currently defined 
 
 Valid when using the *Custom* setting for the **Level of Detail** property and specifies the triangle density for the spatial mesh.
 
-### Display Settings
+### Display settings
 
 ![Mesh Observer Display Settings](../../Documentation/Images/SpatialAwareness/MeshObserverDisplaySettings.png)
 
@@ -112,7 +112,7 @@ Indicates the material to be used when visualizing the spatial mesh.
 
 Indicates the material to be used to cause the spatial mesh to occlude holograms.
 
-## See Also
+## See also
 
 - [Spatial Awareness System](SpatialAwarenessGettingStarted.md)
 - [Configuring Spatial Awareness system via Code](UsageGuide.md)

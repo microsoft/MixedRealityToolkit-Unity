@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
-    public abstract class BaseCameraSettingsProvider : BaseDataProvider, IMixedRealityCameraSettingsProvider
+    public abstract class BaseCameraSettingsProvider : BaseDataProvider<IMixedRealityCameraSystem>, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.

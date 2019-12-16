@@ -46,7 +46,7 @@ You can simply select _DefaultMixedRealityToolkitConfigurationProfile_ and then 
 
 ![MRTK](../Images/EyeTracking/mrtk_setup_configprofile.jpg)
 
-### Create an "Eye Gaze Data Provider"
+### Create an "eye gaze data provider"
 
 - Click on the _'Input'_ tab in your MRTK profile.
 - To edit the default one ( _'DefaultMixedRealityInputSystemProfile'_ ), click the _'Clone'_ button next to it. A _'Clone Profile'_ menu appears. Simply click on _'Clone'_ at the bottom of that menu.

@@ -14,6 +14,12 @@
 
 This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.
 
+#### MixedRealityServiceProfileAttribute
+
+To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.
+
+A second property, ExcludedTypes has also been added.
+
 ## Updating 2.0.0 to 2.1.0
 
 - [API changes](#api-changes-in-210)
@@ -98,11 +104,11 @@ The input simulation system has been upgraded, which changes a few settings in t
 
 1. All KeyCode and mouse button bindings in the profile have been replaced with a generic `KeyBinding` struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
 
-    * FastControlKey
-    * ToggleLeftHandKey
-    * ToggleRightHandKey
-    * LeftHandManipulationKey
-    * RightHandManipulationKey
+    - FastControlKey
+    - ToggleLeftHandKey
+    - ToggleRightHandKey
+    - LeftHandManipulationKey
+    - RightHandManipulationKey
 
 1. `MouseLookToggle` was previously included in the `MouseLookButton` enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
 1. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
@@ -205,7 +211,7 @@ New API `RegisterHandler` and `UnregisterHandler`:
 
 **_Examples of migration_**
 
-```csharp
+```c#
 // Old
 class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
 {
@@ -237,7 +243,7 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 }
 ```
 
-```csharp
+```c#
 // Old
 class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
 {
@@ -336,7 +342,7 @@ The ClippingSphere's Radius property is now implicitly calculated based on the t
 - NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.
 - ColliderNearInteractionTouchable is the new base class for touchables based on colliders, i.e. every touchable except NearInteractionTouchableUnityUI.
 - BaseNearInteractionTouchable.DistFront has been moved and renamed to PokePointer.TouchableDistance
-    This is the distance and which the PokePointer can interact with touchables. Previously each touchable had it's own maximum interaction distance, but now this is defined in the PokePointer which allows better optimization.
+    This is the distance and which the PokePointer can interact with touchables. Previously each touchable had its own maximum interaction distance, but now this is defined in the PokePointer which allows better optimization.
 - BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
     This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.
 

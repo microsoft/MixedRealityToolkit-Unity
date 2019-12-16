@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
