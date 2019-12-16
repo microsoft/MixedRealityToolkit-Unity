@@ -10209,7 +10209,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "                                  ***\n<size=2.9><color=#78A2C8>https://www.microsoft.com/en-us/hololens/</color></size>\nThe
+  m_text: "                                  ***\n<size=2.9><color=#78A2C8>https://www.microsoft.com/hololens/</color></size>\nThe
     <b>HoloLens</b> is a head-mounted display unit connected to an adjustable, cushioned
     inner headband, which can tilt HoloLens up and down, as well as forward and backward.
     To wear the unit, the user fits the HoloLens on their head, using an adjustment

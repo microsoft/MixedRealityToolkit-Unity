@@ -1,4 +1,4 @@
-# Microsoft Mixed Reality Toolkit Release Notes
+# Microsoft Mixed Reality Toolkit release notes
 
 - [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
@@ -24,7 +24,7 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 The following software is required.
 
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
-- [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
 - [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
 
 NuGet requirements
@@ -130,7 +130,7 @@ and
 ![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
 
 **Fixing LayoutDirection in GridObjectCollection**
-In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before. 
+In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before.
 
 Below: `RowsThenColumns` layout, with Rows = 3.
 
@@ -150,7 +150,7 @@ InteractableToggleCollection now properly updates the toggle states within group
 
 **Mixed Reality Capture setting (Experimental)**
 
-The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
+The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
 
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
@@ -165,7 +165,7 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 **MSBuild for Unity**
 
-MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). 
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)).
 
 This is an optional install that can be performed with the **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** menu item and at project load time.
 
@@ -198,7 +198,7 @@ Hand mesh
 
 **Scrolling Object Collection (Experimental)**
 
-An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 intitial (out of box) experience.
+An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 initial (out of box) experience.
 
 ![Scrolling object collection](https://user-images.githubusercontent.com/13754172/65283862-f3dd1480-daec-11e9-8868-671106c6732b.gif)
 
@@ -282,7 +282,7 @@ This error most commonly occurs when a hand comes into view. There is no functio
 
 If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
 
-If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.
 
 **Mixed Reality Capture settings (Experimental)**
 
@@ -397,7 +397,7 @@ The step to re-open the project in Unity resolves the issue.
 
 **NuGet package distribution**
 
-MRTK 2.1.0 now ships packages on nuget.org. The following steps can be used to import the desired packages.
+MRTK 2.1.0 now ships packages on NuGet.org. The following steps can be used to import the desired packages.
 
 1. Install [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
 1. Select **NuGet > Manage NuGet Packages**
@@ -447,7 +447,7 @@ See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/55
 
 We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
 
-```csharp
+```c#
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -469,7 +469,7 @@ We had feedback that it's difficult to find out where the hand is pointing, or w
 
 Please see [change 5944](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944) for details.
 
-```csharp
+```c#
 // Get the head ray
 var headRay = InputRayUtils.GetHeadGazeRay();
 
@@ -489,7 +489,7 @@ It's now possible to instantiate and configure interactable from code. See [chan
 
 It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -518,17 +518,17 @@ The input simulation system has been upgraded, which changes a few settings in t
 
 1. All KeyCode and mouse button bindings in the profile have been replaced with a generic KeyBinding struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
 
-- FastControlKey
-- ToggleLeftHandKey
-- ToggleRightHandKey
-- LeftHandManipulationKey
-- RightHandManipulationKey
+    - FastControlKey
+    - ToggleLeftHandKey
+    - ToggleRightHandKey
+    - LeftHandManipulationKey
+    - RightHandManipulationKey
 
-2. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
+1. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
 
-3. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
+1. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
 
-4. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
+1. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
 
 A new axis "UpDown" has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.
 
@@ -537,13 +537,14 @@ For more information on these changes, please see the [input simulation service]
 Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
 
 ### Replace ColliderNearInteractionTouchable with BaseNearInteractionTouchable
+
 The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages of `ColliderNearInteractionTouchable` with `BaseNearInteractionTouchable`.
 
 ### Interactable: deprecated methods
 
 Interactable has been upgraded to be configurable from code. The following methods in `Interactable` are now marked Obsolete:
 
-```csharp
+```c#
 public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)

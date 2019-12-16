@@ -2,10 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
+    /// <summary>
+    /// Abstract class that provides base profile information for Spatial Awareness Observers and their configuration
+    /// </summary>
+    [Serializable]
     public abstract class BaseSpatialAwarenessObserverProfile : BaseMixedRealityProfile
     {
         [SerializeField]

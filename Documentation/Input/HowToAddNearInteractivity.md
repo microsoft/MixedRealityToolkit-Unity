@@ -26,7 +26,7 @@ Three key steps are required to listen for touch and/or grab input events on a p
 
 Below is a script that will print if an event is a touch or grab. In the relevant *IMixedRealityPointerHandler* interface function, one can look at the type of pointer that triggers that event via the [`MixedRealityPointerEventData`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerEventData). If the pointer is a *SpherePointer*, the interaction is a grab.
 
-```csharp
+```c#
 public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 {
     public void OnPointerDown(MixedRealityPointerEventData eventData)
@@ -88,9 +88,9 @@ The default MRTK profile and the default HoloLens 2 profile already contain a *P
 
 #### Touch code example
 
-The code below demonstrates a MonoBehavior that can be attached to a GameObject with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) variant component and respond to touch input events.
+The code below demonstrates a MonoBehaviour that can be attached to a GameObject with a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) variant component and respond to touch input events.
 
-```csharp
+```c#
 public class TouchEventsExample : MonoBehaviour, IMixedRealityTouchHandler
 {
     public void OnTouchStarted(HandTrackingInputEventData eventData)
@@ -109,7 +109,7 @@ public class TouchEventsExample : MonoBehaviour, IMixedRealityTouchHandler
 
 This example creates a cube, makes it touchable, and changes color on touch.
 
-```csharp
+```c#
 public static void MakeChangeColorOnTouch(GameObject target)
 {
     // Add and configure the touchable
@@ -128,7 +128,7 @@ public static void MakeChangeColorOnTouch(GameObject target)
 
 The below example shows how to make a GameObject draggable. Assumes that the game object has a collider on it.
 
-```csharp
+```c#
 public static void MakeNearDraggable(GameObject target)
 {
     // Instantiate and add grabbable
