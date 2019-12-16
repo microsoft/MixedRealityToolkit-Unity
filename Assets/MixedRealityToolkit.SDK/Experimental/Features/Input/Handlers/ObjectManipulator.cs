@@ -23,6 +23,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
+
+        /// <summary>
+        /// Describes what pivot the manipulated object will rotate about when
+        /// you rotate your hand. This is not a description of any limits or 
+        /// additional rotation logic. If no other factors (such as constraints)
+        /// are involved, rotating your hand by an amount should rotate the object
+        /// by the same amount.
+        /// For example a possible future value here is RotateAboutUserDefinedPoint
+        /// where the user could specify a pivot that the object is to rotate
+        /// around.
+        /// An example of a value that should not be found here is MaintainRotationToUser
+        /// as this restricts rotation of the object when we rotate the hand.
+        /// </summary>
         public enum RotateInOneHandType
         {
             RotateAboutObjectCenter,
