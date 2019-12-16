@@ -787,7 +787,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float checkNegative() => Vector3.Dot(testObject.transform.forward, cameraToObject());
 
             TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
-            Assert.Greater(checkNegative(), 0, "Object facing away");
+            Assert.Less(checkNegative(), 0, "Object facing away");
 
             // Move the hand
             yield return hand.Move(new Vector3(0.2f, 0.2f, 0), numHandSteps);
@@ -795,7 +795,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreNotEqual(Vector3.forward, testObject.transform.position); // ensure the object moved
             TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
-            Assert.Greater(checkNegative(), 0, "Object facing away");
+            Assert.Less(checkNegative(), 0, "Object facing away");
 
             // Face away from user
             rotConstraint.FaceAway = true;
@@ -803,7 +803,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
-            Assert.Less(checkNegative(), 0, "Object facing away");
+            Assert.Greater(checkNegative(), 0, "Object facing away");
 
             // Move the hand
             yield return hand.Move(new Vector3(0.2f, 0.2f, 0), numHandSteps);
@@ -811,7 +811,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.AreNotEqual(Vector3.forward, testObject.transform.position); // ensure the object moved
             TestUtilities.AssertAboutEqual(checkCollinear(), Vector3.zero, "Object not facing camera", 0.002f);
-            Assert.Less(checkNegative(), 0, "Object facing away");
+            Assert.Greater(checkNegative(), 0, "Object facing away");
         }
 
         /// <summary>
