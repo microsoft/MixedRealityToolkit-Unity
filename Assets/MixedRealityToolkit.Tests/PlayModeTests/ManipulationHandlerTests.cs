@@ -130,6 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // grab the cube - move it to the right 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            // This particular test is sensitive to the number of steps that a hand is moving,
+            // so it's set to 30 to override the default amount.
             int numSteps = 30;
             
             Vector3 handOffset = new Vector3(0, 0, 0.1f);
@@ -137,8 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 rightPosition = new Vector3(1f, 0f, 1f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             yield return null;
 
@@ -149,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // forcefully end manipulation and drag with hand back to original position - object shouldn't move with hand
             manipHandler.ForceEndManipulation();
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             posDiff = testObject.transform.position - initialObjectPosition;
             Assert.IsTrue(posDiff.magnitude > maxError, "Manipulationhandler modified objects even though manipulation was forcefully ended.");
@@ -157,10 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(posDiff.magnitude <= maxError, "Manipulated object didn't remain in place after forcefully ending manipulation");
 
             // move hand back to object
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
 
             // grab object again and move to original position
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             // test if object was moved by manipulationhandler
             posDiff = testObject.transform.position - initialObjectPosition;
