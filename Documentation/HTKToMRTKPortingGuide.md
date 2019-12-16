@@ -1,4 +1,4 @@
-﻿# Porting Guide
+# Porting guide
 
 ## Controller and hand input
 

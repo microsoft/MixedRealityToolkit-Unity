@@ -51,7 +51,7 @@ if (MixedRealityServiceRegistry.TryGetService<INewService>(out service))
 }
 ```
 
-## See Also
+## See also
 
 - [Systems, extension services and data providers](../Architecture/SystemsExtensionsProviders.md)
 - [Extension service creation wizard](../Tools/ExtensionServiceCreationWizard.md)

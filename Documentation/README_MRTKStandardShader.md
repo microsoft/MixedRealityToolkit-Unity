@@ -4,7 +4,7 @@
 
 MRTK Standard shading system utilizes a single, flexible shader that can achieve visuals similar to Unity's Standard Shader, implement [Fluent Design System](https://www.microsoft.com/design/fluent/) principles, and remain performant on mixed reality devices.
 
-## Example Scenes
+## Example scenes
 
 You can find the shader material examples in the **MaterialGallery** scene under:
 [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
@@ -19,7 +19,7 @@ You can find a comparison scene to compare and test the MRTK/Standard shader aga
 
 The MRTK/Standard shading system is an "uber shader" that uses [Unity's shader program variant feature](https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html) to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector they only incur performance cost for features they have enabled.
 
-## Material Inspector
+## Material inspector
 
 A custom material inspector exists for the MRTK/Standard shader called [`MixedRealityStandardShaderGUI.cs`](xref:Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI). The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature **please hover over each property in the Unity Editor for a tooltip.**
 
@@ -63,11 +63,11 @@ MRTK Standard shader statistics example
 
 The MRTK/Standard uses a simple approximation for lighting. Because this shader does not calculate for physical correctness and energy conservation, it renders quickly and efficient. Blinn-Phong is the primary lighting technique which is blended with Fresnel and image based lighting to approximate physically based lighting. The shader supports the following lighting techniques:
 
-### Directional Light
+### Directional light
 
 The shader will respect the direction, color, and intensity of the first Unity Directional Light in the scene (if enabled). Dynamic point lights, spot lights, or any other Unity light will not be considered in real time lighting.
 
-### Spherical Harmonics
+### Spherical harmonics
 
 The shader will use Light Probes to approximate lights in the scene using [Spherical Harmonics](https://docs.unity3d.com/Manual/LightProbes-TechnicalInformation.html) if enabled. Spherical harmonics calculations are performed per vertex to reduce calculation cost.
 
@@ -75,15 +75,15 @@ The shader will use Light Probes to approximate lights in the scene using [Spher
 
 For static lighting the shader will respect lightmaps built by Unity's [Lightmapping system](https://docs.unity3d.com/Manual/Lightmapping.html) simply mark the renderer as static (or lightmap static) to use lightmaps.
 
-### Hover Light
+### Hover light
 
 A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the [`HoverLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
 
-### Proximity Light
+### Proximity light
 
 A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the [`ProximityLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
 
-## Lightweight Scriptable Render Pipeline Support
+## Lightweight Scriptable Render Pipeline support
 
 The MRTK contains an upgrade path to allow developers to utilize Unity's Lightweight Scriptable Render Pipeline (LWRP) with MRTK shaders. Tested in Unity 2019.1.1f1 and Lightweight RP 5.7.2 package. or instructions on getting started with the LWRP please see [this page](https://docs.unity3d.com/Packages/com.unity.render-pipelines.lightweight@5.10/manual/getting-started-with-lwrp.html).
 
@@ -93,9 +93,9 @@ To perform the MRTK upgrade select: **Mixed Reality Toolkit -> Utilities -> Upgr
 
 After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
 
-## UGUI Support
+## UGUI support
 
-The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of it's parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
+The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of its parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
 
 Note, when using a Unity Image component it is recommended to specify "None (Sprite)" for the Source Image to prevent Unity UI from generating extra vertices.
 
@@ -103,7 +103,7 @@ A Canvas within the MRTK will prompt for the addition of a [`ScaleMeshEffect.cs`
 
 ![scale mesh effect](../Documentation/Images/MRTKStandardShader/MRTK_ScaleMeshEffect.jpg)
 
-## Texture Combiner
+## Texture combiner
 
 To improve parity with the Unity Standard shader per pixel metallic, smoothness, emissive, and occlusion values can all be controlled via [channel packing](http://wiki.polycount.com/wiki/ChannelPacking). For example:
 
@@ -124,11 +124,11 @@ Or, you can use the MRTK Texture Combiner Tool. To open the tool select: **Mixed
 
 This windows can be automatically filled out by selecting a Unity Standard shader and clicking "Autopopulate from Standard Material." Or, you can manually specify a texture (or constant value) per red, green, blue, or alpha channel. The texture combination is GPU accelerated and does not require the input texture to be CPU accessible.
 
-## Additional Feature Documentation
+## Additional feature documentation
 
 Below are extra details on a handful of features details available with the MRTK/Standard shader.
 
-### Primitive Clipping
+### Primitive clipping
 
 Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
@@ -138,7 +138,7 @@ Performant plane, sphere, and box shape clipping with the ability to specify whi
 
 ![primitive clipping gizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
 
-### Mesh Outlines
+### Mesh outlines
 
 Many mesh outline techniques are done using a [post processing](https://docs.unity3d.com/Manual/PostProcessingOverview.html) technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  **OutlineExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
@@ -161,25 +161,25 @@ The outline behaviors are designed to be used in conjunction with the MRTK/Stand
 1. Smooth normals generated via [`MeshSmoother.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshSmoother).
 2. Default normals used, notice the artifacts around the cube corners. 
 
-### Stencil Testing
+### Stencil testing
 
 Built in configurable stencil test support to achieve a wide array of effects. Such as portals:
 
 ![stencil test](../Documentation/Images/MRTKStandardShader/MRTK_StencilTest.gif)
 
-### Instanced Color Support
+### Instanced color support
 
 Instanced color support to give thousands of GPU instanced meshes unique material properties:
 
 ![instanced properties](../Documentation/Images/MRTKStandardShader/MRTK_InstancedProperties.gif)
 
-### Triplanar Mapping
+### Triplanar mapping
 
 Triplanar mapping is a technique to programmatically texture a mesh. Often used in terrain, meshes without UVs, or difficult to unwrap shapes. This implementation supports world or local space projection, the specification of blending smoothness, and normal map support. Note, each texture used requires 3 texture samples, so please use sparingly in performance critical situations.
 
 ![triplanar](../Documentation/Images/MRTKStandardShader/MRTK_TriplanarMapping.gif)
 
-### Vertex Extrusion
+### Vertex extrusion
 
 Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
 

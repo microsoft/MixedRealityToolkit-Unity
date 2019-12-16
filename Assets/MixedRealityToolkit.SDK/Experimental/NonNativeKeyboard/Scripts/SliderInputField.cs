@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -12,9 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public class SliderInputField : TMP_InputField
     {
-        [Experimental]
-        private object experimentalAttributeHolder;
-
         /// <summary>
         /// Override OnDeselect
         /// </summary>

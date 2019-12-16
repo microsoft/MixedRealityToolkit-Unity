@@ -28,12 +28,12 @@ A clear and concise description of what you expected to happen.
 
 If applicable, add screenshots to help explain your problem.
 
-## Your Setup (please complete the following information)
+## Your setup (please complete the following information)
 
 - Unity Version [e.g. 2018.3.11f1]
 - MRTK Version [e.g. v2.0]
 
-## Target Platform (please complete the following information)
+## Target platform (please complete the following information)
 
 - HoloLens
 - HoloLens 2

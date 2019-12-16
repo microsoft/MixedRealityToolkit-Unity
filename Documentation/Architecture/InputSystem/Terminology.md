@@ -1,4 +1,4 @@
-# Input System
+# Input system
 
 The input system is one of the largest systems out of all features offered by the MRTK.
 So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input

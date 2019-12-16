@@ -36,6 +36,7 @@ The [`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blo
 ### Unity UI based buttons
 
 Create a Canvas in your scene (GameObject -> UI -> Canvas). In the Inspector panel for your Canvas:
+
 * Click "Convert to MRTK Canvas"
 * Click "Add NearInteractionTouchableUnityUI"
 * Set the Rect Transform component's X, Y, and Z scale to 0.001
@@ -58,7 +59,7 @@ To leverage specific articulated hand input state information, you can use press
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
-## Interaction States
+## Interaction states
 
 In the idle state, the button's front plate is not visible. As a finger approaches or a cursor from gaze input targets the surface, the front plate's glowing border becomes visible. There is additional highlighting of the fingertip position on the front plate surface. When pushed with a finger, the front plate moves with the fingertip. When the fingertip touches the surface of the front plate, it shows a subtle pulse effect to give visual feedback of the touch point.
 
@@ -88,7 +89,7 @@ Unity audio source for the audio feedback clips.
 *NearInteractionTouchable.cs*
 Required to make any object touchable with articulated hand input.
 
-## Prefab Layout
+## Prefab layout
 
 The *ButtonContent* object contains front plate, text label and icon. The *FrontPlate* responds to the proximity of the index fingertip using the *Button_Box* shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. *SeeItSayItLabel*'s visibility is controlled by [Interactable](README_Interactable.md)'s theme.
 
@@ -96,26 +97,25 @@ The *ButtonContent* object contains front plate, text label and icon. The *Fron
 
 ## How to change the icon and text
 
-To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned. 
+To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate1.png">
 
-To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder. 
+To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate2.png"  width="350">
 
-Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. ``MixedRealityToolkit.SDK/Features/UX/Interactable/Textures`` 
+Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. ``MixedRealityToolkit.SDK/Features/UX/Interactable/Textures``
 
 Drag and drop newly created PNG texture onto the *Albedo* property in the material.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate3.png">
 
-Assgin the material to the *UIButtonSquareIcon* object.
+Assign the material to the *UIButtonSquareIcon* object.
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate4.png">
 
-
-## Voice command ('See-it, Say-it')
+## Voice command ('see-it, say-it')
 
 **Speech Input Handler**
 The [Interactable](README_Interactable.md) script in Pressable Button already implements `IMixedRealitySpeechHandler`. A voice command keyword can be set here.
@@ -138,7 +138,7 @@ You can find the examples of these buttons in the **PressableButtonExample** sce
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
 
-### 1. Creating a Pressable Button with Cube (Near interaction only)
+### 1. Creating a pressable button with cube (near interaction only)
 
 1. Create a Unity Cube (GameObject > 3D Object > Cube)
 2. Add `PressableButton.cs` script
@@ -189,9 +189,9 @@ You will see the object responds to both far(hand ray or gaze cursor) and near(h
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
-## Custom Button Examples ##
+## Custom button examples
 
-In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`. 
+In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`.
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom1.png" width="450">
 

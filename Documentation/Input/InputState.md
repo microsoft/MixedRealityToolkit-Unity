@@ -1,12 +1,12 @@
-# Accessing Input State in MRTK
+# Accessing input state in MRTK
 
 It's possible to directly query the state of all inputs in MRTK by iterating over the controllers attached to the input sources. MRTK also provides convenience methods for accessing the position and rotation of the eyes, hands, head, and motion controller.
 
-See the InputDataExample scene for an example of querying input both via iterating over controllers, and by using the [`InputRayUtils`](cref:Microsoft.MixedReality.Toolkit.Input.InputRayUtils) class.
+See the InputDataExample scene for an example of querying input both via iterating over controllers, and by using the [`InputRayUtils`](xref:Microsoft.MixedReality.Toolkit.Input.InputRayUtils) class.
 
 ## Example: Access position, rotation of head, hands, eyes in MRTK
 
-MRTK's [`InputRayUtils`](cref:Microsoft.MixedReality.Toolkit.Input.InputRayUtils) class provides convenience methods for accessing the hand ray, head ray, eye gaze ray, and motion controller rays.
+MRTK's [`InputRayUtils`](xref:Microsoft.MixedReality.Toolkit.Input.InputRayUtils) class provides convenience methods for accessing the hand ray, head ray, eye gaze ray, and motion controller rays.
 
 ```c#
 // Get the head ray
@@ -49,7 +49,7 @@ foreach(var controller in CoreServices.InputSystem.DetectedControllers)
 }
 ```
 
-## See Also
+## See also
 
 - [InputEvents](InputEvents.md)
 - [Pointers](Pointers.md)

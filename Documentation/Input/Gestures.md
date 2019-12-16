@@ -16,7 +16,7 @@ Both of these input sources use the _Gesture Settings_ profile to translate Unit
 
 <img src="../../Documentation/Images/Input/GestureProfile.png" style="max-width:100%;">
 
-## Gesture Events
+## Gesture events
 
 Gesture events are received by implementing one of the gesture handler interfaces: [`IMixedRealityGestureHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler) or [`IMixedRealityGestureHandler<TYPE>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGestureHandler`1) (see table of [event handlers](InputEvents.md)).
 
@@ -56,7 +56,7 @@ There are two principal chains of events, depending on user input:
         * complete _Manipulation_
         * complete _Navigation_
 
-## Example Scene
+## Example scene
 
 The **HandInteractionGestureEventsExample** scene in `MixedRealityToolkit.Examples\Demos\HandTracking\Scenes` shows how to use the pointer Result to spawn an object at the hit location.
 
