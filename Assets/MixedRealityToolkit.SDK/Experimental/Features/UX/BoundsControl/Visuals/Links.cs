@@ -1,9 +1,9 @@
 ﻿
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Links that are rendered in between the corners of <see cref="BoundsControl"/>

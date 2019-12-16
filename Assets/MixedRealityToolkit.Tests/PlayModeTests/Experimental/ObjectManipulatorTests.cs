@@ -21,7 +21,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
     public class ObjectManipulatorTests
     {
@@ -898,6 +898,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Apply correction delta again as we have changed hand pose
+            correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
             yield return null;
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);

@@ -1,11 +1,11 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Base class for any type of <see cref="BoundsControl"/> handle.

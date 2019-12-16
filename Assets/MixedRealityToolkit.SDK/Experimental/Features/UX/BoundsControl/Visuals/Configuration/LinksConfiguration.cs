@@ -1,9 +1,9 @@
 ﻿
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Configuration for <see cref="Links"/> used in <see cref="BoundsControl"/>

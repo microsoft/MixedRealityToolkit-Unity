@@ -18,7 +18,7 @@ using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Assert = UnityEngine.Assertions.Assert;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl bbox = InstantiateSceneAndDefaultBbox();
             yield return VerifyInitialBoundsCorrect(bbox);
-            bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
+            bbox.BoundsControlActivation = Toolkit.Experimental.UI.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
 

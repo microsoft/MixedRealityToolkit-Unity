@@ -7,10 +7,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.UI;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Bounds Control allows to transform objects (rotate and scale) and draws a cube around the object to visualize 

@@ -1,9 +1,9 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Helper class providing some static utility functions for <see cref="BoundsControl"/> <see cref="BoundsControlHandlesBase">handles</see>/>

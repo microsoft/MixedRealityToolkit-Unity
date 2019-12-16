@@ -1,10 +1,10 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System;
 
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary> 
     /// BoxDisplay can be used to attach a solid box visualization to a <see cref="BoundsControl"/>

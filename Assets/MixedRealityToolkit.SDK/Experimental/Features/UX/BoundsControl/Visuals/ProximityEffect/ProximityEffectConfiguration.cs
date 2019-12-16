@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
     /// <summary>
     /// Shareable configuration for a proximity effect that can be used with BoundsControl
