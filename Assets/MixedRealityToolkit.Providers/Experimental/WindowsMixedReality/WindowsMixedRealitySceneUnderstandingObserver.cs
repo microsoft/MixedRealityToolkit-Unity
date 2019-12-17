@@ -34,16 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         public WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver(
-            IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, spatialAwarenessSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
         {
             ReadProfile();
         }

@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     public class BaseSpatialSceneObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
         public BaseSpatialSceneObserver(
-            IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = 10,

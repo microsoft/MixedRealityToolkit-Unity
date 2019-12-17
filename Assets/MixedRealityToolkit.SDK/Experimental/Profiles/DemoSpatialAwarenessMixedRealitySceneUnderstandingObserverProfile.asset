@@ -24,7 +24,7 @@ MonoBehaviour:
   instantiationBatchRate: 1
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
   shouldLoadFromFile: 1
-  serializedScene: {fileID: 4900000, guid: 00a4842e9540f944eb47b3f085b1f366, type: 3}
+  serializedScene: {fileID: 4900000, guid: cbf0602262c70ec4fbc01971010e5aca, type: 3}
   generatePlanes: 1
   planeValidationMask: 0
   generateMeshes: 0
