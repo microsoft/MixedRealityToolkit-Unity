@@ -11,6 +11,7 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
@@ -20,8 +21,10 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    // Tests to verify pointer state and pointer direction
-    class PointerTests 
+    /// <summary>
+    /// Tests to verify pointer state and pointer direction
+    /// </summary>
+    public class PointerTests 
     {
         [SetUp]
         public void Setup()
@@ -72,6 +75,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
             Assert.LessOrEqual(angle, 40.0f);
         }
+
+
+        [UnityTest]
+        public IEnumerator TestPointerCaching()
+        {
+            var box = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            box.transform.position = Vector3.forward * 2.0f;
+            var interactable = box.AddComponent<Interactable>();
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Raise the hand
+            var rightHand = new TestHand(Handedness.Right);
+
+            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.MoveTo(box.transform.position);
+            yield return rightHand.Click();
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return PlayModeTestUtilities.WaitForEnterKey();
+            Assert.IsTrue(wasClicked);
+
+            //rightHand.Click();
+        }
+
         #endregion
     }
 }
