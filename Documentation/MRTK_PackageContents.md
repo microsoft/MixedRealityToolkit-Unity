@@ -1,4 +1,4 @@
-# Mixed Reality Toolkit Packages
+# Mixed Reality Toolkit packages
 
 The Microsoft Mixed Reality Toolkit is provided as a collection of packages. The contents of these packages is described in the following sections.
 
@@ -94,6 +94,6 @@ The optional Microsoft.MixedRealityToolkit.Unity.Examples package includes demon
 | | Inspectors | Unity Editor inspectors used by demo scenes. |
 | | StandardAssets | Common assets shared by multiple demo scenes. |
 
-## See Also
+## See also
 
 [Getting Started with the MRTK](GettingStartedWithTheMRTK.md)

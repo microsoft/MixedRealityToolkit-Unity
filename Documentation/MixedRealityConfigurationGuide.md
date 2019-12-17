@@ -1,10 +1,10 @@
-# Mixed Reality Toolkit Profile configuration guide
+# Mixed Reality Toolkit profile configuration guide
 
 ![MRTK logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
 The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime "things").
 
-**This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit**
+> **This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit**
 
 ## The main Mixed Reality Toolkit configuration profile
 
@@ -161,9 +161,9 @@ The MRTK provides this optional service to help you manage complex additive scen
 
 One of the more advanced areas of the Mixed Reality Toolkit is its [service locator pattern](https://en.wikipedia.org/wiki/Service_locator_pattern) implementation which allows the registering of any "Service" with the framework. This allows the framework to be both extended with new features / systems easily but also allows for projects to take advantage of these capabilities to register their own runtime components.
 
-Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime gamelogic, or practically anything else.
+Any registered service still gets the full advantage of all of the Unity events, without the overhead and cost of implementing a MonoBehaviour or clunky singleton patterns. This allows for pure C# components with no scene overhead for running both foreground and background processes, e.g. spawning systems, runtime game logic, or practically anything else.
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProvidersProfile.png" width="650px" style="display:block;">
 
 ---
 <a name="inputactions"></a>
@@ -241,11 +241,11 @@ Gestures are a system specific implementation allowing you to assign input actio
 ---
 <a name="speech"></a>
 
-## Speech Commands
+## Speech commands
 
 Like gestures, some runtime platforms also provide intelligent "Speech to Text" functionality with the ability to generate commands that can be received by a Unity project. This configuration profile allows you to configure the following:
 
-1. General Settings - "Start Behavior" set to Auto Start or Manual Start determines whether to initialize KeywordRecognizer at input system startuo or let the project decide when to initialize the KeywordRecognizer. "Recognition Confidence Level" is used to initialize Unity's [KeywordRecognizer API](https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer-ctor.html)
+1. General Settings - "Start Behavior" set to Auto Start or Manual Start determines whether to initialize KeywordRecognizer at input system startup or let the project decide when to initialize the KeywordRecognizer. "Recognition Confidence Level" is used to initialize Unity's [KeywordRecognizer API](https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer-ctor.html)
 2. Speech Commands - Registers "words" and translates them in to input actions that can be received by your project. They can also be attached to keyboard actions if required.
 
 > [!IMPORTANT]
@@ -299,13 +299,13 @@ If your controller representation in the scene needs to be offset from the physi
 
 <a name="editor-utilities"></a>
 
-## Editor Utilities
+## Editor utilities
 
 The following utilities work only in the editor and are useful to improve development productivity.
 
 ![MRTK Editor Configuration Utilities](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png)
 
-### Service Inspectors
+### Service inspectors
 
 Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
 
@@ -313,7 +313,7 @@ Service Inspectors are an editor-only feature that generates in-scene objects re
 
 You can enable service inspectors by checking *Use Service Inspectors* under *Editor Settings* in the Configuration Profile.
 
-### Depth Buffer Renderer
+### Depth buffer renderer
 
 Sharing the depth buffer with some mixed reality platforms can improve [hologram stabilization](hologram-stabilization.md). For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user.
 
@@ -322,6 +322,6 @@ To ensure a scene renders all necessary data to the depth buffer, developers can
 ![Render Depth Buffer Utility](Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
 <sup>The blue cylinder in the scene has a material with ZWrite off so no depth data is written</sup>
 
-## See Also
+## See also
 
 * [Hologram Stabilization](hologram-stabilization.md)

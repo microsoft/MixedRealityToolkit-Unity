@@ -1,4 +1,4 @@
-# Input Animation Binary File Format Specification
+# Input animation binary file format specification
 
 ## Overall structure
 
@@ -29,7 +29,7 @@ The input animation data consists of a sequence of animation curves. The number 
 | Hand Joints Left | [Joint Pose Curves](#joint-pose-curves) |
 | Hand Joints Right | [Joint Pose Curves](#joint-pose-curves) |
 
-### Joint Pose Curves
+### Joint pose curves
 
 For each hand a sequence of joint animation curves is stored. The number of joints is fixed, and a set of pose curves is stored for each joint.
 
@@ -63,7 +63,7 @@ For each hand a sequence of joint animation curves is stored. The number of join
 | PinkyDistalJoint | [Pose Curves](#pose-curves) |
 | PinkyTip | [Pose Curves](#pose-curves) |
 
-### Pose Curves
+### Pose curves
 
 Pose curves are a sequence of 3 animation curves for the position vector, followed by 4 animation curves for the rotation quaternion.
 
@@ -77,7 +77,7 @@ Pose curves are a sequence of 3 animation curves for the position vector, follow
 | Rotation Z | [Float Curve](#float-curve) |
 | Rotation W | [Float Curve](#float-curve) |
 
-### Float Curve
+### Float curve
 
 Floating point curves are fully fledged Bézier curves with a variable number of keyframes. Each keyframe stores a time and a curve value, as well as tangents and weights on the left and right side of each keyframe.
 
@@ -88,7 +88,7 @@ Floating point curves are fully fledged Bézier curves with a variable number of
 | Number of keyframes | Int32 |
 | Keyframes | [Float Keyframe](#float-keyframe) |
 
-### Float Keyframe
+### Float keyframe
 
 A float keyframe stores tangent and weight values alongside the basic time and value.
 
@@ -102,7 +102,7 @@ A float keyframe stores tangent and weight values alongside the basic time and v
 | OutWeight | Float32 |
 | WeightedMode | Int32, [Weighted Mode](#weighted-mode) |
 
-### Boolean Curve
+### Boolean curve
 
 Boolean curves are simple sequences of on/off values. On every keyframe the value of the curve flips immediately.
 
@@ -113,7 +113,7 @@ Boolean curves are simple sequences of on/off values. On every keyframe the valu
 | Number of keyframes | Int32 |
 | Keyframes | [Boolean Keyframe](#boolean-keyframe) |
 
-### Boolean Keyframe
+### Boolean keyframe
 
 A boolean keyframe only stores a time and value.
 
@@ -122,7 +122,7 @@ A boolean keyframe only stores a time and value.
 | Time | Float32 |
 | Value | Float32 |
 
-### Wrap Mode
+### Wrap mode
 
 The semantics of Pre- and Post-Wrap modes follow the [Unity WrapMode](https://docs.unity3d.com/ScriptReference/WrapMode.html) definition. They are a combination of the following bits:
 
@@ -134,7 +134,7 @@ The semantics of Pre- and Post-Wrap modes follow the [Unity WrapMode](https://do
 | 4 | PingPong: When time reaches the end of the animation clip, time will ping pong back between beginning and end. |
 | 8 | ClampForever: Plays back the animation. When it reaches the end, it will keep playing the last frame and never stop playing. |
 
-### Weighted Mode
+### Weighted mode
 
 The semantics of the Weighted mode follow the [Unity WeightedMode](https://docs.unity3d.com/ScriptReference/WeightedMode.html) definition.
 

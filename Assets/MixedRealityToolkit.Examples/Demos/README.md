@@ -23,7 +23,7 @@ Solvers also allow objects to be aware of their surroundings and moved with / ag
 
 This folder contains a simple demonstration scene showing several of the solver options and how they can be applied in a scene.
 
-## Standard Shader
+## Standard shader
 
 The MRTK standard shader is specifically customized for use in Mixed Reality environments and enabling several advanced effects "out of the box".
 

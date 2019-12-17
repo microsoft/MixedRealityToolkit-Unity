@@ -17,7 +17,7 @@ If your project consists of a single scene, the Scene System probably isn't nece
 - [Monitoring Content Loading](SceneSystemLoadProgress.md)
 - [Lighting Scene Loading](SceneSystemLightingScenes.md)
 
-# Editor settings
+## Editor settings
 
 By default, the Scene System enforces several behaviors in the Unity editor. If you find any of these behaviors heavy-handed, they can be disabled in the **Editor Settings** section of your Scene System profile.
 

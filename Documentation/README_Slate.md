@@ -1,10 +1,10 @@
-# Slate #
+# Slate
 
 ![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)
 
 The Slate prefab offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as *Follow Me* and *Close* functionality. The content window can be scrolled via articulated hand input.
 
-## How to use a slate control ##
+## How to use a slate control
 
 A slate control is composed of the following elements:
 
@@ -16,7 +16,7 @@ A slate control is composed of the following elements:
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Structure.png" width="650">
 
-## Bounding Box ##
+## Bounding box
 
 A slate control contains a bounding box script for scaling and rotating. For more information on bounding box, please see the [Bounding box](README_BoundingBox.md) page.
 
@@ -24,7 +24,7 @@ A slate control contains a bounding box script for scaling and rotating. For mor
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Scale.png" width="650">
 
-## Buttons ##
+## Buttons
 
 A standard slate offers two buttons as default on the top right of the title bar:
 
@@ -33,7 +33,7 @@ A standard slate offers two buttons as default on the top right of the title bar
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.png" width="650">
 
-## Scripts ##
+## Scripts
 
 In general, the `NearInteractionTouchable.cs` script must be attached to any object that is intended to receive touch events from the `IMixedRealityTouchHandler`.
 

@@ -41,7 +41,7 @@ For more precisely positioning your hologram, you can use additional input from 
 
 **Summary**: Positioning holograms using eyes, voice and hand input (*drag-and-drop*). Eye-supported sliders using eyes + hands.
 
-### **Visualization of Visual Attention**
+### **Visualization of visual attention**
 
 Data based on where users look makes an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams.
 This tutorial discusses different eye tracking visualizations and how they fit different needs.
@@ -75,14 +75,14 @@ By default, this is _EyeTrackingDemo-02-TargetSelection_.
 
 ![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
-### 2. Adding scenes to the Build menu
+### 2. Adding scenes to the build menu
 
 To load additive scenes during runtime, you must add these scenes to your _Build Settings -> Scenes in Build_ menu first.
 It is important that the root scene is shown as the first scene in the list:
 
 ![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_build_settings.jpg)
 
-### 3. Play the eye tracking samples in the Unity Editor
+### 3. Play the eye tracking samples in the Unity editor
 
 After adding the eye tracking scenes to the Build Settings and loading the _EyeTrackingDemo-00-RootScene_, there is one last thing you may want to check: Is the _'OnLoadStartScene'_ script that is attached to the _MixedRealityBasicSceneSetup_ GameObject enabled? This is to let the root scene know which demo scene to load first.
 
