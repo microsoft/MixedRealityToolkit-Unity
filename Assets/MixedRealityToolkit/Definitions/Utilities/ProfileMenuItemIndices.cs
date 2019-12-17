@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         EyeTracking,
         MouseInput,
         SceneSystem,
-
+        SceneUnderstandingObserver,
         Assembly = 99,
     }
 }
