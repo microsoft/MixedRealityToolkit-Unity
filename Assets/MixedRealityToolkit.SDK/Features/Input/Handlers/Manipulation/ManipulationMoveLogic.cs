@@ -8,15 +8,15 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
     /// <summary>
-    /// Implements a movement logic that uses the model of angular rotations along a sphere whose 
-    /// radius varies. The angle to move by is computed by looking at how much the hand changes
-    /// relative to a pivot point (slightly below and in front of the head).
+    /// Implements a move logic that will move an object based on the initial position of 
+    /// the grab point relative to the pointer and relative to the object, and subsequent
+    /// changes to the pointer and the object's rotation
     /// 
     /// Usage:
     /// When a manipulation starts, call Setup.
     /// Call Update any time to update the move logic and get a new rotation for the object.
     /// </summary>
-    public class TwoHandMoveLogic
+    internal class ManipulationMoveLogic
     {
         private float pointerRefDistance;
 
@@ -45,14 +45,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         }
 
         /// <summary>
-        /// Update the rotation based on input.
+        /// Update the position based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation, MovementConstraintType movementConstraint)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool usePointerRotation)
         {
             float distanceRatio = 1.0f;
 
-            if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            if (pointerPosIndependentOfHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
                 float currentHandDistance = GetDistanceToBody(pointerCentroidPose);
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             }
             else
             {
-                return pointerCentroidPose.Position + pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject * distanceRatio;
+                return pointerCentroidPose.Position + (pointerCentroidPose.Rotation * pointerLocalGrabPoint + grabToObject) * distanceRatio;
             }
         }
 

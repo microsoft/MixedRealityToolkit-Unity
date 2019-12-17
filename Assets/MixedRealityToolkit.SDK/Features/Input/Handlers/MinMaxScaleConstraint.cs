@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -9,20 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component for setting the min/max scale values for ManipulationHandler
     /// or BoundingBox
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/SDK/TransformScaleHandler")]
-    public class TransformScaleHandler : MonoBehaviour
+    [AddComponentMenu("Scripts/MRTK/SDK/MinMaxScaleConstraint")]
+    public class MinMaxScaleConstraint : TransformConstraint
     {
         #region Properties
-
-        [SerializeField]
-        [Tooltip("Transform being scaled. Defaults to the object of the component.")]
-        private Transform targetTransform = null;
-
-        public Transform TargetTransform
-        {
-            get => targetTransform;
-            set => targetTransform = value;
-        }
 
         private Vector3 initialScale;
 
@@ -32,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 minimumScale;
         
+        /// <summary>
+        /// Minimum scaling allowed
+        /// </summary>
         public float ScaleMinimum
         {
             get => minimumScale.x;
@@ -48,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 maximumScale;
         
+        /// <summary>
+        /// Maximum scaling allowed
+        /// </summary>
         public float ScaleMaximum
         {
             get => maximumScale.x;
@@ -62,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Min/max scaling relative to initial scale if true")]
         private bool relativeToInitialState = true;
         
+        /// <summary>
+        /// Min/max scaling relative to initial scale if true
+        /// </summary>
         public bool RelativeToInitialState
         {
             get => relativeToInitialState;
@@ -72,18 +72,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public override TransformFlags ConstraintType => TransformFlags.Scale;
+
         #endregion Properties
 
         #region MonoBehaviour Methods
 
-        public void Start()
+        public override void Start()
         {
-            if (targetTransform == null)
-            {
-                targetTransform = transform;
-            }
-            initialScale = targetTransform.localScale;
+            base.Start();
 
+            initialScale = TargetTransform.localScale;
             SetScaleLimits();
         }
 
@@ -92,16 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <summary>
-        /// Clamps the given scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
+        /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
         /// - No one component of the returned vector will be greater than the max scale.
         /// - No one component of the returned vector will be less than the min scale.
         /// - The returned vector's direction will be the same as the given vector
         /// </summary>
-        /// <param name="scale">Scale value to clamp</param>
-        /// <returns>The clamped scale vector</returns>
-        public Vector3 ClampScale(Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            if (Vector3.Min(maximumScale, scale) != scale)
+            if (Vector3.Min(maximumScale, transform.Scale) != transform.Scale)
             {
                 float maxRatio = 0.0f;
                 int maxIdx = -1;
@@ -111,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (maximumScale[i] > 0)
                     {
-                        float ratio = scale[i] / maximumScale[i];
+                        float ratio = transform.Scale[i] / maximumScale[i];
                         if (ratio > maxRatio)
                         {
                             maxRatio = ratio;
@@ -122,11 +119,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (maxIdx != -1)
                 {
-                    scale /= maxRatio;
+                    transform.Scale /= maxRatio;
                 }
             }
 
-            if (Vector3.Max(minimumScale, scale) != scale)
+            if (Vector3.Max(minimumScale, transform.Scale) != transform.Scale)
             {
                 float minRatio = 1.0f;
                 int minIdx = -1;
@@ -136,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (minimumScale[i] > 0)
                     {
-                        float ratio = scale[i] / minimumScale[i];
+                        float ratio = transform.Scale[i] / minimumScale[i];
                         if (ratio < minRatio)
                         {
                             minRatio = ratio;
@@ -147,11 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (minIdx != -1)
                 {
-                    scale /= minRatio;
+                    transform.Scale /= minRatio;
                 }
             }
-
-            return scale;
         }
 
         #endregion Public Methods
