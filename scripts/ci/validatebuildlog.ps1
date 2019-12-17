@@ -30,14 +30,14 @@ function CheckDuplicateGuids(
     if ($LogFileContent[$LineNumber] -match "GUID \[[a-g0-9]{32}?\] for asset '.*' conflicts with") {
         for ($i = $LineNumber; $i -lt $LogFileContent.Length; $i++) {
             if ($LogFileContent[$i] -eq "Assigning a new guid.") {
-                Write-Host "Found duplicated GUID, Unity will non-deterministically use one of them, please manually "
-                Write-Host "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally."
+                Write-Debug "Found duplicated GUID, Unity will non-deterministically use one of them, please manually "
+                Write-Debug "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally."
 
                 # Found the end of the guid conflict message - output to the console
                 # all lines between these two locations (including the assigning a new guid message
                 # in case it falls on the same line)
                 for ($j = $LineNumber; $j -le $i; $j++) {
-                    Write-Host $LogFileContent[$j]
+                    Write-Debug $LogFileContent[$j]
                 }
                 return $true
             }
@@ -50,7 +50,7 @@ if (-not $LogFile) {
     throw "-LogFile is a required flag"
 }
 
-Write-Output "Checking $LogFile for build validation errors"
+Write-Debug "Checking $LogFile for build validation errors"
 
 $logFileContent = Get-Content $LogFile
 
@@ -66,10 +66,10 @@ for ($i = 0; $i -lt $logFileContent.Length; $i++) {
 }
 
 if ($containsError) {
-    Write-Output "Validation errors found, please see above for details"
+    Write-Debug "Validation errors found, please see above for details"
     exit 1;
 }
 else {
-    Write-Output "No validation errors found"
+    Write-Debug "No validation errors found"
     exit 0;
 }

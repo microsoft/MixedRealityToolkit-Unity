@@ -8,12 +8,13 @@ function GetChangedFiles {
         [string]$RepoRoot
     )
     $RawContent = Get-Content -Path $Filename
-    [System.Collections.ArrayList]$ProcessedContent = @()
+    $ProcessedContent = @()
     foreach ($Filename in $RawContent) {
         $joinedPath = Join-Path -Path $RepoRoot -ChildPath $Filename
-        $ProcessedContent.Add($joinedPath)
+        $ProcessedContent += $joinedPath
     }
-    return $ProcessedContent
+    
+    $ProcessedContent
 }
 
 <#

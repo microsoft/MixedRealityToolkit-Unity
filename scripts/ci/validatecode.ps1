@@ -40,8 +40,6 @@ param(
     [string]$RepoRoot
 )
 
-Import-Module (Resolve-Path("common.psm1"))
-
 function CheckBooLang(
     [string]$FileName,
     [string[]]$FileContent,
@@ -53,8 +51,8 @@ function CheckBooLang(
         Returns true if such a reference exists.
     #>
     if ($FileContent[$LineNumber] -match "^using Boo\.Lang;") {
-        Write-Host "An instance of Boo.Lang was found in $FileName at line $LineNumber "
-        Write-Host "Use System.Collections instead."
+        Write-Warning "An instance of Boo.Lang was found in $FileName at line $LineNumber "
+        Write-Warning "Use System.Collections instead."
         return $true;
     }
     return $false
@@ -81,9 +79,9 @@ function CheckEmptyDoccomment(
         # and values in the tag itself)
         $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
         if ($FileContent[$LineNumber] -match $matcher) {
-            Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
-            Write-Host "Delete the line or add a description "
-            Write-Host $FileContent[$LineNumber]
+            Write-Warning "An empty doccomment was found in $FileName at line $LineNumber "
+            Write-Warning "Delete the line or add a description "
+            Write-Warning $FileContent[$LineNumber]
             $containsEmptyDoccomment = $true
         }
     }
@@ -101,8 +99,8 @@ function CheckMainCamera(
         Returns true if such a reference exists.
     #>
     if ($FileName -notmatch "CameraCache.cs" -and $FileContent[$LineNumber] -match "Camera\.main") {
-        Write-Host "An instance of Camera.main was found in $FileName at line $LineNumber "
-        Write-Host "Use CameraCache.Main instead."
+        Write-Warning "An instance of Camera.main was found in $FileName at line $LineNumber "
+        Write-Warning "Use CameraCache.Main instead."
         return $true;
     }
 
@@ -120,8 +118,8 @@ function CheckAssemblyCSharp(
         Returns true if such a reference exists.
     #>
     if ($FileName -and $FileContent[$LineNumber] -match "Assembly-CSharp") {
-        Write-Host "An instance of 'Assembly-CSharp' was found in $FileName at line $LineNumber"
-        Write-Host "Please update this to reference the correct assembly."
+        Write-Warning "An instance of 'Assembly-CSharp' was found in $FileName at line $LineNumber"
+        Write-Warning "Please update this to reference the correct assembly."
         return $true
     }
     return $false
@@ -138,8 +136,8 @@ function CheckCustomProfile(
         Returns true if such a reference exists.
     #>
     if ($FileName -notmatch "Examples" -and $FileContent[$LineNumber] -match "isCustomProfile: 1") {
-        Write-Host "An instance of 'isCustomProfile: 1' was found in $FileName at line $LineNumber"
-        Write-Host "Please update this to 'isCustomProfile: 0' instead."
+        Write-Warning "An instance of 'isCustomProfile: 1' was found in $FileName at line $LineNumber"
+        Write-Warning "Please update this to 'isCustomProfile: 0' instead."
         return $true
     }
     return $false
@@ -207,10 +205,10 @@ function CheckHardcodedPath(
         if (-Not $HardcodedPathExceptions.Contains($relativeFileName) -Or
                 ($HardcodedPathExceptions.Contains($relativeFileName) -And
                  -Not $HardcodedPathExceptions[$relativeFileName].Contains($trimmed))) {
-                     Write-Host $trimmed
-            Write-Host "Hardcoded path detected in $FileName - $trimmed"
-            Write-Host "Please delete usage of hardcoded path or add an exception in HardcodedPathExceptions"
-            Write-Host "if this is a valid hardcoded path usage."
+                     Write-Warning $trimmed
+            Write-Warning "Hardcoded path detected in $FileName - $trimmed"
+            Write-Warning "Please delete usage of hardcoded path or add an exception in HardcodedPathExceptions"
+            Write-Warning "if this is a valid hardcoded path usage."
             $containsIssue = $true
         }
     }
@@ -226,7 +224,7 @@ function CheckForMetaFile(
         Returns true if the meta is missing.
     #>
     if (-not (Test-Path ($FileName + ".meta"))) {
-        Write-Host "Meta file missing for $FileName. Please be sure to check it in alongside this file."
+        Write-Warning "Meta file missing for $FileName. Please be sure to check it in alongside this file."
         return $true;
     }
     return $false;
@@ -242,7 +240,7 @@ function CheckForActualFile(
     #>
     # Remove .meta from path
     if (-not (Test-Path $FileName.Substring(0, $FileName.LastIndexOf('.')))) {
-        Write-Host "Actual file missing for meta file $FileName. Please be sure to check it in or remove this meta."
+        Write-Warning "Actual file missing for meta file $FileName. Please be sure to check it in or remove this meta."
         return $true;
     }
     return $false;
@@ -315,7 +313,7 @@ function CheckUnityScene(
     $NumPlayspaces = $MatchesPlayspaces.Matches.Count
 
     if ($NumPlayspaces -gt 1){
-        Write-Host "There are multiple MixedRealityPlayspace objects in $FileName, delete the extra playspaces from the unity scene."
+        Write-Warning "There are multiple MixedRealityPlayspace objects in $FileName, delete the extra playspaces from the unity scene."
         $containsIssue = $true
     }
 
@@ -331,19 +329,21 @@ function CheckUnityScene(
 }
 
 if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
-    Write-Output "Checking only changed files for code issues: $ChangesFile"
+    Import-Module -Force (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
+
+    Write-Warning "Checking only changed files for code issues: $ChangesFile"
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
-    foreach ($changedFile in $changedFiles) {
-        if ((IsCSharp -Filename $changedFile -and CheckScript $changedFile) -or
-            (IsAsset -Filename $changedFile -and CheckAsset $changedFile) -or
-            (IsUnityScene -Filename $changedFile -and CheckUnityScene $changedFile) -or
-            (IsMetaFile -Filename $changedFile -and CheckForActualFile $changedFile)) {
+    ForEach ($changedFile in $changedFiles) {
+        if (((IsCSharp -Filename $changedFile) -and (CheckScript $changedFile)) -or
+            ((IsAsset -Filename $changedFile) -and (CheckAsset $changedFile)) -or
+            ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
+            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile))) {
             $containsIssue = $true;
         }
     }
 }
 else {
-    Write-Output "Checking $Directory for common code issues"
+    Write-Warning "Checking $Directory for common code issues"
 
     $codeFiles = Get-ChildItem $Directory *.cs -Recurse | Select-Object FullName
     $containsIssue = $false
@@ -384,10 +384,10 @@ foreach ($folder in $folders) {
 }
 
 if ($containsIssue) {
-    Write-Output "Issues found, please see above for details"
+    Write-Warning "Issues found, please see above for details"
     exit 1;
 }
 else {
-    Write-Output "No issues found"
+    Write-Warning "No issues found"
     exit 0;
 }

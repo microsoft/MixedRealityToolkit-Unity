@@ -34,8 +34,6 @@ param(
     [string]$RepoRoot
 )
 
-Import-Module (Resolve-Path("common.psm1"))
-
 function CheckDocLinks(
     [string]$FileName,
     [string[]]$FileContent,
@@ -47,9 +45,9 @@ function CheckDocLinks(
         link. Returns true if found.
     #>
     if ($FileContent[$LineNumber] -match "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation") {
-        Write-Host "An non-relative doc link was found in $FileName at line $LineNumber "
-        Write-Host "Avoid doc links containing https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation "
-        Write-Host "and use relative links instead."
+        Write-Debug "An non-relative doc link was found in $FileName at line $LineNumber "
+        Write-Debug "Avoid doc links containing https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation "
+        Write-Debug "and use relative links instead."
         return $true;
     }
     return $false
@@ -73,18 +71,21 @@ function CheckDocument(
 }
 
 if ($ChangesFile -and Test-Path $Output -PathType leaf) {
-    Write-Output "Checking only changed files for doc issues:"
+
+    Import-Module (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
+
+    Write-Debug "Checking only changed files for doc issues:"
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
 
     foreach ($changedFile in $changedFiles) {
-        Write-Output "Checking $changedFile"
+        Write-Debug "Checking $changedFile"
         if (IsMarkdown -Filename $changedFile -and CheckDocument $changedFile) {
             $containsIssue= true;
         }
     }
 }
 else {
-    Write-Output "Checking $Directory for common doc issues"
+    Write-Debug "Checking $Directory for common doc issues"
 
     $docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
     $containsIssue = $false
@@ -96,10 +97,10 @@ else {
 }
 
 if ($containsIssue) {
-    Write-Output "Issues found, please see above for details"
+    Write-Debug "Issues found, please see above for details"
     exit 1;
 }
 else {
-    Write-Output "No issues found"
+    Write-Debug "No issues found"
     exit 0;
 }

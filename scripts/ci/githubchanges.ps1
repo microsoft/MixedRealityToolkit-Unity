@@ -22,7 +22,7 @@
 .PARAMETER RepoRoot
     The root folder of the repo - used to detect which files no longer exist
 .EXAMPLE
-    .\githubchanges.ps1 -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk
+    .\githubchanges.ps1 -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
 #>
 param(
     [string]$PullRequestId,
@@ -46,10 +46,18 @@ if ([string]::IsNullOrEmpty($PullRequestId) -or [string]::IsNullOrEmpty($TargetB
 if (Test-Path $Output -PathType leaf) {
     Remove-Item $Output
 }
+New-Item -ItemType File -Force -Path $Output
+
+# Create the path to the .git file in the repo root.
+$gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
+
+git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
+
+Write-Output "git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch"
 
 # The set of changed files is the diff between the target branch and the pull request
 # branch that was checked out locally
-$ChangedFiles=$(git diff --name-only pull/$PullRequestId/merge $TargetBranch 2>&1)
+$ChangedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch 2>&1)
 
 foreach ($ChangedFile in $ChangedFiles) {
     $JoinedPath = Join-Path -Path $RepoRoot -ChildPath $ChangedFile
