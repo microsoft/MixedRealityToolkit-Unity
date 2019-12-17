@@ -279,6 +279,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             LoadWindowsSdkPaths();
             UpdateBuilds();
 
+            Rest.UseSSL = UwpBuildDeployPreferences.UseSSL;
+
             localConnection = JsonUtility.FromJson<DeviceInfo>(UwpBuildDeployPreferences.LocalConnectionInfo);
 
             portalConnections = JsonUtility.FromJson<DevicePortalConnections>(UwpBuildDeployPreferences.DevicePortalConnections);
@@ -639,6 +641,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     {
                         UwpBuildDeployPreferences.UseSSL = newUseSSL;
                         Rest.UseSSL = newUseSSL;
+                    }
+                    else if (UwpBuildDeployPreferences.UseSSL != Rest.UseSSL)
+                    {
+                        Rest.UseSSL = UwpBuildDeployPreferences.UseSSL;
                     }
                 }
                 else
