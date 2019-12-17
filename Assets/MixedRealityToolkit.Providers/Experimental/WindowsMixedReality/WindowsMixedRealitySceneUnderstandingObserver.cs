@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         public override void Initialize()
         {
             base.Initialize();
-            normalizedQuadMesh = new Mesh();
             MeshExtensions.CreateMeshFromQuad(normalizedQuadMesh, 1, 1);
         }
 
@@ -69,13 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             firstUpdateTimer = new Timer()
             {
-                Interval = Math.Max(FirstUpdateDelay, .001) * 1000.0, // convert to milliseconds // XXX check we need max or let firstupdatedelay=0 works
+                Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
                 AutoReset = false
             };
 
             updateTimer = new Timer
             {
-                Interval = UpdateInterval * 1000.0, // convert to milliseconds
+                Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
                 AutoReset = false
             };
 
@@ -102,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             if (canUpdateScene)
             {
-                GetScene(); // this is async void, we don't wait on it.
                 canUpdateScene = false;
+                GetScene(); // this is async void, we don't wait on it.
             }
 
             if (instantiationQueue.Count > 0)
@@ -201,6 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
+
             canUpdateScene = true;
         }
 
@@ -251,9 +251,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private Queue<SpatialAwarenessSceneObject> instantiationQueue = new Queue<SpatialAwarenessSceneObject>();
         private TextAsset serializedScene = null;
         private byte[] sceneBytes;
+        private bool canGetScene = true;
         private bool canUpdateScene = false;
         private bool sceneNeedsAlignment;
-        private Mesh normalizedQuadMesh;
+        private Mesh normalizedQuadMesh = new Mesh();
+        private string surfaceTypeName;
 
 #if WINDOWS_UWP
         /// <summary>
@@ -332,7 +334,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private async void GetScene()
         {
-            await GetSceneAsync();
+            // Prevent a flood of auto-update messages
+            // finish getting whole scene before getting another
+            if (canGetScene)
+            {
+                Debug.Log("GetScene()");
+                canGetScene = false;
+                await GetSceneAsync();
+                canGetScene = true;
+            }
         }
 
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
@@ -395,6 +405,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private List<SpatialAwarenessSceneObject> ConvertSceneObjects(List<SceneObject> sceneObjects)
         {
+            Debug.Log("Started converting");
+            Assert.IsTrue(sceneObjects.Count > 0);
+
             convertedResult.Clear();
 
             int sceneObjectCount = sceneObjects.Count;
@@ -417,10 +430,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             if (ShouldLoadFromFile)
             {
                 // For this particular workflow
-                // First bytes are saved from device
-                // Second bytes are taken off device and saved to unity StreamingAssets
-                // Third, bytes file is specified MRTK profile
-                // Now, at runtime, the bytes file will be loaded from file
+                // Build DemoSpatialAwareness example, save bytes
+                // Take bytes off device
+                // Specify bytes file in MRTK profile
+                // If running on device (vs editor) save bytes to unity StreamingAssets
+                // Now the bytes file will be loaded from file
 
                 if (!SerializedScene)
                 {
@@ -450,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // Orient data so floor with largest area is aligned to XZ plane
                 if (sceneNeedsAlignment)
                 {
-                    Quaternion sceneRotation = AlignedRotationWithScene(scene); // XXX feed this sasos instead of scene!
+                    Quaternion sceneRotation = AlignedRotationWithScene(sasos);
                     ObservedObjectParent.transform.rotation = sceneRotation;
                     sceneNeedsAlignment = false;
                 }
@@ -697,8 +711,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             return result;
         }
-
-        private string surfaceTypeName;
 
         private void Instantiate(SpatialAwarenessSceneObject saso)
         {
@@ -948,49 +960,49 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// Orients the root game object, such that the Scene Understanding floor lies on the Unity world's X-Z plane.
         /// </summary>
         /// <param name="scene">Scene Understanding scene.</param>
-        private Quaternion AlignedRotationWithScene(Scene scene)
+        private Quaternion AlignedRotationWithScene(List<SpatialAwarenessSceneObject> sasos)
         {
             float areaForlargestFloorSoFar = 0;
-            SceneObject floorSceneObject = null;
-            SceneQuad floorQuad = null;
+            SpatialAwarenessSceneObject floorSceneObject = null;
+            SpatialAwarenessSceneObject.Quad? floorQuad = null;
 
             // Find the largest floor quad.
-            var count = scene.SceneObjects.Count;
+            var count = sasos.Count;
             for (var i = 0; i < count; ++i)
             {
-                if (scene.SceneObjects[i].Kind == SceneObjectKind.Floor)
+                if (sasos[i].SurfaceType == SpatialAwarenessSurfaceTypes.Floor)
                 {
-                    var quads = scene.SceneObjects[i].Quads;
+                    var quads = sasos[i].Quads;
 
-                    if (quads != null)
+                    Assert.IsNotNull(quads);
+
+                    var qcount = quads.Count;
+                    for (int j = 0; j < qcount; j++)
                     {
-                        var qcount = quads.Count;
-                        for (int j = 0; j < qcount; j++)
-                        {
-                            float quadArea = quads[j].Extents.X * quads[j].Extents.Y;
+                        float quadArea = quads[j].extents.x * quads[j].extents.y;
 
-                            if (quadArea > areaForlargestFloorSoFar)
-                            {
-                                areaForlargestFloorSoFar = quadArea;
-                                floorSceneObject = scene.SceneObjects[i];
-                                floorQuad = quads[j];
-                            }
+                        if (quadArea > areaForlargestFloorSoFar)
+                        {
+                            areaForlargestFloorSoFar = quadArea;
+                            floorSceneObject = sasos[i];
+                            floorQuad = quads[j];
                         }
                     }
                 }
             }
 
-            if (floorQuad != null)
+            if (floorQuad.HasValue)
             {
                 // Compute the floor quad's normal.
-                float halfWidthMeters = floorQuad.Extents.X * .5f;
-                float halfHeightMeters = floorQuad.Extents.Y * .5f;
+                float halfWidthMeters = floorQuad.Value.extents.x * .5f;
+                float halfHeightMeters = floorQuad.Value.extents.y * .5f;
 
                 System.Numerics.Vector3 point1 = new System.Numerics.Vector3(-halfWidthMeters, -halfHeightMeters, 0);
                 System.Numerics.Vector3 point2 = new System.Numerics.Vector3(halfWidthMeters, -halfHeightMeters, 0);
                 System.Numerics.Vector3 point3 = new System.Numerics.Vector3(-halfWidthMeters, halfHeightMeters, 0);
 
-                System.Numerics.Matrix4x4 floorTransform = floorSceneObject.GetLocationAsMatrix();
+                System.Numerics.Matrix4x4 floorTransform = floorSceneObject.TransformMatrix;
+
                 floorTransform = SwapRuntimeAndUnityCoordinateSystem(floorTransform);
 
                 System.Numerics.Vector3 tPoint1 = System.Numerics.Vector3.Transform(point1, floorTransform);
