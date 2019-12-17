@@ -909,7 +909,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             rectangularBounds = null;
 
             // Boundaries are supported for Room Scale experiences only.
-            if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
+            if (inputSubsystem.GetTrackingOriginMode() != TrackingOriginModeFlags.Floor)
             {
                 return;
             }
@@ -954,11 +954,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         /// <summary>
-        /// Updates the <see cref="TrackingSpaceType"/> on the XR device.
+        /// Updates the <see cref="TrackingOriginModeFlags"/> on the XR device.
         /// </summary>
         private void SetTrackingSpace()
         {
-            TrackingSpaceType trackingSpace;
+            TrackingOriginModeFlags trackingOriginMode;
 
             // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
             // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
@@ -966,22 +966,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 case ExperienceScale.Standing:
                 case ExperienceScale.Room:
-                    trackingSpace = TrackingSpaceType.RoomScale;
+                    trackingOriginMode = TrackingOriginModeFlags.Floor;
                     break;
 
                 case ExperienceScale.OrientationOnly:
                 case ExperienceScale.Seated:
                 case ExperienceScale.World:
-                    trackingSpace = TrackingSpaceType.Stationary;
+                    trackingOriginMode = TrackingOriginModeFlags.Device;
                     break;
 
                 default:
-                    trackingSpace = TrackingSpaceType.Stationary;
-                    Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Stationary tracking space.");
+                    trackingOriginMode = TrackingOriginModeFlags.Device;
+                    Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Device tracking space.");
                     break;
             }
 
-            bool trackingSpaceSet = XRDevice.SetTrackingSpaceType(trackingSpace);
+            bool trackingSpaceSet = inputSubsystem.TrySetTrackingOriginMode(trackingOriginMode);
 
             if (!trackingSpaceSet)
             {
