@@ -10,14 +10,31 @@
 
     Returns 0 if there are no issues, non-zero if there are.
 .PARAMETER Directory
-    The directory containing the docs to validate.
+    The directory containing the docs to validate. This is the fallback if
+    ChangesFile doesn't exist or isn't valid, and as a result this is
+    always required.
+.PARAMETER ChangesFile
+    The filename containing the list of files to scope the code validation
+    to. This is useful in pull request validation when there isn't a need
+    to check every single file in the repo for changes (i.e. only the list
+    of changed files)
+
+    If ChangesFile doesn't exist (i.e. not specified, null, is specified but
+    the actual file doesn't exist), then this defaults to checking for everything
+    in the repo.
+.PARAMETER RepoRoot
+    The directory containing the repo root. Used in conjunction with ChangesFile
 .EXAMPLE
     .\validatedocs.ps1 -Directory c:\path\to\MRTK\Documentation
 #>
 param(
     [Parameter(Mandatory=$true)]
-    [string]$Directory
+    [string]$Directory,
+    [string]$ChangesFile,
+    [string]$RepoRoot
 )
+
+Import-Module ./common.psm1
 
 function CheckDocLinks(
     [string]$FileName,
@@ -55,13 +72,26 @@ function CheckDocument(
     return $containsIssue
 }
 
-Write-Output "Checking $Directory for common doc issues"
+if ($ChangesFile -and Test-Path $Output -PathType leaf) {
+    Write-Output "Checking only changed files for doc issues:"
+    $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
 
-$docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
-$containsIssue = $false
-foreach ($docFile in $docFiles) {
-    if (CheckDocument $docFile.FullName) {
-        $containsIssue = $true
+    foreach ($changedFile in $changedFiles) {
+        Write-Output "Checking $changedFile"
+        if (IsMarkdown -Filename $changedFile -and CheckDocument $changedFile) {
+            $containsIssue= true;
+        }
+    }
+}
+else {
+    Write-Output "Checking $Directory for common doc issues"
+
+    $docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
+    $containsIssue = $false
+    foreach ($docFile in $docFiles) {
+        if (CheckDocument $docFile.FullName) {
+            $containsIssue = $true
+        }
     }
 }
 

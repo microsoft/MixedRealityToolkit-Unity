@@ -16,7 +16,9 @@
 
     Returns 0 if there are no issues, non-zero if there are.
 .PARAMETER Directory
-    The directory containing the code to validate. 
+    The directory containing the code to validate. This is the fallback if
+    ChangesFile doesn't exist or isn't valid, and as a result this is
+    always required.
 .PARAMETER ChangesFile
     The filename containing the list of files to scope the code validation
     to. This is useful in pull request validation when there isn't a need
@@ -26,14 +28,19 @@
     If ChangesFile doesn't exist (i.e. not specified, null, is specified but
     the actual file doesn't exist), then this defaults to checking for everything
     in the repo.
+.PARAMETER RepoRoot
+    The directory containing the repo root. Used in conjunction with ChangesFile
 .EXAMPLE
-    .\validatecode.ps1 -Directory c:\path\to\MRTK\Assets
+    .\validatecode.ps1 -Directory c:\path\to\MRTK\Assets -ChangesFile c:\path\to\changes\file.txt -RepoRoot c:\path\to\MRTK
 #>
 param(
     [Parameter(Mandatory=$true)]
     [string]$Directory,
-    [string]$ChangesFile
+    [string]$ChangesFile,
+    [string]$RepoRoot
 )
+
+Import-Module ./common.psm1
 
 function CheckBooLang(
     [string]$FileName,
@@ -323,41 +330,55 @@ function CheckUnityScene(
     return $containsIssue
 }
 
-Write-Output "Checking $Directory for common code issues"
-
-$codeFiles = Get-ChildItem $Directory *.cs -Recurse | Select-Object FullName
-$containsIssue = $false
-foreach ($codeFile in $codeFiles) {
-    if (CheckScript $codeFile.FullName) {
-        $containsIssue = $true
+if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
+    Write-Output "Checking only changed files for code issues: $ChangesFile"
+    $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
+    foreach ($changedFile in $changedFiles) {
+        if ((IsCSharp -Filename $changedFile -and CheckScript $changedFile) -or
+            (IsAsset -Filename $changedFile -and CheckAsset $changedFile) -or
+            (IsUnityScene -Filename $changedFile -and CheckUnityScene $changedFile) -or
+            (IsMetaFile -Filename $changedFile -and CheckForActualFile $changedFile)) {
+            $containsIssue = $true;
+        }
     }
 }
+else {
+    Write-Output "Checking $Directory for common code issues"
 
-$codeFiles = Get-ChildItem $Directory *.asset -Recurse | Select-Object FullName
-foreach ($codeFile in $codeFiles) {
-    if (CheckAsset $codeFile.FullName) {
-        $containsIssue = $true
+    $codeFiles = Get-ChildItem $Directory *.cs -Recurse | Select-Object FullName
+    $containsIssue = $false
+    foreach ($codeFile in $codeFiles) {
+        if (CheckScript $codeFile.FullName) {
+            $containsIssue = $true
+        }
     }
-}
 
-# Check all Unity scenes for extra MixedRealityPlayspace objects 
-$codeFiles = Get-ChildItem $Directory *.unity -Recurse | Select-Object FullName
-foreach ($codeFile in $codeFiles) {
-    if (CheckUnityScene $codeFile.FullName) {
-        $containsIssue = $true
+    $codeFiles = Get-ChildItem $Directory *.asset -Recurse | Select-Object FullName
+    foreach ($codeFile in $codeFiles) {
+        if (CheckAsset $codeFile.FullName) {
+            $containsIssue = $true
+        }
+    }
+
+    # Check all Unity scenes for extra MixedRealityPlayspace objects 
+    $codeFiles = Get-ChildItem $Directory *.unity -Recurse | Select-Object FullName
+    foreach ($codeFile in $codeFiles) {
+        if (CheckUnityScene $codeFile.FullName) {
+            $containsIssue = $true
+        }
+    }
+    
+    $metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
+    foreach ($meta in $metas) {
+        if (CheckForActualFile $meta.FullName) {
+            $containsIssue = $true
+        }
     }
 }
 
 $folders = Get-ChildItem $Directory -Directory -Recurse | Select-Object FullName
 foreach ($folder in $folders) {
     if (CheckForMetaFile $folder.FullName) {
-        $containsIssue = $true
-    }
-}
-
-$metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
-foreach ($meta in $metas) {
-    if (CheckForActualFile $meta.FullName) {
         $containsIssue = $true
     }
 }

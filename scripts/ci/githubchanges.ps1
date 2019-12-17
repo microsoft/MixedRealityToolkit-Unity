@@ -3,12 +3,14 @@
     Given a GitHub PullRequest ID, this generates a file containing a list of files that were changed
     in that pull request.
 .DESCRIPTION
-    Generates a file containing a list of all modified files (added/removed/modified) in
+    Generates a file containing a list of all modified files (added/modified) in
     the given pull request. The output file contains a list that is newline delimited, for
     example:
 
     Assets/MixedRealityToolkit.SDK/AssemblyInfo.cs
     Assets/MixedRealityToolkit.Tests/PlayModeTests/ManipulationHandlerTests.cs
+
+    The file will not contain files that have been completely deleted
 
 .PARAMETER Username
     The username associated with the Personal Access Token. This is optional in that
@@ -21,8 +23,10 @@
     to generate this list of changed files.
 .PARAMETER Output
     The output filename containing the list of modified files.
+.PARAMETER RepoRoot
+    The root folder of the repo - used to detect which files no longer exist
 .EXAMPLE
-    .\validatecode.ps1 -Directory c:\path\to\MRTK\Assets
+    .\githubchanges.ps1 -Username username -Token token -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to
 #>
 param(
     [string]$Username,
@@ -30,7 +34,9 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$Output,
     [Parameter(Mandatory=$true)]
-    [string]$PullRequestId
+    [string]$PullRequestId,
+    [Parameter(Mandatory=$true)]
+    [string]$RepoRoot
 )
 
 # Both $Username and $Token are actually required inputs to this script, but may not
@@ -66,5 +72,11 @@ $Response = Invoke-WebRequest -Uri $Uri -Headers $Headers -UseBasicParsing
 $ParsedResponse = ConvertFrom-Json $Response.content
 
 foreach ($FileInfo in $ParsedResponse) {
-    Add-Content -Path $Output -Value $FileInfo.filename
+    $JoinedPath = Join-Path -Path $RepoRoot -ChildPath $FileInfo.filename
+    # Only save the path if the file still exists - also, do not store the absolute path
+    # of the file, in case this set of information is used later in the pipeline on a different
+    # machine/context.
+    if (Test-Path $JoinedPath -PathType leaf) {
+        Add-Content -Path $Output -Value $FileInfo.filename
+    }
 }
