@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// Provides a solver that follows the TrackedObject/TargetTransform in an orbital motion.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/Orbital")]
     public class Orbital : Solver
     {
         [SerializeField]

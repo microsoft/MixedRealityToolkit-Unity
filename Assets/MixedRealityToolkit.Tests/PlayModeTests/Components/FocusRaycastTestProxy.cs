@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// including positioning (through <see cref="RayLineData"/>), as well as the GameObject that the test author expects to be selected
     /// as the pointer's new focus target after the values are set on the <see cref="TestPointer"/>, and it is updated by the <see cref="Toolkit.Input.FocusProvider"/>.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Tests/FocusRaycastTestProxy")]
     public class FocusRaycastTestProxy : MonoBehaviour
     {
         /// <summary>
@@ -40,7 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private void Awake()
         {
-            RayLineData = RayLineData ?? GetComponent<BaseMixedRealityLineDataProvider>();
+            if (RayLineData == null)
+            {
+                RayLineData = GetComponent<BaseMixedRealityLineDataProvider>();
+            }
         }
 
         private void OnDrawGizmos()

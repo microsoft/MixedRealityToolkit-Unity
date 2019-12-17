@@ -1,22 +1,29 @@
-# Scene Transition Service
+# Scene transition service
+
 This extension simplifies the business of fading out a scene, displaying a progress indicator, loading a scene, then fading back in.
 
 Scene operations are driven by the SceneSystem service, but any Task-based operation can be used to drive a transition.
 
 ## Enabling the extension
+
 To enable the extension, open your RegisteredServiceProvider profile. Click Register a new Service Provider to add a new configuration. In the Component Type field, select SceneTransitionService. In the Configuration Profile field, select the default scene transition profile included with the extension.
 
-## Profile Options
-### Use Default Progress Indicator
+## Profile options
+
+### Use default progress indicator
+
 If checked, the default progress indicator prefab will be used when no progress indicator object is provided when calling `DoSceneTransition.` If a progress indicator object is provided, the default will be ignored.
 
-### Use Fade Color
+### Use fade color
+
 If checked, the transition service will apply a fade during your transition. This setting can be changed at runtime via the service's `UseFadeColor` property.
 
-### Fade Color
-Controls the color of the fade effect. Alpha is ingored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
+### Fade color
 
-### Fade Targets
+Controls the color of the fade effect. Alpha is ignored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
+
+### Fade targets
+
 Controls which cameras will have a fade effect applied to them. This setting can be changed at runtime via the service's `FadeTargets` property.
 
 Setting | Targeted Cameras
@@ -26,21 +33,23 @@ UI | Applies fade effect to cameras on the UI layer. (Does not affect overlay UI
 All | Applies to both main and UI cameras.
 Custom | Applies to a custom set of cameras provided via `SetCustomFadeTargetCameras`
 
-### Fade Out Time / Fade In Time
+### Fade out time / fade in time
+
 Default settings for the duration of a fade on entering / exiting a transition. These settings can be changed at runtime via the service's `FadeOutTime` and `FadeInTime` properties.
 
-### Camera Fader Type
+### Camera fader type
+
 Which `ICameraFader` class to use for applying a fade effect to cameras. The default `CameraFaderQuad` class instantiates a quad with a transparent material in front of the target camera close to the clip plane. Another approach might be to use a post effects system.
 
-# Using the Extension
+## Using the extension
 
 You use the transition service by passing Tasks that are run while the camera is faded out.
 
-## Using Scene System Tasks
+### Using scene system tasks
 
 In most cases you will be using Tasks supplied by the SceneSystem service:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -55,10 +64,11 @@ private async void TransitionToScene()
 }
 ```
 
-## Using Custom Tasks
+### Using custom tasks
+
 In other cases you may want to perform a transition without actually loading a scene:
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
@@ -71,14 +81,15 @@ private async void TransitionToScene()
         );
 }
 
-private async Task ResetScene() 
+private async Task ResetScene()
 {
-    // Go through all enemies in the current scene and move them back to starting positions   
+    // Go through all enemies in the current scene and move them back to starting positions
 }
 ```
 
 Or you may want to load a scene without using the SceneSystem service:
-```csharp
+
+```c#
 private async void TransitionToScene()
 {
     ISceneTransitionService transition = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
@@ -101,9 +112,11 @@ private async Task LoadScene(string sceneName)
 }
 ```
 
-## Using Multiple Tasks
+### Using multiple tasks
+
 You can also supply multiple tasks, which will be executed in order:
-```csharp
+
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -144,13 +157,13 @@ private async Task FadeAudio(float targetVolume, float duration)
 }
 ```
 
-## Using the Progress Indicator
+## Using the progress indicator
 
 A progress indicator is anything that implements the `IProgressIndicator` interface. This can take the form of a splash screen, a 3D tagalong loading indicator, or anything else that provides feedback about transition progress.
 
 If `UseDefaultProgressIndicator` is checked in the SceneTransitionService profile, a progress indicator will be instantiated when a transition begins. For the duration of the transition this indicator's `Progress` and `Message` properties can be accessed via that service's `SetProgressValue` and `SetProgressMessage` methods.
 
-```csharp
+```c#
 private async void TransitionToScene()
 {
     IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();

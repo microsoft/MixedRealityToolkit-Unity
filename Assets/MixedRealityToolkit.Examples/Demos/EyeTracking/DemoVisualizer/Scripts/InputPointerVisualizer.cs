@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     /// This visualizer can be used to represent pointer input data, e.g., from a handheld controller,
     /// from hand, head or eye tracking. In general, it assumes a pointing origin and direction,
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InputPointerVisualizer")]
     public class InputPointerVisualizer : MonoBehaviour
     {
         public enum VisModes

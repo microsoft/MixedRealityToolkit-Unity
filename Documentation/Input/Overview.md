@@ -1,6 +1,7 @@
-# Input Overview
+# Input overview
 
 The Input System in MRTK allows you to:
+
 - Consume inputs from a variety of input sources, such as 6 DOF controllers, articulated hands or speech, via input events.
 - Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
 - Setup pointers attached to controllers to drive UI components via focus and pointer events.
@@ -21,4 +22,4 @@ Controllers can have [**Pointers**](Pointers.md) attached to them that query the
 
 While you can handle [input events directly in UI components](InputEvents.md), it is recommended to use [pointer events](pointers.md#pointer-event-interfaces) to keep the implementation device-independent.
 
-MRTK also provides several convenience methods to query input state directly in a device-independent way. See [Accessing Input State in MRTK](InputState.md) for more details.
+MRTK also provides several convenience methods to query input state directly in a device-independent way. See [Accessing input state in MRTK](InputState.md) for more details.

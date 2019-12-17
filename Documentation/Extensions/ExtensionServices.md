@@ -3,14 +3,14 @@
 Extension services are components that extend the functionality of the Mixed Reality Toolkit. These services may be provided
 by the MRTK or by other parties.
 
-## Creating an extenison service
+## Creating an extension service
 
 The most efficient way to create an extension service is to use the [extension service creation wizard](../Tools/ExtensionServiceCreationWizard.md).
 To start the extension service creation wizard, select **Mixed Reality Toolkit > Utilities > Create Extension Service**.
 
 ![Extension service creation wizard](../Images/ExtensionWizard/ExtensionServiceCreationWizard.png)
 
-The wizard automates the creation of the service components and ensures the proper interface inheritance. 
+The wizard automates the creation of the service components and ensures the proper interface inheritance.
 
 ![Components created by the extension service creation wizard](../Images/ExtensionWizard/ExtensionServiceComponents.png)
 
@@ -30,7 +30,7 @@ The extension service creation wizard can be used to register the service.
 
 The service can also be manually registered using the Mixed Reality Toolkit configuration inspector.
 
-![Manual extension service registration](../Images/Profiles/RegisterExtensionService.png) 
+![Manual extension service registration](../Images/Profiles/RegisterExtensionService.png)
 
 If the extension service uses a profile, please ensure that it is specified in the inspector.
 
@@ -43,7 +43,7 @@ The component name and priority can also be adjusted.
 Extension services are accessed, in code, using the [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry)
 as shown in the example below.
 
-``` c#
+```c#
 INewService service = null;
 if (MixedRealityServiceRegistry.TryGetService<INewService>(out service))
 {
@@ -51,7 +51,7 @@ if (MixedRealityServiceRegistry.TryGetService<INewService>(out service))
 }
 ```
 
-## See Also
+## See also
 
 - [Systems, extension services and data providers](../Architecture/SystemsExtensionsProviders.md)
 - [Extension service creation wizard](../Tools/ExtensionServiceCreationWizard.md)

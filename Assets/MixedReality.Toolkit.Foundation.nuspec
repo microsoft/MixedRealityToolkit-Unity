@@ -5,20 +5,24 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft,MixedReality</owners>
-    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
-    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/License.txt</licenseUrl>
+    <projectUrl>https://aka.ms/MRTK</projectUrl>
+    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
+    <dependencies>
+      <dependency id="Microsoft.Windows.MixedReality.DotNetWinRT" version="0.5.1037" />
+    </dependencies>
     <contentFiles>
       <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
     </contentFiles>
   </metadata>
   <files>
     <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit\toc.yml*" target="MRTK\" />
-    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Providers\License.txt*;MixedRealityToolkit.Providers\Version.txt*" target="MRTK\" />
+    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Providers\License.txt*;MixedRealityToolkit.Providers\Version.txt*;MixedRealityToolkit.Providers\WindowsMixedReality\DotNetAdapter*;MixedRealityToolkit.Providers\WindowsMixedReality\DotNetAdapter\**\*.*" target="MRTK\" />
     <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.SDK\License.txt*;MixedRealityToolkit.SDK\Version.txt*;MixedRealityToolkit.SDK\toc.yml*;MixedRealityToolkit.SDK\StandardAssets.meta;MixedRealityToolkit.SDK\StandardAssets\Fonts.meta;MixedRealityToolkit.SDK\StandardAssets\Materials.meta;MixedRealityToolkit.SDK\StandardAssets\Shaders.meta;MixedRealityToolkit.SDK\StandardAssets\Textures.meta" target="MRTK\" />
     <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Services\License.txt*;MixedRealityToolkit.Services\Version.txt*" target="MRTK\" />
 

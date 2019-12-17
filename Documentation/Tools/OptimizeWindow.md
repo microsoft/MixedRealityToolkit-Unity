@@ -1,4 +1,4 @@
-# Optimize Window
+# Optimize window
 
 The MRTK Optimize Window is a utility to help automate and inform in the process of configuring a mixed reality project for best [performance](../Performance/PerfGettingStarted.md) in Unity. This tool generally focuses on rendering configurations that when set to the correct preset can save milliseconds of processing.
 
@@ -20,7 +20,7 @@ A green check icon means that an optimal value has been configured in the projec
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_Settings.png)
 
-### Single Pass Instanced Rendering
+### Single Pass Instanced rendering
 
 [Single Pass instanced rendering](https://docs.unity3d.com/Manual/SinglePassInstancing.html) is the most efficient rendering path for mixed reality applications. This configuration ensures the render pipeline is executed only once for both eyes and that draw calls are instanced across both eyes.
 
@@ -58,6 +58,10 @@ This section will examine the number of lights currently in the scene as well as
 
  The tool also provides polygon count statistics. It can be very helpful to quickly identify which GameObjects have the highest polygon complexity in a given scene to target for optimizations.
 
+### Unity UI raycast analysis
+
+Graphics raycast operations are performed per pointer in MRTK to determine if any Unity UI elements are in focus. These raycasts can be quite expensive and to help improve performance, UI elements that do not need to be returned in the results should be disabled as raycast targets. Every [Graphic](https://docs.unity3d.com/2018.4/Documentation/ScriptReference/UI.Graphic.html) element has a [`Graphic.raycastTarget`](https://docs.unity3d.com/2018.4/Documentation/ScriptReference/UI.Graphic-raycastTarget.html) property. This tool will search for text UI elements that have this property enabled and thus are likely candidates to be disabled.
+
 ## Shader analysis
 
 The [Unity Standard shader](https://docs.unity3d.com/Manual/shader-StandardShader.html) can produce very high quality visual results for games but is not generally best suited for the performance needs of mixed reality applications, especially since such applications are generally GPU bounded. Thus, it is recommended to developers to utilize the [MRTK Standard shader](../README_MRTKStandardShader.md) to balance aesthetics & graphical features with performance.
@@ -66,7 +70,7 @@ The *Shader Analysis* tab scans the current project's Asset folder for materials
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png)
 
-## See Also
+## See also
 
 - [Performance](../Performance/PerfGettingStarted.md)
 - [Hologram Stabilization](../hologram-stabilization.md)

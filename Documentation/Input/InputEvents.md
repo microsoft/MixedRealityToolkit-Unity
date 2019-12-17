@@ -1,6 +1,6 @@
 # Input events
 
-The list below outlines all available input event interfaces to be implemented by a custom MonoBehavior component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
+The list below outlines all available input event interfaces to be implemented by a custom MonoBehaviour component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
 
 > [!IMPORTANT]
 > By default, a script will receive input events only if it is the GameObject in focus by a pointer or parent of a GameObject in focus.
@@ -40,8 +40,8 @@ At the script level, input events can be consumed by implementing one of the eve
 
 The code below demonstrates use of the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface. When the user says the words "smaller" or "bigger" while focusing on a GameObject with this `ShowHideSpeechHandler` class, the GameObject will scale itself by half or twice as much.
 
-```csharp
-public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
+```c#
+public class ShowHideSpeechHandler : MonoBehaviour, IMixedRealitySpeechHandler
 {
     ...
 
@@ -64,20 +64,20 @@ public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 
 ## Register for global input events
 
-To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehavior will receive input events along with any GameObject(s) currently in focus and other global registered listeners.
+To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehaviour will receive input events along with any GameObject(s) currently in focus and other global registered listeners.
 
 If an input event has been [marked as used](#how-to-stop-input-events), global registered handlers will still all receive callbacks. However, no focused GameObjects will receive the event.
 
 ### Global input registration example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler, // Handle source detected and lost
     IMixedRealityHandJointHandler // handle joint position updates for hands
 {
     private void OnEnable()
     {
-        // Instruct Input System that we would like to receive all input events of type 
+        // Instruct Input System that we would like to receive all input events of type
         // IMixedRealitySourceStateHandler and IMixedRealityHandJointHandler
         CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
@@ -94,7 +94,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
     // IMixedRealitySourceStateHandler interface
     public void OnSourceDetected(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
@@ -105,12 +105,12 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
     public void OnSourceLost(SourceStateEventData eventData)
     {
-        var hand = eventData.Controller as IMixedRealityHand)
+        var hand = eventData.Controller as IMixedRealityHand;
 
         // Only react to articulated hand input sources
         if (hand != null)
         {
-            Debug.Log("Source detected: " + hand.ControllerHandedness);
+            Debug.Log("Source lost: " + hand.ControllerHandedness);
         }
     }
 
@@ -132,7 +132,7 @@ Fallback input handlers are similar to registered global input handlers but are 
 
 ### Fallback input handler example
 
-```csharp
+```c#
 public class GlobalHandListenerExample : MonoBehaviour,
     IMixedRealitySourceStateHandler // Handle source detected and lost
 {
@@ -163,7 +163,7 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
 Every input event interface provides a [`BaseInputEventData`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputEventData) data object as a parameter to each function on the interface. This event data object extends from Unity's own [`AbstractEventData`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html).
 
-In order to stop an input event from propagating through it's execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.
+In order to stop an input event from propagating through its execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.
 
 > [!NOTE]
 > A component that calls the `Use()` method will stop other GameObjects from receiving it. However, other components on the current GameObject will still receive the input event and fire any related interface functions.

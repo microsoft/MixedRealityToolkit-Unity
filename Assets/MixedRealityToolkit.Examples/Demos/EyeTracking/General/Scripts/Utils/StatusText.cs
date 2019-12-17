@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/StatusText")]
     public class StatusText : MonoBehaviour
     {
         #region Singleton

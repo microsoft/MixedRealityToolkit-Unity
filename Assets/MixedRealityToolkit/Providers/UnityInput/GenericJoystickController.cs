@@ -24,10 +24,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float PointerOffsetAngle { get; protected set; } = 0f;
 
         private Vector2 dualAxisPosition = Vector2.zero;
-        protected Vector3 CurrentControllerPosition = Vector3.zero;
-        protected Quaternion CurrentControllerRotation = Quaternion.identity;
         private MixedRealityPose pointerOffsetPose = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The current position of this controller.
+        /// </summary>
+        protected Vector3 CurrentControllerPosition = Vector3.zero;
+
+        /// <summary>
+        /// The current rotation of this controller.
+        /// </summary>
+        protected Quaternion CurrentControllerRotation = Quaternion.identity;
+
+        /// <summary>
+        /// The previous pose of this controller.
+        /// </summary>
         protected MixedRealityPose LastControllerPose = MixedRealityPose.ZeroIdentity;
+
+        /// <summary>
+        /// The current pose of this controller.
+        /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
 
         /// <inheritdoc />
@@ -75,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         /// <summary>
-        /// Update an Interaction Bool data type from a Bool input 
+        /// Update an Interaction Bool data type from a Bool input
         /// </summary>
         /// <remarks>
         /// Raises an Input System "Input Down" event when the key is down, and raises an "Input Up" when it is released (e.g. a Button)
@@ -107,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 if (interactionMapping.BoolData)
                 {
                     CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -138,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // If our value changed raise it.
                 if (interactionMapping.Changed)
                 {
-                    // Raise input system Event if it enabled
+                    // Raise input system event if it's enabled
                     if (interactionMapping.BoolData)
                     {
                         CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -157,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // If our value changed raise it.
                 if (interactionMapping.Changed)
                 {
-                    // Raise input system Event if it enabled
+                    // Raise input system event if it's enabled
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }
             }
@@ -179,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
             }
         }
@@ -213,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }

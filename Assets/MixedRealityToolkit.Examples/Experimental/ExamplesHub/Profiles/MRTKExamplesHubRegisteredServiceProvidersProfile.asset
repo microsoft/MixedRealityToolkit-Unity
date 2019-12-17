@@ -16,7 +16,7 @@ MonoBehaviour:
   configurations:
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService,
-        Assembly-CSharp
+        Microsoft.MixedReality.Toolkit.Extensions.SceneTransitionService
     componentName: Scene Transition Service
     priority: 10
     runtimePlatform: 15

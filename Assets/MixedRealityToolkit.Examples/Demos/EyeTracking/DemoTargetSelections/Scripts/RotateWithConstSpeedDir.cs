@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// The associated GameObject will rotate when RotateTarget() is called based on a given direction and speed.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/RotateWithConstSpeedDir")]
     public class RotateWithConstSpeedDir : MonoBehaviour
     {
         #region Serialized variables

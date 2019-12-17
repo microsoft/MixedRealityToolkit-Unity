@@ -1,4 +1,4 @@
-# Mixed Reality Toolkit Packages
+# Mixed Reality Toolkit packages
 
 The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.
 
@@ -11,11 +11,11 @@ The MRTK ships via the following Unity packages:
 
 These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
 
-## Foundation Package
+## Foundation package
 
-The Mixed Reality Toolkit Foundation is the set of code that enable your application to leverage common functionality across Mixed Reality Platforms.
+The Mixed Reality Toolkit Foundation is the set of code that enables your application to leverage common functionality across Mixed Reality Platforms.
 
-<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
+<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;">  
 <sup>MRTK Foundation Package</sup>
 
 The MRTK Foundation is comprised of:
@@ -50,13 +50,13 @@ The MRTK foundation includes the following system services:
 
 Feature Assets are collections of related functionality delivered as Unity assets and scripts including user interface controls, Standard assets, and more.
 
-## Extensions Package
+## Extensions package
 
 The extensions package contains additional services and components that extend the functionality of the foundation package.
 
 - [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 
-## Examples Package
+## Examples package
 
 The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package. This package contains the [HandInteractionExample scene](../README_HandInteractionExamples.md) (pictured below) which contains sample objects
 that respond to various types of hand input (articulated and non-articulated).
@@ -68,7 +68,7 @@ This package also contains eye tracking demos, which are [documented here](../Ey
 More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
 the same folder structure and location.
 
-## Tools Package
+## Tools package
 
 The tools package contains tools that are useful for creating mixed reality experiences whose code will ultimately not
 ship as part of an application.
@@ -78,7 +78,7 @@ ship as part of an application.
 - [Optimize Window](../Tools/OptimizeWindow.md)
 - [Screenshot Utility](../Tools/ScreenshotUtility.md)
 
-## See Also
+## See also
 
 - [Architecture Overview](../Architecture/Overview.md)
 - [Systems, Extension Services and Data Providers](../Architecture/SystemsExtensionsProviders.md)

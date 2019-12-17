@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [RequireComponent(typeof(Interactable))]
+    [AddComponentMenu("Scripts/MRTK/Examples/DwellSelection")]
     public class DwellSelection : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {
         private static bool? useDwell = null;

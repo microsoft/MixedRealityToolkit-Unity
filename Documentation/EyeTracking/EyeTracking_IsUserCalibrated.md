@@ -1,3 +1,5 @@
+# Eye calibration
+
 ![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
 
 ## To be or not to be eye calibrated
@@ -9,16 +11,16 @@ This page covers the following:
 
 - Describes how to detect that a user is eye calibrated
 - Provides a sample for how to trigger a user notification to instruct the user to go through the eye calibration
-   - Automatically dismiss notification if eye calibration becomes valid
-   - Manually dismiss notification if user chooses to continue without calibration
+  - Automatically dismiss notification if eye calibration becomes valid
+  - Manually dismiss notification if user chooses to continue without calibration
 
 ### How to detect the eye calibration state
 
-The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a ```bool?``` property called ```IsEyeGazeValid```.
+The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
-### Sample eye calibration notification - Step-by-step
+### Sample eye calibration notification - step-by-step
 
 1. Open the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking)
 
@@ -38,9 +40,9 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
       - The app gets restarted
       - A valid user has been detected and then a new uncalibrated user has put the device on
 
-   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a ```bool editorTestUserIsCalibrated``` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
+   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a `bool editorTestUserIsCalibrated` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
 
-```csharp
+```c#
     private bool? prevCalibrationStatus = null;
     ...
 

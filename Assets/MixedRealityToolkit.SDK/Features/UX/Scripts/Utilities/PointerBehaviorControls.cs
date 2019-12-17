@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Utility class to control <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> of pointers.
     /// Hook up buttons to the public functions to turn rays on and off.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/PointerBehaviorControls")]
     public class PointerBehaviorControls : MonoBehaviour
     {
         /// <summary>

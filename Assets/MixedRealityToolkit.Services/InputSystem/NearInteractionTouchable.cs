@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Services/NearInteractionTouchable")]
     public class NearInteractionTouchable : NearInteractionTouchableSurface
     {
         [SerializeField]

@@ -42,18 +42,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(7, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(8, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(9, "Menu Press", AxisType.Digital, DeviceInputType.Menu, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(10, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
+            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(2, "Grip Press", AxisType.SingleAxis, DeviceInputType.TriggerPress),
+            new MixedRealityInteractionMapping(3, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger),
+            new MixedRealityInteractionMapping(4, "Trigger Touch", AxisType.Digital, DeviceInputType.TriggerTouch),
+            new MixedRealityInteractionMapping(5, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(6, "Touchpad Position", AxisType.DualAxis, DeviceInputType.Touchpad),
+            new MixedRealityInteractionMapping(7, "Touchpad Touch", AxisType.Digital, DeviceInputType.TouchpadTouch),
+            new MixedRealityInteractionMapping(8, "Touchpad Press", AxisType.Digital, DeviceInputType.TouchpadPress),
+            new MixedRealityInteractionMapping(9, "Menu Press", AxisType.Digital, DeviceInputType.Menu),
+            new MixedRealityInteractionMapping(10, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick),
+            new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ThumbStickPress),
         };
 
 #if UNITY_WSA
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionSourceState.touchpadTouched)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionSourceState.touchpadPressed)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
                     }
                     break;
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         if (interactionSourceState.thumbstickPressed)
                         {
                             CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     // If our value changed raise it.
                     if (interactionMapping.Changed)
                     {
-                        // Raise input system Event if it enabled
+                        // Raise input system event if it's enabled
                         CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
                     }
                     break;
@@ -218,7 +218,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // If our value changed raise it.
             if (interactionMapping.Changed)
             {
-                // Raise input system Event if it enabled
+                // Raise input system event if it's enabled
                 if (interactionSourceState.menuPressed)
                 {
                     CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);

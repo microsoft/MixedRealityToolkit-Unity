@@ -1,20 +1,20 @@
-# Manipulation handler #
+# Manipulation handler
 
 ![Manipulation handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
 
 The *ManipulationHandler* script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation. The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens (1st gen) gesture input, and immersive headset motion controller input.
 
-## How to use the manipulation handler ##
+## How to use the manipulation handler
 
 Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) component to a GameObject.
 
-Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well. 
+Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
 
 If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
-## Inspector properties ##
+## Inspector properties
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
@@ -40,7 +40,7 @@ Specifies whether the object can be manipulated using one hand, two hands, or bo
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
 
 **Allow Far Manipulation**
-Specifies whether manipulation can be done using far interaction with pointers. 
+Specifies whether manipulation can be done using far interaction with pointers.
 
 **One Hand Rotation Mode Near**
 Specifies how the object will behave when it is being grabbed with one hand / controller near.
@@ -76,9 +76,10 @@ Specifies on which axis the object will rotate when interacted with.
 * *Z-Axis Only*
 
 **Use Local Space For Constraint**
-A toggle to switch between applying constraints in repsect to world-space axis, or local space axis.
+A toggle to switch between applying constraints in respect to world-space axis, or local space axis.
 
 **Constraints on Movement**
+
 * *None*
 * *Fix distance from head*
 
@@ -88,7 +89,8 @@ Specifies whether smoothing is active.
 **Smoothing Amount One Hand**
 Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
 
-## Events ##
+## Events
+
 Manipulation handler provides the following events:
 
 * *OnManipulationStarted*: Fired when manipulation starts.

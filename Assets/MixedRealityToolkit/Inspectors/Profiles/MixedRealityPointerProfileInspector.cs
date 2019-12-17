@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
-        private ReorderableList pointerOptionList;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
@@ -56,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 

@@ -44,20 +44,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IgnoreProjectConfigForSession
         {
-            get
-            {
-                return SessionState.GetBool(SessionKey, false);
-            }
-
-            set
-            {
-                SessionState.SetBool(SessionKey, value);
-            }
+            get => SessionState.GetBool(SessionKey, false);
+            set => SessionState.SetBool(SessionKey, value);
         }
 
         private static void OnPlayStateModeChanged(PlayModeStateChange state)
         {
-            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityPreferences.RunOptimalConfiguration)
+            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityProjectPreferences.RunOptimalConfiguration)
             {
                 LogConfigurationWarnings();
             }
@@ -67,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorApplication.isPlayingOrWillChangePlaymode
                 && !IgnoreProjectConfigForSession
-                && !MixedRealityPreferences.IgnoreSettingsPrompt
+                && !MixedRealityProjectPreferences.IgnoreSettingsPrompt
                 && !MixedRealityProjectConfigurator.IsProjectConfigured())
             {
                 MixedRealityProjectConfiguratorWindow.ShowWindow();

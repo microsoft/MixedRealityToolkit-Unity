@@ -52,7 +52,7 @@ A bit value (#) is assigned to the state depending on the order in the list.
 
 Toggles whether an Interactable will start enabled or not. This corresponds to the [`Interactable.IsEnabled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsEnabled) in code.
 
-An *Interactable's* enabled property is different than the enabled property configured via GameObject/Component (i.e SetActive etc). Disabling the GameObject or *Interactable* MonoBehavior will disable everything in the class from running including input, visual themes, events, etc. Disabling via [`Interactable.IsEnabled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsEnabled) will disable most input handling, reseting related input states. However, the class will still run every frame and receive input events which will be ignored. This is useful for displaying the Interactable in a disabled state which can be done via Visual Themes. A typical example of this would be a submit button waiting for all the required input fields to be completed.
+An *Interactable's* enabled property is different than the enabled property configured via GameObject/Component (i.e SetActive etc). Disabling the GameObject or *Interactable* MonoBehaviour will disable everything in the class from running including input, visual themes, events, etc. Disabling via [`Interactable.IsEnabled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsEnabled) will disable most input handling, resetting related input states. However, the class will still run every frame and receive input events which will be ignored. This is useful for displaying the Interactable in a disabled state which can be done via Visual Themes. A typical example of this would be a submit button waiting for all the required input fields to be completed.
 
 **Input Actions**
 
@@ -92,7 +92,7 @@ The selection modes available are:
 
 The current Selection Mode can be queried at runtime via [`Interactable.ButtonMode`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.ButtonMode). Updating the mode at runtime can be achieved by setting the  [`Interactable.Dimensions`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.Dimensions) property to match the desired functionality. Furthermore, the current dimension, useful for *Toggle* and *Multi-Dimension* modes, can be accessed via [`Interactable.CurrentDimension`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.CurrentDimension).
 
-### Interactable Profiles
+### Interactable profiles
 
 *Profiles* are items that create a relationship between a GameObject and a [Visual Theme](VisualThemes.md). The profile defines what content will be manipulated by a theme when a [state change occurs](#general-input-settings).
 
@@ -125,9 +125,9 @@ A custom receiver can be created by making a new class that extends [`ReceiverBa
 
 *Example of a Toggle Event Receiver*
 
-### Interactable Receivers
+### Interactable receivers
 
- The [`InteractableReceiver`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiver) component allows for events to be defined outside of the source *Interactable* component. The *InteractableReceiver* will listen for a filtered event type fired by another *Interactable*. If the *Interactable* property is not directly assigned, then the *Search Scope* property defines the direction the *InteractableReceiver* listens for events which is either on it's self, in a parent, or in a child GameObject.
+ The [`InteractableReceiver`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiver) component allows for events to be defined outside of the source *Interactable* component. The *InteractableReceiver* will listen for a filtered event type fired by another *Interactable*. If the *Interactable* property is not directly assigned, then the *Search Scope* property defines the direction the *InteractableReceiver* listens for events which is either on itself, in a parent, or in a child GameObject.
 
 [`InteractableReceiverList`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableReceiverList) acts in a similar fashion but for a list of matching events.
 
@@ -147,7 +147,7 @@ Custom events can be created in two main ways:
 
 The [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) class under `MixedRealityToolkit.Examples` displays status information about an *Interactable* and is an example how to create a custom Event Receiver.
 
-``` csharp
+```c#
 public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 {
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
@@ -156,7 +156,7 @@ public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 
 The following methods are useful to override/implement when creating a custom Event Receiver. [`ReceiverBase.OnUpdate()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) is an abstract method that can be used to detect state patterns/transitions. Furthermore, the [`ReceiverBase.OnVoiceCommand()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) and [`ReceiverBase.OnClick()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) methods are useful for creating custom event logic when the *Interactable* is selected.
 
-``` csharp
+```c#
 public override void OnUpdate(InteractableStates state, Interactable source)
 {
     if (state.CurrentState() != lastState)
@@ -183,11 +183,11 @@ public virtual void OnClick(InteractableStates state,
 }
 ```
 
-##### Displaying custom Event Receiver fields in the inspector
+##### Displaying custom event receiver fields in the inspector
 
 *ReceiverBase* scripts use [`InspectorField`](xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField) attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an *Interactable* GameObject is selected and has the associated *Event Receiver* type added.
 
-```csharp
+```c#
 [InspectorField(Label = "<Property label>",Tooltip = "<Insert tooltip info>",Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 ```
@@ -203,7 +203,7 @@ Take the button one step further, by creating a new profile, assigning the GameO
 > [!NOTE]
 > Making a [button pressable](README_Button.md) requires the`PressableButton` component. Additionally, the `PhysicalPressEventRouter` component is needed to funnel press events to the *Interactable* component.
 
-### Creating Toggle and Multi-Dimension buttons
+### Creating toggle and multi-dimension buttons
 
 #### Toggle button
 
@@ -217,7 +217,7 @@ While the [`SelectionMode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionMode
 
 Developers can utilize the [`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) and [`IsToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) interfaces to get/set the toggle state of an *Interactable* via code.
 
-```csharp
+```c#
 // If using SelectionMode = Toggle (i.e Dimensions == 2)
 
 // Make the Interactable selected and toggled on
@@ -243,7 +243,7 @@ To create a custom radial button group:
 
 <img src="../Documentation/Images/Interactable/InteractableToggleCollection.png" width="450">
 
-#### Multi-Dimensional button
+#### Multi-dimensional button
 
 Multi-Dimension selection mode is used to create sequential buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).
 
@@ -255,7 +255,7 @@ Every click event will advance the `DimensionIndex` by 1 at runtime until the `D
 
 Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) to determine which dimension is currently active.
 
-```csharp
+```c#
 // If using SelectionMode = Multi-dimension (i.e Dimensions >= 3)
 
 //Access the current DimensionIndex
@@ -272,7 +272,7 @@ myInteractable.IncreaseDimension();
 
 *Interactable* can be easily added to any GameObject at runtime. The following example demonstrates how to assign a profile with a [visual theme](visualthemes.md).
 
-```csharp
+```c#
 var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 var interactable = interactableObject.AddComponent<Interactable>();
 
@@ -304,11 +304,11 @@ interactable.Profiles = new List<InteractableProfileItem>()
 interactable.TriggerOnClick()
 ```
 
-### Interactable Events via code
+### Interactable events via code
 
 One can add an action to the base [`Interactable.OnClick`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.OnClick) event via code with the following example.
 
-```csharp
+```c#
 public static void AddOnClick(Interactable interactable)
 {
     interactable.OnClick.AddListener(() => Debug.Log("Interactable clicked"));
@@ -319,7 +319,7 @@ Use the [`Interactable.AddReceiver<T>()`](xref:Microsoft.MixedReality.Toolkit.UI
 
 The example code below demonstrates how to add an [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver), which listens for focus enter/exit, and furthermore define action code to perform when the event instances fire.
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -331,7 +331,7 @@ public static void AddFocusEvents(Interactable interactable)
 
 The example code below demonstrates how to add an [InteractableOnToggleReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver), which listens for selected/deselected state transitions on toggle-able *Interactables*, and furthermore define action code to perform when the event instances fire.
 
-```csharp
+```c#
 public static void AddToggleEvents(Interactable interactable)
 {
     var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();

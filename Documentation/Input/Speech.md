@@ -8,7 +8,7 @@ Speech input providers, like *Windows Speech Input*, don't create any controller
 
 <img src="../../Documentation/Images/Input/SpeechCommandsProfile.png" width="450px">
 
-## Handling Speech Input
+## Handling speech input
 
 The [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script can be added to a GameObject to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html). It automatically shows the list of the defined keywords from the **Speech Commands Profile**.
 
@@ -20,10 +20,8 @@ Assign optional **SpeechConfirmationTooltip.prefab** to display animated confirm
 
 Alternatively, developers can implement the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface in a custom script component to [handle speech input events](InputEvents.md#input-event-interface-example).
 
-
-## Example Scene
+## Example scene
 
 The **SpeechInputExample** scene, in `MixedRealityToolkit.Examples\Demos\Input\Scenes\Speech`, shows how to use speech. You can also listen to speech command events directly in your own script by implementing [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) (see table of [event handlers](InputEvents.md)).
-
 
 <img src="../../Documentation/Images/Input/SpeechExampleScene.png" width="750px">

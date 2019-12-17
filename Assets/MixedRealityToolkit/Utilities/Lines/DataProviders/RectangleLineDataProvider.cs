@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Defines a line in the shape of a rectangle.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/RectangleLineDataProvider")]
     public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
