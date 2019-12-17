@@ -225,16 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             bool angularClamped = false;
             if (!ignoreAngleClamp && !recenterNextUpdate)
             {
-                angularClamped = AngularClamp(
-                    refPosition,
-                    PreviousReferencePosition,
-                    refRotation,
-                    PreviousReferenceRotation,
-                    currentPosition,
-                    IgnoreReferencePitchAndRoll,
-                    MaxViewHorizontalDegrees,
-                    MaxViewVerticalDegrees,
-                    ref goalDirection);
+                angularClamped = AngularClamp(refPosition, refRotation, currentPosition, ref goalDirection);
 
                 if (angularClamped)
                 {       
@@ -295,13 +286,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             float angle = Mathf.Atan2(to.y, to.x) - Mathf.Atan2(from.y, from.x);
             return SimplifyAngle(angle) * Mathf.Rad2Deg;
         }
-
-        float AngleBetweenOnAxis(Vector3 from, Vector3 to, Vector3 axis)
+        
+        /// <summary>
+        /// Projects from and to on to the plane with given normal and gets the
+        /// angle between these projected vectors.
+        /// </summary>
+        /// <returns>angle between project from and to in degrees</returns>
+        float AngleBetweenOnPlane(Vector3 from, Vector3 to, Vector3 normal)
         {
-            Quaternion axisQuat = Quaternion.Inverse(Quaternion.LookRotation(axis));
-            Vector3 v1 = axisQuat * from;
-            Vector3 v2 = axisQuat * to;
-            return AngleBetweenOnXYPlane(v1, v2);
+            from.Normalize();
+            to.Normalize();
+            normal.Normalize();
+
+            Vector3 right = Vector3.Cross(normal, from);
+            Vector3 forward = Vector3.Cross(right, normal);
+
+            float angle = Mathf.Atan2(Vector3.Dot(to, right), Vector3.Dot(to, forward));
+
+            return SimplifyAngle(angle) * Mathf.Rad2Deg;
         }
 
         float SimplifyAngle(float angle)
@@ -319,16 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return angle;
         }
 
-        private bool AngularClamp(
-            Vector3 refPosition,
-            Vector3 previousRefPosition,
-            Quaternion refRotation,
-            Quaternion previousRefRotation,
-            Vector3 currentPosition,
-            bool ignoreVertical,
-            float maxHorizontalDegrees,
-            float maxVerticalDegrees,
-            ref Vector3 refForward)
+        private bool AngularClamp(Vector3 refPosition, Quaternion refRotation, Vector3 currentPosition, ref Vector3 refForward)
         {
             Vector3 toTarget = currentPosition - refPosition;
             float currentDistance = toTarget.magnitude;
@@ -337,8 +330,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 // No need to clamp
                 return false;
             }
-
-            Debug.Log("clamp");
 
             toTarget.Normalize();
 
@@ -358,48 +349,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // X-axis leashing
             // Leashing around the reference's X axis only makes sense if the reference isn't gravity aligned.
-            if (ignoreVertical)
+            if (IgnoreReferencePitchAndRoll)
             {
-                float angle = AngleBetweenOnAxis(toTarget, currentRefForward, refRight);
+                float angle = AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
                 rotation = Quaternion.AngleAxis(angle, refRight) * rotation;
             }
             else
             {
-                Vector3 min = Quaternion.AngleAxis(maxVerticalDegrees * 0.5f, refRight) * refForward;
-                Vector3 max = Quaternion.AngleAxis(-maxVerticalDegrees * 0.5f, refRight) * refForward;
+                float angle = AngleBetweenOnPlane(refForward, toTarget, refRight);
+                float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
 
-                float minAngle = AngleBetweenOnAxis(toTarget, min, refRight);
-                float maxAngle = AngleBetweenOnAxis(toTarget, max, refRight);
-
-                if (minAngle < 0)
+                if (angle < -minMaxAngle)
                 {
-                    rotation = Quaternion.AngleAxis(minAngle, refRight) * rotation;
+                    rotation = Quaternion.AngleAxis(-minMaxAngle - angle, refRight) * rotation;
                     angularClamped = true;
                 }
-                else if (maxAngle > 0)
+                else if (angle > minMaxAngle)
                 {
-                    rotation = Quaternion.AngleAxis(maxAngle, refRight) * rotation;
+                    rotation = Quaternion.AngleAxis(minMaxAngle - angle, refRight) * rotation;
                     angularClamped = true;
                 }
             }
 
             // Y-axis leashing
             {
-                Vector3 min = Quaternion.AngleAxis(-maxHorizontalDegrees * 0.5f, Vector3.up) * refForward;
-                Vector3 max = Quaternion.AngleAxis(maxHorizontalDegrees * 0.5f, Vector3.up) * refForward;
+                // This is negated because Unity is left-handed
+                float angle = -AngleBetweenOnXZPlane(refForward, toTarget);
+                float minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
 
-                // These are negated because Unity is left-handed
-                float minAngle = -AngleBetweenOnXZPlane(toTarget, min);
-                float maxAngle = -AngleBetweenOnXZPlane(toTarget, max);
-
-                if (minAngle > 0)
+                if (angle < -minMaxAngle)
                 {
-                    rotation = Quaternion.AngleAxis(minAngle, Vector3.up) * rotation;
+                    rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
                     angularClamped = true;
                 }
-                else if (maxAngle < 0)
+                else if (angle > minMaxAngle)
                 {
-                    rotation = Quaternion.AngleAxis(maxAngle, Vector3.up) * rotation;
+                    rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
                     angularClamped = true;
                 }
             }
