@@ -74,15 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("Manipulation Handler will soon be removed, please upgrade to Object Manipulator", MessageType.Warning);
-            if (GUILayout.Button("Upgrade to Object Manipulator"))
-            {
-                var migrationHandler = new ObjectManipulatorMigrationHandler();
-                var manipulationHandler = target as ManipulationHandler;
-                migrationHandler.Migrate(manipulationHandler.gameObject);
-                return;
-            }
-
             EditorGUILayout.PropertyField(hostTransform);
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
