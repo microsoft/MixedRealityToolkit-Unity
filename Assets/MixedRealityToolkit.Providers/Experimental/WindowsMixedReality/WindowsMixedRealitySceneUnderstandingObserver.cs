@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             firstUpdateTimer = new Timer()
             {
-                Interval = Math.Max(FirstUpdateDelay, .1) * 1000.0, // convert to milliseconds
+                Interval = Math.Max(FirstUpdateDelay, .001) * 1000.0, // convert to milliseconds // XXX check we need max or let firstupdatedelay=0 works
                 AutoReset = false
             };
 
@@ -113,13 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // Make our new objects in batches and tell observers about it
                 int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
 
-                for (int i = 0; i < batchCount; i++)
+                for (int i = 0; i < batchCount; ++i)
                 {
                     var saso = instantiationQueue.Dequeue();
 
                     Debug.Log($"I see {saso.Quads.Count} quads");
                     Assert.IsTrue(saso.Quads.Count > 0);
 
+                    // Create GameObjects for our data
                     Instantiate(saso);
 
                     if (!sceneObjects.ContainsKey(saso.Guid))
@@ -219,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 if (serializedScene != value)
                 {
                     serializedScene = value;
-                    sceneBytes = serializedScene != null ? serializedScene.bytes : null;
+                    sceneBytes = serializedScene.bytes;
                 }
             }
         }
@@ -346,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 SceneQuad sceneQuad = null;
 
-                for (int i = 0; i < meshCount; i++)
+                for (int i = 0; i < meshCount; ++i)
                 {
                     sceneQuad = sceneObject.Quads[i];
 
@@ -366,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 SceneMesh sceneMesh = null;
 
-                for (int i = 0; i < quadCount; i++)
+                for (int i = 0; i < quadCount; ++i)
                 {
                     sceneMesh = sceneObject.Meshes[i];
                     var meshData = MeshData(sceneMesh);
@@ -398,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             int sceneObjectCount = sceneObjects.Count;
 
-            for (int i = 0; i < sceneObjectCount; i++)
+            for (int i = 0; i < sceneObjectCount; ++i)
             {
                 var saso = ConvertSceneObject(sceneObjects[i]);
                 convertedResult.Add(saso);
@@ -449,7 +450,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // Orient data so floor with largest area is aligned to XZ plane
                 if (sceneNeedsAlignment)
                 {
-                    Quaternion sceneRotation = AlignedRotationWithScene(scene);
+                    Quaternion sceneRotation = AlignedRotationWithScene(scene); // XXX feed this sasos instead of scene!
                     ObservedObjectParent.transform.rotation = sceneRotation;
                     sceneNeedsAlignment = false;
                 }
@@ -612,6 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         var access = await SceneObserver.RequestAccessAsync();
                         if (access == SceneObserverAccessStatus.Allowed)
                         {
+                            IsRunning = true;
                             return true;
                         }
                     }
@@ -639,7 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             int count = newObjects.Count;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; ++i)
             {
                 if (!SurfaceTypes.HasFlag(SpatialAwarenessSurfaceType(newObjects[i].Kind)))
                 {
@@ -656,7 +658,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             int length = newObjects.Count;
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; ++i)
             {
                 if (!sceneObjects.ContainsKey(newObjects[i].Guid))
                 {
@@ -726,9 +728,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             if (GeneratePlanes)
             {
                 // Add MeshFilter, attach shared quad and scale it
+                // later, we can update scale of existing quads if they change size
+                // (as opposed to modifying the vertexs directly, when persisting objects)
                 int quadCount = saso.Quads.Count;
 
-                for (int i = 0; i < quadCount; i++)
+                for (int i = 0; i < quadCount; ++i)
                 {
                     var go = new GameObject("Quad");
 
@@ -736,6 +740,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     mf.mesh = normalizedQuadMesh;
 
                     var mr = go.AddComponent<MeshRenderer>();
+
                     mr.sharedMaterial = DefaultMaterial;
 
                     var scale = new Vector3(saso.Quads[i].extents.x, saso.Quads[i].extents.y, 0);
@@ -749,10 +754,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             if (GenerateMeshes)
             {
-                // Add MeshFilter, attach shared quad and scale it
                 int meshCount = saso.Meshes.Count;
 
-                for (int i = 0; i < meshCount; i++)
+                for (int i = 0; i < meshCount; ++i)
                 {
                     var go = new GameObject("Mesh");
 
@@ -785,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private void CleanupSceneObjects()
         {
             int kidCount = ObservedObjectParent.transform.childCount;
-            for (int i = 0; i < kidCount; i++)
+            for (int i = 0; i < kidCount; ++i)
             {
                 UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
             }
@@ -952,7 +956,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             // Find the largest floor quad.
             var count = scene.SceneObjects.Count;
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < count; ++i)
             {
                 if (scene.SceneObjects[i].Kind == SceneObjectKind.Floor)
                 {
@@ -979,12 +983,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             if (floorQuad != null)
             {
                 // Compute the floor quad's normal.
-                float widthInMeters = floorQuad.Extents.X;
-                float heightInMeters = floorQuad.Extents.Y;
+                float halfWidthMeters = floorQuad.Extents.X * .5f;
+                float halfHeightMeters = floorQuad.Extents.Y * .5f;
 
-                System.Numerics.Vector3 point1 = new System.Numerics.Vector3(-widthInMeters / 2, -heightInMeters / 2, 0);
-                System.Numerics.Vector3 point2 = new System.Numerics.Vector3(widthInMeters / 2, -heightInMeters / 2, 0);
-                System.Numerics.Vector3 point3 = new System.Numerics.Vector3(-widthInMeters / 2, heightInMeters / 2, 0);
+                System.Numerics.Vector3 point1 = new System.Numerics.Vector3(-halfWidthMeters, -halfHeightMeters, 0);
+                System.Numerics.Vector3 point2 = new System.Numerics.Vector3(halfWidthMeters, -halfHeightMeters, 0);
+                System.Numerics.Vector3 point3 = new System.Numerics.Vector3(-halfWidthMeters, halfHeightMeters, 0);
 
                 System.Numerics.Matrix4x4 floorTransform = floorSceneObject.GetLocationAsMatrix();
                 floorTransform = SwapRuntimeAndUnityCoordinateSystem(floorTransform);
@@ -1019,7 +1023,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             var ilength = meshIndices.Length;
 
-            for (int i = 0; i < ilength; i++)
+            for (int i = 0; i < ilength; ++i)
             {
                 indices[i] = (int)meshIndices[i];
             }
@@ -1033,7 +1037,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             var vlength = meshVertices.Length;
 
-            for (int i = 0; i < vlength; i++)
+            for (int i = 0; i < vlength; ++i)
             {
                 vertices[i] = new Vector3(meshVertices[i].X, meshVertices[i].Y, -meshVertices[i].Z);
             }
