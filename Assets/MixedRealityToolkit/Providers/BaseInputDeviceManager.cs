@@ -13,12 +13,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class BaseInputDeviceManager : BaseDataProvider<IMixedRealityInputSystem>, IMixedRealityInputDeviceManager
     {
-        /// <summary>
-        /// Temporary control mechanism to enable/disable use of Pointer Cache in request/recycling of pointers by Input System
-        /// </summary>
-        public bool EnablePointerCache = true;
+        private bool enablePointerCache = true;
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+        /// <summary>
+        /// Control mechanism to enable/disable use of Pointer Cache in request/recycling of pointers by Input System
+        /// </summary>
+        public bool EnablePointerCache
+        {
+            get => enablePointerCache;
+            set
+            {
+                enablePointerCache = value;
+                if (!enablePointerCache)
+                {
+                    DestroyPointerCache();
+                }
+            }
+        }
+
+        /// <summary>
+        /// The input system configuration profile in use in the application.
+        /// </summary>
+        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
+
+        /// <inheritdoc />
+        public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
 
         /// <summary>
         /// Constructor.
@@ -32,8 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected BaseInputDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            string name, 
-            uint priority, 
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
@@ -53,13 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile)
         { }
 
-        /// <summary>
-        /// The input system configuration profile in use in the application.
-        /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
-
-        /// <inheritdoc />
-        public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
+        #region Private members
 
         private struct PointerConfig
         {
@@ -103,9 +116,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+
         // Active pointers associated with the config index they were spawned from
         private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
+
+        #endregion
+
+        #region IMixedRealityService implementation
 
         /// <inheritdoc />
         public override void Initialize()
@@ -115,6 +134,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (InputSystemProfile != null && InputSystemProfile.PointerProfile != null)
             {
                 var initPointerOptions = InputSystemProfile.PointerProfile.PointerOptions;
+
+                // If we were previously initialized, then clear our old pointer cache
+                if (pointerConfigurations != null && pointerConfigurations.Length > 0)
+                {
+                    DestroyPointerCache();
+                }
 
                 pointerConfigurations = new PointerConfig[initPointerOptions.Length];
                 activePointersToConfig.Clear();
@@ -130,17 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Destroy()
         {
-            for (int i = 0; i < pointerConfigurations.Length; i++)
-            {
-                while (pointerConfigurations[i].cache.Count > 0)
-                {
-                    var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
-                    {
-                        GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
-                    }
-                }
-            }
+            DestroyPointerCache();
 
             // Loop through active pointers in scene, destroy all gameobjects and clear our tracking dictionary
             foreach (var pointer in activePointersToConfig.Keys)
@@ -155,6 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerConfigurations = System.Array.Empty<PointerConfig>();
             activePointersToConfig.Clear();
         }
+
+        #endregion
+
+        #region Pointer utilization and caching
 
         /// <summary>
         /// Request an array of pointers for the controller type.
@@ -215,6 +234,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Recycle all pointers associated with the provided <see cref="IMixedRealityInputSource"/>. 
+        /// This involves reseting the pointer, disabling the pointer GameObject, and possibly caching it for re-use.
+        /// </summary>
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
         {
             if (inputSource != null)
@@ -228,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var pointerComponent = pointer as MonoBehaviour;
                     if (!UnityObjectExtensions.IsNull(pointerComponent))
                     {
-                        // Unfortunately, it's possible gameobject source is *being* destroyed so we are not null now but will be soon.
+                        // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
                         // At least if this is a controller we know about and we expect it to be destroyed, skip
                         if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
                         {
@@ -289,5 +312,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
+
+        /// <summary>
+        /// Wipes references to cached pointers for every pointer configuration option. All GameObject references are likewise destroyed
+        /// </summary>
+        private void DestroyPointerCache()
+        {
+            for (int i = 0; i < pointerConfigurations.Length; i++)
+            {
+                while (pointerConfigurations[i].cache.Count > 0)
+                {
+                    var pointerComponent = pointerConfigurations[i].cache.Pop() as MonoBehaviour;
+                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    {
+                        GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }
