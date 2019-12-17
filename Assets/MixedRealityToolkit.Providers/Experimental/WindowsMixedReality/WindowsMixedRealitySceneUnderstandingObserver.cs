@@ -338,7 +338,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             // finish getting whole scene before getting another
             if (canGetScene)
             {
-                Debug.Log("GetScene()");
                 canGetScene = false;
                 await GetSceneAsync();
                 canGetScene = true;
@@ -405,7 +404,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private List<SpatialAwarenessSceneObject> ConvertSceneObjects(List<SceneObject> sceneObjects)
         {
-            Debug.Log("Started converting");
             Assert.IsTrue(sceneObjects.Count > 0);
 
             convertedResult.Clear();
@@ -436,11 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // If running on device (vs editor) save bytes to unity StreamingAssets
                 // Now the bytes file will be loaded from file
 
-                if (!SerializedScene)
-                {
-                    Debug.LogError("SceneUnderstandingObserver GetSceneAsync() SerializedScene is null!");
-                    return;
-                }
+                Assert.IsNotNull(SerializedScene); // if this is null, sceneBytes is no bueno
 
                 // Move onto a background thread for the expensive scene loading stuff
 
@@ -753,7 +747,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     var mr = go.AddComponent<MeshRenderer>();
 
-                    mr.sharedMaterial = DefaultMaterial;
+                    if (DefaultMaterial)
+                    {
+                        mr.sharedMaterial = DefaultMaterial;
+                    }
 
                     var scale = new Vector3(saso.Quads[i].extents.x, saso.Quads[i].extents.y, 0);
                     go.transform.localScale = scale;
@@ -776,8 +773,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     mf.mesh = UnityMeshFromMeshData(saso.Meshes[i]);
 
                     var mr = go.AddComponent<MeshRenderer>();
-                    mr.sharedMaterial = DefaultMaterial;
 
+                    if (DefaultMaterial)
+                    {
+                        mr.sharedMaterial = DefaultMaterial;
+                    }
                     go.AddComponent<MeshCollider>();
 
                     go.transform.SetParent(saso.GameObject.transform, false);
@@ -839,7 +839,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             switch (levelofDetail)
             {
                 case SpatialAwarenessMeshLevelOfDetail.Custom:
-                    Debug.Log("SceneUnderstanding LOD is set to custom, falling back.");
+                    Debug.LogWarning("SceneUnderstanding LOD is set to custom, falling back to Medium");
                     return SceneMeshLevelOfDetail.Medium;
 
                 case SpatialAwarenessMeshLevelOfDetail.Coarse:

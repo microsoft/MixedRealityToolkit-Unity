@@ -30,7 +30,7 @@ MonoBehaviour:
   generateMeshes: 0
   generateEnvironmentMesh: 0
   renderInferredRegions: 1
-  firstUpdateDelay: 1
+  firstUpdateDelay: 0
   levelOfDetail: 1
-  usePersistentObjects: 1
+  usePersistentObjects: 0
   queryRadius: 5
