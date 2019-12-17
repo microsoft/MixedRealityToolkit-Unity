@@ -53,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject trackVisuals = null;
+        /// <summary>
+        /// Property accessor of trackVisuals
+        /// </summary>
         public GameObject TrackVisuals
         {
             get
@@ -69,6 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The gameObject that contains the tickMarks.  This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject tickMarks = null;
+        /// <summary>
+        /// Property accessor of tickMarks
+        /// </summary>
         public GameObject TickMarks
         {
             get
@@ -88,6 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("The axis the slider moves along")]
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
+        /// <summary>
+        /// Property accessor of sliderAxis
+        /// </summary>
         public SliderAxis CurrentSliderAxis
         {
             get { return sliderAxis; }
@@ -98,8 +107,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Previous value of slider axis, is used in order to detect change in current slider axis value
+        /// </summary>
         private SliderAxis? previousSliderAxis = null;
-        public SliderAxis PreviousSliderAxis
+        /// <summary>
+        /// Property accessor for previousSliderAxis that is used also to initiallize the property with the current value in case of null value.
+        /// </summary>
+        private SliderAxis PreviousSliderAxis
         {
             get
             {
