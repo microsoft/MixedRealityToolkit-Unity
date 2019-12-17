@@ -34,7 +34,7 @@ param(
     [string]$RepoRoot
 )
 
-Import-Module ./common.psm1
+Import-Module (Resolve-Path("common.psm1"))
 
 function CheckDocLinks(
     [string]$FileName,

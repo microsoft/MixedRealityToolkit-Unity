@@ -12,15 +12,9 @@
 
     The file will not contain files that have been completely deleted
 
-.PARAMETER Username
-    The username associated with the Personal Access Token. This is optional in that
-    the script will exit early if not provided, since not all pipelines will be configured
-    to generate this list of changed files.
-.PARAMETER Token
-    The Personal Access Token generated explicitly with "(no scope)" - meaning only public
-    information should be granted to this token.. This is optional in that
-    the script will exit early if not provided, since not all pipelines will be configured
-    to generate this list of changed files.
+    Note that this script also uses two environment variables: GITHUB_USERNAME and GITHUB_TOKEN
+    to avoid passing explicit secrets through the command line (and thus avoiding showing up
+    in logs)
 .PARAMETER Output
     The output filename containing the list of modified files.
 .PARAMETER RepoRoot
@@ -29,8 +23,6 @@
     .\githubchanges.ps1 -Username username -Token token -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to
 #>
 param(
-    [string]$Username,
-    [string]$Token,
     [Parameter(Mandatory=$true)]
     [string]$Output,
     [Parameter(Mandatory=$true)]
@@ -38,6 +30,14 @@ param(
     [Parameter(Mandatory=$true)]
     [string]$RepoRoot
 )
+
+# $Username and $Token are stored in environment variables, per the security guidance here:
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+$Token = $env:GITHUB_TOKEN
+$Username = $env:GITHUB_USERNAME
+
+# This is just for testing that the env setting is correct
+Write-Output $env:TEST_VALUE
 
 # Both $Username and $Token are actually required inputs to this script, but may not
 # be set for all of the pipelines that we run - for the cases where it's not set (i.e.
@@ -62,6 +62,10 @@ if (Test-Path $Output -PathType leaf) {
 # https://developer.github.com/v3/auth/
 $BasicAuthenticationBase64 = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(($Username + ":" + $Token)))
 $Headers = @{ Authorization = "Basic $BasicAuthenticationBase64" }
+
+# GitHub doesn't accept TLS version 1.0 which is the default on some versions of powershell (i.e. those
+# on some host pool machines). Explicitly switch to version 1.2.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # The output of this API call is documented here:
 # https://developer.github.com/v3/pulls/#list-pull-requests-files
