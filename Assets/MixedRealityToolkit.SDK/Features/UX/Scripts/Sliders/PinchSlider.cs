@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private GameObject trackVisuals = null;
         /// <summary>
-        /// Property accessor of trackVisuals
+        /// Property accessor of trackVisuals, it contains the desired track Visuals. This will get rotated to match the slider axis.
         /// </summary>
         public GameObject TrackVisuals
         {
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private GameObject tickMarks = null;
         /// <summary>
-        /// Property accessor of tickMarks
+        /// Property accessor of tickMarks, it contains the desired tick Marks.  This will get rotated to match the slider axis.
         /// </summary>
         public GameObject TickMarks
         {
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
         /// <summary>
-        /// Property accessor of sliderAxis
+        /// Property accessor of sliderAxis. The axis the slider moves along.
         /// </summary>
         public SliderAxis CurrentSliderAxis
         {
