@@ -735,9 +735,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         {
             string ssl = Rest.UseSSL ? "s" : string.Empty;
 
-            if (targetUrl.Contains("Local Machine"))
+            if (targetUrl.Contains(DeviceInfo.LocalMachine) || targetUrl.Contains(DeviceInfo.LocalIPAddress))
             {
-                targetUrl = "127.0.0.1:10080";
+                targetUrl = $"{DeviceInfo.LocalIPAddress}:10080";
                 ssl = string.Empty;
             }
 
