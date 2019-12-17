@@ -31,19 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const float ButtonReleaseAnimationDelay = 0.25f;
         private const float EaseDelay = 0.25f;
 
-        private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
-        private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
-        private const string PressableHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
         private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
         private static string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
-
-        private static readonly Quaternion DefaultRotation = Quaternion.LookRotation(Vector3.up);
-        private static readonly Quaternion DefaultRotationToggle = Quaternion.LookRotation(Vector3.forward);
 
         [SetUp]
         public override void Setup()
@@ -60,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestButtonUtilities.InstantiatePressableButtonPrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
+                TestButtonUtilities.DefaultRotation,
+                TestButtonUtilities.DefaultInteractablePrefabAssetPath,
                 "Cylinder",
                 out Interactable interactable,
                 out Transform translateTargetObject);
@@ -118,7 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
 
-            //Cleanup
             GameObject.Destroy(interactable.gameObject);
         }
 
@@ -128,14 +121,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestSelectGlobalInput()
         {
-            // Place out of the way of any pointers
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(10f, 0.0f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
-                "Cylinder",
-                out Interactable interactable,
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable interactable, 
                 out Transform translateTargetObject);
+
+            interactable.transform.position = new Vector3(10f, 0.0f, 0.5f);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -297,11 +288,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestVoiceInputOnPrefab()
         {
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.0f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
-                "Cylinder",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
@@ -354,11 +342,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTouchInput()
         {
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.0f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
-                "Cylinder",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
@@ -464,12 +449,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestDisableOnClick()
         {
-            // Load the Model_PushButton interactable prefab
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.0f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
-                "Cylinder",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
                 out Transform innerCylinderTransform);
 
@@ -507,7 +488,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate model_pushbutton prefab but with enabled on start false
             TestButtonUtilities.InstantiatePressableButtonPrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
-                DefaultRotation,
+                TestButtonUtilities.DefaultRotation,
                 DisabledOnStartPrefabAssetPath,
                 "Cylinder",
                 out Interactable interactable,
@@ -545,11 +526,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTriggerOnClick()
         {
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.0f, 0.5f),
-                DefaultRotation,
-                DefaultInteractablePrefabAssetPath,
-                "Cylinder",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultPushButton,
                 out Interactable interactable,
                 out Transform innerCylinderTransform);
 
@@ -635,15 +613,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
             Vector3 p2 = new Vector3(0.015f, 0f, 0.3f);
 
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.1f, 0.4f),
-                DefaultRotationToggle,
-                PressableHoloLens2TogglePrefabPath,
-                "CompressableButtonVisuals/FrontPlate",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultHL2ToggleButton,
                 out Interactable interactable,
                 out Transform frontPlateTransform);
 
             Assert.True(interactable.IsEnabled);
+            interactable.transform.position = new Vector3(0.0f, 0.1f, 0.4f);
 
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
@@ -722,14 +698,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestButtonStateResetWhenFocusLostAfterPinch()
         {
-            TestButtonUtilities.InstantiatePressableButtonPrefab(
-                new Vector3(0.0f, 0.1f, 0.4f),
-                DefaultRotationToggle,
-                PressableHoloLens2PrefabPath,
-                "CompressableButtonVisuals/FrontPlate",
+            TestButtonUtilities.InstantiateDefaultButton(
+                TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
                 out Transform interactableTransform);
-
+            
+            interactable.transform.position = new Vector3(0.0f, 0.1f, 0.4f);
             Assert.True(interactable.IsEnabled);
 
             var rightHand = new TestHand(Handedness.Right);

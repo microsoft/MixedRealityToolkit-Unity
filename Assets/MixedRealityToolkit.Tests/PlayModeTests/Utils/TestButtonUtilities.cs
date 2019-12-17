@@ -22,13 +22,72 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public static class TestButtonUtilities
     {
+        public enum DefaultButtonType
+        {
+            DefaultPushButton,
+            DefaultHL2Button,
+            DefaultHL2ToggleButton
+        };
+
+        /// <summary>
+        /// Asset Path to default model push button prefab asset
+        /// </summary>
+        public const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
+
+        /// <summary>
+        /// Asset path to default Hololens 2 Pressable Button prefab asset
+        /// </summary>
+        public const string PressableHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
+
+        /// <summary>
+        /// Asset path to default Hololens 2 Toggle Pressable Button prefab asset
+        /// </summary>
+        public const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
+
+        /// <summary>
+        /// Rought amount of time for press action on button
+        /// </summary>
         public const float ButtonPressAnimationDelay = 0.25f;
+
+        /// <summary>
+        /// Rought amount of time for release action on button
+        /// </summary>
         public const float ButtonReleaseAnimationDelay = 0.25f;
+
+        /// <summary>
+        /// Default position of new interactable buttons instantiated
+        /// </summary>
+        public static readonly Vector3 DefaultPosition = new Vector3(0.0f, 0.0f, 0.5f);
+
+        /// <summary>
+        /// Default rotation applied to new interactable button instantiated
+        /// </summary>
+        public static readonly Quaternion DefaultRotation = Quaternion.LookRotation(Vector3.up);
+
         private const int MoveHandNumSteps = 32;
         private static readonly Vector3 ButtonTranslateOffset = new Vector3(0.05f, 0f, 0.51f);
 
+        private static readonly string[] AssetPaths = { DefaultInteractablePrefabAssetPath, PressableHoloLens2PrefabPath, PressableHoloLens2TogglePrefabPath };
+        private static readonly string[] TranslateTargetPaths = { "Cylinder", "CompressableButtonVisuals/FrontPlate", "CompressableButtonVisuals/FrontPlate" };
+        private static readonly Quaternion[] DefaultRotations = { DefaultRotation, Quaternion.LookRotation(Vector3.forward), Quaternion.LookRotation(Vector3.forward) };
+
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Instantiate and configure one of the <see cref="DefaultButtonType"/> types.
+        /// Returns reference to <see cref="Interactable"/> component and Transform to movable object that transforms on press 
+        /// </summary>
+        public static void InstantiateDefaultButton(DefaultButtonType buttonType, out Interactable interactable, out Transform translateTargetObject)
+        {
+            InstantiatePressableButtonPrefab(
+                DefaultPosition,
+                DefaultRotations[(int)buttonType],
+                AssetPaths[(int)buttonType],
+                TranslateTargetPaths[(int)buttonType],
+                out interactable,
+                out translateTargetObject);
+        }
+
+        /// <summary>
+        /// Instantiates <see cref="Interactable"/> prefab from provided asset database path at given position and rotation
         /// </summary>
         public static GameObject InstantiateInteractableFromPath(Vector3 position, Quaternion rotation, string path)
         {
@@ -44,10 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates Hololens Pressable Button from different Prefabs
+        /// Instantiates Pressable Button based on list of arguments provided
         /// </summary>
         public static void InstantiatePressableButtonPrefab(Vector3 position, Quaternion rotation, 
-            string prefabPath, string translateTargetPath, out Interactable interactable, out Transform translateTargetTransform)
+            string prefabPath, string translateTargetPath, 
+            out Interactable interactable, out Transform translateTargetTransform)
         {
             // Load interactable prefab
             var interactableObject = InstantiateInteractableFromPath(position, rotation, prefabPath);
@@ -61,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Confirms that provided Transform translates as expected due to a press currently happening
         /// </summary>
         public static IEnumerator CheckButtonTranslation(Vector3 targetStartPosition, Transform translateTarget, bool shouldTranslate = true)
         {
@@ -77,8 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Execute and test end-to-end press of a button with right hand poke pointer
         /// </summary>
+        /// <param name="button">Position of button to push hand to/through</param>
+        /// <param name="targetStartPosition">The start position of the button component that will translate on press</param>
+        /// <param name="translateTargetObject">Transform of the button component that will translate on press</param>
+        /// <param name="shouldClick">Should we expect a click (i.e translation) from the button. The button may be disabled</param>
         public static IEnumerator TestClickPushButton(Transform button, Vector3 targetStartPosition, Transform translateTargetObject, bool shouldClick = true)
         {
             yield return MoveHandToButton(button);
@@ -91,12 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Move the right hand from in front of the button through to the button
         /// </summary>
         public static IEnumerator MoveHandToButton(Transform button)
         {
-            // TODO: Troy - Fix this as not like before?
-            Vector3 p1 = button.transform.position - ButtonTranslateOffset;
+            Vector3 p1 = button.transform.position - button.TransformDirection(ButtonTranslateOffset);
             Vector3 p2 = button.transform.position;
 
             // Move the hand towards
@@ -106,12 +169,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Move the right from in the button to just in front of the button
         /// </summary>
         public static IEnumerator MoveHandAwayFromButton(Transform button)
         {
             Vector3 p2 = button.transform.position;
-            Vector3 p3 = button.transform.position - ButtonTranslateOffset;
+            Vector3 p3 = button.transform.position - button.TransformDirection(ButtonTranslateOffset);
 
             // Move the hand back
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();

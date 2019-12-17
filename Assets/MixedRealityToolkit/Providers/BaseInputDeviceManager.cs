@@ -258,16 +258,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             continue;
                         }
 
-                        pointer.Reset();
-                        pointerComponent.gameObject.SetActive(false);
-
-                        if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                        if (EnablePointerCache)
                         {
-                            uint pointerOptionIndex = activePointersToConfig[pointer];
-                            activePointersToConfig.Remove(pointer);
+                            pointer.Reset();
+                            pointerComponent.gameObject.SetActive(false);
 
-                            // Add our pointer back to our cache
-                            pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                            if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                            {
+                                uint pointerOptionIndex = activePointersToConfig[pointer];
+                                activePointersToConfig.Remove(pointer);
+
+                                // Add our pointer back to our cache
+                                pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                            }
+                        }
+                        else
+                        {
+                            GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
                         }
                     }
                 }
@@ -302,14 +309,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void CleanActivePointers()
         {
+            var removal = new List<IMixedRealityPointer>();
+
             var enumerator = activePointersToConfig.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 var pointer = enumerator.Current.Key as MonoBehaviour;
                 if (UnityObjectExtensions.IsNull(pointer))
                 {
-                    activePointersToConfig.Remove(enumerator.Current.Key);
+                    removal.Add(enumerator.Current.Key);
                 }
+            }
+
+            for (int i = 0; i < removal.Count; i++)
+            {
+                activePointersToConfig.Remove(removal[i]);
             }
         }
 

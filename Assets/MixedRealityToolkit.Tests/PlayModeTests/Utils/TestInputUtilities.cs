@@ -23,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public static class TestInputUtilities
     {
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Fires speech command to default input system with given string and input action type.
+        /// If no input source is provided, then the first detected input source is used in conjunction with the raised event.
         /// </summary>
         public static IEnumerator ExecuteSpeechCommand(string voiceCommand, MixedRealityInputAction inputAction, IMixedRealityInputSource inputSource = null)
         {
@@ -43,7 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// TODO: Troy - add comments
+        /// Fires a global input click event by given input source and for given input action type. 
+        /// If testExec is not null, the function will execute in between the input down and input up raised events.
+        /// The testExec function parameter is useful for executing tests and asserts in between raised events.
         /// </summary>
         public static IEnumerator ExecuteGlobalClick(IMixedRealityInputSource defaultInputSource,
                     MixedRealityInputAction inputAction,

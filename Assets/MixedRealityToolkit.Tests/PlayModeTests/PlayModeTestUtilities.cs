@@ -239,11 +239,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InputSimulationService simulationService = GetInputSimulationService();
             var hand = simulationService.GetHandDevice(handedness);
-            foreach (var pointer in hand.InputSource.Pointers)
+            if (hand != null && hand.InputSource != null)
             {
-                if (pointer is T)
+                foreach (var pointer in hand.InputSource.Pointers)
                 {
-                    return pointer as T;
+                    if (pointer is T result)
+                    {
+                        return result;
+                    }
                 }
             }
             return null;
