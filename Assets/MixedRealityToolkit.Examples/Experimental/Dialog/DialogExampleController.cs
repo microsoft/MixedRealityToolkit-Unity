@@ -6,32 +6,28 @@ using Microsoft.MixedReality.Toolkit.Experimental.Dialog;
 
 namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
 {
+    /// <summary>
+    /// This class is used as an example controller to show how to instantiate and lunch two different kind of Dialog.
+    /// Each one of the public methods are called by the buttons in the scene at the OnClick event.
+    /// </summary>
     public class DialogExampleController : MonoBehaviour
     {
-
-        public GameObject dialogPrefab;
-
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField]        
+        private GameObject dialogPrefab;
+        public GameObject DialogPrefab
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            get => dialogPrefab;
+            set => dialogPrefab = value;
         }
 
         public void OpenConfirmationDialog()
         {
-            Dialog confDialog = Dialog.Open(dialogPrefab, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button");
+            Dialog confDialog = Dialog.Open(DialogPrefab, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button");
         }
 
         public void OpenChoiceDialog()
         {
-            var myVariable = new Tuple<string, GameObject>(gameObject.name, gameObject);
-            Dialog myDialog = Dialog.Open(dialogPrefab, DialogButtonType.Yes | DialogButtonType.Cancel, "Are You Sure?", "This is an example of a dialog with a choice message for the user", myVariable);
+            Dialog myDialog = Dialog.Open(DialogPrefab, DialogButtonType.Yes | DialogButtonType.Cancel, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
@@ -42,7 +38,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         {
             if (obj.Result == DialogButtonType.Yes)
             {
-                //The user choise the "Yes" button            
+                //The user chose the "Yes" button            
             }
         }
     }
