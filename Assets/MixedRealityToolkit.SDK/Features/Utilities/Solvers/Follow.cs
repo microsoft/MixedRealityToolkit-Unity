@@ -248,12 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Figure out goal rotation of the element based on orientation setting
             Quaternion goalRotation = Quaternion.identity;
-            ComputeOrientation(
-                orientation,
-                orientToControllerDeadzoneDegrees,
-                goalPosition,
-                GoalRotation,
-                ref goalRotation);
+            ComputeOrientation(orientation, goalPosition, ref goalRotation);
 
             GoalPosition = goalPosition;
             GoalRotation = goalRotation;
@@ -451,18 +446,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return Vector3EqualEpsilon(clampedPosition, currentPosition, 0.0001f);
         }
 
-        void ComputeOrientation(
-            SolverOrientationType defaultOrientationType,
-            float orientToControllerDeadzoneRadians,
-            Vector3 goalPosition,
-            Quaternion previousGoalRotation,
-            ref Quaternion orientation)
+        void ComputeOrientation(SolverOrientationType defaultOrientationType, Vector3 goalPosition, ref Quaternion orientation)
         {
             if (defaultOrientationType == SolverOrientationType.MaintainGoal)
             {
                 Vector3 nodeToCamera = goalPosition - ReferencePosition;
                 float angle = Mathf.Abs(AngleBetweenOnXZPlane(transform.forward,nodeToCamera));
-                if (angle > orientToControllerDeadzoneRadians)
+                if (angle > orientToControllerDeadzoneDegrees)
                 {
                     defaultOrientationType = SolverOrientationType.FaceTrackedObject;
                 }
@@ -490,7 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     orientation = SolverHandler.TransformTarget != null ? ReferenceRotation : Quaternion.identity;
                     break;
                 case SolverOrientationType.MaintainGoal:
-                    orientation = previousGoalRotation;
+                    orientation = GoalRotation;
                     break;
                 default:
                     Debug.LogError($"Invalid OrientationType for Orbital Solver on {gameObject.name}");
