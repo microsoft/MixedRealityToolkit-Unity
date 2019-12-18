@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
@@ -36,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_PLATFORM_TOOLSET = "BuildDeployWindow_PlatformToolset";
         private const string EDITOR_PREF_FORCE_REBUILD = "BuildDeployWindow_ForceRebuild";
         private const string EDITOR_PREF_CONNECT_INFOS = "BuildDeployWindow_DeviceConnections";
+        private const string EDITOR_PREF_LOCAL_CONNECT_INFO = "BuildDeployWindow_LocalConnection";
         private const string EDITOR_PREF_FULL_REINSTALL = "BuildDeployWindow_FullReinstall";
         private const string EDITOR_PREF_USE_SSL = "BuildDeployWindow_UseSSL";
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
@@ -51,6 +53,29 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_BUILD_CONFIG, "master");
             set => EditorPreferences.Set(EDITOR_PREF_BUILD_CONFIG, value.ToLower());
+        }
+
+        /// <summary>
+        /// Gets the build configuraition type as a WSABuildType enum
+        /// </summary>
+        public static WSABuildType BuildConfigType
+        {
+            get
+            {
+                string curBuildConfigString = BuildConfig;
+                if (curBuildConfigString.Equals("master", StringComparison.OrdinalIgnoreCase))
+                {
+                    return WSABuildType.Master;
+                }
+                else if (curBuildConfigString.Equals("release", StringComparison.OrdinalIgnoreCase))
+                {
+                    return WSABuildType.Release;
+                }
+                else
+                {
+                    return WSABuildType.Debug;
+                }
+            }
         }
 
         /// <summary>
@@ -89,8 +114,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     EDITOR_PREF_CONNECT_INFOS,
                     JsonUtility.ToJson(
                             new DevicePortalConnections(
-                                    new DeviceInfo("127.0.0.1", string.Empty, string.Empty, "Local Machine"))));
+                                    new DeviceInfo(DeviceInfo.LocalIPAddress, string.Empty, string.Empty, DeviceInfo.LocalMachine))));
             set => EditorPreferences.Set(EDITOR_PREF_CONNECT_INFOS, value);
+        }
+
+        /// <summary>
+        /// The current device portal connections.
+        /// </summary>
+        public static string LocalConnectionInfo
+        {
+            get => EditorPreferences.Get(
+                    EDITOR_PREF_LOCAL_CONNECT_INFO,
+                    JsonUtility.ToJson(new DeviceInfo(DeviceInfo.LocalIPAddress, string.Empty, string.Empty, DeviceInfo.LocalMachine)));
+            set => EditorPreferences.Set(EDITOR_PREF_LOCAL_CONNECT_INFO, value);
         }
 
         /// <summary>
