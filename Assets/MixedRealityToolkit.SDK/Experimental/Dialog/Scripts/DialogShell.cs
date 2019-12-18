@@ -8,18 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 {
     public class DialogShell : Dialog
     {
-        [SerializeField]
-        private TextMeshPro titleText;
-
-        [SerializeField]
-        private TextMeshPro messageText;
-
-        [SerializeField]
         private GameObject[] twoButtonSet;
 
+        /// <summary>
+        /// This is called after the buttons are generated and
+        /// the title and message have been set.
+        /// Perform here any operations that you'd like
+        /// </summary>
         protected override void FinalizeLayout()
         {
-            //throw new System.NotImplementedException();
         }
 
         protected override void GenerateButtons()
@@ -64,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 
         private void SetButtonsActiveStates(List<DialogButton> buttons, int count)
         {
-
             for (int i = 0; i < buttons.Count; ++i)
             {
                 var flag1 = (count == 1) && (i == 0);
@@ -82,17 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
                 Transform child = transform.GetChild(i);
                 if (child.name == "ButtonParent")
                 {
-                    for (int childIndex = 0; childIndex < child.transform.childCount; ++childIndex)
+                    var buttons = child.GetComponentsInChildren<DialogButton>();
+                    if (buttons != null)
                     {
-                        Transform t = child.transform.GetChild(childIndex);
-                        if (t != null)
-                        {
-                            DialogButton button = t.GetComponent<DialogButton>();
-                            if (button != null)
-                            {
-                                buttonsOnDialog.Add(button);
-                            }
-                        }
+                        buttonsOnDialog.AddRange(buttons);
                     }
                 }
             }
@@ -109,22 +98,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             {
                 if (child != null && child.name == "TitleText")
                 {
-                    titleText = child.GetComponent<TextMeshPro>();
+                    if (child.GetComponent<TextMeshPro>()) {
+                        child.GetComponent<TextMeshPro>().text = Result.Title;
+                    }
                 }
                 else if (child != null && child.name == "Description")
                 {
-                    messageText = child.GetComponent<TextMeshPro>();
+                    if (child.GetComponent<TextMeshPro>())
+                    {
+                        child.GetComponent<TextMeshPro>().text = Result.Message;
+                    }
                 }
-            }
-
-            if (titleText != null)
-            {
-                titleText.text = Result.Title;
-            }
-
-            if (messageText != null)
-            {
-                messageText.text = Result.Message;
             }
         }
 
