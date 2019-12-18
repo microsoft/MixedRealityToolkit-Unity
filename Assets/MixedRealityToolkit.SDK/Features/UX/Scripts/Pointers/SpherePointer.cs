@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -66,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
-
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
 
@@ -123,7 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
 
-                Profiler.BeginSample("TryUpdateQueryBufferForLayerMask");
                 for (int i = 0; i < layerMasks.Length; i++)
                 {
                     if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
@@ -131,9 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     }
                 }
-                Profiler.EndSample();
 
-                Profiler.BeginSample("TryUpdateQueryBufferForLayerMask");
                 for (int i = 0; i < layerMasks.Length; i++)
                 {
                     if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
@@ -141,7 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     }
                 }
-                Profiler.EndSample();
             }
         }
 
@@ -284,9 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     grabbable = collider.GetComponent<NearInteractionGrabbable>();
                     if (grabbable != null)
                     {
-                        Profiler.BeginSample("isInFOV");
                         bool inFov = isInFOVCone(collider);
-                        Profiler.EndSample();
                         if (!inFov)
                         {
                             // Additional check: is grabbable in the camera frustrum
@@ -313,17 +305,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (lastRecalculation != Time.frameCount)
                 {
-                    corners.Clear();
-                    BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
                     colliderCache.Clear();
                     lastRecalculation = Time.frameCount;
                 }
                 if (colliderCache.TryGetValue(myCollider, out bool result))
                 {
-                    Profiler.BeginSample("hit cache");
-                    Profiler.EndSample();
                     return result;
                 }
+
+                corners.Clear();
+                BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
 
                 float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
                 float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
@@ -332,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     var corner = corners[i];
                     if (isPointInFOVCone(corner, 0))
                     {
+                        colliderCache.Add(myCollider, true);
                         return true;
                     }
 
@@ -360,14 +352,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Camera mainCam = CameraCache.Main;
                 var cameraToPoint = point - mainCam.transform.position;
-                var pointCameraDist = Vector3.Dot(mainCam.transform.forward.normalized, cameraToPoint);
+                var pointCameraDist = Vector3.Dot(mainCam.transform.forward, cameraToPoint);
                 if (pointCameraDist < minDist || pointCameraDist > maxDist)
                 {
                     return false;
                 }
-                var verticalFOV = mainCam.fieldOfView - coneAngleBufferDegrees;
+                var verticalFOV = mainCam.fieldOfView + coneAngleBufferDegrees;
                 var degrees = Mathf.Acos(pointCameraDist / cameraToPoint.magnitude) * Mathf.Rad2Deg;
-                
                 return degrees < verticalFOV * 0.5f;
             }
 
