@@ -652,6 +652,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
                 }
+               
+                if (data.currentPointer is GGVPointer)
+                {
+                    data.touchingInitialPt = SnapFingerToQuad(data.currentPointer.Position);
+                    data.touchingPoint = data.touchingInitialPt;
+                    data.touchingPointSmoothed = data.touchingInitialPt;
+                    data.touchingRayOffset = Vector3.zero;
+                }
             }
 
             //store value in case of MRController

@@ -119,6 +119,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test ggv zooming instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Prefab_GGVZoom()
+        {
+            InstantiateFromPrefab(Vector3.forward);
+
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.Show(new Vector3(0.0f, 0.0f, 0.6f));
+
+            TestHand h2 = new TestHand(Handedness.Left);
+            yield return h2.Show(new Vector3(-0.1f, 0.0f, 0.6f));
+
+            yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return h2.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return h.Move(new Vector3(0.005f, 0.0f, 0.0f), 10);
+            yield return h2.Move(new Vector3(-0.005f, 0.0f, 0.0f), 10);
+
+            Assert.AreEqual(0.5, panZoom.CurrentScale, 0.1, "slate did not zoom in using two ggv hands");
+
+            yield return h.Hide();
+        }
+        /// <summary>
         /// Test ggv scroll instantiated from prefab
         /// </summary>
         [UnityTest]
@@ -155,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return h.Show(Vector3.zero);
             yield return h.Move(new Vector3(0.0f, -0.1f, 0f));
 
-            Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.05, "pan delta is not correct");
+            Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.1, "pan delta is not correct");
 
             yield return h.Hide();
         }
