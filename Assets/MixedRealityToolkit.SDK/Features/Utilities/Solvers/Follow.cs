@@ -203,14 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 refPosition = Vector3.zero;
             Quaternion refRotation = Quaternion.identity;
             Vector3 refForward = Vector3.zero;
-            GetReferenceInfo(
-                PreviousReferencePosition,
-                ReferencePosition,
-                ReferenceRotation,
-                VerticalMaxDistance,
-                ref refPosition,
-                ref refRotation,
-                ref refForward);
+            GetReferenceInfo(ref refPosition, ref refRotation, ref refForward);
 
             // Determine the current position of the element
             Vector3 currentPosition = WorkingPosition;
@@ -488,20 +481,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        void GetReferenceInfo(
-            Vector3 previousRefPosition,
-            Vector3 currentRefPosition,
-            Quaternion currentRefRotation,
-            float verticalMaxDistance,
-            ref Vector3 refPosition,
-            ref Quaternion refRotation,
-            ref Vector3 refForward)
+        void GetReferenceInfo(ref Vector3 refPosition, ref Quaternion refRotation, ref Vector3 refForward)
         {
-            refPosition = currentRefPosition;
-            refRotation = currentRefRotation;
+            refPosition = ReferencePosition;
+            refRotation = ReferenceRotation;
             if (IgnoreReferencePitchAndRoll)
             {
-                Vector3 forward = currentRefRotation * Vector3.forward;
+                Vector3 forward = ReferenceRotation * Vector3.forward;
                 forward.y = 0;
                 refRotation = Quaternion.LookRotation(forward);
                 if (PitchOffset != 0)
@@ -515,9 +501,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             refForward = refRotation * Vector3.forward;
 
             // Apply vertical clamp on reference
-            if (!recenterNextUpdate && verticalMaxDistance > 0)
+            if (!recenterNextUpdate && VerticalMaxDistance > 0)
             {
-                refPosition.y = Mathf.Clamp(previousRefPosition.y, currentRefPosition.y - verticalMaxDistance, currentRefPosition.y + verticalMaxDistance);
+                refPosition.y = Mathf.Clamp(PreviousReferencePosition.y, ReferencePosition.y - VerticalMaxDistance, ReferencePosition.y + VerticalMaxDistance);
             }
         }
 
