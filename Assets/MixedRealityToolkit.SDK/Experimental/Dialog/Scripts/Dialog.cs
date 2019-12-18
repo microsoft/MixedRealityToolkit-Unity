@@ -7,19 +7,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 {
     public abstract class Dialog : MonoBehaviour
     {
-        protected DialogResult result;
-
+        /// <summary>
+        /// It's used to keep track of the current state in which the Dialog is
+        /// </summary>
         protected DialogState state = DialogState.Uninitialized;
         public DialogState State
         {
-            get
-            {
-                return state;
-            }
-            set
-            {
-                state = value;
-            }
+            get => state;
+            set => state = value;
         }
 
         /// <summary>
@@ -27,15 +22,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>
         public Action<DialogResult> OnClosed;
 
+        protected DialogResult result;
         /// <summary>
         /// Can be used to monitor result instead of events
-        /// </summary>
+        /// </summary>        
         public DialogResult Result
         {
-            get
-            {
-                return result;
-            }
+            get => result;
         }
 
         protected void Launch(DialogResult newResult)
@@ -51,8 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 
         /// <summary>
         /// Opens dialog, waits for input, then closes
-        /// </summary>
-        /// <returns></returns>
+        /// </summary>        
         protected IEnumerator RunDialogOverTime()
         {
             // Create our buttons and set up our message
@@ -89,8 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Opens the dialog - state must be set to WaitingForInput afterwards
         /// Overridden in inherited class.
+        /// Perform any change here that you'd like to have when the dialog opened.
         /// </summary>
-        /// <returns></returns>
         protected virtual IEnumerator OpenDialog()
         {
             yield break;
@@ -99,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Closes the dialog - state must be set to Closed afterwards
         /// </summary>
-        /// <returns></returns>
         protected virtual IEnumerator CloseDialog()
         {
             yield break;
@@ -136,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>
         /// <param name="dialogPrefab"></param>
         /// <param name="result"></param>
-        /// <returns></returns>
         public static Dialog Open(GameObject dialogPrefab, DialogResult result)
         {
             GameObject dialogGo = GameObject.Instantiate(dialogPrefab) as GameObject;
@@ -153,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="buttons"></param>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        /// <returns></returns>
         public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
@@ -186,47 +175,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             dialog.Launch(result);
             return dialog;
         }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-    }
-
-    /// <summary>
-    /// Enum that describes the current state of a Dialog.
-    /// </summary>
-    public enum DialogState
-    {
-        Uninitialized,
-        Opening,
-        WaitingForInput,
-        InputReceived,
-        Closing,
-        Closed,
-    }
-
-    /// <summary>
-    /// Enum describing the style (caption) of button on a Dialog.
-    /// </summary>
-    public enum DialogButtonType
-    {
-        None = 0,
-        Close = 1,
-        Confirm = 2,
-        Cancel = 4,
-        Accept = 8,
-        Yes = 16,
-        No = 32,
-        OK = 64,
-        Auto = 128,
-        Manual = 256
     }
 }
