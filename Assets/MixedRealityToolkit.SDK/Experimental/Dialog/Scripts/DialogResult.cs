@@ -8,99 +8,74 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     public class DialogResult
     {
         /// <summary>
-        /// The button press that closed the dialog
-        /// </summary>
-        private DialogButtonType result = DialogButtonType.Close;
-
-        /// <summary>
         /// Title for the dialog to display
         /// </summary>
         private string title = string.Empty;
-
-        /// <summary>
-        /// Message for the dialog to display
-        /// </summary>
-        private string message = string.Empty;
-
-        /// <summary>
-        /// Which buttons to generate
-        /// </summary>
-        private DialogButtonType buttons = DialogButtonType.Close;
-
         /// <summary>
         /// The public property to get and set the Title
         /// string (topmost) on the Dialog.
         /// </summary>
         public string Title
         {
-            get
-            {
-                return title;
-            }
-
-            set
-            {
-                title = value;
-            }
+            get => title;
+            set => title = value;            
         }
 
+        /// <summary>
+        /// Message for the dialog to display
+        /// </summary>
+        private string message = string.Empty;
         /// <summary>
         /// The public property to get and set the Message
         /// string of the dialog.
         /// </summary>
         public string Message
         {
-            get
-            {
-                return message;
-            }
-
-            set
-            {
-                message = value;
-            }
+            get => message;
+            set => message = value;            
         }
 
+        /// <summary>
+        /// Which buttons to generate
+        /// </summary>
+        private DialogButtonType buttons = DialogButtonType.Close;
         /// <summary>
         /// Property defining the button type[s]
         /// on the dialog.
         /// </summary>
         public DialogButtonType Buttons
         {
-            get
-            {
-                return buttons;
-            }
-
-            set
-            {
-                buttons = value;
-            }
+            get => buttons;
+            set => buttons = value;            
         }
 
+        /// <summary>
+        /// The button press that closed the dialog
+        /// </summary>
+        private DialogButtonType result = DialogButtonType.Close;
         /// <summary>
         /// Property reporting the Result of the Dialog:
         /// Which button was clicked to dismiss it.
         /// </summary>
         public DialogButtonType Result
         {
-            get
-            {
-                return result;
-            }
-
-            set
-            {
-                result = value;
-            }
+            get => result;
+            set => result = value;
         }
 
-        /// FI
-        /// To pass custom variables
+        /// <summary>
+        /// Variable that can be use to pass an object to the dialog
+        /// so to have it back with the result
+        /// </summary>
+        private System.Object variable;
+        /// <summary>
+        /// The public property to get and set the variable
+        /// object of the dialog
+        /// </summary>
         public System.Object Variable
         {
-            get;
-            set;
+            get => variable;
+            set => variable = value;
         }
     }
 }
