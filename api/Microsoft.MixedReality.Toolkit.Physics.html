@@ -131,30 +131,6 @@ helps stabilize the user's gaze for precision targeting.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RaycastResultComparer.html">RaycastResultComparer</a></h4>
       <section><p>Compares the Raycast Results from Unity's Graphic &amp; Physics Raycasters.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.html">TwoHandMoveLogic</a></h4>
-      <section><p>Implements a movement logic that uses the model of angular rotations along a sphere whose
-radius varies. The angle to move by is computed by looking at how much the hand changes
-relative to a pivot point (slightly below and in front of the head).</p>
-<p>Usage:
-When a manipulation starts, call Setup.
-Call Update any time to update the move logic and get a new rotation for the object.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.html">TwoHandRotateLogic</a></h4>
-      <section><p>Implements common logic for rotating holograms using a handlebar metaphor.
-each frame, object_rotation_delta = rotation_delta(current_hands_vector, previous_hands_vector)
-where hands_vector is the vector between two hand/controller positions.</p>
-<p>Usage:
-When a manipulation starts, call Setup.
-Call Update any time to update the move logic and get a new rotation for the object.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.TwoHandScaleLogic.html">TwoHandScaleLogic</a></h4>
-      <section><p>Implements a scale logic that will scale an object based on the
-ratio of the distance between hands.
-object_scale = start_object_scale * curr_hand_dist / start_hand_dist</p>
-<p>Usage:
-When a manipulation starts, call Setup.
-Call Update any time to update the move logic and get a new rotation for the object.</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.VectorRollingStatistics.html">VectorRollingStatistics</a></h4>
       <section><p>Vector Statistics used in gaze stabilization.</p>
 </section>

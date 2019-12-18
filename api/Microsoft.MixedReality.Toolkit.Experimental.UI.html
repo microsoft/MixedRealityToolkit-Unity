@@ -118,6 +118,11 @@ Unity bug tracking the issue <a href="https://fogbugz.unity3d.com/default.asp?11
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.html">NonNativeKeyboard</a></h4>
       <section><p>A simple general use keyboard that is ideal for AR/VR applications that do not provide a native keyboard.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.html">ObjectManipulator</a></h4>
+      <section><p>This script allows for an object to be movable, scalable, and rotatable with one or two hands.
+You may also configure the script on only enable certain manipulations. The script works with
+both HoloLens' gesture input and immersive headset's motion controller input.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a></h4>
       <section><p>A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.</p>
 </section>
@@ -157,6 +162,20 @@ RectTransform component) such as an Image or Panel.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.NonNativeKeyboard.LayoutType.html">NonNativeKeyboard.LayoutType</a></h4>
       <section><p>Layout type enum for the type of keyboard layout to use.<br>
 This is used when spawning to enable the correct keys based on layout type.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ReleaseBehaviorType.html">ObjectManipulator.ReleaseBehaviorType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.RotateInOneHandType.html">ObjectManipulator.RotateInOneHandType</a></h4>
+      <section><p>Describes what pivot the manipulated object will rotate about when
+you rotate your hand. This is not a description of any limits or
+additional rotation logic. If no other factors (such as constraints)
+are involved, rotating your hand by an amount should rotate the object
+by the same amount.
+For example a possible future value here is RotateAboutUserDefinedPoint
+where the user could specify a pivot that the object is to rotate
+around.
+An example of a value that should not be found here is MaintainRotationToUser
+as this restricts rotation of the object when we rotate the hand.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.ScrollDirectionType.html">ScrollingObjectCollection.ScrollDirectionType</a></h4>
       <section><p>The direction in which a <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection.html">ScrollingObjectCollection</a> can scroll.</p>

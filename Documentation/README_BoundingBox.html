@@ -139,15 +139,15 @@ bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
 bbox.RotationHandleSize = 0.016f;
 bbox.RotateHandleColliderPadding = 0.016f;
 </code></pre>
-<h3 id="example-set-minimum-maximum-bounding-box-scale-using-transformscalehandler">Example: Set minimum, maximum bounding box scale using TransformScaleHandler</h3>
-<p>To set the minimum and maximum scale, use the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler.html"><code>TransformScaleHandler</code></a>. You can also use TransformScaleHandler to set minimum and maximum scale for <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html"><code>ManipulationHandler</code></a>.</p>
+<h3 id="example-set-minimum-maximum-bounding-box-scale-using-minmaxscaleconstraint">Example: Set minimum, maximum bounding box scale using MinMaxScaleConstraint</h3>
+<p>To set the minimum and maximum scale, use the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a>. You can also use MinMaxScaleConstraint to set minimum and maximum scale for <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html"><code>ManipulationHandler</code></a>.</p>
 <pre><code class="lang-c#">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 bbox = cube.AddComponent&lt;BoundingBox&gt;();
 // Important: BoundingBox creates a scale handler on start if one does not exist
 // do not use AddComponent, as that will create a  duplicate handler that will not be used
-TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent&lt;TransformScaleHandler&gt;();
-scaleHandler.ScaleMinimum = 1f;
-scaleHandler.ScaleMaximum = 2f;
+MinMaxScaleConstraint scaleConstraint = bbox.gameObject.GetComponent&lt;MinMaxScaleConstraint&gt;();
+scaleConstraint.ScaleMinimum = 1f;
+scaleConstraint.ScaleMaximum = 2f;
 </code></pre>
 <h2 id="example-add-bounding-box-around-a-game-object">Example: Add bounding box around a game object</h2>
 <p>To add a bounding box around an object, just add a bounding box component to it:</p>
@@ -170,9 +170,9 @@ scaleHandler.ScaleMaximum = 2f;
 <li><em>Activate Manually</em>: Bounding Box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.</li>
 </ul>
 <h3 id="scale-minimum">Scale minimum</h3>
-<p>The minimum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.</p>
+<p>The minimum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the minimum scale will be taken from it instead of from BoundingBox.</p>
 <h3 id="scale-maximum">Scale maximum</h3>
-<p>The maximum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.</p>
+<p>The maximum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the maximum scale will be taken from it instead of from BoundingBox.</p>
 <h3 id="box-display">Box display</h3>
 <p>Various bounding box visualization options.</p>
 <p>If Flatten Axis is set to <em>Flatten Auto</em>, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.</p>

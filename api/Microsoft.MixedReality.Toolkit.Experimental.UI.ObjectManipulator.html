@@ -1,0 +1,764 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ObjectManipulator
+   | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ObjectManipulator
+   | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.0.0">
+    
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator">
+  
+  
+  <h1 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator" class="text-break">Class ObjectManipulator
+  </h1>
+  <div class="markdown level0 summary"><p>This script allows for an object to be movable, scalable, and rotatable with one or two hands.
+You may also configure the script on only enable certain manipulations. The script works with
+both HoloLens' gesture input and immersive headset's motion controller input.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ObjectManipulator</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
+    <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.html">Microsoft.MixedReality.Toolkit.Experimental.UI</a></h6>
+  <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_AllowFarManipulation_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.AllowFarManipulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_AllowFarManipulation" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.AllowFarManipulation">AllowFarManipulation</h4>
+  <div class="markdown level1 summary"><p>Specifies whether manipulation can be done using far interaction with pointers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AllowFarManipulation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_HostTransform_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.HostTransform*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_HostTransform" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.HostTransform">HostTransform</h4>
+  <div class="markdown level1 summary"><p>Transform that will be dragged. Defaults to the object of the component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform HostTransform { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ManipulationType_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ManipulationType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ManipulationType" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ManipulationType">ManipulationType</h4>
+  <div class="markdown level1 summary"><p>Can manipulation be done only with one hand, only with two hands, or with both?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManipulationHandFlags ManipulationType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ManipulationHandFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_MoveLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.MoveLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_MoveLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.MoveLerpTime">MoveLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MoveLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OneHandRotationModeFar_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OneHandRotationModeFar*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OneHandRotationModeFar" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OneHandRotationModeFar">OneHandRotationModeFar</h4>
+  <div class="markdown level1 summary"><p>Rotation behavior of object when using one hand at distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObjectManipulator.RotateInOneHandType OneHandRotationModeFar { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.RotateInOneHandType.html">ObjectManipulator.RotateInOneHandType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OneHandRotationModeNear_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OneHandRotationModeNear*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OneHandRotationModeNear" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OneHandRotationModeNear">OneHandRotationModeNear</h4>
+  <div class="markdown level1 summary"><p>Rotation behavior of object when using one hand near</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObjectManipulator.RotateInOneHandType OneHandRotationModeNear { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.RotateInOneHandType.html">ObjectManipulator.RotateInOneHandType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnHoverEntered_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnHoverEntered*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnHoverEntered" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnHoverEntered">OnHoverEntered</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on hover started</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManipulationEvent OnHoverEntered { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ManipulationEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnHoverExited_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnHoverExited*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnHoverExited" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnHoverExited">OnHoverExited</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on hover ended</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManipulationEvent OnHoverExited { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ManipulationEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnManipulationEnded_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnManipulationEnded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnManipulationEnded" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnManipulationEnded">OnManipulationEnded</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on manipulation ended</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManipulationEvent OnManipulationEnded { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ManipulationEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnManipulationStarted_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnManipulationStarted*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnManipulationStarted" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnManipulationStarted">OnManipulationStarted</h4>
+  <div class="markdown level1 summary"><p>Unity event raised on manipulation started</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManipulationEvent OnManipulationStarted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ManipulationEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ReleaseBehavior_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ReleaseBehavior*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ReleaseBehavior" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ReleaseBehavior">ReleaseBehavior</h4>
+  <div class="markdown level1 summary"><p>Rigid body behavior of the dragged object when releasing it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ObjectManipulator.ReleaseBehaviorType ReleaseBehavior { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ReleaseBehaviorType.html">ObjectManipulator.ReleaseBehaviorType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_RotateLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.RotateLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_RotateLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.RotateLerpTime">RotateLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float RotateLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ScaleLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ScaleLerpTime*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ScaleLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ScaleLerpTime">ScaleLerpTime</h4>
+  <div class="markdown level1 summary"><p>Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ScaleLerpTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_SmoothingActive_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.SmoothingActive*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_SmoothingActive" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.SmoothingActive">SmoothingActive</h4>
+  <div class="markdown level1 summary"><p>Check to enable frame-rate independent smoothing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool SmoothingActive { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_TwoHandedManipulationType_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.TwoHandedManipulationType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_TwoHandedManipulationType" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.TwoHandedManipulationType">TwoHandedManipulationType</h4>
+  <div class="markdown level1 summary"><p>What manipulation will two hands perform?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TransformFlags TwoHandedManipulationType { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TransformFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ForceEndManipulation_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ForceEndManipulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_ForceEndManipulation" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.ForceEndManipulation">ForceEndManipulation()</h4>
+  <div class="markdown level1 summary"><p>Releases the object that is currently manipulated</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ForceEndManipulation()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_GetPointerGrabPoint_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.GetPointerGrabPoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_GetPointerGrabPoint_System_UInt32_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.GetPointerGrabPoint(System.UInt32)">GetPointerGrabPoint(UInt32)</h4>
+  <div class="markdown level1 summary"><p>Gets the grab point for the given pointer id.
+Only use if you know that your given pointer id corresponds to a pointer that has grabbed
+this component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 GetPointerGrabPoint(uint pointerId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td><span class="parametername">pointerId</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnBeforeFocusChange_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnBeforeFocusChange*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnBeforeFocusChange_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnBeforeFocusChange(FocusEventData)">OnBeforeFocusChange(FocusEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnBeforeFocusChange(FocusEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FocusEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnFocusChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnFocusChanged_FocusEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnFocusChanged(FocusEventData)">OnFocusChanged(FocusEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnFocusChanged(FocusEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">FocusEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerClicked_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerClicked*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerClicked_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerClicked(MixedRealityPointerEventData)">OnPointerClicked(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerClicked(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerDown_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerDown_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerDown(MixedRealityPointerEventData)">OnPointerDown(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerDown(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerDragged_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerDragged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerDragged_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerDragged(MixedRealityPointerEventData)">OnPointerDragged(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerUp_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerUp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_UI_ObjectManipulator_OnPointerUp_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.UI.ObjectManipulator.OnPointerUp(MixedRealityPointerEventData)">OnPointerUp(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OnPointerUp(MixedRealityPointerEventData eventData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
+        <td><span class="parametername">eventData</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityPointerHandler</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityFocusChangedHandler</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
