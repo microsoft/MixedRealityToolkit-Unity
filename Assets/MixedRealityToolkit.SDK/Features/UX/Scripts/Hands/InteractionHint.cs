@@ -29,6 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Name of animation to play during loop")]
         public string AnimationState;
 
+        [Tooltip("Time to wait between repeats")]
+        [SerializeField]
+        public float repeatDelay = 1f;
+
         private string FadeInAnimationState = "Fade_In";
         
         private string FadeOutAnimationState = "Fade_Out";
@@ -189,6 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         // If we autohid, then reappear if hands are not tracked
                         else
                         {
+                            yield return new WaitForSeconds(repeatDelay);
                             SetActive(VisualsRoot, true);
                             m_animator.Play(stateToPlay);
                             visibleTime = Time.time;
