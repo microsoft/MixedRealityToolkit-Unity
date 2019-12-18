@@ -238,16 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             bool distanceClamped = false;
             if (!ignoreDistanceClamp)
             {
-                distanceClamped = DistanceClamp(
-                    MinDistance,
-                    DefaultDistance,
-                    MaxDistance,
-                    (PitchOffset != 0),
-                    currentPosition,
-                    refPosition,
-                    goalDirection,
-                    angularClamped,
-                    ref goalPosition);
+                distanceClamped = DistanceClamp(currentPosition, refPosition, goalDirection, angularClamped, ref goalPosition);
 
                 if (distanceClamped)
                 {       
@@ -393,21 +384,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return angularClamped;
         }
 
-        bool DistanceClamp(
-            float minDistance,
-            float defaultDistance,
-            float maxDistance,
-            bool maintainPitch,
-            Vector3 currentPosition,
-            Vector3 refPosition,
-            Vector3 refForward,
-            bool interpolateToDefaultDistance,
-            ref Vector3 clampedPosition)
+        bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, bool interpolateToDefaultDistance, ref Vector3 clampedPosition)
         {
             float clampedDistance;
             float currentDistance = Vector3.Distance(currentPosition, refPosition);
             Vector3 direction = refForward;
-            if (maintainPitch)
+            if (PitchOffset != 0)
             {
                 // If we don't account for pitch offset, the casted object will float up/down as the reference
                 // gets closer to it because we will still be casting in the direction of the pitched offset.
@@ -421,11 +403,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 refToElementXZ.y = 0;
                 float desiredDistanceXZ = refToElementXZ.magnitude;
 
-                Vector3 minDistanceXZVector = refForward * minDistance;
+                Vector3 minDistanceXZVector = refForward * MinDistance;
                 minDistanceXZVector.y = 0;
                 float minDistanceXZ = minDistanceXZVector.magnitude;
 
-                Vector3 maxDistanceXZVector = refForward * maxDistance;
+                Vector3 maxDistanceXZVector = refForward * MaxDistance;
                 maxDistanceXZVector.y = 0;
                 float maxDistanceXZ = maxDistanceXZVector.magnitude;
 
@@ -433,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 if (interpolateToDefaultDistance)
                 {
-                    Vector3 defaultDistanceXZVector = direction * defaultDistance;
+                    Vector3 defaultDistanceXZVector = direction * DefaultDistance;
                     defaultDistanceXZVector.y = 0;
                     float defaulltDistanceXZ = defaultDistanceXZVector.magnitude;
                 
@@ -442,14 +424,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
 
                 Vector3 desiredPosition = refPosition + directionXZ * desiredDistanceXZ;
-                float desiredHeight = refPosition.y + refForward.y * maxDistance;
+                float desiredHeight = refPosition.y + refForward.y * MaxDistance;
                 desiredPosition.y = desiredHeight;
 
                 direction = desiredPosition - refPosition;
                 clampedDistance = direction.magnitude;
                 direction /= clampedDistance;
 
-                clampedDistance = Mathf.Max(minDistance, clampedDistance);
+                clampedDistance = Mathf.Max(MinDistance, clampedDistance);
             }
             else
             {
@@ -458,10 +440,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 if (interpolateToDefaultDistance)
                 {
                     float interpolationRate = Mathf.Min(moveToDefaultDistanceLerpTime * 60.0f * SolverHandler.DeltaTime, 1.0f);
-                    clampedDistance = clampedDistance + (interpolationRate * (defaultDistance - clampedDistance));
+                    clampedDistance = clampedDistance + (interpolationRate * (DefaultDistance - clampedDistance));
                 }
 
-                clampedDistance = Mathf.Clamp(clampedDistance, minDistance, maxDistance);
+                clampedDistance = Mathf.Clamp(clampedDistance, MinDistance, MaxDistance);
             }
 
             clampedPosition = refPosition + direction * clampedDistance;
