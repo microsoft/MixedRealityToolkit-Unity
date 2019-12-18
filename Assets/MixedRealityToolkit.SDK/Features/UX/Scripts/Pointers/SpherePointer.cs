@@ -66,17 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
-        /// <summary>
-        /// Grabbables must be within camera frustrum for sphere pointer to grab them.
-        /// Specify additional buffer to expand the vertical camera frustrum, in degrees.
-        /// </summary>
-        private const float frustrumCheckVerticalBufferDegrees = 0f;
-
-        /// <summary>
-        /// Grabbables must be within camera frustrum for sphere pointer to grab them.
-        /// Specify additional buffer to expand the horizontal camera frustrum, in degrees.
-        /// </summary>
-        private const float frustrumCheckHorizontalBufferDegrees = -5f;
 
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
@@ -233,6 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // used to store list of corners for a bounds. Shared and static
             // to avoid allocating memory each frame
             private static List<Vector3> corners = new List<Vector3>();
+            // Help to clear caches when new frame runs
             static private int lastRecalculation = -1;
             // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
             private static Dictionary<Collider, bool> colliderCache = new Dictionary<Collider, bool>();
@@ -295,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (grabbable != null)
                     {
                         Profiler.BeginSample("isInFOV");
-                        bool inFov = isInFOV(collider);
+                        bool inFov = isInFOVCone(collider);
                         Profiler.EndSample();
                         if (!inFov)
                         {
@@ -319,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// Returns true if a collider's bounds is within the camera FOV
             /// </summary>
             /// <param name="myCollider">The collider to test</param>
-            private bool isInFOV(Collider myCollider)
+            private bool isInFOVCone(Collider myCollider)
             {
                 if (lastRecalculation != Time.frameCount)
                 {
@@ -340,9 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < corners.Count; i++)
                 {
                     var corner = corners[i];
-                    if (isPointInFrustrumWithBuffer(corner, 
-                        frustrumCheckVerticalBufferDegrees, 
-                        frustrumCheckHorizontalBufferDegrees))
+                    if (isPointInFOVCone(corner, 0))
                     {
                         return true;
                     }
@@ -362,6 +350,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     && zMin <= cameraPos.z && cameraPos.z <= zMax;
                 colliderCache.Add(myCollider, result);
                 return result;
+            }
+
+            private static bool isPointInFOVCone(
+                Vector3 point, 
+                float coneAngleBufferDegrees = 0,
+                float minDist = 0.05f,
+                float maxDist = 100f)
+            {
+                Camera mainCam = CameraCache.Main;
+                var cameraToPoint = point - mainCam.transform.position;
+                var pointCameraDist = Vector3.Dot(mainCam.transform.forward.normalized, cameraToPoint);
+                if (pointCameraDist < minDist || pointCameraDist > maxDist)
+                {
+                    return false;
+                }
+                var verticalFOV = mainCam.fieldOfView - coneAngleBufferDegrees;
+                var degrees = Mathf.Acos(pointCameraDist / cameraToPoint.magnitude) * Mathf.Rad2Deg;
+                
+                return degrees < verticalFOV * 0.5f;
             }
 
             /// <summary>
