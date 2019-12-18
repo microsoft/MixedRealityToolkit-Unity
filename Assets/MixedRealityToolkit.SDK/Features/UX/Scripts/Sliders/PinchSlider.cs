@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 thumbRoot = value;
                 InitializeSliderThumb();
             }
-        } 
+        }
 
         [Range(0, 1)]
         [SerializeField]
