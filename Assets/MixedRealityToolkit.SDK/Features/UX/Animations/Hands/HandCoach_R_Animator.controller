@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JustInTimeHandHint_R_Animator
+  m_Name: HandCoach_R_Animator
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
