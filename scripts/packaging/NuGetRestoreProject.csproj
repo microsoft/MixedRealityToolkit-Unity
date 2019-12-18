@@ -15,7 +15,7 @@
 <Project Sdk="Microsoft.Build.Traversal/2.0.2">
 
   <PropertyGroup>
-    <RestoreSources>$(RestorePackageFeed)</RestoreSources>
+    <RestoreSources>$(RestorePackageFeed);https://api.nuget.org/v3/index.json</RestoreSources>
   </PropertyGroup>
 
   <ItemGroup>

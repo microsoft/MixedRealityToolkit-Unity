@@ -174,6 +174,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // have VS2017 or VS2019 installed.
             foreach (VSWhereFindOption findOption in VSWhereFindOptions)
             {
+                string arguments = findOption.arguments;
+                if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaUWPVisualStudioVersion))
+                {
+                    arguments += " -latest";
+                }
+                else
+                {
+                    // Add version number with brackets to find only the specified version
+                    arguments += $" -version [{EditorUserBuildSettings.wsaUWPVisualStudioVersion}]";
+                }
+
                 var result = await new Process().StartProcessAsync(
                 new ProcessStartInfo
                 {
@@ -182,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = findOption.arguments,
+                    Arguments = arguments,
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
@@ -294,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             // Assume package version always has a '.' between each number.
-            // According to https://msdn.microsoft.com/en-us/library/windows/apps/br211441.aspx
+            // According to https://msdn.microsoft.com/library/windows/apps/br211441.aspx
             // Package versions are always of the form Major.Minor.Build.Revision.
             // Note: Revision number reserved for Windows Store, and a value other than 0 will fail WACK.
             var version = PlayerSettings.WSA.packageVersion;
@@ -535,7 +546,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         /// <remarks>
         /// This is only for research projects and should not be used in production.
-        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
         /// take a dependency on this function.
         /// </remarks>
@@ -573,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// This is not required by the research mode, but not using unsafe code with
         /// direct memory access results in poor performance. So its kinda recommended
         /// to use unsafe code.
-        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// For further information take a look at https://docs.microsoft.com/windows/mixed-reality/research-mode.
         /// Note that this function is only public to poke a hole for testing - do not
         /// take a dependency on this function.
         /// </remarks>
@@ -623,12 +634,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // This find option corresponds to the version of vswhere that ships with VS2019.
             new VSWhereFindOption(
-                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
+                @"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                 ""),
             // This find option corresponds to the version of vswhere that ships with VS2017 - this doesn't have
             // support for the -find command switch.
             new VSWhereFindOption(
-                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                @"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
                 "\\MSBuild\\15.0\\Bin\\MSBuild.exe"),
         };
     }

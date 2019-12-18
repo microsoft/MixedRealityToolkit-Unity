@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty nearObjectMargin;
         private SerializedProperty grabLayerMasks;
         private SerializedProperty triggerInteraction;
-
+        private SerializedProperty sceneQueryBufferSize;
 
         private bool spherePointerFoldout = true;
 
@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
 
             sphereCastRadius = serializedObject.FindProperty("sphereCastRadius");
+            sceneQueryBufferSize = serializedObject.FindProperty("sceneQueryBufferSize");
             nearObjectMargin = serializedObject.FindProperty("nearObjectMargin");
             grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
             triggerInteraction = serializedObject.FindProperty("triggerInteraction");
@@ -41,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUILayout.PropertyField(sphereCastRadius);
+                    EditorGUILayout.PropertyField(sceneQueryBufferSize);
                     EditorGUILayout.PropertyField(nearObjectMargin);
                     EditorGUILayout.PropertyField(triggerInteraction);
                     EditorGUILayout.PropertyField(grabLayerMasks, true);

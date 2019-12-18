@@ -7,14 +7,14 @@ assignees: ''
 
 ---
 
-## Describe the Issue
+## Describe the issue
 A clear and concise what the issue
 
-## Feature Area
+## Feature area
 What's incorrect? What's missing?
 
-## Existing Doc Link
-If this is about something in an existing document, please provide link 
+## Existing doc link
+If this is about something in an existing document, please provide link
 
 ## Additional context
 Add any other context about the problem here.

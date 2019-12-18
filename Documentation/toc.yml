@@ -71,6 +71,8 @@
       href: Tools/ExtensionServiceCreationWizard.md
     - name: Scene Transition Service Overview
       href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+    - name: Hand Physics Service Overview
+      href: Extensions/HandPhysicsService/HandPhysicsServiceOverview.md
   - name: Input System
     items:
     - name: Input Overview
@@ -167,15 +169,17 @@
     items:
     - name: Dependency Window
       href: Tools/DependencyWindow.md
-    - name: Optimize Window
-      href: Tools/OptimizeWindow.md
+    - name: Extension Service Creation Wizard
+      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Holographic Remoting
+      href: Tools/HolographicRemoting.md
     - name: Input Animation Recording
       href: InputSimulation/InputAnimationRecording.md
       items:
       - name: Input Animation File Format Specification
         href: InputSimulation/InputAnimationFileFormat.md
-    - name: Extension Service Creation Wizard
-      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Optimize Window
+      href: Tools/OptimizeWindow.md
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
@@ -206,6 +210,10 @@
       href: README_Tooltip.md
     - name: Solvers
       href: README_Solver.md
+  - name: Example Scenes
+    items:
+    - name: Examples Hub
+      href: README_ExampleHub.md
     - name: Hand Interaction Example
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example

@@ -27,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         }
 
         // Device Portal API Resources
-        // https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-api-hololens#holographic-os
-        // https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/device-portal-api-core
+        // https://docs.microsoft.com/windows/uwp/debug-test-perf/device-portal-api-hololens#holographic-os
+        // https://docs.microsoft.com/windows/uwp/debug-test-perf/device-portal-api-core
         private const string GetDeviceOsInfoQuery = @"{0}/api/os/info";
         private const string GetMachineNameQuery = @"{0}/api/os/machinename";
         private const string GetBatteryQuery = @"{0}/api/power/battery";
@@ -735,9 +735,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         {
             string ssl = Rest.UseSSL ? "s" : string.Empty;
 
-            if (targetUrl.Contains("Local Machine"))
+            if (targetUrl.Contains(DeviceInfo.LocalMachine) || targetUrl.Contains(DeviceInfo.LocalIPAddress))
             {
-                targetUrl = "127.0.0.1:10080";
+                targetUrl = $"{DeviceInfo.LocalIPAddress}:10080";
                 ssl = string.Empty;
             }
 

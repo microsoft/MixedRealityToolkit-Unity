@@ -1,4 +1,4 @@
-# Experimental Features
+# Experimental features
 
 Some features the MRTK team works on appear to have a lot of initial value even if we haven’t fully fleshed out the details. For these types of features, we want the community to get a chance to see them early. Because they are early in the cycle, we label them as experimental to indicate that they are still evolving, and subject to change over time.
 
@@ -31,7 +31,7 @@ Keep scenes in a scene folder near the top: `MRTK.Examples/Experimental/FooBar/S
 > [!NOTE]
 > We considered not having a single Experimental root folder and instead putting Experimental under say `MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity`. We decided to go with folders at the base to make the experimental features easier to discover.
 
-### Experimental Code should be in a special namespace
+### Experimental code should be in a special namespace
 
 Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
 if your component is part of solvers at `Microsoft.MixedReality.Toolkit.Utilities.Solvers`, its namespace should be `Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers`.
@@ -41,6 +41,23 @@ See [this PR](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532) 
 ### Experimental features should have an [Experimental] attribute
 
 Add an `[Experimental]` attribute above one of your fields to have a small dialog appear in the component editor that mentions your feature is experimental and subject to significant changes.
+
+### Menus for experimental features should go under "Experimental" sub-menu
+
+Ensure that experimental features are under "experimental" sub-menus when adding commands to menus in the editor. Here are a few examples:
+
+Adding a top-level menu command:
+
+```c#
+[MenuItem("Mixed Reality Toolkit/Experimental/MyCommand")]
+public static void MyCommand()
+```
+
+Adding a component menu:
+
+```c#
+[AddComponentMenu("MRTK/Experimental/MyCommand")]
+```
 
 ### Minimize impact to MRTK code
 
@@ -55,7 +72,7 @@ Aim to have zero changes in folders other than experimental folders. Here is a l
 
 Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
 
-### Using you experimental feature should not impact people's ability to use core controls
+### Using your experimental feature should not impact people's ability to use core controls
 
 Most people use core UX components like the button, ManipulationHandler and Interactable very frequently. They will likely not use your experimental feature if it prevents them from using buttons.
 
@@ -63,7 +80,7 @@ Using your component should not break buttons, ManipulationHandler, BoundingBox,
 
 For example, in [this ScrollableObjectCollection PR](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6001), adding a ScrollableObjectCollection caused people to not be able to use the HoloLens button prefabs. Even though this was not caused by a bug in the PR (but rather exposed an existing bug), it prevented the PR from getting checked in.
 
-### Provide and example scene that demonstrates how to use the feature
+### Provide an example scene that demonstrates how to use the feature
 
 People need to see how to use your feature, and how to test it.
 
@@ -75,7 +92,7 @@ Others will not use the experimental feature if it does not work, it will not gr
 
 Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.
 
-## Graduating experimental code into MRTK code  
+## Graduating experimental code into MRTK code
 
 If a feature ends up seeing quite a lot of use, then we should graduate it into core MRTK code. To do this, the feature should have tests, documentation, and an example scene.
 

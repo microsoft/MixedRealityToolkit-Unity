@@ -2,11 +2,11 @@
 
 This document outlines the roadmap of the Mixed Reality Toolkit.
 
-## Current Release
+## Current release
 
 [Microsoft Mixed Reality Toolkit v2.1.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.1.0)
 
-## Upcoming Releases
+## Upcoming releases
 
 | Product | Description | Timeline | Project board |
 | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 
 Release details, including backlog items, can be found on the [GitHub milestone pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/milestones). The complete set of open issues can also be found on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
-## Mixed Reality Toolkit (MRTK) Roadmap
+## Mixed Reality Toolkit (MRTK) roadmap
 
 The Mixed Reality Toolkit is an all-new product, built to be cross MR/AR/VR/XR platform by design. There are two planned pre-releases after which the Mixed Reality Toolkit will become the primary product.
 
