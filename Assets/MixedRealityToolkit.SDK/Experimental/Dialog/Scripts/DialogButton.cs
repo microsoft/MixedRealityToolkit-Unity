@@ -10,44 +10,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     /// </summary>
     public class DialogButton : MonoBehaviour
     {
-        //private Button buttonComponent;
-        public TextMeshPro buttonText;
+        [SerializeField]
+        private TextMeshPro buttonText;
+        public TextMeshPro ButtonText
+        {
+            get => buttonText;
+            set => buttonText = value;
+        }
 
         private DialogShell parentDialog;
-
         /// <summary>
         /// A reference to the Dialog that this button is on.
         /// </summary>
         public DialogShell ParentDialog
         {
-            get
-            {
-                return parentDialog;
-            }
-            set
-            {
-                parentDialog = value;
-            }
+            get => parentDialog;
+            set => parentDialog = value;            
         }
 
         /// <summary>
         /// The type description of the button
         /// </summary>
         public DialogButtonType ButtonTypeEnum;
-
-        private void OnEnable()
-        {
-            //buttonComponent = GetComponent<Button>();
-            //buttonComponent.OnButtonClicked += OnButtonClicked;
-        }
-
-        private void OnDisable()
-        {
-            //if (buttonComponent != null)
-            //{
-            //    buttonComponent.OnButtonClicked -= OnButtonClicked;
-            //}
-        }
 
         /// <summary>
         /// event handler that runs when button is clicked.
@@ -69,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="title"></param>
         public void SetTitle(string title)
         {
-            if (buttonText)
+            if (ButtonText)
             {
-                buttonText.text = title;
+                ButtonText.text = title;
             }
         }
     }
