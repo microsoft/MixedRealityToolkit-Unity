@@ -1,4 +1,4 @@
-# Sliders
+# Hand Coach
 ![](../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
 
 Hand Coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand Coach could be used to represent pressing a button or picking up a hologram.   
