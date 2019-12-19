@@ -45,12 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 case DeviceInputType.SpatialPointer:
                     if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerPosition, out currentPointerPosition))
                     {
-                        currentPointerPose.Position = currentPointerPosition;
+                        currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
                     }
 
                     if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerRotation, out currentPointerRotation))
                     {
-                        currentPointerPose.Rotation = currentPointerRotation;
+                        currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
                     }
 
                     interactionMapping.PoseData = currentPointerPose;
