@@ -105,7 +105,7 @@
 </li>
 <li><p><strong>Press</strong>: The object is being pointed at and a button or hand is pressing. The Press state out ranks Default and Focus. This state will also get set as a fallback to Physical Press.</p>
 </li>
-<li><p><strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
+<li><p><strong>Disabled</strong>: The button should not be interactive and visual feedback will let the user know if for some reason this button is not usable at this time. In theory, the disabled state could contain all other states, but when Enabled is turned off, the Disabled state trumps all other states.</p>
 </li>
 </ul>
 <p>A bit value (#) is assigned to the state depending on the order in the list.</p>
@@ -126,7 +126,7 @@
 <p>Toggles whether an Interactable will start enabled or not. This corresponds to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_IsEnabled"><code>Interactable.IsEnabled</code></a> in code.</p>
 <p>An <em>Interactable's</em> enabled property is different than the enabled property configured via GameObject/Component (i.e SetActive etc). Disabling the GameObject or <em>Interactable</em> MonoBehaviour will disable everything in the class from running including input, visual themes, events, etc. Disabling via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_IsEnabled"><code>Interactable.IsEnabled</code></a> will disable most input handling, resetting related input states. However, the class will still run every frame and receive input events which will be ignored. This is useful for displaying the Interactable in a disabled state which can be done via Visual Themes. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
 <p><strong>Input Actions</strong></p>
-<p>Select the <a href="Input/InputActions.html">input action</a>, from the input configuration or controller mapping profile, that the <em>Interactable</em> component should react to.</p>
+<p>Select the <a href="Input/InputActions.html">input action</a> from the input configuration or controller mapping profile that the <em>Interactable</em> component should react to.</p>
 <p>This property can be configured at runtime in code via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_InputAction"><code>Interactable.InputAction</code></a>.</p>
 <p><strong>IsGlobal</strong></p>
 <p>If true, this will mark the component as a global input listener for the selected <a href="Input/InputActions.html">input action</a>. Default behavior is false which will restrict input to only this <em>Interactable</em> collider/GameObject.</p>
@@ -183,7 +183,7 @@
 </li>
 </ol>
 <h4 id="example-of-extending-receiverbase">Example of extending <code>ReceiverBase</code></h4>
-<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.html"><code>CustomInteractablesReceiver</code></a> class under <code>MixedRealityToolkit.Examples</code> displays status information about an <em>Interactable</em> and is an example how to create a custom Event Receiver.</p>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.html"><code>CustomInteractablesReceiver</code></a> class under <code>MixedRealityToolkit.Examples</code> displays status information about an <em>Interactable</em> and is an example of how to create a custom Event Receiver.</p>
 <pre><code class="lang-c#">public CustomInteractablesReceiver(UnityEvent ev) : base(ev, &quot;CustomEvent&quot;)
 {
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
@@ -216,13 +216,13 @@ public virtual void OnClick(InteractableStates state,
 }
 </code></pre>
 <h5 id="displaying-custom-event-receiver-fields-in-the-inspector">Displaying custom event receiver fields in the inspector</h5>
-<p><em>ReceiverBase</em> scripts use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField.html"><code>InspectorField</code></a> attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an <em>Interactable</em> GameObject is selected and has the associated <em>Event Receiver</em> type added.</p>
+<p><em>ReceiverBase</em> scripts use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField.html"><code>InspectorField</code></a> attributes to expose custom properties in the inspector. Here's an example of Vector3, a custom property with tooltip and label information. This property will show up as configurable in the inspector when an <em>Interactable</em> GameObject is selected and has the associated <em>Event Receiver</em> type added.</p>
 <pre><code class="lang-c#">[InspectorField(Label = &quot;&lt;Property label&gt;&quot;,Tooltip = &quot;&lt;Insert tooltip info&gt;&quot;,Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 </code></pre>
 <h2 id="how-to-use-interactable">How to use Interactable</h2>
 <h3 id="building-a-simple-button">Building a simple button</h3>
-<p>One can create a simple button by simply adding the <em>Interactable</em> component to a GameObject that is configured to receive input events. It can have  has a collider on it or on a child to receive input. If using <em>Interactable</em> with a Unity UI based GameObjects it should be under the Canvas GameObject.</p>
+<p>One can create a simple button by adding the <em>Interactable</em> component to a GameObject that is configured to receive input events. It can have a collider on it or on a child to receive input. If using <em>Interactable</em> with a Unity UI based GameObjects, it should be under the Canvas GameObject.</p>
 <p>Take the button one step further, by creating a new profile, assigning the GameObject itself and creating a new theme. Furthermore, use the <em>OnClick</em> event to make something happen.</p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -232,7 +232,7 @@ public Vector3 EffectOffset = Vector3.zero;
 <h4 id="toggle-button">Toggle button</h4>
 <p>To make a button Toggle-able, change the the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.SelectionModes.html"><code>Selection Mode</code></a> field to type <code>Toggle</code>. In the <em>Profiles</em> section, a new toggled theme is added for each profile that is used when the <em>Interactable</em> is toggled on.</p>
 <p>While the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.SelectionModes.html"><code>SelectionMode</code></a> is set to Toggle, the <em>IsToggled</em> check box can be used to set the default value of the control at runtime initialization.</p>
-<p><em>CanSelect</em> means the the <em>Interactable</em> can go from <em>off</em> to <em>on</em> while the <em>CanDeselect</em> means the inverse.</p>
+<p><em>CanSelect</em> means the <em>Interactable</em> can go from <em>off</em> to <em>on</em> while the <em>CanDeselect</em> means the inverse.</p>
 <p><img src="Images/Interactable/Profile_toggle.png" alt="Profile Toggle Visual Themes Example"></p>
 <p>Developers can utilize the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>SetToggled</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>IsToggled</code></a> interfaces to get/set the toggle state of an <em>Interactable</em> via code.</p>
 <pre><code class="lang-c#">// If using SelectionMode = Toggle (i.e Dimensions == 2)
@@ -258,7 +258,7 @@ bool isSelected = myInteractable.IsToggled;
 <h4 id="multi-dimensional-button">Multi-dimensional button</h4>
 <p>Multi-Dimension selection mode is used to create sequential buttons, or a button that has more than two steps, like controlling speed with three values, Fast (1x), Faster (2x) or Fastest (3x).</p>
 <p>With dimensions being a numeric value, up to 9 themes can be added to control the text label or texture of the button for each speed setting, using a different theme for each of step.</p>
-<p>Every click event will advance the <code>DimensionIndex</code> by 1 at runtime until the <code>Dimensions</code> value is reached then the cycle will reset to 0.</p>
+<p>Every click event will advance the <code>DimensionIndex</code> by 1 at runtime until the <code>Dimensions</code> value is reached. Then the cycle will reset to 0.</p>
 <p><img src="Images/Interactable/Profile_multiDimensions.png" alt="Multi-Dimensional profile example"></p>
 <p>Developers can assess the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>DimensionIndex</code></a> to determine which dimension is currently active.</p>
 <pre><code class="lang-c#">// If using SelectionMode = Multi-dimension (i.e Dimensions &gt;= 3)
@@ -321,7 +321,7 @@ interactable.TriggerOnClick()
     onFocusReceiver.OnFocusOff.AddListener(() =&gt; Debug.Log(&quot;Focus off&quot;));
 }
 </code></pre>
-<p>The example code below demonstrates how to add an <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnToggleReceiver</a>, which listens for selected/deselected state transitions on toggle-able <em>Interactables</em>, and furthermore define action code to perform when the event instances fire.</p>
+<p>The example code below demonstrates how to add an <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnToggleReceiver</a>, which listens for selected/deselected state transitions on toggle-able <em>Interactables</em>, and furthermore defines action code to perform when the event instances fire.</p>
 <pre><code class="lang-c#">public static void AddToggleEvents(Interactable interactable)
 {
     var toggleReceiver = interactable.AddReceiver&lt;InteractableOnToggleReceiver&gt;();
