@@ -653,6 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         // Return null so we don't raise the source detected.
                         return null;
                     }
+                    else
+                        ((WindowsMixedRealityController)detectedController).EnsureControllerModel(interactionSource);
                 }
                 else
                 {

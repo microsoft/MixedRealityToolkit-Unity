@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            EnsureControllerModel(interactionSourceState);
+            EnsureControllerModel(interactionSourceState.source);
 
             base.UpdateController(interactionSourceState);
 
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Ensure that if a controller model was desired that we have attempted initialization.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        private void EnsureControllerModel(InteractionSourceState interactionSourceState)
+        public void EnsureControllerModel(InteractionSource interactionSource)
         {
             GameObject controllerModel;
 
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 controllerModelInitialized = true;
                 return;
             }
-            else if (controllerDictionary.TryGetValue(GenerateKey(interactionSourceState.source), out controllerModel))
+            else if (controllerDictionary.TryGetValue(GenerateKey(interactionSource), out controllerModel))
             {
                 controllerModelInitialized = true;
                 TryAddControllerModelToSceneHierarchy(controllerModel);
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             controllerModelInitialized = true;
-            CreateControllerModelFromPlatformSDK(interactionSourceState.source);
+            CreateControllerModelFromPlatformSDK(interactionSource);
         }
 
         /// <inheritdoc />
