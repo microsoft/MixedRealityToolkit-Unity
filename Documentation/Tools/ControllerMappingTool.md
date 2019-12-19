@@ -1,4 +1,4 @@
-# Controller Mapping Tool
+# Controller mapping tool
 
 The controller mapping tool is a runtime (on device or in the editor) tool that enables developers to quickly determine the Unity input axis and button mappings for a hardware controller (ex: motion controller).
 
@@ -8,7 +8,7 @@ This tool is very useful when developing support for a new hardware controller. 
 
 ## Using the controller mapping tool
 
-To get started with the controller mapping tool, navigate to **MixedRealityToolkit.Tools\RuntimeTools\Tools\ControllerMappingTool** and open the **ControllerMappingTool** scene. Once the scene has been loaded, the project can either be run in the editor, using play mode, or built and run on a device. 
+To get started with the controller mapping tool, navigate to **MixedRealityToolkit.Tools\RuntimeTools\Tools\ControllerMappingTool** and open the **ControllerMappingTool** scene. Once the scene has been loaded, the project can either be run in the editor, using play mode, or built and run on a device.
 
 To examine Unity's mappings for a controller:
 
@@ -17,8 +17,8 @@ To examine Unity's mappings for a controller:
 - Note the mappings in the display
 - Update the control mappings in the input system data provider for the controller
 
-> [!Note]
-> The controller mapping tool does not make use of Microsoft Mixed Reality Toolkit components. It directly communicates with Unity to determine and display the control mappings. 
+> [!NOTE]
+> The controller mapping tool does not make use of Microsoft Mixed Reality Toolkit components. It directly communicates with Unity to determine and display the control mappings.
 
 ### All controls display
 
@@ -28,7 +28,7 @@ The large display panel reports the state of all defined Unity input axes and bu
 
 ### Active controls display
 
-The smaller, narrow display panel shows the Unity input axed and buttons which are in an actice state (ex: a button is pressed). The active controls display provides an easy to read summary view of the state of the controller.
+The smaller, narrow display panel shows the Unity input axed and buttons which are in an active state (ex: a button is pressed). The active controls display provides an easy to read summary view of the state of the controller.
 
 ![Active controls display](../Images/ControllerMappingTool/ActiveControls.png)
 

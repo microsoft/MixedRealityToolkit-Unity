@@ -1,4 +1,4 @@
-# Material Instance
+# Material instance
 
 The [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. This utility component can be used as a replacement to [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") or 
 [Renderer.materials]("https://docs.unity3d.com/ScriptReference/Renderer-materials.html").
@@ -8,7 +8,7 @@ The [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialI
 
 Why can using [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") be an issue? If you add the below code to a Unity scene and hit play memory usage will continue to climb and climb:
 
-```csharp
+```c#
 public class Leak : MonoBehaviour
 {
     private void Update()
@@ -27,7 +27,7 @@ public class Leak : MonoBehaviour
 
 As an alternative try using the [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior:
 
-```csharp
+```c#
 public class NoLeak : MonoBehaviour
 {
     private void Update()
@@ -47,10 +47,10 @@ When invoking Unity's [Renderer.material]("https://docs.unity3d.com/ScriptRefere
 
 When a [MaterialPropertyBlock](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) can not be used and a material must be instanced, [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) can be used as follows:
 
-```csharp
+```c#
 public class MyBehaviour : MonoBehaviour
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()
@@ -61,12 +61,13 @@ public class MyBehaviour : MonoBehaviour
     }
 }
 ```
+
 If multiple objects need ownership of the material instance it's best to take explicit ownership for reference tracking. (An optional interface called [`IMaterialInstanceOwner`](xref:Microsoft.MixedReality.Toolkit.Rendering.IMaterialInstanceOwner) exists to aide with ownership.) Below is example usage:
 
-```csharp
+```c#
 public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 {
-    // Assigned via the inspector. 
+    // Assigned via the inspector.
     public Renderer targetRenderer;
 
     private void OnEnable()
@@ -91,6 +92,6 @@ public class MyBehaviour : MonoBehaviour,  IMaterialInstanceOwner
 
 For more information please see the example usage demonstrated within the [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive) behavior.
 
-## See Also
+## See also
 
 * [MRTK Standard Shader](../README_MRTKStandardShader.md)

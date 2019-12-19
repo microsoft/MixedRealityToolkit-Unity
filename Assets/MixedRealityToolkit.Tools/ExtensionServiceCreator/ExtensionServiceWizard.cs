@@ -17,17 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static ExtensionServiceWizard window;
         private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/ExtensionServiceCreationWizard.html";
         private static readonly Vector2 minWindowSize = new Vector2(500, 0);
-        private const int docLinkWidth = 200;
+        private const int DocLinkWidth = 200;
         private const string TargetFolderLabel = "Target Folder";
 
         private ExtensionServiceCreator creator = new ExtensionServiceCreator();
         private List<string> errors = new List<string>();
         private bool registered = false;
-        private static float progrssBarTimer = 0.0f;
+        private static float progressBarTimer = 0.0f;
 
         private Vector2 outputFoldersScrollPos;
         private bool useUniversalFolder = true;
-        private UnityEngine.Object universalFolder;
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Create Extension Service", false, 500)]
         private static void CreateExtensionServiceMenuItem()
@@ -302,9 +301,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             using (var progressBarRect = new EditorGUILayout.VerticalScope())
             {
-                progrssBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+                progressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
 
-                EditorGUI.ProgressBar(progressBarRect.rect, progrssBarTimer, "Creating assets...");
+                EditorGUI.ProgressBar(progressBarRect.rect, progressBarTimer, "Creating assets...");
                 GUILayout.Space(16);
             }
 

@@ -1,6 +1,6 @@
 # How to download the Mixed Reality Toolkit
 
-![](../Documentation/Images/MRTK_Logo_Rev.png)
+![MRTK logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
 The MRTK is available via the following methods. For feedback on these methods, or to request an additional distribution method, please [file an issue on Github](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose)
 
@@ -11,9 +11,11 @@ You can download the packaged [Unity assets from here](https://github.com/Micros
 There are two Unity packages available for each release:
 
 ### Foundation
+
 This package contains the MRTK itself and all of the code and materials needed to build Mixed Reality experiences.
 
 ### Examples
+
 This is an optional package which contains example scenes and samples. This package is dependent on the Foundation package.
 
 ## GitHub submodule (advanced users)

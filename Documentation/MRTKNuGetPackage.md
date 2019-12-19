@@ -8,7 +8,8 @@ Mixed Reality Toolkit (MRTK) is now available as a NuGet package on NuGet.org. T
 
 Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to your project.
 
-1. Download the latest [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest) .unitypackage
+1. Download the latest [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest) .unitypackage.
+    1. If you already have NuGetForUnity installed, please ensure you're using version 2.0.0 or newer.
 1. Import the package into your Unity project, [instructions](https://docs.unity3d.com/Manual/AssetPackages.html).
 1. In the Unity menu bar, click on **NuGet > Manage NuGet Packages**.
 
@@ -38,7 +39,7 @@ The release of MRTK as NuGet package is a new delivery mechanism being explored 
 
 ### Migrating to NuGet from .unitypackage or source (not yet supported)
 
-NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target it's assets as well, and although there is code for it this is not a supported scenario, yet.
+NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target its assets as well, and although there is code for it this is not a supported scenario, yet.
 
 *Thereby, there is no currently supported way of migrating to NuGet from .unitypackage or source. This will change as we continue development on this delivery mechanism.*
 

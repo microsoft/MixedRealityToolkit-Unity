@@ -1,12 +1,12 @@
 ## Overview
 
-## Expected Behavior
+## Expected behavior
 
-## Actual Behavior
+## Actual behavior
 
 ## Steps to reproduce
 _(Links to sample github project preferred)_
 
-## Unity Editor Version
+## Unity editor version
 
-## Mixed Reality Toolkit Release Version
+## Mixed Reality Toolkit release version

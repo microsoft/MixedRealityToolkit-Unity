@@ -31,6 +31,18 @@ steps:
     createLogFile: true
     restoreNugetPackages: false
     msbuildVersion: '15.0'
+    msbuildArguments: '/t:Restore /p:BuildProjectReferences=false'
+  displayName: 'NuGet Restore for InEditor WSA (Special)'
+
+- task: MSBuild@1
+  inputs:
+    solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
+    msbuildArchitecture: 'x64'
+    platform: 'WSA'
+    configuration: 'InEditor'
+    createLogFile: true
+    restoreNugetPackages: false
+    msbuildVersion: '15.0'
     msbuildArguments: '/p:BuildProjectReferences=false'
   displayName: 'Build InEditor WSA'
   

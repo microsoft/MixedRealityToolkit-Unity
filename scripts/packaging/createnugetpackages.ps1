@@ -27,10 +27,9 @@ if (-not $unityEditor) {
 }
 Write-Verbose $unityEditor;
 
-function RunUnityTask
-{
+function RunUnityTask {
     param([string]$taskName, [string]$methodToExecute)
-    Write-Output "Starting runing Unity task: $($taskName)"
+    Write-Output "Starting running Unity task: $($taskName)"
     $logFile = New-Item -Path "Logs\Unity.$($taskName).$($Version).log" -ItemType File -Force
     
     $ProjectLocation = Resolve-Path "$(Get-Location)\..\"
@@ -38,8 +37,7 @@ function RunUnityTask
     $proc = Start-Process -FilePath "$unityEditor" -ArgumentList "-projectPath $ProjectLocation -batchmode -executeMethod $($methodToExecute) -logFile $($logFile.FullName) -nographics -quit" -PassThru
     $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
     
-    while (-not $proc.HasExited -and $ljob.HasMoreData)
-    {
+    while (-not $proc.HasExited -and $ljob.HasMoreData) {
         Receive-Job $ljob
         Start-Sleep -Milliseconds 200
     }
@@ -49,16 +47,14 @@ function RunUnityTask
     
     Remove-Job $ljob
     Stop-Process $proc
-    if ($proc.ExitCode -ge 1)
-    {
+    if ($proc.ExitCode -ge 1) {
         Write-Error "Failed to execute Unity Task '$($taskName)', see log '$($logFile)' for more information."
         exit($proc.ExitCode)
     }
 }
 
 $OriginalPath = Get-Location
-try
-{
+try {
     Set-Location (Split-Path $MyInvocation.MyCommand.Path)
     Set-Location "..\\..\\"
     New-Item -ItemType Directory "NuGet" -ErrorAction SilentlyContinue
@@ -70,47 +66,40 @@ try
     ### Build all the needed flavors for MRTK
     Write-Output "============ Building InEditor WindowsStandalone32 ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildStandaloneEditor > "Logs\Build.InEditor.WindowsStandalone32.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
-            Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
+    if ($lastexitcode -ge 1) {
+        Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building InEditor WSA ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
-            Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log";
+    if ($lastexitcode -ge 1) {
+        Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player WindowsStandalone32 ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildStandalonePlayer > "Logs\Build.Player.WindowsStandalone32.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
+    if ($lastexitcode -ge 1) {
         Write-Error "Building Player WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player Android ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildAndroidPlayer > "Logs\Build.Player.Android.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
+    if ($lastexitcode -ge 1) {
         Write-Error "Building Player Android Failed! See log file for more information $(Get-Location)\Logs\Build.Player.Android.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player iOS  ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildIOSPlayer > "Logs\Build.Player.iOS.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
+    if ($lastexitcode -ge 1) {
         Write-Error "Building Player iOS Failed! See log file for more information $(Get-Location)\Logs\Build.Player.iOS.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player WSA ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildWSAPlayer  > "Logs\Build.Player.WSA.$($Version).log"
-    if ($lastexitcode -ge 1)
-    {
+    if ($lastexitcode -ge 1) {
         Write-Error "Building Player WSA Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WSA.$($Version).log";
         exit($lastexitcode)
     }
-
 
     ### Run Asset regargetting:
     RunUnityTask -taskName "AssetRetargeting" -methodToExecute "Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets"
@@ -125,7 +114,7 @@ try
 
     # Check if NuGet.exe is in the environment PATH, if not go ahead and install it to this directory
     where.exe nuget > $null 2> $null
-    if ($lastexitcode -ne 0){
+    if ($lastexitcode -ne 0) {
         Write-Host "Could not find NuGet.exe in the path. Downloading it now from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
         Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile ".\nuget.exe"
     }
@@ -155,8 +144,7 @@ try
         nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta -Version $Version
         
         # If the package is already installed to the machine global cache delete it, otherwise the next restore will no-op
-        if ([System.IO.Directory]::Exists($finalInstallPath))
-        {
+        if ([System.IO.Directory]::Exists($finalInstallPath)) {
             Remove-Item -Recurse -Force $finalInstallPath
         }
         
@@ -166,7 +154,6 @@ try
         dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$Version
     }
 }
-finally
-{
+finally {
     Set-Location $OriginalPath
 }
