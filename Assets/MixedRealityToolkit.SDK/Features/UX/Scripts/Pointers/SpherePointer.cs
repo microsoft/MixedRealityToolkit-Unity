@@ -74,7 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, 
         /// radius equal to half display height.
         /// </summary>
-        public bool IgnoreCollidersNotInFOV => ignoreCollidersNotInFOV;
+        public bool IgnoreCollidersNotInFOV
+        {
+            get => ignoreCollidersNotInFOV;
+            set => ignoreCollidersNotInFOV = value;
+        }
 
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
