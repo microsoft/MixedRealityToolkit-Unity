@@ -358,11 +358,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.Target = cube;
             bbox.Active = true;
 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-
             // front right corner is corner 3
             var frontRightCornerPos = cube.transform.Find("rigRoot/corner_3").position;
 
+            // grab corner and scale object
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);

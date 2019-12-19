@@ -360,11 +360,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             bbox.Target = cube;
             bbox.Active = true;
 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-
             // front right corner is corner 3
             var frontRightCornerPos = cube.transform.Find("rigRoot/corner_3").position;
 
+            // grab corner and scale object
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
@@ -374,7 +373,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos, numSteps);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(frontRightCornerPos + delta, numSteps);
-
 
             var endBounds = cube.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
