@@ -254,18 +254,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             UpdateWorkingRotationToGoal();
         }
 
-        float AngleBetweenOnXZPlane(Vector3 from, Vector3 to)
-        {
-            float angle = Mathf.Atan2(to.z, to.x) - Mathf.Atan2(from.z, from.x);
-            return SimplifyAngle(angle) * Mathf.Rad2Deg;
-        }
-
-        float AngleBetweenOnXYPlane(Vector3 from, Vector3 to)
-        {
-            float angle = Mathf.Atan2(to.y, to.x) - Mathf.Atan2(from.y, from.x);
-            return SimplifyAngle(angle) * Mathf.Rad2Deg;
-        }
-        
         /// <summary>
         /// Projects from and to on to the plane with given normal and gets the
         /// angle between these projected vectors.
@@ -283,6 +271,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             float angle = Mathf.Atan2(Vector3.Dot(to, right), Vector3.Dot(to, forward));
 
             return SimplifyAngle(angle) * Mathf.Rad2Deg;
+        }
+        
+        /// <summary>
+        /// Calculates the angle between vec and a plane described by normal. The angle returned
+        /// is signed.
+        /// </summary>
+        /// <returns>signed angle between vec and the plane described by normal</returns>
+        float AngleBetweenVectorAndPlane(Vector3 vec, Vector3 normal)
+        {
+            return 90 - (Mathf.Acos(Vector3.Dot(vec, normal)) * Mathf.Rad2Deg);
         }
 
         float SimplifyAngle(float angle)
@@ -323,6 +321,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             Vector3 currentRefForward = refRotation * Vector3.forward;
             Vector3 refRight = refRotation * Vector3.right;
+            Vector3 refUp = refRotation * Vector3.up;
 
             bool angularClamped = false;
 
@@ -335,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else
             {
-                float angle = AngleBetweenOnPlane(refForward, toTarget, refRight);
+                float angle = -AngleBetweenVectorAndPlane(toTarget, refUp);
                 float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
 
                 if (angle < -minMaxAngle)
@@ -353,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             // Y-axis leashing
             {
                 // This is negated because Unity is left-handed
-                float angle = -AngleBetweenOnXZPlane(refForward, toTarget);
+                float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
                 float minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
 
                 if (angle < -minMaxAngle)
@@ -444,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (defaultOrientationType == SolverOrientationType.MaintainGoal)
             {
                 Vector3 nodeToCamera = goalPosition - ReferencePosition;
-                float angle = Mathf.Abs(AngleBetweenOnXZPlane(transform.forward,nodeToCamera));
+                float angle = Mathf.Abs(AngleBetweenOnPlane(transform.forward, nodeToCamera, Vector3.up));
                 if (angle > orientToControllerDeadzoneDegrees)
                 {
                     defaultOrientationType = SolverOrientationType.FaceTrackedObject;
