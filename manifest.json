@@ -6680,7 +6680,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Sliders.html",
-          "hash": "yHw/6t1Mu4fK4R4yivxuiw=="
+          "hash": "woT2v9TvnZtId5JfkDi/Nw=="
         }
       },
       "is_incremental": false,
@@ -20959,7 +20959,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PinchSlider.html",
-          "hash": "ApsZSyfNY8tzl5Qeeeodfw=="
+          "hash": "yz2EkEbxYNehCEJE9Qvwcg=="
         }
       },
       "is_incremental": false,
@@ -21152,6 +21152,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ShaderPropertyType.html",
           "hash": "er3RUt3Wphi+9hmTdosswg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.SliderAxis.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.SliderAxis.html",
+          "hash": "RWwx14cxD0fdCIJFZgiTeA=="
         }
       },
       "is_incremental": false,
@@ -21511,7 +21523,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "IgBL4ifytlciPcv5Qq/cpw=="
+          "hash": "2j0+h2Ubd4S3elU0W+3spQ=="
         }
       },
       "is_incremental": false,
@@ -25087,7 +25099,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "rhxavj2qqXevPkpGE8Fbiw=="
+          "hash": "xde+2nw9M8YmyXx8BkmmGQ=="
         }
       },
       "is_incremental": false,
@@ -25146,12 +25158,6 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1502,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -25163,6 +25169,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1503,
           "skipped_file_count": 0
         }
       }

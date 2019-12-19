@@ -117,6 +117,18 @@
 <p><img src="Images/Sliders/MRTK_Sliders_Setup.png" alt="Sliders Config"></p>
 <p>You can also specify the axis (in local space) of the slider via the <em>Slider Axis</em> field</p>
 <p>If you cannot use the handles, you can instead specify the start and end points of the slider via the <em>Slider Start Distance</em> and <em>Slider End Distance</em> fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distances as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.</p>
+<h2 id="inspector-properties">Inspector properties</h2>
+<p><strong>Thumb Root</strong> The gameobject that contains the slider thumb.</p>
+<p><strong>Slider Value</strong> The value of the slider.</p>
+<p><strong>Track Visuals</strong> The gameobject that contains the desired track visuals that goes along the slider.</p>
+<p><strong>Tick Marks</strong> The gameobject that contains the desired tick marks that goes along the slider.</p>
+<p><strong>Slider Axis</strong> The axis the slider moves along.</p>
+<p><strong>Slider Start Distance</strong> Where the slider track starts, as distance from center along slider axis, in local space units.</p>
+<p><strong>Slider End Distance</strong> Where the slider track ends, as distance from center along slider axis, in local space units.</p>
+<p>When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated.
+Specifically, their local position is reset and their local rotation is set to match the Slider Axis orientation.
+Their scale isn't modified.
+If Tick Marks have a Grid Object Collection component then the Layout and CellWidth or CellHeight is updated accordingly to match the Slider Axis.</p>
 </article>
           </div>
           
