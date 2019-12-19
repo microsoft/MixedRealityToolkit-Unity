@@ -59,15 +59,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             public System.Guid guid;
             public Vector2 extents;
+            public byte[] occlusionMask;
 
-            public Quad(System.Guid guid, Vector2 extents)
+            public Quad(System.Guid guid, Vector2 extents, byte[] occlusionMask)
             {
                 this.guid = guid;
                 this.extents = extents;
+                this.occlusionMask = occlusionMask;
             }
         }
 
         public SpatialAwarenessSurfaceTypes SurfaceType
+        {
+            get;
+            private set;
+        }
+
+        public byte[] OcclusionMaskBytes
         {
             get;
             private set;

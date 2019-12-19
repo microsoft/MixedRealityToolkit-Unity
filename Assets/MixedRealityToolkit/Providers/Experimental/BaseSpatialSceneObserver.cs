@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
@@ -123,5 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public bool GeneratePlanes { get; set; }
         public bool UsePersistentObjects { get; set; }
         public float QueryRadius { get; set; }
+        public bool VisualizeOcclusionMask { get; set; }
+        public Vector2Int OcclusionMaskResolution { get; set; }
+
     }
 }

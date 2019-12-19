@@ -24,9 +24,8 @@ MonoBehaviour:
   instantiationBatchRate: 1
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
   shouldLoadFromFile: 1
-  serializedScene: {fileID: 4900000, guid: cbf0602262c70ec4fbc01971010e5aca, type: 3}
+  serializedScene: {fileID: 4900000, guid: e391ac2f2ef904b49a2ac2fff2831f91, type: 3}
   generatePlanes: 1
-  planeValidationMask: 0
   generateMeshes: 0
   generateEnvironmentMesh: 0
   renderInferredRegions: 1
@@ -34,3 +33,5 @@ MonoBehaviour:
   levelOfDetail: 1
   usePersistentObjects: 0
   queryRadius: 5
+  visualizeOcclusionMask: 1
+  occlusionMaskResolution: {x: 128, y: 128}

@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         [Tooltip("Physics layer on which to set understood planes.")]
         private int physicsLayer = 31;
         /// <summary>
-        ///
+        /// Physics layer on which to set understood planes
         /// </summary>
         public int PhysicsLayer => physicsLayer;
 
@@ -88,14 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// When updating planes, save data to file.
         /// </summary>
         public bool GeneratePlanes => generatePlanes;
-
-        [SerializeField]
-        [Tooltip("Apply validation mask texture to planes.")]
-        private bool planeValidationMask = false;
-        /// <summary>
-        /// Apply validation mask texture to planes.
-        /// </summary>
-        public bool PlaneValidationMask => planeValidationMask;
 
         [SerializeField]
         [Tooltip("Generate mesh objects for surface types.")]
@@ -153,5 +145,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// Keep previously observed objects when updating the scene
         /// </summary>
         public float QueryRadius => queryRadius;
+
+        [SerializeField]
+        [Tooltip("When instantiating quads, show the occlusion mask texture")]
+        private bool visualizeOcclusionMask = true;
+        /// <summary>
+        /// When instantiating quads, show the occlusion mask texture
+        /// </summary>
+        public bool VisualizeOcclusionMask => visualizeOcclusionMask;
+
+        [SerializeField]
+        [Tooltip("Sets pixel resolution of occlusion mask")]
+        private Vector2Int occlusionMaskResolution = new Vector2Int(128, 128);
+        /// <summary>
+        /// When instantiating quads, show the occlusion mask texture
+        /// </summary>
+        public Vector2Int OcclusionMaskResolution => occlusionMaskResolution;
     }
 }

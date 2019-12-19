@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty defaultMaterial;
         private SerializedProperty shouldLoadFromFile;
         private SerializedProperty serializedScene;
-        private SerializedProperty planeValidationMask;
         private SerializedProperty generateMeshes;
         private SerializedProperty generatePlanes;
         private SerializedProperty generateEnvironmentMesh;
@@ -33,6 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty levelOfDetail;
         private SerializedProperty usePersistentObjects;
         private SerializedProperty queryRadius;
+        private SerializedProperty visualizeOcclusionMask;
+        private SerializedProperty occlusionMaskResolution;
 
         private const string ProfileTitle = "Scene Understanding Observer Settings";
         private const string ProfileDescription = "Settings for high-level environment representation";
@@ -60,10 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             generateEnvironmentMesh = serializedObject.FindProperty("generateEnvironmentMesh");
 
             physicsLayer = serializedObject.FindProperty("physicsLayer");
-            planeValidationMask = serializedObject.FindProperty("planeValidationMask");
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
             renderInferredRegions = serializedObject.FindProperty("renderInferredRegions");
             queryRadius = serializedObject.FindProperty("queryRadius");
+            visualizeOcclusionMask = serializedObject.FindProperty("visualizeOcclusionMask");
+            occlusionMaskResolution = serializedObject.FindProperty("occlusionMaskResolution");
         }
 
         public override void OnInspectorGUI()
@@ -96,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(queryRadius);
                     EditorGUILayout.PropertyField(levelOfDetail);
                     EditorGUILayout.PropertyField(usePersistentObjects);
+                    EditorGUILayout.PropertyField(renderInferredRegions);
                 }
                 EditorGUILayout.Space();
 
@@ -108,13 +111,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(generateEnvironmentMesh);
                     EditorGUILayout.PropertyField(physicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
-                }
-                EditorGUILayout.Space();
-
-                EditorGUILayout.LabelField("Physics", EditorStyles.boldLabel);
-                {
-                    EditorGUILayout.PropertyField(planeValidationMask);
-                    EditorGUILayout.PropertyField(renderInferredRegions);
+                    EditorGUILayout.PropertyField(visualizeOcclusionMask);
+                    EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
 
                 serializedObject.ApplyModifiedProperties();

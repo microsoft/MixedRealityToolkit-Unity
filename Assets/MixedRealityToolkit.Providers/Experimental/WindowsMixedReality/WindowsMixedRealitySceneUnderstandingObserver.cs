@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc/>
         public override void Suspend()
         {
-            updateTimer.Enabled = false;
+            //updateTimer.Enabled = false;
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private Timer updateTimer = null;
         private SceneQuerySettings lastQuerySettings;
         private Dictionary<Guid, SceneMesh> cachedSceneMeshes = new Dictionary<Guid, SceneMesh>(128);
-        private Dictionary<Guid, SceneQuad> cachedSceneQuads = new Dictionary<Guid, SceneQuad>(128);
+        private Dictionary<Guid, SpatialAwarenessSceneObject.Quad> cachedSceneQuads = new Dictionary<Guid, SpatialAwarenessSceneObject.Quad>(128);
         private Scene previousScene = null;
         private Queue<SpatialAwarenessSceneObject> instantiationQueue = new Queue<SpatialAwarenessSceneObject>();
         private TextAsset serializedScene = null;
@@ -267,34 +267,81 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private IStorageFile SUfile;
 #endif // WINDOWS_UWP
 
-
         #endregion Private Fields
 
         #region Public Methods
-        /// <summary>
-        /// Get a byte array representing the occlusion mask of a plane
-        /// </summary>
-        /// <param name="saso">The <see cref="SpatialAwarenessMeshObject"/> who's mask to return</param>
-        /// <param name="width"><see cref="ushort"/> representing the width of the texture mask to be returned</param>
-        /// <param name="height"><see cref="ushort"/> representing the height of the texture mask to be returned</param>
-        /// <param name="mask">The plane's occlusion mask as a <see cref="byte[]"/> to generate a texture.</param>
-        /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public bool TryGetPlaneValidationMask(SpatialAwarenessSceneObject.Quad quad, ushort textureWidth, ushort textureHeight, out byte[] mask)
+        public bool TryGetOcclusionMask(Guid quadId, ushort textureWidth, ushort textureHeight, out byte[] mask)
         {
-            mask = null;
+            SpatialAwarenessSceneObject.Quad quad;
 
-            SceneQuad associatedQuad;
-            cachedSceneQuads.TryGetValue(quad.guid, out associatedQuad);
-
-            if (associatedQuad == null)
+            if (!cachedSceneQuads.TryGetValue(quadId, out quad))
             {
+                mask = null;
                 return false;
             }
 
-            mask = new byte[textureWidth * textureHeight];
+            mask = quad.occlusionMask;
 
-            associatedQuad.GetSurfaceMask(textureWidth, textureHeight, mask);
             return true;
+        }
+
+        /// <summary>
+        /// Applies the quad region mask on the passed in game object.
+        /// </summary>
+        /// <param name="quad">Scene Understanding quad.</param>
+        /// <param name="go">Game object associated with the quad.</param>
+        /// <param name="color">Color to use for the valid regions.</param>
+        public void ApplyQuadRegionMask(SceneUnderstanding.SceneQuad quad, GameObject go, Color? color)
+        {
+            if (quad == null || go == null)
+            {
+                Debug.LogWarning("SceneUnderstandingUtils.ApplyQuadRegionMask: One or more arguments are null.");
+                return;
+            }
+
+            // If no color has been provided, paint it red.
+            color = color == null ? Color.red : color.Value;
+
+            // Resolution of the mask.
+            ushort width = 256;
+            ushort height = 256;
+
+            byte[] mask = new byte[width * height];
+            quad.GetSurfaceMask(width, height, mask);
+
+            MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
+            if (meshRenderer == null || meshRenderer.material == null || meshRenderer.material.HasProperty("_MainTex") == false)
+            {
+                Debug.LogWarning("SceneUnderstandingUtils.ApplyQuadRegionMask: Mesh renderer component is null or does not have a valid material.");
+                return;
+            }
+
+            // Create a new texture.
+            Texture2D texture = new Texture2D(width, height);
+            texture.filterMode = FilterMode.Bilinear;
+            texture.wrapMode = TextureWrapMode.Clamp;
+
+            // Transfer the invalidation mask onto the texture.
+            Color[] pixels = texture.GetPixels();
+            for (int i = 0; i < pixels.Length; ++i)
+            {
+                var value = mask[i];
+
+                if (value == (byte)SceneUnderstanding.SceneRegionSurfaceKind.NotSurface)
+                {
+                    pixels[i] = Color.clear;
+                }
+                else
+                {
+                    pixels[i] = color.Value;
+                }
+            }
+
+            texture.SetPixels(pixels);
+            texture.Apply(true);
+
+            // Set the texture on the material.
+            meshRenderer.material.mainTexture = texture;
         }
 
         /// <summary>
@@ -304,14 +351,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public bool TryGetBestPlacementPosition(SpatialAwarenessSceneObject.Quad quad, Vector2 objExtents, out Vector2 placementPosOnPlane)
+        public bool TryFindCentermostPlacement(SpatialAwarenessSceneObject.Quad quad, Vector2 objExtents, out Vector2 placementPosOnPlane)
         {
             placementPosOnPlane = Vector2.zero;
 
-            SceneQuad associatedQuad;
-            cachedSceneQuads.TryGetValue(quad.guid, out associatedQuad);
+            SpatialAwarenessSceneObject.Quad associatedQuad;
 
-            if (associatedQuad == null)
+            if (!cachedSceneQuads.TryGetValue(quad.guid, out associatedQuad))
             {
                 return false;
             }
@@ -319,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             System.Numerics.Vector2 ext = new System.Numerics.Vector2(objExtents.x, objExtents.y);
             System.Numerics.Vector2 pos = new System.Numerics.Vector2();
 
-            associatedQuad.FindCentermostPlacement(ext, out pos);
+            //associatedQuad.FindCentermostPlacement(ext, out pos);
 
             placementPosOnPlane.Set(pos.X, pos.Y);
 
@@ -344,28 +390,46 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
-            int meshCount = sceneObject.Meshes.Count;
             int quadCount = sceneObject.Quads.Count;
+            int meshCount = sceneObject.Meshes.Count;
 
-            List<SpatialAwarenessSceneObject.MeshData> meshes = new List<SpatialAwarenessSceneObject.MeshData>(meshCount);
             List<SpatialAwarenessSceneObject.Quad> quads = new List<SpatialAwarenessSceneObject.Quad>(quadCount);
+            List<SpatialAwarenessSceneObject.MeshData> meshes = new List<SpatialAwarenessSceneObject.MeshData>(meshCount);
 
             if (GeneratePlanes)
             {
                 SceneQuad sceneQuad = null;
 
-                for (int i = 0; i < meshCount; ++i)
+                for (int i = 0; i < quadCount; ++i)
                 {
                     sceneQuad = sceneObject.Quads[i];
 
                     var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
-                    var quad = new SpatialAwarenessSceneObject.Quad(sceneObject.Id, extents);
+
+                    var quadIdKey = sceneQuad.Id;
+
+                    byte[] occlusionMaskBytes = null;
+
+                    if (VisualizeOcclusionMask)
+                    {
+                        try
+                        {
+                            occlusionMaskBytes = new byte[OcclusionMaskResolution.x * OcclusionMaskResolution.y];
+                            sceneQuad.GetSurfaceMask((ushort)sceneQuad.Extents.X, (ushort)sceneQuad.Extents.Y, occlusionMaskBytes);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
+                    }
+
+                    var quad = new SpatialAwarenessSceneObject.Quad(quadIdKey, extents, occlusionMaskBytes);
+
                     quads.Add(quad);
 
-                    var key = sceneQuad.Id;
-                    if (!cachedSceneQuads.ContainsKey(key))
+                    if (!cachedSceneQuads.ContainsKey(quadIdKey))
                     {
-                        cachedSceneQuads.Add(key, sceneQuad);
+                        cachedSceneQuads.Add(quadIdKey, quad);
                     }
                 }
             }
@@ -374,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 SceneMesh sceneMesh = null;
 
-                for (int i = 0; i < quadCount; ++i)
+                for (int i = 0; i < meshCount; ++i)
                 {
                     sceneMesh = sceneObject.Meshes[i];
                     var meshData = MeshData(sceneMesh);
@@ -590,6 +654,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             InstantiationBatchRate = profile.InstantiationBatchRate;
             ObservationExtents = profile.ObservationExtents;
             QueryRadius = profile.QueryRadius;
+            VisualizeOcclusionMask = profile.VisualizeOcclusionMask;
+            OcclusionMaskResolution = profile.OcclusionMaskResolution;
         }
 
         private async Task<bool> CanAccessObserver()
@@ -740,17 +806,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     var go = new GameObject("Quad");
 
-                    var mf = go.AddComponent<MeshFilter>();
-                    mf.mesh = normalizedQuadMesh;
+                    var quad = saso.Quads[i];
 
-                    var mr = go.AddComponent<MeshRenderer>();
+                    var meshFilter = go.AddComponent<MeshFilter>();
+                    meshFilter.mesh = normalizedQuadMesh;
+
+                    var meshRenderer = go.AddComponent<MeshRenderer>();
 
                     if (DefaultMaterial)
                     {
-                        mr.sharedMaterial = DefaultMaterial;
+                        meshRenderer.sharedMaterial = DefaultMaterial;
                     }
 
-                    var scale = new Vector3(saso.Quads[i].extents.x, saso.Quads[i].extents.y, 0);
+                    if (VisualizeOcclusionMask)
+                    {
+                        if (quad.occlusionMask != null)
+                        {
+                            var occlusionTexture = OcclulsionTexture(quad.occlusionMask);
+                            meshRenderer.material.mainTexture = occlusionTexture;
+                        }
+                    }
+
+                    var scale = new Vector3(quad.extents.x, quad.extents.y, 0);
                     go.transform.localScale = scale;
 
                     go.AddComponent<BoxCollider>();
@@ -785,6 +862,38 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return;
         }
 
+        private Texture2D OcclulsionTexture(byte[] textureBytes)
+        {
+            Assert.IsNotNull(textureBytes);
+
+            // Create a new texture.
+            Texture2D result = new Texture2D(OcclusionMaskResolution.x, OcclusionMaskResolution.y);
+            //result.filterMode = FilterMode.Bilinear;
+            result.wrapMode = TextureWrapMode.Clamp;
+
+            // Transfer the invalidation mask onto the texture.
+            Color[] pixels = result.GetPixels();
+
+            for (int i = 0; i < pixels.Length; ++i)
+            {
+                var value = textureBytes[i];
+
+                if (value == (byte)SceneUnderstanding.SceneRegionSurfaceKind.NotSurface)
+                {
+                    pixels[i] = Color.clear;
+                }
+                else
+                {
+                    pixels[i] = Color.white;
+                }
+            }
+
+            result.SetPixels(pixels);
+            result.Apply(true);
+
+            return result;
+        }
+
 #if WINDOWS_UWP
         /// <summary>
         /// Asynchronously saves the <see cref="SceneUnderstanding.SceneProcessor"/>'s data stream as a file for later use
@@ -798,14 +907,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void CleanupSceneObjects()
         {
-            int kidCount = ObservedObjectParent.transform.childCount;
-            for (int i = 0; i < kidCount; ++i)
+            if (ObservedObjectParent != null)
             {
-                UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
+                int kidCount = ObservedObjectParent.transform.childCount;
+
+                for (int i = 0; i < kidCount; ++i)
+                {
+                    UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
+                }
             }
 
-            cachedSceneQuads.Clear();
-            cachedSceneMeshes.Clear();
             sceneObjects.Clear();
             instantiationQueue.Clear();
         }

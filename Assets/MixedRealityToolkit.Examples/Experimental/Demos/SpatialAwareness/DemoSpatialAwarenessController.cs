@@ -18,7 +18,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
 
+            if (access == null)
+            {
+                Debug.LogError("Couldn't get access to CoreServices.SpatialAwarenessSystem");
+                return;
+            }
+
             observer = access.GetDataProvider<IMixedRealitySpatialAwarenessSceneUnderstandingObserver>();
+
+            if (observer == null)
+            {
+                Debug.LogError("Couldn't access Scene Understanding Observer!");
+                return;
+            }
 
             Debug.Log($"observer.UpdateInterval = {observer.UpdateInterval}");
 
