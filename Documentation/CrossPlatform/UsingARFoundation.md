@@ -26,6 +26,8 @@
     | --- | --- |
     | AR Foundation  <br/> Version: 2.1.4 |  AR Foundation  <br/> Version: 2.1.4 |
     | ARCore XR Plugin <br/> Version: 2.1.2 | ARKit XR Plugin <br/> Version: 2.1.2 |
+    | Multiplayer HLAPI <br/> Version: 1.0.4 | Multiplayer HLAPI <br/> Version: 1.0.4 |
+    | XR Legacy Input Helpers <br/> Version: 2.0.6 | XR Legacy Input Helpers <br/> Version: 2.0.6 |
 
 1. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityEngine.SpatialTracking** reference added.
 
