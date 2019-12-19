@@ -65,6 +65,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
+        [SerializeField]
+        [Tooltip("Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV. This can prevent accidental grabs, and will allow hand rays to turn on when you may be near a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, radius equal to half display height.")]
+        private bool ignoreCollidersNotInFOV = true;
+        /// <summary>
+        /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+        /// This can prevent accidental grabs, and will allow hand rays to turn on when you may be near 
+        /// a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, 
+        /// radius equal to half display height.
+        /// </summary>
+        public bool IgnoreCollidersNotInFOV => ignoreCollidersNotInFOV;
+
         private SpherePointerQueryInfo queryBufferNearObjectRadius;
         private SpherePointerQueryInfo queryBufferInteractionRadius;
 
@@ -123,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < layerMasks.Length; i++)
                 {
-                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
+                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
@@ -131,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < layerMasks.Length; i++)
                 {
-                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
+                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
@@ -257,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="layerMask">Filter to only perform sphere cast on these layers.</param>
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call</param>
-            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
+            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
             {
                 grabbable = null;
                 numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
@@ -278,13 +289,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     grabbable = collider.GetComponent<NearInteractionGrabbable>();
                     if (grabbable != null)
                     {
-                        bool inFov = isInFOVCone(collider);
-                        if (!inFov)
+                        if (ignoreCollidersNotInFOV)
                         {
-                            // Additional check: is grabbable in the camera frustrum
-                            // We do this so that if grabbable is not visible it is not accidentally grabbed
-                            // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
-                            grabbable = null;
+                            if (!isInFOVCone(collider))
+                            {
+                                // Additional check: is grabbable in the camera frustrum
+                                // We do this so that if grabbable is not visible it is not accidentally grabbed
+                                // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
+                                grabbable = null;
+                            }
                         }
                     }
 

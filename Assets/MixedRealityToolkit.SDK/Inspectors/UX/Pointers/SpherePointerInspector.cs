@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty nearObjectMargin;
         private SerializedProperty grabLayerMasks;
         private SerializedProperty triggerInteraction;
+        private SerializedProperty ignoreCollidersNotInFOV;
 
 
         private bool spherePointerFoldout = true;
@@ -26,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             nearObjectMargin = serializedObject.FindProperty("nearObjectMargin");
             grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
             triggerInteraction = serializedObject.FindProperty("triggerInteraction");
+            ignoreCollidersNotInFOV = serializedObject.FindProperty("ignoreCollidersNotInFOV");
         }
 
         public override void OnInspectorGUI()
@@ -44,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(nearObjectMargin);
                     EditorGUILayout.PropertyField(triggerInteraction);
                     EditorGUILayout.PropertyField(grabLayerMasks, true);
+                    EditorGUILayout.PropertyField(ignoreCollidersNotInFOV);
                 }
             }
 
