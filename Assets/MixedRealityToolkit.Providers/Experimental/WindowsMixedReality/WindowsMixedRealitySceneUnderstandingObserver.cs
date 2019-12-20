@@ -289,65 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         }
 
         /// <summary>
-        /// Applies the quad region mask on the passed in game object.
-        /// </summary>
-        /// <param name="quad">Scene Understanding quad.</param>
-        /// <param name="go">Game object associated with the quad.</param>
-        /// <param name="color">Color to use for the valid regions.</param>
-        public void ApplyQuadRegionMask(SceneUnderstanding.SceneQuad quad, GameObject go, Color? color)
-        {
-            if (quad == null || go == null)
-            {
-                Debug.LogWarning("SceneUnderstandingUtils.ApplyQuadRegionMask: One or more arguments are null.");
-                return;
-            }
-
-            // If no color has been provided, paint it red.
-            color = color == null ? Color.red : color.Value;
-
-            // Resolution of the mask.
-            ushort width = 256;
-            ushort height = 256;
-
-            byte[] mask = new byte[width * height];
-            quad.GetSurfaceMask(width, height, mask);
-
-            MeshRenderer meshRenderer = go.GetComponent<MeshRenderer>();
-            if (meshRenderer == null || meshRenderer.material == null || meshRenderer.material.HasProperty("_MainTex") == false)
-            {
-                Debug.LogWarning("SceneUnderstandingUtils.ApplyQuadRegionMask: Mesh renderer component is null or does not have a valid material.");
-                return;
-            }
-
-            // Create a new texture.
-            Texture2D texture = new Texture2D(width, height);
-            texture.filterMode = FilterMode.Bilinear;
-            texture.wrapMode = TextureWrapMode.Clamp;
-
-            // Transfer the invalidation mask onto the texture.
-            Color[] pixels = texture.GetPixels();
-            for (int i = 0; i < pixels.Length; ++i)
-            {
-                var value = mask[i];
-
-                if (value == (byte)SceneUnderstanding.SceneRegionSurfaceKind.NotSurface)
-                {
-                    pixels[i] = Color.clear;
-                }
-                else
-                {
-                    pixels[i] = color.Value;
-                }
-            }
-
-            texture.SetPixels(pixels);
-            texture.Apply(true);
-
-            // Set the texture on the material.
-            meshRenderer.material.mainTexture = texture;
-        }
-
-        /// <summary>
         /// Returns best placement position in local space to the plane
         /// </summary>
         /// <param name="plane">The <see cref="SpatialAwarenessMeshObject"/> who's plane will be used for placement</param>
@@ -407,8 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     sceneQuad = sceneObject.Quads[i];
 
-                    var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
-
                     var quadIdKey = sceneQuad.Id;
 
                     byte[] occlusionMaskBytes = null;
@@ -418,13 +357,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         try
                         {
                             occlusionMaskBytes = new byte[OcclusionMaskResolution.x * OcclusionMaskResolution.y];
-                            sceneQuad.GetSurfaceMask((ushort)sceneQuad.Extents.X, (ushort)sceneQuad.Extents.Y, occlusionMaskBytes);
+                            sceneQuad.GetSurfaceMask((ushort)OcclusionMaskResolution.x, (ushort)OcclusionMaskResolution.y, occlusionMaskBytes);
                         }
                         catch (Exception e)
                         {
                             Debug.LogException(e);
                         }
                     }
+
+                    var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
 
                     var quad = new SpatialAwarenessSceneObject.Quad(quadIdKey, extents, occlusionMaskBytes);
 
@@ -876,6 +817,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             // Transfer the invalidation mask onto the texture.
             Color[] pixels = result.GetPixels();
+
 
             for (int i = 0; i < pixels.Length; ++i)
             {
