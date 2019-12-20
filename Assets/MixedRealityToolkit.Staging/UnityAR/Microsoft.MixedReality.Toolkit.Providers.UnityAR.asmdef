@@ -16,5 +16,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [
+        "ARFOUNDATION_PRESENT"
+    ]
 }

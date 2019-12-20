@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -17,10 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
         /// specified build target group.
         /// </summary>
-        /// <param name="targetGroup">The build target group for which the sybmols are to be defined.</param>
+        /// <param name="targetGroup">The build target group for which the symbols are to be defined.</param>
         /// <param name="symbols">Array of symbols to define.</param>
         public static void AppendScriptingDefinitions(
-            BuildTargetGroup targetGroup, 
+            BuildTargetGroup targetGroup,
             string[] symbols)
         {
             if (symbols == null || symbols.Length == 0) { return; }
@@ -47,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Removes a set of symbolic constant definitions to Unity's Scripting Define Symbols from the
         /// specified build target group.
         /// </summary>
-        /// <param name="targetGroup">The build target group for which the sybmols are to be removed.</param>
+        /// <param name="targetGroup">The build target group for which the symbols are to be removed.</param>
         /// <param name="symbols">Array of symbols to remove.</param>
         public static void RemoveScriptingDefinitions(
             BuildTargetGroup targetGroup,
