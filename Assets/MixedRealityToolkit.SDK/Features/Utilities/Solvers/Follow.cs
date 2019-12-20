@@ -180,6 +180,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set { verticalMaxDistance = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
+        private bool useAngleStepping = false;
+
+        /// <summary>
+        /// Lock the rotation to a specified number of steps around the tracked object.
+        /// </summary>
+        public bool UseAngleStepping
+        {
+            get { return useAngleStepping; }
+            set { useAngleStepping = value; }
+        }
+
+        [Range(2, 24)]
+        [SerializeField]
+        [Tooltip("The division of steps this object can tether to. Higher the number, the more snapple steps.")]
+        private int tetherAngleSteps = 6;
+
+        /// <summary>
+        /// The division of steps this object can tether to. Higher the number, the more snapple steps.
+        /// </summary>
+        public int TetherAngleSteps
+        {
+            get { return tetherAngleSteps; }
+            set
+            {
+                tetherAngleSteps = Mathf.Clamp(value, 2, 24);
+            }
+        }
+
         public void Recenter()
         {
             recenterNextUpdate = true;
@@ -350,6 +380,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             // Y-axis leashing
+            if (UseAngleStepping)
+            {
+                float stepAngle = 360f / tetherAngleSteps;
+                int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
+
+                float newAngle = stepAngle * numberOfSteps;
+
+                rotation = Quaternion.Euler(rotation.eulerAngles.x, newAngle, rotation.eulerAngles.z);
+            }
+            else
             {
                 // This is negated because Unity is left-handed
                 float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
@@ -376,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             float clampedDistance;
             float currentDistance = Vector3.Distance(currentPosition, refPosition);
             Vector3 direction = refForward;
-            if (PitchOffset != 0)
+            if (IgnoreReferencePitchAndRoll && PitchOffset != 0)
             {
                 // If we don't account for pitch offset, the casted object will float up/down as the reference
                 // gets closer to it because we will still be casting in the direction of the pitched offset.
