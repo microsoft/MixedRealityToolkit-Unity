@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // to avoid allocating memory each frame
             private static List<Vector3> corners = new List<Vector3>();
             // Help to clear caches when new frame runs
-            static private int lastRecalculation = -1;
+            static private int lastCalculatedFrame = -1;
             // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
             private static Dictionary<Collider, bool> colliderCache = new Dictionary<Collider, bool>();
 
@@ -268,10 +268,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// all colliders in the layers defined by layerMask at the given pointer position.
             /// All colliders intersecting the sphere at queryRadius and pointerPosition are stored in queryBuffer,
             /// and the first grabbable in the list of returned colliders is stored.
+            /// Also provides an option to ignore colliders that are not visible.
             /// </summary>
             /// <param name="layerMask">Filter to only perform sphere cast on these layers.</param>
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
-            /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call</param>
+            /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call.</param>
+            /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
             {
                 grabbable = null;
@@ -302,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
                                 grabbable = null;
                             }
-                        }
+                        }   
                     }
 
                     if (grabbable != null)
@@ -320,10 +322,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="myCollider">The collider to test</param>
             private bool isInFOVCone(Collider myCollider)
             {
-                if (lastRecalculation != Time.frameCount)
+                if (lastCalculatedFrame != Time.frameCount)
                 {
                     colliderCache.Clear();
-                    lastRecalculation = Time.frameCount;
+                    lastCalculatedFrame = Time.frameCount;
                 }
                 if (colliderCache.TryGetValue(myCollider, out bool result))
                 {
@@ -353,6 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // edge case: check if camera is inside the entire bounds of the collider;
+                // Consider simplifying to myCollider.bounds.Contains(CameraCache.main.transform.position)
                 var cameraPos = CameraCache.Main.transform.position;
                 result = xMin <= cameraPos.x && cameraPos.x <= xMax 
                     && yMin <= cameraPos.y && cameraPos.y <= yMax
@@ -361,6 +364,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return result;
             }
 
+            /// <summary>
+            /// Returns true if a point is in the a cone inscribed into the 
+            /// Camera's frustrum. The cone is inscribed to match the vertical height of the camera's
+            /// FOV. By default, the cone's tip is "chopped off" by an amount defined by minDist. 
+            /// The cone's height is given by maxDist.
+            /// </summary>
+            /// <param name="point">Point to test</param>
+            /// <param name="coneAngleBufferDegrees">Degrees to expand the cone by.</param>
+            /// <param name="minDist">Point must be at least this far away (along the camera forward) from camera. </param>
+            /// <param name="maxDist">Point must be at most this far away (along camera forward) from camera. </param>
+            /// <returns></returns>
             private static bool isPointInFOVCone(
                 Vector3 point, 
                 float coneAngleBufferDegrees = 0,
@@ -377,26 +391,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var verticalFOV = mainCam.fieldOfView + coneAngleBufferDegrees;
                 var degrees = Mathf.Acos(pointCameraDist / cameraToPoint.magnitude) * Mathf.Rad2Deg;
                 return degrees < verticalFOV * 0.5f;
-            }
-
-            /// <summary>
-            /// Returns true if a point is in the camera's frustrum, given a small buffer around
-            /// the camera's view in x, y, as well as distance form camera (distanceBuffer)
-            /// </summary>
-            /// <param name="point">Point to test</param>
-            /// <param name="inFrontOfcamera">Minimum distance point must be from camera to be considered in frustrum, in meters. Defaults to 5 cm.</param>
-            /// <param name="fieldOfViewBufferVertical">Additional buffer around camera field of view (horizontal and vertical, in degrees. Defaults to 1. </param>
-            /// <param name="fieldOfViewBufferHorizontal">Additional buffer around camera field of view (horizontal and vertical, in degrees. Defaults to 1. </param>
-            private static bool isPointInFrustrumWithBuffer(Vector3 point, float fieldOfViewBufferVertical = 1, float fieldOfViewBufferHorizontal = 1, float inFrontOfcamera = 0.05f)
-            {
-                Camera mainCam = CameraCache.Main;
-                return MathUtilities.IsInFOV(
-                    point,
-                    mainCam.transform,
-                    mainCam.fieldOfView + fieldOfViewBufferVertical,
-                    mainCam.GetHorizontalFieldOfViewDegrees() + fieldOfViewBufferHorizontal,
-                    inFrontOfcamera,
-                    mainCam.farClipPlane);
             }
 
             /// <summary>
