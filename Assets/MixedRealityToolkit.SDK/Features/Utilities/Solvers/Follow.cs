@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         
         [SerializeField]
         [Tooltip("The desired orientation of this object")]
-        private SolverOrientationType orientationType = SolverOrientationType.MaintainGoal;
+        private SolverOrientationType orientationType = SolverOrientationType.FaceTrackedObject;
 
         /// <summary>
         /// The desired orientation of this object.
@@ -35,6 +35,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get { return orientationType; }
             set { orientationType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The object will face the tracked object while the object is outside of the distance/direction bounds defined in this component.")]
+        private bool faceTrackedObjectWhileClamped = true;
+
+        /// <summary>
+        /// The object will face the tracked object while the object is outside of the distance/direction bounds defined in this component.
+        /// </summary>
+        public bool FaceTrackedObjectWhileClamped
+        {
+            get { return faceTrackedObjectWhileClamped; }
+            set { faceTrackedObjectWhileClamped = value; }
         }
 
         [SerializeField]
@@ -100,6 +113,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get { return maxViewVerticalDegrees; }
             set { maxViewVerticalDegrees = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The element will only reorient when the object is outside of the distance/direction bounds defined in this component.")]
+        private bool reorientWhenOutsideParameters = true;
+
+        /// <summary>
+        /// The element will only reorient when the object is outside of the distance/direction bounds above.
+        /// </summary>
+        public bool ReorientWhenOutsideParameters
+        {
+            get { return reorientWhenOutsideParameters; }
+            set { reorientWhenOutsideParameters = value; }
         }
 
         [SerializeField]
@@ -219,6 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private Quaternion ReferenceRotation => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.rotation : Quaternion.identity;
         private Vector3 PreviousReferencePosition = Vector3.zero;
         private Quaternion PreviousReferenceRotation = Quaternion.identity;
+        private Quaternion PreviousGoalRotation = Quaternion.identity;
         private bool recenterNextUpdate = true;
 
         protected override void OnEnable()
@@ -242,39 +269,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 currentPosition = refPosition + refForward * DefaultDistance;
             }
 
+            bool wasClamped = false;
+
             // Angularly clamp to determine goal direction to place the element
             Vector3 goalDirection = refForward;
-            SolverOrientationType orientation = orientationType;
-            bool angularClamped = false;
             if (!ignoreAngleClamp && !recenterNextUpdate)
             {
-                angularClamped = AngularClamp(refPosition, refRotation, currentPosition, ref goalDirection);
-
-                if (angularClamped)
-                {       
-                    orientation = SolverOrientationType.FaceTrackedObject;
-                }
+                wasClamped |= AngularClamp(refPosition, refRotation, currentPosition, ref goalDirection);
             }
 
             // Distance clamp to determine goal position to place the element
             Vector3 goalPosition = currentPosition;
-            bool distanceClamped = false;
             if (!ignoreDistanceClamp)
             {
-                distanceClamped = DistanceClamp(currentPosition, refPosition, goalDirection, angularClamped, ref goalPosition);
-
-                if (distanceClamped)
-                {       
-                    orientation = SolverOrientationType.FaceTrackedObject;
-                }
+                wasClamped |= DistanceClamp(currentPosition, refPosition, goalDirection, wasClamped, ref goalPosition);
             }
 
             // Figure out goal rotation of the element based on orientation setting
             Quaternion goalRotation = Quaternion.identity;
-            ComputeOrientation(orientation, goalPosition, ref goalRotation);
+            ComputeOrientation(goalPosition, wasClamped, ref goalRotation);
 
             GoalPosition = goalPosition;
             GoalRotation = goalRotation;
+            PreviousGoalRotation = goalRotation;
 
             PreviousReferencePosition = refPosition;
             PreviousReferenceRotation = refRotation;
@@ -302,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             return SimplifyAngle(angle) * Mathf.Rad2Deg;
         }
-        
+
         /// <summary>
         /// Calculates the angle between vec and a plane described by normal. The angle returned
         /// is signed.
@@ -478,16 +495,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return Vector3EqualEpsilon(clampedPosition, currentPosition, 0.0001f);
         }
 
-        void ComputeOrientation(SolverOrientationType defaultOrientationType, Vector3 goalPosition, ref Quaternion orientation)
+        void ComputeOrientation(Vector3 goalPosition, bool wasClamped, ref Quaternion orientation)
         {
-            if (defaultOrientationType == SolverOrientationType.MaintainGoal)
+            SolverOrientationType defaultOrientationType = OrientationType;
+
+            if (!wasClamped && reorientWhenOutsideParameters)
             {
                 Vector3 nodeToCamera = goalPosition - ReferencePosition;
                 float angle = Mathf.Abs(AngleBetweenOnPlane(transform.forward, nodeToCamera, Vector3.up));
-                if (angle > orientToControllerDeadzoneDegrees)
+                if (angle < OrientToControllerDeadzoneDegrees)
                 {
-                    defaultOrientationType = SolverOrientationType.FaceTrackedObject;
+                    orientation = PreviousGoalRotation;
+                    return;
                 }
+            }
+
+            if (wasClamped && FaceTrackedObjectWhileClamped)
+            {
+                defaultOrientationType = SolverOrientationType.FaceTrackedObject;
             }
             
             switch (defaultOrientationType)
@@ -510,9 +535,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     break;
                 case SolverOrientationType.FollowTrackedObject:
                     orientation = SolverHandler.TransformTarget != null ? ReferenceRotation : Quaternion.identity;
-                    break;
-                case SolverOrientationType.MaintainGoal:
-                    orientation = GoalRotation;
                     break;
                 default:
                     Debug.LogError($"Invalid OrientationType for Orbital Solver on {gameObject.name}");
