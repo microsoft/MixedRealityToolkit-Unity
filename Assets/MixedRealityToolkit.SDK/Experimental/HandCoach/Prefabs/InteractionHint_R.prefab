@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3812110794721936692}
+  - component: {fileID: 6520951085272245290}
   m_Layer: 0
-  m_Name: HandRig_R
+  m_Name: InteractionHint_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +32,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6520951085272245290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433038356817191116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00612bdf43d32f645999b15d3a5888d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkHandTracking: 1
+  MinMaxDelay: {x: 5, y: 10}
+  useMaxTimer: 1
+  repeats: 2
+  autoActivate: 1
+  animationState: 
+  repeatDelay: 1
 --- !u!1001 &3277420049748480186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44,15 +64,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c4867650c78612948ac0c914c70aff76, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.022970498
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c4867650c78612948ac0c914c70aff76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13953437
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c4867650c78612948ac0c914c70aff76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.07801384
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c4867650c78612948ac0c914c70aff76, type: 3}
       propertyPath: m_LocalRotation.x

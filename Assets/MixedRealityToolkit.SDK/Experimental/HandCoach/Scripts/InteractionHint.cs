@@ -11,32 +11,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject VisualsRoot;
 
         [Tooltip("React to hand tracking state to hide visuals when hands are being tracked.  If false, only the customShouldHideHands function will be evaluated.")]
-        public bool bCheckHandTracking = true;
+        public bool checkHandTracking = true;
 
         [Tooltip("Min/max delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds." +
             "  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds")]
         public Vector2 MinMaxDelay = new Vector2(5f, 10f);
 
         [Tooltip("Uncheck this if you don't want to use max timer, only show hint when hands are out of view")]
-        public bool bUseMaxTimer = true;
-        
+        public bool useMaxTimer = true;
+
         [Tooltip("Number of times to repeat the hint before fading out")]
-        public int Repeats = 2;
+        public int repeats = 2;
 
         [Tooltip("If true, logic runs whenever this component is active.  If false, you must manually start the logic with StartShowTimer.")]
-        public bool bAutoActivate = true;
-        
+        public bool autoActivate = true;
+
         [Tooltip("Name of animation to play during loop")]
-        public string AnimationState;
+        public string animationState;
 
         [Tooltip("Time to wait between repeats")]
         [SerializeField]
         public float repeatDelay = 1f;
 
-        private string FadeInAnimationState = "Fade_In";
-        
-        private string FadeOutAnimationState = "Fade_Out";
-        
+        private string fadeInAnimationState = "Fade_In";
+
+        private string fadeOutAnimationState = "Fade_Out";
+
         private float animationHideTime = 3f;
 
         private float animationHideDuration = 0.5f;
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnEnable()
         {
             // When component is enabled, start up the timer logic if auto activate is specified
-            if (bAutoActivate)
+            if (autoActivate)
             {
                 StartHintLoop();
             }
@@ -99,13 +99,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (!m_loopRunning && VisualsRoot != null)
             {
                 m_loopRunning = true;
-                animationHideDuration = GetAnimationDuration(FadeOutAnimationState);
-                animationHideTime = GetAnimationDuration(AnimationState) - animationHideDuration;
+                animationHideDuration = GetAnimationDuration(fadeOutAnimationState);
+                animationHideTime = GetAnimationDuration(animationState) - animationHideDuration;
                 if (animationHideTime < 0)
                 {
                     animationHideTime = 0;
                 }
-                StartCoroutine(HintLoopSequence(AnimationState));
+                StartCoroutine(HintLoopSequence(animationState));
             }
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Tell the animator to play the animation
                 if (m_animator != null)
                 {
-                    m_animator.Play(FadeOutAnimationState);
+                    m_animator.Play(fadeOutAnimationState);
                 }
 
                 yield return new WaitForSeconds(animationHideDuration);
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         timer += Time.deltaTime;
                     }
 
-                    if (bUseMaxTimer)
+                    if (useMaxTimer)
                     {
                         maxTimer += Time.deltaTime;
                     }
@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 int playCount = 0;
 
                 // loop as long as visuals are active and we haven't repeated the number of times desired
-                while (VisualsRoot.activeSelf && playCount < Repeats)
+                while (VisualsRoot.activeSelf && playCount < repeats)
                 {
                     // hide if hand is present, but maxTimer was not hit
                     bool bShouldHide = ShouldHideVisuals();
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         yield return FadeOutHint();
 
                         // if fade out was caused by user interacting, we've reached the repeat limit, or we've stopped the loop, break out
-                        if (bShouldHide || playCount == Repeats - 1 || !m_loopRunning)
+                        if (bShouldHide || playCount == repeats - 1 || !m_loopRunning)
                         {
                             break;
                         }
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                     }
                     yield return null;
-                }				
+                }
             }
         }
 
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (bShow)
                 {
-                    m_animator.Play(FadeInAnimationState);
+                    m_animator.Play(fadeInAnimationState);
                 }
             }
         }
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return ac.animationClips[i].length;
                 }
             }
-            
+
             // the specified state is not found
             return 0;
         }
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool ShouldHideVisuals()
         {
             // Check hand trtacking, if configured to do so
-            bool bShouldHide = bCheckHandTracking && IsHandTracked();
+            bool bShouldHide = checkHandTracking && IsHandTracked();
 
             // Check the custom show visuals function
             if (!bShouldHide)
