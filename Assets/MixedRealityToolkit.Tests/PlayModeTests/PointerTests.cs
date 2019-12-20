@@ -41,9 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that sphere pointer grabs object when hand is insize a giant grabbable
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestSpherePointerInsideGiantGrabbable()
+        public IEnumerator TestSpherePointerInsideGrabbable()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
@@ -60,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that sphere pointer behaves correctly when hand is near grabbable
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSpherePointerNearGrabbable()
         {
