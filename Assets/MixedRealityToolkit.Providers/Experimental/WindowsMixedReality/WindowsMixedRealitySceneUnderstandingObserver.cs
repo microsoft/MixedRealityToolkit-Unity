@@ -178,7 +178,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc/>
         public override void Suspend()
         {
-            //updateTimer.Enabled = false;
+            if (updateTimer != null)
+            {
+                updateTimer.Enabled = false;
+            }
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver
