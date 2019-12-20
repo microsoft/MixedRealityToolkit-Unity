@@ -77,6 +77,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
+        [EnumFlags]
+        [Tooltip("Rotation axes used when facing target.")]
+        private AxisFlags pivotAxis = AxisFlags.XAxis | AxisFlags.YAxis | AxisFlags.ZAxis;
+
+        /// <summary>
+        /// Rotation axes used when facing target.
+        /// </summary>
+        public AxisFlags PivotAxis
+        {
+            get { return pivotAxis; }
+            set { pivotAxis = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Min distance from eye to position element around, i.e. the sphere radius")]
         private float minDistance = 1f;
 
@@ -538,7 +552,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (FaceUserDefinedTargetTransform)
             {
-                orientation = TargetToFace != null ? Quaternion.LookRotation(goalPosition - TargetToFace.position) : Quaternion.identity;
+                Vector3 directionToTarget = TargetToFace != null ? goalPosition - TargetToFace.position : Vector3.zero;
+                if (!PivotAxis.HasFlag(AxisFlags.XAxis))
+                {
+                    directionToTarget.x = 0;
+                }
+                if (!PivotAxis.HasFlag(AxisFlags.YAxis))
+                {
+                    directionToTarget.y = 0;
+                }
+                if (!PivotAxis.HasFlag(AxisFlags.ZAxis))
+                {
+                    directionToTarget.z = 0;
+                }
+
+                if (directionToTarget.sqrMagnitude == 0)
+                {
+                    orientation = Quaternion.identity;
+                    return;
+                }
+
+                orientation = Quaternion.LookRotation(directionToTarget);
                 return;
             }
 
