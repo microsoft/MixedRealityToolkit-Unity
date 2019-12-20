@@ -173,6 +173,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 return targetObject;
             }
+
+            set
+            {
+                if (targetObject != value)
+                {
+                    targetObject = value;
+                    CreateRig();
+                }
+            }
         }
 
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]

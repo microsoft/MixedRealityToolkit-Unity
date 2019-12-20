@@ -42,3 +42,24 @@ You can directly move the starting and end points of the slider by moving the ha
 You can also specify the axis (in local space) of the slider via the _Slider Axis_ field
 
 If you cannot use the handles, you can instead specify the start and end points of the slider via the _Slider Start Distance_ and _Slider End Distance_ fields. These specify start / end position of slider as a distance from the slider's center, in local coordinates. This means that once you set the slider start and end distances as you want them, you can scale the slider to be smaller or larger without needing to update the start and end distances.
+
+## Inspector properties
+
+**Thumb Root** The gameobject that contains the slider thumb.
+
+**Slider Value** The value of the slider.
+
+**Track Visuals** The gameobject that contains the desired track visuals that goes along the slider.
+
+**Tick Marks** The gameobject that contains the desired tick marks that goes along the slider.
+
+**Slider Axis** The axis the slider moves along.
+
+**Slider Start Distance** Where the slider track starts, as distance from center along slider axis, in local space units.
+
+**Slider End Distance** Where the slider track ends, as distance from center along slider axis, in local space units.
+
+When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated. 
+Specifically, their local position is reset and their local rotation is set to match the Slider Axis orientation.
+Their scale isn't modified.
+If Tick Marks have a Grid Object Collection component then the Layout and CellWidth or CellHeight is updated accordingly to match the Slider Axis.
