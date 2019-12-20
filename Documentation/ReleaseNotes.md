@@ -17,14 +17,14 @@
 - Windows Mixed Reality Immersive headsets
 - OpenVR
 - (Experimental) Mobile AR
-    - Android
-    - iOS
+  - Android
+  - iOS
 
 The following software is required.
 
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
 - [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
-- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1, 2019.2, or 2019.3.
 
 NuGet requirements
 
