@@ -109,7 +109,6 @@ Useful Sphere Pointer properties:
 - *Ignore Colliders Not in FOV* - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
 This can prevent accidental grabs, and will allow hand rays to turn on when you may be near 
 a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, 
-radius equal to half display height.
 
 <img src="../../Documentation/Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
 
