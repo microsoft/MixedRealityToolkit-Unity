@@ -13,8 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// Class to perform checks for configuration checks for the UnityAR provider.
     /// </summary>
     [InitializeOnLoad]
-    public class UnityARConfigurationChecker
+    public static class UnityARConfigurationChecker
     {
+        private const string FileName = "Unity.XR.ARFoundation.asmdef";
+        private static readonly string[] definitions = { "ARFOUNDATION_PRESENT" };
+
         static UnityARConfigurationChecker()
         {
             UpdateAsmDef(ReconcileArFoundationDefine());
@@ -26,10 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// <returns>True if the define was added, false otherwise.</returns>
         private static bool ReconcileArFoundationDefine()
         {
-            const string fileName = "Unity.XR.ARFoundation.asmdef";
-            string[] definitions = { "ARFOUNDATION_PRESENT" };
-
-            FileInfo[] files = FileUtilities.FindFilesInPackageCache(fileName);
+            FileInfo[] files = FileUtilities.FindFilesInPackageCache(FileName);
             if (files.Length > 0)
             {
                 ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, definitions);
