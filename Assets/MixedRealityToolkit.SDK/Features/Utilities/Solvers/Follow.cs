@@ -51,6 +51,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
+        [Tooltip("Face a user defined transform rather than using the solver orientation type.")]
+        private bool faceUserDefinedTargetTransform = false;
+
+        /// <summary>
+        /// Face a user defined transform rather than using the solver orientation type.
+        /// </summary>
+        public bool FaceUserDefinedTargetTransform
+        {
+            get { return faceUserDefinedTargetTransform; }
+            set { faceUserDefinedTargetTransform = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Transform this object should face rather than using the solver orientation type.")]
+        private Transform targetToFace = null;
+
+        /// <summary>
+        /// Transform this object should face rather than using the solver orientation type.
+        /// </summary>
+        public Transform TargetToFace
+        {
+            get { return targetToFace; }
+            set { targetToFace = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Min distance from eye to position element around, i.e. the sphere radius")]
         private float minDistance = 1f;
 
@@ -508,6 +534,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     orientation = PreviousGoalRotation;
                     return;
                 }
+            }
+
+            if (FaceUserDefinedTargetTransform)
+            {
+                orientation = TargetToFace != null ? Quaternion.LookRotation(goalPosition - TargetToFace.position) : Quaternion.identity;
+                return;
             }
 
             if (wasClamped && FaceTrackedObjectWhileClamped)
