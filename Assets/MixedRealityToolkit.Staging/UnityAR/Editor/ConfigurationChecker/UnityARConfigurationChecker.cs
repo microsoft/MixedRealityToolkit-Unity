@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
-using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -17,14 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     {
         static UnityARConfigurationChecker()
         {
-            UpdateAsmDef(EnsureArFoundationDefine());
+            UpdateAsmDef(ReconcileArFoundationDefine());
         }
 
         /// <summary>
-        /// Ensures that the appropriate symbolic constant is defined based on the presence of the DotNetWinRT binary.
+        /// Ensures that the appropriate symbolic constant is defined based on the presence of the AR Foundation package.
         /// </summary>
         /// <returns>True if the define was added, false otherwise.</returns>
-        private static bool EnsureArFoundationDefine()
+        private static bool ReconcileArFoundationDefine()
         {
             const string fileName = "Unity.XR.ARFoundation.asmdef";
             string[] definitions = { "ARFOUNDATION_PRESENT" };
