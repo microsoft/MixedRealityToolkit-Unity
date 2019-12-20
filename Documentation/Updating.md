@@ -1,13 +1,11 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
-- [How to update](#Updating-a-project-to-use-a-new-version-of-MRTK)
 - [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
-## Updating a project to use a new version of MRTK
-
-The steps to update to each version of the Mixed Reality Toolkit are documented in the release notes for each version.  See the release notes for the version you're updating to for instructions.
+> [!NOTE]
+> Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
 
 ## Updating 2.1.0 to 2.2.0
 

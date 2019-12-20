@@ -42,7 +42,7 @@ The 2.2.0 release has some changes that may impact application projects. Breakin
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Inside the Assets folder, delete most of the **MixedRealityToolkit** folders (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -53,7 +53,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -66,7 +66,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If you've changed any properties of the main camera, you may want to note those changes and re-apply them.
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
@@ -340,7 +340,7 @@ Breaking change details, including mitigation guidance, can be found in the [**U
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Inside the Assets folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -364,7 +364,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If you've changed any properties of the main camera, you may want to note those changes and re-apply them.
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
@@ -670,7 +670,7 @@ including some files moving to new folder locations. Breaking change details, in
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Inside the Assets folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -694,7 +694,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If you've changed any properties of the main camera, you may want to note those changes and re-apply them.
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!IMPORTANT]
