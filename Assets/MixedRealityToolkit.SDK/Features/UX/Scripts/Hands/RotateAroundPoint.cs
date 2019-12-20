@@ -7,10 +7,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class RotateAroundPoint : MonoBehaviour
     {
-        [Tooltip("Root object")]
-        [SerializeField]
-        private GameObject m_root = null;
-
         [Tooltip("Parent object centered at rotation center")]
         [SerializeField]
         private Transform m_centeredParent = null;
@@ -19,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private Transform m_inverseParent = null;
 
-        [Tooltip("Points to start movement at")]
+        [Tooltip("Point to start movement at")]
         [SerializeField]
         private Transform m_pivotPosition = null;
 
@@ -71,27 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             int index = 0;
 
-                Vector3 comp = GetRelativeLocalPosition(m_pivotPosition.gameObject, m_root);
-
             m_updatePosition = true;
             StartCoroutine(TrackPositionSequence(index));
-        }
-
-        private Vector3 GetRelativeLocalPosition(GameObject input, GameObject root)
-        {
-            Vector3 sum = new Vector3();
-            Transform currentLevel = input.transform;
-            while (currentLevel.gameObject != root)
-            {
-                // first rotate the current sum using the current level's rotation
-                sum = currentLevel.localRotation * sum;
-                // then get the scaled value
-                sum = Vector3.Scale(sum, currentLevel.localScale);
-                // now add the current level's local position
-                sum += currentLevel.localPosition;
-                currentLevel = currentLevel.parent;
-            }
-            return sum;
         }
 
         // tracks the pivot determined above
