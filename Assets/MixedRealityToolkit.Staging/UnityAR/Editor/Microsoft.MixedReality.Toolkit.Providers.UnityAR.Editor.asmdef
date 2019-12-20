@@ -1,7 +1,10 @@
 {
-    "name": "Microsoft.MixedReality.UnityAR.ConfigCheck",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR.Editor",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Providers.UnityAR"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.WindowsMixedReality.ConfigCheck",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR.ConfigCheck",
     "references": [
         "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
