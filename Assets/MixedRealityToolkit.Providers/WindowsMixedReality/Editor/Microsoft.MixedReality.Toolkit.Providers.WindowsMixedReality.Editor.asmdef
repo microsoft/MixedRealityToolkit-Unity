@@ -4,7 +4,8 @@
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality",
-        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

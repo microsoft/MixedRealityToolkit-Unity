@@ -1,9 +1,7 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Gltf",
-        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
