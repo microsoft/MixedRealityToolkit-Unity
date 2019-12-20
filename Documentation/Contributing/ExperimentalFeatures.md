@@ -42,7 +42,6 @@ See [this PR](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532) 
 
 Add an `[Experimental]` attribute above one of your fields to have a small dialog appear in the component editor that mentions your feature is experimental and subject to significant changes.
 
-
 ### Menus for experimental features should go under "Experimental" sub-menu
 
 Ensure that experimental features are under "experimental" sub-menus when adding commands to menus in the editor. Here are a few examples:
