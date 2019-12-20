@@ -374,7 +374,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="coneAngleBufferDegrees">Degrees to expand the cone by.</param>
             /// <param name="minDist">Point must be at least this far away (along the camera forward) from camera. </param>
             /// <param name="maxDist">Point must be at most this far away (along camera forward) from camera. </param>
-            /// <returns></returns>
             private static bool isPointInFOVCone(
                 Vector3 point, 
                 float coneAngleBufferDegrees = 0,
