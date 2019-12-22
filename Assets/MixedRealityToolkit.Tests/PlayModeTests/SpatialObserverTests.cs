@@ -21,7 +21,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// 
+    /// Test class that validates observers start and stop based on right configuration in editor. 
     /// </summary>
     public class SpatialObserverTests
     {
