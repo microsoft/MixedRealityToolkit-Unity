@@ -155,6 +155,7 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <img src="../Images/Pointers/MRTK_PokePointer.png" width="400">
 <h5 id="spherepointer"><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html"><code>SpherePointer</code></a></h5>
 <p>The <em><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html">SpherePointer</a></em> uses <a href="https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html">UnityEngine.Physics.OverlapSphere</a> in order to identify the closest <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> object for interaction, which is useful for &quot;grabbable&quot; input like the <code>ManipulationHandler</code>. Similar to the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a>/<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> script.</p>
+<img src="../Images/Pointers/MRTK_GrabPointer.jpg" width="400">
 <p>Useful Sphere Pointer properties:</p>
 <ul>
 <li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
@@ -164,7 +165,12 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <h5>Note</h5>
 <p>The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.</p>
 </div>
-<img src="../Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+<ul>
+<li><em>Ignore Colliders Not in FOV</em> - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+This can prevent accidental grabs, and will allow hand rays to turn on when you may be near
+a grabbable but cannot see it. The <em>Visual FOV</em> is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV).</li>
+</ul>
+<img src="../Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
 <h4 id="teleport-pointers">Teleport pointers</h4>
 <ul>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html"><code>TeleportPointer</code></a> will raise a teleport request when action is taken (i.e the teleport button is pressed) in order to move the user.</li>
