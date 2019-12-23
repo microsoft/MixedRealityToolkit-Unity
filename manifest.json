@@ -18378,7 +18378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html",
-          "hash": "QGIbd18S8PkckXJJRGh6Nw=="
+          "hash": "D65rtzF93Iirw6ob/T5E0g=="
         }
       },
       "is_incremental": false,
@@ -18678,7 +18678,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html",
-          "hash": "3ygLqD+i/XywVmXj68ezMQ=="
+          "hash": "mkoq+n5mk8e9rI2x7RAtWQ=="
         }
       },
       "is_incremental": false,
@@ -19562,6 +19562,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SpatialObserverTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SpatialObserverTests.html",
+          "hash": "vQ2TmfhmjtACjPXhA+otvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SpeechTests.yml",
       "output": {
         ".html": {
@@ -19674,7 +19686,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "1F0bi8vzT7Xnx1ES5ikO1g=="
+          "hash": "koZK4/z/RDD3opt+L/3mew=="
         }
       },
       "is_incremental": false,
@@ -25110,7 +25122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xde+2nw9M8YmyXx8BkmmGQ=="
+          "hash": "43UWLs8t2CHSpx3XltgE6Q=="
         }
       },
       "is_incremental": false,
@@ -25172,7 +25184,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1503,
+          "total_file_count": 1504,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
