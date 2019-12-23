@@ -101,8 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #region IMixedRealityDataProvider Implementation
 
-        bool autoResume = false;
-
         /// <inheritdoc />
         public override void Initialize()
         {
@@ -116,9 +114,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             }
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
-            if (!IsRunning) { return; }
+            if (!IsRunning) 
+            {
+                return;
+            }
 
             SendMeshObjects();
         }
@@ -128,30 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         {
             CleanupObserver();
             Initialize();
-        }
-
-        /// <inheritdoc />
-        public override void Enable()
-        {
-            // Resume iff we are not running and had been disabled while running.
-            if (!IsRunning && autoResume)
-            {
-                Resume();
-            }
-        }
-
-        /// <inheritdoc />
-        public override void Disable()
-        {
-            // Remember if we are currently running when Disable is called.
-            autoResume = IsRunning;
-
-            // If we are disabled while running...
-            if (IsRunning)
-            {
-                // Suspend the observer
-                Suspend();
-            }
         }
 
         /// <inheritdoc />
