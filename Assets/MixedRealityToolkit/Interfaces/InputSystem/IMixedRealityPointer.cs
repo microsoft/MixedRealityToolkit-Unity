@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void OnPreCurrentPointerTargetChange();
 
         /// <summary>
-        /// Resets pointer to initial state. After invoked pointer should be functional and ready for re-use
+        /// Resets pointer to initial state. After invoked pointer should be functional and ready for re-use.
         /// </summary>
         /// <remarks>
         /// Useful for caching and recycling of pointers
