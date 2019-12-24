@@ -23,10 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => enablePointerCache;
             set
             {
-                enablePointerCache = value;
-                if (!enablePointerCache)
+                if (enablePointerCache != value)
                 {
-                    DestroyPointerCache();
+                    enablePointerCache = value;
+
+                    if (!enablePointerCache)
+                    {
+                        DestroyPointerCache();
+                    }
                 }
             }
         }
