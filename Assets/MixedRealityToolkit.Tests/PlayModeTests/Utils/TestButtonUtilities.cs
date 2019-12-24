@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Instantiate and configure one of the <see cref="DefaultButtonType"/> types.
-        /// Returns reference to <see cref="Interactable"/> component and Transform to movable object that transforms on press 
+        /// Returns reference to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> component and Transform to movable object that transforms on press 
         /// </summary>
         public static void InstantiateDefaultButton(DefaultButtonType buttonType, out Interactable interactable, out Transform translateTargetObject)
         {
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates <see cref="Interactable"/> prefab from provided asset database path at given position and rotation
+        /// Instantiates <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/> prefab from provided asset database path at given position and rotation
         /// </summary>
         public static GameObject InstantiateInteractableFromPath(Vector3 position, Quaternion rotation, string path)
         {
