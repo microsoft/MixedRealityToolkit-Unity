@@ -12,18 +12,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
     /// <remarks>
     /// Application specific semantics are not supported
     /// </remarks>
-    [Serializable]
     public class GltfMeshPrimitiveAttributes
     {
-        public int POSITION = -1;
-        public int NORMAL = -1;
-        public int TANGENT = -1;
-        public int TEXCOORD_0 = -1;
-        public int TEXCOORD_1 = -1;
-        public int TEXCOORD_2 = -1;
-        public int TEXCOORD_3 = -1;
-        public int COLOR_0 = -1;
-        public int JOINTS_0 = -1;
-        public int WEIGHTS_0 = -1;
+        public static string POSITION = "POSITION";
+        public static string NORMAL = "NORMAL";
+        public static string TANGENT = "TANGENT";
+        public static string TEXCOORD_0 = "TEXCOORD_0";
+        public static string TEXCOORD_1 = "TEXCOORD_1";
+        public static string TEXCOORD_2 = "TEXCOORD_2";
+        public static string TEXCOORD_3 = "TEXCOORD_3";
+        public static string COLOR_0 = "COLOR_0";
+        public static string JOINTS_0 = "JOINTS_0";
+        public static string WEIGHTS_0 = "WEIGHTS_0";
     }
 }

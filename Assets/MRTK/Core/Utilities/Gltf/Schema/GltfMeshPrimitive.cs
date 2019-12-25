@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema
         /// A dictionary object, where each key corresponds to mesh attribute semantic
         /// and each value is the index of the accessor containing attribute's data.
         /// </summary>
-        public GltfMeshPrimitiveAttributes Attributes { get; internal set; }
+        public Dictionary<string, int> Attributes { get; internal set; }
 
         /// <summary>
         /// Unity Mesh wrapper for the GltfMeshPrimitive SubMesh
