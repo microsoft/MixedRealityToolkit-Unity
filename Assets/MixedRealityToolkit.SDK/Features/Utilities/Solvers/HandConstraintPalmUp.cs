@@ -55,6 +55,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set { flatHandThreshold = value; }
         }
 
+        [SerializeField]
+        [Tooltip("When using hybrid hand rotation, solver hand rotation until the menu is aligned with the gaze sufficiently")]
+        private bool useHybridHandRotation = false;
+
+        [SerializeField]
+        [Tooltip("Angle between hand up and camera forward, below which the hand menu follows the gaze, if useHybridHandRotation is active.")]
+        private float hybridHandRotationThresholdAngle = 60f;
+
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
@@ -69,13 +77,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             MixedRealityPose palmPose;
-
             var jointedHand = controller as IMixedRealityHand;
+
+            float palmCameraAngle = 360f;
+            bool palmFacingThresholdMet = false;
 
             if (jointedHand != null)
             {
                 if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                 {
+                    palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+
                     if (requireFlatHand)
                     {
                         // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
@@ -94,13 +106,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             }
                         }
                     }
+
+                    // Check if the palm angle meets the prescribed threshold
+                    palmFacingThresholdMet = palmCameraAngle < facingThreshold;
+
+                    // If using hybrid hand rotation, we proceed with additional checks
+                    if (useHybridHandRotation && palmFacingThresholdMet)
+                    {
+                        // If we are above the threshold angle, keep the menu mapped to the tracked object
+                        if (palmCameraAngle > hybridHandRotationThresholdAngle)
+                        {
+                            RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
+                        }
+                        // If we are within the threshold angle, we snap to follow the camera
+                        else
+                        {
+                            RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
+                        }
+                    }
                 }
                 else
                 {
                     Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
                 }
 
-                return Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward) < facingThreshold;
+                return palmFacingThresholdMet;
             }
 
             return true;

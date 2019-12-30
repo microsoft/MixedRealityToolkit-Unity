@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, trackedController, safeZone);
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, RotationBehavior);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, IMixedRealityController hand, SolverSafeZone handSafeZone)
+        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverRotationBehavior rotationBehavior)
         {
             Vector3 direction;
 
@@ -416,8 +416,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 default:
                 case SolverSafeZone.UlnarSide:
                     {
-                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
-                        direction = IsPalmFacingCamera(hand) ? direction : -direction;
+                        if (rotationBehavior == SolverRotationBehavior.LookAtTrackedObject)
+                        {
+                            direction = targetTransform.right;
+                        }
+                        else
+                        {
+                            direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                            direction = IsPalmFacingCamera(hand) ? direction : -direction;
+                        }
 
                         if (hand.ControllerHandedness.IsLeft())
                         {
@@ -428,8 +435,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 case SolverSafeZone.RadialSide:
                     {
-                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
-                        direction = IsPalmFacingCamera(hand) ? direction : -direction;
+
+                        if (rotationBehavior == SolverRotationBehavior.LookAtTrackedObject)
+                        {
+                            direction = -targetTransform.right;
+                        }
+                        else
+                        {
+                            direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                            direction = IsPalmFacingCamera(hand) ? direction : -direction;
+                        }
 
                         if (hand.ControllerHandedness == Handedness.Right)
                         {
