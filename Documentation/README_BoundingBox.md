@@ -1,10 +1,10 @@
-# Bounding box
+# Bounding Box
 
 ![Bounding box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)
 
-The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.
+The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A Bounding Box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The Bounding Box also reacts to user input. On HoloLens 2, for example, the Bounding Box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.
 
-For more information please see [Bounding Box and App Bar](https://docs.microsoft.com/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
+For more information, see [Bounding Box and App Bar](https://docs.microsoft.com/windows/mixed-reality/app-bar-and-bounding-box) in the Windows Dev Center.
 
 ## Example scene
 
@@ -12,19 +12,19 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png">
 
-## How to add and configure a bounding box using Unity Inspector
+## How to add and configure a Bounding Box using Unity Inspector
 
 1. Add Box Collider to an object
 2. Assign `BoundingBox` script to an object
-3. Configure options such as 'Activation' methods (see [Inspector properties](#inspector-properties) section below)
-4. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box (see [Handle styles](#handle-styles) section below)
+3. Configure options, such as 'Activation' methods (see [Inspector properties](#inspector-properties) section below)
+4. (Optional) Assign prefabs and materials for the HoloLens 2 style Bounding Box (see [Handle styles](#handle-styles) section below)
 
 > [!NOTE]
 > Use *Target Object* and *Bounds Override* field in the inspector to assign specific object and collider in the object with multiple child components.
 
 ![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png)
 
-## How to add and configure a bounding box in the code
+## How to add and configure a Bounding Box in the code
 
 1. Instantiate cube GameObject
 
@@ -50,7 +50,7 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
     bbox.ShowRotationHandleForZ = false;
     ```
 
-1. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded.
+1. (Optional) Assign prefabs and materials for the HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded.
 
 > [!NOTE]
 > Using Unity's 'Resources' folder or [Shader.Find]( https://docs.unity3d.com/ScriptReference/Shader.Find.html) for dynamically loading shaders is not recommended since shader permutations may be missing at runtime.
@@ -69,7 +69,7 @@ bbox.RotationHandleSize = 0.016f;
 bbox.RotateHandleColliderPadding = 0.016f;
 ```
 
-### Example: Set minimum, maximum bounding box scale using MinMaxScaleConstraint
+### Example: Set minimum, maximum Bounding Box scale using MinMaxScaleConstraint
 
 To set the minimum and maximum scale, use the [`MinMaxScaleConstraint`](xref:Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint). You can also use MinMaxScaleConstraint to set minimum and maximum scale for [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
@@ -83,9 +83,9 @@ scaleConstraint.ScaleMinimum = 1f;
 scaleConstraint.ScaleMaximum = 2f;
 ```
 
-## Example: Add bounding box around a game object
+## Example: Add Bounding Box around a game object
 
-To add a bounding box around an object, just add a bounding box component to it:
+To add a Bounding Box around an object, simply add a Bounding Box component to it:
 
 ```c#
 private void PutABoxAroundIt(GameObject target)
@@ -98,7 +98,7 @@ private void PutABoxAroundIt(GameObject target)
 
 ### Target object
 
-This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
+This property specifies which object will get transformed by the Bounding Box manipulation. If no object is set, the Bounding Box defaults to the owner object.
 
 ### Bounds override
 
@@ -106,7 +106,7 @@ Sets a box collider from the object for bounds computation.
 
 ### Activation behavior
 
-There are several options to activate the bounding box interface.
+There are several options to activate the Bounding Box interface.
 
 * *Activate On Start*: Bounding Box becomes visible once the scene is started.
 * *Activate By Proximity*: Bounding Box becomes visible when an articulated hand is close to the object.
@@ -123,9 +123,9 @@ The maximum allowed scale. This property is deprecated and it is preferable to a
 
 ### Box display
 
-Various bounding box visualization options.
+Various Bounding Box visualization options.
 
-If Flatten Axis is set to *Flatten Auto*, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.
+If Flatten Axis is set to *Flatten Auto*, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D Bounding Box, which is usually used for thin objects.
 
 ### Handles
 
@@ -133,7 +133,7 @@ You can assign the material and prefab to override the handle style. If no handl
 
 ## Events
 
-Bounding box provides the following events. The example uses these events to play audio feedback.
+Bounding Box provides the following events. This example uses these events to play audio feedback.
 
 * **Rotate Started**: Fired when rotation starts.
 * **Rotate Ended**: Fired when rotation ends.
@@ -173,14 +173,14 @@ Show and hide the handles with animation based on the distance to the hands. It 
 * **Proximity Effect Active**: Enable proximity-based handle activation
 * **Handle Medium Proximity**: Distance for the 1st step scaling
 * **Handle Close Proximity**: Distance for the 2nd step scaling
-* **Far Scale**: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)
-* **Medium Scale**: Scale value of the handle asset when the hands are within the range of the Bounding Box interaction(distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)
-* **Close Scale**: Scale value of the handle asset when the hands are within the grab interaction(distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)
+* **Far Scale**: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction (distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)
+* **Medium Scale**: Scale value of the handle asset when the hands are within the range of the Bounding Box interaction (distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)
+* **Close Scale**: Scale value of the handle asset when the hands are within the grab interaction (distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)
 
 ## Making an object movable with manipulation handler
 
-A bounding box can be combined with [`ManipulationHandler.cs`](README_ManipulationHandler.md) to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. [Hand tracking](Input/HandTracking.md) can be used to interact with an object up close.
+A Bounding Box can be combined with [`ManipulationHandler.cs`](README_ManipulationHandler.md) to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. [Hand tracking](Input/HandTracking.md) can be used to interact with an object up close.
 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 
-In order for the bounding box edges to behave the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for *On Manipulation Started* / *On Manipulation Ended* to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
+In order for the Bounding Box edges to behave the same way when moving it using [`ManipulationHandler`](README_ManipulationHandler.md)'s far interaction, it is advised to connect its events for *On Manipulation Started* / *On Manipulation Ended* to `BoundingBox.HighlightWires` / `BoundingBox.UnhighlightWires` respectively, as shown in the screenshot above.
