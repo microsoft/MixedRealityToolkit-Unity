@@ -4,17 +4,17 @@ The MRTK Optimize Window is a utility to help automate and inform in the process
 
 The *Active Build Target* is the [build platform currently targeted](https://docs.unity3d.com/Manual/BuildSettings.html) by the project for compiling.
 
-The *Performance Target* instructs the optimize tool what kind of device endpoints to target.
+The *Performance Target* instructs the optimize tool on what kind of device endpoints to target.
 
-- *AR Headsets* are mobile-class devices such as HoloLens
-- *VR Standalone* are mobile-class devices such as the Oculus Go or Quest
-- *VR Tethered* are PC-powered devices such as the Samsung Odyssey, Oculus Rift or HTC Vive etc.
+- *AR Headsets* are mobile-class devices, such as HoloLens
+- *VR Standalone* are mobile-class devices, such as the Oculus Go or Quest
+- *VR Tethered* are PC-powered devices, such as the Samsung Odyssey, Oculus Rift or HTC Vive etc.
 
 ![MRTK Optimize Window Performance Target](../../Documentation/Images/Performance/OptimizeWindowPerformanceTarget.jpg)
 
 ## Setting optimizations
 
-The settings optimization tab covers some of the important rendering configurations for a Unity project. This section can help automate and inform what settings should be changed for the best performing results.
+The settings optimization tab covers some of the important rendering configurations for a Unity project. This section can help automate and inform you of which settings should be changed for the best performing results.
 
 A green check icon means that an optimal value has been configured in the project/scene for this particular setting. A yellow warning icon indicates the current configuration can be improved. Clicking the associated button in a given section will auto-configure that setting in the Unity project/scene to a more optimal value.
 
@@ -26,7 +26,7 @@ A green check icon means that an optimal value has been configured in the projec
 
 ### Depth buffer sharing
 
-To improve [hologram stabilization](../hologram-Stabilization.md), developers can share the application's depth buffer which gives the platform information of where and what holograms to stabilize in the rendered scene.
+To improve [hologram stabilization](../hologram-Stabilization.md), developers can share the application's depth buffer which gives the platform information on where and what holograms to stabilize in the rendered scene.
 
 ### Depth buffer format
 
@@ -35,7 +35,7 @@ Furthermore, for *AR Headsets*, it is recommended to utilize a 16-bit depth form
 > [!NOTE]
 > If using *16-bit depth format*, stencil buffer required effects will not work because [Unity does not create a stencil buffer](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html) in this setting. Selecting *24-bit depth format* conversely will generally create an [8-bit stencil buffer](https://docs.unity3d.com/Manual/SL-Stencil.html), if applicable on the endpoint graphics platform.
 >
-> If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
+> If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead, which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
 
 ### Real-time Global Illumination
 
@@ -46,17 +46,17 @@ Furthermore, for *AR Headsets*, it is recommended to utilize a 16-bit depth form
 
 ## Scene analysis
 
-The *Scene Analysis* tab is designed to inform developers what elements currently in the scene will likely have the biggest impact on performance.
+The *Scene Analysis* tab is designed to inform developers on which elements currently in the scene will likely have the most impact on performance.
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_SceneAnalysis.png)
 
 ### Lighting analysis
 
-This section will examine the number of lights currently in the scene as well as any lights that should disable shadows. Shadow casting is a very expensive operation.
+This section will examine the number of lights currently in the scene, as well as any lights that should disable shadows. Shadow casting is a very expensive operation.
 
 ### Polygon count analysis
 
- The tool also provides polygon count statistics. It can be very helpful to quickly identify which GameObjects have the highest polygon complexity in a given scene to target for optimizations.
+The tool also provides polygon count statistics. It can be very helpful to quickly identify which GameObjects have the highest polygon complexity in a given scene to target for optimizations.
 
 ### Unity UI raycast analysis
 
