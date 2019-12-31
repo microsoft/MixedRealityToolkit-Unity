@@ -64,8 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                trackVisuals = value;
-                UpdateTrackVisuals();
+                if (trackVisuals != value)
+                {
+                    trackVisuals = value;
+                    UpdateTrackVisuals();
+                }
             }
         }
 
@@ -83,8 +86,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                tickMarks = value;
-                UpdateTickMarks();
+                if (tickMarks != value)
+                {
+                    tickMarks = value;
+                    UpdateTickMarks();
+                }
             }
         }
 
@@ -102,8 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                thumbVisuals = value;
-                UpdateThumbVisuals();
+                if (thumbVisuals != value)
+                {
+                    thumbVisuals = value;
+                    UpdateThumbVisuals();
+                }
             }
         }
 
