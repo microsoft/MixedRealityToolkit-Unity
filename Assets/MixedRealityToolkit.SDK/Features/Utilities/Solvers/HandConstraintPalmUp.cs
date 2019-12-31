@@ -79,14 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             MixedRealityPose palmPose;
             var jointedHand = controller as IMixedRealityHand;
 
-            float palmCameraAngle = 360f;
             bool palmFacingThresholdMet = false;
 
             if (jointedHand != null)
             {
                 if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                 {
-                    palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+                    float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
 
                     if (requireFlatHand)
                     {
