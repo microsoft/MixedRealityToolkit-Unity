@@ -85,7 +85,7 @@
 <p><img src="Images/MRTK_Logo_Rev.png" alt="MRTK Logo"></p>
 <p>The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>To get started with the Mixed Reality Toolkit you will need:</p>
+<p>To get started with the Mixed Reality Toolkit, you will need:</p>
 <ul>
 <li><p><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
 </li>
@@ -114,7 +114,7 @@ when building for OpenVR.</p>
 <h3 id="get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</h3>
 <ol>
 <li>Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.</li>
-<li>Under Assets, download
+<li>Under Assets, download:
 <ul>
 <li><strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong></li>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
@@ -124,20 +124,20 @@ when building for OpenVR.</p>
 </ul>
 </li>
 </ol>
-<p>For information on package contents, please see <a href="MRTK_PackageContents.html">MRTK Package Contents</a>.</p>
-<p>The Mixed Reality Toolkit is also available for download on NuGet.org, for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
+<p>For information on package contents, see <a href="MRTK_PackageContents.html">MRTK Package Contents</a>.</p>
+<p>The Mixed Reality Toolkit is also available for download on NuGet.org; for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
 <h3 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h3>
 <ol>
 <li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
-<li>Import the <strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
+<li>Import the <strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, select the .unitypackage file, ensure all items to import are checked, and then select &quot;Import&quot;.</li>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
-<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
-<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
-<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</strong> following the same steps as for the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
+<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</strong> following the same steps as the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.</li>
 </ol>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, please see the <a href="CameraSystem/UnityArCameraSettings.html">UnityAR camera settings provider</a> article.</p>
+<p>Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, see the <a href="CameraSystem/UnityArCameraSettings.html">UnityAR camera settings provider</a> article.</p>
 </div>
 <p>After importing the Foundation package, you may see a prompt similar to the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt="UnitySetupPrompt"></p>
@@ -147,14 +147,14 @@ when building for OpenVR.</p>
 <li>Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).</li>
 </ul>
 <p>Accepting these options is completely optional, but recommended.</p>
-<p>Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
+<p>Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
 <h3 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h3>
 <p>With the packages imported, the next step is to select the correct platform for the application.</p>
-<p>To create a <strong>HoloLens application</strong>, switch to Universal Windows Platform:</p>
+<p>To create a <strong>HoloLens application</strong>, switch to the Universal Windows Platform:</p>
 <ol>
 <li>Open menu : File &gt; Build Settings</li>
 <li>Select <strong>Universal Windows Platform</strong> in the <strong>Platform</strong> list</li>
-<li>Click on the <strong>Switch Platform</strong> button</li>
+<li>Click the <strong>Switch Platform</strong> button</li>
 </ol>
 <p><img src="Images/getting_started/SwitchPlatform.png" alt="Switch Platform"></p>
 <div class="NOTE">
@@ -189,7 +189,7 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 <p>While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the <strong>MixedRealityPlayspace</strong>) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
 </div>
 </li>
-<li><p>Hit play and test out hand simulation by pressing the <strong>spacebar</strong>.</p>
+<li><p>Press Play and test out hand simulation by pressing the <strong>spacebar</strong>.</p>
 </li>
 </ol>
 <p>You are now ready to build and deploy to device! Follow the steps instructions at <a href="BuildAndDeploy.html">Build and Deploy MRTK</a>.</p>
@@ -206,11 +206,11 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 </li>
 <li><p>You may get a prompt asking you to import &quot;TMP Essentials&quot;.</p>
 <p><img src="Images/getting_started/MRTK_GettingStarted_TMPro.png" alt="TMP Essentials"></p>
-<p>If you get such a prompt, select &quot;Import TMP essentials&quot; button. &quot;TMP Essentials&quot; refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See <a href="https://docs.microsoft.com/windows/mixed-reality/text-in-unity">Text in Unity</a> for more detailed information)</p>
+<p>If you get such a prompt, select the &quot;Import TMP essentials&quot; button. &quot;TMP Essentials&quot; refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See <a href="https://docs.microsoft.com/windows/mixed-reality/text-in-unity">Text in Unity</a> for more detailed information)</p>
 </li>
-<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.</p>
+<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by double-clicking the scene in the Project tab.</p>
 </li>
-<li><p>Press the play button.</p>
+<li><p>Press the Play button.</p>
 </li>
 </ol>
 <h2 id="using-the-in-editor-hand-input-simulation-to-test-a-scene">Using the in-editor hand input simulation to test a scene</h2>
@@ -245,7 +245,7 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 <li>Read through <a href="InputSimulation/InputSimulationService.html">input simulation guide</a> to learn how to simulate hand input in editor.</li>
 </ul>
 <h2 id="upgrading-from-the-holotoolkit-htkmrtk-v1">Upgrading from the HoloToolkit (HTK/MRTK v1)</h2>
-<p>There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the <a href="HTKToMRTKPortingGuide.html">HoloToolkit to Mixed Reality Toolkit Porting Guide</a></p>
+<p>There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the <a href="HTKToMRTKPortingGuide.html">HoloToolkit to Mixed Reality Toolkit Porting Guide</a></p>
 </article>
           </div>
           
