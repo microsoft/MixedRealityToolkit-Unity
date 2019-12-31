@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private GameObject thumbVisuals = null;
         /// <summary>
-        /// Property accessor of thumbVisuals, it contains the desired tick Marks.  This will get rotated to match the slider axis.
+        /// Property accessor of thumbVisuals, it contains the desired tick marks.  This will get rotated to match the slider axis.
         /// </summary>
         public GameObject ThumbVisuals
         {
