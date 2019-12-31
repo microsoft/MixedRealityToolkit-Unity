@@ -173,6 +173,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 return targetObject;
             }
+
+            set
+            {
+                if (targetObject != value)
+                {
+                    targetObject = value;
+                    CreateRig();
+                }
+            }
         }
 
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
@@ -263,9 +272,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMinimum;
+                    return scaleConstraint.ScaleMinimum;
                 }
                 return 0.0f;
             }
@@ -281,9 +290,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMaximum;
+                    return scaleConstraint.ScaleMaximum;
                 }
                 return 0.0f;
             }
@@ -1045,7 +1054,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler;
+        private MinMaxScaleConstraint scaleConstraint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -1370,17 +1379,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
+
+                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
+                    if (scaleConstraint != null)
                     {
-                        clampedScale = scaleHandler.ClampScale(newScale);
-                        if (clampedScale != newScale)
+                        scaleConstraint.ApplyConstraint(ref clampedTransform);
+                        if (clampedTransform.Scale != newScale)
                         {
-                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                            scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
                         }
                     }
 
-                    Target.transform.localScale = clampedScale;
+                    Target.transform.localScale = clampedTransform.Scale;
                     Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }
@@ -1914,7 +1924,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var rigRootObj = new GameObject(rigRootName);
             rigRoot = rigRootObj.transform;
-            rigRoot.parent = transform;
+            rigRoot.parent = Target.transform;
 
             var pH = rigRootObj.AddComponent<PointerHandler>();
             pH.OnPointerDown.AddListener(OnPointerDown);
@@ -1968,16 +1978,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 isChildOfTarget = transform.IsChildOf(target.transform);
 
-                scaleHandler = GetComponent<TransformScaleHandler>();
-                if (scaleHandler == null)
+                scaleConstraint = GetComponent<MinMaxScaleConstraint>();
+                if (scaleConstraint == null)
                 {
-                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
+                    scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
 
-                    scaleHandler.TargetTransform = Target.transform;
-                #pragma warning disable 0618
-                    scaleHandler.ScaleMinimum = scaleMinimum;
-                    scaleHandler.ScaleMaximum = scaleMaximum;
-                #pragma warning restore 0618
+                    scaleConstraint.TargetTransform = Target.transform;
+#pragma warning disable 0618
+                    scaleConstraint.ScaleMinimum = scaleMinimum;
+                    scaleConstraint.ScaleMaximum = scaleMaximum;
+#pragma warning restore 0618
                 }
             }
         }
@@ -2183,7 +2193,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
-                rigRoot.parent = transform;
+                rigRoot.parent = Target.transform;
             }
         }
 
