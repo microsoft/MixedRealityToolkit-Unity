@@ -1113,7 +1113,7 @@ MonoBehaviour:
   sliderValue: 0.5
   trackVisuals: {fileID: 7307063431327029218}
   tickMarks: {fileID: 7307063430561165487}
-  thumbVisual: {fileID: 7307063430134822100}
+  thumbVisuals: {fileID: 7307063430134822100}
   sliderAxis: 0
   sliderStartDistance: -0.125
   sliderEndDistance: 0.125
