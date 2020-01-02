@@ -1,6 +1,6 @@
 # How to configure MRTK for iOS and Android [Experimental]
 
-## Install Required Packages
+## Install required packages
 
 1. Download and import the **Microsoft.MixedReality.Toolkit.Providers.UnityAR** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.2.0) or [NuGet](../MRTKNuGetPackage.md)
 
@@ -64,7 +64,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
     For more information about configuring the Unity AR camera settings provider: [Unity AR camera settings provider](../CameraSystem/UnityArCameraSettings.md).
 
-## Building a Scene for Android and iOS devices
+## Building a scene for Android and iOS devices
 
 1. Make sure you have added the UnityAR Camera Settings Provider to your scene.
 
@@ -87,6 +87,6 @@ iOS Project Configurator Settings
 
 5. Build and run the scene
 
-## See Also
+## See also
 
 - [Unity AR Camera Settings](../CameraSystem/UnityArCameraSettings.md)

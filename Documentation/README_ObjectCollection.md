@@ -21,11 +21,11 @@ To create a collection, create an empty GameObject and assign one of the Object 
 
 ![Object collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png)
 
-## `GridObjectCollection` Content Alignment
+## `GridObjectCollection` content alignment
 
 The content in a GridObjectCollection can be aligned so that the parent object is anchored to the top/middle/bottom and left/center/right of the collection. Use the **anchor** property to specify content alignment.
 
-## `GridObjectCollection` Layout Order
+## `GridObjectCollection` layout order
 
 Use the **Layout** field to specify the row / column order that children are laid out:
 

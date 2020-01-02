@@ -48,17 +48,86 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        [Header("Slider Axis Visuals")]
+    
+        [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
+        [SerializeField]
+        private GameObject trackVisuals = null;
+        /// <summary>
+        /// Property accessor of trackVisuals, it contains the desired track Visuals. This will get rotated to match the slider axis.
+        /// </summary>
+        public GameObject TrackVisuals
+        {
+            get
+            {
+                return trackVisuals;
+            }
+            set
+            {
+                trackVisuals = value;
+                UpdateTrackVisuals();
+            }
+        }
+
+        [Tooltip("The gameObject that contains the tickMarks.  This will get rotated to match the slider axis")]
+        [SerializeField]
+        private GameObject tickMarks = null;
+        /// <summary>
+        /// Property accessor of tickMarks, it contains the desired tick Marks.  This will get rotated to match the slider axis.
+        /// </summary>
+        public GameObject TickMarks
+        {
+            get
+            {
+                return tickMarks;
+            }
+            set
+            {
+                tickMarks = value;
+                UpdateTickMarks();
+            }
+        }
+
+
         [Header("Slider Track")]
 
         [Tooltip("The axis the slider moves along")]
         [SerializeField]
         private SliderAxis sliderAxis = SliderAxis.XAxis;
-        [Serializable]
-        private enum SliderAxis
+        /// <summary>
+        /// Property accessor of sliderAxis. The axis the slider moves along.
+        /// </summary>
+        public SliderAxis CurrentSliderAxis
         {
-            XAxis = 0,
-            YAxis,
-            ZAxis
+            get { return sliderAxis; }
+            set
+            {
+                sliderAxis = value;
+                UpdateVisualsOrientation();
+            }
+        }
+
+        /// <summary>
+        /// Previous value of slider axis, is used in order to detect change in current slider axis value
+        /// </summary>
+        private SliderAxis? previousSliderAxis = null;
+        /// <summary>
+        /// Property accessor for previousSliderAxis that is used also to initiallize the property with the current value in case of null value.
+        /// </summary>
+        private SliderAxis PreviousSliderAxis
+        {
+            get
+            {
+                if (previousSliderAxis == null)
+                {
+                    previousSliderAxis = CurrentSliderAxis;
+                }
+                return previousSliderAxis.Value;
+            }
+            set
+            {
+                previousSliderAxis = value;
+            }
         }
 
         [SerializeField]
@@ -144,8 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             OnValueUpdated.Invoke(new SliderEventData(sliderValue, sliderValue, null, this));
         }
 
-
-
         private void OnDisable()
         {
             if (activePointer != null)
@@ -153,6 +220,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 EndInteraction();
             }
         }
+
+        private void OnValidate()
+        {
+            CurrentSliderAxis = sliderAxis;
+        }
+
         #endregion
 
         #region Private Methods
@@ -163,6 +236,78 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sliderThumbOffset = thumbRoot.transform.position - thumbProjectedOnTrack;
 
             UpdateUI();
+        }
+
+        /// <summary>
+        /// Update orientation of track visuals based on slider axis orientation
+        /// </summary>
+        private void UpdateTrackVisuals()
+        {
+            if (TrackVisuals)
+            {
+                TrackVisuals.transform.localPosition = Vector3.zero;
+
+                switch (sliderAxis)
+                {
+                    case SliderAxis.XAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.identity;
+                        break;
+                    case SliderAxis.YAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+                        break;
+                    case SliderAxis.ZAxis:
+                        TrackVisuals.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update orientation of tick marks based on slider axis orientation
+        /// </summary>
+        private void UpdateTickMarks()
+        {
+            if (TickMarks)
+            {
+                TickMarks.transform.localPosition = Vector3.zero;
+                TickMarks.transform.localRotation = Quaternion.identity;
+
+                var grid = TickMarks.GetComponent<Utilities.GridObjectCollection>();
+                if (grid)
+                {
+                    // Update cellwidth or cellheight depending on what was the previous axis set to
+                    var previousAxis = grid.Layout;
+                    if (previousAxis == Utilities.LayoutOrder.Vertical)
+                    {
+                        grid.CellWidth = grid.CellHeight;
+                    }
+                    else
+                    {
+                        grid.CellHeight = grid.CellWidth;
+                    }
+
+                    grid.Layout = (sliderAxis == SliderAxis.YAxis) ? Utilities.LayoutOrder.Vertical : Utilities.LayoutOrder.Horizontal;
+                    grid.UpdateCollection();
+                }
+
+                if (sliderAxis == SliderAxis.ZAxis)
+                {
+                    TickMarks.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update orientation of the visual components of pinch slider
+        /// </summary>
+        private void UpdateVisualsOrientation()
+        {
+            if (PreviousSliderAxis != sliderAxis)
+            {
+                UpdateTrackVisuals();
+                UpdateTickMarks();
+                PreviousSliderAxis = sliderAxis;
+            }
         }
 
         private Vector3 GetSliderAxis()

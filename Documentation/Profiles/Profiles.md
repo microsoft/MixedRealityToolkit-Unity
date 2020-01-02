@@ -10,14 +10,14 @@ For example, the Input system's behavior is governed by an [input system profile
 > [!NOTE]
 > While it is intended that profiles can be swapped out at runtime, this [currently does not work](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289)
 
-## Default Profile
+## Default profile
 
 The MRTK provides a set of default profiles which cover most platforms and scenarios that the MRTK supports. For example, when you select the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) you will be able to try out scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2).
 
 Note that because this is a general use profile, it's not optimized for any particular use case. If you want to have
 more performant/specific settings that are better on other platforms, see the other profiles below, which are slightly tweaked to be better on their respective platforms.
 
-## HoloLens 2 Profile
+## HoloLens 2 profile
 
 The MRTK also provides a default profile that is optimized for deployment and testing on
 the HoloLens 2: [DefaultHoloLens2ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset).

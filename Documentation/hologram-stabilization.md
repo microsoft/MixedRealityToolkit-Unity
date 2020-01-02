@@ -12,11 +12,11 @@ Stable holographic rendering heavily relies on head-pose tracking by the platfor
 
 The Windows Mixed Reality platform provides some [reference material](https://docs.microsoft.com/windows/mixed-reality/hologram-stability) for stabilizing holograms on the platform. There are a handful of key tools though that developers can utilize to improve the hologram visual experience for users.
 
-### Depth Buffer Sharing
+### Depth buffer sharing
 
 Unity developers have the option of sharing the application's depth buffer with the platform. This provides information, where holograms exist for a current frame, that the platform can utilize to stabilize holograms via a hardware-assisted process known as Late-Stage Reprojection.
 
-#### Late-Stage Reprojection
+#### Late-stage reprojection
 
 At the end of rendering a frame, the Windows Mixed Reality platform takes the color & depth render targets produced by the application and transforms the final screen output to account for any slight head movement since the last head pose prediction. An application's game loop takes time to execute. For example, at 60 FPS, this means the application is taking ~16.667ms to render a frame. Even though this may seem like a miniscule amount of time, the user's position and orientation of their head will change resulting in new projection matrices for the camera in rendering. Late-stage reprojection transforms the pixels in the final image to account for this new perspective.
 
@@ -39,7 +39,7 @@ If targeting HoloLens for development, it is highly recommended to utilize the 1
 > [!NOTE]
 > If using *16-bit depth format*, stencil buffer required effects will not work because [Unity does not create a stencil buffer](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html) in this setting. Selecting *24-bit depth format* conversely will generally create an [8-bit stencil buffer](https://docs.unity3d.com/Manual/SL-Stencil.html), if applicable on the endpoint graphics platform.
 
-#### Depth Buffer Sharing in Unity
+#### Depth buffer sharing in Unity
 
 In order to utilize depth-based LSR, there are two important steps that developers need to take.
 

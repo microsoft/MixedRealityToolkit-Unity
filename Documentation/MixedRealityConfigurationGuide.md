@@ -1,4 +1,4 @@
-# Mixed Reality Toolkit Profile configuration guide
+# Mixed Reality Toolkit profile configuration guide
 
 ![MRTK logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
@@ -241,7 +241,7 @@ Gestures are a system specific implementation allowing you to assign input actio
 ---
 <a name="speech"></a>
 
-## Speech Commands
+## Speech commands
 
 Like gestures, some runtime platforms also provide intelligent "Speech to Text" functionality with the ability to generate commands that can be received by a Unity project. This configuration profile allows you to configure the following:
 
@@ -299,13 +299,13 @@ If your controller representation in the scene needs to be offset from the physi
 
 <a name="editor-utilities"></a>
 
-## Editor Utilities
+## Editor utilities
 
 The following utilities work only in the editor and are useful to improve development productivity.
 
 ![MRTK Editor Configuration Utilities](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png)
 
-### Service Inspectors
+### Service inspectors
 
 Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
 
@@ -313,7 +313,7 @@ Service Inspectors are an editor-only feature that generates in-scene objects re
 
 You can enable service inspectors by checking *Use Service Inspectors* under *Editor Settings* in the Configuration Profile.
 
-### Depth Buffer Renderer
+### Depth buffer renderer
 
 Sharing the depth buffer with some mixed reality platforms can improve [hologram stabilization](hologram-stabilization.md). For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user.
 
@@ -322,6 +322,6 @@ To ensure a scene renders all necessary data to the depth buffer, developers can
 ![Render Depth Buffer Utility](Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
 <sup>The blue cylinder in the scene has a material with ZWrite off so no depth data is written</sup>
 
-## See Also
+## See also
 
 * [Hologram Stabilization](hologram-stabilization.md)
