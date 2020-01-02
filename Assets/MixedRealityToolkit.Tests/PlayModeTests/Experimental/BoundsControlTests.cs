@@ -350,6 +350,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             //yield return PlayModeTestUtilities.WaitForEnterKey();
             //yield return PlayModeTestUtilities.WaitForEnterKey();
 
+            ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
+            Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
+
             Vector3 initialHandPosition = new Vector3(0, 0, 0f);
             Transform scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
             Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
@@ -359,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return null;
             // verify no scaling applied
-            Assert.AreEqual(proximityScaledVisual.localScale, Vector3.one, "Handle was scaled even though proximity effect wasn't active");
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
             var frontRightCornerPos = scaleHandle.position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Left);
             Vector3 initialScale = bbox.transform.localScale;
@@ -370,21 +373,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos, 300);// new Vector3(0.253f, 0.248f, 1.241f), 300);
             yield return null;
 
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            //yield return PlayModeTestUtilities.WaitForEnterKey();
             // we're at scale handle position now - check proximity scaling
-            Assert.AreEqual(proximityScaledVisual.localScale, Vector3.one, "Handle was scaled even though proximity effect wasn't active");
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             //yield return null;
 
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            //yield return PlayModeTestUtilities.WaitForEnterKey();
             // Verify that scale works before deactivating
             yield return hand.MoveTo(new Vector3(0.542f, 0.192f, 1.245f), 300);
             Vector3 afterTransformScale = bbox.transform.localScale;
             Assert.AreNotEqual(initialScale, afterTransformScale);
             Assert.AreApproximatelyEqual(afterTransformScale.x, 0.58f, 0.09f);
 
-            yield return hand.MoveTo(frontRightCornerPos);
+            yield return hand.MoveTo(frontRightCornerPos,300);
 
             // reset hand
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
@@ -393,20 +396,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // enable proximity scaling and test defaults
             ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
             proximityConfig.ProximityEffectActive = true;
+            proximityConfig.CloseGrowRate = 1.0f;
+            proximityConfig.MediumGrowRate = 1.0f;
+            proximityConfig.FarGrowRate = 1.0f;
+            bbox.CreateRig();
+            scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
+            proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
 
             yield return null;
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            //yield return PlayModeTestUtilities.WaitForEnterKey();
 
             // check far scale applied
-            Assert.AreEqual(proximityScaledVisual.localScale, Vector3.zero, "Proximity far scale wasn't applied to handle");
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+            Assert.IsTrue(proximityScaledVisual.localScale == Vector3.zero, "Proximity far scale wasn't applied to handle");
+            //yield return PlayModeTestUtilities.WaitForEnterKey();
 
             Vector3 mediumProximityTestDist = frontRightCornerPos;
-            mediumProximityTestDist.x -= (proximityConfig.ObjectMediumProximity + proximityConfig.ObjectCloseProximity);
+           // mediumProximityTestDist.x -= (proximityConfig.ObjectMediumProximity + proximityConfig.ObjectCloseProximity);
             yield return hand.MoveTo(mediumProximityTestDist);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
+           // yield return PlayModeTestUtilities.WaitForEnterKey();
             // check medium scale applied
-            Assert.AreEqual(proximityScaledVisual.localScale, Vector3.one, "Proximity medium scale wasn't applied to handle");
+            Assert.IsTrue(proximityScaledVisual.localScale == Vector3.one, "Proximity medium scale wasn't applied to handle");
 
             // check close scale applied
             Vector3 closeProximityTestDir = frontRightCornerPos;

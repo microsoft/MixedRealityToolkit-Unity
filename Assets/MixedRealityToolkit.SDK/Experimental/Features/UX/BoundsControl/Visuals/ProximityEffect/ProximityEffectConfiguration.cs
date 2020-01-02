@@ -18,10 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Determines whether proximity feature (scaling and material toggling) is activated
         /// </summary>
-        public bool ProximityEffectActive// => proximityEffectActive;
+        public bool ProximityEffectActive
         {
-            get { return proximityEffectActive; }
-            set { proximityEffectActive = value; }
+            get
+            {
+                return proximityEffectActive;
+            }
+            set
+            {
+                proximityEffectActive = value;
+            }
         }
 
         [SerializeField]
@@ -31,7 +37,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Distance the hand has to be in to start scaling objects.
         /// </summary>
-        public float ObjectMediumProximity => objectMediumProximity;
+        public float ObjectMediumProximity
+        {
+            get
+            {
+                return objectMediumProximity;
+            }
+            set
+            {
+                objectMediumProximity = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("How far away should the hand be from an object before it activates the close-proximity scaling effect?")]
@@ -40,7 +56,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Distance the hand has to be in to start the close proximity scaling effect.
         /// </summary>
-        public float ObjectCloseProximity => objectCloseProximity;
+        public float ObjectCloseProximity
+        {
+            get
+            {
+                return objectCloseProximity;
+            }
+            set
+            {
+                objectCloseProximity = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.")]
@@ -49,7 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.
         /// </summary>
-        public float FarScale => farScale;
+        public float FarScale
+        {
+            get
+            {
+                return farScale;
+            }
+            set
+            {
+                farScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.")]
@@ -58,7 +94,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.
         /// </summary>
-        public float MediumScale => mediumScale;
+        public float MediumScale
+        {
+            get
+            {
+                return mediumScale;
+            }
+            set
+            {
+                mediumScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size.")]
@@ -67,7 +113,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size
         /// </summary>
-        public float CloseScale => closeScale;
+        public float CloseScale
+        {
+            get
+            {
+                return closeScale;
+            }
+            set
+            {
+                closeScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves from Medium proximity to Far proximity?")]
@@ -76,7 +132,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Rate a proximity scaled object scales when the hand moves from medium to far proximity.
         /// </summary>
-        public float FarGrowRate => farGrowRate;
+        public float FarGrowRate
+        {
+            get
+            {
+                return farGrowRate;
+            }
+            set
+            {
+                farGrowRate = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Object scale when the Hand moves to a distance that activates Medium Scale ?")]
@@ -85,7 +151,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Rate a proximity scaled object scales when the hand moves from medium to close proximity.
         /// </summary>
-        public float MediumGrowRate => mediumGrowRate;
+        public float MediumGrowRate
+        {
+            get
+            {
+                return mediumGrowRate;
+            }
+            set
+            {
+                mediumGrowRate = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves to a distance that activates Close Scale ?")]
@@ -94,6 +170,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Rate a proximity scaled object scales when the hand moves from close proximity to object center
         /// </summary>
-        public float CloseGrowRate => closeGrowRate;
+        public float CloseGrowRate
+        {
+            get
+            {
+                return closeGrowRate;
+            }
+            set
+            {
+                closeGrowRate = value;
+            }
+        }
     }
 }
