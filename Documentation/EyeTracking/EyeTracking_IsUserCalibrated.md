@@ -1,4 +1,4 @@
-# Eye Calibration
+# Eye calibration
 
 ![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
 
@@ -20,7 +20,7 @@ The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvide
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
-### Sample eye calibration notification - Step-by-step
+### Sample eye calibration notification - step-by-step
 
 1. Open the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking)
 

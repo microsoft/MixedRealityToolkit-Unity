@@ -1,12 +1,12 @@
-# Hand Tracking
+# Hand tracking
 
-## Hand Tracking Profile
+## Hand tracking profile
 
 The _Hand Tracking profile_ is found under the _Input System profile_. It contains settings for customizing hand representation.
 
 <img src="../../Documentation/Images/Input/HandTrackingProfile.png" width="650px" style="display:block;">
 
-## Joint Prefabs
+## Joint prefabs
 
 Joint prefabs are visualized using simple prefabs. The _Palm_ and _Index Finger_ joints are of special importance and have their own prefab, while all other joints share the same prefab.
 
@@ -17,7 +17,7 @@ By default the hand joint prefabs are simple geometric primitives. These can be 
 
 <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px"  style="display:block;">
 
-## Hand Mesh Prefab
+## Hand mesh prefab
 
 The hand mesh is used if fully defined mesh data is provided by the hand tracking device. The mesh renderable in the prefab is replaced by data from the device, so a dummy mesh such as a cube is sufficient. The material of the prefab is used for the hand mesh.
 
@@ -47,11 +47,11 @@ Available joints are listed in the [`TrackedHandJoint`](xref:Microsoft.MixedReal
 > [!NOTE]
 > Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors!
 
-### Accessing a given Hand Controller
+### Accessing a given hand controller
 
 A specific hand controller is often available, e.g. when handling input events. In this case the joint data can be requested directly from the device, using the [`IMixedRealityHand`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) interface.
 
-#### Polling Joint Pose from Controller
+#### Polling joint pose from controller
 
 The [`TryGetJoint`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint*) function returns `false` if the requested joint is not available for some reason. In that case the resulting pose will be [`MixedRealityPose.ZeroIdentity`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ZeroIdentity).
 
@@ -69,7 +69,7 @@ public void OnSourceDetected(SourceStateEventData eventData)
 }
 ```
 
-#### Joint Transform from Hand Visualizer
+#### Joint transform from hand visualizer
 
 Joint objects can be requested from the [controller visualizer](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.Visualizer).
 
@@ -91,7 +91,7 @@ public void OnSourceDetected(SourceStateEventData eventData)
 
 If no specific controller is given then utility classes are provided for convenient access to hand joint data. These functions request joint data from the first available hand device currently tracked.
 
-#### Polling Joint Pose from HandJointUtils
+#### Polling joint pose from HandJointUtils
 
 [`HandJointUtils`](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils) is a static class that queries the first active hand device.
 
@@ -102,7 +102,7 @@ if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, 
 }
 ```
 
-#### Joint Transform from Hand Joint Service
+#### Joint transform from hand joint service
 
 [`IMixedRealityHandJointService`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) keeps a persistent set of [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) for tracking joints.
 
@@ -124,11 +124,11 @@ if (handJointService != null)
 }
 ```
 
-### Hand Tracking Events
+### Hand tracking events
 
 The input system provides events as well, if polling data from controllers directly is not desirable.
 
-#### Joint Events
+#### Joint events
 
 [`IMixedRealityHandJointHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) handles updates of joint positions.
 
@@ -150,7 +150,7 @@ public class MyHandJointEventHandler : IMixedRealityHandJointHandler
 }
 ```
 
-#### Mesh Events
+#### Mesh events
 
 [`IMixedRealityHandMeshHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) handles changes of the articulated hand mesh.
 
@@ -181,7 +181,7 @@ public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
 }
 ```
 
-## Known Issues
+## Known issues
 
 ### .NET Native
 

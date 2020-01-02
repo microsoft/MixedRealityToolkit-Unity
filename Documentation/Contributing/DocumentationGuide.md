@@ -2,7 +2,7 @@
 
 # Documentation guidelines
 
-This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). It's purpose is to get you started quickly by giving an introduction about the technical aspects that you need to know, to point out common pitfalls and to describe the writing style that you should try to follow.
+This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). Its purpose is to get you started quickly by giving an introduction about the technical aspects that you need to know, to point out common pitfalls and to describe the writing style that you should try to follow.
 
 The page itself is supposed to serve as an example, therefore it uses the intended style and the most common markup features of the documentation.
 
@@ -188,7 +188,7 @@ In addition to the above, the code should be well commented to allow for mainten
 
 ### Class, struct, enum summary blocks
 
-If a class, struct or enum is being added to the MRTK, it's purpose must be described. This is to take the form of a summary block above the class.
+If a class, struct or enum is being added to the MRTK, its purpose must be described. This is to take the form of a summary block above the class.
 
 ```c#
 /// <summary>

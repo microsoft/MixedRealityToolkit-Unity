@@ -9,7 +9,7 @@ provides a way to identify specific capabilities at runtime, (e.g. if the curren
 The Mixed Reality Toolkit provides the [`MixedRealityCapability`](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
 enumeration, which defines a set of capabilities for which an application can query at runtime.
 
-### Input System capabilities
+### Input system capabilities
 
 The default MRTK Input System supports querying the following capabilities:
 
@@ -34,7 +34,7 @@ if (capabilityCheck != null)
 }
 ```
 
-### Spatial Awareness capabilities
+### Spatial awareness capabilities
 
 The default MRTK Spatial Awareness system supports querying the following capabilities:
 
@@ -56,7 +56,7 @@ if (capabilityCheck != null)
 }
 ```
 
-## See Also
+## See also
 
 - [IMixedRealityCapabilityCheck API documentation](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)
 - [MixedRealityCapability enum documentation](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)

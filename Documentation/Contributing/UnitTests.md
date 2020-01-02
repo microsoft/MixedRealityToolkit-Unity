@@ -1,4 +1,4 @@
-# Writing and Running Tests in MRTK
+# Writing and running tests in MRTK
 
 To ensure MRTK is reliable, MRTK has a set of tests to ensure that changes to the code does not regress existing behavior. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when making changes.
 
@@ -43,7 +43,7 @@ It's also possible to run the playmode tests multiple times via the `run_repeat_
 .\run_repeat_tests.ps1 -Times 5
 ```
 
-### Pull Request Validation
+### Pull request validation
 
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
 
@@ -66,7 +66,7 @@ public IEnumerator MyTest() {...}
 
 Run the following from a command line ([PowerShell](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
 
-```ps
+```powershell
 cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest
@@ -74,7 +74,7 @@ python .\generate_repeat_tests.py -n 5 -t MyTest
 
 Copy and paste the output into your test file. The following script is for running multiple tests in sequence:
 
-```ps
+```powershell
 cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest MySecondTest
@@ -112,9 +112,9 @@ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.
 
 To create a new play mode test:
 
-- Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
-- Right click, Create > Testing > C# Test Script
-- Replace the default template with the skeleton below
+* Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
+* Right click, Create > Testing > C# Test Script
+* Replace the default template with the skeleton below
 
 ```c#
 #if !WINDOWS_UWP

@@ -1,8 +1,8 @@
-# Configuring Mesh Observers via code
+# Configuring mesh observers via code
 
 This article will discuss some of the key mechanisms and APIs to programmatically configure the [Spatial Awareness system](SpatialAwarenessGettingStarted.md) and related *Mesh Observer* data providers.
 
-## Accessing Mesh Observers
+## Accessing mesh observers
 
 Mesh Observer classes that implement the [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface provide platform-specific mesh data to the Spatial Awareness system. Multiple Observers can be configured in the Spatial Awareness profile.
 
@@ -102,7 +102,7 @@ observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.None;
 observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.Occlusion;
 ```
 
-## Registering for Mesh Observation events
+## Registering for mesh observation events
 
 Components can implement the `IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>` and then register with the Spatial Awareness system to receive Mesh Observation events.
 
@@ -145,7 +145,7 @@ public class MyMeshObservationExample : MonoBehaviour, SpatialAwarenessHandler
 }
 ```
 
-## See Also
+## See also
 
 - [Spatial Awareness Getting Started](SpatialAwarenessGettingStarted.md)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)

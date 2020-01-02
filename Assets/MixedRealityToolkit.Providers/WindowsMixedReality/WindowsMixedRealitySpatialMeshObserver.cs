@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            if (WindowsApiChecker.UniversalApiContractV4_IsAvailable)
             {
 #if WINDOWS_UWP
                 return (capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
@@ -144,27 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public override void Enable()
-        {
-            if (!IsRunning)
-            {
-                Resume();
-            }
-        }
-
-        /// <inheritdoc />
         public override void Update()
         {
             UpdateObserver();
-        }
-
-        /// <inheritdoc />
-        public override void Disable()
-        {
-            if (IsRunning)
-            {
-                Suspend();
-            }
         }
 
         /// <inheritdoc />
@@ -359,6 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public bool RecalculateNormals { get; set; } = true;
 
+        /// <inheritdoc />
         public int TrianglesPerCubicMeter { get; set; } = 0;
 
         private Material visibleMaterial = null;

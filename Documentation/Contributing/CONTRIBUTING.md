@@ -17,7 +17,7 @@ From here you file:
 - **Documentation issue** - Issue with the Mixed Reality Toolkit [documentation](https://microsoft.github.io/MixedRealityToolkit-Unity)
 - **Feature request** - Proposal for a new Mixed Reality Toolkit feature
 
-## Proposing Feature Requests
+## Proposing feature requests
 
 When requesting a new Mixed Reality Toolkit feature, it is important to document the customer benefit / problem to be solved. Once submitted, a feature request will be reviewed and discussed on GitHub. We encourage open and constructive discussion of each feature proposal to ensure that the work is beneficial to a large segment of customers.
 

@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             {
                 updateTo = "2018";
             }
-#elif UNITY_2019_2_OR_NEWER
+#elif UNITY_2019_1_OR_NEWER
             if (!fileContents.Contains(arFoundationReference) ||
                 !fileContents.Contains(spatialTrackingReference))
             {

@@ -1,4 +1,4 @@
-# Controllers, Pointers, and Focus
+# Controllers, pointers, and focus
 
 Controllers, pointers, and focus are higher-level concepts that build upon the foundation established by the core input system. Together, they provide a large portion of the mechanism for interacting with objects in the scene.
 
@@ -36,7 +36,7 @@ Pointers generally fall into one of the following categories:
 
   These types of pointers plug into the teleportation system to handle moving the user to the location targeted by the pointer.
 
-## Pointer Mediation
+## Pointer mediation
 
 Because a single controller can have multiple pointers (for example, the articulated hand can have both near and far interaction pointers), there exists a component that is responsible for mediating which pointer should be active.
 
@@ -48,9 +48,11 @@ which is responsible for determining which pointers are active, based on the sta
 It's possible to provide an alternate implementation of the pointer mediator by changing the [`PointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.PointerMediator) property on the pointer profile.
 
 ### How to disable pointers
-Because the pointer mediator runs every frame, it ends up controlling the active / inactive state of all pointers. Therefore, if you set a pointer's IsInteractionEnabled property in code, it will get overwritten by the pointer mediator every frame. Instead, you can specify the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) to control whether pointers should be on or off yourself. Note that this will only work if you are using the default [`FocusProvider`](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider) and [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator) in MRTK. 
+
+Because the pointer mediator runs every frame, it ends up controlling the active / inactive state of all pointers. Therefore, if you set a pointer's IsInteractionEnabled property in code, it will get overwritten by the pointer mediator every frame. Instead, you can specify the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) to control whether pointers should be on or off yourself. Note that this will only work if you are using the default [`FocusProvider`](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider) and [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator) in MRTK.
 
 #### Example: Disable hand rays in MRTK
+
 The following code will turn off the hand rays in MRTK:
 
 ```c#

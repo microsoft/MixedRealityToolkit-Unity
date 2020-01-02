@@ -1,4 +1,4 @@
-# Accessing Input State in MRTK
+# Accessing input state in MRTK
 
 It's possible to directly query the state of all inputs in MRTK by iterating over the controllers attached to the input sources. MRTK also provides convenience methods for accessing the position and rotation of the eyes, hands, head, and motion controller.
 
@@ -49,7 +49,7 @@ foreach(var controller in CoreServices.InputSystem.DetectedControllers)
 }
 ```
 
-## See Also
+## See also
 
 - [InputEvents](InputEvents.md)
 - [Pointers](Pointers.md)
