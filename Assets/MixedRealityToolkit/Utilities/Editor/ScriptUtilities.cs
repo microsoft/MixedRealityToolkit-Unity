@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -23,22 +24,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (symbols == null || symbols.Length == 0) { return; }
 
-            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup);
-            foreach (string symbol in symbols)
-            {
-                if (string.IsNullOrWhiteSpace(defines))
-                {
-                    defines = symbol;
-                    continue;
-                }
+            List<string> toAdd = new List<string>(symbols);
+            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
 
-                if (!defines.Contains(symbol))
-                {
-                    defines = string.Concat(defines, $";{symbol}");
-                }
-            }
-
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, defines);
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Union(toAdd).ToArray()));
         }
 
         /// <summary>
@@ -52,20 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string[] symbols)
         {
             if (symbols == null || symbols.Length == 0) { return; }
+
             List<string> toRemove = new List<string>(symbols);
+            List<string> defines = new List<string>(PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';'));
 
-            string[] oldDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(targetGroup).Split(';');
-            List<string> defines = new List<string>();
-
-            foreach (string s in oldDefines)
-            {
-                if (!toRemove.Contains(s))
-                {
-                    defines.Add(s);
-                }
-            }
-
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.ToArray()));
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(targetGroup, string.Join(";", defines.Except(toRemove).ToArray()));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// A set of utilities to configure script compilation. 
     /// </summary>
     [Obsolete("The ScriptingUtilities class is obsolete and will be removed from a future version of MRTK. Please use the ScriptUtilities class.")]
-    public class ScriptingUtilities
+    public static class ScriptingUtilities
     {
         /// <summary>
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
