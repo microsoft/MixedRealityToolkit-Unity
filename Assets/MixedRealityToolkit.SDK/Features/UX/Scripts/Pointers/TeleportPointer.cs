@@ -31,7 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public IMixedRealityTeleportHotSpot TeleportHotSpot { get; set; }
 
         [SerializeField]
+        [Tooltip("Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction")]
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
+
+        /// <summary>
+        /// Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction
+        /// </summary>
+        public MixedRealityInputAction TeleportInputAction => teleportAction;
 
         [SerializeField]
         [Range(0f, 1f)]
