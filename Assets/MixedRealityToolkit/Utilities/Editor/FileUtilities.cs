@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </returns>
         public static DirectoryInfo GetPackageCache()
         {
-            string packageCacheFolderName = @"Library\PackageCache";
+            const string packageCacheFolderName = @"Library\PackageCache";
 
             DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
             return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
