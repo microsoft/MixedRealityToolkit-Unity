@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// A set of utilities to configure script compilation. 
     /// </summary>
-    public static class ScriptingUtilities
+    public static class ScriptUtilities
     {
         /// <summary>
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the

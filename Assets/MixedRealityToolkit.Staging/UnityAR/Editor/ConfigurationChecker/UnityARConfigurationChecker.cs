@@ -32,14 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             FileInfo[] files = FileUtilities.FindFilesInPackageCache(FileName);
             if (files.Length > 0)
             {
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, definitions);
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Android, definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.iOS, definitions);
                 return true;
             }
             else
             {
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, definitions);
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Android, definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.iOS, definitions);
                 return false;
             }
         }

@@ -29,11 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             FileInfo[] files = FileUtilities.FindFilesInAssets(FileName);
             if (files.Length > 0)
             {
-                ScriptingUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.WSA, definitions);
             }
             else
             {
-                ScriptingUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.WSA, definitions);
             }
         }
     }
