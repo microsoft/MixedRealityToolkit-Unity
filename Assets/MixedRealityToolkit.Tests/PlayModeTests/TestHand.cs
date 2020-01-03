@@ -75,7 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves hand to given position over some number of frames.
         /// </summary>
         /// <param name="newPosition">Where to move hand to</param>
-        /// <param name="numSteps">How many frames to move over</param>
+        /// <param name="numSteps">
+        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
+        /// to use the default number of steps. For more information on this value, see
+        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
+        /// </param>
         /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the hand</param>
         public IEnumerator MoveTo(Vector3 newPosition, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
@@ -95,7 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Move the hand by some given delta.
         /// </summary>
         /// <param name="delta">Amount to move the hand by.</param>
-        /// <param name="numSteps">Number of frames to move over.</param>
+        /// <param name="numSteps">
+        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
+        /// to use the default number of steps. For more information on this value, see
+        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
+        /// </param>
         public IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
         {
             for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext(); )

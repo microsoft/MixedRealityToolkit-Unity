@@ -64,6 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// }
         /// </code>
         /// </example>
+        /// <remarks>
+        /// Note that this value is reset to false after each play mode test that uses
+        /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+        /// UseSlowTestHand = true ends up slowing all subsequent tests.
+        /// </remarks>
         public static bool UseSlowTestHand = false;
 
         /// <summary>
@@ -88,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void Setup()
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            // See comments for UseSlowTestHand for why this is reset to false on each test case.
+            PlayModeTestUtilities.UseSlowTestHand = false;
 
             bool sceneExists = false;
             for (int i = 0; i < SceneManager.sceneCount; i++)
