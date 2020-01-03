@@ -70,7 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
-            if (disposed) { return; }
+            if (disposed)
+            {
+                return;
+            }
 
             base.Dispose(disposing);
 
