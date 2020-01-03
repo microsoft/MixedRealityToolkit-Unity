@@ -90,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObjectExtensions.DestroyGameObject(linePointer.gameObject);
             GameObjectExtensions.DestroyGameObject(curvePointer.gameObject);
+            CoreServices.TeleportSystem.RaiseTeleportCanceled(curvePointer, null);
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
         }
 
         /// <summary>
