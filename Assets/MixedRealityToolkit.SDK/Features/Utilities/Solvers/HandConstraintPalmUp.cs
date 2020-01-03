@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool followHandUntilFacingCamera = false;
 
         [SerializeField]
-        [Tooltip("Angle between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.")]
+        [Tooltip("Angle (in degrees) between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.")]
         private float followHandCameraFacingThresholdAngle = 60f;
 
         /// <summary>
