@@ -383,14 +383,14 @@ MonoBehaviour:
   LineColorValid:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0.55}
+    key2: {r: 0, g: 0, b: 0, a: 0.55}
+    key3: {r: 0, g: 0, b: 0, a: 0.27392158}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.5176471}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -398,17 +398,17 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 4587
-    atime2: 11141
-    atime3: 65535
-    atime4: 63222
-    atime5: 0
-    atime6: 0
-    atime7: 0
+    atime0: 4587
+    atime1: 11141
+    atime2: 13762
+    atime3: 16384
+    atime4: 22937
+    atime5: 49151
+    atime6: 58982
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
+    m_NumAlphaKeys: 8
   LineColorInvalid:
     serializedVersion: 2
     key0: {r: 1, g: 0.7971698, b: 0.7971698, a: 0}

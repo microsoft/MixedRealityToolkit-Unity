@@ -153,11 +153,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // The distance the ray travels through the world before it hits something. Measured in world-units (as opposed to normalized distance).
             float clearWorldLength;
             Gradient lineColor = LineColorNoTarget;
+
             if (Result?.CurrentPointerTarget != null)
             {
                 // We hit something
                 clearWorldLength = Result.Details.RayDistance;
-                lineColor = LineColorValid;
+                lineColor = IsSelectPressed ? LineColorSelected : LineColorValid;
             }
             else
             {
