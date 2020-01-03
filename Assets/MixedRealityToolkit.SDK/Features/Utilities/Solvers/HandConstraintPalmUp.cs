@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -15,17 +16,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     {
         [Header("Palm Up")]
         [SerializeField]
+        [FormerlySerializedAs("facingThreshold")]
         [Tooltip("The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by IMixedRealityHand controllers.")]
         [Range(0.0f, 90.0f)]
-        private float facingThreshold = 80.0f;
+        private float facingCameraTrackingThreshold = 80.0f;
 
         /// <summary>
         /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
         /// </summary>
-        public float FacingThreshold
+        public float FacingCameraTrackingThreshold
         {
-            get { return facingThreshold; }
-            set { facingThreshold = value; }
+            get { return facingCameraTrackingThreshold; }
+            set { facingCameraTrackingThreshold = value; }
         }
 
         [SerializeField]
@@ -56,12 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("When using hybrid hand rotation, solver hand rotation until the menu is aligned with the gaze sufficiently")]
-        private bool useHybridHandRotation = false;
+        [Tooltip("With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera.")]
+        private bool followHandUntilFacingCamera = false;
 
         [SerializeField]
-        [Tooltip("Angle between hand up and camera forward, below which the hand menu follows the gaze, if useHybridHandRotation is active.")]
-        private float hybridHandRotationThresholdAngle = 60f;
+        [Tooltip("Angle between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.")]
+        private float followHandCameraFacingThresholdAngle = 60f;
 
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
@@ -107,13 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     }
 
                     // Check if the palm angle meets the prescribed threshold
-                    palmFacingThresholdMet = palmCameraAngle < facingThreshold;
+                    palmFacingThresholdMet = palmCameraAngle < facingCameraTrackingThreshold;
 
                     // If using hybrid hand rotation, we proceed with additional checks
-                    if (useHybridHandRotation && palmFacingThresholdMet)
+                    if (followHandUntilFacingCamera && palmFacingThresholdMet)
                     {
                         // If we are above the threshold angle, keep the menu mapped to the tracked object
-                        if (palmCameraAngle > hybridHandRotationThresholdAngle)
+                        if (palmCameraAngle > followHandCameraFacingThresholdAngle)
                         {
                             RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
                         }
