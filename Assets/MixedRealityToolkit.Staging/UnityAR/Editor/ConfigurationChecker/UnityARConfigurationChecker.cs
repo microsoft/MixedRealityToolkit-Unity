@@ -48,6 +48,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// Updates the assembly definition to contain the appropriate references based on the Unity
         /// version and if the project contains the AR Foundation package.
         /// </summary>
+        /// <remarks>
+        /// Versions of Unity may have different factorings of components. To address this, the UpdateAsmDef
+        /// method conditionally compiles for the version currently in use.
+        /// To ensure proper compilation on each Unity version, the following steps are performed:
+        /// - Load the Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef file
+        /// - If AR Foundation has been installed via the Unity Package Manager, add the appropriate assembly references
+        ///   - Unity 2018: Unity.XR.ARFoundation
+        ///   - Unity 2019 and newer: Unity.XR.ARFoundation, UnityEngine.SpatialTracking
+        /// - If AR Foundatrion has been uninstalled, remove the assembly references. 
+        /// - Save the Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef file
+        /// This will result in Unity reloading the assembly with the appropriate dependencies.
+        /// </remarks>
         private static void UpdateAsmDef(bool arFoundationPresent)
         {
             string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
@@ -57,6 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             {
                 Debug.LogWarning($"Unable to locate file: {asmDefFileName}");
                 return;
+            }
+            if (asmDefFiles.Length > 1)
+            {
+                Debug.LogWarning($"Mutliple ({asmDefFiles.Length}) {asmDefFileName} instances found. Modifying only the first.");
             }
 
             AssemblyDefinition asmDef = AssemblyDefinition.Load(asmDefFiles[0].FullName);
@@ -72,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 references.AddRange(asmDef.References);
             }
 
-            // Assemblies required by Unity 2018 and / or 2019 (and newer)
+            // ARFoundation assembly names
             const string arFoundationReference = "Unity.XR.ARFoundation";
             const string spatialTrackingReference = "UnityEngine.SpatialTracking";
             bool changed = false;
@@ -82,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 #if UNITY_2018 || UNITY_2019_1_OR_NEWER
                 if (!references.Contains(arFoundationReference))
                 {
+                    // Add a reference to the ARFoundation assembly
                     references.Add(arFoundationReference);
                     changed = true; 
                 }
@@ -89,12 +106,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 #if UNITY_2019_1_OR_NEWER
                 if (!references.Contains(spatialTrackingReference))
                 {
+                    // Add a reference to the spatial tracking assembly
                     references.Add(spatialTrackingReference);
                     changed = true;
                 }
 #elif UNITY_2018
                 if (references.Contains(spatialTrackingReference))
                 {
+                    // Remove the refernece to the spatial tracking assembly
                     references.Remove(spatialTrackingReference);
                     changed = true;
                 }
@@ -102,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
             else
             {
+                // Remove all ARFoundation related assembly references
                 if (references.Contains(arFoundationReference))
                 {
                     references.Remove(arFoundationReference);
