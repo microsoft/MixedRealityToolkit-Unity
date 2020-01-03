@@ -90,7 +90,7 @@
 </ul>
 <h2 id="version-220">Version 2.2.0</h2>
 <ul>
-<li><a href="#upgrading-projects-to-220">Upgrading projects</a></li>
+<li><a href="#how-to-upgrade-projects-to-220">How to upgrade projects</a></li>
 <li><a href="#whats-new-in-220">What's new</a></li>
 <li><a href="#known-issues-in-220">Known issues</a></li>
 </ul>
@@ -118,13 +118,13 @@
 <ul>
 <li><a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity 2.0.0 or newer</a></li>
 </ul>
-<h3 id="upgrading-projects-to-220">Upgrading projects to 2.2.0</h3>
+<h3 id="how-to-upgrade-projects-to-220">How to upgrade projects to 2.2.0</h3>
 <p>The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-210-to-220"><strong>Updating 2.1.0 to 2.2.0</strong></a> article.</p>
 <p><strong>Updating using .unitypackage files</strong></p>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Close Unity</li>
-<li>Delete <strong>MixedRealityToolkit</strong> (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
 <li>MixedRealityToolkit</li>
 <li>MixedRealityToolkit.Examples</li>
@@ -142,7 +142,7 @@
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder.</p>
+<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
 </div>
 </li>
 <li>Delete the <strong>Library</strong> folder</li>
@@ -165,7 +165,7 @@
 asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
-<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy</li>
+<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
 <li>Select <strong>MixedRealityToolkit -&gt; Add to Scene and Configure</strong></li>
 <li>Select <strong>MixedRealityToolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles</strong> (only needs to be done once)
 - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
@@ -335,7 +335,7 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <p>If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.</p>
 <h2 id="version-210">Version 2.1.0</h2>
 <ul>
-<li><a href="#upgrading-projects-to-210">Upgrading projects</a></li>
+<li><a href="#how-to-upgrade-projects-to-210">How to upgrade projects</a></li>
 <li><a href="#whats-new-in-210">What's new</a></li>
 <li><a href="#known-issues-in-210">Known issues</a></li>
 </ul>
@@ -357,14 +357,14 @@ In MRTK 2.1 and below <a href="README_ObjectCollection.html"><code>GridObjectCol
 <ul>
 <li><a href="https://github.com/GlitchEnzo/NuGetForUnity">NuGet for Unity</a></li>
 </ul>
-<h3 id="upgrading-projects-to-210">Upgrading projects to 2.1.0</h3>
+<h3 id="how-to-upgrade-projects-to-210">How to upgrade projects to 2.1.0</h3>
 <p><strong>Updating using .unitypackage files</strong></p>
 <p>The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
 Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-200-to-210"><strong>Updating 2.0.0 to 2.1.0</strong></a> article.</p>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Close Unity</li>
-<li>Delete <strong>MixedRealityToolkit</strong> (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
 <li>MixedRealityToolkit</li>
 <li>MixedRealityToolkit.Examples</li>
@@ -382,7 +382,7 @@ Breaking change details, including mitigation guidance, can be found in the <a h
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder.</p>
+<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
 </div>
 </li>
 <li>Delete the <strong>Library</strong> folder</li>
@@ -405,7 +405,7 @@ Breaking change details, including mitigation guidance, can be found in the <a h
 asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
-<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy</li>
+<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
 <li>Select <strong>MixedRealityToolkit -&gt; Add to Scene and Configure</strong></li>
 <li>Select <strong>MixedRealityToolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles</strong> (only needs to be done once)
 - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
@@ -595,14 +595,14 @@ may place objects below the user when run on VR/Immersive device's (headset's Y 
 <p><img src="Images/ReleaseNotes/AdjustContentHeight.png" alt="Adjusting Scene Content Height"></p>
 <h2 id="version-201">Version 2.0.1</h2>
 <ul>
-<li><a href="#upgrading-projects-to-201">Upgrading projects</a></li>
+<li><a href="#how-to-upgrade-projects-to-201">How to upgrade projects</a></li>
 <li><a href="#whats-new-in-201">What's new</a></li>
 </ul>
 <p>This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.</p>
-<h3 id="upgrading-projects-to-201">Upgrading projects to 2.0.1</h3>
+<h3 id="how-to-upgrade-projects-to-201">How to upgrade projects to 2.0.1</h3>
 <p>For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:</p>
 <ul>
-<li><a href="#upgrading-projects-to-200">Upgrading projects</a></li>
+<li><a href="#how-to-upgrade-projects-to-200">How to upgrade projects</a></li>
 </ul>
 <p>Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.</p>
 <p>To add Mixed Reality Toolkit to your project in the form of a NuGet package, do the following:</p>
@@ -623,7 +623,7 @@ may place objects below the user when run on VR/Immersive device's (headset's Y 
 <p>Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the amount of .csproj files when editing code, and allow for a simple update mechanism for future versions.</p>
 <h2 id="version-200">Version 2.0.0</h2>
 <ul>
-<li><a href="#upgrading-projects-to-200">Upgrading projects</a></li>
+<li><a href="#how-to-upgrade-projects-to-200">How to upgrade projects</a></li>
 <li><a href="#whats-new-in-200">What's new</a></li>
 <li><a href="#known-issues-in-200">Known issues</a></li>
 </ul>
@@ -640,13 +640,13 @@ may place objects below the user when run on VR/Immersive device's (headset's Y 
 <li>Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)</li>
 <li>Unity 2018.4, 2019.1 or 2019.2</li>
 </ul>
-<h3 id="upgrading-projects-to-200">Upgrading projects to 2.0.0</h3>
+<h3 id="how-to-upgrade-projects-to-200">How to upgrade projects to 2.0.0</h3>
 <p>Since the RC2 release, there have been several changes that may impact application projects,
 including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-rc2-to-200"><strong>Updating RC2 to 2.0.0</strong></a> article.</p>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Close Unity</li>
-<li>Delete <strong>MixedRealityToolkit</strong> (the project may not have all listed folders)
+<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
 <ul>
 <li>MixedRealityToolkit</li>
 <li>MixedRealityToolkit.Examples</li>
@@ -664,7 +664,7 @@ including some files moving to new folder locations. Breaking change details, in
 </ul>
 <div class="IMPORTANT">
 <h5>Important</h5>
-<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder.</p>
+<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
 </div>
 </li>
 <li>Delete the <strong>Library</strong> folder</li>
@@ -687,7 +687,7 @@ including some files moving to new folder locations. Breaking change details, in
 asset database and reconcile existing custom profiles.</li>
 <li>Launch Unity, and for each scene in the project
 <ul>
-<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy</li>
+<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
 <li>Select <strong>MixedRealityToolkit -&gt; Add to Scene and Configure</strong></li>
 </ul>
 </li>
