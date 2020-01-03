@@ -174,8 +174,8 @@ LineRenderer:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-      key2: {r: 0, g: 0, b: 0, a: 0.29010782}
-      key3: {r: 0, g: 0, b: 0, a: 0.29010782}
+      key2: {r: 0, g: 0, b: 0, a: 0.087757625}
+      key3: {r: 0, g: 0, b: 0, a: 0.087757625}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -224,8 +224,8 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-    key2: {r: 0, g: 0, b: 0, a: 0.29010782}
-    key3: {r: 0, g: 0, b: 0, a: 0.29010782}
+    key2: {r: 0, g: 0, b: 0, a: 0.087757625}
+    key3: {r: 0, g: 0, b: 0, a: 0.087757625}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -307,7 +307,7 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 876c7e981edab3a44918b5c51482a286, type: 2}
   roundedEdges: 1
   roundedCaps: 1
-  fadeLineBrightnessOnEnable: 1
+  fadeLineBrightnessOnEnable: 0
   fadeLinePercentage: 0.55
   fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 120690711267243118}
@@ -440,15 +440,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   LineColorNoTarget:
     serializedVersion: 2
-    key0: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-    key1: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0.43137255}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0.55}
+    key2: {r: 0, g: 0, b: 0, a: 0.627451}
+    key3: {r: 0, g: 0, b: 0, a: 0.27392158}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.69411767}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -456,17 +456,17 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 1735
-    atime2: 50115
-    atime3: 65535
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
+    atime0: 4587
+    atime1: 11141
+    atime2: 13762
+    atime3: 16384
+    atime4: 22937
+    atime5: 49151
+    atime6: 59385
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
+    m_NumAlphaKeys: 8
   LineColorLockFocus:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
@@ -506,6 +506,8 @@ MonoBehaviour:
   inertia: {fileID: 3980487836371375048}
   startPointLerp: 0.267
   endPointLerp: 0.637
+  lineRendererSelected: {fileID: 0}
+  lineRendererNoTarget: {fileID: 0}
 --- !u!114 &3980487836371375048
 MonoBehaviour:
   m_ObjectHideFlags: 0
