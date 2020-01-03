@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorAssemblyReloadManager.LockReloadAssemblies = false;
             }
 
-            DirectoryInfo packageCache = GetPackageCache();
+            DirectoryInfo packageCache = FileUtilities.GetPackageCache();
 
             if (packageCache.Exists)
             {
@@ -212,20 +212,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
 #endif // !UNITY_2019_OR_NEWER
-        }
-
-        /// <summary>
-        /// Gets the package cache folder of this project.
-        /// </summary>
-        /// <returns>
-        /// A <see href="https://docs.microsoft.com/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> object that describes the package cache folder.
-        /// </returns>
-        private static DirectoryInfo GetPackageCache()
-        {
-            string packageCacheFolderName = @"Library\PackageCache";
-
-            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
-            return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
         }
 
         /// <summary>
