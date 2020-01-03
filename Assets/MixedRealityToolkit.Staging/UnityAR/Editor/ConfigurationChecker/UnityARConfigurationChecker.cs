@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// Class to perform checks for configuration checks for the UnityAR provider.
     /// </summary>
     [InitializeOnLoad]
-    public static class UnityARConfigurationChecker
+    static class UnityARConfigurationChecker
     {
         private const string FileName = "Unity.XR.ARFoundation.asmdef";
         private static readonly string[] definitions = { "ARFOUNDATION_PRESENT" };

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// Class to perform checks for configuration checks for the Windows Mixed Reality provider.
     /// </summary>
     [InitializeOnLoad]
-    public static class WindowsMixedRealityConfigurationChecker
+    static class WindowsMixedRealityConfigurationChecker
     {
         private const string FileName = "Microsoft.Windows.MixedReality.DotNetWinRT.dll";
         private static readonly string[] definitions = { "DOTNETWINRT_PRESENT" };
