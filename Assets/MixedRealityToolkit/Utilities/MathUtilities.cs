@@ -522,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         /// <param name="cone">The transform that defines the orientation and position of the cone</param>
         /// <param name="point">The point to test if it lies within the cone FOV</param>
-        /// <param name="fieldOfView">Field of view for the cone which calculates it's radius</param>
+        /// <param name="fieldOfView">Field of view for the cone which calculates its radius</param>
         /// <param name="minDist">Point must be at least this far away (along direction forward) from the cone </param>
         /// <param name="maxDist">Point must be at most this far away (along direction forward) from the cone. </param>
         ///<remarks>

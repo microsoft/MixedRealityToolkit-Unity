@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <summary>
             /// Returns true if a collider's bounds is within the camera FOV. 
-            /// Utilities a cache to test if this collider has been seen before and returns current frame's calculated result.
+            /// Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.
             /// </summary>
             /// <param name="myCollider">The collider to test</param>
             private bool isInFOVConeCached(Collider myCollider)
