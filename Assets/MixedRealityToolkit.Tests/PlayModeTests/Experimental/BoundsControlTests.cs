@@ -335,21 +335,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         
         /// <summary>
         /// Tests proximity scaling on handles of bounds control
-        /// Verifies default behavior of handles with effect enabled / disabled as well as constum scaling / distance configurations
+        /// Verifies default behavior of handles with effect enabled / disabled as well as custom runtime configured scaling / distance values
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleHandlesOnProximity()
         {
             var bbox = InstantiateSceneAndDefaultBbox();
-
             yield return VerifyInitialBoundsCorrect(bbox);
-            // ProximityEffect proximityEffect = bbox.gameObject.AddComponent<ProximityEffect>();
 
-            // 1. test no proximity scaling active per default
-            //yield return PlayModeTestUtilities.WaitForEnterKey();
-            //yield return PlayModeTestUtilities.WaitForEnterKey();
-
+            //--- 1. test no proximity scaling active per default
             ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
             Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
 
@@ -376,22 +370,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // we're in poximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
-            //yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            
-            //// Verify that scale works before deactivating
-            //yield return hand.MoveTo(new Vector3(0.542f, 0.192f, 1.245f));
-            //Vector3 afterTransformScale = bbox.transform.localScale;
-            //Assert.AreNotEqual(initialScale, afterTransformScale);
-            //Assert.AreApproximatelyEqual(afterTransformScale.x, 0.58f, 0.09f);
-
-            //yield return hand.MoveTo(frontRightCornerPos);
-
             //// reset hand
-            //yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.MoveTo(initialHandPosition);
 
-
-            /// enable proximity scaling and test defaults
+            //--- 2. enable proximity scaling and test defaults
             ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
             proximityConfig.ProximityEffectActive = true;
             proximityConfig.CloseGrowRate = 1.0f;
@@ -401,7 +383,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return null; // wait so rig gameobjects get recreated
             yield return TestCurrentProximityConfiguration(bbox, hand);
 
-            /// now test custom configuration is applied during runtime
+            // reset hand
+            yield return hand.MoveTo(initialHandPosition);
+
+            //--- 3. now test custom configuration is applied during runtime
             proximityConfig.CloseScale = 4.0f;
             proximityConfig.MediumScale = 3.0f;
             proximityConfig.FarScale = 2.0f;
@@ -412,10 +397,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             bbox.CreateRig();
             yield return null; // wait so rig gameobjects get recreated
             yield return TestCurrentProximityConfiguration(bbox, hand);
-
         }
 
 
+        /// <summary>
+        /// This tests far, medium and close proximity scaling on scale handles by moving the test hand in the corresponding distance ranges
+        /// </summary>
+        /// <param name="bbox">Bounds Control to test on</param>
+        /// <param name="hand">Test hand to use for testing proximity to handle</param>
         private IEnumerator TestCurrentProximityConfiguration(BoundsControl bbox, TestHand hand)
         {
             // get config and scaling handle
