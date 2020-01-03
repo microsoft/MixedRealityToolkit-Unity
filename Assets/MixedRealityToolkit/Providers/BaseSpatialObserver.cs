@@ -55,6 +55,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
 
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            if (!IsRunning && StartupBehavior == AutoStartBehavior.AutoStart)
+            {
+                Resume();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            if (IsRunning)
+            {
+                Suspend();
+            }
+        }
+
+
         #region IMixedRealityEventSource Implementation
 
         /// <inheritdoc />

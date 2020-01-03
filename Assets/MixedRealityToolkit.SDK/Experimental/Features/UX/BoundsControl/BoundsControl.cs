@@ -44,6 +44,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 return targetObject;
             }
+
+            set
+            {
+                if (targetObject != value)
+                {
+                    targetObject = value;
+                    CreateRig();
+                }
+            }
         }
 
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of bounds control.")]
@@ -880,7 +889,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             var rigRootObj = new GameObject(rigRootName);
             rigRoot = rigRootObj.transform;
-            rigRoot.parent = transform;
+            rigRoot.parent = Target.transform;
 
             var pH = rigRootObj.AddComponent<PointerHandler>();
             pH.OnPointerDown.AddListener(OnPointerDown);
@@ -1170,7 +1179,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
-                rigRoot.parent = transform;
+                rigRoot.parent = Target.transform;
             }
         }
 
