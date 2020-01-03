@@ -5,6 +5,9 @@
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
+> [!NOTE]
+> Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
+
 ## Updating 2.2.0 to 2.3.0
 
 - [API changes](#api-changes-in-230)

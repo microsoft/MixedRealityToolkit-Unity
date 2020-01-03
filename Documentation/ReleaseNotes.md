@@ -42,7 +42,7 @@ The 2.3.0 release has some changes that may impact application projects. Breakin
 
 ## Version 2.2.0
 
-- [Upgrading projects](#upgrading-projects-to-220)
+- [How to upgrade projects](#how-to-upgrade-projects-to-220)
 - [What's new](#whats-new-in-220)
 - [Known issues](#known-issues-in-220)
 
@@ -68,7 +68,7 @@ If importing the Mixed Reality Toolkit NuGet packages, the following software is
 
 - [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
-### Upgrading projects to 2.2.0
+### How to upgrade projects to 2.2.0
 
 The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.1.0 to 2.2.0**](Updating.md#updating-210-to-220) article.
 
@@ -77,7 +77,7 @@ The 2.2.0 release has some changes that may impact application projects. Breakin
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -88,7 +88,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -101,7 +101,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
@@ -342,7 +342,7 @@ If the project is not intended to be run on Android or iOS devices, it is safe t
 
 ## Version 2.1.0
 
-- [Upgrading projects](#upgrading-projects-to-210)
+- [How to upgrade projects](#how-to-upgrade-projects-to-210)
 - [What's new](#whats-new-in-210)
 - [Known issues](#known-issues-in-210)
 
@@ -365,7 +365,7 @@ If importing the Mixed Reality Toolkit's NuGet packages, the following software 
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
 
-### Upgrading projects to 2.1.0
+### How to upgrade projects to 2.1.0
 
 **Updating using .unitypackage files**
 
@@ -375,7 +375,7 @@ Breaking change details, including mitigation guidance, can be found in the [**U
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -386,7 +386,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -399,7 +399,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
@@ -651,16 +651,16 @@ may place objects below the user when run on VR/Immersive device's (headset's Y 
 
 ## Version 2.0.1
 
-- [Upgrading projects](#upgrading-projects-to-201)
+- [How to upgrade projects](#how-to-upgrade-projects-to-201)
 - [What's new](#whats-new-in-201)
 
 This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.
 
-### Upgrading projects to 2.0.1
+### How to upgrade projects to 2.0.1
 
 For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
 
-- [Upgrading projects](#upgrading-projects-to-200)
+- [How to upgrade projects](#how-to-upgrade-projects-to-200)
 
 Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
 
@@ -681,7 +681,7 @@ Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time,
 
 ## Version 2.0.0
 
-- [Upgrading projects](#upgrading-projects-to-200)
+- [How to upgrade projects](#how-to-upgrade-projects-to-200)
 - [What's new](#whats-new-in-200)
 - [Known issues](#known-issues-in-200)
 
@@ -698,7 +698,7 @@ The following software is required.
 - Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
 - Unity 2018.4, 2019.1 or 2019.2
 
-### Upgrading projects to 2.0.0
+### How to upgrade projects to 2.0.0
 
 Since the RC2 release, there have been several changes that may impact application projects,
 including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating RC2 to 2.0.0**](Updating.md#updating-rc2-to-200) article.
@@ -706,7 +706,7 @@ including some files moving to new folder locations. Breaking change details, in
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -717,7 +717,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -730,7 +730,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!IMPORTANT]
