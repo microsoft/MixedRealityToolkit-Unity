@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent UseCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
 
-        private readonly GUIContent gazeInputCapabilityLabel =
+        private readonly GUIContent GazeInputCapabilityLabel =
             new GUIContent("Gaze Input Capability",
                            "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
 
-        private readonly GUIContent liveCubeModelLabel = new GUIContent("Live Cube Model", "Location of .glb model to use as 3D Launcher");
+        private readonly GUIContent LiveCubeModelLabel = new GUIContent("Live Cube Model", "Location of .glb model to use as 3D Launcher");
 
         #endregion Labels
 
@@ -555,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 // AppX manifest during the build. This option provides a mechanism for people using the
                 // MRTK build tools to auto-append this capability if desired, instead of having to manually
                 // do this each time on their own.
-                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(gazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
+                bool gazeInputCapabilityEnabled = EditorGUILayout.ToggleLeft(GazeInputCapabilityLabel, UwpBuildDeployPreferences.GazeInputCapabilityEnabled);
 
                 // Enable Research Mode Capability
                 bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
