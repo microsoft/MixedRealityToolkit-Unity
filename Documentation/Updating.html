@@ -84,6 +84,7 @@
 
 <ul>
 <li><a href="#updating-210-to-220">2.1.0 to 2.2.0</a></li>
+<li><a href="#updating-220-to-230">2.2.0 to 2.3.0</a></li>
 <li><a href="#updating-200-to-210">2.0.0 to 2.1.0</a></li>
 <li><a href="#updating-rc2-to-200">RC2 to 2.0.0</a></li>
 </ul>
@@ -91,6 +92,14 @@
 <h5>Note</h5>
 <p>Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the <a href="ReleaseNotes.html">release notes</a> for each version.</p>
 </div>
+<h2 id="updating-220-to-230">Updating 2.2.0 to 2.3.0</h2>
+<ul>
+<li><a href="#api-changes-in-230">API changes</a></li>
+</ul>
+<h3 id="api-changes-in-230">API changes in 2.3.0</h3>
+<h4 id="scriptingutilitiescs">ScriptingUtilities.cs</h4>
+<p>The ScriptingUtilities.cs file was moved from the MixedRealityToolkit\Utilities folder to MixedRealityToolkit\Utilities\Editor. As a result, the class has been moved to the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly.</p>
+<p>In addition, the <code>AppendScriptingDefinitions</code> method has a new signature.  It no longer takes the fileName argument.</p>
 <h2 id="updating-210-to-220">Updating 2.1.0 to 2.2.0</h2>
 <ul>
 <li><a href="#api-changes-in-220">API changes</a></li>
