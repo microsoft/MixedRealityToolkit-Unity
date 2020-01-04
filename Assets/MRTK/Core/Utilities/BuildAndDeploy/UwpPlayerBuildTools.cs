@@ -19,6 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     /// </summary>
     public static class UwpPlayerBuildTools
     {
+        private const string LiveCubePath = @"Assets\LiveCubeModel.glb";
+
         private static void ParseBuildCommandLine(ref UwpBuildInfo buildInfo)
         {
             IBuildInfo iBuildInfo = buildInfo;
@@ -52,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var root = doc.DocumentElement;
 
             // Check to see if model has already been added
-            XmlNodeList nodes = root.SelectNodes("//None[@Include = \"Assets\\LiveCubeModel.glb\"]");
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{LiveCubePath}\"]");
             if (nodes.Count > 0)
             {
                 Debug.Log("Model Already Exists in Project File");
@@ -60,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             var newNodeDoc = new XmlDocument();
-            newNodeDoc.LoadXml("<None Include=\"Assets\\LiveCubeModel.glb\">" +
+            newNodeDoc.LoadXml($"<None Include=\"{LiveCubePath}\">" +
                             "<DeploymentContent>true</DeploymentContent>" +
                             "</None>");
             var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
@@ -78,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var root = doc.DocumentElement;
 
             // Check to see if model has already been added
-            XmlNodeList nodes = root.SelectNodes("//None[@Include = \"Assets\\LiveCubeModel.glb\"]");
+            XmlNodeList nodes = root.SelectNodes($"//None[@Include = \"{LiveCubePath}\"]");
             if (nodes.Count > 0)
             {
                 Debug.Log("Model Already Exists in Filter File");
@@ -86,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             var newNodeDoc = new XmlDocument();
-            newNodeDoc.LoadXml("<None Include=\"Assets\\LiveCubeModel.glb\">" +
+            newNodeDoc.LoadXml($"<None Include=\"{LiveCubePath}\">" +
                             "<Filter>Assets</Filter>" +
                             "</None>");
             var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
@@ -109,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             XmlNodeList nodes = root.SelectNodes("//uap5:MixedRealityModel", nsmgr);
             foreach (XmlNode node in nodes)
             {
-                if (node.Attributes != null && node.Attributes["Path"].Value == "Assets\\LiveCubeModel.glb")
+                if (node.Attributes != null && node.Attributes["Path"].Value == LiveCubePath)
                 {
                     Debug.Log("Model Already Exists in Manifest File");
                     return;
@@ -121,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             root.SetAttribute("IgnorableNamespaces", ignoredValue + " uap5");
 
             var newElement = doc.CreateElement("uap5", "MixedRealityModel", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
-            newElement.SetAttribute("Path", "Assets\\LiveCubeModel.glb");
+            newElement.SetAttribute("Path", LiveCubePath);
             var list = doc.GetElementsByTagName("uap:DefaultTile");
             var items = list.Item(0);
             items.AppendChild(newElement);
@@ -178,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.Log($"LiveCubeModelLocation: {BuildDeployPreferences.LiveCubeModelLocation}, Destination: {buildDirectory}");
                     if (!String.IsNullOrEmpty(BuildDeployPreferences.LiveCubeModelLocation))
                     {
-                        FileUtil.ReplaceFile(BuildDeployPreferences.LiveCubeModelLocation, $"{buildDirectory}/{PlayerSettings.productName}/Assets/LiveCubeModel.glb");
+                        FileUtil.ReplaceFile(BuildDeployPreferences.LiveCubeModelLocation, $"{buildDirectory}/{PlayerSettings.productName}/{LiveCubePath}");
                         AddLiveCubeModelToProject($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj");
                         AddLiveCubeModelToFilter($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj.filters");
                         UpdateManifest($"{buildDirectory}/{PlayerSettings.productName}/Package.appxmanifest");
