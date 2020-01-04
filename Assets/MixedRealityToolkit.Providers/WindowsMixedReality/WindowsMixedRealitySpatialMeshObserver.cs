@@ -397,6 +397,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             // UpdateObserver keys off of this value to stop observing.
             IsRunning = false;
 
+            // Halt any outstanding work.
+            if (outstandingMeshObject != null)
+            {
+                ReclaimMeshObject(outstandingMeshObject);
+                outstandingMeshObject = null;
+            }
+
             // Clear any pending work.
             meshWorkQueue.Clear();
 #endif // UNITY_WSA
