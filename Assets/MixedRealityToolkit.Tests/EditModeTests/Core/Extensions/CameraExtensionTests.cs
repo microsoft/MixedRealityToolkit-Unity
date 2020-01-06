@@ -36,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             testCamera.orthographic = false;
             testCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
+            // Create test data with pre-determined points.
+            // This data expects the same results for both IsInFOVCone and IsInFOV
             TestPoints = new List<TestPoint>()
             {
                 new TestPoint(-Vector3.forward,false),

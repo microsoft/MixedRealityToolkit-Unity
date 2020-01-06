@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// far and near clip planes.
         /// </summary>
         /// <param name="point">Point to test</param>
-        /// <param name="coneAngleBufferDegrees">Degrees to expand the cone by.</param>
+        /// <param name="coneAngleBufferDegrees">Degrees to expand the cone radius by.</param>
         public static bool IsInFOVCone(this Camera camera,
             Vector3 point,
             float coneAngleBufferDegrees = 0)
