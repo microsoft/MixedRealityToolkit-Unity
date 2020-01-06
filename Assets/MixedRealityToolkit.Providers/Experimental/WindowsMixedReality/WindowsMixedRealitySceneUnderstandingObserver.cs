@@ -114,9 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     var saso = instantiationQueue.Dequeue();
 
-                    Debug.Log($"I see {saso.Quads.Count} quads");
-                    Assert.IsTrue(saso.Quads.Count > 0);
-
                     // Create GameObjects for our data
                     Instantiate(saso);
 
@@ -487,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     EnableSceneObjectQuads = GeneratePlanes,
                     EnableSceneObjectMeshes = GenerateMeshes,
-                    EnableOnlyObservedSceneObjects = RenderInferredRegions,
+                    EnableOnlyObservedSceneObjects = InferRegions,
                     EnableWorldMesh = GenerateEnvironmentMesh,
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(LevelOfDetail)
                 };
@@ -593,7 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             FirstUpdateDelay = profile.FirstUpdateDelay;
             ShouldLoadFromFile = profile.ShouldLoadFromFile;
             SerializedScene = profile.SerializedScene;
-            RenderInferredRegions = profile.RenderInferredRegions;
+            InferRegions = profile.InferRegions;
             LevelOfDetail = profile.LevelOfDetail;
             InstantiationBatchRate = profile.InstantiationBatchRate;
             ObservationExtents = profile.ObservationExtents;

@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty generateMeshes;
         private SerializedProperty generatePlanes;
         private SerializedProperty generateEnvironmentMesh;
-        private SerializedProperty renderInferredRegions;
+        private SerializedProperty inferRegions;
         private SerializedProperty firstUpdateDelay;
         private SerializedProperty levelOfDetail;
         private SerializedProperty usePersistentObjects;
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
             physicsLayer = serializedObject.FindProperty("physicsLayer");
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
-            renderInferredRegions = serializedObject.FindProperty("renderInferredRegions");
+            inferRegions = serializedObject.FindProperty("inferRegions");
             queryRadius = serializedObject.FindProperty("queryRadius");
             visualizeOcclusionMask = serializedObject.FindProperty("visualizeOcclusionMask");
             occlusionMaskResolution = serializedObject.FindProperty("occlusionMaskResolution");
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(queryRadius);
                     EditorGUILayout.PropertyField(levelOfDetail);
                     EditorGUILayout.PropertyField(usePersistentObjects);
-                    EditorGUILayout.PropertyField(renderInferredRegions);
+                    EditorGUILayout.PropertyField(inferRegions);
                 }
                 EditorGUILayout.Space();
 

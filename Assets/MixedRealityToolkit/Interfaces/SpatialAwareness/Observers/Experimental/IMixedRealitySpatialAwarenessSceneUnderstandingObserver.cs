@@ -36,10 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         int InstantiationBatchRate { get; set; }
 
         /// <summary>
-        /// When enabled, renders observed and inferred regions for scene objects.
-        /// When disabled, renders only the observed regions for scene objects.
+        /// When enabled, generates  data for observed and inferred regions in the scene.
+        /// When disabled, generates data only for observed regions in the scene.
         /// </summary>
-        bool RenderInferredRegions { get; set; }
+        bool InferRegions { get; set; }
 
         /// <summary>
         /// When enabled, the service will provide a boundless, static water-tight mesh of the observed environment.

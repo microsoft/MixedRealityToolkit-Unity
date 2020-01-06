@@ -107,12 +107,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         [SerializeField]
         [Tooltip("When enabled, renders observed and inferred regions for scene objects. When disabled, renders only the observed regions for scene objects.")]
-        private bool renderInferredRegions = true;
+        private bool inferRegions = true;
         /// <summary>
         /// When enabled, renders observed and inferred regions for scene objects.
         /// When disabled, renders only the observed regions for scene objects.
         /// </summary>
-        public bool RenderInferredRegions => renderInferredRegions;
+        public bool InferRegions => inferRegions;
 
         [SerializeField]
         [Tooltip("The amount of delay before the scene is updated the first time")]
