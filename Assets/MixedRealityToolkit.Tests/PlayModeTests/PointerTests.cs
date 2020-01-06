@@ -78,14 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Confirm the line pointer is colliding with the cube which is straight in front
-            Assert.AreEqual(hitObject, linePointer.Result.CurrentPointerTarget);
+            Assert.IsTrue(hitObject == linePointer.Result.CurrentPointerTarget);
             Assert.IsNull(curvePointer.Result.CurrentPointerTarget);
 
             hitObject.transform.position = new Vector3(0.0f, -0.8f, 2.0f);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Confirm the teleport poitner is collding with the cube which is in front but down
-            Assert.AreEqual(hitObject, curvePointer.Result.CurrentPointerTarget);
+            Assert.IsTrue(hitObject == curvePointer.Result.CurrentPointerTarget);
             Assert.IsNull(linePointer.Result.CurrentPointerTarget);
 
             // Clean up our dummy controllers and objects from the input & teleport system
