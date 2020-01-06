@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 
-        private TouchEventCatcher CreateEventCatcher(BaseNearInteractionTouchable touchable)
+        private TouchEventCatcher CreateTouchEventCatcher(BaseNearInteractionTouchable touchable)
         {
             var catcher = TouchEventCatcher.Create(touchable.gameObject);
 
@@ -140,6 +140,80 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             return catcher;
+        }
+
+
+        private PointerEventCatcher CreatePointerEventCatcher(BaseNearInteractionTouchable touchable)
+        {
+            var catcher = PointerEventCatcher.Create(touchable.gameObject);
+            catcher.OnPointerDownEvent.AddListener(() =>
+            {
+                touchable.GetComponent<Renderer>().material = pokeMaterial;
+            });
+            catcher.OnPointerUpEvent.AddListener(() =>
+            {
+                touchable.GetComponent<Renderer>().material = idleMaterial;
+            });
+
+            return catcher;
+        }
+
+        /// <summary>
+        /// Test that NearInteractionTouchable can raise pointer events
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchablePointerEvents()
+        {
+            var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
+            touchable.SetLocalForward(touchNormal);
+            touchable.SetBounds(new Vector2(0.5f, 0.5f));
+            touchable.EventsToReceive = TouchableEventType.Pointer;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+
+            using (var catcher = CreatePointerEventCatcher(touchable))
+            {
+                // Touch started and completed when entering and exiting
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(0, catcher.EventsCompleted);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+                Assert.Greater(catcher.DragEventCount, 0);
+
+                // Touch started and completed when entering and exiting behind the plane
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(2, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, backPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(2, catcher.EventsStarted);
+                Assert.AreEqual(2, catcher.EventsCompleted);
+                Assert.Greater(catcher.DragEventCount, 1);
+                int dragEventCount = catcher.DragEventCount;
+
+                // No touch when moving at behind the plane
+                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                Assert.AreEqual(2, catcher.EventsStarted);
+                Assert.AreEqual(2, catcher.EventsCompleted);
+                Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving behind plane");
+
+
+                // No touch when moving outside the bounds
+                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                Assert.AreEqual(2, catcher.EventsStarted);
+                Assert.AreEqual(2, catcher.EventsCompleted);
+                Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving outside bounds");
+            }
+
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
+
+            UnityEngine.Object.Destroy(touchable.gameObject);
         }
 
         /// <summary>
@@ -157,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
 
-            using (var catcher = CreateEventCatcher(touchable))
+            using (var catcher = CreateTouchEventCatcher(touchable))
             {
                 // Touch started and completed when entering and exiting
                 yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
@@ -205,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
 
-            using (var catcher = CreateEventCatcher(touchable))
+            using (var catcher = CreateTouchEventCatcher(touchable))
             {
                 // Touch started when entering collider
                 yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
@@ -365,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 touchables[i].SetBounds(new Vector2(0.5f, 0.5f));
                 touchables[i].transform.position = objectPosition + r * radiusStart;
 
-                catchers[i] = CreateEventCatcher(touchables[i]);
+                catchers[i] = CreateTouchEventCatcher(touchables[i]);
             }
 
             yield return new WaitForFixedUpdate();
@@ -491,10 +565,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var touchableRect = CreateTouchable<NearInteractionTouchable>(0.15f);
             touchableRect.SetLocalForward(touchNormal);
             touchableRect.SetBounds(new Vector2(0.5f, 0.5f));
-            var catcherRect = CreateEventCatcher(touchableRect);
+            var catcherRect = CreateTouchEventCatcher(touchableRect);
 
             var touchableVolume = CreateTouchable<NearInteractionTouchableVolume>(0.15f);
-            var catcherVolume = CreateEventCatcher(touchableVolume);
+            var catcherVolume = CreateTouchEventCatcher(touchableVolume);
 
             var canvas = UnityUiUtilities.CreateCanvas(0.002f);
             var touchableUI = canvas.GetComponent<NearInteractionTouchableUnityUI>();
@@ -634,7 +708,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BoxCollider newBoxCollider = cube2.GetComponent<BoxCollider>();
             newBoxCollider.size = new Vector3(4, 2, 1.2f);
 
-            using (var catcher = CreateEventCatcher(nearIT))
+            using (var catcher = CreateTouchEventCatcher(nearIT))
             {
                 // Touch started and completed when entering and exiting the collider
                 yield return rightHand.Move(new Vector3(0, 0, 0.4f));
