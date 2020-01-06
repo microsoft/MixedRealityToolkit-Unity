@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static bool IsGuidValid(string guid)
         {
-            return !string.IsNullOrEmpty(guid) && guid != nullGuid;
+            return !string.IsNullOrEmpty(guid) && guid != nullGuid
             && !string.IsNullOrEmpty(Path.GetExtension(AssetDatabase.GUIDToAssetPath(guid)));
         }
 
