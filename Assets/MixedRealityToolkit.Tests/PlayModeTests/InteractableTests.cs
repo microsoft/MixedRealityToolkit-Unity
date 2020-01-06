@@ -730,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move Hand to remove focus. Button should go to Default State
             yield return rightHand.Move(releaseDelta);
-            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return new WaitForSeconds(0.25f);// Wait for Interactable rollOffTime for HasPress to reset
 
             Assert.False(interactable.HasFocus);
             Assert.False(interactable.HasPress);
