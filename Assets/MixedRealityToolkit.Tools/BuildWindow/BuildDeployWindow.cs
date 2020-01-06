@@ -250,6 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
+        private static float appxProgressBarTimer = 0.0f;
         private static DeviceInfo localConnection;
 
         #endregion Fields
@@ -304,6 +305,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderWSABuildView()
         {
+            RenderBuildDirectory();
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 using (new EditorGUI.DisabledGroupScope(!ShouldBuildSLNBeEnabled))
@@ -359,8 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderUnityBuildView()
         {
-            RenderBuildDirectory();
-
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, TARGET_DEVICE_OPTIONS, GUILayout.Width(HALF_WIDTH));
 
 #if !UNITY_2019_1_OR_NEWER
@@ -412,6 +413,20 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
 #endif // !UNITY_2019_1_OR_NEWER
+
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                EditorGUILayout.LabelField("Scenes in Build", EditorStyles.boldLabel);
+
+                using (new EditorGUI.DisabledGroupScope(true))
+                {
+                    var scenes = EditorBuildSettings.scenes;
+                    for (int i = 0; i < scenes.Length; i++)
+                    {
+                        EditorGUILayout.ToggleLeft($"{i} {scenes[i].path}", scenes[i].enabled);
+                    }
+                }
+            }
 
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -503,6 +518,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 int currentPlatformToolsetIndex = Array.IndexOf(PLATFORM_TOOLSET_VALUES, UwpBuildDeployPreferences.PlatformToolset);
                 int newPlatformToolsetIndex = EditorGUILayout.Popup("Plaform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
 
+                // Force rebuild
+                bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
+
+                // Multicore Appx Build
+                bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
+
                 EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
 
                 // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
@@ -521,6 +542,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     EditorUserBuildSettings.wsaArchitecture = ARCHITECTURE_OPTIONS[buildPlatformIndex];
                     UwpBuildDeployPreferences.GazeInputCapabilityEnabled = gazeInputCapabilityEnabled;
                     UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = researchModeEnabled;
+                    UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
+                    UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                 }
             }
 
@@ -555,6 +578,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             EditorGUILayout.Space();
 
+            if (appxCancellationTokenSource != null)
+            {
+                using (var progressBarRect = new EditorGUILayout.VerticalScope())
+                {
+                    appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+
+                    EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
+                    GUILayout.Space(16);
+                    Repaint();
+                }
+            }
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.FlexibleSpace();
@@ -568,26 +603,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
                     {
                         EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-                    }
-                }
-            }
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                GUILayout.FlexibleSpace();
-
-                using (var c = new EditorGUI.ChangeCheckScope())
-                {
-                    // Force rebuild
-                    bool forceRebuildAppx = EditorGUILayout.ToggleLeft("Force Rebuild", UwpBuildDeployPreferences.ForceRebuild);
-
-                    // Multicore Appx Build
-                    bool multicoreAppxBuildEnabled = EditorGUILayout.ToggleLeft("Multicore Build", UwpBuildDeployPreferences.MulticoreAppxBuildEnabled);
-
-                    if (c.changed)
-                    {
-                        UwpBuildDeployPreferences.ForceRebuild = forceRebuildAppx;
-                        UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = multicoreAppxBuildEnabled;
                     }
                 }
 
@@ -809,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (Builds.Count == 0)
             {
-                GUILayout.Label("*** No builds found in build directory", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox("***No builds found in build directory", MessageType.Info);
             }
             else
             {

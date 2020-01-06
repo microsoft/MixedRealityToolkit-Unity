@@ -51,7 +51,7 @@ The events exposed in the prefab itself as well as the [Interactable](README_In
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
-You can configure when the pressable button fires the *OnClick* event via the `PhysicalPressEventRouter` on the button. For example, you can set *OnClick* to fire when the button is first pressed, as opposed to be pressed and released, by setting *Interactable On Click* to *Event On Press*.
+You can configure when the pressable button fires the *OnClick* event via the `PhysicalPressEventRouter` on the button. For example, you can set *OnClick* to fire when the button is first pressed, as opposed to being pressed and released, by setting *Interactable On Click* to *Event On Press*.
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_Events.png" width="450">
 
@@ -160,7 +160,7 @@ When you press the button, it will move and generate proper events exposed in th
 
 ### 2. Adding visual feedback to the basic cube button
 
-MRTK Standard Shader provides various features that makes it easy to add visual feedback. Create an material and select shader `Mixed Reality Toolkit/Standard`. Or you can use or duplicate one of the existing materials under `/SDK/StandardAssets/Materials/` that uses MRTK Standard Shader.
+MRTK Standard Shader provides various features that makes it easy to add visual feedback. Create a material and select shader `Mixed Reality Toolkit/Standard`. Or you can use or duplicate one of the existing materials under `/SDK/StandardAssets/Materials/` that uses MRTK Standard Shader.
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube4.png" width="450">
 
@@ -180,18 +180,18 @@ Since `PressableButton.cs` script exposes events such as TouchBegin(), TouchEnd(
 
 ### 4. Adding visual states and handle far interaction events
 
-[Interactable](README_Interactable.md) is a script that makes it easy to create a visual states for the various types of input interactions. It also handles far interaction events. Add `Interactable.cs` and drag and drop the cube object onto the **Target** field under **Profiles**. Then, create a new Theme with a type **ScaleOffsetColorTheme**. Under this theme, you can specify the color of the object for the specific interaction states such as **Focus** and **Pressed**. You can also control Scale and Offset as well. Check **Easing** and set duration to make the visual transition smooth.
+[Interactable](README_Interactable.md) is a script that makes it easy to create a visual state for the various types of input interactions. It also handles far interaction events. Add `Interactable.cs` and drag and drop the cube object onto the **Target** field under **Profiles**. Then, create a new Theme with a type **ScaleOffsetColorTheme**. Under this theme, you can specify the color of the object for the specific interaction states, such as **Focus** and **Pressed**. You can also control Scale and Offset, as well. Check **Easing** and set duration to make the visual transition smooth.
 
 ![Select profile theme](Images/Button/mrtk_button_profiles.gif)
 
-You will see the object responds to both far(hand ray or gaze cursor) and near(hand) interactions.
+You will see the object respond to both far (hand ray or gaze cursor) and near(hand) interactions.
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
 ## Custom button examples
 
-In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`.
+In the [HandInteractionExample scene](README_HandInteractionExamples.md), see the piano and round button examples which are both using `PressableButton`.
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom1.png" width="450">
 

@@ -6,7 +6,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 
 ## Prerequisites
 
-To get started with the Mixed Reality Toolkit you will need:
+To get started with the Mixed Reality Toolkit, you will need:
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 * [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
@@ -36,28 +36,28 @@ To get started with the Mixed Reality Toolkit you will need:
 ### Get the latest MRTK Unity packages
 
 1. Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.
-1. Under Assets, download
+1. Under Assets, download:
     * **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage**
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
     * (**_Optional_**, **_Experimental_**) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage
 
-For information on package contents, please see [MRTK Package Contents](MRTK_PackageContents.md).
+For information on package contents, see [MRTK Package Contents](MRTK_PackageContents.md).
 
-The Mixed Reality Toolkit is also available for download on NuGet.org, for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
+The Mixed Reality Toolkit is also available for download on NuGet.org; for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
 
 ### Import MRTK packages into your Unity project
 
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type.
-1. Import the **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage** you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
+1. Import the **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage** you downloaded by going into "Asset -> Import Package -> Custom Package", select the .unitypackage file, ensure all items to import are checked, and then select "Import".
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
-1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
-1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage** following the same steps as for the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage** following the same steps as the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.
 
 > [!Note]
-> Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, please see the [UnityAR camera settings provider](CameraSystem/UnityArCameraSettings.md) article.
+> Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, see the [UnityAR camera settings provider](CameraSystem/UnityArCameraSettings.md) article.
 
 After importing the Foundation package, you may see a prompt similar to the following:
 
@@ -70,17 +70,17 @@ MRTK is attempting to set up your project for building Mixed Reality solutions b
 
 Accepting these options is completely optional, but recommended.
 
-Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+Some prefabs and assets require TextMesh Pro, meaning you need the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
 ### Switch your Unity project to the target platform
 
 With the packages imported, the next step is to select the correct platform for the application.
 
-To create a **HoloLens application**, switch to Universal Windows Platform:
+To create a **HoloLens application**, switch to the Universal Windows Platform:
 
 1. Open menu : File > Build Settings
 1. Select **Universal Windows Platform** in the **Platform** list
-1. Click on the **Switch Platform** button
+1. Click the **Switch Platform** button
 
 ![Switch Platform](../Documentation/Images/getting_started/SwitchPlatform.png)
 
@@ -117,7 +117,7 @@ To create a **HoloLens application**, switch to Universal Windows Platform:
     >[!NOTE]
     > While working in your scene, **DO NOT move the Main Camera** (or the **MixedRealityPlayspace**) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then **move the scene content and NOT the camera**!
 
-1. Hit play and test out hand simulation by pressing the **spacebar**.
+1. Press Play and test out hand simulation by pressing the **spacebar**.
 
 You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
@@ -143,11 +143,11 @@ To try the hand interaction scene, do the following steps.
 
     ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-    If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/windows/mixed-reality/text-in-unity) for more detailed information)
+    If you get such a prompt, select the "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/windows/mixed-reality/text-in-unity) for more detailed information)
 
-1. Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.
+1. Close the TMP dialog. After this you need to reload the scene. You can do this by double-clicking the scene in the Project tab.
 
-1. Press the play button.
+1. Press the Play button.
 
 ## Using the in-editor hand input simulation to test a scene
 
@@ -187,4 +187,4 @@ Here are some suggested next steps:
 
 ## Upgrading from the HoloToolkit (HTK/MRTK v1)
 
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)

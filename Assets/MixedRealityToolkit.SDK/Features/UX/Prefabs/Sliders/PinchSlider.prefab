@@ -1061,6 +1061,7 @@ MonoBehaviour:
   columns: 13
   cellWidth: 0.021
   cellHeight: 0.01
+  assetVersion: 1
 --- !u!1 &7307063430618434862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thumbRoot: {fileID: 7307063430758334042}
   sliderValue: 0.5
+  trackVisuals: {fileID: 7307063431327029218}
+  tickMarks: {fileID: 7307063430561165487}
+  thumbVisuals: {fileID: 7307063430134822100}
   sliderAxis: 0
   sliderStartDistance: -0.125
   sliderEndDistance: 0.125
