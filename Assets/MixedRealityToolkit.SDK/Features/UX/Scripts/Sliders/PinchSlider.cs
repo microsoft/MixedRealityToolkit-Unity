@@ -64,8 +64,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                trackVisuals = value;
-                UpdateTrackVisuals();
+                if (trackVisuals != value)
+                {
+                    trackVisuals = value;
+                    UpdateTrackVisuals();
+                }
             }
         }
 
@@ -83,8 +86,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                tickMarks = value;
-                UpdateTickMarks();
+                if (tickMarks != value)
+                {
+                    tickMarks = value;
+                    UpdateTickMarks();
+                }
+            }
+        }
+
+        [Tooltip("The gameObject that contains the thumb visuals.  This will get rotated to match the slider axis.")]
+        [SerializeField]
+        private GameObject thumbVisuals = null;
+        /// <summary>
+        /// Property accessor of thumbVisuals, it contains the desired tick marks.  This will get rotated to match the slider axis.
+        /// </summary>
+        public GameObject ThumbVisuals
+        {
+            get
+            {
+                return thumbVisuals;
+            }
+            set
+            {
+                if (thumbVisuals != value)
+                {
+                    thumbVisuals = value;
+                    UpdateThumbVisuals();
+                }
             }
         }
 
@@ -298,12 +326,37 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Update orientation of thumb visuals based on slider axis orientation
+        /// </summary>
+        private void UpdateThumbVisuals()
+        {
+            if (ThumbVisuals)
+            {
+                ThumbVisuals.transform.localPosition = Vector3.zero;
+
+                switch (sliderAxis)
+                {
+                    case SliderAxis.XAxis:
+                        ThumbVisuals.transform.localRotation = Quaternion.identity;
+                        break;
+                    case SliderAxis.YAxis:
+                        ThumbVisuals.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 90.0f);
+                        break;
+                    case SliderAxis.ZAxis:
+                        ThumbVisuals.transform.localRotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Update orientation of the visual components of pinch slider
         /// </summary>
         private void UpdateVisualsOrientation()
         {
             if (PreviousSliderAxis != sliderAxis)
             {
+                UpdateThumbVisuals();
                 UpdateTrackVisuals();
                 UpdateTickMarks();
                 PreviousSliderAxis = sliderAxis;

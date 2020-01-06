@@ -75,13 +75,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Moves hand to given position over some number of frames.
         /// </summary>
         /// <param name="newPosition">Where to move hand to</param>
-        /// <param name="numSteps">How many frames to move over</param>
+        /// <param name="numSteps">
+        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
+        /// to use the default number of steps. For more information on this value, see
+        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
+        /// </param>
         /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the hand</param>
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
+        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            for (var iter = PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(oldPosition, newPosition, gestureId, handedness, simulationService, numSteps); iter.MoveNext(); )
             {
                 yield return iter.Current;
             }
@@ -95,10 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Move the hand by some given delta.
         /// </summary>
         /// <param name="delta">Amount to move the hand by.</param>
-        /// <param name="numSteps">Number of frames to move over.</param>
-        public IEnumerator Move(Vector3 delta, int numSteps = 30)
+        /// <param name="numSteps">
+        /// How many frames to move over. This defaults to the "sentinel" value which tells the system
+        /// to use the default number of steps. For more information on this value, see
+        /// <see cref="PlayModeTestUtilities.HandMoveStepsSentinelValue"/>
+        /// </param>
+        public IEnumerator Move(Vector3 delta, int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
         {
-            for (var iter = MoveTo(position + delta, numSteps); iter.MoveNext(); )
+            for (var iter = MoveTo(position + delta, PlayModeTestUtilities.CalculateNumSteps(numSteps)); iter.MoveNext(); )
             {
                 yield return iter.Current;
             }
@@ -109,11 +117,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <param name="newRotation">New rotation of hand</param>
         /// <param name="numSteps">Number of frames to rotate over.</param>
-        public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
+        public IEnumerator SetRotation(
+            Quaternion newRotation,
+            int numSteps = PlayModeTestUtilities.HandMoveStepsSentinelValue)
         {
             Quaternion oldRotation = rotation;
             rotation = newRotation;
-            yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
+            yield return PlayModeTestUtilities.SetHandRotation(
+                oldRotation,
+                newRotation,
+                position,
+                gestureId,
+                handedness,
+                PlayModeTestUtilities.CalculateNumSteps(numSteps),
+                simulationService);
         }
 
         /// <summary>
@@ -124,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
-            for (var iter = PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService); iter.MoveNext(); )
+            for (var iter = PlayModeTestUtilities.MoveHand(position, position, gestureId, handedness, simulationService, 1); iter.MoveNext(); )
             {
                 yield return iter.Current;
             }

@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsNearObject
         {
-            get { return (closestProximityTouchable != null); }
+            get => closestProximityTouchable != null;
         }
 
         /// <inheritdoc />
@@ -203,12 +203,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
             {
                 NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
-                float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
-                if (distance <= touchableDistance && distance < closestDistance)
+                if (touchable.gameObject.IsInLayerMask(layerMask))
                 {
-                    closest = touchable;
-                    closestDistance = distance;
-                    closestNormal = normal;
+                    float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                    if (distance <= touchableDistance && distance < closestDistance)
+                    {
+                        closest = touchable;
+                        closestDistance = distance;
+                        closestNormal = normal;
+                    }
                 }
             }
 

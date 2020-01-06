@@ -1,15 +1,14 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async",
-        "Unity.XR.ARFoundation"
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Providers.UnityAR"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "Android",
-        "Editor",
-        "iOS"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
