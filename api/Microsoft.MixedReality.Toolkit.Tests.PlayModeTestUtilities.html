@@ -123,6 +123,80 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class PlayModeTestUtilities</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.UseSlowTestHand">UseSlowTestHand</h4>
+  <div class="markdown level1 summary"><p>If true, the hand movement test steps will take a longer number of frames. This is especially
+useful for seeing motion in play mode tests (where the default smaller number of frames tends
+to make tests too fast to be understandable to the human eye). This is false by default
+to ensure that tests will run quickly in general, and can be set to true manually in specific
+test cases using the example below.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UseSlowTestHand</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that this value is reset to false after each play mode test that uses
+PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+UseSlowTestHand = true ends up slowing all subsequent tests.</p>
+</div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_UseSlowTestHand_examples">Examples</h5>
+  <pre><code>[UnityTest]
+public IEnumerator YourTestCase()
+{
+    PlayModeTestUtilities.UseSlowTestHand = true;
+    ...
+    PlayModeTestUtilities.UseSlowTestHand = false;
+}</code></pre>
+
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HandMoveSteps" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HandMoveSteps">HandMoveSteps</h4>
+  <div class="markdown level1 summary"><p>The number of frames that elapse for each test hand movement, taking into account if
+slow test hand mode has been engaged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int HandMoveSteps { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
