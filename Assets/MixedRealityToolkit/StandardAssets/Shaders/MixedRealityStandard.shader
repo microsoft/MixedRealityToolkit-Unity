@@ -932,8 +932,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 float2 halfScale = i.scale.xy * 0.5;
                 float2 roundCornerPosition = distanceToEdge * halfScale;
 				
-#if defined(_INDEPENDENT_CORNERS)
 				fixed currentCornerRadius;
+
+#if defined(_INDEPENDENT_CORNERS)
 				
                 _RoundCornersRadius = clamp(_RoundCornersRadius, 0, 0.5);
 
@@ -959,10 +960,11 @@ Shader "Mixed Reality Toolkit/Standard"
 						currentCornerRadius = _RoundCornersRadius.z;
 					}
 				}
-				float cornerCircleRadius = saturate(max(currentCornerRadius - _RoundCornerMargin, 0.01)) * i.scale.z;
 #else 
-                float cornerCircleRadius = saturate(max(_RoundCornerRadius - _RoundCornerMargin, 0.01)) * i.scale.z;
+                currentCornerRadius = _RoundCornerRadius;
 #endif
+
+                float cornerCircleRadius = saturate(max(currentCornerRadius - _RoundCornerMargin, 0.01)) * i.scale.z;
 
                 float2 cornerCircleDistance = halfScale - (_RoundCornerMargin * i.scale.z) - cornerCircleRadius;
 
@@ -1073,11 +1075,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
                 fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
-#if defined(_INDEPENDENT_CORNERS)
+
                 cornerCircleRadius = saturate(max(currentCornerRadius - borderMargin, 0.01)) * i.scale.z;
-#else
-                cornerCircleRadius = saturate(max(_RoundCornerRadius - borderMargin, 0.01)) * i.scale.z;
-#endif
+
                 cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
 
                 borderValue =  1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
