@@ -24938,6 +24938,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.BaseWindowsMixedRealityCameraSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.BaseWindowsMixedRealityCameraSettings.html",
+          "hash": "m3REElkyp99RCr3eCJecAg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Editor.WindowsMixedRealityCameraSettingsProfileInspector.yml",
       "output": {
         ".html": {
@@ -25110,7 +25122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.html",
-          "hash": "xq7dBb9zj7hixq7c/kf0gw=="
+          "hash": "kYITqem9CB8XXzr3UChAGw=="
         }
       },
       "is_incremental": false,
@@ -25146,7 +25158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.html",
-          "hash": "/UlQJfyiRvXZeAzlDLEewg=="
+          "hash": "3HwsfWjb7WH/m2O+T1mhuw=="
         }
       },
       "is_incremental": false,
@@ -25170,7 +25182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "mr9SyG7Lv4vuvsn5zAUJYg=="
+          "hash": "bfJekF5b5RLBj7KRm5mwrg=="
         }
       },
       "is_incremental": false,
@@ -25222,16 +25234,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1508,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 145,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1507,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
