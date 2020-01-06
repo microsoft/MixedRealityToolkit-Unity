@@ -63,8 +63,8 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.01
-		[Toggle(_INDEPENDENT_CORNERS)] _IndependentCorners("Independent Corners", Float) = 0.0
-		_RoundCornersRadius("Round Corners Radius", Vector) = (0.5,0.5,0.5,0.5)
+        [Toggle(_INDEPENDENT_CORNERS)] _IndependentCorners("Independent Corners", Float) = 0.0
+        _RoundCornersRadius("Round Corners Radius", Vector) = (0.5,0.5,0.5,0.5)
         [Toggle(_BORDER_LIGHT)] _BorderLight("Border Light", Float) = 0.0
         [Toggle(_BORDER_LIGHT_USES_HOVER_COLOR)] _BorderLightUsesHoverColor("Border Light Uses Hover Color", Float) = 0.0
         [Toggle(_BORDER_LIGHT_REPLACES_ALBEDO)] _BorderLightReplacesAlbedo("Border Light Replaces Albedo", Float) = 0.0
@@ -513,7 +513,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_ROUND_CORNERS)
 #if defined(_INDEPENDENT_CORNERS)
-			float4 _RoundCornersRadius; 
+            float4 _RoundCornersRadius; 
 #else
             fixed _RoundCornerRadius;
 #endif
@@ -931,35 +931,35 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 float2 halfScale = i.scale.xy * 0.5;
                 float2 roundCornerPosition = distanceToEdge * halfScale;
-				
-				fixed currentCornerRadius;
+
+                fixed currentCornerRadius;
 
 #if defined(_INDEPENDENT_CORNERS)
-				
+
                 _RoundCornersRadius = clamp(_RoundCornersRadius, 0, 0.5);
 
-				if (i.uv.x < 0.5)
-				{
-					if (i.uv.y > 0.5)
-					{
-						currentCornerRadius = _RoundCornersRadius.x;
-					}
-					else
-					{
-						currentCornerRadius = _RoundCornersRadius.w;
-					}
-				}
-				else
-				{
-					if (i.uv.y > 0.5)
-					{
-						currentCornerRadius = _RoundCornersRadius.y;
-					}
-					else
-					{
-						currentCornerRadius = _RoundCornersRadius.z;
-					}
-				}
+                if (i.uv.x < 0.5)
+                {
+                    if (i.uv.y > 0.5)
+                    {
+                        currentCornerRadius = _RoundCornersRadius.x;
+                    }
+                    else
+                    {
+                        currentCornerRadius = _RoundCornersRadius.w;
+                    }
+                }
+                else
+                {
+                    if (i.uv.y > 0.5)
+                    {
+                        currentCornerRadius = _RoundCornersRadius.y;
+                    }
+                    else
+                    {
+                        currentCornerRadius = _RoundCornersRadius.z;
+                    }
+                }
 #else 
                 currentCornerRadius = _RoundCornerRadius;
 #endif

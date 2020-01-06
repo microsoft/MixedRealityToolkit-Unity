@@ -621,10 +621,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (PropertyEnabled(roundCorners))
             {
-                materialEditor.ShaderProperty(independentCorners, Styles.independentCorners,2);
+                materialEditor.ShaderProperty(independentCorners, Styles.independentCorners, 2);
                 if (PropertyEnabled(independentCorners))
                 {
-                    materialEditor.ShaderProperty(roundCornersRadius, Styles.roundCornersRadius, 3);
+                    materialEditor.ShaderProperty(roundCornersRadius, Styles.roundCornersRadius, 2);
                 }
                 else
                 {
