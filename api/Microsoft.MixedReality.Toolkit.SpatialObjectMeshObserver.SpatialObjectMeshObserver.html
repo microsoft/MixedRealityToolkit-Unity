@@ -96,14 +96,13 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">IMixedRealitySpatialAwarenessMeshObserver</span></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.html">Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck</code></pre>
+    <pre><code class="lang-csharp hljs">public class SpatialObjectMeshObserver : BaseSpatialMeshObserver, IMixedRealityCapabilityCheck</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -206,260 +205,18 @@ public SpatialObjectMeshObserver(IMixedRealityServiceRegistrar registrar, IMixed
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_DisplayOption_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.DisplayOption*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_DisplayOption" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.DisplayOption">DisplayOption</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpatialAwarenessMeshDisplayOptions DisplayOption { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SpatialAwarenessMeshDisplayOptions</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_LevelOfDetail_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.LevelOfDetail*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_LevelOfDetail" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.LevelOfDetail">LevelOfDetail</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpatialAwarenessMeshLevelOfDetail LevelOfDetail { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SpatialAwarenessMeshLevelOfDetail</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Meshes_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Meshes*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Meshes" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Meshes">Meshes</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;int, SpatialAwarenessMeshObject&gt; Meshes { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <span class="xref">SpatialAwarenessMeshObject</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_MeshPhysicsLayer_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.MeshPhysicsLayer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_MeshPhysicsLayer" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.MeshPhysicsLayer">MeshPhysicsLayer</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int MeshPhysicsLayer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_MeshPhysicsLayerMask_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.MeshPhysicsLayerMask*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_MeshPhysicsLayerMask" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.MeshPhysicsLayerMask">MeshPhysicsLayerMask</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int MeshPhysicsLayerMask { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_ObservedObjectParent_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.ObservedObjectParent*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_ObservedObjectParent" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.ObservedObjectParent">ObservedObjectParent</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual GameObject ObservedObjectParent { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">GameObject</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_OcclusionMaterial_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.OcclusionMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_OcclusionMaterial" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.OcclusionMaterial">OcclusionMaterial</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Material OcclusionMaterial { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Material</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_RecalculateNormals_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.RecalculateNormals*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_RecalculateNormals" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.RecalculateNormals">RecalculateNormals</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool RecalculateNormals { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_TrianglesPerCubicMeter_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.TrianglesPerCubicMeter*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_TrianglesPerCubicMeter" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.TrianglesPerCubicMeter">TrianglesPerCubicMeter</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TrianglesPerCubicMeter { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_VisibleMaterial_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.VisibleMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_VisibleMaterial" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.VisibleMaterial">VisibleMaterial</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Material VisibleMaterial { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Material</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_CleanupObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.CleanupObserver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_CleanupObserver" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.CleanupObserver">CleanupObserver()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void CleanupObserver()</code></pre>
+  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_ClearObservations_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.ClearObservations*"></a>
@@ -472,33 +229,24 @@ public SpatialObjectMeshObserver(IMixedRealityServiceRegistrar registrar, IMixed
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Destroy*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Destroy" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Destroy">Destroy()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_CreateObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.CreateObserver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_CreateObserver" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.CreateObserver">CreateObserver()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Destroy()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void CreateObserver()</code></pre>
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Initialize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Initialize" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Initialize">Initialize()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_ReadProfile_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.ReadProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_ReadProfile" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.ReadProfile">ReadProfile()</h4>
+  <div class="markdown level1 summary"><p>Reads the settings from the configuration profile.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Initialize()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Reset_" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Reset*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialObjectMeshObserver_SpatialObjectMeshObserver_Reset" data-uid="Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.Reset">Reset()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Reset()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void ReadProfile()</code></pre>
   </div>
   
   
@@ -579,9 +327,6 @@ on the current platform.</p>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">IMixedRealitySpatialAwarenessMeshObserver</span>
-  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a>
   </div>

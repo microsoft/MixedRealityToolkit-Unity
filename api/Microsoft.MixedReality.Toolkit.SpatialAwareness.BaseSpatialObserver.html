@@ -95,6 +95,7 @@
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html">BaseDataProvider</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a>&gt;</div>
     <div class="level3"><span class="xref">BaseSpatialObserver</span></div>
+      <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialMeshObserver.html">BaseSpatialMeshObserver</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -126,28 +127,16 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_ConfigurationProfile">BaseService.ConfigurationProfile</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose">BaseService.Dispose()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose_System_Boolean_">BaseService.Dispose(Boolean)</a>
     </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
@@ -602,6 +591,17 @@ used as the radius.</p>
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_CleanupObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.CleanupObserver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_CleanupObserver" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.CleanupObserver">CleanupObserver()</h4>
+  <div class="markdown level1 summary"><p>Ensures that the spatial observer has been stopped and destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void CleanupObserver()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_ClearObservations_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.ClearObservations*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_ClearObservations" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.ClearObservations">ClearObservations()</h4>
   <div class="markdown level1 summary"><p>Clears the observer's collection of observations.</p>
@@ -616,6 +616,30 @@ used as the radius.</p>
 </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_CreateObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.CreateObserver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_CreateObserver" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.CreateObserver">CreateObserver()</h4>
+  <div class="markdown level1 summary"><p>Creates the spatial observer and handles the desired startup behavior.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void CreateObserver()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Destroy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Destroy" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Destroy">Destroy()</h4>
+  <div class="markdown level1 summary"><p>Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Destroy()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a></div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Disable_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Disable*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Disable" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Disable">Disable()</h4>
   <div class="markdown level1 summary"><p>Optional Disable function to pause the service.</p>
@@ -627,6 +651,38 @@ used as the radius.</p>
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Disable">BaseService.Disable()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Dispose_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Dispose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Dispose_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Dispose(System.Boolean)">Dispose(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Cleanup resources used by the object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void Dispose(bool disposing)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">disposing</span></td>
+        <td><p>Are we fully disposing the object?
+True will release all managed resources, unmanaged resources are always released.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Dispose_System_Boolean_">BaseService.Dispose(Boolean)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Enable_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Enable*"></a>
@@ -753,6 +809,32 @@ used as the radius.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Initialize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Initialize" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Initialize">Initialize()</h4>
+  <div class="markdown level1 summary"><p>Creates the observer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Initialize()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Reset_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Reset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Reset" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Suspends the observer, clears observations, cleans up the observer, then re-initializes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Reset()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_BaseSpatialObserver_Resume_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.Resume*"></a>
