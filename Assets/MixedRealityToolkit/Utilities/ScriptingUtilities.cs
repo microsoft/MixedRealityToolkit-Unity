@@ -1,17 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// A set of utilities to configure script compilation. 
     /// </summary>
-    public class ScriptingUtilities
+    [Obsolete("The ScriptingUtilities class is obsolete and will be removed from a future version of MRTK. Please use the ScriptUtilities class.")]
+    public static class ScriptingUtilities
     {
         /// <summary>
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
@@ -25,11 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// To always append the symbols, pass null (or the empty string) for the fileName parameter.
         /// </remarks>
+        [Obsolete("ScriptingUtilties.AppendScriptingDefinitions is obsolete and will be removed from a future version of MRTK. Please use FileUtilities.FindFilesInAssets and ScriptUtilties.AppendScriptingDefinitions.")]
         public static void AppendScriptingDefinitions(
             string fileName, 
             BuildTargetGroup targetGroup, 
             string[] symbols)
         {
+            // Note: Typically, obsolete methods are re-implemented using the replacement versions.
+            // In this instance, that is not possible as the replacement exists in a separate assembly that is
+            // not appropriate for referencing (the new assembly is editor only).
+
             if (symbols == null || symbols.Length == 0) { return; }
 
             bool appendSymbols = true;

@@ -315,21 +315,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region IMixedRealityDeviceManager Interface
 
         /// <inheritdoc/>
-        public override void Initialize()
-        {
-            base.Initialize();
-
-#if UNITY_EDITOR
-            // When in the editor, check for the DotNetWinRT dll and define the appropriate
-            // preprocessor sybmol
-            ScriptingUtilities.AppendScriptingDefinitions(
-                "Microsoft.Windows.MixedReality.DotNetWinRT.dll", 
-                UnityEditor.BuildTargetGroup.WSA, 
-                new string[] { "DOTNETWINRT_PRESENT" });
-#endif // UNITY_EDITOR
-        }
-
-        /// <inheritdoc/>
         public override void Enable()
         {
             if (!Application.isPlaying) { return; }
