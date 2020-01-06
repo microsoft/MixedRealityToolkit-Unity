@@ -82,14 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private IEnumerator PressButtonWithHand()
         {
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 42;
             Vector3 p1 = new Vector3(0, 0, 0.5f);
             Vector3 p2 = new Vector3(0, 0, 1.08f);
             Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, p1);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
         }
 
@@ -288,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 p2 = new Vector3(0, 0, 0.02f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");

@@ -140,12 +140,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // front right corner is corner 3
             var frontRightCornerPos = bbox.gameObject.transform.Find("rigRoot/corner_3").position;
 
+
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
