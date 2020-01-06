@@ -532,6 +532,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             clampedPosition = refPosition + direction * clampedDistance;
 
+            // Apply vertical clamp on reference
+            if (VerticalMaxDistance > 0)
+            {
+                clampedPosition.y = Mathf.Clamp(clampedPosition.y, ReferencePosition.y - VerticalMaxDistance, ReferencePosition.y + VerticalMaxDistance);
+            }
+
             return Vector3EqualEpsilon(clampedPosition, currentPosition, 0.0001f);
         }
 
@@ -626,12 +632,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             refForward = refRotation * Vector3.forward;
-
-            // Apply vertical clamp on reference
-            if (!recenterNextUpdate && VerticalMaxDistance > 0)
-            {
-                refPosition.y = Mathf.Clamp(PreviousReferencePosition.y, ReferencePosition.y - VerticalMaxDistance, ReferencePosition.y + VerticalMaxDistance);
-            }
         }
 
         bool Vector3EqualEpsilon(Vector3 x, Vector3 y, float eps)
