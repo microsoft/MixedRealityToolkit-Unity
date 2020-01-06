@@ -11,6 +11,7 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
@@ -20,8 +21,10 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    // Tests to verify pointer state and pointer direction
-    class PointerTests 
+    /// <summary>
+    /// Tests to verify pointer state and pointer direction
+    /// </summary>
+    public class PointerTests 
     {
         [SetUp]
         public void Setup()
@@ -121,6 +124,124 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float angle = Vector3.Angle(linePointer.Rays[0].Direction, CameraCache.Main.transform.forward);
             Assert.LessOrEqual(angle, 40.0f);
         }
+
+
+        /// <summary>
+        /// Test that the same PokePointer
+        /// 1) is not destroyed
+        /// 2) retreived and re-used from the pointer cache
+        /// 3) still click buttons and provides input after re-use
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPointerCaching()
+        {
+            TestButtonUtilities.InstantiateDefaultButton(TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable interactable,
+                out Transform translateTargetObject);
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.right);
+
+            var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
+            Assert.IsNotNull(rightPokePointer);
+            Assert.IsFalse(rightPokePointer.DestroyOnSourceLost);
+
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+
+            Assert.IsTrue(wasClicked);
+            Assert.IsNotNull(rightPokePointer);
+            Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
+
+            wasClicked = false;
+
+            yield return rightHand.Show(Vector3.right);
+
+            // Confirm that we are re-using the same pointer gameobject that was stored in the cache
+            Assert.AreEqual(rightPokePointer, PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
+
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+            Assert.IsTrue(wasClicked);
+            Assert.IsNotNull(rightPokePointer);
+            Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
+        }
+
+        /// <summary>
+        /// As GameObjects, pointers can be destroyed at any time. 
+        /// Utilize BaseControllerPointer.DestroyOnSourceLost property to test pointer cache does not break with null references (aka auto-destroyed pointers).
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDestroyOnSourceLostPointer()
+        {
+            TestButtonUtilities.InstantiateDefaultButton(TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable interactable,
+                out Transform translateTargetObject);
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.right);
+
+            var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
+            rightPokePointer.DestroyOnSourceLost = true;
+
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+
+            Assert.IsTrue(wasClicked);
+            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
+            Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
+
+            wasClicked = false;
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+            Assert.IsTrue(wasClicked);
+        }
+
+        /// <summary>
+        /// Test that buttons still work when pointer cache is disabled. 
+        /// Pointers that do not auto-destroy themselves on source lost should be destroyed by the input device manager creating the pointers
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDisabledPointerCache()
+        {
+            TestButtonUtilities.InstantiateDefaultButton(TestButtonUtilities.DefaultButtonType.DefaultPushButton,
+                out Interactable interactable,
+                out Transform translateTargetObject);
+
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            PlayModeTestUtilities.GetInputSimulationService().EnablePointerCache = false;
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.right);
+
+            var rightPokePointer = PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right);
+            Assert.IsNotNull(rightPokePointer);
+            Assert.IsFalse(rightPokePointer.DestroyOnSourceLost);
+
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+
+            Assert.IsTrue(wasClicked);
+            Assert.IsTrue(UnityObjectExtensions.IsNull(rightPokePointer));
+            Assert.IsNull(PlayModeTestUtilities.GetPointer<PokePointer>(Handedness.Right));
+
+            wasClicked = false;
+            yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
+            Assert.IsTrue(wasClicked);
+        }
+
         #endregion
     }
 }

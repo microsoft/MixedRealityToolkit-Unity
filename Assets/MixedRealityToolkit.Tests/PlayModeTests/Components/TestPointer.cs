@@ -15,25 +15,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class TestPointer : GenericPointer
     {
+        /// <inheritdoc />
         public TestPointer() : base("Test Pointer", null)
         {
         }
 
+        /// <inheritdoc />
         public override Vector3 Position => throw new System.NotImplementedException();
 
+        /// <inheritdoc />
         public override Quaternion Rotation => throw new System.NotImplementedException();
 
-        public override void OnPreCurrentPointerTargetChange()
-        {
-        }
+        /// <inheritdoc />
+        public override void OnPreCurrentPointerTargetChange() { }
 
-        public override void OnPreSceneQuery()
-        {
-        }
+        /// <inheritdoc />
+        public override void OnPreSceneQuery() { }
 
-        public override void OnPostSceneQuery()
-        {
-        }
+        /// <inheritdoc />
+        public override void OnPostSceneQuery() { }
+
+        /// <inheritdoc />
+        public override void Reset() { }
 
         /// <summary>
         /// Initialize all applicable settings on this pointer from <paramref name="testProxy"/> and then set this pointer active,

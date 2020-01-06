@@ -61,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             deviceRefreshTimer += Time.unscaledDeltaTime;
 
             if (deviceRefreshTimer >= DeviceRefreshInterval)
@@ -78,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             foreach (var genericJoystick in ActiveControllers)

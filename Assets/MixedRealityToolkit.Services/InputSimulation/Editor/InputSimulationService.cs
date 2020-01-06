@@ -208,6 +208,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             ArticulatedHandPose.LoadGesturePoses();
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
@@ -216,12 +218,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Destroy()
         {
+            base.Destroy();
+
             ArticulatedHandPose.ResetGesturePoses();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
+
             var profile = InputSimulationProfile;
 
             if (indicators == null && profile.IndicatorsPrefab)
@@ -235,6 +241,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             if (indicators)
             {
                 GameObject.Destroy(indicators);
@@ -247,6 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             var profile = InputSimulationProfile;
 
             switch (HandSimulationMode)
@@ -304,6 +314,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            base.LateUpdate();
+
             var profile = InputSimulationProfile;
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
