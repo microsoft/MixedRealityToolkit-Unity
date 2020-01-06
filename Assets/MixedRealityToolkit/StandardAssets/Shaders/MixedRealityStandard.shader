@@ -63,6 +63,8 @@ Shader "Mixed Reality Toolkit/Standard"
         [Toggle(_ROUND_CORNERS)] _RoundCorners("Round Corners", Float) = 0.0
         _RoundCornerRadius("Round Corner Radius", Range(0.0, 0.5)) = 0.25
         _RoundCornerMargin("Round Corner Margin", Range(0.0, 0.5)) = 0.01
+		[Toggle(_INDEPENDENT_CORNERS)] _IndependentCorners("Independent Corners", Float) = 0.0
+		_RoundCornerFactors("Round Corner Factors", Vector) = (1.0,1.0,1.0,1.0)
         [Toggle(_BORDER_LIGHT)] _BorderLight("Border Light", Float) = 0.0
         [Toggle(_BORDER_LIGHT_USES_HOVER_COLOR)] _BorderLightUsesHoverColor("Border Light Uses Hover Color", Float) = 0.0
         [Toggle(_BORDER_LIGHT_REPLACES_ALBEDO)] _BorderLightReplacesAlbedo("Border Light Replaces Albedo", Float) = 0.0
@@ -245,6 +247,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _PROXIMITY_LIGHT_SUBTRACTIVE
             #pragma shader_feature _PROXIMITY_LIGHT_TWO_SIDED
             #pragma shader_feature _ROUND_CORNERS
+			#pragma shader_feature _INDEPENDENT_CORNERS
             #pragma shader_feature _BORDER_LIGHT
             #pragma shader_feature _BORDER_LIGHT_USES_HOVER_COLOR
             #pragma shader_feature _BORDER_LIGHT_REPLACES_ALBEDO
@@ -256,6 +259,8 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _IGNORE_Z_SCALE
 
             #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
+
+			#define halfPI 3.1415926538/2
 
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
@@ -511,6 +516,9 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
             fixed _RoundCornerRadius;
             fixed _RoundCornerMargin;
+#if defined(_INDEPENDENT_CORNERS)
+			float4 _RoundCornerFactors; 
+#endif
 #endif
 
 #if defined(_BORDER_LIGHT)
@@ -924,8 +932,37 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 float2 halfScale = i.scale.xy * 0.5;
                 float2 roundCornerPosition = distanceToEdge * halfScale;
-
+				
+#if defined(_INDEPENDENT_CORNERS)
+				fixed roundCornerFactor = 1;
+				
+				if (i.uv.x < 0.5)
+				{
+					if (i.uv.y > 0.5)
+					{
+						roundCornerFactor *= _RoundCornerFactors.x;
+					}
+					else
+					{
+						roundCornerFactor *= _RoundCornerFactors.w;
+					}
+				}
+				else
+				{
+					if (i.uv.y > 0.5)
+					{
+						roundCornerFactor *= _RoundCornerFactors.y;
+					}
+					else
+					{
+						roundCornerFactor *= _RoundCornerFactors.z;
+					}
+				}
+				float cornerCircleRadius = min(saturate(max(roundCornerFactor * (_RoundCornerRadius - _RoundCornerMargin), 0.01)), halfPI - _RoundCornerMargin) * i.scale.z;
+#else 
                 float cornerCircleRadius = saturate(max(_RoundCornerRadius - _RoundCornerMargin, 0.01)) * i.scale.z;
+#endif
+
                 float2 cornerCircleDistance = halfScale - (_RoundCornerMargin * i.scale.z) - cornerCircleRadius;
 
                 float roundCornerClip = RoundCorners(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
@@ -1035,7 +1072,11 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed borderValue;
 #if defined(_ROUND_CORNERS)
                 fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
+#if defined(_INDEPENDENT_CORNERS)
+                cornerCircleRadius = min(saturate(max(roundCornerFactor * (_RoundCornerRadius - borderMargin), 0.01)), halfPI - borderMargin) * i.scale.z;
+#else
                 cornerCircleRadius = saturate(max(_RoundCornerRadius - borderMargin, 0.01)) * i.scale.z;
+#endif
                 cornerCircleDistance = halfScale - (borderMargin * i.scale.z) - cornerCircleRadius;
 
                 borderValue =  1.0 - RoundCornersSmooth(roundCornerPosition, cornerCircleDistance, cornerCircleRadius);
