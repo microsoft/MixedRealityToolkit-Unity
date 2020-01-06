@@ -334,6 +334,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Tests setting a target in code that is a different gameobject than the gameobject the bounds control component is attached to
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SetTarget()
+        {
+            // create cube without control
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = boundsControlStartCenter;
+
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(cube.transform.position);
+            });
+
+            cube.transform.localScale = boundsControlStartScale;
+
+            // create another gameobject with boundscontrol attached 
+            var emptyGameObject = new GameObject("empty");
+            BoundsControl bbox = emptyGameObject.AddComponent<BoundsControl>();
+
+            // set target to cube
+            bbox.Target = cube;
+            bbox.Active = true;
+
+            // front right corner is corner 3
+            var frontRightCornerPos = cube.transform.Find("rigRoot/corner_3").position;
+
+            // grab corner and scale object
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            int numSteps = 30;
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta, numSteps);
+
+            var endBounds = cube.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
+            Vector3 expectedSize = Vector3.one * .567f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
+            Object.Destroy(emptyGameObject);
+            Object.Destroy(cube);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+        }
+
+        /// <summary>
         /// Returns the AABB of the bounds control rig (corners, edges)
         /// that make up the bounds control by using the positions of the corners
         /// </summary>

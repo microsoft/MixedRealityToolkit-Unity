@@ -458,7 +458,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         #region asset version migration
-#if UNITY_EDITOR
         private const int CurrentAssetVersion = 1;
 
         [SerializeField]
@@ -504,7 +503,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return objectName;
         }
-#endif
         #endregion
 
     }

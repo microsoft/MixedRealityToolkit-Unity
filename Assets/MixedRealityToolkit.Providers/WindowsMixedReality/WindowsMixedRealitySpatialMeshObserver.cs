@@ -144,27 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public override void Enable()
-        {
-            if (!IsRunning)
-            {
-                Resume();
-            }
-        }
-
-        /// <inheritdoc />
         public override void Update()
         {
             UpdateObserver();
-        }
-
-        /// <inheritdoc />
-        public override void Disable()
-        {
-            if (IsRunning)
-            {
-                Suspend();
-            }
         }
 
         /// <inheritdoc />
@@ -359,6 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public bool RecalculateNormals { get; set; } = true;
 
+        /// <inheritdoc />
         public int TrianglesPerCubicMeter { get; set; } = 0;
 
         private Material visibleMaterial = null;
@@ -413,6 +396,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             // UpdateObserver keys off of this value to stop observing.
             IsRunning = false;
+
+            // Halt any outstanding work.
+            if (outstandingMeshObject != null)
+            {
+                ReclaimMeshObject(outstandingMeshObject);
+                outstandingMeshObject = null;
+            }
 
             // Clear any pending work.
             meshWorkQueue.Clear();
