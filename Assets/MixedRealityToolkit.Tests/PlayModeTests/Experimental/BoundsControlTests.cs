@@ -419,13 +419,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // move into medium range and check if scale was applied
             Vector3 mediumProximityTestDist = frontRightCornerPos;
-            mediumProximityTestDist.x += proximityConfig.ObjectMediumProximity * 0.8f;
+            mediumProximityTestDist.x += proximityConfig.ObjectMediumProximity;
             yield return hand.MoveTo(mediumProximityTestDist);
             Vector3 expectedMediumScale = defaultHandleSize * proximityConfig.MediumScale;
             Assert.AreEqual(proximityScaledVisual.localScale, expectedMediumScale, testDescription + " - Proximity medium scale wasn't applied to handle");
 
             // move into close scale range and check if scale was applied
             Vector3 closeProximityTestDir = frontRightCornerPos;
+            closeProximityTestDir.x += proximityConfig.ObjectCloseProximity;
             yield return hand.MoveTo(closeProximityTestDir);
             Vector3 expectedCloseScale = defaultHandleSize * proximityConfig.CloseScale;
             Assert.AreEqual(proximityScaledVisual.localScale, expectedCloseScale, testDescription + " - Proximity close scale wasn't applied to handle");
