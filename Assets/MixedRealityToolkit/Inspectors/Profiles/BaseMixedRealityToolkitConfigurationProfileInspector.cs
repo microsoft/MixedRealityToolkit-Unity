@@ -260,50 +260,5 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
         }
-
-        /// <summary>
-        /// Applies the most relevant settings of DataProviderConfigurations
-        /// </summary>
-        /// <param name="typeName">name of the Type of the Data Provider</param>
-        /// <param name="providerAttribute"> the corresponding attribute</param>
-        /// <param name="providerName"> the target provider Name</param>
-        /// <param name="configurationProfile">the target configuration profile</param>
-        /// <param name="runtimePlatform">the target runtime plaform</param>
-        protected void ApplyDataProviderConfiguration(
-            string typeName,
-            MixedRealityDataProviderAttribute providerAttribute,
-            SerializedProperty providerName,
-            SerializedProperty configurationProfile,
-            SerializedProperty runtimePlatform)
-        {
-            if (typeName != null)
-            {
-                if (providerAttribute != null)
-                {
-                    providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : typeName;
-                    configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
-                }
-                else
-                {
-                    providerName.stringValue = typeName;
-                }
-
-                serializedObject.ApplyModifiedProperties();
-            }
-        }
-
-        /// <summary>
-        /// Returns the MixedRealityDataProviderAttribute on a given type
-        /// </summary>
-        /// <param name="type">The type on which to look after the attribute</param>
-        /// <returns>The MixedRealityDataProviderAttribute for the given type</returns>
-        protected MixedRealityDataProviderAttribute GetTypeNameAndProvider(SystemType type)
-        {
-            if (type == null) { return null; }
-
-            MixedRealityExtensionServiceAttribute serviceAttribute = MixedRealityExtensionServiceAttribute.Find(type);
-            return serviceAttribute != null ? MixedRealityExtensionServiceAttribute.Find(type) as MixedRealityDataProviderAttribute : null;
-        }
     }
 }
