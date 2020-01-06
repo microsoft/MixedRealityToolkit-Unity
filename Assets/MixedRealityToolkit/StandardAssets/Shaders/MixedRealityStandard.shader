@@ -940,25 +940,25 @@ Shader "Mixed Reality Toolkit/Standard"
 				{
 					if (i.uv.y > 0.5)
 					{
-						roundCornerFactor *= _RoundCornerFactors.x;
+						roundCornerFactor *= saturate(_RoundCornerFactors.x);
 					}
 					else
 					{
-						roundCornerFactor *= _RoundCornerFactors.w;
+						roundCornerFactor *= saturate(_RoundCornerFactors.w);
 					}
 				}
 				else
 				{
 					if (i.uv.y > 0.5)
 					{
-						roundCornerFactor *= _RoundCornerFactors.y;
+						roundCornerFactor *= saturate(_RoundCornerFactors.y);
 					}
 					else
 					{
-						roundCornerFactor *= _RoundCornerFactors.z;
+						roundCornerFactor *= saturate(_RoundCornerFactors.z);
 					}
 				}
-				float cornerCircleRadius = min(saturate(max(roundCornerFactor * (_RoundCornerRadius - _RoundCornerMargin), 0.01)), halfPI - _RoundCornerMargin) * i.scale.z;
+				float cornerCircleRadius = min(max(roundCornerFactor * (_RoundCornerRadius - _RoundCornerMargin), 0.01), halfPI - _RoundCornerMargin) * i.scale.z;
 #else 
                 float cornerCircleRadius = saturate(max(_RoundCornerRadius - _RoundCornerMargin, 0.01)) * i.scale.z;
 #endif
@@ -1073,7 +1073,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_ROUND_CORNERS)
                 fixed borderMargin = _RoundCornerMargin  + _BorderWidth * 0.5;
 #if defined(_INDEPENDENT_CORNERS)
-                cornerCircleRadius = min(saturate(max(roundCornerFactor * (_RoundCornerRadius - borderMargin), 0.01)), halfPI - borderMargin) * i.scale.z;
+                cornerCircleRadius = min(max(roundCornerFactor * (_RoundCornerRadius - borderMargin), 0.01), halfPI - borderMargin) * i.scale.z;
 #else
                 cornerCircleRadius = saturate(max(_RoundCornerRadius - borderMargin, 0.01)) * i.scale.z;
 #endif
