@@ -7602,7 +7602,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraExtensions.html",
-          "hash": "u7hQ8p6sn+m/X2zLkiHIVw=="
+          "hash": "0gQvTIKgJcXfIkN/Vyssmw=="
         }
       },
       "is_incremental": false,
@@ -19170,7 +19170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Extensions.CameraExtensionTests.html",
-          "hash": "Hf7+iJYwuGjTwvbA2t1d5g=="
+          "hash": "6Rz4nLPenaiUogi0kZPwtA=="
         }
       },
       "is_incremental": false,
@@ -23658,7 +23658,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.html",
-          "hash": "EwlE0dlKocz5IqmBPC1A7g=="
+          "hash": "ZMBUnwAdfnBqbYuKK2uB2g=="
         }
       },
       "is_incremental": false,

@@ -361,6 +361,64 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_CameraExtensions_IsInFOVCone_" data-uid="Microsoft.MixedReality.Toolkit.CameraExtensions.IsInFOVCone*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_CameraExtensions_IsInFOVCone_Camera_Vector3_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.CameraExtensions.IsInFOVCone(Camera,Vector3,System.Single)">IsInFOVCone(Camera, Vector3, Single)</h4>
+  <div class="markdown level1 summary"><p>Returns true if a point is in the a cone inscribed into the Camera's frustrum, false otherwise
+The cone is inscribed to a radius equal to the vertical height of the camera's FOV.
+By default, the cone's tip is &quot;chopped off&quot; by an amount defined by the camera's
+far and near clip planes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInFOVCone(this Camera camera, Vector3 point, float coneAngleBufferDegrees = 0F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Camera</span></td>
+        <td><span class="parametername">camera</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point</span></td>
+        <td><p>Point to test</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">coneAngleBufferDegrees</span></td>
+        <td><p>Degrees to expand the cone radius by.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

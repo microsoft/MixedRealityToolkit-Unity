@@ -876,6 +876,79 @@ public static float AngularScaleFromDistance(float angle, float distance)</code>
 </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOVCone_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.IsInFOVCone*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOVCone_Transform_Vector3_System_Single_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.IsInFOVCone(Transform,Vector3,System.Single,System.Single,System.Single)">IsInFOVCone(Transform, Vector3, Single, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Returns true if a point lies inside the cone described with given parameters, false otherwise.
+The cone is inscribed to a radius equal to the vertical height of the provided FOV.
+The test also ensures the distance from the point to the cone lies within the given range.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInFOVCone(Transform cone, Vector3 point, float fieldOfView, float minDist = 0.05F, float maxDist = 100F)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">cone</span></td>
+        <td><p>The transform that defines the orientation and position of the cone</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">point</span></td>
+        <td><p>The point to test if it lies within the cone FOV</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fieldOfView</span></td>
+        <td><p>Field of view for the cone which calculates its radius</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">minDist</span></td>
+        <td><p>Point must be at least this far away (along direction forward) from the cone</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">maxDist</span></td>
+        <td><p>Point must be at most this far away (along direction forward) from the cone.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOVCone_Transform_Vector3_System_Single_System_Single_System_Single__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Field of view parameter is in degrees and distances are in meters.</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_NearestPointToLines_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.NearestPointToLines*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_NearestPointToLines_Ray_Ray_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.NearestPointToLines(Ray,Ray)">NearestPointToLines(Ray, Ray)</h4>
   <div class="markdown level1 summary"><p>Find 3D point that minimizes distance to 2 lines, midpoint of the shortest perpendicular line segment between them</p>
