@@ -525,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="fieldOfView">Field of view for the cone which calculates its radius</param>
         /// <param name="minDist">Point must be at least this far away (along direction forward) from the cone </param>
         /// <param name="maxDist">Point must be at most this far away (along direction forward) from the cone. </param>
-        ///<remarks>
+        /// <remarks>
         /// Field of view parameter is in degrees and distances are in meters.
         /// </remarks>
         public static bool IsInFOVCone(Transform cone, 
