@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;
             for (int i = 0; i < ac.animationClips.Length; i++)
             {
-                if (ac.animationClips[i].name == animationStateName)
+                if (ac.animationClips[i].name.StartsWith(animationStateName))
                 {
                     return ac.animationClips[i].length;
                 }

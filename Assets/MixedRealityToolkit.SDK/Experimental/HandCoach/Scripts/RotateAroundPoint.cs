@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             m_centeredParent.localEulerAngles = m_centeredParentRotate;
 
             // set inverseParent rotation based on RotateToTarget() and parent object
-            m_inverseParent.localEulerAngles = -m_centeredParentRotate - m_centeredParent.parent.localEulerAngles;
+            m_inverseParent.localEulerAngles = -m_centeredParentRotate;
         }
 
         public void RotateToTarget()
