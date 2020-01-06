@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the hand towards
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, MoveHandNumSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand back
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, MoveHandNumSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
         }
     }
