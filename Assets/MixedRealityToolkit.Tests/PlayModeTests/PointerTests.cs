@@ -51,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestLinePointers()
         {
+            BaseEventSystem.enableDanglingHandlerDiagnostics = false;
+
             var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab, 
                 out IMixedRealityInputSource lineInputSource, out IMixedRealityController lineController);
 
@@ -90,9 +92,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObjectExtensions.DestroyGameObject(linePointer.gameObject);
             GameObjectExtensions.DestroyGameObject(curvePointer.gameObject);
-            CoreServices.TeleportSystem.RaiseTeleportCanceled(curvePointer, null);
 
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            BaseEventSystem.enableDanglingHandlerDiagnostics = true;
         }
 
         /// <summary>
