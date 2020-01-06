@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects
-            float squareMaxLength= boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
+            float squareMaxLength = boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
@@ -282,11 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <returns>ProximityState for given distance</returns>
         private ProximityState GetProximityState(float sqrDistance)
         {
-            if (sqrDistance <= (config.ObjectCloseProximity * config.ObjectCloseProximity))
+            if (sqrDistance <= config.ObjectCloseProximity * config.ObjectCloseProximity)
             {
                 return ProximityState.CloseProximity;
             }
-            else if (sqrDistance <= (config.ObjectMediumProximity * config.ObjectMediumProximity))
+            else if (sqrDistance <= config.ObjectMediumProximity * config.ObjectMediumProximity)
             {
                 return ProximityState.MediumProximity;
             }

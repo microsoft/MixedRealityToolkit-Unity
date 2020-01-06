@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return VerifyInitialBoundsCorrect(bbox);
 
-            //--- 1. test no proximity scaling active per default
+            // 1. test no proximity scaling active per default
             ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
             Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
 
@@ -373,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             //// reset hand
             yield return hand.MoveTo(initialHandPosition);
 
-            //--- 2. enable proximity scaling and test defaults
+            // 2. enable proximity scaling and test defaults
             ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
             proximityConfig.ProximityEffectActive = true;
             proximityConfig.CloseGrowRate = 1.0f;
@@ -386,7 +386,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // reset hand
             yield return hand.MoveTo(initialHandPosition);
 
-            //--- 3. now test custom configuration is applied during runtime
+            // 3. now test custom configuration is applied during runtime
             proximityConfig.CloseScale = 4.0f;
             proximityConfig.MediumScale = 3.0f;
             proximityConfig.FarScale = 2.0f;
