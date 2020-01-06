@@ -14,7 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
 
         /// <inheritdoc />
-        public override SceneQueryType SceneQueryType { get { return raycastMode; } set { raycastMode = value; } }
+        public override SceneQueryType SceneQueryType 
+        { 
+            get => raycastMode; 
+            set => raycastMode = value;
+        }
 
         [SerializeField]
         [Min(0.0f)]
@@ -90,10 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.</returns>
         public bool IsNearObject
         {
-            get
-            {
-                return queryBufferNearObjectRadius.ContainsGrabbable();
-            }
+            get => queryBufferNearObjectRadius.ContainsGrabbable();
         }
 
         /// <summary>
@@ -304,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 // Also to not turn off the hand ray if hand is near a grabbable that's not actually visible
                                 grabbable = null;
                             }
-                        }   
+                        }
                     }
 
                     if (grabbable != null)
@@ -363,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 result = xMin <= cameraPos.x && cameraPos.x <= xMax 
                     && yMin <= cameraPos.y && cameraPos.y <= yMax
                     && zMin <= cameraPos.z && cameraPos.z <= zMax;
-                
+
                 colliderCache.Add(myCollider, result);
 
                 return result;
