@@ -321,6 +321,106 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSolverSwap()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // Instantiate and setup RadialView to place object in the view center.
+            var testObjects = InstantiateTestSolver<RadialView>();
+            RadialView radialViewSolver = (RadialView)testObjects.solver;
+            radialViewSolver.MinDistance = 2.0f;
+            radialViewSolver.MaxDistance = 2.0f;
+            radialViewSolver.MinViewDegrees = 0.0f;
+            radialViewSolver.MaxViewDegrees = 0.0f;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is placing object in center of View, so we can later check that a solver swap actually moved the target object.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView does not place object in center of view");
+
+            // Disable the old solver
+            radialViewSolver.enabled = false;
+
+            // Add a another solver during runtime, give him a specific location to check whether the new solver updates the target object.
+            Orbital orbitalSolver = AddSolverComponent<Orbital>(testObjects.target);
+            orbitalSolver.WorldOffset = Vector3.zero;
+            orbitalSolver.LocalOffset = Vector3.down * 2.0f;
+
+            // Let Orbital update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Orbital is now updating the target object
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.down * 2.0f, "Orbital solver did not place object below origin");
+
+            // Swap solvers once again during runtime
+            radialViewSolver.enabled = true;
+            orbitalSolver.enabled = false;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is now updating the target object once again.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
+        }
+
+
+        #region Experimental
+
+        /// <summary>
+        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDirectionalIndicator()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            const float ANGLE_THRESHOLD = 30.0f;
+
+            var directionTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            directionTarget.transform.position = 10.0f * Vector3.right; 
+
+            // Instantiate our test gameobject with solver.
+            var testObjects = InstantiateTestSolver<DirectionalIndicator>();
+
+            var indicatorSolver = testObjects.solver as DirectionalIndicator;
+            indicatorSolver.DirectionalTarget = directionTarget.transform;
+
+            var indicatorMesh = indicatorSolver.GetComponent<Renderer>();
+
+            // Test that solver points to the right and is visible
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            directionTarget.transform.position = -10.0f * Vector3.right;
+
+            // Test that solver points to the left now and is visible
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            // Test that the solver is invisible
+            directionTarget.transform.position = 5.0f * Vector3.forward;
+
+            yield return WaitForFrames(2);
+            Assert.IsFalse(indicatorMesh.enabled);
+        }
+
+        /// <summary>
         /// Test the Follow solver distance clamp options
         /// </summary>
         [UnityTest]
@@ -508,106 +608,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
-        }
-
-        /// <summary>
-        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator TestSolverSwap()
-        {
-            // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
-
-            // Instantiate and setup RadialView to place object in the view center.
-            var testObjects = InstantiateTestSolver<RadialView>();
-            RadialView radialViewSolver = (RadialView)testObjects.solver;
-            radialViewSolver.MinDistance = 2.0f;
-            radialViewSolver.MaxDistance = 2.0f;
-            radialViewSolver.MinViewDegrees = 0.0f;
-            radialViewSolver.MaxViewDegrees = 0.0f;
-
-            // Let RadialView update the target object
-            yield return WaitForFrames(2);
-
-            // Make sure Radial View is placing object in center of View, so we can later check that a solver swap actually moved the target object.
-            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView does not place object in center of view");
-
-            // Disable the old solver
-            radialViewSolver.enabled = false;
-
-            // Add a another solver during runtime, give him a specific location to check whether the new solver updates the target object.
-            Orbital orbitalSolver = AddSolverComponent<Orbital>(testObjects.target);
-            orbitalSolver.WorldOffset = Vector3.zero;
-            orbitalSolver.LocalOffset = Vector3.down * 2.0f;
-
-            // Let Orbital update the target object
-            yield return WaitForFrames(2);
-
-            // Make sure Orbital is now updating the target object
-            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.down * 2.0f, "Orbital solver did not place object below origin");
-
-            // Swap solvers once again during runtime
-            radialViewSolver.enabled = true;
-            orbitalSolver.enabled = false;
-
-            // Let RadialView update the target object
-            yield return WaitForFrames(2);
-
-            // Make sure Radial View is now updating the target object once again.
-            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
-        }
-
-
-        #region Experimental
-
-        /// <summary>
-        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
-        /// </summary>
-        [UnityTest]
-        public IEnumerator TestDirectionalIndicator()
-        {
-            // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
-
-            const float ANGLE_THRESHOLD = 30.0f;
-
-            var directionTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            directionTarget.transform.position = 10.0f * Vector3.right; 
-
-            // Instantiate our test gameobject with solver.
-            var testObjects = InstantiateTestSolver<DirectionalIndicator>();
-
-            var indicatorSolver = testObjects.solver as DirectionalIndicator;
-            indicatorSolver.DirectionalTarget = directionTarget.transform;
-
-            var indicatorMesh = indicatorSolver.GetComponent<Renderer>();
-
-            // Test that solver points to the right and is visible
-            yield return WaitForFrames(2);
-            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
-            Assert.IsTrue(indicatorMesh.enabled);
-
-            directionTarget.transform.position = -10.0f * Vector3.right;
-
-            // Test that solver points to the left now and is visible
-            yield return WaitForFrames(2);
-            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
-            Assert.IsTrue(indicatorMesh.enabled);
-
-            // Test that the solver is invisible
-            directionTarget.transform.position = 5.0f * Vector3.forward;
-
-            yield return WaitForFrames(2);
-            Assert.IsFalse(indicatorMesh.enabled);
         }
 
         #endregion
