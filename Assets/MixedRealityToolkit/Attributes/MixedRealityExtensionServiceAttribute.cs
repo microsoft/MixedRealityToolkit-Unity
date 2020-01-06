@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual SupportedPlatforms RuntimePlatforms { get; }
 
         /// <summary>
-        /// Is a Profile explicitly required?
+        /// Is a profile explicitly required?
         /// </summary>
         public virtual bool RequiresProfile { get; }
 
