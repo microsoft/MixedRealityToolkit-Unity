@@ -140,22 +140,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     // don't use IsInteractionEnabled for near pointers as the pointers might have a different radius when deciding
                     // if they can interact with a near-by object - we might still want to show proximity scaling even if
                     // eg. grab pointer decides it's too far away to actually perform the interaction
-                    if (pointer.IsActive
-                        && (pointer.IsInteractionEnabled || pointer is IMixedRealityNearPointer)
-                        && !proximityPointers.Contains(pointer))
+                    if (pointer.IsActive && !proximityPointers.Contains(pointer))
                     {
                         proximityPointers.Add(pointer);
                     }
                 }
             }
 
-            // Get the max radius possible of our current bounds plus the proximity
+            // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects
+           // float maxRadius = Mathf.Max(Mathf.Max(boundsExtents.x, boundsExtents.y), boundsExtents.z);
+            //maxRadius *= maxRadius;
             float squareMaxLength= boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
             {
-                
+                //float squareDistanceCenterToPointer = (position - point).sqrMagnitude
                 if (IsPointWithinBounds(boundsCenter, pointer.Position, squareMaxLength))
                 {
                     proximityPoints.Add(pointer.Position);
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsPointWithinBounds(Vector3 position, Vector3 point, float radiusSqr)
         {
-            return (position - point).sqrMagnitude < radiusSqr;
+            return (position - point).sqrMagnitude <= radiusSqr;
         }
 
 
