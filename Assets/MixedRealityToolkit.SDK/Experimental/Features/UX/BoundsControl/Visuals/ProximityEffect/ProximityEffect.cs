@@ -148,14 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects
-           // float maxRadius = Mathf.Max(Mathf.Max(boundsExtents.x, boundsExtents.y), boundsExtents.z);
-            //maxRadius *= maxRadius;
             float squareMaxLength= boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
             {
-                //float squareDistanceCenterToPointer = (position - point).sqrMagnitude
                 if (IsPointWithinBounds(boundsCenter, pointer.Position, squareMaxLength))
                 {
                     proximityPoints.Add(pointer.Position);
