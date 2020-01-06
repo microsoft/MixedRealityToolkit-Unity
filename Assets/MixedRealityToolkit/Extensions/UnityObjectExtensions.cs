@@ -39,5 +39,14 @@ namespace Microsoft.MixedReality.Toolkit
                 Object.DestroyImmediate(obj);
             }
         }
+
+        /// <summary>
+        /// Tests if the Unity object is null. Checks both the managed object and the underly Unity-managed native object
+        /// </summary>
+        /// <returns>True if either the managed or native object is null, false otherwise</returns>
+        public static bool IsNull(Object obj)
+        {
+            return obj == null || obj.Equals(null);
+        }
     }
 }

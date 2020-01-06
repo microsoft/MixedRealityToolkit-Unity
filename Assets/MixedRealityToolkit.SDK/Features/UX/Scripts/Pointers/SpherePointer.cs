@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (ignoreCollidersNotInFOV)
                         {
-                            if (!isInFOVCone(collider))
+                            if (!isInFOVConeCached(collider))
                             {
                                 // Additional check: is grabbable in the camera frustrum
                                 // We do this so that if grabbable is not visible it is not accidentally grabbed
@@ -318,21 +318,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 
             /// <summary>
-            /// Returns true if a collider's bounds is within the camera FOV
+            /// Returns true if a collider's bounds is within the camera FOV. 
+            /// Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.
             /// </summary>
             /// <param name="myCollider">The collider to test</param>
-            private bool isInFOVCone(Collider myCollider)
+            private bool isInFOVConeCached(Collider myCollider)
             {
                 if (lastCalculatedFrame != Time.frameCount)
                 {
                     colliderCache.Clear();
                     lastCalculatedFrame = Time.frameCount;
                 }
+
                 if (colliderCache.TryGetValue(myCollider, out bool result))
                 {
                     return result;
                 }
 
+                var cam = CameraCache.Main;
                 corners.Clear();
                 BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
 
@@ -341,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < corners.Count; i++)
                 {
                     var corner = corners[i];
-                    if (isPointInFOVCone(corner, 0))
+                    if (cam.IsInFOVCone(corner, 0))
                     {
                         colliderCache.Add(myCollider, true);
                         return true;
@@ -357,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // edge case: check if camera is inside the entire bounds of the collider;
                 // Consider simplifying to myCollider.bounds.Contains(CameraCache.main.transform.position)
-                var cameraPos = CameraCache.Main.transform.position;
+                var cameraPos = cam.transform.position;
                 result = xMin <= cameraPos.x && cameraPos.x <= xMax 
                     && yMin <= cameraPos.y && cameraPos.y <= yMax
                     && zMin <= cameraPos.z && cameraPos.z <= zMax;
@@ -365,37 +368,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 colliderCache.Add(myCollider, result);
 
                 return result;
-            }
-
-            /// <summary>
-            /// Returns true if a point is in the a cone inscribed into the 
-            /// Camera's frustrum. The cone is inscribed to match the vertical height of the camera's
-            /// FOV. By default, the cone's tip is "chopped off" by an amount defined by minDist. 
-            /// The cone's height is given by maxDist.
-            /// </summary>
-            /// <param name="point">Point to test</param>
-            /// <param name="coneAngleBufferDegrees">Degrees to expand the cone by.</param>
-            /// <param name="minDist">Point must be at least this far away (along the camera forward) from camera. </param>
-            /// <param name="maxDist">Point must be at most this far away (along camera forward) from camera. </param>
-            private static bool isPointInFOVCone(
-                Vector3 point, 
-                float coneAngleBufferDegrees = 0,
-                float minDist = 0.05f,
-                float maxDist = 100f)
-            {
-                Camera mainCam = CameraCache.Main;
-                var cameraToPoint = point - mainCam.transform.position;
-
-                var pointCameraDist = Vector3.Dot(mainCam.transform.forward, cameraToPoint);
-                if (pointCameraDist < minDist || pointCameraDist > maxDist)
-                {
-                    return false;
-                }
-
-                var verticalFOV = mainCam.fieldOfView + coneAngleBufferDegrees;
-                var degrees = Mathf.Acos(pointCameraDist / cameraToPoint.magnitude) * Mathf.Rad2Deg;
-
-                return degrees < verticalFOV * 0.5f;
             }
 
             /// <summary>

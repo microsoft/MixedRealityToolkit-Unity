@@ -55,6 +55,57 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
 
+        /// <summary>
+        /// Creates the spatial observer and handles the desired startup behavior.
+        /// </summary>
+        protected virtual void CreateObserver() { }
+
+        /// <summary>
+        /// Ensures that the spatial observer has been stopped and destroyed.
+        /// </summary>
+        protected virtual void CleanupObserver() { }
+
+        #region BaseService Implementation
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                CleanupObservationsAndObserver();
+            }
+
+            disposed = true;
+        }
+
+        #endregion BaseService Implementation
+
+        #region IMixedRealityDataProvider Implementation
+
+        /// <summary>
+        /// Creates the observer.
+        /// </summary>
+        public override void Initialize()
+        {
+            CreateObserver();
+        }
+
+        /// <summary>
+        /// Suspends the observer, clears observations, cleans up the observer, then re-initializes.
+        /// </summary>
+        public override void Reset()
+        {
+            Destroy();
+            Initialize();
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
@@ -67,12 +118,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Disable()
         {
+            // If we are disabled while running...
             if (IsRunning)
             {
+                // Suspend the observer
                 Suspend();
             }
         }
 
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            CleanupObservationsAndObserver();
+        }
+
+        #endregion IMixedRealityDataProvider Implementation
 
         #region IMixedRealityEventSource Implementation
 
@@ -157,5 +217,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public virtual void ClearObservations() { }
 
         #endregion IMixedRealitySpatialAwarenessObserver Implementation
+
+        #region Helpers
+
+        /// <summary>
+        /// Destroys all observed objects and the observer.
+        /// </summary>
+        private void CleanupObservationsAndObserver()
+        {
+            Disable();
+
+            // Destroys all observed objects and the observer.
+            ClearObservations();
+            CleanupObserver();
+        }
+
+        #endregion Helpers
     }
 }
