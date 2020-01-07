@@ -159,10 +159,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public override void Initialize()
         {
             meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
-            
-            base.Initialize();
 
             ReadProfile();
+
+            base.Initialize();
         }
 
         #endregion IMixedRealityDataProvider Implementation
