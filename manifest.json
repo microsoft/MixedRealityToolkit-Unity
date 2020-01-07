@@ -10770,7 +10770,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl.ProximityEffectConfiguration.html",
-          "hash": "2XWWkgh0WlmHJ++8PTfcMQ=="
+          "hash": "zesPkdOxSap6Q8F7s9lj+g=="
         }
       },
       "is_incremental": false,
@@ -19146,7 +19146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Experimental.BoundsControlTests.html",
-          "hash": "dkk10bY250YtmdT3S571gQ=="
+          "hash": "2EV+LsP3u2OA8w/JivGmJQ=="
         }
       },
       "is_incremental": false,
