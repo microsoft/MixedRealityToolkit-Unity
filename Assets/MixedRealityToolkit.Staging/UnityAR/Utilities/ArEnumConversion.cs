@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+#if ARFOUNDATION_PRESENT
 using UnityEngine.SpatialTracking;
+#endif // ARFOUNDATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -11,8 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     /// </summary>
     public static class ArEnumConversion
     {
+#if ARFOUNDATION_PRESENT
         /// <summary>
-        /// Converts from a <see cref="ArTrackedPose"/> to a Unity tracked pose value.
+        /// Converts from an <see cref="ArTrackedPose"/> to a Unity tracked pose value.
         /// </summary>
         /// <param name="pose">Value to convert.</param>
         /// <returns>
@@ -43,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         }
 
         /// <summary>
-        /// Converts from a <see cref="ArTrackingType"/> to a Unity tracking type value.
+        /// Converts from an <see cref="ArTrackingType"/> to a Unity tracking type value.
         /// </summary>
         /// <param name="trackingType">Value to convert.</param>
         /// <returns>
@@ -66,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         }
 
         /// <summary>
-        /// Converts from a <see cref="ArUpdateType"/> to a Unity update type value.
+        /// Converts from an <see cref="ArUpdateType"/> to a Unity update type value.
         /// </summary>
         /// <param name="updateType">Value to convert.</param>
         /// <returns>
@@ -87,5 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                     return (TrackedPoseDriver.UpdateType)((int)updateType);
             }
         }
+#endif // ARFOUNDATION_PRESENT
     }
 }
