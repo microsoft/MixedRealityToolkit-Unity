@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// angle between these projected vectors.
         /// </summary>
         /// <returns>Angle between project from and to in degrees</returns>
-        float AngleBetweenOnPlane(Vector3 from, Vector3 to, Vector3 normal)
+        private float AngleBetweenOnPlane(Vector3 from, Vector3 to, Vector3 normal)
         {
             from.Normalize();
             to.Normalize();
@@ -366,12 +366,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// is signed.
         /// </summary>
         /// <returns>Signed angle between vec and the plane described by normal</returns>
-        float AngleBetweenVectorAndPlane(Vector3 vec, Vector3 normal)
+        private float AngleBetweenVectorAndPlane(Vector3 vec, Vector3 normal)
         {
             return 90 - (Mathf.Acos(Vector3.Dot(vec, normal)) * Mathf.Rad2Deg);
         }
 
-        float SimplifyAngle(float angle)
+        private float SimplifyAngle(float angle)
         {
             while (angle > Mathf.PI)
             {
@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// IgnoreReferencePitchAndRoll is true and we have a PitchOffset, we only apply these calculations
         /// for xz.
         /// </summary>
-        bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, bool interpolateToDefaultDistance, ref Vector3 clampedPosition)
+        private bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, bool interpolateToDefaultDistance, ref Vector3 clampedPosition)
         {
             float clampedDistance;
             float currentDistance = Vector3.Distance(currentPosition, refPosition);
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return Vector3EqualEpsilon(clampedPosition, currentPosition, 0.0001f);
         }
 
-        void ComputeOrientation(Vector3 goalPosition, bool wasClamped, ref Quaternion orientation)
+        private void ComputeOrientation(Vector3 goalPosition, bool wasClamped, ref Quaternion orientation)
         {
             SolverOrientationType defaultOrientationType = OrientationType;
 
@@ -622,7 +622,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        void GetReferenceInfo(ref Vector3 refPosition, ref Quaternion refRotation, ref Vector3 refForward)
+        private void GetReferenceInfo(ref Vector3 refPosition, ref Quaternion refRotation, ref Vector3 refForward)
         {
             refPosition = ReferencePosition;
             refRotation = ReferenceRotation;
@@ -642,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             refForward = refRotation * Vector3.forward;
         }
 
-        bool Vector3EqualEpsilon(Vector3 x, Vector3 y, float eps)
+        private bool Vector3EqualEpsilon(Vector3 x, Vector3 y, float eps)
         {
             float sqrMagnitude = (x - y).sqrMagnitude;
 
