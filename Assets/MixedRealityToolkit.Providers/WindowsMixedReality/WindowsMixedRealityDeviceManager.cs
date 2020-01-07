@@ -320,9 +320,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (InputSystemProfile == null) { return; }
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            if (WindowsMixedRealityUtilities.WmrUtilitiesProvider == null)
+            if (WindowsMixedRealityUtilities.UtilitiesProvider == null)
             {
-                WindowsMixedRealityUtilities.WmrUtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
+                WindowsMixedRealityUtilities.UtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
             }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 

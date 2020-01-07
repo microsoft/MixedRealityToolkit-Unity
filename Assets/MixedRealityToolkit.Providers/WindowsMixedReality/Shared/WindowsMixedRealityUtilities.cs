@@ -39,7 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             try
             {
-                GetSpatialCoordinateSystem(nativePtr, out SpatialCoordinateSystem coordinateSystem);
+                SpatialCoordinateSystem coordinateSystem;
+                GetSpatialCoordinateSystem(nativePtr, out coordinateSystem);
                 return coordinateSystem;
             }
             catch
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         }
 #endif //ENABLE_DOTNET
 
-        public static IWindowsMixedRealityUtilitiesProvider WmrUtilitiesProvider { get; set; } = null;
+        public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
 
         /// <summary>
         /// Access the underlying native spatial coordinate system.
@@ -63,14 +64,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (spatialCoordinateSystem == null && WmrUtilitiesProvider != null)
+                if (spatialCoordinateSystem == null && UtilitiesProvider != null)
                 {
 #if ENABLE_DOTNET
-                    spatialCoordinateSystem = GetSpatialCoordinateSystem(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr);
+                    spatialCoordinateSystem = GetSpatialCoordinateSystem(UtilitiesProvider.ISpatialCoordinateSystemPtr);
 #elif WINDOWS_UWP
-                    spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
+                    spatialCoordinateSystem = Marshal.GetObjectForIUnknown(UtilitiesProvider.ISpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
 #elif DOTNETWINRT_PRESENT
-                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr);
+                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(UtilitiesProvider.ISpatialCoordinateSystemPtr);
 #endif
                 }
                 return spatialCoordinateSystem;
@@ -88,15 +89,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (WmrUtilitiesProvider == null)
+                if (UtilitiesProvider == null)
                 {
                     return null;
                 }
 
 #if DOTNETWINRT_PRESENT
-                return HolographicFrame.FromNativePtr(WmrUtilitiesProvider.IHolographicFramePtr);
+                return HolographicFrame.FromNativePtr(UtilitiesProvider.IHolographicFramePtr);
 #elif WINDOWS_UWP
-                return Marshal.GetObjectForIUnknown(WmrUtilitiesProvider.IHolographicFramePtr) as HolographicFrame;
+                return Marshal.GetObjectForIUnknown(UtilitiesProvider.IHolographicFramePtr) as HolographicFrame;
 #else
                 return null;
 #endif
