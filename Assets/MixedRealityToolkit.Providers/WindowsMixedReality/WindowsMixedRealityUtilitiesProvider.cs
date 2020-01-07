@@ -3,7 +3,10 @@
 
 using System;
 using System.Runtime.InteropServices;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {

@@ -320,7 +320,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             if (InputSystemProfile == null) { return; }
 
-            WindowsMixedRealityUtilities.WmrUtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
+            if (WindowsMixedRealityUtilities.WmrUtilitiesProvider == null)
+            {
+                WindowsMixedRealityUtilities.WmrUtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
+            }
 
             if (InputSystemProfile.GesturesProfile != null)
             {
