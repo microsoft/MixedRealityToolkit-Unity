@@ -161,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that NearInteractionTouchable can raise pointer events
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchablePointerEvents()
         {
