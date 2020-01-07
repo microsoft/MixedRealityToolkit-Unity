@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
         private async void Start()
         {
-            Debug.Log("Start");
             var path = $"{Application.streamingAssetsPath}{uri}";
             path = path.Replace("/", "\\");
 
@@ -53,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
             try
             {
-                Debug.Log("pre-ImportGltfObjectFromPathAsync");
                 gltfObject = await GltfUtility.ImportGltfObjectFromPathAsync(path);
 
                 // Put object in front of user
