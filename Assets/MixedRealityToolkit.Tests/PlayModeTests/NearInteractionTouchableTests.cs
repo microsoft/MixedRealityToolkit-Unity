@@ -177,34 +177,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             using (var catcher = CreatePointerEventCatcher(touchable))
             {
                 // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 0);
 
                 // Touch started and completed when entering and exiting behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, backPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition, backPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 1);
                 int dragEventCount = catcher.DragEventCount;
 
                 // No touch when moving at behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(backPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving behind plane");
 
 
                 // No touch when moving outside the bounds
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition + outOfBoundsOffset, rightPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving outside bounds");
