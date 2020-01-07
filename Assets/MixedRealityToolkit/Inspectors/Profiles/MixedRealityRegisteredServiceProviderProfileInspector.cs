@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -118,9 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                         }
 
-                        SystemType systemType = null;
-                        string typeName = null;
-                        MixedRealityExtensionServiceAttribute providerAttribute = null;
+                        SystemType serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
 
                         if (configFoldouts[i] || RenderAsSubProfile)
                         {
@@ -151,24 +148,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 changed |= EditorGUI.EndChangeCheck();
 
-                                Type serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
-
                                 changed |= RenderProfile(configurationProfile, null, true, true, serviceType);
                             }
 
                             serializedObject.ApplyModifiedProperties();
                         }
 
-                        systemType = ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType;
-                        if (systemType != null)
+                        if (IsProfileRequired(serviceType) && 
+                            (configurationProfile.objectReferenceValue == null))
                         {
-                            typeName = systemType.Type?.Name;
-                            providerAttribute = typeName != null ? MixedRealityExtensionServiceAttribute.Find(systemType) : null;
-                        }
-
-                        if (providerAttribute != null && providerAttribute.RequiresProfile && configurationProfile.objectReferenceValue == null)
-                        {
-                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a Profile", MessageType.Warning);
+                            EditorGUILayout.HelpBox($"{componentName} requires a Profile", MessageType.Warning);
                         }
                     }
                     EditorGUILayout.Space();

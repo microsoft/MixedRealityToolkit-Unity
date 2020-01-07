@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
@@ -142,6 +143,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Inspect the attributes of the provided <see cref="SystemType"/> to determine if a configuration profile is required.
+        /// </summary>
+        /// <param name="serviceType">The <see cref="SystemType"/> representing the service.</param>
+        /// <returns>
+        /// True if the service is decorated with an attribute indicating a profile is required, false otherwise.
+        /// </returns>
+        protected bool IsProfileRequired(SystemType serviceType)
+        {
+            // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
+            // support specifying whether or not a profile is required.
+            MixedRealityExtensionServiceAttribute attribute = serviceType != null ? MixedRealityExtensionServiceAttribute.Find(serviceType) : null;
+
+            return ((attribute != null) && attribute.RequiresProfile);
         }
 
         /// <summary>
