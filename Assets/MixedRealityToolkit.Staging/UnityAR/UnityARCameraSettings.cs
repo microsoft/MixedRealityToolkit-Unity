@@ -6,11 +6,11 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-#if (UNITY_IOS || UNITY_ANDROID) && ARFOUNDATION_PRESENT
+#if ARFOUNDATION_PRESENT
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
-#endif // (UNITY_IOS || UNITY_ANDROID) && ARFOUNDATION_PRESENT
+#endif // ARFOUNDATION_PRESENT
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// </summary>
         public UnityARCameraSettingsProfile SettingsProfile => ConfigurationProfile as UnityARCameraSettingsProfile;
 
-#if (UNITY_IOS || UNITY_ANDROID) && ARFOUNDATION_PRESENT
+#if ARFOUNDATION_PRESENT
         private bool isSupportedArConfiguration = true;
         private bool isInitialized = false;
 
@@ -214,6 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             isInitialized = false;
         }
-#endif // (UNITY_IOS || UNITY_ANDROID) && ARFOUNDATION_PRESENT
+#endif // ARFOUNDATION_PRESENT
     }
 }
