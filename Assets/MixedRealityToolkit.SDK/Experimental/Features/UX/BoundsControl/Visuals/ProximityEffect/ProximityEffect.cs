@@ -137,30 +137,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 foreach (var pointer in inputSource.Pointers)
                 {
-                    if (pointer.IsInteractionEnabled && !proximityPointers.Contains(pointer))
+                    // don't use IsInteractionEnabled for near pointers as the pointers might have a different radius when deciding
+                    // if they can interact with a near-by object - we might still want to show proximity scaling even if
+                    // eg. grab pointer decides it's too far away to actually perform the interaction
+                    if (pointer.IsActive && !proximityPointers.Contains(pointer))
                     {
                         proximityPointers.Add(pointer);
                     }
                 }
             }
 
-            // Get the max radius possible of our current bounds plus the proximity
-            float maxRadius = Mathf.Max(Mathf.Max(boundsExtents.x, boundsExtents.y), boundsExtents.z);
-            maxRadius *= maxRadius;
-            maxRadius += config.ObjectCloseProximity + config.ObjectMediumProximity;
+            // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects. This is done by adjusting the original bounds to include the ObjectMediumProximity range in x, y and z axis
+            float squareMaxLength = boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
             {
-                if (IsPointWithinBounds(boundsCenter, pointer.Position, maxRadius))
+                if (IsPointWithinBounds(boundsCenter, pointer.Position, squareMaxLength))
                 {
                     proximityPoints.Add(pointer.Position);
                 }
-
-                Vector3? point = pointer.Result?.Details.Point;
-                if (point.HasValue && IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, maxRadius))
-                {
-                    proximityPoints.Add(pointer.Result.Details.Point);
+                
+                if (pointer.Result?.CurrentPointerTarget != null)
+                { 
+                    Vector3? point = pointer.Result?.Details.Point;
+                    if (point.HasValue && IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, squareMaxLength))
+                    {
+                        proximityPoints.Add(pointer.Result.Details.Point);
+                    }
                 }
             }
 
@@ -267,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsPointWithinBounds(Vector3 position, Vector3 point, float radiusSqr)
         {
-            return (position - point).sqrMagnitude < radiusSqr;
+            return (position - point).sqrMagnitude <= radiusSqr;
         }
 
 
@@ -278,11 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <returns>ProximityState for given distance</returns>
         private ProximityState GetProximityState(float sqrDistance)
         {
-            if (sqrDistance < config.ObjectCloseProximity * config.ObjectCloseProximity)
+            if (sqrDistance <= config.ObjectCloseProximity * config.ObjectCloseProximity)
             {
                 return ProximityState.CloseProximity;
             }
-            else if (sqrDistance < config.ObjectMediumProximity * config.ObjectMediumProximity)
+            else if (sqrDistance <= config.ObjectMediumProximity * config.ObjectMediumProximity)
             {
                 return ProximityState.MediumProximity;
             }

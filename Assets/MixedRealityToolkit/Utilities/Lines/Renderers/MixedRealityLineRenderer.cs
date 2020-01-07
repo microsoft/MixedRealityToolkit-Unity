@@ -23,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public Material LineMaterial
         {
-            get { return lineMaterial; }
-            set { lineMaterial = value; }
+            get => lineMaterial;
+            set => lineMaterial = value;
         }
 
         [SerializeField]
@@ -32,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public bool RoundedEdges
         {
-            get { return roundedEdges; }
-            set { roundedEdges = value; }
+            get => roundedEdges;
+            set => roundedEdges = value;
         }
 
         [SerializeField]
@@ -41,8 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public bool RoundedCaps
         {
-            get { return roundedCaps; }
-            set { roundedCaps = value; }
+            get => roundedCaps;
+            set => roundedCaps = value;
         }
 
         [SerializeField]
@@ -50,25 +50,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private bool fadeLineBrightnessOnEnable = true;
 
         /// <summary>
-        /// Sets whether the ray line will animate to a lower brightness level after a hand/controller is recognized
+        /// Sets whether the ray line will animate to a lower brightness level on enable of this component
         /// </summary>
         public bool FadeLineBrightnessOnEnable
         {
-            get { return fadeLineBrightnessOnEnable; }
-            set { fadeLineBrightnessOnEnable = value; }
+            get => fadeLineBrightnessOnEnable;
+            set => fadeLineBrightnessOnEnable = value;
         }
 
         [SerializeField, Range(0f, 1f)]
-        [Tooltip("The amount the pointer line will fade if fadeLineBrightnessOnEnable is true.")]
+        [Tooltip("The amount the pointer line will fade if FadeLineBrightnessOnEnable is true.")]
         private float fadeLinePercentage = 0.55f;
 
         /// <summary>
-        /// The amount the pointer line will fade if fadeLineBrightnessOnEnable is true"
+        /// The amount the pointer line will fade if FadeLineBrightnessOnEnable is true"
         /// </summary>
         public float FadeLinePercentage
         {
-            get { return fadeLinePercentage; }
-            set { fadeLinePercentage = value; }
+            get => fadeLinePercentage;
+            set => fadeLinePercentage = value;
         }
 
         [SerializeField]
@@ -80,8 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float FadeLineAnimationTime
         {
-            get { return fadeLineAnimationTime; }
-            set { fadeLineAnimationTime = value; }
+            get => fadeLineAnimationTime;
+            set => fadeLineAnimationTime = value;
         }
 
         [SerializeField]
@@ -107,9 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             lineRenderer = gameObject.EnsureComponent<LineRenderer>();
 
-            if (lineMaterial == null)
+            if (LineMaterial == null)
             {
-                lineMaterial = lineRenderer.sharedMaterial;
+                LineMaterial = lineRenderer.sharedMaterial;
             }
 
             // mafinc - Start the line renderer off disabled (invisible), we'll enable it
@@ -119,13 +119,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 lineRenderer.enabled = false;
             }
 
-            if (lineMaterial == null)
+            if (LineMaterial == null)
             {
                 Debug.LogError("MixedRealityLineRenderer needs a material.");
                 enabled = false;
             }
 
-            fadeLine = StartCoroutine(FadeLine(fadeLinePercentage, fadeLineAnimationTime));
+            if (FadeLineBrightnessOnEnable)
+            {
+                fadeLine = StartCoroutine(FadeLine(FadeLinePercentage, FadeLineAnimationTime));
+            }
         }
 
         private void OnDisable()

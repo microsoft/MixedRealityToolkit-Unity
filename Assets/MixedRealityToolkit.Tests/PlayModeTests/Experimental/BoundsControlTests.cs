@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             p =>
             {
                 p.position = Vector3.zero;
-                p.LookAt(cube.transform.position);
+                p.LookAt(boundsControlStartCenter);
             });
 
             bbox.transform.localScale = boundsControlStartScale;
@@ -333,6 +333,117 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             bbox.gameObject.SetActive(true);
             yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
             Assert.AreEqual(afterTransformScale, bbox.transform.localScale);
+        }
+
+        /// <summary>
+        /// Tests proximity scaling on scale handles of bounds control
+        /// Verifies default behavior of handles with effect enabled / disabled as well as custom runtime configured scaling / distance values
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ProximityOnScaleHandles()
+        {
+            var bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            // 1. test no proximity scaling active per default
+            ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
+            Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0f);
+            // this is specific to scale handles
+            Transform scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
+            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            var frontRightCornerPos = scaleHandle.position; // front right corner is corner 
+            Assert.IsNotNull(proximityScaledVisual, "Couldn't get visual gameobject for scale handle");
+            Assert.IsTrue(proximityScaledVisual.name == "visuals", "scale visual has unexpected name");
+
+            yield return null;
+            // verify no proximity scaling applied per default
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
+            TestHand hand = new TestHand(Handedness.Left);
+            Vector3 initialScale = bbox.transform.localScale;
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return null;
+
+            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
+
+            //// reset hand
+            yield return hand.MoveTo(initialHandPosition);
+
+            // 2. enable proximity scaling and test defaults
+            ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
+            proximityConfig.ProximityEffectActive = true;
+            proximityConfig.CloseGrowRate = 1.0f;
+            proximityConfig.MediumGrowRate = 1.0f;
+            proximityConfig.FarGrowRate = 1.0f;
+            bbox.CreateRig();
+            yield return null; // wait so rig gameobjects get recreated
+            yield return TestCurrentProximityConfiguration(bbox, hand, "Defaults");
+
+            // reset hand
+            yield return hand.MoveTo(initialHandPosition);
+
+            // 3. now test custom configuration is applied during runtime
+            proximityConfig.CloseScale = 4.0f;
+            proximityConfig.MediumScale = 3.0f;
+            proximityConfig.FarScale = 2.0f;
+
+            proximityConfig.ObjectMediumProximity = 0.2f;
+            proximityConfig.ObjectCloseProximity = 0.1f;
+
+            bbox.CreateRig();
+            yield return null; // wait so rig gameobjects get recreated
+            yield return TestCurrentProximityConfiguration(bbox, hand, "Custom runtime config max");
+        }
+
+        /// <summary>
+        /// This tests far, medium and close proximity scaling on scale handles by moving the test hand in the corresponding distance ranges
+        /// </summary>
+        /// <param name="bbox">Bounds Control to test on</param>
+        /// <param name="hand">Test hand to use for testing proximity to handle</param>
+        private IEnumerator TestCurrentProximityConfiguration(BoundsControl bbox, TestHand hand, string testDescription)
+        {
+            // get config and scaling handle
+            ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
+            Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
+            Transform scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
+            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            var frontRightCornerPos = scaleHandle.position;
+            // check far scale applied
+            ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
+            Vector3 expectedFarScale = defaultHandleSize * proximityConfig.FarScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedFarScale, testDescription + " - Proximity far scale wasn't applied to handle");
+
+            // move into medium range and check if scale was applied
+            Vector3 mediumProximityTestDist = frontRightCornerPos;
+            mediumProximityTestDist.x += proximityConfig.ObjectMediumProximity;
+            yield return hand.MoveTo(mediumProximityTestDist);
+            Vector3 expectedMediumScale = defaultHandleSize * proximityConfig.MediumScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedMediumScale, testDescription + " - Proximity medium scale wasn't applied to handle");
+
+            // move into close scale range and check if scale was applied
+            Vector3 closeProximityTestDir = frontRightCornerPos;
+            closeProximityTestDir.x += proximityConfig.ObjectCloseProximity;
+            yield return hand.MoveTo(closeProximityTestDir);
+            Vector3 expectedCloseScale = defaultHandleSize * proximityConfig.CloseScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedCloseScale, testDescription + " - Proximity close scale wasn't applied to handle");
+
+            // move out of close scale again - should fall back to medium proximity
+            closeProximityTestDir = mediumProximityTestDist;
+            yield return hand.MoveTo(closeProximityTestDir);
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedMediumScale, testDescription + " - Proximity medium scale wasn't applied to handle");
+
+            // move out of medium proximity and check if far scaling is applied
+            mediumProximityTestDist = Vector3.zero;
+            yield return hand.MoveTo(mediumProximityTestDist);
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedFarScale, testDescription + " - Proximity far scale wasn't applied to handle");
+
+            yield return null;
         }
 
         /// <summary>

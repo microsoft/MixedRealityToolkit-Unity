@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         }
 
         /// <summary>
-        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
+        /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
         /// </summary>
         public override void Register(GameObject listener)
         {
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public float TeleportDuration
         {
-            get { return teleportDuration; }
+            get => teleportDuration;
             set
             {
                 if (isProcessingTeleportRequest)
