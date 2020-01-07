@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     /// <summary>
     /// Follow solver positions an element in front of the of the tracked target (relative to its local forward axis).
-    /// The element can be loosly constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
+    /// The element can be loosely constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
     /// beyond user defined bounds.
     /// </summary>
     public class Follow : Solver
