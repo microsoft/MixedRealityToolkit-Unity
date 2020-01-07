@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (!AudioSettings.GetSpatializerPluginName().Equals(MSFT_AudioSpatializerPlugin))
                 {
-                    // If using UWP, developers should use the Microsoft Audio Spatilizer plugin
+                    // If using UWP, developers should use the Microsoft Audio Spatializer plugin
                     Debug.LogWarning("<b>Audio Spatializer Plugin</b> not currently set to <i>" + MSFT_AudioSpatializerPlugin + "</i>. Switch to <i>" + MSFT_AudioSpatializerPlugin + "</i> under <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i>");
                 }
             }
