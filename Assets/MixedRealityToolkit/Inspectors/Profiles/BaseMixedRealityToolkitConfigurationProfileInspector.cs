@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             // Services marked with the MixedRealityExtensionServiceAttribute (or a derivative)
             // support specifying whether or not a profile is required.
-            MixedRealityExtensionServiceAttribute attribute = serviceType != null ? MixedRealityExtensionServiceAttribute.Find(serviceType) : null;
+            MixedRealityExtensionServiceAttribute attribute = (serviceType?.Type != null) ? MixedRealityExtensionServiceAttribute.Find(serviceType.Type) : null;
 
             return ((attribute != null) && attribute.RequiresProfile);
         }

@@ -197,15 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     serializedObject.ApplyModifiedProperties();
                 }
 
-                if (serviceType?.Type != null)
+                if (IsProfileRequired(serviceType) &&
+                    (providerProperties.providerProfile.objectReferenceValue == null))
                 {
-                    MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(serviceType.Type) as MixedRealityDataProviderAttribute;
-                    if ((providerAttribute != null) &&
-                        providerAttribute.RequiresProfile &&
-                        providerProperties.providerProfile.objectReferenceValue == null)
-                    {
-                        EditorGUILayout.HelpBox($"{providerProperties.componentName.stringValue} requires a profile.", MessageType.Warning);
-                    }
+                    EditorGUILayout.HelpBox($"{providerProperties.componentName.stringValue} requires a profile.", MessageType.Warning);
                 }
             }
 
