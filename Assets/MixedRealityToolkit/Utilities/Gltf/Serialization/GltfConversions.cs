@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
             else
             {
-                Debug.LogWarning($"Invalid color array of size {colorArray?.Length}");
+                Debug.LogWarning($"GetColorValue() - Invalid color array of size {colorArray?.Length}");
                 return Color.black;
             }
         }
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
             else
             {
-                Debug.LogWarning($"Invalid Vector2 array of size {vector2Array?.Length}");
+                Debug.LogWarning($"GetVector2Value() - Invalid Vector2 array of size {vector2Array?.Length}");
                 return Vector2.zero;
             }
         }
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
             else
             {
-                Debug.LogWarning($"Invalid Vector3 array of size {vector3Array?.Length}");
+                Debug.LogWarning($"GetVector3Value() - Invalid Vector3 array of size {vector3Array?.Length}");
                 return Vector3.zero;
             }
         }
