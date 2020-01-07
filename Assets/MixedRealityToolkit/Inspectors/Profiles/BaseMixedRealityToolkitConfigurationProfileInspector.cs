@@ -146,9 +146,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Inspect the attributes of the provided <see cref="SystemType"/> to determine if a configuration profile is required.
+        /// Inspect the attributes of the provided system type to determine if a configuration profile is required.
         /// </summary>
-        /// <param name="serviceType">The <see cref="SystemType"/> representing the service.</param>
+        /// <param name="serviceType">The system type representing the service.</param>
         /// <returns>
         /// True if the service is decorated with an attribute indicating a profile is required, false otherwise.
         /// </returns>
