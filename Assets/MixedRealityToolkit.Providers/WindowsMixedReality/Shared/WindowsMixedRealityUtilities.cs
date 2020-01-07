@@ -106,13 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-        [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
+        [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
             return vector.ToUnityVector3();
         }
 
-        [Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
+        [System.Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
         public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
             return quaternion.ToUnityQuaternion();
