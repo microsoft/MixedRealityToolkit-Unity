@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
 
-            // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects
+            // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects. This is done by adjusting the original bounds to include the ObjectMediumProximity range in x, y and z axis
             float squareMaxLength = boundsExtents.sqrMagnitude + (3 * config.ObjectMediumProximity * config.ObjectMediumProximity);
 
             // Grab points within sphere of influence from valid pointers
