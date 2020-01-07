@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             PlayerSettings.VRDaydream.depthFormat = depthFormat;
 
             var playerSettings = GetSettingsObject("PlayerSettings");
-#if UNITY_2019
+#if UNITY_2019_1_OR_NEWER
             PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ?
                 PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
                 PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
