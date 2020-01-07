@@ -382,11 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestDirectionalIndicator()
         {
             // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             const float ANGLE_THRESHOLD = 30.0f;
 
@@ -427,11 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestFollowDistance()
         {
             // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
@@ -571,13 +563,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 directionToHead() => CameraCache.Main.transform.position - targetTransform.position;
             float xAngle() => (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.right)) * Mathf.Rad2Deg) - 90;
             float yAngle() => 90 - (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.up)) * Mathf.Rad2Deg);
-            
+
             // Test without rotation
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             yield return new WaitForFixedUpdate();
             yield return null;
