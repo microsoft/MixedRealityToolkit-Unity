@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             if (isDepthReprojectionModeSupported &&
                 (ReprojectionMethod == HolographicDepthReprojectionMethod.AutoPlanar))
             {
-                Microsoft.Windows.Graphics.Holographic.HolographicFrame frame = Input.WindowsMixedRealityUtilities.CurrentHolographicFrame;
+                Microsoft.Windows.Graphics.Holographic.HolographicFrame frame = WindowsMixedRealityUtilities.CurrentHolographicFrame;
                 foreach (var cameraPose in frame?.CurrentPrediction.CameraPoses)
                 {
                     if (CameraSupportsAutoPlanar(cameraPose.HolographicCamera))

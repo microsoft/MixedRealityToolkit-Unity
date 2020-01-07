@@ -7,7 +7,6 @@ using Microsoft.MixedReality.Toolkit.Windows.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using UnityEngine;
 using System;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 #if UNITY_WSA
 using System.Collections.Generic;
@@ -320,6 +319,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Application.isPlaying) { return; }
 
             if (InputSystemProfile == null) { return; }
+
+            WindowsMixedRealityUtilities.WmrUtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
 
             if (InputSystemProfile.GesturesProfile != null)
             {

@@ -4,7 +4,6 @@
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System;
 using System.Runtime.InteropServices;
-using UnityEngine.XR.WSA;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
 #if DOTNETWINRT_PRESENT
@@ -18,7 +17,7 @@ using Microsoft.Windows.Perception.Spatial;
 #endif
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
+namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     public static class WindowsMixedRealityUtilities
     {
@@ -51,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 #endif //ENABLE_DOTNET
 
+        public static IWindowsMixedRealityUtilitiesProvider WmrUtilitiesProvider { get; set; } = null;
+
         /// <summary>
         /// Access the underlying native spatial coordinate system.
         /// </summary>
@@ -62,18 +63,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             get
             {
-#if ENABLE_DOTNET
-                return spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
-#elif WINDOWS_UWP
-                return spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
-#elif DOTNETWINRT_PRESENT
-                var spatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
-                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != IntPtr.Zero)
+                if (spatialCoordinateSystem == null && WmrUtilitiesProvider != null)
                 {
-                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
+#if ENABLE_DOTNET
+                    spatialCoordinateSystem = GetSpatialCoordinateSystem(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr);
+#elif WINDOWS_UWP
+                    spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
+#elif DOTNETWINRT_PRESENT
+                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WmrUtilitiesProvider.ISpatialCoordinateSystemPtr);
+#endif
                 }
                 return spatialCoordinateSystem;
-#endif
             }
         }
 
@@ -88,14 +88,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             get
             {
+                if (WmrUtilitiesProvider == null)
+                {
+                    return null;
+                }
+
 #if DOTNETWINRT_PRESENT
-                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
-                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
-                return HolographicFrame.FromNativePtr(hfd.IHolographicFramePtr);
+                return HolographicFrame.FromNativePtr(WmrUtilitiesProvider.IHolographicFramePtr);
 #elif WINDOWS_UWP
-                IntPtr nativePtr = UnityEngine.XR.XRDevice.GetNativePtr();
-                HolographicFrameNativeData hfd = Marshal.PtrToStructure<HolographicFrameNativeData>(nativePtr);
-                return Marshal.GetObjectForIUnknown(hfd.IHolographicFramePtr) as HolographicFrame;
+                return Marshal.GetObjectForIUnknown(WmrUtilitiesProvider.IHolographicFramePtr) as HolographicFrame;
 #else
                 return null;
 #endif
@@ -105,13 +106,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-        [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
+        [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
             return vector.ToUnityVector3();
         }
 
-        [System.Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
+        [Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
         public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
             return quaternion.ToUnityQuaternion();
