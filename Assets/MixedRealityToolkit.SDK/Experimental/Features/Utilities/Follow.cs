@@ -6,8 +6,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
-    /// Follow solver positions an element relative in front of the forward axis of the reference.
-    /// The element can be loosly constrained (a.k.a. tag-along) so that it doesn't follow until it is too far.
+    /// Follow solver positions an element in front of the of the tracked target (relative to its local forward axis).
+    /// The element can be loosly constrained (a.k.a. tag-along) so that it doesn't follow until the tracked target moves
+    /// beyond user defined bounds.
     /// </summary>
     public class Follow : Solver
     {
@@ -117,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Min distance from eye to position element around, i.e. the sphere radius")]
+        [Tooltip("Default distance from eye to position element around, i.e. the sphere radius")]
         private float defaultDistance = 1f;
 
         /// <summary>
@@ -130,11 +131,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("The element will stay at least this close to the center of view")]
+        [Tooltip("The horizontal angle from the tracked target forward axis to this object will not exceed this value")]
         private float maxViewHorizontalDegrees = 30f;
 
         /// <summary>
-        /// The element will stay at least this close to the center of view.
+        /// The horizontal angle from the tracked target forward axis to this object will not exceed this value.
         /// </summary>
         public float MaxViewHorizontalDegrees
         {
@@ -143,11 +144,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("The element will stay at least this close to the center of view")]
+        [Tooltip("The vertical angle from the tracked target forward axis to this object will not exceed this value")]
         private float maxViewVerticalDegrees = 30f;
 
         /// <summary>
-        /// The element will stay at least this close to the center of view.
+        /// The vertical angle from the tracked target forward axis to this object will not exceed this value.
         /// </summary>
         public float MaxViewVerticalDegrees
         {
@@ -169,11 +170,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("The element will stay world lock until the angle between the forward vector and vector to the controller is greater then the deadzone")]
+        [Tooltip("The element will not reorient until the angle between the forward vector and vector to the controller is greater then this value")]
         private float orientToControllerDeadzoneDegrees = 60f;
 
         /// <summary>
-        /// The element will stay world lock until the angle between the forward vector and vector to the controller is greater then the deadzone.
+        /// The element will not reorient until the angle between the forward vector and vector to the controller is greater then this value.
         /// </summary>
         public float OrientToControllerDeadzoneDegrees
         {
@@ -261,11 +262,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [Range(2, 24)]
         [SerializeField]
-        [Tooltip("The division of steps this object can tether to. Higher the number, the more snapple steps.")]
+        [Tooltip("The division of steps this object can tether to. Higher the number, the more snapping steps.")]
         private int tetherAngleSteps = 6;
 
         /// <summary>
-        /// The division of steps this object can tether to. Higher the number, the more snapple steps.
+        /// The division of steps this object can tether to. Higher the number, the more snapping steps.
         /// </summary>
         public int TetherAngleSteps
         {
@@ -311,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             bool wasClamped = false;
 
-            // Angularly clamp to determine goal direction to place the element
+            // Angular clamp to determine goal direction to place the element
             Vector3 goalDirection = refForward;
             if (!ignoreAngleClamp && !recenterNextUpdate)
             {
@@ -345,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Projects from and to on to the plane with given normal and gets the
         /// angle between these projected vectors.
         /// </summary>
-        /// <returns>angle between project from and to in degrees</returns>
+        /// <returns>Angle between project from and to in degrees</returns>
         float AngleBetweenOnPlane(Vector3 from, Vector3 to, Vector3 normal)
         {
             from.Normalize();
@@ -364,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Calculates the angle between vec and a plane described by normal. The angle returned
         /// is signed.
         /// </summary>
-        /// <returns>signed angle between vec and the plane described by normal</returns>
+        /// <returns>Signed angle between vec and the plane described by normal</returns>
         float AngleBetweenVectorAndPlane(Vector3 vec, Vector3 normal)
         {
             return 90 - (Mathf.Acos(Vector3.Dot(vec, normal)) * Mathf.Rad2Deg);
@@ -385,6 +386,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return angle;
         }
 
+        /// <summary>
+        /// This method ensures that the refForward vector remains within the bounds set by the 
+        /// leashing parameters. To do this, it determines the angles between toTarget and the reference
+        /// local xz and yz planes. If these angles fall within the leashing bounds, then we don't have
+        /// to modify refForward. Otherwise, we apply a correction rotation to bring it within bounds.
+        /// </summary>
         private bool AngularClamp(Vector3 refPosition, Quaternion refRotation, Vector3 currentPosition, ref Vector3 refForward)
         {
             Vector3 toTarget = currentPosition - refPosition;
@@ -399,12 +406,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Start off with a rotation towards the target. If it's within leashing bounds, we can leave it alone.
             Quaternion rotation = Quaternion.LookRotation(toTarget, Vector3.up);
-
-            // This is the meat of the leashing algorithm. The goal is to ensure that the reference's forward
-            // vector remains within the bounds set by the leashing parameters. To do this, determine the angles
-            // between toTarget and the leashing bounds about the global Y axis and the reference's X axis.
-            // If toTarget falls within the leashing bounds, then we don't have to modify it.
-            // Otherwise, we apply a correction rotation to bring it within bounds.
 
             Vector3 currentRefForward = refRotation * Vector3.forward;
             Vector3 refRight = refRotation * Vector3.right;
@@ -468,6 +469,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return angularClamped;
         }
 
+        /// <summary>
+        /// This method ensures that the distance from clampedPosition to the tracked target remains within 
+        /// the bounds set by the leashing parameters. To do this, it clamps the current distance to these
+        /// bounds and then uses this clamped distance with refForward to calculate the new position. If
+        /// IgnoreReferencePitchAndRoll is true and we have a PitchOffset, we only apply these calculations
+        /// for xz.
+        /// </summary>
         bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, bool interpolateToDefaultDistance, ref Vector3 clampedPosition)
         {
             float clampedDistance;
