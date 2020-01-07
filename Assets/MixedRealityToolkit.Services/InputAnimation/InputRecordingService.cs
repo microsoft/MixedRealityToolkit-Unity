@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         (SupportedPlatforms)(-1), // Supported on all platforms
         "Input Recording Service",
         "Profiles/DefaultMixedRealityInputRecordingProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true)]
     public class InputRecordingService :
         BaseInputDeviceManager,
         IMixedRealityInputRecordingService
