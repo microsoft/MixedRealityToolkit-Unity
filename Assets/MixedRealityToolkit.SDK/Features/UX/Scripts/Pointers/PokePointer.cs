@@ -345,6 +345,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
                 }
+                else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                {
+                    CoreServices.InputSystem?.RaisePointerDragged(this, pointerAction, Handedness, InputSourceParent);
+                }
             }
         }
 
