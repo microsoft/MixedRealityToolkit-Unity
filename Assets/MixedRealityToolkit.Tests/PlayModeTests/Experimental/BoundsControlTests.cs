@@ -53,12 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cube.transform.position = boundsControlStartCenter;
             BoundsControl bbox = cube.AddComponent<BoundsControl>();
 
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(boundsControlStartCenter);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             bbox.transform.localScale = boundsControlStartScale;
             bbox.Active = true;
@@ -158,7 +153,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+        }
 
+        /// <summary>
+        /// Tests scaling of bounds control by grabbing a corner with the far interaction hand ray
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator ScaleViaFarInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+            
+            Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(rightCornerInteractionPoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(scalePoint);
+            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
+            Vector3 expectedSize = Vector3.one * 0.59f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
         }
 
         /// <summary>
