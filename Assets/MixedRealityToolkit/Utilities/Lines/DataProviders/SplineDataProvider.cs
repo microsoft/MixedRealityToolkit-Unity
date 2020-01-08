@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         };
 
         /// <summary>
-        /// List of positions and orientations that define control points to generate spline
+        /// List of positions and orientations that define control points to generate the spline
         /// </summary>
         public MixedRealityPose[] ControlPoints => controlPoints;
 
