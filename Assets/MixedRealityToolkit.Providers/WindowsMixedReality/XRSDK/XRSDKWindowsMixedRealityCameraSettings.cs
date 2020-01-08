@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
-        SupportedPlatforms.WindowsUniversal,
-        "Windows Mixed Reality Camera Settings",
+        SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsStandalone,
+        "XR SDK Windows Mixed Reality Camera Settings",
         "WindowsMixedReality/Shared/Profiles/DefaultWindowsMixedRealityCameraSettingsProfile.asset",
         "MixedRealityToolkit.Providers")]
     public class XRSDKWindowsMixedRealityCameraSettings : BaseWindowsMixedRealityCameraSettings

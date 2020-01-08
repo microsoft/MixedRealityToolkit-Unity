@@ -15,18 +15,11 @@ MonoBehaviour:
   isCustomProfile: 0
   settingsConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Experimental.UnityAR.UnityARCameraSettings,
-        Microsoft.MixedReality.Toolkit.Providers.UnityAR
-    componentName: Unity AR Foundation Camera Settings
-    priority: 0
-    runtimePlatform: 288
-    settingsProfile: {fileID: 11400000, guid: a8af4c5deb4155b479e4e2d2b0bca103, type: 2}
-  - componentType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.XRSDKWindowsMixedRealityCameraSettings,
-        Microsoft.MixedReality.Toolkit.Providers.XRSDK
-    componentName: Windows Mixed Reality Camera Settings
+        Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
+    componentName: XR SDK Windows Mixed Reality Camera Settings
     priority: 0
-    runtimePlatform: 8
+    runtimePlatform: 9
     settingsProfile: {fileID: 11400000, guid: b8be5b71c8e0a254c83b691d62a79ff5, type: 2}
   nearClipPlaneOpaqueDisplay: 0.1
   farClipPlaneOpaqueDisplay: 1000
