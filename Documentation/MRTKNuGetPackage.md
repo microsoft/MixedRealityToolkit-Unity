@@ -72,8 +72,6 @@ With the latest source from MRTK, you can build the NuGet package locally and co
     - Press **Add New Source** and replace **source_path** with the `<Path to your Repository>\NuGet\artifacts`
 
         ![Edit Preferences Menu Item](Images/NuGet/AddNewSource.png)
-
-    - Press **Save**.
 1. If this your first time building, or the version was incremented, follow the update process:
     1. In the Unity menu bar, click on **NuGet > Manage NuGet Packages**.
 
