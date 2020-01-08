@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Management;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -42,23 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             return (capability == MixedRealityCapability.MotionController);
         }
 
-        private XRInputSubsystem inputSubsystem;
-        private XRInputSubsystem InputSubsystem
-        {
-            get
-            {
-                if (inputSubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
-                {
-                    inputSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRInputSubsystem>();
-                }
-
-                return inputSubsystem;
-            }
-        }
-
         protected static readonly Dictionary<string, GenericXRSDKController> ActiveControllers = new Dictionary<string, GenericXRSDKController>();
 
         private InputDevice leftInputDevice;
@@ -70,9 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             base.Update();
 
-            if (InputSubsystem == null || !InputSubsystem.running)
+            if (XRSDKSubsystemHelpers.InputSubsystem == null || !XRSDKSubsystemHelpers.InputSubsystem.running)
             {
-                Debug.Log($"Input system null {InputSubsystem == null}");
+                Debug.Log($"Input system null {XRSDKSubsystemHelpers.InputSubsystem == null}");
                 return;
             }
 
