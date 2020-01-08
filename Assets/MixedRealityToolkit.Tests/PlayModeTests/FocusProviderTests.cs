@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             inputSimulationService.UserInputEnabled = false;
 
-            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(ArticulatedHandPose.GestureId.Open);
+            ArticulatedHandPose gesturePose = SimulatedArticulatedHandPoses.GetGesturePose(ArticulatedHandPose.GestureId.Open);
             var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f, Quaternion.identity);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;

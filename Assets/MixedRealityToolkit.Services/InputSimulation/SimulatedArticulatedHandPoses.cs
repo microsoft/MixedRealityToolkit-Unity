@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private static void LoadGesturePoses()
         {
-            gesturePoses = new Dictionary<ArticulatedHandPose.GestureId, ArticulatedHandPose>();
+            gesturePoses = new Dictionary<GestureId, ArticulatedHandPose>();
 
             foreach (var mapping in GesturePoseJSONMapping)
             {
@@ -512,7 +512,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 ""position"": {
                   ""x"": -0.08690944314002991,
                   ""y"": 0.013536587357521057,
-                  ""z"": -0.3781388998031616""
+                  ""z"": -0.3781388998031616
                 },
                 ""rotation"": {
                   ""x"": 0.0,
@@ -939,9 +939,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
               }
             }
           ]
-        }
-                ";
-
+        }";
+        
         #endregion
 
         #region ArticulatedHandPose_Open JSON
@@ -3151,6 +3150,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
           ]
         }";
+
+        #endregion
 
         #region ArticulatedHandPose_ThumbsUp JSON
 
