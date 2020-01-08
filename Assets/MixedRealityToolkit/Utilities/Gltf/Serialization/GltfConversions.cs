@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         internal static Vector3 GetVector3Value(this float[] vector3Array, bool convert = true)
         {
-            if (vector3Array != null && vector3Array.Length == 2)
+            if (vector3Array != null && vector3Array.Length == 3)
             {
                 var vector = new Vector3(vector3Array[0], vector3Array[1], vector3Array[2]);
                 return convert ? Vector3.Scale(vector, CoordinateSpaceConversionScale) : vector;
