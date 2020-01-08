@@ -301,9 +301,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         bool IsHandTracked()
         {
             return HandJointService.IsHandTracked(Handedness.Right) || HandJointService.IsHandTracked(Handedness.Left);
-
-            // no service detected, return false
-            return false;
         }
     }
 }
