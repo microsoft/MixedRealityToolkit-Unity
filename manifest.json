@@ -19386,7 +19386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
-          "hash": "21eiClqcRTtB5pDwfvTNGQ=="
+          "hash": "JFgmdtLv157BYPaidp7IUw=="
         }
       },
       "is_incremental": false,
@@ -19722,7 +19722,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TouchEventCatcher.html",
-          "hash": "nWTAsNlvvxpFGGJlmvIXnA=="
+          "hash": "ddrlDiafL+fSaxjn0sSPlQ=="
         }
       },
       "is_incremental": false,
@@ -25318,16 +25318,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1515,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 145,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1515,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
