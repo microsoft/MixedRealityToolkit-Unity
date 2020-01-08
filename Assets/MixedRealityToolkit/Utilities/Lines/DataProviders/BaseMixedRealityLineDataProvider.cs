@@ -14,39 +14,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [ExecuteAlways] 
     public abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {
-        protected const int UnclampedWorldLengthSearchSteps = 10;
-        private const float MinRotationMagnitude = 0.0001f;
-        private const float MinLineStartClamp = 0.0001f;
-        private const float MaxLineEndClamp = 0.9999f;
+        #region Properties
 
-        public float UnClampedWorldLength => GetUnClampedWorldLengthInternal();
-
-        [Range(0f, 1f)]
+        [Range(MinLineStartClamp, MaxLineEndClamp)]
         [SerializeField]
         [Tooltip("Clamps the line's normalized start point. This setting will affect line renderers.")]
-        private float lineStartClamp = 0f;
+        private float lineStartClamp = MinLineStartClamp;
 
         /// <summary>
         /// Clamps the line's normalized start point. This setting will affect line renderers.
         /// </summary>
         public float LineStartClamp
         {
-            get { return lineStartClamp; }
-            set { lineStartClamp = Mathf.Clamp01(value); }
+            get => lineStartClamp;
+            set => lineStartClamp = Mathf.Clamp(value, MinLineStartClamp, MaxLineEndClamp);
         }
 
-        [Range(0f, 1f)]
+        [Range(MinLineStartClamp, MaxLineEndClamp)]
         [SerializeField]
         [Tooltip("Clamps the line's normalized end point. This setting will affect line renderers.")]
-        private float lineEndClamp = 1f;
+        private float lineEndClamp = MaxLineEndClamp;
 
         /// <summary>
         /// Clamps the line's normalized end point. This setting will affect line renderers.
         /// </summary>
         public float LineEndClamp
         {
-            get { return lineEndClamp; }
-            set { lineEndClamp = Mathf.Clamp01(value); }
+            get => lineEndClamp;
+            set => lineEndClamp = Mathf.Clamp(value, MinLineStartClamp, MaxLineEndClamp);
         }
 
         [SerializeField]
@@ -58,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Transform LineTransform
         {
-            get { return customLineTransform != null ? customLineTransform : transform; }
-            set { customLineTransform = value; }
+            get => customLineTransform != null ? customLineTransform : transform;
+            set => customLineTransform = value;
         }
 
         [SerializeField]
@@ -72,8 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>Some classes override this setting.</remarks>
         public virtual bool Loops
         {
-            get { return loops; }
-            set { loops = value; }
+            get => loops;
+            set => loops = value;
         }
 
         [SerializeField]
@@ -85,8 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public LinePointTransformMode TransformMode
         {
-            get { return transformMode; }
-            set { transformMode = value; }
+            get => transformMode;
+            set => transformMode = value;
         }
 
         [SerializeField]
@@ -98,8 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public LineRotationMode RotationMode
         {
-            get { return rotationMode; }
-            set { rotationMode = value; }
+            get => rotationMode;
+            set => rotationMode = value;
         }
 
         [SerializeField]
@@ -111,8 +106,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public bool FlipUpVector
         {
-            get { return flipUpVector; }
-            set { flipUpVector = value; }
+            get => flipUpVector;
+            set => flipUpVector = value;
         }
 
         [SerializeField]
@@ -124,8 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Vector3 OriginOffset
         {
-            get { return originOffset; }
-            set { originOffset = value; }
+            get => originOffset;
+            set => originOffset = value;
         }
 
         [Range(0f, 1f)]
@@ -138,8 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float ManualUpVectorBlend
         {
-            get { return manualUpVectorBlend; }
-            set { manualUpVectorBlend = Mathf.Clamp01(value); }
+            get => manualUpVectorBlend;
+            set => manualUpVectorBlend = Mathf.Clamp01(value);
         }
 
         [SerializeField]
@@ -151,8 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Vector3[] ManualUpVectors
         {
-            get { return manualUpVectors; }
-            set { manualUpVectors = value; }
+            get => manualUpVectors;
+            set => manualUpVectors = value;
         }
 
         [SerializeField]
@@ -168,8 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </remarks>
         public float VelocitySearchRange
         {
-            get { return velocitySearchRange; }
-            set { velocitySearchRange = Mathf.Clamp(value, 0.001f, 0.1f); }
+            get => velocitySearchRange;
+            set =>  velocitySearchRange = Mathf.Clamp(value, 0.001f, 0.1f);
         }
 
         [SerializeField]
@@ -178,21 +173,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// A list of distorters that apply to this line
         /// </summary>
-        public List<Distorter> Distorters
+        public IReadOnlyList<Distorter> Distorters
         {
             get
             {
                 if (distorters.Count == 0)
                 {
-                    var newDistorters = GetComponents<Distorter>();
-
-                    for (int i = 0; i < newDistorters.Length; i++)
-                    {
-                        distorters.Add(newDistorters[i]);
-                    }
+                    distorters.AddRange(GetComponents<Distorter>());
+                    distorters.Sort();
                 }
 
-                distorters.Sort();
                 return distorters;
             }
         }
@@ -206,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public bool DistortionEnabled
         {
-            get { return distortionEnabled; }
-            set { distortionEnabled = value; }
+            get => distortionEnabled;
+            set => distortionEnabled = value;
         }
 
         [SerializeField]
@@ -219,40 +209,58 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public DistortionMode DistortionMode
         {
-            get { return distortionMode; }
-            set { distortionMode = value; }
+            get => distortionMode;
+            set => distortionMode = value;
         }
 
         [SerializeField]
+        [Tooltip("Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength")]
         private AnimationCurve distortionStrength = AnimationCurve.Linear(0f, 1f, 1f, 1f);
 
+        /// <summary>
+        /// Curve that defines distoration strength over distance, only used when DistortionMode = NormalizedLength
+        /// </summary>
         public AnimationCurve DistortionStrength
         {
-            get { return distortionStrength; }
-            set { distortionStrength = value; }
+            get => distortionStrength;
+            set => distortionStrength = value;
         }
 
         [Range(0f, 1f)]
+        [Tooltip("Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform")]
         [SerializeField]
         private float uniformDistortionStrength = 1f;
 
+        /// <summary>
+        /// Float value that defines distoration strength uniformly over distance, only used when DistortionMode = Uniform
+        /// </summary>
         public float UniformDistortionStrength
         {
-            get { return uniformDistortionStrength; }
-            set { uniformDistortionStrength = Mathf.Clamp01(value); }
+            get => uniformDistortionStrength;
+            set => uniformDistortionStrength = Mathf.Clamp01(value);
         }
 
+        /// <summary>
+        /// Returns world position of first point along line as defined by this data provider
+        /// </summary>
         public Vector3 FirstPoint
         {
-            get { return GetPoint(0); }
-            set { SetPoint(0, value); }
+            get => GetPoint(0);
+            set => SetPoint(0, value);
         }
 
+        /// <summary>
+        /// Returns world position of last point along line as defined by this data provider
+        /// </summary>
         public Vector3 LastPoint
         {
-            get { return GetPoint(PointCount - 1); }
-            set { SetPoint(PointCount - 1, value); }
+            get => GetPoint(PointCount - 1);
+            set => SetPoint(PointCount - 1, value);
         }
+
+        public float UnClampedWorldLength => GetUnClampedWorldLengthInternal();
+
+        #endregion
 
         #region BaseMixedRealityLineDataProvider Abstract Declarations
 
@@ -291,6 +299,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected abstract float GetUnClampedWorldLengthInternal();
 
+        private Matrix4x4 localToWorldMatrix;
+        private Matrix4x4 worldToLocalMatrix;
+
+        protected const int UnclampedWorldLengthSearchSteps = 10;
+        private const float MinRotationMagnitude = 0.0001f;
+        private const float MinLineStartClamp = 0.0001f;
+        private const float MaxLineEndClamp = 0.9999f;
+
         #endregion BaseMixedRealityLineDataProvider Abstract Declarations
 
         #region MonoBehaviour Implementation
@@ -298,7 +314,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected virtual void OnEnable()
         {
             UpdateMatrix();
-            distorters.Sort();
         }
 
         protected virtual void LateUpdate()
@@ -328,13 +343,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 // Get the normalized length of this position along the line
                 normalizedLength = normalizedSegmentLength * i;
+
                 Vector3 currentPoint = GetUnClampedPoint(normalizedLength);
-                distanceSoFar += Vector3.Distance(lastPoint, currentPoint);
+
+                float currDistance = Vector3.Distance(lastPoint, currentPoint);
+                distanceSoFar += currDistance;
 
                 if (distanceSoFar >= worldLength)
                 {
                     // We've reached the world length, so subtract the amount we overshot
-                    normalizedLength -= (distanceSoFar - worldLength) / Vector3.Distance(lastPoint, currentPoint) * normalizedSegmentLength;
+                    normalizedLength -= (distanceSoFar - worldLength) / currDistance * normalizedSegmentLength;
                     break;
                 }
 
@@ -382,7 +400,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
                 case LineRotationMode.RelativeToOrigin:
                     Vector3 point = GetPoint(normalizedLength);
-                    Vector3 origin = TransformPoint(originOffset);
+                    Vector3 origin = originOffset;
+                    TransformPoint(ref origin);
                     rotationVector = (point - origin).normalized;
                     break;
                 case LineRotationMode.None:
@@ -423,8 +442,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Vector3 GetPoint(float normalizedLength)
         {
-            normalizedLength = ClampedLength(normalizedLength);
-            return DistortPoint(TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
+            normalizedLength = Mathf.Lerp(lineStartClamp, lineEndClamp, Mathf.Clamp01(normalizedLength));
+            Vector3 point = GetPointInternal(normalizedLength);
+            TransformPoint(ref point);
+            DistortPoint(ref point, normalizedLength);
+            return point;
         }
 
         /// <summary>
@@ -433,7 +455,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Vector3 GetUnClampedPoint(float normalizedLength)
         {
             normalizedLength = Mathf.Clamp01(normalizedLength);
-            return DistortPoint(TransformPoint(GetPointInternal(normalizedLength)), normalizedLength);
+            Vector3 point = GetPointInternal(normalizedLength);
+            TransformPoint(ref point);
+            DistortPoint(ref point, normalizedLength);
+            return point;
         }
 
         /// <summary>
@@ -446,8 +471,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Debug.LogError("Invalid point index");
                 return Vector3.zero;
             }
-
-            return TransformPoint(GetPointInternal(pointIndex));
+            
+            Vector3 point = GetPointInternal(pointIndex);
+            TransformPoint(ref point);
+            return point;
         }
 
         /// <summary>
@@ -462,7 +489,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            SetPointInternal(pointIndex, InverseTransformPoint(point));
+            InverseTransformPoint(ref point);
+            SetPointInternal(pointIndex, point);
         }
 
         /// <summary>
@@ -480,56 +508,50 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public float GetNormalizedLengthFromWorldPos(Vector3 worldPosition, int resolution = 5, int maxIterations = 5)
         {
             int iteration = 0;
-            float length = GetNormalizedLengthFromWorldPosInternal(worldPosition, 0f, ref iteration, resolution, maxIterations, 0f, 1f);
-            return length;
+            return GetNormalizedLengthFromWorldPosInternal(worldPosition, 0f, ref iteration, resolution, maxIterations, 0f, 1f);
         }
 
-        private Vector3 InverseTransformPoint(Vector3 point)
+        private void InverseTransformPoint(ref Vector3 point)
         {
             switch (transformMode)
             {
                 case LinePointTransformMode.UseTransform:
                 default:
-                    return LineTransform.InverseTransformPoint(point);
+                    point = LineTransform.InverseTransformPoint(point);
+                    return;
                 case LinePointTransformMode.UseMatrix:
-                    return worldToLocalMatrix.MultiplyPoint3x4(point);
+                    point = worldToLocalMatrix.MultiplyPoint3x4(point);
+                    return;
             }
         }
 
-        private Vector3 TransformPoint(Vector3 point)
+        private void TransformPoint(ref Vector3 point)
         {
             switch (transformMode)
             {
                 case LinePointTransformMode.UseTransform:
                 default:
-                    return LineTransform.TransformPoint(point);
+                    point = LineTransform.TransformPoint(point);
+                    return;
                 case LinePointTransformMode.UseMatrix:
-                    return localToWorldMatrix.MultiplyPoint3x4(point);
+                    point = localToWorldMatrix.MultiplyPoint3x4(point);
+                    return;
             }
         }
 
         public void UpdateMatrix()
         {
-            switch (transformMode)
+            if (transformMode == LinePointTransformMode.UseMatrix)
             {
-                case LinePointTransformMode.UseTransform:
-                default:
-                    return;
-                case LinePointTransformMode.UseMatrix:
-                    break;
-            }
-
-            Transform t = LineTransform;
-            if (t.hasChanged)
-            {
-                t.hasChanged = false;
-                localToWorldMatrix = LineTransform.localToWorldMatrix;
-                worldToLocalMatrix = LineTransform.worldToLocalMatrix;
+                Transform t = LineTransform;
+                if (t.hasChanged)
+                {
+                    t.hasChanged = false;
+                    localToWorldMatrix = LineTransform.localToWorldMatrix;
+                    worldToLocalMatrix = LineTransform.worldToLocalMatrix;
+                }
             }
         }
-
-        private Matrix4x4 localToWorldMatrix;
-        private Matrix4x4 worldToLocalMatrix;
 
         private float GetNormalizedLengthFromWorldPosInternal(Vector3 worldPosition, float currentLength, ref int iteration, int resolution, int maxIterations, float start, float end)
         {
@@ -576,10 +598,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return GetNormalizedLengthFromWorldPosInternal(worldPosition, currentLength, ref iteration, resolution, maxIterations, newStart, newEnd);
         }
 
-        private Vector3 DistortPoint(Vector3 point, float normalizedLength)
+        private void DistortPoint(ref Vector3 point, float normalizedLength)
         {
             if (!distortionEnabled || distorters.Count == 0)
-                return point;
+            {
+                return;
+            }
 
             float strength = uniformDistortionStrength;
 
@@ -591,34 +615,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = 0; i <distorters.Count; i++)
             {
                 Distorter distorter = distorters[i];
-
-                if (!distorter.DistortionEnabled)
-                    continue;
-
-                point = distorter.DistortPoint(point, strength);
+                if (distorter.DistortionEnabled)
+                {
+                    point = distorter.DistortPoint(point, strength);
+                }
             }
-
-            return point;
-        }
-
-        private float ClampedLength(float normalizedLength)
-        {
-            if (lineStartClamp < MinLineStartClamp)
-                lineStartClamp = MinLineStartClamp;
-            else if (lineStartClamp > MaxLineEndClamp)
-                lineStartClamp = MaxLineEndClamp;
-
-            if (lineEndClamp < MinLineStartClamp)
-                lineEndClamp = MinLineStartClamp;
-            else if (lineEndClamp > MaxLineEndClamp)
-                lineEndClamp = MaxLineEndClamp;
-
-            if (normalizedLength > 1)
-                return 1;
-            else if (normalizedLength < 0)
-                return 0;
-
-            return Mathf.Lerp(lineStartClamp, lineEndClamp, normalizedLength);
         }
 
         private void OnDrawGizmos()

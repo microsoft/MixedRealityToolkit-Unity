@@ -25,7 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Eye Gaze Provider",
-        "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK")]
+        "Profiles/DefaultMixedRealityEyeTrackingProfile.asset", "MixedRealityToolkit.SDK",
+        true)]
     public class WindowsMixedRealityEyeGazeDataProvider : BaseInputDeviceManager, IMixedRealityEyeGazeDataProvider, IMixedRealityEyeSaccadeProvider, IMixedRealityCapabilityCheck
     {
         /// <summary>

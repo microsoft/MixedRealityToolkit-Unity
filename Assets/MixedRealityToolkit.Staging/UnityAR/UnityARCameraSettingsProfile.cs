@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEngine;
-using UnityEngine.SpatialTracking;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -14,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {
-#region Tracked Pose Driver settings
+        #region Tracked Pose Driver settings
 
         [SerializeField]
         [Tooltip("The portion of the device (ex: color camera) from which to read the pose.")]
@@ -43,6 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// </summary>
         public ArUpdateType UpdateType => updateType;
 
-#endregion Tracked Pose Driver settings
+        #endregion Tracked Pose Driver settings
     }
 }

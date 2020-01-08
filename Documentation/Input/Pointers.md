@@ -49,11 +49,15 @@ The following classes are the out-of-box MRTK pointers available and defined in 
 
 ##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer)
 
- *LinePointer*, a base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
+ *LinePointer*, a base pointer class, draws a line from the source of the input (i.e. the controller) in the pointer direction and supports a single ray cast in this direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
 
 For motion controllers like in Oculus, Vive, and Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Line.png" width="400">
+
+##### [`CurvePointer`](xref:Microsoft.MixedReality.Toolkit.Input.CurvePointer)
+
+*CurvePointer* extends the *LinePointer* class by allowing for multi-step ray casts along a curve. This base pointer class is useful for curved instances such as teleportation pointers where the line consistently bends into a parabola.
 
 ##### [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer)
 
@@ -97,15 +101,21 @@ Useful Poke Pointer properties:
 
 The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction, which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
 
+<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+
+
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
 - *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
-
 > [!NOTE]
 > The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
+- *Ignore Colliders Not in FOV* - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+This can prevent accidental grabs, and will allow hand rays to turn on when you may be near 
+a grabbable but cannot see it. The *Visual FOV* is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV). 
 
-<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+<img src="../../Documentation/Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
+
 
 #### Teleport pointers
 
