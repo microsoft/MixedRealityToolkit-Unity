@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected BaseMixedRealityLineDataProvider lineDataSource;
 
         /// <summary>
-        /// The line data this component will render
+        /// The data provider component that provides the positioning source information for the LineRenderer.
         /// </summary>
         public BaseMixedRealityLineDataProvider LineDataSource
         {
@@ -192,6 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return LineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
 
+        /// <summary>
+        /// Gets the normalized distance along the line path (range 0 to 1) going the given number of steps provided
+        /// </summary>
+        /// <param name="stepNum">Number of steps to take "walking" along the curve </param>
         protected virtual float GetNormalizedPointAlongLine(int stepNum)
         {
             float normalizedDistance = 0;
@@ -225,9 +229,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             UpdateLine();
         }
 
+        /// <summary>
+        /// Executes every Unity LateUpdate(). Any property updates or frame updates should occur here to update the line data source.
+        /// </summary>
         protected abstract void UpdateLine();
 
-#if UNITY_EDITOR
+        #region Gizmos
+
+        #if UNITY_EDITOR
+
         protected virtual void OnDrawGizmos()
         {
             if (UnityEditor.Selection.activeGameObject == gameObject || Application.isPlaying) { return; }
@@ -321,6 +331,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
-#endif
+
+        #endif
+        #endregion
     }
 }
