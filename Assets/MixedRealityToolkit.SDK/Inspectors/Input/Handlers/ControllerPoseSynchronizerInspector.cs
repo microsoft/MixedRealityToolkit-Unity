@@ -53,20 +53,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return; 
             }
 
-            EditorGUI.indentLevel++;
+            HandednessInspectorGUI.DrawControllerHandednessDropdown(handedness);
 
-            if (DrawHandednessProperty)
+            EditorGUILayout.PropertyField(destroyOnSourceLost);
+            EditorGUILayout.PropertyField(useSourcePoseData);
+
+            if (!useSourcePoseData.boolValue)
             {
-                HandednessInspectorGUI.DrawControllerHandednessDropdown(handedness);
-            }
-
-                EditorGUILayout.PropertyField(destroyOnSourceLost);
-                EditorGUILayout.PropertyField(useSourcePoseData);
-
-                if (!useSourcePoseData.boolValue)
-                {
-                    EditorGUILayout.PropertyField(poseAction);
-                }
+                EditorGUILayout.PropertyField(poseAction);
             }
 
             serializedObject.ApplyModifiedProperties();
