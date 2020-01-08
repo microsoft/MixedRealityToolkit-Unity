@@ -181,7 +181,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand handRight = new TestHand(Handedness.Right);
             yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return handRight.Show(Vector3.zero);
-            yield return handRight.Move(new Vector3(0.0f, -0.1f, 0f));
+
+            // Move requires a slower action (i.e. higher numSteps) in order to
+            // achieve a reliable pan.
+            yield return handRight.Move(new Vector3(0.0f, -0.1f, 0f), 30);
 
             Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.1, "pan delta is not correct");
 

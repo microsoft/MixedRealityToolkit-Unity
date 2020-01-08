@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
     /// Configuration profile for the Windows Mixed Reality Camera settings provider.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Windows Mixed Reality Camera Settings Profile", fileName = "WindowsMixedRealityCameraSettingsProfile", order = 100)]
-    [MixedRealityServiceProfile(typeof(WindowsMixedRealityCameraSettings))]
+    [MixedRealityServiceProfile(typeof(BaseWindowsMixedRealityCameraSettings))]
     public class WindowsMixedRealityCameraSettingsProfile : BaseCameraSettingsProfile
     {
         [SerializeField]

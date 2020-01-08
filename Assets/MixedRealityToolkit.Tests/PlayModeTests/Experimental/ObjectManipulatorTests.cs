@@ -131,15 +131,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // grab the cube - move it to the right 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            // This particular test is sensitive to the number of steps that a hand is moving,
+            // so it's set to 30 to override the default amount.
             int numSteps = 30;
-            
+
             Vector3 handOffset = new Vector3(0, 0, 0.1f);
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             Vector3 rightPosition = new Vector3(1f, 0f, 1f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             yield return null;
 
@@ -150,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // forcefully end manipulation and drag with hand back to original position - object shouldn't move with hand
             manipHandler.ForceEndManipulation();
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             posDiff = testObject.transform.position - initialObjectPosition;
             Assert.IsTrue(posDiff.magnitude > maxError, "ObjectManipulator modified objects even though manipulation was forcefully ended.");
@@ -158,10 +161,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(posDiff.magnitude <= maxError, "Manipulated object didn't remain in place after forcefully ending manipulation");
 
             // move hand back to object
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
 
             // grab object again and move to original position
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             // test if object was moved by ObjectManipulator
             posDiff = testObject.transform.position - initialObjectPosition;
@@ -553,8 +556,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         private class OriginOffsetTest
         {
-            const int numSteps = 10;
-
             public struct TestData
             {
                 // transform data
@@ -586,35 +587,35 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
                 TestHand rightHand = new TestHand(Handedness.Right);
 
                 // One hand rotate near
-                yield return rightHand.MoveTo(rightHandNearPos, numSteps);
+                yield return rightHand.MoveTo(rightHandNearPos);
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return rightHand.SetRotation(testQuaternion, numSteps);
+                yield return rightHand.SetRotation(testQuaternion);
                 RecordTransform(testObject.transform, "one hand rotate near");
 
                 // Two hand rotate/scale near
-                yield return rightHand.SetRotation(Quaternion.identity, numSteps);
-                yield return leftHand.MoveTo(leftHandNearPos, numSteps);
+                yield return rightHand.SetRotation(Quaternion.identity);
+                yield return leftHand.MoveTo(leftHandNearPos);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0), numSteps);
-                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0), numSteps);
+                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0));
+                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0));
                 RecordTransform(testObject.transform, "two hand rotate/scale near");
 
                 // Two hand rotate/scale far
-                yield return rightHand.MoveTo(rightHandNearPos, numSteps);
-                yield return leftHand.MoveTo(leftHandNearPos, numSteps);
+                yield return rightHand.MoveTo(rightHandNearPos);
+                yield return leftHand.MoveTo(leftHandNearPos);
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-                yield return rightHand.MoveTo(rightHandFarPos, numSteps);
-                yield return leftHand.MoveTo(leftHandFarPos, numSteps);
+                yield return rightHand.MoveTo(rightHandFarPos);
+                yield return leftHand.MoveTo(leftHandFarPos);
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0), numSteps);
-                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0), numSteps);
+                yield return rightHand.Move(new Vector3(0.2f, 0.2f, 0));
+                yield return leftHand.Move(new Vector3(-0.2f, -0.2f, 0));
                 RecordTransform(testObject.transform, "two hand rotate/scale far");
 
                 // One hand rotate near
-                yield return rightHand.MoveTo(rightHandFarPos, numSteps);
-                yield return leftHand.MoveTo(leftHandFarPos, numSteps);
+                yield return rightHand.MoveTo(rightHandFarPos);
+                yield return leftHand.MoveTo(leftHandFarPos);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return leftHand.Hide();
 
@@ -628,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
                 yield return null;
                 
                 Vector3 newHandPosition = Quaternion.AngleAxis(testRotation, Vector3.up) * rightHandFarPos;
-                yield return rightHand.MoveTo(newHandPosition, numSteps);
+                yield return rightHand.MoveTo(newHandPosition);
                 RecordTransform(testObject.transform, "one hand rotate far");
 
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);

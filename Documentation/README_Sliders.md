@@ -53,6 +53,8 @@ If you cannot use the handles, you can instead specify the start and end points 
 
 **Tick Marks** The gameobject that contains the desired tick marks that goes along the slider.
 
+**Thumb Visuals** The gameobject that contains the desired thumb visual that goes along the slider.
+
 **Slider Axis** The axis the slider moves along.
 
 **Slider Start Distance** Where the slider track starts, as distance from center along slider axis, in local space units.

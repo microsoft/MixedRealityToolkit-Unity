@@ -57,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            base.LateUpdate();
+
             leftHand = null;
             rightHand = null;
 
@@ -108,6 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             // Check existence of fauxJoints before destroying. This avoids a (harmless) race
             // condition when the service is getting destroyed at the same time that the gameObjects
             // are being destroyed at shutdown.
