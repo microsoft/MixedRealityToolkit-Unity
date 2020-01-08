@@ -1,8 +1,24 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
 - [2.1.0 to 2.2.0](#updating-210-to-220)
+- [2.2.0 to 2.3.0](#updating-220-to-230)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
+
+> [!NOTE]
+> Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
+
+## Updating 2.2.0 to 2.3.0
+
+- [API changes](#api-changes-in-230)
+
+### API changes in 2.3.0
+
+#### ScriptingUtilities.cs
+
+The ScriptingUtilities.cs file was moved from the MixedRealityToolkit\Utilities folder to MixedRealityToolkit\Utilities\Editor. As a result, the class has been moved to the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly.
+
+In addition, the `AppendScriptingDefinitions` method has a new signature.  It no longer takes the fileName argument.
 
 ## Updating 2.1.0 to 2.2.0
 

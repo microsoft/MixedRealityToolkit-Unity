@@ -1,15 +1,12 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Async",
-        "Unity.XR.ARFoundation"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "Android",
         "Editor",
-        "iOS"
+        "WSA"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

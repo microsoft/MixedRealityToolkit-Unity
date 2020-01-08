@@ -29,11 +29,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
-
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
         private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+
+        /// <summary>
+        /// The default number of frames that elapse for each test hand movement.
+        /// Intentionally a smaller number to keep tests fast.
+        /// </summary>
+        private const int HandMoveStepsDefault = 5;
+
+        /// <summary>
+        /// The default number of frames that elapse when in slow test hand mode.
+        /// See UseSlowTestHand for more information.
+        /// </summary>
+        private const int HandMoveStepsSlow = 60;
+
+        /// <summary>
+        /// If true, the hand movement test steps will take a longer number of frames. This is especially
+        /// useful for seeing motion in play mode tests (where the default smaller number of frames tends
+        /// to make tests too fast to be understandable to the human eye). This is false by default
+        /// to ensure that tests will run quickly in general, and can be set to true manually in specific
+        /// test cases using the example below.
+        /// </summary>
+        /// <example> 
+        /// <code>
+        /// [UnityTest]
+        /// public IEnumerator YourTestCase()
+        /// {
+        ///     PlayModeTestUtilities.UseSlowTestHand = true;
+        ///     ...
+        ///     PlayModeTestUtilities.UseSlowTestHand = false;
+        /// }
+        /// </code>
+        /// </example>
+        /// <remarks>
+        /// Note that this value is reset to false after each play mode test that uses
+        /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+        /// UseSlowTestHand = true ends up slowing all subsequent tests.
+        /// </remarks>
+        public static bool UseSlowTestHand = false;
+
+        /// <summary>
+        /// The number of frames that elapse for each test hand movement, taking into account if
+        /// slow test hand mode has been engaged.
+        /// </summary>
+        public static int HandMoveSteps => UseSlowTestHand ? HandMoveStepsSlow : HandMoveStepsDefault;
+
+        /// <summary>
+        /// A sentinel value used by hand test utilities to indicate that the default number of move
+        /// steps should be used or not.
+        /// </summary>
+        /// <remarks>
+        /// This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.
+        /// </remarks>
+        internal const int HandMoveStepsSentinelValue = -1;
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -41,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void Setup()
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            // See comments for UseSlowTestHand for why this is reset to false on each test case.
+            PlayModeTestUtilities.UseSlowTestHand = false;
 
             bool sceneExists = false;
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -232,33 +287,46 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
+            yield return MoveHand(handPos, handPos, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService, 2);
         }
 
         public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
             InputSimulationService simulationService = GetInputSimulationService();
             var hand = simulationService.GetHandDevice(handedness);
-            foreach (var pointer in hand.InputSource.Pointers)
+            if (hand != null && hand.InputSource != null)
             {
-                if (pointer is T)
+                foreach (var pointer in hand.InputSource.Pointers)
                 {
-                    return pointer as T;
+                    if (pointer is T result)
+                    {
+                        return result;
+                    }
                 }
             }
             return null;
         }
 
-        internal static IEnumerator MoveHandFromTo(
-            Vector3 startPos, Vector3 endPos, int numSteps,
-            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        /// <summary>
+        /// Moves the the hand from startPos to endPos.
+        /// </summary>
+        /// <remarks>
+        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used (i.e. HandMoveSteps). HandMoveSteps is not a compile
+        /// time constant, which is a requirement for default parameter values.
+        /// </remarks>
+        internal static IEnumerator MoveHand(
+            Vector3 startPos, Vector3 endPos,
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService,
+            int numSteps = HandMoveStepsSentinelValue)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
+            numSteps = CalculateNumSteps(numSteps);
 
             for (int i = 1; i <= numSteps; i++)
             {
-                float t = i / (float) numSteps;
+                float t = i / (float)numSteps;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
@@ -368,6 +436,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Given a numSteps value, determines if the value is a 'sentinel' value of
+        /// HandMoveStepsSentinelValue, which should be converted to the current
+        /// default value of HandMoveSteps. If it's not the sentinel value,
+        /// this returns numSteps unchanged.
+        /// </summary>
+        internal static int CalculateNumSteps(int numSteps)
+        {
+            return numSteps == HandMoveStepsSentinelValue ? HandMoveSteps : numSteps;
+        }
     }
 }
 #endif

@@ -72,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private const int numSteps = 10;
         // Scale larger than bounds vector to test bounds checks
         private float objectScale = 0.4f;
         private Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
@@ -162,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that NearInteractionTouchable can raise pointer events
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchablePointerEvents()
         {
@@ -284,11 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestHand testHand = new TestHand(Handedness.Left);
             yield return testHand.Show(Vector3.zero);
-            yield return testHand.MoveTo(initialHandPosition, numSteps);
+            yield return testHand.MoveTo(initialHandPosition);
             using (var catcher = CreateTouchEventCatcher(touchable))
             {
                 // Touch started when entering collider
-                yield return testHand.MoveTo(objectPosition, numSteps);
+                yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
 
@@ -402,13 +400,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
             // No. 0 is touched initially
             TestEvents(catchers, new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, new int[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-            yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(objectPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
             // Only No. 3 gets touched when moving through the row, because No. 0 is still active while inside the poke threshold
             TestEvents(catchers, new int[] { 1, 0, 0, 1, 0, 0, 0, 0, 0, 0 }, new int[] { 1, 0, 0, 1, 0, 0, 0, 0, 0, 0 });
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, objectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
             // No. 3 touched a second time
             TestEvents(catchers, new int[] { 1, 0, 0, 2, 0, 0, 0, 0, 0, 0 }, new int[] { 1, 0, 0, 2, 0, 0, 0, 0, 0, 0 });
 
@@ -452,11 +450,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, 1, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim, 1);
 
-            for (int i = 0; i < numSteps; ++i)
+            for (int i = 0; i < PlayModeTestUtilities.HandMoveSteps; ++i)
             {
-                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)numSteps;
+                float scale = radiusStart + (radiusEnd - radiusStart) * (float)(i + 1) / (float)PlayModeTestUtilities.HandMoveSteps;
                 for (int j = 0; j < numTouchables; ++j)
                 {
                     Vector3 r = GetRandomPoint(j + 10);
@@ -497,9 +495,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             using (var catcher = new UnityButtonEventCatcher(button))
             {
                 // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(0, catcher.Click);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.Click);
             }
 
@@ -530,18 +528,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             using (var catcher = new UnityToggleEventCatcher(toggle))
             {
                 // Turn on the toggle after exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(0, catcher.Changed);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
 
                 // Turn off the toggle after exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(initialHandPosition, objectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.IsTrue(catcher.IsOn);
                 Assert.AreEqual(1, catcher.Changed);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, initialHandPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return PlayModeTestUtilities.MoveHand(objectPosition, initialHandPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.IsFalse(catcher.IsOn);
                 Assert.AreEqual(2, catcher.Changed);
             }
@@ -637,48 +635,48 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 pEnd = center + new Vector3(0, 0, touchableDistance + 0.5f);
 
             // Test return beyond DebounceThreshold
-            yield return PlayModeTestUtilities.MoveHandFromTo(pStart, pStart, 1, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pStart, pStart, gesture, handedness, inputSim, 1);
             Assert.IsNull(pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pStart, pTouch, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pStart, pTouch, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pTouch, pPoke, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pTouch, pPoke, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.AreEqual(objectDownExpected, pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pPoke, pDebounce, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pPoke, pDebounce, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pDebounce, pStart, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pDebounce, pStart, gesture, handedness, inputSim);
             Assert.IsNull(pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
             // Test touchable distance behind the surface
-            yield return PlayModeTestUtilities.MoveHandFromTo(pStart, pStart, 1, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pStart, pStart, gesture, handedness, inputSim, 1);
             Assert.IsNull(pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pStart, pTouch, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pStart, pTouch, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pTouch, pPoke, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pTouch, pPoke, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.AreEqual(objectDownExpected, pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pPoke, pEnd, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pPoke, pEnd, gesture, handedness, inputSim);
             Assert.IsNull(pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pEnd, pDebounce, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pEnd, pDebounce, gesture, handedness, inputSim);
             Assert.AreEqual(touchable, pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
-            yield return PlayModeTestUtilities.MoveHandFromTo(pDebounce, pStart, numSteps, gesture, handedness, inputSim);
+            yield return PlayModeTestUtilities.MoveHand(pDebounce, pStart, gesture, handedness, inputSim);
             Assert.IsNull(pokePointer.ClosestProximityTouchable);
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 

@@ -1,6 +1,8 @@
 {
-    "name": "Microsoft.MixedReality.UnityAR.ConfigCheck.asmdef",
-    "references": [],
+    "name": "Microsoft.MixedReality.Toolkit.Providers.UnityAR.ConfigCheck",
+    "references": [
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
+    ],
     "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
