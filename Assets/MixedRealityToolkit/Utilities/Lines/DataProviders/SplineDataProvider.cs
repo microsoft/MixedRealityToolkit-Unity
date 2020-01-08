@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/SplineDataProvider")]
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
-        [Tooltip("List of positions and orientations that define control points to generate spline")]
+        [Tooltip("List of positions and orientations that define control points to generate the spline")]
         [SerializeField]
         private MixedRealityPose[] controlPoints =
         {
