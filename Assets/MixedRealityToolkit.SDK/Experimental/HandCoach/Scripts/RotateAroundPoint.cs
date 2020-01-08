@@ -3,33 +3,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// This class provides functionality to rotate the hand hint around a pivot point over time.
+    /// </summary>
     public class RotateAroundPoint : MonoBehaviour
     {
-        [Tooltip("Parent object centered at rotation center")]
+        /// <summary>
+        /// Parent object centered at rotation center.
+        /// </summary>
         [SerializeField]
         private Transform m_centeredParent = null;
 
-        [Tooltip("Hand hint parent to rotate inverse to centeredParent")]
+        /// <summary>
+        /// Hand hint parent to rotate inverse to centeredParent to keep hand orientation the same.
+        /// </summary>
         [SerializeField]
         private Transform m_inverseParent = null;
 
-        [Tooltip("Point to start movement at")]
+        /// <summary>
+        /// Point to start movement at.
+        /// </summary>
         [SerializeField]
         private Transform m_pivotPosition = null;
 
-        [Tooltip("Duration of move from tracking object to target object")]
+        /// <summary>
+        /// Duration of rotation around the CenteredParent.
+        /// </summary>
         [SerializeField]
         private float m_duration = 1.38f;
 
-        [Tooltip("Lerp curve")]
+        /// <summary>
+        /// Lerp curve.
+        /// </summary>
         [SerializeField]
         private AnimationCurve m_animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-        [Tooltip("How many degrees to rotate")]
-        [SerializeField]
-        private float m_degreesToMove = 0f;
+        /// <summary>
+        /// How many degrees to rotate along each axis.
+        /// </summary>
+        public Vector3 RotationVector = new Vector3(0f, 90f, 0f);
 
         private Vector3 m_centeredParentRotate;
 
@@ -54,12 +68,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             m_inverseParent.localEulerAngles = -m_centeredParentRotate;
         }
 
+        /// <summary>
+        /// Start the rotation sequence.
+        /// </summary>
         public void RotateToTarget()
         {
             StartCoroutine(RotateHintSequence());
         }
 
-        private IEnumerator ResetAndDeterminePivot()
+        /// <summary>
+        /// Reset position to the PivotPosition.
+        /// </summary>
+        public IEnumerator ResetAndDeterminePivot()
         {
             // reset rotation and wait a frame to ensure the m_centeredParent is set in LateUpdate
             m_centeredParentRotate = new Vector3(0f, 0f, 0f);
@@ -86,9 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             m_updatePosition = false;
             Vector3 centeredOrigin = m_centeredParent.localEulerAngles;
-            Vector3 targetOrigin = centeredOrigin + new Vector3(0, m_degreesToMove, 0);
-
-            //Vector3 hintStart = m_boudingBox.transform.localEulerAngles;
+            Vector3 targetOrigin = centeredOrigin + RotationVector;
 
             float t = 0;
             while (t <= m_duration)

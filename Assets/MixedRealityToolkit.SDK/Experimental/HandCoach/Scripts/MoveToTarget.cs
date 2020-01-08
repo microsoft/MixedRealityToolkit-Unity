@@ -2,68 +2,74 @@
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// This class provides functionality to move the hand hint from a tracking position to a target position over time.
+    /// </summary>
     public class MoveToTarget : MonoBehaviour
     {
-        [Tooltip("Object to track")]
+        /// <summary>
+        /// Object to track.
+        /// </summary>
         [SerializeField]
         private GameObject m_trackingObject = null;
 
-        [Tooltip("Target to move to")]
+        /// <summary>
+        /// Target to move to.
+        /// </summary>
         [SerializeField]
         private GameObject m_targetObject = null;
 
-        [Tooltip("Shared parent between tracking and target objects used for relative local positions")]
+        /// <summary>
+        /// Shared parent between tracking and target objects used for relative local positions.
+        /// </summary>
         [SerializeField]
         private GameObject m_rootObject = null;
 
-        [Tooltip("Duration of move from tracking object to target object")]
+        /// <summary>
+        /// Duration of move from tracking object to target object in seconds.
+        /// </summary>
         [SerializeField]
         private float m_duration = 1.38f;
 
-        [Tooltip("Tunable offset to get the GameObject to arrive at the right target position")]
+        /// <summary>
+        /// Tunable offset to get the GameObject to arrive at the right target position.
+        /// </summary>
         [SerializeField]
         private Vector3 m_targetOffset = new Vector3(0.05f, -0.1f, -0.2f);
 
-        [Tooltip("Lerp curve")]
+        /// <summary>
+        /// Lerp curve.
+        /// </summary>
         [SerializeField]
         private AnimationCurve m_animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
-        // The local position of this gameObject
-        private Vector3 m_position;
+        // The local position of this gameObject relative to the root object
+        private Vector3 m_relativePositionTrackingToRoot;
 
-        // The local position of m_targetObject
-        private Vector3 m_targetPosition;
-
-        // The offset from this gameObject's position to the m_trackingObject's position
-        private Vector3 m_trackingOffset;
+        // The local position of m_targetObject relative to the root object
+        private Vector3 m_relativeTargetPositionToRoot;
 
         // bool to determine when to stop the follow sequence
         private bool m_followingTargetObject;
-
-        private void Awake()
-        {
-            if (m_trackingObject != null)
-            {
-                m_trackingOffset = new Vector3(0,0,0); // GetRelativeLocalPosition(m_trackingObject, m_rootObject) - gameObject.transform.parent.localPosition;
-            }
-        }
 
         // Since this script can attach to an object with an animator, we need to update position in LateUpdate
         private void LateUpdate()
         {
             if (m_targetObject != null && m_rootObject != null)
             {
-                m_targetPosition = GetRelativeLocalPosition(m_targetObject, m_rootObject) + m_targetOffset;
-                transform.parent.localPosition = m_position;
+                m_relativeTargetPositionToRoot = GetRelativeLocalPosition(m_targetObject, m_rootObject) + m_targetOffset;
+                transform.parent.localPosition = m_relativePositionTrackingToRoot;
             }
         }
 
-        // Starts coroutine to lerp from current position to target position
+        /// <summary>
+        /// Starts coroutine to lerp from current position to target position
+        /// </summary>
         public void MoveToTargetPosition()
         {
-            if (m_targetPosition != null)
+            if (m_relativeTargetPositionToRoot != Vector3.zero)
             {
                 m_followingTargetObject = false;
                 StartCoroutine(MoveHintSequence());
@@ -72,23 +78,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private IEnumerator MoveHintSequence()
         {
-            Vector3 origin = m_position;
+            Vector3 origin = m_relativePositionTrackingToRoot;
 
             float t = 0;
             while (t <= m_duration)
             {
-                m_position = Vector3.Lerp(origin, m_targetPosition, m_animationCurve.Evaluate(t / m_duration));
+                m_relativePositionTrackingToRoot = Vector3.Lerp(origin, m_relativeTargetPositionToRoot, m_animationCurve.Evaluate(t / m_duration));
                 t += Time.deltaTime;
                 yield return null;
             }
         }
 
+        /// <summary>
+        /// Set the target object to move to.
+        /// </summary>
         public void SetHintTarget(GameObject target)
         {
             m_targetObject = target;
         }
 
-        // Starts coroutine to follow the target object
+        /// <summary>
+        /// Starts coroutine to follow the target object.
+        /// </summary>
         public void Follow()
         {
             if (m_trackingObject != null && m_rootObject != null)
@@ -102,26 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             while (m_followingTargetObject)
             {
-                m_position = GetRelativeLocalPosition(m_trackingObject, m_rootObject) - m_trackingOffset;
+                m_relativePositionTrackingToRoot = GetRelativeLocalPosition(m_trackingObject, m_rootObject);
                 yield return null;
             }
         }
 
         private Vector3 GetRelativeLocalPosition(GameObject input, GameObject root)
         {
-            Vector3 sum = new Vector3();
-            Transform currentLevel = input.transform;
-            while (currentLevel.gameObject != root)
-            {
-                // first rotate the current sum using the current level's rotation
-                sum = currentLevel.localRotation * sum;
-                // then get the scaled value
-                sum = Vector3.Scale(sum, currentLevel.localScale);
-                // now add the current level's local position
-                sum += currentLevel.localPosition;
-                currentLevel = currentLevel.parent;
-            }
-            return sum;
+            return input.transform.position - root.transform.position;
         }
     }
 }

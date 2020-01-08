@@ -4,34 +4,55 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// This class provides wrapper functionality for triggering animations and fades for the hand rig.
+    /// </summary>
     public class InteractionHint : MonoBehaviour
     {
         private GameObject VisualsRoot;
 
-        [Tooltip("React to hand tracking state to hide visuals when hands are being tracked.  If false, only the customShouldHideHands function will be evaluated.")]
-        public bool checkHandTracking = true;
+        /// <summary>
+        /// React to hand tracking state to hide visuals when hands are being tracked.
+        /// If false, only the customShouldHideHands function will be evaluated.
+        /// </summary>
+        public bool HideIfHandTracked = false;
 
-        [Tooltip("Min/max delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds." +
-            "  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds")]
-        public Vector2 MinMaxDelay = new Vector2(5f, 10f);
+        /// <summary>
+        /// Min delay for showing the visuals.  If the user's hands are not in view, the visuals will appear after min seconds.
+        /// </summary>
+        public float MinDelay = 5f;
 
-        [Tooltip("Uncheck this if you don't want to use max timer, only show hint when hands are out of view")]
-        public bool useMaxTimer = true;
+        /// <summary>
+        /// Max delay for showing the visuals.  If the user's hands are in view, the min timer will reset to 0, but the visuals will appear after max seconds.
+        /// <summary>
+        public float MaxDelay = 10f;
 
-        [Tooltip("Number of times to repeat the hint before fading out")]
-        public int repeats = 2;
+        /// <summary>
+        /// Set to false if you don't want to use a max timer and only want to show the hint when user's hands are not tracked.
+        /// </summary>
+        public bool UseMaxDelay = true;
 
-        [Tooltip("If true, logic runs whenever this component is active.  If false, you must manually start the logic with StartShowTimer.")]
-        public bool autoActivate = true;
+        /// <summary>
+        /// Number of times to repeat the hint before fading out and waiting for timer again.
+        /// </summary>
+        public int Repeats = 2;
 
-        [Tooltip("Name of animation to play during loop")]
-        public string animationState;
+        /// <summary>
+        /// If true, logic runs whenever this component is active.  If false, you must manually start the logic with StartShowTimer.
+        /// </summary>
+        public bool AutoActivate = true;
 
-        [Tooltip("Time to wait between repeats")]
-        [SerializeField]
-        public float repeatDelay = 1f;
+        /// <summary>
+        /// Name of animation to play during loop.
+        /// </summary>
+        public string AnimationState;
+
+        /// <summary>
+        /// Time to wait between repeats in seconds.
+        /// </summary>
+        public float RepeatDelay = 1f;
 
         private string fadeInAnimationState = "Fade_In";
 
@@ -45,8 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private IMixedRealityHandJointService handJointService = null;
 
-        // Custom function to determine visibility of visuals.  Return true to hide visuals and reset min timer (max timer will still be in effect), return false when user is doing nothing and needs a hint.
-        public Func<bool> customShouldHideVisuals = delegate { return false; };
+        /// <summary>
+        /// Custom function to determine visibility of visuals.
+        /// Return true to hide visuals and reset min timer (max timer will still be in effect), return false when user is doing nothing and needs a hint.
+        /// </summary>
+        public Func<bool> CustomShouldHideVisuals = delegate { return false; };
 
         private Animator m_animator;
 
@@ -56,9 +80,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void Awake()
         {
-            if (VisualsRoot == null && transform.childCount > 0)
+            if (VisualsRoot == null)
             {
-                VisualsRoot = transform.GetChild(0).gameObject;
+                if (transform.childCount > 0)
+                {
+                    VisualsRoot = transform.GetChild(0).gameObject;
+                }
+                else
+                {
+                    Debug.LogError("Incorrect hand rig setup. Disabling gameObject");
+                    gameObject.SetActive(false);
+                }
             }
 
             // store the root's animator
@@ -74,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnEnable()
         {
             // When component is enabled, start up the timer logic if auto activate is specified
-            if (autoActivate)
+            if (AutoActivate)
             {
                 StartHintLoop();
             }
@@ -93,23 +125,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetActive(VisualsRoot, false);
         }
 
-        // Starts the hint loop logic
+        /// <summary>
+        /// Starts the hint loop logic.
+        /// </summary>
         public void StartHintLoop()
         {
             if (!m_loopRunning && VisualsRoot != null)
             {
                 m_loopRunning = true;
                 animationHideDuration = GetAnimationDuration(fadeOutAnimationState);
-                animationHideTime = GetAnimationDuration(animationState) - animationHideDuration;
+                animationHideTime = GetAnimationDuration(AnimationState) - animationHideDuration;
                 if (animationHideTime < 0)
                 {
                     animationHideTime = 0;
                 }
-                StartCoroutine(HintLoopSequence(animationState));
+                StartCoroutine(HintLoopSequence(AnimationState));
             }
         }
 
-        // Fades out the hint and stops the hint loop logic
+        /// <summary>
+        /// Fades out the hint and stops the hint loop logic
+        /// </summary>
         public void StopHintLoop()
         {
             if (m_loopRunning && !m_animatingOut)
@@ -120,8 +156,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             m_loopRunning = false;
         }
 
-        // stops the hint with appropriate fade
-        IEnumerator FadeOutHint()
+        /// <summary>
+        /// Stops the hint with appropriate fade.
+        /// </summary>
+        private IEnumerator FadeOutHint()
         {
             m_animatingOut = true;
             if (animationHideDuration > 0)
@@ -138,8 +176,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             m_animatingOut = false;
         }
 
-        // The main timer logic coroutine.  Pass the min/max delay to use and the function to evaluate the desired state
-        IEnumerator HintLoopSequence(string stateToPlay)
+        /// <summary>
+        /// The main timer logic coroutine. Pass the min/max delay to use and the function to evaluate the desired state.
+        /// </summary>
+        private IEnumerator HintLoopSequence(string stateToPlay)
         {
             // loop until the gameObject has been turned off
             while (VisualsRoot != null && m_loopRunning)
@@ -148,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // wait for the max timer, never resetting it.
                 float maxTimer = 0;
                 float timer = 0;
-                while (timer < MinMaxDelay.x && maxTimer < MinMaxDelay.y)
+                while (timer < MinDelay && maxTimer < MaxDelay)
                 {
                     if (ShouldHideVisuals())
                     {
@@ -159,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         timer += Time.deltaTime;
                     }
 
-                    if (useMaxTimer)
+                    if (UseMaxDelay)
                     {
                         maxTimer += Time.deltaTime;
                     }
@@ -175,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 int playCount = 0;
 
                 // loop as long as visuals are active and we haven't repeated the number of times desired
-                while (VisualsRoot.activeSelf && playCount < repeats)
+                while (VisualsRoot.activeSelf && playCount < Repeats)
                 {
                     // hide if hand is present, but maxTimer was not hit
                     bool bShouldHide = ShouldHideVisuals();
@@ -186,14 +226,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         yield return FadeOutHint();
 
                         // if fade out was caused by user interacting, we've reached the repeat limit, or we've stopped the loop, break out
-                        if (bShouldHide || playCount == repeats - 1 || !m_loopRunning)
+                        if (bShouldHide || playCount == Repeats - 1 || !m_loopRunning)
                         {
                             break;
                         }
                         // If we autohid, then reappear if hands are not tracked
                         else
                         {
-                            yield return new WaitForSeconds(repeatDelay);
+                            yield return new WaitForSeconds(RepeatDelay);
                             SetActive(VisualsRoot, true);
                             m_animator.Play(stateToPlay);
                             visibleTime = Time.time;
@@ -205,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        void SetActive(GameObject root, bool bShow)
+        private void SetActive(GameObject root, bool bShow)
         {
             if (root != null)
             {
@@ -218,6 +258,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Gets the duration of the animation name passed in, or 0 if the state name is not found.
+        /// </summary>
         public float GetAnimationDuration(string animationStateName)
         {
             RuntimeAnimatorController ac = m_animator.runtimeAnimatorController;
@@ -233,26 +276,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return 0;
         }
 
-        // Check if the user is making an attempt to proceed, according to the hint.
-        // Return true if the user is attempting to interact properly.  Visuals will hide until the max timer expires.
-        // Return false if the user is doing nothing.  Visuals will show according to the min timer.
+        /// <summary>
+        /// Check if the user is making an attempt to proceed, according to the hint.
+        /// Return true if the user is attempting to interact properly.  Visuals will hide until the max timer expires.
+        /// Return false if the user is doing nothing.  Visuals will show according to the min timer.
+        /// </summary>
         private bool ShouldHideVisuals()
         {
-            // Check hand trtacking, if configured to do so
-            bool bShouldHide = checkHandTracking && IsHandTracked();
+            // Check hand tracking, if configured to do so
+            bool bShouldHide = HideIfHandTracked && IsHandTracked();
 
             // Check the custom show visuals function
             if (!bShouldHide)
             {
-                bShouldHide |= customShouldHideVisuals();
+                bShouldHide |= CustomShouldHideVisuals();
             }
             return bShouldHide;
         }
 
-        // Check if any hands are being tracked
+        /// <summary>
+        /// Return true if either of the user's hands are being tracked.
+        /// Return false if neither of the user's hands are being tracked.
+        /// </summary>
         bool IsHandTracked()
         {
-            return false; // return HandJointService.IsHandTracked(Handedness.Right) || HandJointService.IsHandTracked(Handedness.Left);
+            return HandJointService.IsHandTracked(Handedness.Right) || HandJointService.IsHandTracked(Handedness.Left);
+
+            // no service detected, return false
+            return false;
         }
     }
 }
