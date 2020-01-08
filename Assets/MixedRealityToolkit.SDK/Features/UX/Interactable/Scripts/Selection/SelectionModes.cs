@@ -9,6 +9,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public enum SelectionModes
     {
         /// <summary>
+        /// Not a valid mode
+        /// </summary>
+        Invalid = -1,
+        /// <summary>
         /// Just click, no selection
         /// </summary>
         Button,

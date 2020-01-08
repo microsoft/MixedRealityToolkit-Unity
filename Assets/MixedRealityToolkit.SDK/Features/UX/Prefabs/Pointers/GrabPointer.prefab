@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 1
-  destroyOnSourceLost: 1
+  destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 3
@@ -72,7 +72,11 @@ MonoBehaviour:
   defaultPointerExtent: 10
   sphereCastRadius: 0.05
   nearObjectMargin: 0.2
-  debugMode: 0
+  grabLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 563
+  triggerInteraction: 0
+  sceneQueryBufferSize: 64
 --- !u!114 &7376459786343609486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +406,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: e74b90b0fec1bef4fa500cebdb12d821, type: 2}
   roundedEdges: 0
   roundedCaps: 0
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 4601683360483888622}
   tileMaterialByWorldLength: 1
   tileMaterialScale: 48

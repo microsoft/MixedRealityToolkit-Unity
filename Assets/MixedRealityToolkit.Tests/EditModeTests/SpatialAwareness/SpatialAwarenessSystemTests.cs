@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         [Test]
@@ -25,12 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Retrieve Spatial Awareness System
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out spatialAwarenessSystem);
-
             // Tests
-            Assert.IsNotNull(spatialAwarenessSystem);
+            Assert.IsNotNull(CoreServices.SpatialAwarenessSystem);
         }
 
         [Test]
@@ -70,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
             MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(TestSpatialAwarenessSysteProfilePath);
 
-            var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
+            var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
 
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealitySpatialAwarenessSystem>(spatialAwarenessSystem));
 
@@ -109,12 +106,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
             Assert.IsNotNull(dataProvider);
             Assert.IsTrue(dataProvider.IsInitialized);
         }
-
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorCreateScenes();
-        }
-
     }
 }

@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Example of building an event system for Interactable that still uses ReceiverBase events
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InteractableReceiver")]
     public class InteractableReceiver : ReceiverBaseMonoBehavior
     {
         // list of events added to this interactable
@@ -28,8 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (Events.Count > 0)
             {
-                InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
-                Events[0].Receiver = InteractableEvent.GetReceiver(Events[0], interactableTypes);
+                Events[0].Receiver = InteractableEvent.CreateReceiver(Events[0]);
                 Events[0].Receiver.Host = this;
             }
         }
@@ -37,8 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public override void OnStateChange(InteractableStates state, Interactable source)
         {
             base.OnStateChange(state, source);
@@ -54,9 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// click happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             base.OnClick(state, source, pointer);
@@ -73,11 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// voice command happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
         public override void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             base.OnVoiceCommand(state, source, command, index, length);

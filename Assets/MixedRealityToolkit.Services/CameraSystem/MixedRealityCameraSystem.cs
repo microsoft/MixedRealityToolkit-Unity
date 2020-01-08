@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
@@ -11,36 +12,56 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// The Camera system controls the settings of the main camera.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
-    public class MixedRealityCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
+    public class MixedRealityCameraSystem : BaseDataProviderAccessCoreSystem, IMixedRealityCameraSystem
     {
-        private enum DisplayType
-        {
-            Opaque = 0,
-            Transparent
-        }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityCameraSystem(
             IMixedRealityServiceRegistrar registrar,
-            BaseMixedRealityProfile profile = null) : base(registrar, profile)
+            BaseMixedRealityProfile profile = null) : this(profile)
         {
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public MixedRealityCameraSystem(
+            BaseMixedRealityProfile profile = null) : base(profile)
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Camera System";
 
-        /// <summary>
-        /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsOpaque
         {
             get
             {
                 currentDisplayType = DisplayType.Opaque;
+
+                IReadOnlyList<IMixedRealityCameraSettingsProvider> dataProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
+                if (dataProviders.Count > 0)
+                {
+                    // Takes the first settings provider's setting.
+                    if (!dataProviders[0].IsOpaque)
+                    {
+                        currentDisplayType = DisplayType.Transparent;
+                    }
+                }
 #if UNITY_WSA
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {
                     currentDisplayType = DisplayType.Transparent;
                 }
+
+                Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
 #endif
                 return currentDisplayType == DisplayType.Opaque;
             }
@@ -52,51 +73,55 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Camera System";
 
-        private MixedRealityCameraProfile cameraProfile = null;
-
         /// <inheritdoc/>
-        public MixedRealityCameraProfile CameraProfile
-        {
-            get
-            {
-                if (cameraProfile == null)
-                {
-                    cameraProfile = ConfigurationProfile as MixedRealityCameraProfile;
-                }
-                return cameraProfile;
-            }
-        }
+        public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
+        /// <summary>
+        /// Specifies whether or not the camera system was able to register a camera settings provider.
+        /// If so, camera management is not to be performed by the camera system itself. If not, the camera
+        /// system is to behave as it did in MRTK versions 2.0.0 and 2.1.0.
+        /// </summary>
+        private bool useFallbackBehavior = true;
+
         /// <inheritdoc />
         public override void Initialize()
         {
-            cameraOpaqueLastFrame = IsOpaque;
+            MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
 
-            if (IsOpaque)
+            if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
             {
-                ApplySettingsForOpaqueDisplay();
-            }
-            else
-            {
-                ApplySettingsForTransparentDisplay();
+                // Register the settings providers.
+                for (int i = 0; i < profile.SettingsConfigurations.Length; i++)
+                {
+                    MixedRealityCameraSettingsConfiguration configuration = profile.SettingsConfigurations[i];
+
+                    if (configuration.ComponentType?.Type == null) 
+                    { 
+                        // Incomplete configuration, do not try to register until a type is set in the profile.
+                        continue; 
+                    }
+
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };
+
+                    if (RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
+                        configuration.ComponentType.Type,
+                        configuration.RuntimePlatform,
+                        args))
+                    {
+                        // Apply the display settings
+                        IMixedRealityCameraSettingsProvider provider = GetDataProvider<IMixedRealityCameraSettingsProvider>(configuration.ComponentName);
+                        provider?.ApplyConfiguration();
+                    }
+                }
             }
 
-            // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
-            MixedRealityPlayspace.Position = Vector3.zero;
-            MixedRealityPlayspace.Rotation = Quaternion.identity;
-            if (CameraCache.Main.transform.position != Vector3.zero)
-            {
-                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), immersive experiences may not behave as expected.");
-            }
-        }
+            // Check to see if any providers were loaded.
+            useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);
 
-        /// <inheritdoc />
-        public override void Update()
-        {
-            if (IsOpaque != cameraOpaqueLastFrame)
+            if (useFallbackBehavior)
             {
                 cameraOpaqueLastFrame = IsOpaque;
 
@@ -107,6 +132,76 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 else
                 {
                     ApplySettingsForTransparentDisplay();
+                }
+
+                // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
+                MixedRealityPlayspace.Position = Vector3.zero;
+                MixedRealityPlayspace.Rotation = Quaternion.identity;
+                if (CameraCache.Main.transform.position != Vector3.zero)
+                {
+                    Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
+                }
+                if (CameraCache.Main.transform.rotation != Quaternion.identity)
+                {
+                    Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Enable()
+        {
+            base.Enable();
+
+            IReadOnlyList<IMixedRealityCameraSettingsProvider> providers = GetDataProviders<IMixedRealityCameraSettingsProvider>();
+            for (int i = 0; i < providers.Count; i++)
+            {
+                providers[i].Enable();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            IReadOnlyList<IMixedRealityCameraSettingsProvider> providers = GetDataProviders<IMixedRealityCameraSettingsProvider>();
+            for (int i = 0; i < providers.Count; i++)
+            {
+                providers[i].Disable();
+            }
+
+            base.Disable();
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            foreach (var provider in GetDataProviders<IMixedRealityCameraSettingsProvider>())
+            {
+                UnregisterDataProvider(provider);
+            }
+
+            useFallbackBehavior = true;
+
+            base.Destroy();
+        }
+
+        /// <inheritdoc />
+        public override void Update()
+        {
+            if (useFallbackBehavior)
+            {
+                if (IsOpaque != cameraOpaqueLastFrame)
+                {
+                    cameraOpaqueLastFrame = IsOpaque;
+
+                    if (IsOpaque)
+                    {
+                        ApplySettingsForOpaqueDisplay();
+                    }
+                    else
+                    {
+                        ApplySettingsForTransparentDisplay();
+                    }
                 }
             }
         }
@@ -132,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
             CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
-            QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
+            QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
         }
 
         /// <inheritdoc />

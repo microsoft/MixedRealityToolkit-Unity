@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// A game object with this script attached will follow the main camera's position. 
     /// This is particularly useful for secondary cameras or sound sources to follow the user around.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/MoveWithCamera")]
     public class MoveWithCamera : MonoBehaviour
     {
         /// <summary>

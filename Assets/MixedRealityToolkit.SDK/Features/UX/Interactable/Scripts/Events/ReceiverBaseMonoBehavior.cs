@@ -12,11 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// 
     /// InteractableReceiver or InteractableReceiverList can be used with ReceiverBase - built-in receivers
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ReceiverBaseMonoBehavior")]
     public class ReceiverBaseMonoBehavior : MonoBehaviour, IInteractableHandler
     {
+        /// <summary>
+        /// Types of directions to search for Interactable component in transform hierarchy
+        /// </summary>
         public enum SearchScopes { Self, Parent, Children };
+
+        /// <summary>
+        /// Interactable to target
+        /// </summary>
         public Interactable Interactable;
+
+        /// <summary>
+        /// directions to search for Interactable component in transform hierarchy if none assigned
+        /// </summary>
         public SearchScopes InteractableSearchScope;
+
         protected State lastState;
 
         /// <summary>
@@ -51,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add an interactable and add it as a handler
         /// </summary>
-        /// <param name="interactable"></param>
         public void AddInteractable(Interactable interactable)
         {
             if (Interactable != null)
@@ -90,8 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// a state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public virtual void OnStateChange(InteractableStates state, Interactable source)
         {
             // the state has changed, do something new

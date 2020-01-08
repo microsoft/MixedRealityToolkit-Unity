@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Defines a line in the shape of a rectangle.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/RectangleLineDataProvider")]
     public class RectangleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
@@ -100,8 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// When we get interpolated points we subdivide the square so our sampling has more to work with
         /// </summary>
-        /// <param name="normalizedDistance"></param>
-        /// <returns></returns>
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             BuildPoints();

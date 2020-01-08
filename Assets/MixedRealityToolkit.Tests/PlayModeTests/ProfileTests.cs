@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that the default HoloLens 2 profile acts as expected (when hands are up, we see a hand ray).
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestDefaultProfile()
         {
@@ -54,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that HoloLens 1 profile acts as expected (e.g. when hands are up there are no hand rays)
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestHL1Profile()
         {

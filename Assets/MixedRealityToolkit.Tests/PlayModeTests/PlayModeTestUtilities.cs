@@ -20,10 +20,8 @@ using Microsoft.MixedReality.Toolkit.Diagnostics;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using System;
 
 #if UNITY_EDITOR
-using TMPro;
 using UnityEditor;
 #endif
 
@@ -31,11 +29,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class PlayModeTestUtilities
     {
-
         // Unity's default scene name for a recently created scene
         const string playModeTestSceneName = "MixedRealityToolkit.PlayModeTestScene";
 
         private static Stack<MixedRealityInputSimulationProfile> inputSimulationProfiles = new Stack<MixedRealityInputSimulationProfile>();
+
+        /// <summary>
+        /// The default number of frames that elapse for each test hand movement.
+        /// Intentionally a smaller number to keep tests fast.
+        /// </summary>
+        private const int HandMoveStepsDefault = 5;
+
+        /// <summary>
+        /// The default number of frames that elapse when in slow test hand mode.
+        /// See UseSlowTestHand for more information.
+        /// </summary>
+        private const int HandMoveStepsSlow = 60;
+
+        /// <summary>
+        /// If true, the hand movement test steps will take a longer number of frames. This is especially
+        /// useful for seeing motion in play mode tests (where the default smaller number of frames tends
+        /// to make tests too fast to be understandable to the human eye). This is false by default
+        /// to ensure that tests will run quickly in general, and can be set to true manually in specific
+        /// test cases using the example below.
+        /// </summary>
+        /// <example> 
+        /// <code>
+        /// [UnityTest]
+        /// public IEnumerator YourTestCase()
+        /// {
+        ///     PlayModeTestUtilities.UseSlowTestHand = true;
+        ///     ...
+        ///     PlayModeTestUtilities.UseSlowTestHand = false;
+        /// }
+        /// </code>
+        /// </example>
+        /// <remarks>
+        /// Note that this value is reset to false after each play mode test that uses
+        /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
+        /// UseSlowTestHand = true ends up slowing all subsequent tests.
+        /// </remarks>
+        public static bool UseSlowTestHand = false;
+
+        /// <summary>
+        /// The number of frames that elapse for each test hand movement, taking into account if
+        /// slow test hand mode has been engaged.
+        /// </summary>
+        public static int HandMoveSteps => UseSlowTestHand ? HandMoveStepsSlow : HandMoveStepsDefault;
+
+        /// <summary>
+        /// A sentinel value used by hand test utilities to indicate that the default number of move
+        /// steps should be used or not.
+        /// </summary>
+        /// <remarks>
+        /// This is primarily something that exists to get around the limitation of default parameter
+        /// values requiring compile-time constants.
+        /// </remarks>
+        internal const int HandMoveStepsSentinelValue = -1;
 
         /// <summary>
         /// Creates a play mode test scene, creates an MRTK instance, initializes playspace.
@@ -43,6 +93,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public static void Setup()
         {
             Assert.True(Application.isPlaying, "This setup method should only be used during play mode tests. Use TestUtilities.");
+
+            // See comments for UseSlowTestHand for why this is reset to false on each test case.
+            PlayModeTestUtilities.UseSlowTestHand = false;
 
             bool sceneExists = false;
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -69,7 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.
         /// </summary>
-        /// <returns></returns>
         public static void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
@@ -99,16 +151,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return (jointsOut) =>
             {
                 ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
-                gesturePose.ComputeJointPoses(handedness, rotation, worldPosition, jointsOut);
+                Quaternion worldRotation = rotation * CameraCache.Main.transform.rotation;
+                gesturePose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
             };
         }
 
         public static IMixedRealityInputSystem GetInputSystem()
         {
-            IMixedRealityInputSystem inputSystem;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-            Assert.IsNotNull(inputSystem, "MixedRealityInputSystem is null!");
-            return inputSystem;
+            Assert.IsNotNull(CoreServices.InputSystem, "MixedRealityInputSystem is null!");
+            return CoreServices.InputSystem;
         }
 
         /// <summary>
@@ -173,17 +224,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield break;
             }
 
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-
-            Assert.IsNotNull(inputSystem, "Input system must be initialized");
+            Assert.IsNotNull(CoreServices.InputSystem, "Input system must be initialized");
 
             // Let input system to register all cursors and managers.
             yield return null;
 
             // Switch off / Destroy all input components, which listen to global events
-            UnityEngine.Object.Destroy(inputSystem.GazeProvider.GazeCursor as Behaviour);
-            inputSystem.GazeProvider.Enabled = false;
+            UnityEngine.Object.Destroy(CoreServices.InputSystem.GazeProvider.GazeCursor as Behaviour);
+            CoreServices.InputSystem.GazeProvider.Enabled = false;
 
             var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
@@ -195,12 +243,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Forcibly unregister all other input event listeners.
-            BaseEventSystem baseEventSystem = inputSystem as BaseEventSystem;
+            BaseEventSystem baseEventSystem = CoreServices.InputSystem as BaseEventSystem;
             MethodInfo unregisterHandler = baseEventSystem.GetType().GetMethod("UnregisterHandler");
 
             // Since we are iterating over and removing these values, we need to snapshot them
             // before calling UnregisterHandler on each handler.
-            var eventHandlersByType = new Dictionary<System.Type, List<BaseEventSystem.EventHandlerEntry>>(((BaseEventSystem)inputSystem).EventHandlersByType);
+            var eventHandlersByType = new Dictionary<System.Type, List<BaseEventSystem.EventHandlerEntry>>(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType);
             foreach (var typeToEventHandlers in eventHandlersByType)
             {
                 var handlerEntries = new List<BaseEventSystem.EventHandlerEntry>(typeToEventHandlers.Value);
@@ -213,8 +261,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Check that input system is clean
-            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventListeners, "Input event system handler registry is not empty in the beginning of the test.");
-            CollectionAssert.IsEmpty(((BaseEventSystem)inputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
+            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventListeners, "Input event system handler registry is not empty in the beginning of the test.");
+            CollectionAssert.IsEmpty(((BaseEventSystem)CoreServices.InputSystem).EventHandlersByType, "Input event system handler registry is not empty in the beginning of the test.");
 
             yield return null;
         }
@@ -234,26 +282,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         internal static void SetHandSimulationMode(HandSimulationMode mode)
         {
             var iss = GetInputSimulationService();
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = mode;
-            iss.InputSimulationProfile = isp;
+            iss.HandSimulationMode = mode;
         }
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
         {
-            yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
+            yield return MoveHand(handPos, handPos, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService, 2);
         }
 
-        internal static IEnumerator MoveHandFromTo(
-            Vector3 startPos, Vector3 endPos, int numSteps,
-            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
+        public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
+        {
+            InputSimulationService simulationService = GetInputSimulationService();
+            var hand = simulationService.GetHandDevice(handedness);
+            if (hand != null && hand.InputSource != null)
+            {
+                foreach (var pointer in hand.InputSource.Pointers)
+                {
+                    if (pointer is T result)
+                    {
+                        return result;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Moves the the hand from startPos to endPos.
+        /// </summary>
+        /// <remarks>
+        /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used (i.e. HandMoveSteps). HandMoveSteps is not a compile
+        /// time constant, which is a requirement for default parameter values.
+        /// </remarks>
+        internal static IEnumerator MoveHand(
+            Vector3 startPos, Vector3 endPos,
+            ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService,
+            int numSteps = HandMoveStepsSentinelValue)
         {
             Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
             bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
+            numSteps = CalculateNumSteps(numSteps);
 
             for (int i = 1; i <= numSteps; i++)
             {
-                float t = i / (float) numSteps;
+                float t = i / (float)numSteps;
                 Vector3 handPos = Vector3.Lerp(startPos, endPos, t);
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
@@ -301,9 +374,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Shows the hand in the open state, at the origin
         /// </summary>
-        /// <param name="handedness"></param>
-        /// <param name="inputSimulationService"></param>
-        /// <returns></returns>
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return ShowHand(handedness, inputSimulationService, ArticulatedHandPose.GestureId.Open, Vector3.zero);
@@ -320,17 +390,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        internal static void EnsureTextMeshProEssentials()
+        internal static void InstallTextMeshProEssentials()
         {
 #if UNITY_EDITOR
-            // Special handling for TMP Settings and importing Essential Resources
-            if (TMP_Settings.instance == null)
+            // Import the TMP Essential Resources package
+            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+            if (Directory.Exists(packageFullPath))
             {
-                string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
-                if (Directory.Exists(packageFullPath))
-                {
-                    AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
-                }
+                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+            }
+            else
+            {
+                Debug.LogError("Unable to locate the Text Mesh Pro package.");
             }
 #endif
         }
@@ -349,6 +420,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Sometimes it take a few frames for inputs raised via InputSystem.OnInput*
+        /// to actually get sent to input handlers. This method waits for enough frames
+        /// to pass so that any events raised actually have time to send to handlers.
+        /// We set it fairly conservatively to ensure that after waiting
+        /// all input events have been sent.
+        /// </summary>
+        internal static IEnumerator WaitForInputSystemUpdate()
+        {
+            const int inputSystemUpdateFrames = 10;
+            for (int i = 0; i < inputSystemUpdateFrames; i++)
+            {
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Given a numSteps value, determines if the value is a 'sentinel' value of
+        /// HandMoveStepsSentinelValue, which should be converted to the current
+        /// default value of HandMoveSteps. If it's not the sentinel value,
+        /// this returns numSteps unchanged.
+        /// </summary>
+        internal static int CalculateNumSteps(int numSteps)
+        {
+            return numSteps == HandMoveStepsSentinelValue ? HandMoveSteps : numSteps;
+        }
     }
 }
 #endif

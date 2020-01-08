@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     /// This visualizer can be used to represent pointer input data, e.g., from a handheld controller,
     /// from hand, head or eye tracking. In general, it assumes a pointing origin and direction,
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/InputPointerVisualizer")]
     public class InputPointerVisualizer : MonoBehaviour
     {
         public enum VisModes
@@ -75,24 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         private bool isPaused = false;
         private int numberOfTraceSamples;
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        void Start()
+        private void Start()
         {
             AmountOfSamples = (int)nhist;
 
@@ -342,9 +326,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 return null;
         }
 
-        void Update()
+        private void Update()
         {
-            if (InputSystem?.EyeGazeProvider == null)
+            var eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
+            if (eyeGazeProvider == null)
             {
                 return;
             }
@@ -356,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             if ((!isPaused) && (useLiveInputStream))
             {
-                UpdateDataVis(new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection));
+                UpdateDataVis(new Ray(eyeGazeProvider.GazeOrigin, eyeGazeProvider.GazeDirection));
             }
         }
 

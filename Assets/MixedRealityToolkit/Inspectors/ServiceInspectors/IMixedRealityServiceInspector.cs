@@ -35,7 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Used to draw gizmos in the scene
         /// </summary>
-        /// <param name="target"></param>
         void DrawGizmos(object target);
     }
 }

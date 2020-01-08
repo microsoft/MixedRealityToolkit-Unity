@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// In these cases, we don't want to render when the active instance isn't using this profile,
         /// because it may produce an inaccurate combination of settings.
         /// </summary>
-        /// <returns></returns>
         protected abstract bool IsProfileInActiveInstance();
 
         /// <summary>
@@ -56,17 +56,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Render the Mixed Reality Toolkit Logo.
+        /// Render the Mixed Reality Toolkit Logo and search field.
         /// </summary>
-        protected void RenderMRTKLogo()
+        /// <returns>True if the rest of the inspector should be drawn.</returns>
+        protected bool RenderMRTKLogoAndSearch()
         {
             // If we're being rendered as a sub profile, don't show the logo
             if (RenderAsSubProfile)
             {
-                return;
+                return true;
+            }
+
+            if (MixedRealitySearchInspectorUtility.DrawSearchInterface(target))
+            {
+                return false;
             }
 
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
+            return true;
         }
 
         /// <summary>
@@ -118,8 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Renders a button that will take user back to a specified profile object
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="activeObject"></param>
         /// <returns>True if button was clicked</returns>
         protected bool DrawBacktrackProfileButton(string message, UnityEngine.Object activeObject)
         {
@@ -147,9 +152,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="isProfileInitialized">profile properties are full initialized for rendering</param>
         /// <param name="backText">Text for back button if not rendering as sub-profile</param>
         /// <param name="backProfile">Target profile to return to if not rendering as sub-profile</param>
-        protected void RenderProfileHeader(string title, string description, Object selectionObject, bool isProfileInitialized = true, BackProfileType returnProfileTarget = BackProfileType.Configuration)
+        /// <returns>True if the rest of the profile should be rendered.</returns>
+        protected bool RenderProfileHeader(string title, string description, Object selectionObject, bool isProfileInitialized = true, BackProfileType returnProfileTarget = BackProfileType.Configuration)
         {
-            RenderMRTKLogo();
+            if (!RenderMRTKLogoAndSearch())
+            {
+                CheckEditorPlayMode();
+                return false;
+            }
 
             var profile = target as BaseMixedRealityProfile;
             if (!RenderAsSubProfile)
@@ -196,12 +206,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                 RenderDocumentation(selectionObject);
-            EditorGUILayout.EndHorizontal();
+            }
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+
+            return true;
         }
 
         /// <summary>

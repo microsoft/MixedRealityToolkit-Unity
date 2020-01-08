@@ -1,0 +1,25 @@
+<!--
+  The purpose of this project file is to allow you to do a command line restore of a specific nuget package. A NuGet restore
+  is slightly different than using the NuGet.exe CLI "install" command. The restore installs to the machine NuGet cache so that
+  other projects on the machine can consume the package. This can be very handy for locally validating a NuGet package.
+  
+  This command is expected to be used like:
+  dotnet build <this_file> -p:RestorePackageFeed=<path_to_package_folder> -p:RestorePackageId=<NuGet_Package_Id> -p:RestorePackageVersion=<NuGet_Package_Version>
+  
+  Ex:
+  dotnet build NuGetRestoreProject.csproj -p:RestorePackageFeed=D:\MRTK\Artifacts -p:RestorePackageId=Microsoft.MixedReality.Toolkit.Foundation -p:RestorePackageVersion=0.0.0
+  
+  Use the Microsoft.Build.Traversal Sdk so that this project doesn't actually compile anything and doesn't have to specify a TargetFramework.
+  https://github.com/microsoft/MSBuildSdks/tree/master/src/Traversal
+-->
+<Project Sdk="Microsoft.Build.Traversal/2.0.2">
+
+  <PropertyGroup>
+    <RestoreSources>$(RestorePackageFeed);https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="$(RestorePackageId)" Version="$(RestorePackageVersion)" />
+  </ItemGroup>
+
+</Project>

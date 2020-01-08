@@ -30,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Creates a Color from a hexcode string
         /// </summary>
-        /// <param name="hexstring"></param>
-        /// <returns></returns>
         public static Color ParseHexcode(string hexstring)
         {
             if (hexstring.StartsWith("#"))

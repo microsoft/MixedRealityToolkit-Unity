@@ -16,11 +16,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseCoreSystem, IMixedRealityFocusProvider
+    public class FocusProvider : BaseCoreSystem, 
+        IMixedRealityFocusProvider, 
+        IPointerPreferences
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public FocusProvider(
+            MixedRealityInputSystemProfile profile) : base(profile)
         {
             maxQuerySceneResults = profile.FocusQueryBufferSize;
             focusIndividualCompoundCollider = profile.FocusIndividualCompoundCollider;
@@ -49,23 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// are active (IsInteractionEnabled == true), excluding the gaze cursor
         /// </summary>
         public int NumFarPointersActive { get; private set; }
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         private IMixedRealityPointer primaryPointer;
 
@@ -141,12 +142,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Checks if the <see cref="MixedRealityToolkit"/> is setup correctly to start this service.
         /// </summary>
-        /// <returns></returns>
         private bool IsSetupValid
         {
             get
             {
-                if (InputSystem == null)
+                if (CoreServices.InputSystem == null)
                 {
                     Debug.LogError($"Unable to start {Name}. An Input System is required for this feature.");
                     return false;
@@ -276,7 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details => focusDetails;
+            public FocusDetails Details
+            {
+                get
+                {
+                    return focusDetails;
+                }
+                set
+                {
+                    focusDetails = value;
+                }
+            }
 
             /// <inheritdoc />
             public GameObject CurrentPointerTarget => focusDetails.Object;
@@ -305,6 +315,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
             private PointerEventData graphicData;
+
+            /// <summary>
+            /// Returns true if the current pointer target has been disabled or destroyed
+            /// </summary>
+            public bool IsCurrentPointerTargetInvalid => ((CurrentPointerTarget != null && !CurrentPointerTarget.activeInHierarchy)) ||
+                (CurrentPointerTarget == null && !ReferenceEquals(CurrentPointerTarget, null));
 
             private FocusDetails focusDetails = new FocusDetails();
 
@@ -485,14 +501,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 FindOrCreateUiRaycastCamera();
             }
 
-            var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
+            var primaryPointerSelectorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
             if (primaryPointerSelectorType != null)
             {
                 primaryPointerSelector = Activator.CreateInstance(primaryPointerSelectorType) as IMixedRealityPrimaryPointerSelector;
                 primaryPointerSelector.Initialize();
             }
 
-            foreach (var inputSource in InputSystem.DetectedInputSources)
+            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
             {
                 RegisterPointers(inputSource);
             }
@@ -537,14 +553,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (gazeHitResult == null)
             {
                 hitResult3d.Clear();
-                var raycastProvider = InputSystem.RaycastProvider;
+                var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
                 gazeHitResult = hitResult3d;
             }
 
-            InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+            CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
@@ -581,6 +597,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             focusDetails = default(FocusDetails);
             return false;
+        }
+
+        /// <inheritdoc />
+        public bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails)
+        {
+            if (TryGetPointerData(pointer, out PointerData pointerData))
+            {
+                pointerData.Details = focusDetails;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion Focus Details by IMixedRealityPointer
@@ -693,13 +723,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void RegisterPointers(IMixedRealityInputSource inputSource)
         {
             // If our input source does not have any pointers, then skip.
-            if (inputSource.Pointers == null) { return; }
+            if (inputSource.Pointers == null)
+            {
+                return;
+            }
 
             IMixedRealityPointerMediator mediator = null;
 
-            if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
+            var mediatorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
+            if (mediatorType != null)
             {
-                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                try
+                {
+                    // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
+                    mediator = Activator.CreateInstance(mediatorType, this) as IMixedRealityPointerMediator;
+                }
+                catch (MissingMethodException)
+                {
+                    // We are using custom mediator not provided by MRTK, instantiate with empty constructor
+                    mediator = Activator.CreateInstance(mediatorType) as IMixedRealityPointerMediator;
+                }
             }
 
             if (mediator != null)
@@ -717,7 +760,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RegisterPointer(inputSource.Pointers[i]);
 
                 // Special Registration for Gaze
-                if (inputSource.SourceId == InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
                 {
                     gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
                 }
@@ -747,15 +790,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                CoreServices.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
 
                 if (!objectIsStillFocusedByOtherPointer)
                 {
                     // Policy: only raise focus exit if no other pointers are still focusing the object
-                    InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    CoreServices.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
                 }
 
-                InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                CoreServices.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
             }
 
             pointers.Remove(pointerData);
@@ -885,19 +928,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
+                LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+
+                if (pointerData.IsCurrentPointerTargetInvalid)
+                {
+                    pointerData.Pointer.IsFocusLocked = false;
+                }
+
                 // If the pointer is locked, keep the focused object the same.
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them.
                 if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.IsTargetPositionLockedOnFocusLock)
                 {
                     pointerData.UpdateFocusLockedHit();
+
+                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                    if (EventSystem.current != null)
+                    {
+                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                        hitResultUi.Clear();
+                        RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                    }
                 }
                 else
                 {
-                    LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-
                     // Perform raycast to determine focused object
-                    var raycastProvider = InputSystem.RaycastProvider;
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
@@ -906,9 +962,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         gazeHitResult = hitResult3d;
                     }
 
-                    PointerHitResult hit = hitResult3d;
-
-                    int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
+                    int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
                     if (hitResult3dLayer == 0)
                     {
                         // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
@@ -917,6 +971,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
                     }
 
+                    PointerHitResult hit = hitResult3d;
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
                     if (EventSystem.current != null)
                     {
@@ -1029,7 +1084,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     NumNearPointersActive,
                     NumFarPointersActive,
                     numFarPointersWithoutCursorActive,
-                    InputSystem.EyeGazeProvider.IsEyeGazeValid);
+                    CoreServices.InputSystem.EyeGazeProvider.IsEyeGazeValid);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
@@ -1044,8 +1099,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Perform a scene query to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
-        /// <param name="pointerData"></param>
-        /// <param name="prioritizedLayerMasks"></param>
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
             float rayStartDistance = 0;
@@ -1163,15 +1216,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             RaycastResult raycastResult = default(RaycastResult);
 
-            if (pointer.Rays == null)
+            if (pointer.Rays == null || pointer.Rays.Length <= 0)
             {
                 Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
-
-            if (pointer.Rays.Length <= 0)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
                 return;
             }
 
@@ -1219,7 +1266,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
             // Graphics raycast
-            uiRaycastResult = InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
+            uiRaycastResult = CoreServices.InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
             graphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
             return (uiRaycastCamera.gameObject != null);
@@ -1293,7 +1340,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GameObject pendingUnfocusObject = change.PreviousPointerTarget;
                 GameObject pendingFocusObject = change.CurrentPointerTarget;
 
-                InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                CoreServices.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
 
                 int numExits;
                 if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
@@ -1304,18 +1351,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                        CoreServices.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
                         pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                     }
                 }
 
                 if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                 {
-                    InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                    CoreServices.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
                     pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                 }
 
-                InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                CoreServices.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
             }
 
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -1354,7 +1401,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == InputSystem.GazeProvider?.GazeInputSource.SourceId)
+                    if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
                     {
                         gazeProviderPointingData.ResetFocusedObjects();
                         gazeProviderPointingData = null;
@@ -1379,5 +1426,137 @@ namespace Microsoft.MixedReality.Toolkit.Input
             gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
         }
         #endregion
+
+
+        #region IPointerPreferences Implementation
+        private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
+
+        /// <inheritdoc />
+        public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer)
+        {
+            // Assumption: all pointers have controllers, input sources, except the gaze pointers
+            // if the controller, input source is null, return the gaze pointer behavior here.
+            if (pointer.Controller == null || pointer.InputSourceParent == null)
+            {
+                // gazepointer means input source is null
+                return GazePointerBehavior;
+            }
+
+            return GetPointerBehavior(
+                pointer.GetType(), 
+                pointer.Controller.ControllerHandedness,
+                pointer.InputSourceParent.SourceType);
+        }
+
+        /// <summary>
+        /// Gets the behavior for the given pointer type.
+        /// </summary>
+        /// <param name="pointerType">Pointer type to query</param>
+        /// <param name="handedness">Handedness to query</param>
+        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness. If right hand is enabled, left
+        /// hand is not enabled, and Handedness.Any is passed, returns value for the right hand.</returns>
+        public PointerBehavior GetPointerBehavior<T>(
+            Handedness handedness,
+            InputSourceType sourceType) where T : class, IMixedRealityPointer
+        {
+            return GetPointerBehavior(typeof(T), handedness, sourceType);
+        }
+
+        private PointerBehavior GetPointerBehavior(Type type, Handedness handedness, InputSourceType sourceType)
+        {
+            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            {
+                if (customPointerBehaviors[i].Matches(type, sourceType))
+                {
+                    return customPointerBehaviors[i].GetBehaviorForHandedness(handedness);
+                }
+            }
+            return PointerBehavior.Default;
+        }
+
+        /// <inheritdoc />
+        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
+
+        /// <inheritdoc />
+        public void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
+        {
+            PointerPreferences preference = null;
+            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            {
+                if (customPointerBehaviors[i].Matches(typeof(T), inputType))
+                {
+                    preference = customPointerBehaviors[i];
+                }
+            }
+            if (preference == null)
+            {
+                preference = new PointerPreferences(typeof(T), inputType);
+                customPointerBehaviors.Add(preference);
+            }
+            preference.SetBehaviorForHandedness(handedness, pointerBehavior);
+        }
+
+        private class PointerPreferences
+        {
+            public InputSourceType InputSourceType;
+            public Type PointerType;
+
+            public bool Matches(Type queryType, InputSourceType queryInputType)
+            {
+                return Matches(queryType) && queryInputType == InputSourceType;
+            }
+
+            public bool Matches(Type queryType)
+            {
+                return queryType.IsAssignableFrom(PointerType);
+            }
+
+            public PointerBehavior Left;
+            public PointerBehavior Right;
+            public PointerBehavior Other;
+            public PointerBehavior GetBehaviorForHandedness(Handedness h)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    return Right;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    return Left;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    return Other;
+                }
+                return PointerBehavior.Default;
+            }
+            public void SetBehaviorForHandedness(
+                Handedness h, 
+                PointerBehavior b)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    Right = b;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    Left = b;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    Other = b;
+                }
+            }
+            public PointerPreferences(Type pointerType, InputSourceType inputType)
+            {
+                Left = PointerBehavior.Default;
+                Right = PointerBehavior.Default;
+                Other = PointerBehavior.Default;
+                InputSourceType = inputType;
+                PointerType = pointerType;
+            }
+        }
+        #endregion
+
     }
 }

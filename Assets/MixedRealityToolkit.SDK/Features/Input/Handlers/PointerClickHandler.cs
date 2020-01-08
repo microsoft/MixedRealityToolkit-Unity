@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// i.e. a primary mouse button click, motion controller selection press, or hand tap.
     /// </summary>
     [System.Obsolete("Use PointerHandler instead of PointerClickHandler", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/PointerClickHandler")]
     public class PointerClickHandler : BaseInputHandler, IMixedRealityPointerHandler
     {
         [SerializeField]
@@ -34,13 +35,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation

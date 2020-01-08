@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             for (int i = 0; i < 4; i++)
             {
-                viewportCorners[i] = Camera.main.WorldToViewportPoint(worldCorners[i]);
+                viewportCorners[i] = CameraCache.Main.WorldToViewportPoint(worldCorners[i]);
             }
 
             return viewportCorners;
@@ -79,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// 0 -- 3
         /// </summary>
         /// <param name="canvas">The canvas to get the screen corners for.</param>
-        /// <returns></returns>
         public static Vector3[] GetScreenCorners(this Canvas canvas)
         {
             Vector3[] screenCorners = new Vector3[4];
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             for (int i = 0; i < 4; i++)
             {
-                screenCorners[i] = Camera.main.WorldToScreenPoint(worldCorners[i]);
+                screenCorners[i] = CameraCache.Main.WorldToScreenPoint(worldCorners[i]);
             }
 
             return screenCorners;
@@ -97,7 +97,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Returns a rectangle in screen coordinates that encompasses the bounds of the target canvas.
         /// </summary>
         /// <param name="canvas">The canvas the get the screen rect for</param>
-        /// <returns></returns>
         public static Rect GetScreenRect(this Canvas canvas)
         {
             Vector3[] screenCorners = canvas.GetScreenCorners();
@@ -117,7 +116,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="distance">The distance of the ray</param>
         /// <param name="hitPoint">The hitpoint of the ray</param>
         /// <param name="hitChildObject">The child object that was hit or the canvas itself if it has no active children that were within the hit range.</param>
-        /// <returns></returns>
         public static bool Raycast(this Canvas canvas, Vector3 rayOrigin, Vector3 rayDirection, out float distance, out Vector3 hitPoint, out GameObject hitChildObject)
         {
             hitChildObject =null;
@@ -165,7 +163,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="recursive">Indicates if the check should be done recursively</param>
         /// <param name="shouldReturnActive">If true, will only check children that are active, otherwise it will check all children.</param>
         /// <param name="shouldReturnRaycastable">If true, will only check children that if they have a graphic and have it's member raycastTarget set to true, otherwise will ignore the raycastTarget value. Will still allow children to be checked that do not have a graphic component.</param>
-        /// <returns></returns>
         public static RectTransform GetChildRectTransformAtPoint(this RectTransform rectTransformParent, Vector3 worldPoint, bool recursive, bool shouldReturnActive, bool shouldReturnRaycastable)
         {
             Vector3[] localCorners = new Vector3[4];

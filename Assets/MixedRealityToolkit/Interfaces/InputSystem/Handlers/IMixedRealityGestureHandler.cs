@@ -13,25 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Gesture Started Event.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnGestureStarted(InputEventData eventData);
 
         /// <summary>
         /// Gesture Updated Event.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnGestureUpdated(InputEventData eventData);
 
         /// <summary>
         /// Gesture Completed Event.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData eventData);
 
         /// <summary>
         /// Gesture Canceled Event.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnGestureCanceled(InputEventData eventData);
     }
 
@@ -47,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
-        /// <param name="eventData"></param>
         void OnGestureUpdated(InputEventData<T> eventData);
 
         /// <summary>
@@ -56,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// The <see cref="Microsoft.MixedReality.Toolkit.Input.InputEventData{T}.InputData"/> for the associated gesture data.
         /// </remarks>
-        /// <param name="eventData"></param>
         void OnGestureCompleted(InputEventData<T> eventData);
     }
 }

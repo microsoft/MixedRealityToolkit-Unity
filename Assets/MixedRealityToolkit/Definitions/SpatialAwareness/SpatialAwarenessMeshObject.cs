@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When a mesh is created we will need to create a game object with a minimum 
         /// set of components to contain the mesh.  These are the required component types.
         /// </summary>
-        private static Type[] requiredMeshComponents =
+        private static readonly Type[] requiredMeshComponents =
         {
             typeof(MeshFilter),
             typeof(MeshRenderer),
@@ -28,18 +28,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public MeshCollider Collider { get; set; }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         private SpatialAwarenessMeshObject() : base() { }
 
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessMeshObject"/>.
         /// </summary>
-        /// <param name="mesh"></param> todo: add comments
-        /// <param name="layer"></param>
-        /// <param name="name"></param>
-        /// <param name="meshId"></param>
-        /// <param name="meshParent"></param>
         /// <returns>
         /// SpatialMeshObject containing the fields that describe the mesh.
         /// </returns>
@@ -50,12 +45,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             int meshId,
             GameObject meshParent = null)
         {
-            SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject();
+            SpatialAwarenessMeshObject newMesh = new SpatialAwarenessMeshObject
+            {
+                Id = meshId,
+                GameObject = new GameObject(name, requiredMeshComponents)
+                {
+                    layer = layer
+                }
+            };
 
-            newMesh.Id = meshId;
-            newMesh.GameObject = new GameObject(name, requiredMeshComponents);
-            newMesh.GameObject.layer = layer;
-            newMesh.GameObject.transform.parent = meshParent?.transform;
+            newMesh.GameObject.transform.parent = (meshParent != null) ? meshParent.transform : null;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;
@@ -77,8 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Clean up the resources associated with the surface.
         /// </summary>
         /// <param name="meshObject">The <see cref="SpatialAwarenessMeshObject"/> whose resources will be cleaned up.</param>
-        /// <param name="destroyGameObject"></param>
-        /// <param name="destroyMeshes"></param>
         public static void Cleanup(SpatialAwarenessMeshObject meshObject, bool destroyGameObject = true, bool destroyMeshes = true)
         {
             if (meshObject.GameObject == null)

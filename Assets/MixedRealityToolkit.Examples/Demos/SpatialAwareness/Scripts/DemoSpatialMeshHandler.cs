@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,22 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This class is an example of the <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/DemoSpatialMeshHandler")]
     public class DemoSpatialMeshHandler : MonoBehaviour, SpatialAwarenessHandler
     {
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
-        {
-            get
-            {
-                if (spatialAwarenessSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
-                }
-                return spatialAwarenessSystem;
-            }
-        }
-
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
         /// </summary>
@@ -65,9 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void RegisterEventHandlers()
         {
-            if (!isRegistered && (SpatialAwarenessSystem != null))
+            if (!isRegistered && (CoreServices.SpatialAwarenessSystem != null))
             {
-                SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
+                CoreServices.SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
                 isRegistered = true;
             }
         }
@@ -77,9 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void UnregisterEventHandlers()
         {
-            if (isRegistered && (SpatialAwarenessSystem != null))
+            if (isRegistered && (CoreServices.SpatialAwarenessSystem != null))
             {
-                SpatialAwarenessSystem.UnregisterHandler<SpatialAwarenessHandler>(this);
+                CoreServices.SpatialAwarenessSystem.UnregisterHandler<SpatialAwarenessHandler>(this);
                 isRegistered = false;
             }
         }

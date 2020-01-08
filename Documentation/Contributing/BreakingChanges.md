@@ -1,4 +1,4 @@
-# Breaking Changes
+# Breaking changes
 
 Consumers of the MRTK depend on having a stable release-to-release API surface, so that they can take updates to the MRTK without having large breaking changes each time.
 
@@ -32,7 +32,7 @@ A change is a breaking change if it satisfies any of the conditions in the [List
 > [!IMPORTANT]
 > Any asset that sits in the examples package (i.e. part of the MixedRealityToolkit.Examples/ folder) is subject to change at any time, as assets there are designed to be copied and viewed by consumers as 'reference implementations' but are not part of the core set of APIs and assets. Assets in the experimental namespace (or more generally, features labelled as experimental) are ones that get published before all due diligence has been done (i.e. tests, UX iteration, documentation) and is published early to get feedback sooner.  However, because they don't have tests and documentation, and because we likely haven't nailed down all of the interactions and designs, we publish them in a state where the public should assume that they can and will change (i.e. be modified, completely removed, etc).
 >
-> See [Experimental features](../ExperimentalFeatures.md) for more information.
+> See [Experimental features](../Contributing/ExperimentalFeatures.md) for more information.
 
 As the surface area for breaking changes is very large, it's important to note that having an absolute
 rule that says "no breaking changes" would be impossible - there may be issues that can only be fixed in
@@ -44,7 +44,7 @@ accrue significant customer or framework long term value.
 
 ## What to do about breaking changes
 
-If it is possible to accomplish something without a breaking change and without compromising the long term structure and viability of the feature, don't do the breaking change. If there is no other way, the current policy is to evaluate each individual breaking change, to understand if the benefit from taking the change outweighs the cost to the consumer of absorbing the change. Debate about what is worth doing and what isn't will generally take place on the PR or issue discussion itself. 
+If it is possible to accomplish something without a breaking change and without compromising the long term structure and viability of the feature, don't do the breaking change. If there is no other way, the current policy is to evaluate each individual breaking change, to understand if the benefit from taking the change outweighs the cost to the consumer of absorbing the change. Debate about what is worth doing and what isn't will generally take place on the PR or issue discussion itself.
 
 What can happen here falls into several buckets:
 
@@ -72,7 +72,7 @@ One thing we've already done is introduce the concept of an "experimental" featu
 
 ### Other examples of things that could help in the future
 
-- Usage of the [internal keyword](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/internal).
+- Usage of the [internal keyword](https://docs.microsoft.com/dotnet/csharp/language-reference/keywords/internal).
   This would allow for us to have shared code within our own assemblies (for reducing code duplication) without making things public to external consumers.
 - Creation of an "internal" namespace (i.e. Microsoft.MixedReality.Toolkit.Internal.Utilities),
   where we publicly document that anything contained within that internal namespace is subject to change at anytime and could be removed, etc. This is similar to how C++ header libraries will make use of ::internal namespaces to hide their implementation details.

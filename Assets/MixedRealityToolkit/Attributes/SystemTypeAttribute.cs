@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="type">Initializes a new instance of the <see cref="SystemTypeAttribute"/> class.</param>
         /// <param name="grouping">Gets or sets grouping of selectable classes. Defaults to <see cref="Utilities.TypeGrouping.ByNamespaceFlat"/> unless explicitly specified.</param>
-        public SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
+        protected SystemTypeAttribute(Type type, TypeGrouping grouping = TypeGrouping.ByNamespaceFlat)
         {
 #if WINDOWS_UWP && !ENABLE_IL2CPP
             bool isValid = type.IsClass() || type.IsInterface() || type.IsValueType() && !type.IsEnum();
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Type"/> satisfies filter constraint.
+        /// Determines whether the specified <see cref="System.Type"/> satisfies filter constraint.
         /// </summary>
         /// <param name="type">Type to test.</param>
         /// <returns>

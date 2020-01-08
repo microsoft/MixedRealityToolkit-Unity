@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         {
             // Validates the Quaternion overload of InterpolationUtilities::ExpDecay, which lerps between the from value
             // toward the to value in an exponential fashion.
-            // Note that Quarternions are a bit funky in that they are using spherical lerps, which means the lerp occurs
+            // Note that Quaternions are a bit funky in that they are using spherical lerps, which means the lerp occurs
             // on the surface of a sphere (instead of a linear lerp between points)
             Quaternion from = Quaternion.Euler(new Vector3(0, 0, 0));
             Quaternion to = Quaternion.Euler(new Vector3(0, 45, 0));
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
             // This test ultimately converts the lerped values into rotation effects on the forward vector, to show
             // that this is properly lerping in a more human-readable fashion (i.e. reading unit vector directions, instead
-            // of quarternions)
+            // of quaternions)
             Vector3 result = InterpolationUtilities.ExpDecay(from, to, 2.0f /*hLife*/, 2.0f /*dTime*/) * Vector3.forward;
             Assert.IsTrue(
                 AreEqual(

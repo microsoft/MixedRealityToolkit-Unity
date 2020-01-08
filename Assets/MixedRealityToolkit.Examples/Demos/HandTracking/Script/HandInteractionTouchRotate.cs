@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/HandInteractionTouchRotate")]
     public class HandInteractionTouchRotate : HandInteractionTouch, IMixedRealityTouchHandler
     {
         [SerializeField]

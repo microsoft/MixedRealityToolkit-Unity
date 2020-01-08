@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private SerializedProperty keywordsProperty;
         private SerializedProperty persistentKeywordsProperty;
+        private SerializedProperty speechConfirmationTooltipPrefabProperty;
 
         protected override void OnEnable()
         {
@@ -27,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             keywordsProperty = serializedObject.FindProperty("keywords");
             persistentKeywordsProperty = serializedObject.FindProperty("persistentKeywords");
+            speechConfirmationTooltipPrefabProperty = serializedObject.FindProperty("speechConfirmationTooltipPrefab");
 
             if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
@@ -70,6 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             serializedObject.Update();
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
+            EditorGUILayout.PropertyField(speechConfirmationTooltipPrefabProperty);
 
             bool wasGUIEnabled = GUI.enabled;
             GUI.enabled = enabled;
@@ -102,93 +105,93 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private void ShowList(SerializedProperty list)
         {
-            EditorGUI.indentLevel++;
-
-            // remove the keywords already assigned from the registered list
-            var handler = (SpeechInputHandler)target;
-            var availableKeywords = new string[0];
-
-            if (handler.Keywords != null && distinctRegisteredKeywords != null)
+            using (new EditorGUI.IndentLevelScope())
             {
-                availableKeywords = distinctRegisteredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
-            }
+                // remove the keywords already assigned from the registered list
+                var handler = (SpeechInputHandler)target;
+                var availableKeywords = System.Array.Empty<string>();
 
-            // keyword rows
-            for (int index = 0; index < list.arraySize; index++)
-            {
-                // the element
-                SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
-                GUILayout.BeginHorizontal();
+                if (handler.Keywords != null && distinctRegisteredKeywords != null)
+                {
+                    availableKeywords = distinctRegisteredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+                }
+
+                // keyword rows
+                for (int index = 0; index < list.arraySize; index++)
+                {
+                    // the element
+                    SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
+                    GUILayout.BeginHorizontal();
                     bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
                     GUILayout.FlexibleSpace();
                     // the remove element button
                     bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
 
-                GUILayout.EndHorizontal();
+                    GUILayout.EndHorizontal();
 
-                if (elementRemoved)
-                {
-                    list.DeleteArrayElementAtIndex(index);
-
-                    if (index == list.arraySize)
+                    if (elementRemoved)
                     {
-                        EditorGUI.indentLevel--;
-                        return;
-                    }
-                }
+                        list.DeleteArrayElementAtIndex(index);
 
-                SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
-
-                bool invalidKeyword = true;
-                if (distinctRegisteredKeywords != null)
-                {
-                    foreach (string keyword in distinctRegisteredKeywords)
-                    {
-                        if (keyword == keywordProperty.stringValue)
+                        if (index == list.arraySize)
                         {
-                            invalidKeyword = false;
-                            break;
+                            EditorGUI.indentLevel--;
+                            return;
                         }
                     }
-                }
 
-                if (invalidKeyword)
-                {
-                    EditorGUILayout.HelpBox("Registered keyword is not recognized in the speech command profile!", MessageType.Error);
-                }
+                    SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
 
-                if (!elementRemoved && elementExpanded)
-                {
-                    string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
-                    int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                    int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
-
-                    if (currentSelection != previousSelection)
+                    bool invalidKeyword = true;
+                    if (distinctRegisteredKeywords != null)
                     {
-                        keywordProperty.stringValue = keywords[currentSelection];
+                        foreach (string keyword in distinctRegisteredKeywords)
+                        {
+                            if (keyword == keywordProperty.stringValue)
+                            {
+                                invalidKeyword = false;
+                                break;
+                            }
+                        }
                     }
 
-                    SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");
-                    EditorGUILayout.PropertyField(responseProperty, true);
+                    if (invalidKeyword)
+                    {
+                        EditorGUILayout.HelpBox("Registered keyword is not recognized in the speech command profile!", MessageType.Error);
+                    }
+
+                    if (!elementRemoved && elementExpanded)
+                    {
+                        string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
+                        int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
+                        int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
+
+                        if (currentSelection != previousSelection)
+                        {
+                            keywordProperty.stringValue = keywords[currentSelection];
+                        }
+
+                        SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");
+                        EditorGUILayout.PropertyField(responseProperty, true);
+                    }
+                }
+
+                // add button row
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+
+                    // the add element button
+                    if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton, MiniButtonWidth))
+                    {
+                        var index = list.arraySize;
+                        list.InsertArrayElementAtIndex(index);
+                        var elementProperty = list.GetArrayElementAtIndex(index);
+                        SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
+                        keywordProperty.stringValue = string.Empty;
+                    }
                 }
             }
-
-            // add button row
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // the add element button
-            if (GUILayout.Button(AddButtonContent, EditorStyles.miniButton, MiniButtonWidth))
-            {
-                var index = list.arraySize;
-                list.InsertArrayElementAtIndex(index);
-                var elementProperty = list.GetArrayElementAtIndex(index);
-                SerializedProperty keywordProperty = elementProperty.FindPropertyRelative("keyword");
-                keywordProperty.stringValue = string.Empty;
-            }
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUI.indentLevel--;
         }
 
         private static string[] GetDistinctRegisteredKeywords()

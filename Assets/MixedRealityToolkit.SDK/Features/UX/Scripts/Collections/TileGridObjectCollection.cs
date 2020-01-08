@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     /// 
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/SDK/TileGridObjectCollection")]
     public class TileGridObjectCollection : MonoBehaviour
     {
         /// <summary>
@@ -108,8 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Set the item position by index
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public virtual Vector3 GetListPosition(int index)
         {
             int column = index % Columns;

@@ -40,10 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Lerps between two settings
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
         /// <param name="t">Value from 0 to 1</param>
-        /// <returns></returns>
         public static RuntimeRenderSettings Lerp(RuntimeRenderSettings from, RuntimeRenderSettings to, float t)
         {
             bool notStarted                 = t <= 0;
@@ -74,8 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Sets continuous settings to 'black' without changing any discrete features.
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static RuntimeRenderSettings Black(RuntimeRenderSettings source)
         {
             source.AmbientEquatorColor      = Color.clear;

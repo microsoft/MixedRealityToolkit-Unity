@@ -67,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function must be called from the OnSourceLost handler in a script implementing the IMixedRealitySourceStateHandler interface.
         /// </summary>
-        /// <param name="eventData"></param>
         public void RemoveSource(SourceStateEventData eventData)
         {
             uint sourceId = eventData.SourceId;
@@ -81,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function must be called from the OnInputChanged handler in a script implementing the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler{T}"/>.
         /// </summary>
-        /// <param name="eventData"></param>
         public void UpdateSource(InputEventData<MixedRealityPose> eventData)
         {
             uint id = eventData.SourceId;
@@ -109,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function returns the number of active hands.
         /// </summary>
-        /// <returns></returns>
         public int GetActiveHandCount()
         {
             int count = 0;

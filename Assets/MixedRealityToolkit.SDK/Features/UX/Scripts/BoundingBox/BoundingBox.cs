@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -12,7 +13,14 @@ using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// BoundingBox allows to transform objects (rotate and scale) and draws a cube around the object to visualize 
+    /// the possibility of user triggered transform manipulation. 
+    /// BoundingBox provides scale and rotation handles that can be used for far and near interaction manipulation
+    /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
+    /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/BoundingBox")]
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
@@ -21,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Enums
 
         /// <summary>
-        /// Enum which describes how an object's boundingbox is to be flattened.
+        /// Enum which describes how an object's BoundingBox is to be flattened.
         /// </summary>
         public enum FlattenModeType
         {
@@ -45,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Enum which describes whether a boundingbox handle which has been grabbed, is 
+        /// Enum which describes whether a BoundingBox handle which has been grabbed, is 
         /// a Rotation Handle (sphere) or a Scale Handle( cube)
         /// </summary>
         public enum HandleType
@@ -56,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This enum describes which primitive type the wireframe portion of the boundingbox
+        /// This enum describes which primitive type the wireframe portion of the BoundingBox
         /// consists of. 
         /// </summary>
         /// <remarks>
@@ -135,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Container for handle references and states (including scale and rotation type handles)
+        /// Container for handle references and states (including scale and rotation type handles) which is used in the handle proximity effect
         /// </summary>
         private class Handle
         {
@@ -151,6 +159,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("The object that the bounding box rig will be modifying.")]
         private GameObject targetObject;
+        /// <summary>
+        /// The object that the bounding box rig will be modifying.
+        /// </summary>
+        public GameObject Target
+        {
+            get
+            {
+                if (targetObject == null)
+                {
+                    targetObject = gameObject;
+                }
+
+                return targetObject;
+            }
+
+            set
+            {
+                if (targetObject != value)
+                {
+                    targetObject = value;
+                    CreateRig();
+                }
+            }
+        }
 
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
         [SerializeField]
@@ -231,6 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
         /// <summary>
+        /// Deprecated: Use TransformScaleHandler component instead.
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
@@ -239,15 +272,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMinimum;
+                    return scaleConstraint.ScaleMinimum;
                 }
                 return 0.0f;
             }
         }
 
         /// <summary>
+        /// Deprecated: Use TransformScaleHandler component instead.
         /// Public property for the scale maximum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
@@ -256,9 +290,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMaximum;
+                    return scaleConstraint.ScaleMaximum;
                 }
                 return 0.0f;
             }
@@ -787,11 +821,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
         [Range(0.005f, 0.2f)]
+        /// <summary>
+        /// Distance between handle and hand before proximity scaling will be triggered.
+        /// </summary>
         private float handleMediumProximity = 0.1f;
 
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.1f)]
+        /// <summary>
+        /// Distance between handle and hand that will trigger the close proximity effect.
+        /// </summary>
         private float handleCloseProximity = 0.03f;
 
         [SerializeField]
@@ -854,16 +894,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves from Medium proximity to Far proximity?")]
         [Range(0.0f, 1.0f)]
+        /// <summary>
+        /// Scaling animation velocity from medium to far proximity state.
+        /// </summary>
         private float farGrowRate = 0.3f;
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Medium Scale ?")]
         [Range(0.0f, 1.0f)]
+        /// <summary>
+        /// Scaling animation velocity from far to medium proximity.
+        /// </summary>
         private float mediumGrowRate = 0.2f;
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Close Scale ?")]
         [Range(0.0f, 1.0f)]
+        /// <summary>
+        /// Scaling animation velocity from medium to close proximity.
+        /// </summary>
         private float closeGrowRate = 0.3f;
 
         [SerializeField]
@@ -887,6 +936,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages")]
+        /// <summary>
+        /// Debug only. Component used to display debug messages
+        /// </summary>
         public TextMesh debugText;
 
         [SerializeField]
@@ -940,9 +992,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Events")]
+        /// <summary>
+        /// Event that gets fired when interaction with a rotation handle starts.
+        /// </summary>
         public UnityEvent RotateStarted = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a rotation handle stops.
+        /// </summary>
         public UnityEvent RotateStopped = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a scale handle starts.
+        /// </summary>
         public UnityEvent ScaleStarted = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a scale handle stops.
+        /// </summary>
         public UnityEvent ScaleStopped = new UnityEvent();
         #endregion Serialized Fields
 
@@ -990,7 +1054,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler;
+        private MinMaxScaleConstraint scaleConstraint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -1025,6 +1089,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region public Properties
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
+        /// <summary>
+        /// Flag that indicates if the bounding box is currently active / visible.
+        /// </summary>
         public bool Active
         {
             get
@@ -1047,18 +1114,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public GameObject Target
-        {
-            get
-            {
-                if (targetObject == null)
-                {
-                    targetObject = gameObject;
-                }
-
-                return targetObject;
-            }
-        }
+        
 
         /// <summary>
         /// The collider reference tracking the bounds utilized by this component during runtime
@@ -1175,6 +1231,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void OnDisable()
         {
             DestroyRig();
+
+            if (currentPointer != null)
+            {
+                DropController();
+            }
         }
 
         private void Update()
@@ -1187,7 +1248,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     UpdateBounds();
                     UpdateRigHandles();
                 }
-                else if (!isChildOfTarget && Target.transform.hasChanged)
+                else if ((!isChildOfTarget && Target.transform.hasChanged)
+                    || (boundsOverride != null && HasBoundsOverrideChanged()))
                 {
                     UpdateBounds();
                     UpdateRigHandles();
@@ -1317,17 +1379,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
+
+                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
+                    if (scaleConstraint != null)
                     {
-                        clampedScale = scaleHandler.ClampScale(newScale);
-                        if (clampedScale != newScale)
+                        scaleConstraint.ApplyConstraint(ref clampedTransform);
+                        if (clampedTransform.Scale != newScale)
                         {
-                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                            scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
                         }
                     }
 
-                    Target.transform.localScale = clampedScale;
+                    Target.transform.localScale = clampedTransform.Scale;
                     Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }
@@ -1411,6 +1474,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
+                cornerbounds.center = new Vector3(
+                    (i & (1 << 0)) == 0 ? cornerbounds.center.x : -cornerbounds.center.x,
+                    (i & (1 << 1)) == 0 ? -cornerbounds.center.y : cornerbounds.center.y,
+                    (i & (1 << 2)) == 0 ? -cornerbounds.center.z : cornerbounds.center.z
+                    );
+
                 // we need to multiply by this amount to get to desired scale handle size
                 var invScale = scaleHandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
@@ -1432,8 +1501,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add all common components to a corner or rotate affordance
         /// </summary>
-        /// <param name="afford"></param>
-        /// <param name="bounds"></param>
         private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)
@@ -1540,8 +1607,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
+                
+                Bounds bounds = new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale);
+                if (edgeAxes[i] == CardinalAxisType.X)
+                {
+                    bounds.size = new Vector3(bounds.size.y, bounds.size.x, bounds.size.z);
+                }
+                else if (edgeAxes[i] == CardinalAxisType.Z)
+                {
+                    bounds.size = new Vector3(bounds.size.x, bounds.size.z, bounds.size.y);
+                }
 
-                AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
+                AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
 
                 balls.Add(midpoint.transform);
 
@@ -1712,7 +1789,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
-            // Since those have the gizmo structure childed, be need to ommit them completely in the calculation of the bounds
+            // Since those have the gizmo structure childed, be need to omit them completely in the calculation of the bounds
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
@@ -1815,9 +1892,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                wireframeMaterial = new Material(shader);
+                wireframeMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 wireframeMaterial.EnableKeyword("_InnerGlow");
                 wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
@@ -1827,9 +1902,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleMaterial = new Material(shader);
+                handleMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 handleMaterial.EnableKeyword("_InnerGlow");
                 handleMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 handleMaterial.SetFloat("_InnerGlow", 1.0f);
@@ -1839,9 +1912,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleGrabbedMaterial = new Material(shader);
+                handleGrabbedMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 handleGrabbedMaterial.EnableKeyword("_InnerGlow");
                 handleGrabbedMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 handleGrabbedMaterial.SetFloat("_InnerGlow", 1.0f);
@@ -1853,7 +1924,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var rigRootObj = new GameObject(rigRootName);
             rigRoot = rigRootObj.transform;
-            rigRoot.parent = transform;
+            rigRoot.parent = Target.transform;
 
             var pH = rigRootObj.AddComponent<PointerHandler>();
             pH.OnPointerDown.AddListener(OnPointerDown);
@@ -1907,16 +1978,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 isChildOfTarget = transform.IsChildOf(target.transform);
 
-                scaleHandler = GetComponent<TransformScaleHandler>();
-                if (scaleHandler == null)
+                scaleConstraint = GetComponent<MinMaxScaleConstraint>();
+                if (scaleConstraint == null)
                 {
-                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
+                    scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
 
-                    scaleHandler.TargetTransform = Target.transform;
-                #pragma warning disable 0618
-                    scaleHandler.ScaleMinimum = scaleMinimum;
-                    scaleHandler.ScaleMaximum = scaleMaximum;
-                #pragma warning restore 0618
+                    scaleConstraint.TargetTransform = Target.transform;
+#pragma warning disable 0618
+                    scaleConstraint.ScaleMinimum = scaleMinimum;
+                    scaleConstraint.ScaleMaximum = scaleMaximum;
+#pragma warning restore 0618
                 }
             }
         }
@@ -2069,7 +2140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateRigHandles()
         {
-            if (rigRoot != null && Target != null)
+            if (rigRoot != null && Target != null && TargetBounds != null)
             {
                 // We move the rigRoot to the scene root to ensure that non-uniform scaling performed
                 // anywhere above the rigRoot does not impact the position of rig corners / edges
@@ -2119,10 +2190,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(), invRootScale);
                 }
 
-                //move rig into position and rotation
+                // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
-                rigRoot.parent = transform;
+                rigRoot.parent = Target.transform;
             }
         }
 
@@ -2151,7 +2222,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 maxRadius *= maxRadius;
                 maxRadius += handleCloseProximity + handleMediumProximity;
 
-                // Grab points within sphere of inluence from valid pointers
+                // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
                 {
                     if (IsPointWithinBounds(pointer.Position, maxRadius))
@@ -2159,7 +2230,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         proximityPoints.Add(pointer.Position);
                     }
 
-                    if (IsPointWithinBounds(pointer.Result.Details.Point, maxRadius))
+                    Vector3? point = pointer.Result?.Details.Point;
+
+                    if (point.HasValue && IsPointWithinBounds(point.Value, maxRadius))
                     {
                         proximityPoints.Add(pointer.Result.Details.Point);
                     }
@@ -2172,7 +2245,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     for (int i = 0; i < handles.Count; ++i)
                     {
-                        // If handle can't be visisble, skip calculations
+                        // If handle can't be visible, skip calculations
                         if (!IsHandleTypeVisible(handles[i].Type))
                             continue;
 

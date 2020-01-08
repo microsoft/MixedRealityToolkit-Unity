@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [ExecuteInEditMode]
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/ButtonBackgroundSizeOffset")]
     public class ButtonBackgroundSizeOffset : MonoBehaviour
     {
         /// <summary>
@@ -58,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the objects scale relative to the Anchor
         /// </summary>
-        /// <param name="scale"></param>
         public void SetScale(Vector3 scale)
         {
             Scale = scale;
@@ -73,7 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set a consistent offset value from the Anchor
         /// </summary>
-        /// <param name="offset"></param>
         public void SetOffset(Vector3 offset)
         {
             Offset = offset;
@@ -82,7 +81,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get the current offset value
         /// </summary>
-        /// <returns></returns>
         public Vector3 GetSOffset()
         {
             return Offset;

@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Renders a background mesh for a tool tip using a mesh renderer
     /// If the mesh has an offset anchor point you will get odd results
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ToolTipBackgroundMesh")]
     public class ToolTipBackgroundMesh : MonoBehaviour, IToolTipBackground
     {
         [SerializeField]

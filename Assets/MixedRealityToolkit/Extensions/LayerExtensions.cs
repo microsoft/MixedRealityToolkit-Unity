@@ -63,8 +63,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Transform layer id to <see href="https://docs.unity3d.com/ScriptReference/LayerMask.html">LayerMask</see>
         /// </summary>
-        /// <param name="layerId"></param>
-        /// <returns></returns>
         public static LayerMask ToMask(int layerId)
         {
             return 1 << layerId;

@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// SurfaceMagnetism casts rays to Surfaces in the world and aligns the object to the hit surface.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/SurfaceMagnetism")]
     public class SurfaceMagnetism : Solver
     {
         #region Enums
@@ -442,6 +443,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return;
             }
 
+            if (DebugEnabled)
+            {
+                Debug.DrawLine(currentRayStep.Origin, currentRayStep.Terminus, Color.magenta);
+            }
+
             switch (RaycastMode)
             {
                 case SceneQueryType.SimpleRaycast:
@@ -583,17 +589,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Calculates a plane from all raycast hit locations upon which the object may align. Used in Box Raycast Mode.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="direction"></param>
-        /// <param name="positions"></param>
-        /// <param name="normals"></param>
-        /// <param name="hits"></param>
-        /// <param name="assetWidth"></param>
-        /// <param name="maxNormalVariance"></param>
-        /// <param name="constrainVertical"></param>
-        /// <param name="useClosestDistance"></param>
-        /// <param name="plane"></param>
-        /// <param name="closestDistance"></param>
         private void FindPlacementPlane(Vector3 origin, Vector3 direction, Vector3[] positions, Vector3[] normals, bool[] hits, float assetWidth, float maxNormalVariance, bool constrainVertical, bool useClosestDistance, out Plane plane, out float closestDistance)
         {
             int rayCount = positions.Length;
@@ -789,7 +784,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Checks if a normal is nearly vertical
         /// </summary>
-        /// <param name="normal"></param>
         /// <returns>Returns true, if normal is vertical.</returns>
         private static bool IsNormalVertical(Vector3 normal) => 1f - Mathf.Abs(normal.y) < 0.01f;
     }

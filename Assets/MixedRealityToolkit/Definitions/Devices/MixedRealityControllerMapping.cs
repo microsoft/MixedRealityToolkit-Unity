@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -128,30 +127,80 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         internal void SetDefaultInteractionMapping(bool overwrite = false)
         {
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) as BaseController;
+            if (interactions == null || interactions.Length == 0 || overwrite)
+            {
+                MixedRealityInteractionMapping[] defaultMappings = GetDefaultInteractionMappings();
 
-            if (detectedController != null && (interactions == null || interactions.Length == 0 || overwrite))
+                if (defaultMappings != null)
+                {
+                    interactions = defaultMappings;
+                }
+            }
+        }
+
+        internal bool UpdateInteractionSettingsFromDefault()
+        {
+            bool updatedMappings = false;
+
+            if (interactions?.Length > 0)
+            {
+                MixedRealityInteractionMapping[] newDefaultInteractions = GetDefaultInteractionMappings();
+
+                if (newDefaultInteractions == null)
+                {
+                    return updatedMappings;
+                }
+
+                for (int i = 0; i < newDefaultInteractions.Length; i++)
+                {
+                    MixedRealityInteractionMapping currentMapping = interactions[i];
+                    MixedRealityInteractionMapping currentDefaultMapping = newDefaultInteractions[i];
+
+                    if (currentMapping.Id != currentDefaultMapping.Id ||
+                        currentMapping.Description != currentDefaultMapping.Description ||
+                        currentMapping.AxisType != currentDefaultMapping.AxisType ||
+                        currentMapping.InputType != currentDefaultMapping.InputType ||
+                        currentMapping.KeyCode != currentDefaultMapping.KeyCode ||
+                        currentMapping.AxisCodeX != currentDefaultMapping.AxisCodeX ||
+                        currentMapping.AxisCodeY != currentDefaultMapping.AxisCodeY ||
+                        currentMapping.InvertXAxis != currentDefaultMapping.InvertXAxis ||
+                        currentMapping.InvertYAxis != currentDefaultMapping.InvertYAxis)
+                    {
+                        interactions[i] = new MixedRealityInteractionMapping(currentDefaultMapping)
+                        {
+                            MixedRealityInputAction = currentMapping.MixedRealityInputAction
+                        };
+
+                        updatedMappings = true;
+                    }
+                }
+            }
+
+            return updatedMappings;
+        }
+
+        private MixedRealityInteractionMapping[] GetDefaultInteractionMappings()
+        {
+            if (Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) is BaseController detectedController)
             {
                 switch (handedness)
                 {
                     case Handedness.Left:
-                        interactions = detectedController.DefaultLeftHandedInteractions;
-                        break;
+                        return detectedController.DefaultLeftHandedInteractions;
                     case Handedness.Right:
-                        interactions = detectedController.DefaultRightHandedInteractions;
-                        break;
+                        return detectedController.DefaultRightHandedInteractions;
                     default:
-                        interactions = detectedController.DefaultInteractions;
-                        break;
+                        return detectedController.DefaultInteractions;
                 }
             }
+
+            return null;
         }
 
         /// <summary>
         /// Synchronizes the Input Actions of the same physical controller of a different concrete type.
         /// </summary>
-        /// <param name="otherControllerMapping"></param>
-        internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping) 
+        internal void SynchronizeInputActions(MixedRealityInteractionMapping[] otherControllerMapping)
         {
             if (otherControllerMapping.Length != interactions.Length)
             {

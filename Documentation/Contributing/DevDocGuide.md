@@ -5,7 +5,7 @@ The current state of the developer documentation can be found on the [MRTK githu
 
 Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found [here](https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html)
 
-Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into it's html equivalent. Therefor it's important to only use relative paths when referring to other local files.
+Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into its html equivalent. Therefor it's important to only use relative paths when referring to other local files.
 
 ## Building docfx locally
 
@@ -20,11 +20,11 @@ The docfx build files in the MRTK repo can be used to create a local version of 
 ### Generation
 
 * open a powershell or cmd prompt in the root of the MRTK project
-* execute docfx docfx.json (optionally with the -f option to force a rebuild of doc files)
-* execute docfx serve doc (optionally with -p *portnumber* if you don't want to use the 8888 default port)
+* execute `docfx docfx.json` (optionally with the -f option to force a rebuild of doc files)
+* execute `docfx serve doc` (optionally with -p *portnumber* if you don't want to use the 8888 default port)
 * open a web browser with localhost:*portnumber*
 
-Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning. 
+Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.
 
 ## Verifying docfx on github
@@ -40,9 +40,9 @@ For external apis that don't provide an xref service hrefs to the documentation 
 
 Examples:
 
-```csharp
+```c#
 /// Links to MRTK internal class SystemType
-///<see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
+/// <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/>
 
 /// Links to external API - link provided by xref service
 /// <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
@@ -62,7 +62,7 @@ Example:
 This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 
-```
+```md
 This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 ```
@@ -78,7 +78,7 @@ This will generate an xrefmap.yml file, which will be located in docs/xrefmap.ym
 
 For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:
 
-```
+```yml
 - uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
   name: HandleEvent<T>(BaseEventData, ExecuteEvents.EventFunction<T>)
   href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
@@ -96,11 +96,11 @@ In this example, the xref would look like: (xref:Microsoft.MixedReality.Toolkit.
 
 ## Adding new .md files to developer docs
 
-Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added. 
+Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added.
 
 ### Navigation entries
 
-To determine the entries of the navigation in the developer docs docfx uses toc.yml/toc.md - table of content files. 
+To determine the entries of the navigation in the developer docs docfx uses toc.yml/toc.md - table of content files.
 The toc file in the root of the project defines entries in the top navigation bar whereas the toc.yml files in the subfolders of the repo define subtopics in the sidebar navigation.
 toc.yml files can be used for structuring and there can be any amount of those files. For more info about defining entries for toc.yml check the [docfx documentation entry on toc](https://dotnet.github.io/docfx/tutorial/intro_toc.html).
 
@@ -110,35 +110,30 @@ There are some files like images, videos or PDFs that the documentation can refe
 
 Currently there's a definition for the following resource types:
 
-<table>
-<tr>
-<td><i>ResourceType</i></td> <td><i>Path</i></td>
-</tr>
-<tr>
-<td>Images</td> <td>Documentation/Images/</td>
-</tr>
-</table>
+| ResourceType | Path |
+| --- | --- |
+| Images | Documentation/Images/ |
 
 ## Releasing a new version
 
 Multiple versions of developer docs are supported and can be switched by the version drop down in the top menu bar. If you're releasing a new version perform the following steps to have your version on the developer docs page.
 
-1. Optional: Adjusting your docfx.json
+1. Optional: Adjusting your docfx.json  
 Depending on whether you want to have the "Improve this doc" to point to a specific version of the github repo you will have to add the following entry to the globalMetaData section in the docfx.json file before calling the docfx command:
 
-```
- "_gitContribute": {
+    ```json
+    "_gitContribute": {
         "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity.git",
         "branch": "mrtk_development"
-      }
-```
+    }
+    ```
 
-If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
+    If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.
 
-2. Create your docfx docs by calling docfx docfx.json in the root of the repo
-3. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
-4. Add your version number into the versionArray in web/version.js
-5. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
+1. Create your docfx docs by calling docfx docfx.json in the root of the repo
+1. Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder
+1. Add your version number into the versionArray in web/version.js
+1. Push the modified version.js to mrtk_development branch and the changes in gh-pages branch
 
 CI will pick up the changes done to the version.js file and update the version dropdown automatically.
 
@@ -163,7 +158,7 @@ The versioning system can also be used for showing doc versions from other dev b
   * typos in crefs
   * incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.
     * Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref="Interfaces.IMixedRealityServiceRegistrar"
-  * External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>
+  * External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: `<see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>`
 
 ## See also
 

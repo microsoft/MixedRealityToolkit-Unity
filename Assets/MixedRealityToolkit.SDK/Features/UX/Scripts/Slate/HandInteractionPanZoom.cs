@@ -8,9 +8,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [AddComponentMenu("Scripts/MRTK/SDK/HandInteractionPanZoom")]
     public class HandInteractionPanZoom : 
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
@@ -150,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
         List<Vector2> uvs = new List<Vector2>();
         List<Vector2> uvsOrig = new List<Vector2>();
+        private bool oldIsTargetPositionLockedOnFocusLock;
         #endregion Private Properties
 
         /// <summary>
@@ -292,9 +293,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                if (this.GetComponent<Renderer>()?.material?.mainTexture != null)
+                Renderer renderer = this.GetComponent<Renderer>();
+                Material material = (renderer != null) ? renderer.material : null;
+                if ((material != null) && (material.mainTexture != null))
                 {
-                    this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+                    material.mainTexture.wrapMode = TextureWrapMode.Repeat;
                 }
             }
 
@@ -466,8 +469,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rightPoint.SetActive(affordancesVisible);
             }
 
-            currentMaterial?.SetColor(proximityLightCenterColorID, active ? proximityLightCenterColor : defaultProximityLightCenterColor);
+            if (currentMaterial != null)
+            {
+                currentMaterial.SetColor(proximityLightCenterColorID, active ? proximityLightCenterColor : defaultProximityLightCenterColor);
+            }
         }
+
         private Vector3 GetContactForHand(Handedness hand)
         {
             Vector3 handPoint = Vector3.zero;
@@ -635,7 +642,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else//is far
             {
-                if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
+                if (data.currentPointer is GGVPointer)
+                {
+                    data.touchingInitialPt = SnapFingerToQuad(data.currentPointer.Position);
+                    data.touchingPoint = data.touchingInitialPt;
+                    data.touchingPointSmoothed = data.touchingInitialPt;
+                }
+                else if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
                 {
                     data.touchingInitialPt = SnapFingerToQuad(handRayPt);
                     data.touchingPoint = data.touchingInitialPt;
@@ -644,7 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
-                }
+                }              
             }
 
             //store value in case of MRController
@@ -788,6 +801,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
+            if (! (eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            {
+                eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
+            }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
             SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer,  false);
@@ -795,6 +813,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
         }    

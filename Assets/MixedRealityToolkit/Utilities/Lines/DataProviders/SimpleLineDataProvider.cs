@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// A simple line with two points.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/SimpleLineDataProvider")]
     public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]

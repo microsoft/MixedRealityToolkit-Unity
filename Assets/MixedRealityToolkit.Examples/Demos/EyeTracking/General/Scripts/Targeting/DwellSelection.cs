@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     [RequireComponent(typeof(Interactable))]
+    [AddComponentMenu("Scripts/MRTK/Examples/DwellSelection")]
     public class DwellSelection : BaseEyeFocusHandler, IMixedRealityPointerHandler
     {
         private static bool? useDwell = null;
@@ -261,10 +262,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Returns an individual color channel that is blended between an original and final value based on normalized blend factor.
         /// </summary>
-        /// <param name="startVal"></param>
-        /// <param name="endVal"></param>
-        /// <param name="normalizedBlendFactor"></param>
-        /// <returns></returns>
         private float LerpTransparency(float startVal, float endVal, float normalizedBlendFactor)
         {
             return (startVal + (endVal - startVal) * normalizedBlendFactor);

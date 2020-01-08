@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Displays progress bar and (optionally) percentage text.
     /// </summary>
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/SDK/ProgressIndicatorLoadingBar")]
     public class ProgressIndicatorLoadingBar : MonoBehaviour, IProgressIndicator
     {
         const float SmoothProgressSpeed = 0.25f;

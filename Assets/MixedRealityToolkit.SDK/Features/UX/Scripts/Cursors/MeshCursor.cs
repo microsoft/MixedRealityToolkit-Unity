@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/MeshCursor")]
     public class MeshCursor : BaseCursor
     {
         [Serializable]
@@ -36,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (CursorStateData == null)
             {
-                CursorStateData = new MeshCursorDatum[0];
+                CursorStateData = Array.Empty<MeshCursorDatum>();
             }
 
             if (TargetRenderer == null)
@@ -51,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Override OnCursorState change to set the correct animation
         /// state for the cursor
         /// </summary>
-        /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
@@ -71,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Based on the type of state info pass it through to the mesh renderer
         /// </summary>
-        /// <param name="stateDatum"></param>
         private void SetCursorState(MeshCursorDatum stateDatum)
         {
             // Return if we do not have an animator

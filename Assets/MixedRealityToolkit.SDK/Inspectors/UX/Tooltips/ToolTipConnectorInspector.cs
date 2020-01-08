@@ -171,8 +171,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
 
-            EditorUtility.SetDirty(connector);
+        public override bool RequiresConstantRepaint()
+        {
+            return true;
         }
 
         private ConnectorPivotDirection DrawPivotDirection(ConnectorPivotDirection selection)

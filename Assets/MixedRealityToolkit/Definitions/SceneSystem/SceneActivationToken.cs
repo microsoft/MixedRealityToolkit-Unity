@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Sets ReadyToProceed value
         /// </summary>
-        /// <param name="readyToProceed"></param>
         public void SetReadyToProceed(bool readyToProceed)
         {
             ReadyToProceed = readyToProceed;

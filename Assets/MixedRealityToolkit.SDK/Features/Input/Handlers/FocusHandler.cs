@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Utility component to hook up Unity events to the OnFocusEnter and OnFocusExit events.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/FocusHandler")]
     public class FocusHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
         [SerializeField]

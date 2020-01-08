@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Starts the build process
         /// </summary>
-        /// <param name="buildInfo"></param>
         /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
@@ -87,17 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (buildInfo.ScriptingBackend.HasValue)
             {
                 PlayerSettings.SetScriptingBackend(buildTargetGroup, buildInfo.ScriptingBackend.Value);
-
-#if !UNITY_2019_1_OR_NEWER
-                // When building the .NET backend, also build the C# projects, as the
-                // intent of this build process is to prove that it's possible build
-                // a solution where the local dev loop can be accomplished in the
-                // generated C# projects.
-                if (buildInfo.ScriptingBackend == ScriptingImplementation.WinRTDotNET)
-                {
-                    EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
-                }
-#endif
             }
 
             BuildTarget oldBuildTarget = EditorUserBuildSettings.activeBuildTarget;
@@ -261,6 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     case "-x86":
                     case "-x64":
                     case "-arm":
+                    case "-arm64":
                         buildInfo.BuildPlatform = arguments[i].Substring(1);
                         break;
                     case "-debug":
@@ -284,8 +273,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Restores any nuget packages at the path specified.
         /// </summary>
-        /// <param name="nugetPath"></param>
-        /// <param name="storePath"></param>
         /// <returns>True, if the nuget packages were successfully restored.</returns>
         public static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {

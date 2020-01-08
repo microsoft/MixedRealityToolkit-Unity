@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Raised when the boundary visualization has changed.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnBoundaryVisualizationChanged(BoundaryEventData eventData);
     }
 }

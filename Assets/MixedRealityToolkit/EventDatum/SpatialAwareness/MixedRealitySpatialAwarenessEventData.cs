@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="eventSystem"></param>
         public MixedRealitySpatialAwarenessEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

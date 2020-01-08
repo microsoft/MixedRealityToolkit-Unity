@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Button class used by AppBar.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/AppBarButton")]
     public class AppBarButton : MonoBehaviour
     {
         private const float changeSpeed = 5f;
@@ -97,8 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(visible);
             // Use the interactable theme to make button invisible
             button.enabled = visible;
-            interactable.Enabled = visible;
-
+            interactable.IsEnabled = visible;
         }
     }
 }

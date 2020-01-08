@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [ExecuteInEditMode]
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/ButtonBackgroundSize")]
     public class ButtonBackgroundSize : MonoBehaviour
     {
         /// <summary>
@@ -49,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the size at Runtime or through code
         /// </summary>
-        /// <param name="size"></param>
         public void SetSize(Vector3 size)
         {
             ItemSize = size;
@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get the current size
         /// </summary>
-        /// <returns></returns>
         public Vector3 GetSize()
         {
             return ItemSize;
@@ -67,7 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get the base pixel scale
         /// </summary>
-        /// <returns></returns>
         public float GetBasePixelScale()
         {
             return BasePixelScale;
@@ -76,7 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the base pixel scale
         /// </summary>
-        /// <param name="scale"></param>
         public void SetBasePixelScale(float scale)
         {
             BasePixelScale = scale;

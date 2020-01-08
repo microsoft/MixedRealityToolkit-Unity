@@ -30,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="target"></param>
         public void Initialize(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot target)
         {
             BaseInitialize(pointer.InputSourceParent);

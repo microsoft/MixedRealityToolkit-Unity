@@ -1,24 +1,24 @@
-# Fingertip visualization #
+# Fingertip visualization
 
 ![Fingertip visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)
 
 The fingertip affordance helps the user recognize the distance from the target object. The ring shape visual adjusts its size based on the distance from the fingertip to the object. The fingertip visualization is primarily controlled by the [FingerCursor.prefab](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Cursors/FingerCursor.prefab) (and script) which is spawned as the cursor prefab of the *PokePointer*. Other components of the visualization include the *ProximityLight* script, and *MixedRealityStandard* shader.
 
-## How to use the fingertip visualization ##
+## How to use the fingertip visualization
 
-By default the fingertip visualization will work in any Unity scene that is configured to spawn a FingerCursor. Spawning of the FingerCursor occurs in the *DefaultMixedRealityToolkitConfigurationProfile* under: 
+By default the fingertip visualization will work in any Unity scene that is configured to spawn a FingerCursor. Spawning of the FingerCursor occurs in the *DefaultMixedRealityToolkitConfigurationProfile* under:
 
 *DefaultMixedRealityInputSystemProfile > DefaultMixedRealityInputPointerProfile > PokePointer > FingerCursor*
 
 At a high level the fingertip visualization works by using a proximity light to project a colored gradient on any nearby surfaces that accept proximity lights. The finger cursor then looks for any nearby interactable surfaces, which are determined by parent `IMixedRealityNearPointer(s)`, to align the finger ring with a surface as the finger moves towards a surface. As a finger approaches a surface the finger ring is also dynamically animated using the round corner properties of the MixedRealityStandard shader.
 
-## Example scene ##
+## Example scene
 
 You can find fingertip visualization examples in almost any scene that works with articulated hands, but is prominent in the [HandInteractionExample scene](README_HandInteractionExamples.md).
 
 ![Fingertip visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_States.png)
 
-## Inspector properties ##
+## Inspector properties
 
 **FingerCursor**
 Many of the finger cursor properties are inherited from the base cursor class. Important properties include the far / near surface margins and widths which drive the finger ring animation in the MixedRealityStandard shader. For other properties please hover over the inspector tool tips.

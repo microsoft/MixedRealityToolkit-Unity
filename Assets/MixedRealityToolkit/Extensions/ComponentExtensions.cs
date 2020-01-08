@@ -56,7 +56,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Ensure that a component of type exists on the game object.
         /// If it doesn't exist, creates it.
         /// </summary>
-        /// <param name="gameObject"></param>
         /// <param name="component">A component on the game object for which a component of type should exist.</param>
         /// <returns>The component that was retrieved or created.</returns>
         public static Component EnsureComponent(this GameObject gameObject, Type component)

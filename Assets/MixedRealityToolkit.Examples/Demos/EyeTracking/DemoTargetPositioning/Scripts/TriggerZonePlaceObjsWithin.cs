@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/TriggerZonePlaceObjsWithin")]
     public class TriggerZonePlaceObjsWithin : MonoBehaviour
     {
         [Tooltip("Array of referenced game objects that are supposed to be placed within the collider of this target.).")]
@@ -43,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// If a new collider enters our trigger zone, let's add it to the list of currently colliding targets.
         /// </summary>
-        /// <param name="other"></param>
         private void OnTriggerEnter(Collider other)
         {
             if (!currCollidingObjs.Contains(other.gameObject.name))
@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// If an already enrolled collider leaves our trigger zone, let's remove it from the list of currently colliding targets.
         /// </summary>
-        /// <param name="other"></param>
         void OnTriggerExit(Collider other)
         {
             if (currCollidingObjs.Contains(other.gameObject.name))

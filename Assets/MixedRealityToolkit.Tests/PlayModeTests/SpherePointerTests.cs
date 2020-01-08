@@ -21,22 +21,25 @@ using Microsoft.MixedReality.Toolkit.Input;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify sphere pointer distances
-    public class SpherePointerTests
+    public class SpherePointerTests : BasePlayModeTests
     {
         // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
         private const int numFramesPerMove = 3;
 
         private float colliderSurfaceZ;
 
+        // Grabbable cube that we want to be manipulating
+        private GameObject cube;
+
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
         [SetUp]
-        public void SetUp()
+        public override void Setup()
         {
-            PlayModeTestUtilities.Setup();
+            base.Setup();
 
             float centerZ = 2.0f;
             float scale = 0.2f;
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, centerZ);
             cube.transform.localScale = Vector3.one * scale;
 
@@ -44,14 +47,72 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
+
+            var grabbable = cube.AddComponent<NearInteractionGrabbable>();
+            Assert.IsNotNull(grabbable);
         }
 
         [TearDown]
-        public void TearDown()
+        public override void TearDown()
         {
-            PlayModeTestUtilities.TearDown();
+            GameObject.Destroy(cube);
+            base.TearDown();
         }
 
+        /// <summary>
+        /// Verifies that SpherePointer correctly returns IsNearObject and IsInteractionEnabled
+        /// only when it is near a grabbable object, on the correct grabbable layer.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GrabLayerMasks()
+        {
+            // Initialize hand
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
+            var pointer = rightHand.GetPointer<SpherePointer>();
+            Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
+            Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
+
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand to object, IsNearObject, IsInteractionEnabled should be true
+            yield return rightHand.MoveTo(interactionEnabledPos);
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+
+            // Set layer to spatial mesh, which sphere pointer should be ignoring
+            // assumption: layer 31 is the spatial mesh layer
+            cube.SetLayerRecursively(31);
+            yield return null;
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Set layer back to default
+            cube.SetLayerRecursively(0);
+            yield return null;
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+
+            // Remove the grabbable component, ray should turn on
+            GameObject.Destroy(cube.GetComponent<NearInteractionGrabbable>());
+            yield return null;
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Add back the grabbable, ray should turn off
+            cube.AddComponent<NearInteractionGrabbable>();
+            yield return null;
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+        }
+
+        /// <summary>
+        /// Verifies that the IsNearObject and IsInteractionEnabled get set 
+        /// at the correct times as a hand approaches a grabbable object
+        /// </summary>
         [UnityTest]
         public IEnumerator SpherePointerDistances()
         {

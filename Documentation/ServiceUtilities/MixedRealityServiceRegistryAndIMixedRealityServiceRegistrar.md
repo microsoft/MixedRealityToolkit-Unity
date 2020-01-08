@@ -1,6 +1,6 @@
 # What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar?
 
-The Mixed Reality Toolkit has two very similarly named components that perform related tasks: 
+The Mixed Reality Toolkit has two very similarly named components that perform related tasks:
 MixedRealityServiceRegistry and IMixedRealityServiceRegistrar.
 
 ## MixedRealityServiceRegistry
@@ -9,8 +9,8 @@ The [MixedRealityServiceRegistry](xref:Microsoft.MixedReality.Toolkit.MixedReali
 the component that contains instances of each registered service (core systems and extension services).
 
 > [!NOTE]
-> The MixedRealityServiceRegistry contains instances of objects that 
-implement [IMixedRealityService](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface, including [IMixedRealityExtensionService](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService). 
+> The MixedRealityServiceRegistry contains instances of objects that
+implement [IMixedRealityService](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface, including [IMixedRealityExtensionService](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService).
 >
 >Objects implementing the [IMixedRealityDataProvider](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) (a subclass of IMixedRealityService) are explicitly not registered in the MixedRealityServiceRegistry. These objects are managed by the individual services (ex: Spatial Awareness).
 
@@ -19,7 +19,7 @@ use to acquire service instances in application code.
 
 The following snippet demonstrates acquiring an IMixedRealityInputSystem instance.
 
-```
+```c#
 IMixedRealityInputSystem inputSystem = null;
 
 if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))

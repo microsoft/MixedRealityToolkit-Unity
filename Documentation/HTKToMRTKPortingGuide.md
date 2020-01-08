@@ -1,4 +1,4 @@
-﻿# Porting Guide
+# Porting guide
 
 ## Controller and hand input
 
@@ -29,9 +29,9 @@ Some events no longer have unique events and now contain a [MixedRealityInputAct
 
 Related input systems:
 
-* [Input Overview](/Input/Overview.md)
-* [Input Events](/Input/InputEvents.md)
-* [Input Pointers](/Input/Pointers.md)
+* [Input Overview](Input/Overview.md)
+* [Input Events](Input/InputEvents.md)
+* [Input Pointers](Input/Pointers.md)
 
 | HTK 2017 |  MRTK v2  | Action Mapping |
 |----------|-----------|----------------|
@@ -128,7 +128,7 @@ Related input systems:
 
 ## Utilities
 
-Some Utilities have been reconciled as duplicates with the Solver system. Please file an issue if any of your needed scripts are missing.
+Some Utilities have been reconciled as duplicates with the Solver system. Please file an issue if any of the scripts you need are missing.
 
 | HTK 2017 |  MRTK v2  |
 |----------|-----------|

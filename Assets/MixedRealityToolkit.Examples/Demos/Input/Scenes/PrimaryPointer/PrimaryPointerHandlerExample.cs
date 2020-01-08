@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     // Simple example script that subscribes to primary pointer changes and applies a cursor highlight to the current one.
+    [AddComponentMenu("Scripts/MRTK/Examples/PrimaryPointerHandlerExample")]
     public class PrimaryPointerHandlerExample : MonoBehaviour
     {
         public GameObject CursorHighlight;
@@ -23,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 if (newPointer != null)
                 {
-                    Transform parentTransform = newPointer.BaseCursor?.GameObjectReference?.transform;
+                    GameObject gameObjectReference = newPointer.BaseCursor?.GameObjectReference;
+                    Transform parentTransform = (gameObjectReference != null) ? gameObjectReference.transform : null;
 
                     // If there's no cursor try using the controller pointer transform instead
                     if (parentTransform == null)

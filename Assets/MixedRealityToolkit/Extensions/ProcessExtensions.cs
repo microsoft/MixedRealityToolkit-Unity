@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="fileName">The process executable to run.</param>
         /// <param name="args">The Process arguments.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
-        /// <param name="cancellationToken"></param>
         /// <returns><see cref="Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, string fileName, string args, bool showDebug = false, CancellationToken cancellationToken = default)
         {
@@ -45,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="process">This Process.</param>
         /// <param name="startInfo">The Process start info.</param>
         /// <param name="showDebug">Should output debug code to Editor Console?</param>
-        /// <param name="cancellationToken"></param>
         /// <returns><see cref="Utilities.ProcessResult"/></returns>
         public static async Task<ProcessResult> StartProcessAsync(this Process process, ProcessStartInfo startInfo, bool showDebug = false, CancellationToken cancellationToken = default)
         {

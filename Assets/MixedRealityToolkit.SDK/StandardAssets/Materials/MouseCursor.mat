@@ -121,6 +121,7 @@ Material:
     - _FluentLightIntensity: 1
     - _HoverLight: 0
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -162,6 +163,7 @@ Material:
     - _VertColorScale: 1
     - _VertexColors: 0
     - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0

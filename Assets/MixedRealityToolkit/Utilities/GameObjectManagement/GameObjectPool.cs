@@ -79,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <param name="objectIdentifier">The identifier you want to use to identify the kind of game object you want to retrieve.</param>
         /// <param name="position">The position that the game object should have before it is activated.</param>
         /// <param name="rotation">The rotation that the game object should have before it is activated.</param>
-        /// <returns></returns>
         public GameObject GetGameObject(string objectIdentifier, Vector3 position, Quaternion rotation)
         {
             GameObject obj = null;
@@ -128,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <summary>
         /// Gets the number of game objects in the pool for a specific identifier.
         /// </summary>
-        /// <param name="objectIdentifier"></param>
         public int Count(string objectIdentifier)
         {
             EnsureListForObjectID(objectIdentifier);
@@ -179,7 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.GameObjectManagement
         /// <summary>
         /// Ensures there is a list for the specified identifier
         /// </summary>
-        /// <param name="objectIdentifier"></param>
         private void EnsureListForObjectID(string objectIdentifier)
         {
             if (!_pool.ContainsKey(objectIdentifier))

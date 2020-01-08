@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SpeechVisualFeedback")]
     public class SpeechVisualFeedback : MonoBehaviour, IMixedRealitySpeechHandler
     {
         #region Variable declarations
@@ -38,27 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         /// <summary>
         /// Update text to be displayed
         /// </summary>
-        /// <param name="msg"></param>
         private void UpdateTextMesh(string msg)
         {
             if (MyTextMesh != null)
@@ -70,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// This method handles displaying a given text message.
         /// </summary>
-        /// <param name="msg"></param>
         public void ShowVisualFeedback(string msg)
         {
             // Start showing the visual feedback
@@ -79,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Update text to be displayed
                 UpdateTextMesh(msg);
 
-                if (InputSystem.GazeProvider != null)
+                if (CoreServices.InputSystem.GazeProvider != null)
                 {
                     // Show the visual feedback at 2m in the direction the user is looking
-                    visualFeedbackTemplate.transform.position = CameraCache.Main.transform.position + InputSystem.GazeProvider.GazeDirection.normalized * 2f;
+                    visualFeedbackTemplate.transform.position = CameraCache.Main.transform.position + CoreServices.InputSystem.GazeProvider.GazeDirection.normalized * 2f;
                     visualFeedbackTemplate.transform.LookAt(CameraCache.Main.transform.position);
                 }
 

@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
     /// <remarks>
     /// This scene needs to be opened before building to the device so the appropriate assets are copied.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/Examples/TestGltfLoading")]
     public class TestGltfLoading : MonoBehaviour
     {
         [SerializeField]

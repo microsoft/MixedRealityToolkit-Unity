@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SolverExampleManager")]
     public class SolverExampleManager : MonoBehaviour
     {
         [SerializeField]
@@ -37,6 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public void SetTrackedHead()
         {
             TrackedType = TrackedObjectType.Head;
+        }
+
+        public void SetTrackedController()
+        {
+            TrackedType = TrackedObjectType.ControllerRay;
         }
 
         public void SetTrackedHands()

@@ -68,11 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (oldShader.name.Contains(TransparentCutoutShadersPath))
                 {
-                    mode = RenderingMode.TransparentCutout;
+                    mode = RenderingMode.Cutout;
                 }
                 else if (oldShader.name.Contains(TransparentShadersPath))
                 {
-                    mode = RenderingMode.Transparent;
+                    mode = RenderingMode.Fade;
                 }
 
                 material.SetFloat(BaseStyles.renderingModeName, (float)mode);
@@ -84,8 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected void AdvancedOptions(MaterialEditor materialEditor, Material material)
         {
             GUILayout.Label(Styles.advancedOptionsTitle, EditorStyles.boldLabel);
-
-            EditorGUILayout.Space();
 
             EditorGUI.BeginChangeCheck();
 

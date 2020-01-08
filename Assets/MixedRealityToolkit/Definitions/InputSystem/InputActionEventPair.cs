@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="inputAction"></param>
-        /// <param name="unityEvent"></param>
         public InputActionEventPair(MixedRealityInputAction inputAction, UnityEvent unityEvent)
         {
             this.inputAction = inputAction;

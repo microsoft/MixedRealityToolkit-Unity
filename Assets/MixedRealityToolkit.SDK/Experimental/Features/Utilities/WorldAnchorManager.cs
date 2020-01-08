@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// This class only functions when built for the WSA platform. It uses APIs that are only present
     /// on that platform.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/SDK/WorldAnchorManager")]
     public class WorldAnchorManager : MonoBehaviour
     {
         /// <summary>

@@ -10,6 +10,7 @@
 [Aa]pp/
 UWP/
 WindowsStoreApp/
+WSA/
 UnityGenerated/
 UnityPackageManager/
 .out/
@@ -58,14 +59,13 @@ obj/
 # Project Specific List #
 # ===================== #
 artifacts/
-Assets/ThirdParty/
-Assets/ThirdParty.meta
-Assets/TextMesh Pro.meta
-Assets/TextMesh Pro/
+Assets/ThirdParty*
+Assets/TextMesh Pro*
 --Version/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
 Assets/StreamingAssets.meta
+Assets/MixedRealityToolkit.Generated*
 
 /mrtk_log_mostRecentET.csv
 
@@ -74,7 +74,7 @@ Assets/StreamingAssets.meta
 # =============== #
 doc/
 
-# This is only needed because docfx chooses the first alphebetically occuring
+# This is only needed because docfx chooses the first alphabetically occurring
 # .cs file's folder to create an obj/xdoc cache folder inside.
 # When https://github.com/dotnet/docfx/issues/1156 is addressed, it should be
 # possible to remove the rule on the following line and update our docfx
@@ -89,3 +89,11 @@ doc/
 /MRTKBuild/
 /MSBuild/
 /PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj
+
+# ========================= #
+# MSBuildForUnity generated #
+# ========================= #
+Assets/MixedRealityToolkit.Providers/WindowsMixedReality/DotNetAdapter/Plugins*
+MSBuildForUnity.Common.props
+.obj

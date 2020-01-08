@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("Scripts/MRTK/Services/GazeProvider")]
     public class GazeProvider :
         InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
@@ -197,8 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public override float PointerExtent
             {
-                get { return pointerExtent; }
-                set { pointerExtent = value; }
+                get => pointerExtent;
+                set => pointerExtent = value;
             }
 
             // Is the pointer currently down
@@ -213,7 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Only for use when initializing Gaze Pointer on startup.
             /// </summary>
-            /// <param name="gazeInputSource"></param>
             internal void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
             {
                 InputSourceParent = gazeInputSource;
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (isDown)
                 {
-                    InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
                 }
             }
 
@@ -268,6 +268,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <inheritdoc />
             public override Quaternion Rotation => gazeTransform.rotation;
+            
+            /// <inheritdoc />
+            public override void Reset()
+            {
+                Controller = null;
+            }
 
             #endregion IMixedRealityPointer Implementation
 
@@ -276,13 +282,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = true;
                 currentHandedness = handedness;
                 currentInputSource = inputSource;
-                gazeProvider.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
+                CoreServices.InputSystem?.RaisePointerDown(this, mixedRealityInputAction, handedness, inputSource);
             }
 
             /// <summary>
@@ -290,14 +295,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = false;
                 currentHandedness = Handedness.None;
                 currentInputSource = null;
-                gazeProvider.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
-                gazeProvider.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
+                CoreServices.InputSystem?.RaisePointerClicked(this, mixedRealityInputAction, 0, handedness, inputSource);
+                CoreServices.InputSystem?.RaisePointerUp(this, mixedRealityInputAction, handedness, inputSource);
             }
         }
 
@@ -411,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // if true, component has never started and never fired onSourceDetected event
             if (!delayInitialization)
             {
-                InputSystem?.RaiseSourceLost(GazeInputSource);
+                CoreServices.InputSystem?.RaiseSourceLost(GazeInputSource);
             }
         }
 
@@ -422,13 +426,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
         }
 
         /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation
@@ -494,7 +498,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // We've been destroyed during the await.
                 return;
             }
-            InputSystem?.RaiseSourceDetected(GazeInputSource);
+
+            CoreServices.InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 

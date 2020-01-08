@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// Creates a parabolic line based on physics.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/ParabolaPhysicalLineDataProvider")]
     public class ParabolaPhysicalLineDataProvider : ParabolaLineDataProvider
     {
         [SerializeField]
@@ -87,8 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <remarks>
         /// This specific override doesn't set any points.
         /// </remarks>
-        /// <param name="pointIndex"></param>
-        /// <param name="point"></param>
         protected override void SetPointInternal(int pointIndex, Vector3 point)
         {
             // Intentionally does nothing. StartPoint is always the base.FirstPoint and EndPoint is always calculated by the physics.

@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
         public void Initialize(IMixedRealityPointer pointer)
         {
             Reset();
@@ -42,9 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="oldFocusedObject"></param>
-        /// <param name="newFocusedObject"></param>
         public void Initialize(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
             Reset();

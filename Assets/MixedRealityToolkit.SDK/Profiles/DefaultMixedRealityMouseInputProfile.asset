@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityMouseInputProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  mouseSpeed: 0.25
+  cursorSpeed: 1
+  wheelSpeed: 1

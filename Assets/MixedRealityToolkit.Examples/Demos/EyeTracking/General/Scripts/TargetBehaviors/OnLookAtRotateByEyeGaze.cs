@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// The currently looked at part will move towards the front facing the user.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/OnLookAtRotateByEyeGaze")]
     public class OnLookAtRotateByEyeGaze : BaseEyeFocusHandler
     {
         #region Serialized variables
@@ -52,23 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private float maxRotY = 180.0f;
         #endregion
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         protected override void OnEyeFocusStay()
         {
             // Update target rotation
@@ -77,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void RotateHitTarget()
         {
-            Vector3 TargetToHit = (this.gameObject.transform.position - InputSystem.EyeGazeProvider.HitPosition).normalized;
+            Vector3 TargetToHit = (this.gameObject.transform.position - CoreServices.InputSystem.EyeGazeProvider.HitPosition).normalized;
             Vector3 TargetToCam = (this.gameObject.transform.position - CameraCache.Main.transform.position).normalized;
 
             float angle1x, angle1y, angle1z, angle2x, angle2y;
@@ -124,10 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Clamps angle within the range of a given min and max value and maps it to the range of -180 to +180.
         /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="min"></param>
-        /// <param name="maxAngleInDegree"></param>
-        /// <returns></returns>
         private float ClampAngleInDegree(float angleInDegree, float minAngleInDegree, float maxAngleInDegree)
         {
             // Angle is not constricted

@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Tells the eye gaze provider that eye gaze has updated.
         /// </summary>
         /// <param name="provider">The provider raising the event.</param>
-        /// <param name="eyeRay"></param>
-        /// <param name="timestamp"></param>
         /// <remarks>
         /// This method is to be called by implementations of the <see cref="IMixedRealityEyeGazeDataProvider"/> interface, not by application code.
         /// </remarks>

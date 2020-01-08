@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     /// Rotates a game object in response to panning motion from the specified
     /// panzoom component.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/RotateWithPan")]
     public class RotateWithPan : MonoBehaviour
     {
         private Renderer rd;

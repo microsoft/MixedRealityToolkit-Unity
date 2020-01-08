@@ -206,6 +206,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 135097812019856892}

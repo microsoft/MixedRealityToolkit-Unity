@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/RadialView")]
     public class RadialView : Solver
     {
         [SerializeField]
@@ -234,7 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Optimized version of GetDesiredOrientation.
         /// </summary>
-        /// <param name="desiredPos"></param>
         private void GetDesiredOrientation_DistanceOnly(ref Vector3 desiredPos)
         {
             // TODO: There should be a different solver for distance constraint.

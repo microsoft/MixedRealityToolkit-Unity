@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace #NAMESPACE#.Editor
 {	
-	[MixedRealityServiceInspector(typeof(#SERVICE_NAME#))]
+	[MixedRealityServiceInspector(typeof(#INTERFACE_NAME#))]
 	public class #INSPECTOR_NAME# : BaseMixedRealityServiceInspector
 	{
 		public override void DrawInspectorGUI(object target)

@@ -11,7 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class SpherePointerInspector : BaseControllerPointerInspector
     {
         private SerializedProperty sphereCastRadius;
-        private SerializedProperty debugMode;
+        private SerializedProperty nearObjectMargin;
+        private SerializedProperty grabLayerMasks;
+        private SerializedProperty triggerInteraction;
+        private SerializedProperty sceneQueryBufferSize;
+        private SerializedProperty ignoreCollidersNotInFOV;
+
 
         private bool spherePointerFoldout = true;
 
@@ -20,7 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
 
             sphereCastRadius = serializedObject.FindProperty("sphereCastRadius");
-            debugMode = serializedObject.FindProperty("debugMode");
+            sceneQueryBufferSize = serializedObject.FindProperty("sceneQueryBufferSize");
+            nearObjectMargin = serializedObject.FindProperty("nearObjectMargin");
+            grabLayerMasks = serializedObject.FindProperty("grabLayerMasks");
+            triggerInteraction = serializedObject.FindProperty("triggerInteraction");
+            ignoreCollidersNotInFOV = serializedObject.FindProperty("ignoreCollidersNotInFOV");
         }
 
         public override void OnInspectorGUI()
@@ -33,10 +42,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (spherePointerFoldout)
             {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(sphereCastRadius);
-                EditorGUILayout.PropertyField(debugMode);
-                EditorGUI.indentLevel--;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(sphereCastRadius);
+                    EditorGUILayout.PropertyField(sceneQueryBufferSize);
+                    EditorGUILayout.PropertyField(nearObjectMargin);
+                    EditorGUILayout.PropertyField(triggerInteraction);
+                    EditorGUILayout.PropertyField(grabLayerMasks, true);
+                    EditorGUILayout.PropertyField(ignoreCollidersNotInFOV);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();

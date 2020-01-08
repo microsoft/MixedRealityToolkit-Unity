@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     /// </summary>
     public class TemplateFiles
     {
-        private const string TemplateFilesFolderName = "MSBuildTemplates";
+        private const string TemplateFilesFolderName = "MSBuildMRTKTemplates";
         private const string MSBuildSolutionTemplateName = "SolutionTemplate.sln.template";
         private const string SDKProjectFileTemplateName = "SDKProjectTemplate.csproj.template";
         private const string PlatformPropsTemplateName = "Platform.Configuration.Template.props.template";
@@ -168,4 +167,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

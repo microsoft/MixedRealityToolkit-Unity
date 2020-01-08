@@ -51,12 +51,26 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
 #if UNITY_EDITOR
-                string path;
-                if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out path))
+                MixedRealityToolkitModuleType moduleType = MixedRealityToolkitFiles.GetModuleFromPackageFolder(PackageFolder);
+
+                if (moduleType != MixedRealityToolkitModuleType.None)
                 {
-                    return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(path, DefaultProfilePath));
+                    string folder = MixedRealityToolkitFiles.MapModulePath(moduleType);
+                    if (!string.IsNullOrWhiteSpace(folder))
+                    {
+                        return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(folder, DefaultProfilePath));
+                    }
+                }
+                else
+                {
+                    string folder;
+                    if (EditorProjectUtilities.FindRelativeDirectory(PackageFolder, out folder))
+                    {
+                        return AssetDatabase.LoadAssetAtPath<BaseMixedRealityProfile>(System.IO.Path.Combine(folder, DefaultProfilePath));
+                    }
                 }
 
+                // If we get here, there was an issue finding the profile.
                 Debug.LogError("Unable to find or load the profile.");
 #endif  
                 return null;

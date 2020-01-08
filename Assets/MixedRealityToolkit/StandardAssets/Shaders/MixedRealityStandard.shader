@@ -208,9 +208,6 @@ Shader "Mixed Reality Toolkit/Standard"
 
             CGPROGRAM
 
-#if defined(SHADER_API_D3D11)
-            #pragma target 5.0
-#endif
             #pragma vertex vert
             #pragma fragment frag
 
@@ -325,13 +322,16 @@ Shader "Mixed Reality Toolkit/Standard"
             struct appdata_t
             {
                 float4 vertex : POSITION;
+                // The default UV channel used for texturing.
                 float2 uv : TEXCOORD0;
 #if defined(LIGHTMAP_ON)
-                float2 lightMapUV : TEXCOORD1;
+                // Reserved for Unity's light map UVs.
+                float2 uv1 : TEXCOORD1;
 #endif
-#if defined (_VERTEX_EXTRUSION_SMOOTH_NORMALS)
-                fixed3 smoothNormal : TEXCOORD2;
-#endif
+                // Used for smooth normal data (or UGUI scaling data).
+                float4 uv2 : TEXCOORD2;
+                // Used for UGUI scaling data.
+                float2 uv3 : TEXCOORD3;
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
 #endif
@@ -679,6 +679,15 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
 #endif
+#if !defined(_VERTEX_EXTRUSION_SMOOTH_NORMALS)
+                // uv3.y will contain a negative value when rendered by a UGUI and ScaleMeshEffect.
+                if (v.uv3.y < 0.0)
+                {
+                    o.scale.x *= v.uv2.x;
+                    o.scale.y *= v.uv2.y;
+                    o.scale.z *= v.uv3.x;
+                }
+#endif
 #endif
 
                 fixed3 localNormal = v.normal;
@@ -689,7 +698,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_VERTEX_EXTRUSION)
 #if defined(_VERTEX_EXTRUSION_SMOOTH_NORMALS)
-                worldVertexPosition += UnityObjectToWorldNormal(v.smoothNormal * o.scale) * _VertexExtrusionValue;
+                worldVertexPosition += UnityObjectToWorldNormal(v.uv2 * o.scale) * _VertexExtrusionValue;
 #else
                 worldVertexPosition += worldNormal * _VertexExtrusionValue;
 #endif
@@ -791,7 +800,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(LIGHTMAP_ON)
-                o.lightMapUV.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+                o.lightMapUV.xy = v.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
 
 #if defined(_VERTEX_COLORS)
@@ -834,9 +843,6 @@ Shader "Mixed Reality Toolkit/Standard"
                 return o;
             }
 
-#if defined(SHADER_API_D3D11) && !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
-            [earlydepthstencil]
-#endif
             fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
 #if defined(_INSTANCED_COLOR)
@@ -1082,7 +1088,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed diffuse = max(0.0, dot(worldNormal, directionalLightDirection));
 #if defined(_SPECULAR_HIGHLIGHTS)
                 fixed halfVector = max(0.0, dot(worldNormal, normalize(directionalLightDirection + worldViewDir)));
-                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness * 0.5);
+                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * (_Smoothness * 2.0) * _Metallic);
 #else
                 fixed specular = 0.0;
 #endif

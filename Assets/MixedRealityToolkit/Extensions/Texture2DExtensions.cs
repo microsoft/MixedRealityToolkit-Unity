@@ -72,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="y">y position of this texture to get the texture from</param>
         /// <param name="width">width of the region to capture</param>
         /// <param name="height">height of the region to capture</param>
-        /// <returns></returns>
         public static Texture2D CreateTextureFromRegion(this Texture2D texture2D, int x, int y, int width, int height)
         {
             Color[] pixels = texture2D.GetPixels(x, y, width, height);

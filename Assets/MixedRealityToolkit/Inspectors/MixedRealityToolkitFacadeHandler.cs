@@ -3,7 +3,9 @@
 
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 {
@@ -13,11 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     [InitializeOnLoad]
     public static class MixedRealityToolkitFacadeHandler
     {
-        private static List<Transform> childrenToDelete = new List<Transform>();
+        private static readonly List<Transform> childrenToDelete = new List<Transform>();
         private static MixedRealityToolkit previousActiveInstance;
-        private static long previousFrameCount;
         private static short editorUpdateTicks;
         private const short EditorUpdateTickInterval = 15;
+
+        // While a scene save is occurring, facade creation is disabled
+        // and currently present facades get deleted.
+        private static bool sceneSaving = false;
 
         static MixedRealityToolkitFacadeHandler()
         {
@@ -28,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 #endif
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorApplication.update += OnUpdate;
+            EditorSceneManager.sceneSaving += OnSceneSaving;
+            EditorSceneManager.sceneSaved += OnSceneSaved;
         }
 
         #region callbacks
@@ -51,14 +58,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static void OnScriptsReloaded()
         {
             // If scripts were reloaded, nuke everything and start over
-            foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
-            {
-                DestroyAllChildren(toolkitInstance);
-            }
-            previousActiveInstance = null;
+            CleanupCurrentFacades();
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            CleanupCurrentFacades();
+        }
+
+        private static void OnSceneSaving(Scene scene, string path)
+        {
+            sceneSaving = true;
+            CleanupCurrentFacades();
+        }
+
+        private static void OnSceneSaved(Scene scene)
+        {
+            sceneSaving = false;
+        }
+
+        #endregion
+
+        private static void CleanupCurrentFacades()
         {
             foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
             {
@@ -66,8 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
             previousActiveInstance = null;
         }
-
-        #endregion
 
         private static HashSet<IMixedRealityService> GetAllServices()
         {
@@ -93,8 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void UpdateServiceFacades()
         {
-            // If compiling, don't modify service facades
-            if (EditorApplication.isCompiling)
+            // If compiling or saving, don't modify service facades
+            if (sceneSaving || EditorApplication.isCompiling)
             {
                 return;
             }
@@ -131,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 else if (!serviceSet.Contains(facade.Service))
                 {
                     ServiceFacade.ActiveFacadeObjects.Remove(facade);
-                    DestroyGameObject(facade.gameObject);
+                    GameObjectExtensions.DestroyGameObject(facade.gameObject);
                 }
                 else
                 {
@@ -165,30 +184,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             previousActiveInstance = MixedRealityToolkit.Instance;
         }
 
-        /// <summary>
-        /// Destroys gameobject appropriately depending if in edit or playmode
-        /// </summary>
-        /// <param name="gameObject">gameobject to destroy</param>
-        /// <param name="t">time at which to destroy GameObject if applicable</param>
-        public static void DestroyGameObject(this GameObject gameObject, float t = 0.0f)
-        {
-            if (Application.isPlaying)
-            {
-                GameObject.Destroy(gameObject, t);
-            }
-            else
-            {
-                GameObject.DestroyImmediate(gameObject);
-            }
-        }
-
         private static void DestroyFacades()
         {
-            foreach (var facade in ServiceFacade.ActiveFacadeObjects)
+            for (int i = ServiceFacade.ActiveFacadeObjects.Count - 1; i >= 0; i--)
             {
+                var facade = ServiceFacade.ActiveFacadeObjects[i];
                 if (facade != null)
                 {
-                    DestroyGameObject(facade.gameObject);
+                    GameObjectExtensions.DestroyGameObject(facade.gameObject);
                 }
             }
 
@@ -218,12 +221,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
             {
                 if (!childrenToDelete.Contains(facade.transform))
+                {
                     childrenToDelete.Add(facade.transform);
+                }
             }
 
             foreach (Transform child in childrenToDelete)
             {
-                DestroyGameObject(child.gameObject);
+                GameObjectExtensions.DestroyGameObject(child.gameObject);
             }
 
             childrenToDelete.Clear();

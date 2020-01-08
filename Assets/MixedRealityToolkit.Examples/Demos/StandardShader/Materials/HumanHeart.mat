@@ -9,9 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: HumanHeart
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _CLIPPING_BORDER _CLIPPING_BOX _CLIPPING_SPHERE _DIRECTIONAL_LIGHT
-    _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _PROXIMITY_LIGHT_COLOR_OVERRIDE _REFLECTIONS
-    _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _CLIPPING_BORDER _DIRECTIONAL_LIGHT _HOVER_COLOR_OVERRIDE _HOVER_LIGHT
+    _PROXIMITY_LIGHT_COLOR_OVERRIDE _REFLECTIONS _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -84,7 +83,7 @@ Material:
     - _BorderWidth: 0.1
     - _BumpScale: 1
     - _ClippingBorder: 1
-    - _ClippingBorderWidth: 0.02
+    - _ClippingBorderWidth: 0.01
     - _ColorWriteMask: 15
     - _CullMode: 0
     - _CustomMode: 0
@@ -111,6 +110,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _HoverLight: 1
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -150,6 +150,7 @@ Material:
     - _UVSec: 0
     - _VertexColors: 0
     - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0

@@ -10,14 +10,48 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone |
+        SupportedPlatforms.LinuxStandalone | SupportedPlatforms.WindowsUniversal,
+        "Scene Transition Service",
+        "SceneTransitionService/Profiles/DefaultSceneTransitionServiceProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
-        public SceneTransitionService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public SceneTransitionService(
+            IMixedRealityServiceRegistrar registrar, 
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : this(name, priority, profile)
         {
-            sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public SceneTransitionService(
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            sceneTransitionServiceProfile = profile as SceneTransitionServiceProfile;
+        }
+
+        private const float maxFadeOutTime = 30;
+        private const float maxFadeInTime = 30;
 
         /// <inheritdoc />
         public bool UseFadeColor { get; set; }
@@ -87,18 +121,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc />
         public async Task DoSceneTransition(Func<Task> sceneOperation, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Func<Task>[] { sceneOperation }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOperation }, FadeOutTime, FadeInTime, progressIndicator);
         }
 
         /// <inheritdoc />
         public async Task DoSceneTransition(Func<Task> sceneOp1, Func<Task> sceneOp2, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Func<Task>[] { sceneOp1, sceneOp2 }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOp1, sceneOp2 }, FadeOutTime, FadeInTime, progressIndicator);
         }
 
         /// <inheritdoc />
         public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, IProgressIndicator progressIndicator = null)
         {
+            await DoSceneTransition(sceneOperations, FadeOutTime, FadeInTime, progressIndicator);
+        }
+
+        /// <inheritdoc />
+        public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)
+        {
+            fadeOutTime = Mathf.Clamp(fadeOutTime, 0, maxFadeOutTime);
+            fadeInTime = Mathf.Clamp(fadeInTime, 0, maxFadeInTime);
+
             if (TransitionInProgress)
             {
                 throw new Exception("Attempting to do a transition while one is already in progress.");
@@ -118,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             if (UseFadeColor)
             {
-                await FadeOut();
+                await FadeOut(fadeOutTime);
             }
 
             if (progressIndicator != null)
@@ -150,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             if (UseFadeColor)
             {
-                await FadeIn();
+                await FadeIn(fadeInTime);
             }
 
             TransitionInProgress = false;
@@ -168,6 +211,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         /// <inheritdoc />
         public async Task FadeOut()
+        {
+            await FadeOut(FadeOutTime);
+        }
+
+        /// <inheritdoc />
+        public async Task FadeIn()
+        {
+            await FadeIn(FadeInTime);
+        }
+
+        /// <inheritdoc />
+        public async Task FadeOut(float fadeOutTime)
         {
             CreateCameraFader();
 
@@ -193,11 +248,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     break;
             }
 
-            await cameraFader.FadeOutAsync(FadeInTime, FadeColor, GatherFadeTargetCameras());
+            await cameraFader.FadeOutAsync(fadeOutTime, FadeColor, GatherFadeTargetCameras());
         }
 
         /// <inheritdoc />
-        public async Task FadeIn()
+        public async Task FadeIn(float fadeInTime)
         {
             CreateCameraFader();
 
@@ -224,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     break;
             }
 
-            await cameraFader.FadeInAsync(FadeInTime);
+            await cameraFader.FadeInAsync(fadeInTime);
         }
 
         /// <inheritdoc />
@@ -236,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 case ProgressIndicatorState.Open:
                 case ProgressIndicatorState.Opening:
-                    // If it's already open / opening, don't botheer to open again
+                    // If it's already open / opening, don't bother to open again
                     break;
 
                 case ProgressIndicatorState.Closed:
@@ -393,14 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             if (progressIndicatorObject != null)
             {
-                if (Application.isPlaying)
-                {
-                    GameObject.Destroy(progressIndicatorObject);
-                }
-                else
-                {
-                    GameObject.DestroyImmediate(progressIndicatorObject);
-                }
+                GameObjectExtensions.DestroyGameObject(progressIndicatorObject);
             }
         }
 
@@ -412,6 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
 
             cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
+            cameraFader.Initialize(sceneTransitionServiceProfile);
 
             if (cameraFader == null)
             {

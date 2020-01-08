@@ -1,0 +1,156 @@
+<Project ToolsVersion="15.0">
+  <PropertyGroup>
+    <!--anborod: This is a weird thing, it is a required property (even if commented)-->
+    <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> -->
+    
+    <ProjectGuid><!--PROJECT_GUID_TOKEN--></ProjectGuid>
+    <AllowUnsafeBlocks><!--ALLOW_UNSAFE_TOKEN--></AllowUnsafeBlocks>
+    <LangVersion><!--LANGUAGE_VERSION_TOKEN--></LangVersion>
+    
+    <DevelopmentBuild><!--DEVELOPMENT_BUILD_TOKEN--></DevelopmentBuild>
+    
+    <IsEditorOnlyTarget><!--IS_EDITOR_ONLY_TARGET_TOKEN--></IsEditorOnlyTarget>
+    <UnityEditorInstallFolder><!--UNITY_EDITOR_INSTALL_FOLDER--></UnityEditorInstallFolder>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <RelativeBuildFolder>..\Output\</RelativeBuildFolder>
+    <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!--NOTE: Currently one of the Unity packages has a * in AssemblyVersion identifier in the AssemblyInfo file, so have to do this.-->
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(PublishOutputPath)'==''">
+    <PublishOutputPath>$(MSBuildThisFileDirectory)..\Publish\</PublishOutputPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Platform)' == ''">
+    <Platform><!--DEFAULT_PLATFORM_TOKEN--></Platform>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>InEditor</Configuration>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(UnityPlatform)' == ''">
+    <UnityPlatform>$(Platform)</UnityPlatform>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(UnityConfiguration)' == ''">
+    <UnityConfiguration>$(Configuration)</UnityConfiguration>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Configurations>InEditor;Player</Configurations>
+    <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
+  </PropertyGroup>
+  
+  <!--Set proper Config/Platform now. We don't really need to rely on these above, but for VS it's a useful drop down-->
+  <PropertyGroup>
+    <Configuration>Release</Configuration>
+    <Platform>AnyCPU</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='InEditor'">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(BuildFolder)obj\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(BuildFolder)bin\</BaseOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(UnityConfiguration)\$(UnityPlatform)\</IntermediateOutputPath>
+  </PropertyGroup>
+  
+  <!-- This is special cased here for WSA player only-->
+  <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' == 'Player|WSA'">
+    <OutputPath>$(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UnityConfiguration)|$(UnityPlatform)' != 'Player|WSA'">
+    <OutputPath>$(BuildFolder)$(UnityConfiguration)\$(UnityPlatform)\$(MSBuildProjectName)\</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+  </PropertyGroup>
+
+  <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath above path-->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+      <AssemblySearchPaths>{CandidateAssemblyFiles};{HintPathFromItem};{RawFileName};</AssemblySearchPaths>
+  </PropertyGroup>
+  
+  <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\$(UnityPlatform).$(UnityConfiguration).props"/>
+
+  <!-- This is a "special" platform that will override references -->
+  <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\Editor.InEditor.props" Condition="'$(IsEditorOnlyTarget)' == 'true'"/>
+
+  <PropertyGroup Condition="'$(UnityConfiguration)'=='InEditor'">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+    <DevelopmentBuild>true</DevelopmentBuild>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(UnityConfiguration)'=='Player'">
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes)obj;bin;*.asmdef;*.asmdef.meta;*.csmap;</DefaultItemExcludes>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+
+<!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
+  <ItemGroup Condition="'$(UnityConfiguration)'=='##REFERENCE_CONFIGURATION_TOKEN##'">
+<!--PROJECT_REFERENCE_TEMPLATE_START-->
+    <ProjectReference Include="##REFERENCE_TOKEN##" Condition="##CONDITION_TOKEN##">
+      <PrivateAssets>All</PrivateAssets>
+    </ProjectReference>
+<!--PROJECT_REFERENCE_TEMPLATE_END-->
+    
+<!--PLUGIN_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##" Condition="##CONDITION_TOKEN##">
+      <Private>false</Private>
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+<!--PLUGIN_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+<!--PROJECT_REFERENCE_SET_TEMPLATE_END-->
+  
+  <ItemGroup>
+<!--SOURCE_INCLUDE_TEMPLATE_START-->
+    <Compile Include="##RELATIVE_SOURCE_PATH##" Link="##PROJECT_LINK_PATH##" />
+<!--SOURCE_INCLUDE_TEMPLATE_END-->
+
+    <Content Include="$(ProjectGuid).csmap">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <!--IMPORT SDK.targets-->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!--We control whether we build the project this way, depending on the platform/configuration-->
+  <PropertyGroup>
+    <OriginalBuildDependsOn>$(BuildDependsOn)</OriginalBuildDependsOn>
+    <BuildDependsOn></BuildDependsOn>
+  </PropertyGroup>
+  
+  <Target Name="OriginalBuild" DependsOnTargets="$(OriginalBuildDependsOn)">
+  </Target>
+
+  <Target Name="SetPlatformProperty">
+    <CreateProperty Value="AnyCPU">
+      <Output TaskParameter="Value" PropertyName="Platform"/>
+    </CreateProperty>
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
+    <CallTarget Targets="SetPlatformProperty"/>
+<!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_START-->
+    <CallTarget Targets="OriginalBuild" Condition="'$(UnityConfiguration)|$(UnityPlatform)'=='##SUPPORTED_CONFIGURATION_TOKEN##|##SUPPORTED_PLATFORM_TOKEN##'"/>
+<!--SUPPORTED_PLATFORM_BUILD_CONDITION_TEMPLATE_END-->
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y $(TargetDir)$(TargetName).dll $(PublishOutputPath)$(UnityConfiguration)\$(UnityPlatform)\&#xD;&#xA;xcopy /y $(TargetDir)$(TargetName).pdb $(PublishOutputPath)$(UnityConfiguration)\$(UnityPlatform)\" />
+  </Target>
+
+</Project>

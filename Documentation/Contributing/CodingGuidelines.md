@@ -1,42 +1,82 @@
-# Coding Guidelines
+# Coding guidelines
 
-This document outlines the recommended coding guidelines for the Mixed Reality Toolkit.  The majority of these suggestions follow the [recommended standards from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
+This document outlines coding principles and conventions to follow when contributing to MRTK.
 
 ---
 
-## Script license information headers
+## Philosophy
 
-All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:
+### Be concise and strive for simplicity
+
+The simplest solution is often the best. This is an overriding aim of these guidelines and should be the goal of all coding activity. Part of being simple is being concise, and consistent with existing code. Try to keep your code simple.
+
+Readers should only encounter artifacts that provide useful information. For example, comments that restate what is obvious provide no extra information and increase the noise to signal ratio.
+
+Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.
+
+### Produce consistent, readable code
+
+Code readability is correlated with low defect rates. Strive to create code that is easy to read. Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.
+
+All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.
+
+### Support configuring components both in editor and at run-time
+
+MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.
+
+All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.
+
+### Play-in-editor is your first and primary target platform
+
+Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.
+
+Make everything work in editor, then make it work on any other platform. Keep it working in the editor. It is easy to add a new platform to Play-In-Editor. It is very difficult to get Play-In-Editor working if your app only works on a device.
+
+### Add new public fields, properties, methods and serialized private fields with care
+
+Every time you add a public method, field, property, it becomes part of MRTK’s public API surface. Private fields marked with `[SerializeField]` also expose fields to the editor and are part of the public API surface. Other people might use that public method, configure custom prefabs with your public field, and take a dependency on it.
+
+New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.
+
+### Prioritize writing tests
+
+MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build?definitionId=16) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
+
+When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
+
+## Coding conventions
+
+### Script license information headers
+
+All Microsoft employees contributing new files should add the following standard License header at the top of any new files, exactly as shown below:
 
 ```c#
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 ```
 
-Any script files submitted without the license header will be rejected
+### Function / method summary headers
 
-## Function / Method summary headers
-
-All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to its purpose and use, exactly as shown below:
 
 ```c#
+/// <summary>
+/// The Controller definition defines the Controller as defined by the SDK / Unity.
+/// </summary>
+public struct Controller
+{
     /// <summary>
-    /// The Controller definition defines the Controller as defined by the SDK / Unity.
+    /// The ID assigned to the Controller
     /// </summary>
-    public struct Controller
-    {
-        /// <summary>
-        /// The ID assigned to the Controller
-        /// </summary>
-        public string ID;
-    }
+    public string ID;
+}
 ```
 
 This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
 
 Any script files submitted without proper summary tags will be rejected.
 
-## MRTK namespace rules
+### MRTK namespace rules
 
 The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with "Microsoft.MixedReality.Toolkit". In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.
 
@@ -53,62 +93,28 @@ The currently defined namespaces are:
 
 For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.
 
-### Do
-
-```c#
-namespace Microsoft.MixedReality.Toolkit.Boundary
-{
-    // Interface, class or data type definition.
-}
-```
-
 Omitting the namespace for an interface, class or data type will cause your change to be blocked.
 
-## Spaces vs Tabs
+### Adding new MonoBehaviour scripts
+
+When adding new MonoBehaviour scripts with a pull-request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+
+In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
+
+```c#
+[AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
+public class MyNewComponent : MonoBehaviour
+```
+
+### Spaces vs tabs
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
-Additionally, ensure that spaces are added for conditional / loop functions like if / while / for
-
-### Don't
-
-```c#
-private Foo () // < - space between Foo and ()
-{
-    if(Bar==null) // <- no space between if and ()
-    {
-        DoThing();
-    }
-
-    while(true) // <- no space between while and ()
-    {
-        Do();
-    }
-}
-```
-
-### Do
-
- ```c#
-private Foo()
-{
-    if (Bar==null)
-    {
-        DoThing();
-    }
-
-    while (true)
-    {
-        Do();
-    }
-}
- ```
-
-## Spacing
+### Spacing
 
 Do not to add additional spaces between square brackets and parenthesis:
 
-### Don't
+#### Don't
 
 ```c#
 private Foo()
@@ -119,7 +125,7 @@ private Foo()
 
 ```
 
-### Do
+#### Do
 
 ```c#
 private Foo()
@@ -129,26 +135,26 @@ private Foo()
 }
 ```
 
-## Naming Conventions
+### Naming conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
-### Don't
+#### Don't
 
 ```c#
 public string myProperty; // <- Starts with a lower case letter
 private string MyProperty; // <- Starts with an uppercase case letter
 ```
 
-### Do
+#### Do
 
- ```c#
+```c#
 public string MyProperty;
 protected string MyProperty;
 private string myProperty;
- ```
+```
 
-## Access Modifiers
+### Access modifiers
 
 Always declare an access modifier for all fields, properties and methods.
 
@@ -158,35 +164,35 @@ Always declare an access modifier for all fields, properties and methods.
 
 - Use [expression-bodied members](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members) and [auto properties](https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements) where possible
 
-### Don't
+#### Don't
 
 ```c#
 // protected field should be private
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get { return myVariable; } }
+public int MyVariable => myVariable;
 
 // No public / private access modifiers
 void Foo() { }
 void Bar() { }
 ```
 
-### Do
+#### Do
 
- ```c#
+```c#
 public int MyVariable { get; protected set; } = 0;
 
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
- ```
+```
 
-## Use Braces
+### Use braces
 
 Always use braces after each statement block, and place them on the next line.
 
-### Don't
+#### Don't
 
 ```c#
 private Foo()
@@ -198,16 +204,16 @@ private Foo()
 }
 ```
 
-### Don't
+#### Don't
 
 ```c#
 private Foo() { // <- Open bracket on same line
-    if (Bar==null) DoThing(); <- if action on same line with no surrounding brackets 
+    if (Bar==null) DoThing(); <- if action on same line with no surrounding brackets
     else DoTheOtherThing();
 }
 ```
 
-### Do
+#### Do
 
 ```c#
 private Foo()
@@ -223,11 +229,11 @@ private Foo()
 }
 ```
 
-## Public classes, structs, and enums should all go in their own files.
+### Public classes, structs, and enums should all go in their own files
 
 If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.
 
-### Don't
+#### Don't
 
 ```c#
 public class MyClass
@@ -238,9 +244,9 @@ public class MyClass
 }
 ```
 
-### Do
+#### Do
 
- ```c#
+```c#
  // Private references for use inside the class only
 public class MyClass
 {
@@ -248,14 +254,14 @@ public class MyClass
     private enum MyEnumType() { }
     private class MyNestedClass() { }
 }
- ```
+```
 
-### Do
+#### Do
 
- MyStruct.cs
+MyStruct.cs
 
- ```c#
- // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
+```c#
+// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
 {
     public string Var1;
@@ -278,16 +284,16 @@ MyClass.cs
 ```c#
 public class MyClass
 {
-    private MyStruct myStructreference;
+    private MyStruct myStructReference;
     private MyEnumType myEnumReference;
 }
- ```
+```
 
-## Initialize Enums
+### Initialize enums
 
-To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
+To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
-### Don't
+#### Don't
 
 ```c#
 public enum Value
@@ -298,22 +304,22 @@ public enum Value
 }
 ```
 
-### Do
+#### Do
 
- ```c#
+```c#
 public enum ValueType
 {
     Value1 = 0,
     Value2,
     Value3
 }
- ```
+```
 
-## Order Enums for appropriate extension
+### Order enums for appropriate extension
 
 It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.
 
-### Don't
+#### Don't
 
 ```c#
 public enum SDKType
@@ -326,74 +332,39 @@ public enum SDKType
 }
 ```
 
-### Do
+#### Do
 
- ```c#
+```c#
+/// <summary>
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// </summary>
+public enum SDKType
+{
     /// <summary>
-    /// The SDKType lists the VR SDK's that are supported by the MRTK
-    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// No specified type or Standalone / non-VR type
     /// </summary>
-    public enum SDKType
-    {
-        /// <summary>
-        /// No specified type or Standalone / non-VR type
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other,
-        /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens. 
-        /// </summary>
-        WindowsMR,
-        /// <summary>
-        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-        /// </summary>
-        OpenVR,
-        /// <summary>
-        /// The OpenXR platform. SDK to be determined once released.
-        /// </summary>
-        OpenXR
-    }
-```
-
-## End Enum names with "Type"
-
-Enum names should clearly indicate their nature by using the Type suffix.
-
-### Don't
-
-```c#
-public enum Ordering
-{
-    First,
-    Second,
-    Third
+    None = 0,
+    /// <summary>
+    /// Undefined SDK.
+    /// </summary>
+    Other,
+    /// <summary>
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// </summary>
+    WindowsMR,
+    /// <summary>
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// </summary>
+    OpenVR,
+    /// <summary>
+    /// The OpenXR platform. SDK to be determined once released.
+    /// </summary>
+    OpenXR
 }
 ```
 
-```c#
-public enum OrderingEnum
-{
-    First,
-    Second,
-    Third
-}
-```
-
-### Do
-
-```c#
-public enum OrderingType
-{
-    First = 0,
-    Second,
-    Third
-}
-```
-
-## Review Enum use for Bitfields
+### Review enum use for bitfields
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
 
@@ -412,112 +383,86 @@ public enum Handedness
 
 ### Do
 
- ```c#
- [flags]
-public enum HandednessType
+```c#
+[Flags]
+public enum Handedness
 {
     None = 0 << 0,
     Left = 1 << 0,
     Right = 1 << 1,
     Both = Left | Right
 }
- ```
+```
 
-## Best Practices, including Unity recommendations
+## Best practices, including Unity recommendations
 
 Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.
 
-## Encapsulation
+### Encapsulation
 
 Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.
-
-If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.
 
 > [!NOTE]
 > The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`, where a data class is required to have all public fields for the serialization to work.
 
-### Don't
+#### Don't
 
 ```c#
-public float MyValue;
+private float myValue1;
+private float myValue2;
+
+public float MyValue1
+{
+    get{ return myValue1; }
+    set{ myValue1 = value }
+}
+
+public float MyValue2
+{
+    get{ return myValue2; }
+    set{ myValue2 = value }
+}
 ```
 
-### Do
-
- ```c#
- // private field, only accessible within script (field is not serialized in Unity)
- private float myValue;
-  ```
-
-### Do
-
- ```c#
- // Enable private field to be configurable only in editor (field is correctly serialized in Unity)
- [SerializeField] 
- private float myValue;
-  ```
-
----
-
-### Don't
-
- ```c#
- private float myValue1;
- private float myValue2;
-
- public float MyValue1
- {
-     get{ return myValue1; }
-     set{ myValue1 = value }
- }
-
- public float MyValue2
- {
-     get{ return myValue2; }
-     set{ myValue2 = value }
- }
-```
-
-### Do
-
- ```c#
- // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField]
- [ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
- private float myValue; // <- Notice we co-located the backing field above our corresponding property.
-
- /// <summary>
- /// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
- /// </summary>
- public float MyValue
- {
-     get{ return myValue; }
-     set{ myValue = value }
- }
- ```
-
-## Use `for` instead of `foreach` when possible
-
-In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
-
-### Don't
+#### Do
 
 ```c#
-foreach(var item in items)
+// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+[SerializeField]
+[ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
+private float myValue; // <- Notice we co-located the backing field above our corresponding property.
+
+/// <summary>
+/// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+/// </summary>
+public float MyValue
+{
+    get => myValue;
+    set => myValue = value;
+}
+
+/// <summary>
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// </summary>
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue < 0)
+        {
+            return -MyValue;
+        }
+
+        return MyValue
+    }
+}
 ```
 
-### Do
-
- ```c#
-int length = items.length; // cache reference to list/array length
-for(int i=0; i < length; i++)
- ```
-
-## Cache values and serialize them in the scene/prefab whenever possible.
+### Cache values and serialize them in the scene/prefab whenever possible
 
 With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.
 
-### Don't
+#### Don't
 
 ```c#
 void Update()
@@ -526,7 +471,7 @@ void Update()
 }
 ```
 
-### Do
+#### Do
 
 ```c#
 [SerializeField] // To enable setting the reference in the inspector.
@@ -545,13 +490,13 @@ private void Update()
 {
     myRenderer.Foo(Bar);
 }
- ```
+```
 
-## Cache references to materials, do not call the ".material" each time.
+### Cache references to materials, do not call the ".material" each time
 
 Unity will create a new material each time you use ".material", which will cause a memory leak if not cleaned up properly.
 
-### Don't
+#### Don't
 
 ```c#
 public class MyClass
@@ -564,10 +509,10 @@ public class MyClass
 }
 ```
 
-### Do:
+#### Do
 
- ```c#
- // Private references for use inside the class only
+```c#
+// Private references for use inside the class only
 public class MyClass
 {
     private Material cachedMaterial;
@@ -587,15 +532,15 @@ public class MyClass
         Destroy(cachedMaterial);
     }
 }
- ```
+```
+
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
 
-## Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
+### Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
 
-* Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
-
-* Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
+- Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+- Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
 
 This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
 
@@ -608,8 +553,12 @@ This chart can help you decide which `#if` to use, depending on your use cases a
 | `ENABLE_WINMD_SUPPORT` | True | True | False |
 | `NETFX_CORE` | False | True | False |
 
-## Prefer DateTime.UtcNow over DateTime.Now
+### Prefer DateTime.UtcNow over DateTime.Now
 
 DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. [Others have hit the same issue](https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now).
 
-Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
+Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
+
+## See also
+
+ [C# coding conventions from MSDN](https://docs.microsoft.com/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)

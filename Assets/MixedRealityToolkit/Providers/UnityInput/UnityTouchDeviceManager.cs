@@ -25,20 +25,49 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public UnityTouchDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public UnityTouchDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
+
+        private List<UnityTouchController> touchesToRemove = new List<UnityTouchController>();
 
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
+            // Ensure that touch up and source lost events are at least one frame apart.
+            for (int i = 0; i < touchesToRemove.Count; i++)
+            {
+                IMixedRealityController controller = touchesToRemove[i];
+                Service?.RaiseSourceLost(controller.InputSource, controller);
+            }
+            touchesToRemove.Clear();
+
             int touchCount = UInput.touchCount;
-            for (var i = 0; i < touchCount; i++)
+            for (int i = 0; i < touchCount; i++)
             {
                 Touch touch = UInput.touches[i];
 
@@ -60,27 +89,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         break;
                 }
             }
-
-            foreach (var controller in ActiveTouches)
-            {
-                controller.Value?.Update();
-            }
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            
+            base.Disable();
+
             foreach (var controller in ActiveTouches)
             {
-                if (controller.Value == null || inputSystem == null) { continue; }
+                if (controller.Value == null || Service == null) { continue; }
 
-                foreach (var inputSource in inputSystem.DetectedInputSources)
+                foreach (var inputSource in Service.DetectedInputSources)
                 {
                     if (inputSource.SourceId == controller.Value.InputSource.SourceId)
                     {
-                        inputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                        Service.RaiseSourceLost(controller.Value.InputSource, controller.Value);
                     }
                 }
             }
@@ -91,16 +115,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         private void AddTouchController(Touch touch, Ray ray)
         {
             UnityTouchController controller;
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
                 IMixedRealityInputSource inputSource = null;
 
-                if (inputSystem != null)
+                if (Service != null)
                 {
                     var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
-                    inputSource = inputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
+                    inputSource = Service.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
@@ -120,9 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
-            inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            Service?.RaiseSourceDetected(controller.InputSource, controller);
+
+            controller.TouchData = touch;
             controller.StartTouch();
-            UpdateTouchData(touch, ray);
         }
 
         private void UpdateTouchData(Touch touch, Ray ray)
@@ -149,11 +173,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-            ActiveTouches.Remove(touch.fingerId);
+            RecyclePointers(controller.InputSource);
+
             controller.TouchData = touch;
             controller.EndTouch();
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            // Schedule the source lost event.
+            touchesToRemove.Add(controller);
+            // Remove from the active collection
+            ActiveTouches.Remove(touch.fingerId);
         }
     }
 }

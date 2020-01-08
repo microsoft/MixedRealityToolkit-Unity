@@ -350,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <returns>
         /// True if the point is within the rectangle's bounds, false otherwise.
         /// </returns>
-        /// <exception cref="InvalidOperationException">The rectangle is not valid.</exception>
+        /// <exception cref="System.InvalidOperationException">The rectangle is not valid.</exception>
         public bool IsInsideBoundary(Vector2 point)
         {
             if (!IsValid)
@@ -411,7 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="angleRadians">The orientation, in radians, of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns></returns>
         private bool CheckRectangleFit(
             Edge[] geometryEdges,
             Vector2 centerPoint,

@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ManipulationHandlerTests
     {
+        private readonly List<Action> cleanupAction = new List<Action>();
+
         [SetUp]
         public void Setup()
         {
@@ -33,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
+            cleanupAction.ForEach(f => f?.Invoke());
+
             PlayModeTestUtilities.TearDown();
         }
 
@@ -40,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating adding a ManipulationHandler to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerInstantiate()
         {
@@ -61,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating ManipulationHandler and receiving hover enter/exit events
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerGazeHover()
         {
@@ -108,7 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// as well as forcefully ending of the manipulation
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerForceRelease()
         {
@@ -129,6 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // grab the cube - move it to the right 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+
+            // This particular test is sensitive to the number of steps that a hand is moving,
+            // so it's set to 30 to override the default amount.
             int numSteps = 30;
             
             Vector3 handOffset = new Vector3(0, 0, 0.1f);
@@ -136,8 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 rightPosition = new Vector3(1f, 0f, 1f);
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             yield return null;
 
@@ -148,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // forcefully end manipulation and drag with hand back to original position - object shouldn't move with hand
             manipHandler.ForceEndManipulation();
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             posDiff = testObject.transform.position - initialObjectPosition;
             Assert.IsTrue(posDiff.magnitude > maxError, "Manipulationhandler modified objects even though manipulation was forcefully ended.");
@@ -156,10 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(posDiff.magnitude <= maxError, "Manipulated object didn't remain in place after forcefully ending manipulation");
 
             // move hand back to object
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialObjectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialObjectPosition, rightPosition, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
 
             // grab object again and move to original position
-            yield return PlayModeTestUtilities.MoveHandFromTo(rightPosition, initialObjectPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(rightPosition, initialObjectPosition, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             // test if object was moved by manipulationhandler
             posDiff = testObject.transform.position - initialObjectPosition;
@@ -174,7 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests MaintainRotationToUser mode of ManipulationHandler (OneHandedOnly)
         /// MaintainRotationToUser should only align with user / camera on x / y and not apply rotations in z
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerRotateWithUser()
         {
@@ -240,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a 
         /// certain distance when being released from grab during hand movement
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerThrow()
         {
@@ -274,12 +276,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.Show(initialHandPosition);
             yield return hand.MoveTo(initialObjectPosition);
-            yield return hand.GrabAndThrowAt(rightPosition);
+            // Note: don't wait for a physics update after releasing, because it would recompute
+            // the velocity of the hand and make it deviate from the rigid body velocity!
+            yield return hand.GrabAndThrowAt(rightPosition, false);
 
             // With simulated hand angular velocity would not be equal to 0, because of how simulation
             // moves hand when releasing the Pitch. Even though it doesn't directly follow from hand movement, there will always be some rotation.
             Assert.NotZero(rigidBody.angularVelocity.magnitude, "Manipulationhandler should apply angular velocity to rigidBody upon release.");
-            Assert.AreEqual(rigidBody.velocity, hand.GetVelocity(), "Manipulationhandler should apply hand velocity to rigidBody upon release.");
+            Assert.AreEqual(hand.GetVelocity(), rigidBody.velocity, "Manipulationhandler should apply hand velocity to rigidBody upon release.");
 
             // This is just for debugging purposes, so object's movement after release can be seen.
             yield return hand.MoveTo(initialHandPosition);
@@ -295,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveNear()
         {
@@ -337,8 +340,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialOffsetGrabToObjPivot = pointer.Position - testObject.transform.position;
-                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
+                Vector3 initialGrabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                Vector3 initialOffsetGrabToObjPivot = initialGrabPoint - testObject.transform.position;
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(initialGrabPoint);
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -363,8 +367,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                     if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
                     {
-                        // make sure that the offset between hand and object centre hasn't changed while rotating
-                        Vector3 offsetRotated = pointer.Position - testObject.transform.position;
+                        // make sure that the offset between grab and object centre hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 offsetRotated = grabPoint - testObject.transform.position;
                         TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
                     }
                     else
@@ -389,7 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// out of the object on pointer rotation - this test is the same for all objects that won't change 
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveFar()
         {
@@ -412,35 +416,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numCircleSteps = 10;
             const int numHandSteps = 3;
 
-            Vector3 initialHandPosition = new Vector3(0.04f, -0.18f, 0.3f); // grab point on the lower center part of the cube
-            
+            // Hand pointing at middle of cube
+            Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
             foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
-                // TODO: grab point is moving in this test and has to be covered by a different test
-                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
+                // Some rotation modes move the object on grab, don't test those
+                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceUser)
                 {
                     continue;
-                }         
+                }
 
                 manipHandler.OneHandRotationModeFar = type;
 
                 TestUtilities.PlayspaceToOriginLookingForward();
 
                 yield return hand.Show(initialHandPosition);
-                yield return null;
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                
-                // pinch and let go of the object again to make sure that any rotation adjustment we're doing is applied 
-                // at the beginning of our test and doesn't interfere with our grab position on the cubes surface while we're moving around
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return new WaitForFixedUpdate();
-                yield return null;
-
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
                 InputSimulationService simulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -492,17 +490,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
+        /// NOTE: This tests both LOCAL and WORLD SPACE rotation.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandRotateWithConstraint()
         {
             // set up cube with manipulation handler
-            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            GameObject parentObject = new GameObject("Test Object Parent");
+
+            // In case of error, this object won't be cleaned up, so clean up at the end of the test
+            cleanupAction.Add(() => { if (parentObject != null) UnityEngine.Object.Destroy(parentObject); });
+
+            GameObject testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.parent = parentObject.transform;
+
+            // Rotate the parent object, as we differ when constraining on local vs world
+            Quaternion initialQuaternion = Quaternion.Euler(30f, 30f, 30f);
+            parentObject.transform.rotation = initialQuaternion;
+
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
-            testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            parentObject.transform.position = initialObjectPosition;
+
+            ManipulationHandler manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
             manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneHandedOnly;
@@ -530,53 +540,94 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numRotSteps = 10;
             Quaternion testQuaternion = Quaternion.Euler(testRotation, testRotation, testRotation);
 
+            /*********************************/
+            /*** TEST WORLD SPACE ROTATION ***/
+            /*********************************/
+
             // rotate without constraint
             manipHandler.ConstraintOnRotation = RotationConstraintType.None;
             yield return hand.SetRotation(testQuaternion, numRotSteps);
-            float diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, testRotation, testRotation));
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand");
+            float diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, testRotation, testRotation) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
 
             yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.identity);
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
 
             // rotate with x axis only
             manipHandler.ConstraintOnRotation = RotationConstraintType.XAxisOnly;
             yield return hand.SetRotation(testQuaternion, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, 0, 0));
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, 0, 0) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
 
             yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.identity);
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
 
             // rotate with y axis only
             manipHandler.ConstraintOnRotation = RotationConstraintType.YAxisOnly;
             yield return hand.SetRotation(testQuaternion, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, testRotation, 0));
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, testRotation, 0) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
 
             yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.identity);
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
 
             // rotate with z axis only
             manipHandler.ConstraintOnRotation = RotationConstraintType.ZAxisOnly;
             yield return hand.SetRotation(testQuaternion, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, 0, testRotation));
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, 0, testRotation) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
 
             yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.identity);
-            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly");
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
+
+            /*********************************/
+            /*** TEST LOCAL SPACE ROTATION ***/
+            /*********************************/
+
+            manipHandler.UseLocalSpaceForConstraint = true;
+            // rotate with x axis only
+            manipHandler.ConstraintOnRotation = RotationConstraintType.XAxisOnly;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(testRotation, 0, 0));
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+
+            // rotate with y axis only
+            manipHandler.ConstraintOnRotation = RotationConstraintType.YAxisOnly;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, testRotation, 0));
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+
+            // rotate with z axis only
+            manipHandler.ConstraintOnRotation = RotationConstraintType.ZAxisOnly;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, 0, testRotation));
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.Hide();
+
+            UnityEngine.Object.Destroy(parentObject);
         }
 
         private class OriginOffsetTest
         {
-            const int numSteps = 1;
+            const int numSteps = 10;
 
             public struct TestData
             {
@@ -678,10 +729,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ManipulationHandlerOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
+            // Without this background object that contains a collider, Unity will rarely
+            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is 
+            // intersecting the collider. Causes tests to be unreliable.
+            // It seems to only happen when one collider is in the scene.
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.position = Vector3.forward * 10;
+            backgroundObject.transform.localScale = new Vector3(100, 100, 1);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
@@ -689,7 +750,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
-
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = Vector3.forward;
 
@@ -711,11 +771,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             mesh.vertices = vertices;
             mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
             testObject.GetComponent<BoxCollider>().center = offset;
-
             testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
 
             // Collect data for modified cube
+
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
             yield return null;
@@ -729,7 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 Vector3 transformedOffset = actualData[i].pose.Rotation * Vector3.Scale(offset, actualData[i].scale);
                 TestUtilities.AssertAboutEqual(expectedData[i].pose.Position, actualData[i].pose.Position + transformedOffset, $"Failed for position of object for {actualData[i].manipDescription}");
-                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}", 1.0f);
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
@@ -739,7 +800,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This test will scale a cube with two hand manipulation and ensure that
         /// maximum and minimum scales are not exceeded.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerMinMaxScale()
         {
@@ -756,8 +816,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
             manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
-
-            var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = testObject.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
 
@@ -814,10 +873,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -833,28 +890,411 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
-
+            
             // Grab cube
             yield return hand.Show(originalHandPosition);
-            yield return null;
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
 
             // Rotate Head and readjust hand
             int numRotations = 10;
             for (int i = 0; i < numRotations; i++)
             {
                 MixedRealityPlayspace.Transform.Rotate(Vector3.up, 180 / numRotations);
-                yield return hand.MoveTo(originalHandPosition, numHandSteps);
+                correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+                yield return hand.Move(correction, numHandSteps);
                 yield return null;
 
                 // Test Object hasn't moved
-                TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head");
+                TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head", 0.01f);
                 TestUtilities.AssertAboutEqual(initialObjectRotation, testObject.transform.rotation, "Object rotated while rotating head", 0.25f);
             }
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            iss.HandSimulationMode = oldHandSimMode;
             yield return null;
+        }
+
+        /// <summary>
+        /// For positionless input sources that use gaze, such as xbox controller, pointer position will
+        /// be coincident with the head position. This was causing issues with manipulation handler, as
+        /// the distance between the pointer and the head is taken as part of the move logic. 
+        /// This test simulates a positionless input source by using GGV hands and setting the hand position
+        /// to be the head position. It then ensures that there is no weird behaviour as a result of this.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerPositionlessController()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+            
+            float expectedDist = Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position);
+            
+            yield return hand.Show(CameraCache.Main.transform.position);
+            yield return null;
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Apply correction delta again as we have changed hand pose
+            correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            Vector3 delta = new Vector3(0.2f, 0, 0);
+            MixedRealityPlayspace.Transform.Translate(delta);
+            yield return hand.Move(delta, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 2.5f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            // Restore the input simulation profile
+            iss.HandSimulationMode = oldHandSimMode;
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test first moves the hand a set amount along the x-axis, records its x distance from the hand, then moves
+        /// it the same amount along the y-axis and records its y distance from the hand. Given no constraints on manipulation,
+        /// we expect these values to be the same.
+        /// This test was added as a change to pointer behaviour made GGV manipulation along the y-axis sluggish.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveYAxisGGV()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ManipulationHandler.RotateInOneHandType.FaceAwayFromUser;
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            float xPos, yPosUp, yPosDown;
+
+            // Grab the object
+            yield return hand.Show(new Vector3(0, 0, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            // Move the hand in a way that does not change the distance from the body ray
+            float root2Over2 = Mathf.Cos(Mathf.PI / 4);
+            Vector3 moveX = new Vector3(root2Over2, 0, root2Over2) * 0.5f;
+            yield return hand.MoveTo(moveX, numHandSteps);
+            yield return null;
+
+            xPos = testObject.transform.position.x - moveX.x;
+
+            Vector3 moveYUp = new Vector3(0, root2Over2, root2Over2) * 0.5f;
+            yield return hand.MoveTo(moveYUp, numHandSteps);
+            yield return null;
+
+            yPosUp = testObject.transform.position.y - moveYUp.y;
+
+            Vector3 moveYDown = new Vector3(0, -0.5f, 0.5f);
+            yield return hand.MoveTo(moveYDown, numHandSteps);
+            yield return null;
+
+            yPosDown = testObject.transform.position.y - moveYDown.y;
+
+            Assert.AreEqual(xPos, yPosUp, 0.02f);
+            Assert.AreEqual(xPos, Mathf.Abs(yPosDown), 0.02f);
+
+            // Restore the input simulation profile
+            iss.HandSimulationMode = oldHandSimMode;
+            yield return null;
+        }
+
+        /// <summary>
+        /// Ensure that while manipulating an object, if that object gets
+        /// deactivated, that manipulation no longer moves that object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerDisableObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 originalObjectPos = Vector3.forward;
+            testObject.transform.position = originalObjectPos;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Move the object without disabling and assure it moves
+            Vector3 originalHandPos = new Vector3(0.06f, -0.1f, 0.5f);
+            yield return hand.Show(originalHandPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(0.2f, 0, 0), numHandSteps);
+            yield return null;
+
+            Assert.AreNotEqual(originalObjectPos, testObject.transform.position);
+
+            // Disable the object and move the hand and assure the object does not move
+            yield return hand.MoveTo(originalHandPos, numHandSteps);
+            yield return null;
+
+            testObject.SetActive(false);
+            yield return null;
+            testObject.SetActive(true);
+
+            yield return hand.Move(new Vector3(0.2f, 0, 0), numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(originalObjectPos, testObject.transform.position, "Object moved after it was disabled");
+        }
+
+        /// <summary>
+        /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
+        /// for various One Handed Only.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerEventsOneHandedOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+            
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+            yield return null;
+
+            // One Handed
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneHandedOnly;
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+        }
+        
+        /// <summary>
+        /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
+        /// for Two Handed Only.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerEventsTwoHandedOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+            yield return null;
+
+            // Two Handed
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.TwoHandedOnly;
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(0, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+        }
+
+        /// <summary>
+        /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
+        /// for One Handed and Two Handed.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerEventsBothHands()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+            yield return null;
+
+            // One + Two Handed
+            manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+        }
+
+        /// <summary>
+        /// Ensure that a manipulated object has the same rotation as the hand
+        /// when RotateAboutObjectCenter is used
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerRotateAboutObjectCenter()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter;
+
+            Quaternion rotateTo = Quaternion.Euler(45, 45, 45);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Rotate the hand and test that the rotations are equal
+            yield return hand.Show(new Vector3(0.06f, -0.1f, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.SetRotation(rotateTo, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(rotateTo, testObject.transform.rotation, "Object moved after it was disabled");
+
+            // Rotate the hand back and test that the rotations still are equal
+            yield return hand.SetRotation(Quaternion.identity, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(Quaternion.identity, testObject.transform.rotation, "Object moved after it was disabled");
         }
     }
 }

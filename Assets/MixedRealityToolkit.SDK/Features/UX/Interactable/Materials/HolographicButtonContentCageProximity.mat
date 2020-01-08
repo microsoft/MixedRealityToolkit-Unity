@@ -126,6 +126,7 @@ Material:
     - _GlossyReflections: 1
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 12
     - _InstancedColor: 0
@@ -165,6 +166,7 @@ Material:
     - _UVSec: 0
     - _VertexColors: 0
     - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0

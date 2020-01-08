@@ -12,9 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
-        /// <param name="step"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
@@ -24,10 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
-        /// <param name="step"></param>
-        /// <param name="maxDistance"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
@@ -111,10 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
-        /// <param name="step"></param>
-        /// <param name="radius"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
@@ -124,11 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
         /// </summary>
-        /// <param name="step"></param>
-        /// <param name="radius"></param>
-        /// <param name="maxDistance"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
@@ -143,9 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Tries to get the prioritized physics raycast hit based on the prioritized layer masks.
         /// </summary>
         /// <remarks>Sorts all hit objects first by layerMask, then by distance.</remarks>
-        /// <param name="hits"></param>
-        /// <param name="priorityLayers"></param>
-        /// <param name="raycastHit"></param>
         /// <returns>The minimum distance hit within the first layer that has hits.</returns>
         public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, bool focusIndividualCompoundCollider, out RaycastHit raycastHit)
         {

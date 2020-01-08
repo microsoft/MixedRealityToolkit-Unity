@@ -10,6 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
     [Serializable]
     public class DeviceInfo
     {
+        /// <summary>
+        /// Constant string for local machine target
+        /// </summary>
+        public const string LocalMachine = "Local Machine";
+
+        /// <summary>
+        /// Constant string for local machine IP Address
+        /// </summary>
+        public const string LocalIPAddress = "127.0.0.1";
+
         // These fields are public to be serialized by the Unity Json Serializer Utility.
         #region Json Serialized Fields
 
@@ -72,16 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
-        /// <param name="machineName"></param>
         public DeviceInfo(string ip, string user, string password, string machineName = "")
         {
             IP = ip;
             User = user;
             Password = password;
-            MachineName = string.IsNullOrEmpty(machineName) ? ip : machineName;
+            MachineName = machineName;
             CsrfToken = string.Empty;
         }
     }

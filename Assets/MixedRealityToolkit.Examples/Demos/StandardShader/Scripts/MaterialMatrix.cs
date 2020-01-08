@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
     /// <summary>
     /// Builds a matrix of spheres demonstrating a spectrum of two material properties.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/MaterialMatrix")]
     public class MaterialMatrix : MonoBehaviour
     {
         [SerializeField]
@@ -41,21 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
             for (int i = 0; i < children.Count; ++i)
             {
                 Transform child = children[i];
-
-                if (Application.isPlaying)
-                {
-                    Destroy(child.gameObject);
-                }
-                else
-                {
-                    DestroyImmediate(child.gameObject);
-                }
+                GameObjectExtensions.DestroyGameObject(child.gameObject);
             }
 
             if (material == null)
             {
                 Debug.LogError("Failed to build material matrix due to missing material.");
-
                 return;
             }
 

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The Mixed Reality Visualization component is primarily responsible for synchronizing the user's current input with controller models.
     /// </summary>
     /// <seealso cref="MixedRealityControllerMappingProfile"/>
+    [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityControllerVisualizer")]
     public class MixedRealityControllerVisualizer : ControllerPoseSynchronizer, IMixedRealityControllerVisualizer
     {
         // TODO wire up input actions to controller transform nodes / animations
@@ -24,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputDown(InputEventData eventData)
         {
             base.OnInputDown(eventData);
@@ -37,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputUp(InputEventData eventData)
         {
             base.OnInputUp(eventData);
@@ -50,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<float> eventData)
         {
             base.OnInputChanged(eventData);
@@ -63,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             base.OnInputChanged(eventData);

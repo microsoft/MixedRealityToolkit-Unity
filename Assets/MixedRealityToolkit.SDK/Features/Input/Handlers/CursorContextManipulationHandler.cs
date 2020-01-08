@@ -15,29 +15,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// This script provides cursor context for the manipulation handler
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/CursorContextManipulationHandler")]
     public class CursorContextManipulationHandler : MonoBehaviour
     {
+        private ManipulationHandler manipulationHandler;
         private CursorContextInfo contextInfo;
         private int hoverCount = 0;
 
         private void Start()
         {
-            ManipulationHandler mh = GetComponent<ManipulationHandler>();
+            manipulationHandler = GetComponent<ManipulationHandler>();
 
             contextInfo = gameObject.EnsureComponent<CursorContextInfo>();
             contextInfo.ObjectCenter = transform;
 
-            mh.OnHoverEntered.AddListener(ManipulatorHoverEntered);
-            mh.OnHoverExited.AddListener(ManipulatorHoverExited);
-            mh.OnManipulationStarted.AddListener(ManipulationStarted);
-            mh.OnManipulationEnded.AddListener(ManipulationEnded);
+            manipulationHandler.OnHoverEntered.AddListener(ManipulatorHoverEntered);
+            manipulationHandler.OnHoverExited.AddListener(ManipulatorHoverExited);
+            manipulationHandler.OnManipulationStarted.AddListener(ManipulationStarted);
+            manipulationHandler.OnManipulationEnded.AddListener(ManipulationEnded);
         }
 
         private void ManipulatorHoverEntered(ManipulationEventData manipEvent)
         {
             hoverCount++;
-            if (hoverCount >= 2 && 
-                manipEvent.ManipulationSource.ManipulationType != ManipulationHandler.HandMovementType.OneHandedOnly)
+            if (hoverCount >= 2 &&
+                manipulationHandler.ManipulationType != ManipulationHandler.HandMovementType.OneHandedOnly)
             {
                 contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Move;
             }

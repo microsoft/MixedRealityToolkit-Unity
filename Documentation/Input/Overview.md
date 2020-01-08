@@ -1,14 +1,15 @@
-# Input Overview
+# Input overview
 
 The Input System in MRTK allows you to:
-- Consume inputs from a variety of input sources, like 6 DOF controllers, articulated hands or speech, via input events.
+
+- Consume inputs from a variety of input sources, such as 6 DOF controllers, articulated hands or speech, via input events.
 - Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
 - Setup pointers attached to controllers to drive UI components via focus and pointer events.
 
 <img src="../../Documentation/Images/Input/MRTK_InputSystem.png" style="display:block;margin-left:auto;margin-right:auto;">
 <sup>Overview of MRTK Input System</sup>
 
-Inputs are produced by [**Input Data Providers(Device Manager)**](InputProviders.md). Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile** in the *Mixed Reality Toolkit* component and will produce [**Input Events**](InputEvents.md) automatically when the corresponding input sources are available, e.g. when a WMR controller is detected or a gamepad connected.
+Inputs are produced by [**Input Data Providers(Device Manager)**](InputProviders.md). Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile** in the *Mixed Reality Toolkit* component and will produce [**Input Events**](InputEvents.md) automatically when the corresponding input sources are available (e.g. when a WMR controller is detected or a gamepad connected).
 
 [**Input Actions**](InputActions.md) are abstractions over raw inputs meant to help isolating application logic from the specific input sources producing an input. It can be useful, for example, to define a *Select* action and map it to the left mouse button, a button in a gamepad and a trigger in a 6 DOF controller. You can then have your application logic listen for *Select* input action events instead of having to be aware of all the different inputs that can produce it. Input Actions are defined in the **Input Actions Profile**, found within the *Input System Profile* in the *Mixed Reality Toolkit* component.
 
@@ -19,4 +20,6 @@ Controllers can have [**Pointers**](Pointers.md) attached to them that query the
 <img src="../../Documentation/Images/Input/MRTK_Input_EventFlow.png" width="200px" style="display:block;margin-left:auto;margin-right:auto;">
 <sup>Event flow.</sup>
 
-While you can handle input events directly in UI components it is recommended to use pointer events to keep the implementation device-independent.
+While you can handle [input events directly in UI components](InputEvents.md), it is recommended to use [pointer events](pointers.md#pointer-event-interfaces) to keep the implementation device-independent.
+
+MRTK also provides several convenience methods to query input state directly in a device-independent way. See [Accessing input state in MRTK](InputState.md) for more details.

@@ -1,5 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -15,30 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         Vertical
     }
 
+    [AddComponentMenu("Scripts/MRTK/Examples/MoveObjByEyeGaze")]
     public class MoveObjByEyeGaze : MonoBehaviour,
         IMixedRealitySpeechHandler,
         IMixedRealitySourceStateHandler,
         IMixedRealityPointerHandler,
         IMixedRealityHandJointHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
+        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
         #region Serialized variables
@@ -259,12 +243,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             if (voiceAction_PutThis == eventData.MixedRealityInputAction)
             {
                 DragAndDrop_Start();
-                InputSystem.PushModalInputHandler(gameObject);
+                CoreServices.InputSystem.PushModalInputHandler(gameObject);
             }
             else if (voiceAction_OverHere == eventData.MixedRealityInputAction)
             {
                 DragAndDrop_Finish();
-                InputSystem.PopModalInputHandler();
+                CoreServices.InputSystem.PopModalInputHandler();
             }
         }
         #endregion
@@ -368,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 handPos_relative = Vector3.zero;
                 handPos_absolute = Vector3.zero;
                 DragAndDrop_Start();
-                InputSystem.PushModalInputHandler(gameObject);
+                CoreServices.InputSystem.PushModalInputHandler(gameObject);
             }
         }
 
@@ -383,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 handIsPinching = false;
                 handPos_relative = Vector3.zero;
                 DragAndDrop_Finish();
-                InputSystem.PopModalInputHandler();
+                CoreServices.InputSystem.PopModalInputHandler();
                 currEngagedHand = Handedness.None;
             }
         }
@@ -391,7 +375,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Check whether the user is looking away from the target.
         /// </summary>
-        /// <returns></returns>
         private bool IsLookingAwayFromTarget()
         {
             // First, let's check if the target is still hit by the eye gaze cursor
@@ -416,7 +399,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Determine whether the user is looking away from the preview. 
         /// </summary>
-        /// <returns></returns>
         private bool IsLookingAwayFromPreview()
         {
             if (prevPreviewPos == null || EyeTrackingProvider == null)
@@ -481,8 +463,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Retrieve a valid location for placing the target.
         /// </summary>
-        /// <param name="hitobj"></param>
-        /// <returns></returns>
         private Vector3 GetValidPlacemLocation(GameObject hitobj)
         {
             // Determine position
@@ -598,7 +578,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Move the target using relative input values.
         /// </summary>
-        /// <param name="relativeMovement"></param>
         private void RelativeMoveUpdate(Vector3 relativeMovement)
         {
             manualTargetManip = false;
@@ -608,7 +587,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Compute the angle between the initial (when selecting the target) and current eye gaze direction.
         /// </summary>
-        /// <returns></returns>
         public float Angle_InitialGazeToCurrGazeDir()
         {
             return Vector3.Angle(initalGazeDir, EyeTrackingProvider.GazeDirection);
@@ -617,7 +595,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Compute angle between target center ( OR original targeting location??? ) and current targeting direction
         /// </summary>
-        /// <returns></returns>
         public float Angle_ToCurrHitTarget(GameObject gobj)
         {
             if (EyeTrackingProvider?.GazeTarget != null)

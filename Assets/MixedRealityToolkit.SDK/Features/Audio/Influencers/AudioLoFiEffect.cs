@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     [RequireComponent(typeof(AudioLowPassFilter))]
     [RequireComponent(typeof(AudioHighPassFilter))]
     [DisallowMultipleComponent]
+    [AddComponentMenu("Scripts/MRTK/SDK/AudioLoFiEffect")]
     public class AudioLoFiEffect : MonoBehaviour
     {
         [Tooltip("The quality level of the simulated audio source.")]
@@ -202,7 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             /// <summary>
             /// Generates a hash code representing this FilterSettings.
             /// </summary>
-            /// <returns></returns>
             public override int GetHashCode()
             {
                 string s = $"[{GetType().ToString()}] Low: {LowPassCutoff}, High: {HighPassCutoff}";

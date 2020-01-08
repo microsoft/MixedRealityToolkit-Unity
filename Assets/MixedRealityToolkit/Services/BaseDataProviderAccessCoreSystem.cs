@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseDataProviderAccessCoreSystem : BaseCoreSystem, IMixedRealityDataProviderAccess
     {
-        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
+        private readonly List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         public override void Reset()
         {
@@ -62,11 +62,26 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        public BaseDataProviderAccessCoreSystem(
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        protected BaseDataProviderAccessCoreSystem(
             IMixedRealityServiceRegistrar registrar,
-            BaseMixedRealityProfile profile = null) : base(registrar, profile)
+            BaseMixedRealityProfile profile = null) : this(profile)
         {
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        protected BaseDataProviderAccessCoreSystem(
+            BaseMixedRealityProfile profile = null) : base(profile)
+        { }
 
         #region IMixedRealityDataProviderAccess Implementation
 
@@ -128,9 +143,23 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Registers a data provider of the specified type.
         /// </summary>
-        /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
-        /// <returns>True if the data provider was successfully registered, false otherwise.</returns>
         protected bool RegisterDataProvider<T>(
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            params object[] args) where T : IMixedRealityDataProvider
+        {
+            return RegisterDataProviderInternal<T>(
+                true, // Retry with an added IMixedRealityService parameter
+                concreteType,
+                supportedPlatforms,
+                args);
+        }
+
+        /// <summary>
+        /// Internal method that creates an instance of the specified concrete type and registers the provider.
+        /// </summary>
+        private bool RegisterDataProviderInternal<T>(
+            bool retryWithRegistrar,
             Type concreteType,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
@@ -164,6 +193,24 @@ namespace Microsoft.MixedReality.Toolkit
             }
             catch (Exception e)
             {
+                if (retryWithRegistrar && (e is MissingMethodException))
+                {
+                    Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} data provider. Adding the Registrar instance and re-attempting registration.");
+#pragma warning disable 0618
+                    List<object> updatedArgs = new List<object>();
+                    updatedArgs.Add(Registrar);
+                    if (args != null)
+                    {
+                        updatedArgs.AddRange(args);
+                    }
+                    return RegisterDataProviderInternal<T>(
+                        false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
+                        concreteType,
+                        supportedPlatforms,
+                        updatedArgs.ToArray());
+#pragma warning restore 0618
+                }
+
                 Debug.LogError($"Failed to register the {concreteType.Name} data provider: {e.GetType()} - {e.Message}");
 
                 // Failures to create the concrete type generally surface as nested exceptions - just logging

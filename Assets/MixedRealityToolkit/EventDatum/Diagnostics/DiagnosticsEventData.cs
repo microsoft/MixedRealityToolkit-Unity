@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="eventSystem"></param>
         public DiagnosticsEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         /// <summary>

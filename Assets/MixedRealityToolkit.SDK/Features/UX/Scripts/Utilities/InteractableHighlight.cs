@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     /// <remarks>Useful with focusable <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s</remarks>
     [System.Obsolete("This component is no longer supported", true)]
+    [AddComponentMenu("Scripts/MRTK/Obsolete/InteractableHighlight")]
     public class InteractableHighlight : BaseFocusHandler
     {
         [Flags]

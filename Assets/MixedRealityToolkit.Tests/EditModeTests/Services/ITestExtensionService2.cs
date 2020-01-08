@@ -4,5 +4,8 @@
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
+    /// <summary>
+    /// An empty extension service used for testing.
+    /// </summary>
     internal interface ITestExtensionService2 : IMixedRealityExtensionService, ITestService { }
 }

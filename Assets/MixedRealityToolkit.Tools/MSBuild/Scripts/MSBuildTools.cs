@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,13 +31,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-        [MenuItem("MSBuild/Generate C# SDK Projects")]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Generate C# SDK Projects")]
         public static void GenerateSDKProjects()
         {
             try
             {
                 RunGenerateSDKProjects();
-                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Succesfully.");
+                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Successfully.");
             }
             catch
             {
@@ -215,4 +214,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

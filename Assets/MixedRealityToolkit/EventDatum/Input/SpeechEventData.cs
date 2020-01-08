@@ -38,11 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Populates the event with data.
         /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="confidence"></param>
-        /// <param name="phraseDuration"></param>
-        /// <param name="phraseStartTime"></param>
-        /// <param name="command"></param>
         public void Initialize(IMixedRealityInputSource inputSource, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
             BaseInitialize(inputSource, command.Action);

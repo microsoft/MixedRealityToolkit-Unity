@@ -27,11 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="count"></param>
         public void Initialize(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null, int count = 0)
         {
             if (inputSource != null)
@@ -50,10 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="count"></param>
-        /// <param name="inputAction"></param>
-        /// <param name="handedness"></param>
         public void Initialize(IMixedRealityPointer pointer, Handedness handedness, MixedRealityInputAction inputAction, int count = 0)
         {
             Initialize(pointer.InputSourceParent, handedness, inputAction);
