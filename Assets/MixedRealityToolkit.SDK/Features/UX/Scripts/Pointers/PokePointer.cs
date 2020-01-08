@@ -53,14 +53,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
         [SerializeField]
-        [Tooltip("Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV. This can prevent accidental touches, " +
-            "and will allow hand rays to turn on when you may be near a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, radius equal to half display height.")]
+        [Tooltip("Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV. " +
+            "This can prevent accidental touches, and will allow hand rays to turn on when you may be near a " +
+            "touchable but cannot see it. Visual FOV is defined by cone centered about display center, " +
+            "radius equal to half display height.")]
         private bool ignoreCollidersNotInFOV = true;
        
         /// <summary>
         /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
         /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near 
-        /// a grabbable but cannot see it. Visual FOV is defined by cone centered about display center, 
+        /// a touchable but cannot see it. Visual FOV is defined by cone centered about display center, 
         /// radius equal to half display height.
         /// </summary>
         public bool IgnoreCollidersNotInFOV
@@ -87,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Specify whether queries for touchable surfaces hit triggers.
         /// </summary>
         public QueryTriggerInteraction TriggerInteraction => triggerInteraction;
-
 
         private Collider[] queryBuffer;
 
