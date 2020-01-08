@@ -174,45 +174,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+            TestHand testHand = new TestHand(Handedness.Right);
+            yield return testHand.Show(initialHandPosition);
 
             using (var catcher = CreatePointerEventCatcher(touchable))
             {
-                // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 0);
 
                 // Touch started and completed when entering and exiting behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(initialHandPosition);
+                yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, backPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(backPosition);              
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.Greater(catcher.DragEventCount, 1);
                 int dragEventCount = catcher.DragEventCount;
 
                 // No touch when moving at behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(rightPosition);              
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving behind plane");
 
 
                 // No touch when moving outside the bounds
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(initialHandPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(objectPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
                 Assert.AreEqual(dragEventCount, catcher.DragEventCount, "No drag events should fire when poke pointer moving outside bounds");
             }
 
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
+            yield return testHand.Hide();
 
             UnityEngine.Object.Destroy(touchable.gameObject);
         }
@@ -230,39 +232,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
+            TestHand testHand = new TestHand(Handedness.Right);
+            yield return testHand.Show(initialHandPosition);
 
             using (var catcher = CreateTouchEventCatcher(touchable))
             {
-                // Touch started and completed when entering and exiting
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // Touch started and completed when entering and exiting behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(initialHandPosition);
+                yield return testHand.MoveTo(objectPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, backPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(backPosition);              
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
                 // No touch when moving at behind the plane
-                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(rightPosition);              
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
 
                 // No touch when moving outside the bounds
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(initialHandPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(objectPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
             }
 
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
+            yield return testHand.Hide();
 
             UnityEngine.Object.Destroy(touchable.gameObject);
         }
@@ -274,49 +278,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
-
+            
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSim);
-
+            TestHand testHand = new TestHand(Handedness.Left);
+            yield return testHand.Show(Vector3.zero);
+            yield return testHand.MoveTo(initialHandPosition, numSteps);
             using (var catcher = CreateTouchEventCatcher(touchable))
             {
                 // Touch started when entering collider
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(objectPosition, numSteps);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
 
                 // Ensure no touch up event fires while moving hand/pokepointer through collider to each corner of volume
                 Vector3[] cornerPositions = new Vector3[8];
                 touchable.GetComponent<BoxCollider>().bounds.GetCornerPositions(ref cornerPositions);
-                var currentPos = objectPosition;
                 for (int i = 0; i < cornerPositions.Length; i++)
                 {
-                    yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, cornerPositions[i], numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                    currentPos = cornerPositions[i];
-                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume to position " + currentPos);
-                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume to position " + currentPos);
+                    yield return testHand.MoveTo(cornerPositions[i]);
+                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume to position " + cornerPositions[i]);
+                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume to position " + cornerPositions[i]);
                 }
 
                 // Touch up when exit collider
-                yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // No touch when moving outside the collider
-                yield return PlayModeTestUtilities.MoveHandFromTo(backPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+                yield return testHand.Hide();
+                yield return testHand.Show(backPosition);
+                yield return testHand.MoveTo(backPosition + new Vector3(2f, 0f, 0f));
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // Touch when moving off-center
-                yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition + outOfBoundsOffset, objectPosition + outOfBoundsOffset, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition + outOfBoundsOffset, rightPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                yield return testHand.Hide();
+                yield return testHand.Show(initialHandPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(objectPosition + outOfBoundsOffset);
+                yield return testHand.MoveTo(rightPosition);
                 Assert.AreEqual(2, catcher.EventsStarted);
                 Assert.AreEqual(2, catcher.EventsCompleted);
             }
-
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSim);
 
             UnityEngine.Object.Destroy(touchable.gameObject);
         }
