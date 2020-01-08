@@ -75,11 +75,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e61bc6a61690aa43837974b88ea7adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_centeredParent: {fileID: 3265844208835655128}
-  m_inverseParent: {fileID: 4497374150134998559}
-  m_pivotPosition: {fileID: 4669452101997557680}
-  m_duration: 1.38
-  m_animationCurve:
+  centeredParent: {fileID: 3265844208835655128}
+  inverseParent: {fileID: 4497374150134998559}
+  pivotPosition: {fileID: 4669452101997557680}
+  duration: 1.38
+  animationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -103,7 +103,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_degreesToMove: -90
+  rotationVector: {x: 0, y: 90, z: 0}
 --- !u!1 &8242322901259647596
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,11 +262,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
-        type: 3}
-      propertyPath: animationState
-      value: Rotate_L
-      objectReference: {fileID: 0}
     - target: {fileID: 7772422766622430800, guid: 33969ce6b44fe404f9f60e8031eade87,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -286,6 +281,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
+        type: 3}
+      propertyPath: animationState
+      value: Rotate_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
+        type: 3}
+      propertyPath: AnimationState
+      value: Rotate_L
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33969ce6b44fe404f9f60e8031eade87, type: 3}

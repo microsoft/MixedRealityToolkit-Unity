@@ -9,58 +9,137 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public class MoveToTarget : MonoBehaviour
     {
+        [Tooltip("Object to track.")]
+        [SerializeField]
+        private GameObject trackingObject = null;
+
         /// <summary>
         /// Object to track.
         /// </summary>
+        public GameObject TrackingObject
+        {
+            get
+            {
+                return trackingObject;
+            }
+            protected set
+            {
+                trackingObject = value;
+            }
+        }
+
+        [Tooltip("Target to move to.")]
         [SerializeField]
-        private GameObject m_trackingObject = null;
+        private GameObject targetObject = null;
 
         /// <summary>
         /// Target to move to.
         /// </summary>
+        public GameObject TargetObject
+        {
+            get
+            {
+                return targetObject;
+            }
+            protected set
+            {
+                targetObject = value;
+            }
+        }
+
+
+        [Tooltip("Shared parent between tracking and target objects used for relative local positions.")]
         [SerializeField]
-        private GameObject m_targetObject = null;
+        private GameObject rootObject = null;
 
         /// <summary>
         /// Shared parent between tracking and target objects used for relative local positions.
         /// </summary>
+        public GameObject RootObject
+        {
+            get
+            {
+                return rootObject;
+            }
+            protected set
+            {
+                rootObject = value;
+            }
+        }
+
+        [Tooltip("Duration of move from tracking object to target object in seconds.")]
         [SerializeField]
-        private GameObject m_rootObject = null;
+        private float duration = 1.38f;
 
         /// <summary>
         /// Duration of move from tracking object to target object in seconds.
         /// </summary>
+        public float Duration
+        {
+            get
+            {
+                return duration;
+            }
+            protected set
+            {
+                duration = value;
+            }
+        }
+
+        [Tooltip("Tunable offset to get the GameObject to arrive at the right target position.")]
         [SerializeField]
-        private float m_duration = 1.38f;
+        private Vector3 targetOffset = new Vector3(0f, 0f, 0f);
 
         /// <summary>
         /// Tunable offset to get the GameObject to arrive at the right target position.
         /// </summary>
+        public Vector3 TargetOffset
+        {
+            get
+            {
+                return targetOffset;
+            }
+            protected set
+            {
+                targetOffset = value;
+            }
+        }
+
+        [Tooltip("Lerp curve.")]
         [SerializeField]
-        private Vector3 m_targetOffset = new Vector3(0.05f, -0.1f, -0.2f);
+        private AnimationCurve animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         /// <summary>
         /// Lerp curve.
         /// </summary>
-        [SerializeField]
-        private AnimationCurve m_animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        public AnimationCurve AnimationCurve
+        {
+            get
+            {
+                return animationCurve;
+            }
+            protected set
+            {
+                animationCurve = value;
+            }
+        }
 
         // The local position of this gameObject relative to the root object
-        private Vector3 m_relativePositionTrackingToRoot;
+        private Vector3 relativePositionTrackingToRoot;
 
-        // The local position of m_targetObject relative to the root object
-        private Vector3 m_relativeTargetPositionToRoot;
+        // The local position of targetObject relative to the root object
+        private Vector3 relativeTargetPositionToRoot;
 
         // bool to determine when to stop the follow sequence
-        private bool m_followingTargetObject;
+        private bool followingTargetObject;
 
         // Since this script can attach to an object with an animator, we need to update position in LateUpdate
         private void LateUpdate()
         {
-            if (m_targetObject != null && m_rootObject != null)
+            if (TargetObject != null && RootObject != null)
             {
-                m_relativeTargetPositionToRoot = GetRelativeLocalPosition(m_targetObject, m_rootObject) + m_targetOffset;
-                transform.parent.localPosition = m_relativePositionTrackingToRoot;
+                relativeTargetPositionToRoot = GetRelativeLocalPosition(TargetObject, RootObject) + TargetOffset;
+                transform.parent.localPosition = relativePositionTrackingToRoot;
             }
         }
 
@@ -69,32 +148,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public void MoveToTargetPosition()
         {
-            if (m_relativeTargetPositionToRoot != Vector3.zero)
+            if (relativeTargetPositionToRoot != Vector3.zero)
             {
-                m_followingTargetObject = false;
+                followingTargetObject = false;
                 StartCoroutine(MoveHintSequence());
             }
         }
 
         private IEnumerator MoveHintSequence()
         {
-            Vector3 origin = m_relativePositionTrackingToRoot;
+            Vector3 origin = relativePositionTrackingToRoot;
 
             float t = 0;
-            while (t <= m_duration)
+            while (t <= Duration)
             {
-                m_relativePositionTrackingToRoot = Vector3.Lerp(origin, m_relativeTargetPositionToRoot, m_animationCurve.Evaluate(t / m_duration));
+                relativePositionTrackingToRoot = Vector3.Lerp(origin, relativeTargetPositionToRoot, AnimationCurve.Evaluate(t / Duration));
                 t += Time.deltaTime;
                 yield return null;
             }
-        }
-
-        /// <summary>
-        /// Set the target object to move to.
-        /// </summary>
-        public void SetHintTarget(GameObject target)
-        {
-            m_targetObject = target;
         }
 
         /// <summary>
@@ -102,18 +173,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public void Follow()
         {
-            if (m_trackingObject != null && m_rootObject != null)
+            if (TrackingObject != null && RootObject != null)
             {
-                m_followingTargetObject = true;
+                followingTargetObject = true;
                 StartCoroutine(FollowSequence());
             }
         }
 
         private IEnumerator FollowSequence()
         {
-            while (m_followingTargetObject)
+            while (followingTargetObject)
             {
-                m_relativePositionTrackingToRoot = GetRelativeLocalPosition(m_trackingObject, m_rootObject);
+                relativePositionTrackingToRoot = GetRelativeLocalPosition(TrackingObject, RootObject);
                 yield return null;
             }
         }

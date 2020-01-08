@@ -42,7 +42,7 @@ Otherwise, you'll need to place the script on a gameObject one parent level up f
 
 - **Repeats** This property controls how many times the hint animation plays when the min or max timer has passed. The hint then hides and waits for the delay again.
 
-- **AutoActivate** When this boolean is set to true, the hint will atuomatically run through the timer logic when the GameObject of the script is active in the hierarchy and the script is enabled. This should only be set to false if you intend to manually control the hint appearance and disappearance via code.
+- **AutoActivate** When this boolean is set to true, the hint will automatically run through the timer logic when the GameObject of the script is active in the hierarchy and the script is enabled. This should only be set to false if you intend to manually control the hint appearance and disappearance via code.
 
 - **AnimationState** The name of the animation state that should play when the hint is active. This must be set before the StartHintLoop() function is called (during OnEnable if AutoActivate is checked).
 

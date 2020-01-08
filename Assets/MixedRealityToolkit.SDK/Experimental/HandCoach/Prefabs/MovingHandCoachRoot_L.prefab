@@ -105,12 +105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46971a4b0a165cc459ba256fb6897686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_trackingObject: {fileID: 2327961064019510130}
-  m_targetObject: {fileID: 4221595241135283459}
-  m_rootObject: {fileID: 310375347966207967}
-  m_duration: 1.38
-  m_targetOffset: {x: 0, y: 0, z: 0}
-  m_animationCurve:
+  trackingObject: {fileID: 2327961064019510130}
+  targetObject: {fileID: 4221595241135283459}
+  rootObject: {fileID: 310375347966207967}
+  duration: 1.38
+  targetOffset: {x: 0, y: 0, z: 0}
+  animationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -201,11 +201,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
-        type: 3}
-      propertyPath: animationState
-      value: Move_L
-      objectReference: {fileID: 0}
     - target: {fileID: 7772422766622430800, guid: 33969ce6b44fe404f9f60e8031eade87,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -225,6 +220,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
+        type: 3}
+      propertyPath: animationState
+      value: Move_L
+      objectReference: {fileID: 0}
+    - target: {fileID: 6520951085272245290, guid: 33969ce6b44fe404f9f60e8031eade87,
+        type: 3}
+      propertyPath: AnimationState
+      value: Move_L
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33969ce6b44fe404f9f60e8031eade87, type: 3}
