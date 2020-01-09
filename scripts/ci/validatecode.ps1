@@ -157,7 +157,8 @@ function CheckCustomProfile {
             Write-Host "Please update this to 'isCustomProfile: 0' instead."
             $true
         }
-    $false
+        $false
+    }
 }
 
 # This dictionary contains the list of all allowed hardcoded path exceptions
@@ -377,8 +378,8 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
     Write-Host "Checking only changed files for code issues: $ChangesFile"
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
     ForEach ($changedFile in $changedFiles) {
-        if (((IsCSharp -Filename $changedFile) -and (CheckScript $changedFile)) -or
-            ((IsAsset -Filename $changedFile) -and (CheckAsset $changedFile)) -or
+        if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
+            ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
             ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile))) {
             $containsIssue = $true;

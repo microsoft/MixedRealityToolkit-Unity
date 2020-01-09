@@ -66,20 +66,22 @@ function CheckDocument {
         # a single pass, we'll get all of the issues highlighted all at once, rather than
         # repeatedly running this script, discovering a single issue, fixing it, and then
         # re-running the script
-        $containsIssue = $false
+        $issueFound = $false
         $fileContent = Get-Content $FileName
         for ($i = 0; $i -lt $fileContent.Length; $i++) {
             if (CheckDocLinks $FileName $fileContent $i) {
-                $containsIssue = $true
+                $issueFound = $true
             }
         }
-        $containsIssue
+        $issueFound
     }
 }
 
+$containsIssue = $false
+
 # If the file containing the list of changes was provided and actually exists,
 # this validation should scope to only those changed files.
-if ($ChangesFile -and Test-Path $Output -PathType leaf) {
+if (($ChangesFile) -and (Test-Path $Output -PathType leaf)) {
     # TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7022)
     # There may be ways to configure common modules so that paths like this aren't required
     Import-Module (Resolve-Path("$RepoRoot\scripts\ci\common.psm1"))
@@ -88,8 +90,8 @@ if ($ChangesFile -and Test-Path $Output -PathType leaf) {
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
 
     foreach ($changedFile in $changedFiles) {
-        if ((IsMarkdown -Filename $changedFile) -and (CheckDocument $changedFile)) {
-            $containsIssue = true;
+        if ((IsMarkdownFile -Filename $changedFile) -and (CheckDocument $changedFile)) {
+            $containsIssue = $true;
         }
     }
 }
@@ -97,7 +99,6 @@ else {
     Write-Host "Checking $Directory for common doc issues"
 
     $docFiles = Get-ChildItem $Directory *.md -Recurse | Select-Object FullName
-    $containsIssue = $false
     foreach ($docFile in $docFiles) {
         if (CheckDocument $docFile.FullName) {
             $containsIssue = $true

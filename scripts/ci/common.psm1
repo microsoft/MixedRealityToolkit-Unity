@@ -38,7 +38,7 @@ function GetChangedFiles {
 function IsMarkdownFile {
     [CmdletBinding()]
     param(
-        [string]$Filename)
+        [string]$Filename
     )
     process {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".md"
@@ -54,7 +54,7 @@ function IsMarkdownFile {
 function IsCSharpFile {
     [CmdletBinding()]
     param(
-        [string]$Filename)
+        [string]$Filename
     )
     process {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".cs"
@@ -70,7 +70,7 @@ function IsCSharpFile {
 function IsAssetFile {
     [CmdletBinding()]
     param(
-        [string]$Filename)
+        [string]$Filename
     )
     process {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".asset"
@@ -86,7 +86,7 @@ function IsAssetFile {
 function IsUnityScene {
     [CmdletBinding()]
     param(
-        [string]$Filename)
+        [string]$Filename
     )
     process {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".unity"
@@ -102,7 +102,7 @@ function IsUnityScene {
 function IsMetaFile {
     [CmdletBinding()]
     param(
-        [string]$Filename)
+        [string]$Filename
     )
     process {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".meta"
