@@ -16,9 +16,9 @@
 
     Returns 0 if there are no issues, non-zero if there are.
 .PARAMETER Directory
-    The directory containing the code to validate. This is the fallback if
-    ChangesFile doesn't exist or isn't valid, and as a result this is
-    always required.
+    The directory containing the code to validate. This won't be used if ChangesFile
+    is specified, but is always required because it's the fallback if
+    ChangesFile doesn't exist or isn't valid.
 .PARAMETER ChangesFile
     The filename containing the list of files to scope the code validation
     to. This is useful in pull request validation when there isn't a need
