@@ -216,7 +216,8 @@
       href: ../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md
     - name: Hand Coach UX
       href: ../Assets/MixedRealityToolkit.SDK/Experimental/HandCoach/README_HandCoach.md
-
+    - name: Pulse Shader
+      href: ../Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md
 - name: Contributing
   items:
   - name: Contributing Overview
