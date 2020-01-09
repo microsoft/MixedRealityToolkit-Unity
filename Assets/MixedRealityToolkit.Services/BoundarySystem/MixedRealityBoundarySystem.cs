@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         }
 
         /// <summary>
-        /// Updates the <see cref="TrackingSpaceType"/> on the XR device.
+        /// Updates the <see href="https://docs.unity3d.com/ScriptReference/XR.TrackingSpaceType.html">TrackingSpaceType</see> on the XR device.
         /// </summary>
         protected override void SetTrackingSpace()
         {

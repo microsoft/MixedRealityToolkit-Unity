@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         /// <summary>
-        /// Updates the <see cref="TrackingOriginModeFlags"/> on the XR device.
+        /// Updates the <see href="https://docs.unity3d.com/2019.3/Documentation/ScriptReference/XR.TrackingOriginModeFlags.html">TrackingOriginModeFlags</see> on the XR device.
         /// </summary>
         protected override void SetTrackingSpace()
         {
