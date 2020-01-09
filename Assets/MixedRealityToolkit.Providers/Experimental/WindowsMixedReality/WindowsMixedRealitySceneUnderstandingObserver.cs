@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Scene Understanding Observer",
-        "Profiles/DefaultMixedRealitySpatialAwarenessSceneUnderstandingObserverProfile.asset",
+        "Experimental/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
     public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver : BaseSpatialSceneObserver, IMixedRealityOnDemandObserver, IWindowsMixedRealitySceneUnderstanding
     {
@@ -901,13 +901,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void CleanupSceneObjects()
         {
-            if (ObservedObjectParent != null)
+            if (observedObjectParent != null)
             {
-                int kidCount = ObservedObjectParent.transform.childCount;
+                int kidCount = observedObjectParent.transform.childCount;
 
                 for (int i = 0; i < kidCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(ObservedObjectParent.transform.GetChild(i).gameObject);
+                    UnityEngine.Object.Destroy(observedObjectParent.transform.GetChild(i).gameObject);
                 }
             }
 
