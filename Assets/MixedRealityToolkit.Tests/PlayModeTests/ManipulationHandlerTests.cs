@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ManipulationHandlerTests
     {
-        /// <summary></summary>
+        /// <summary>test</summary>
         private readonly List<Action> cleanupAction = new List<Action>();
 
         [SetUp]
