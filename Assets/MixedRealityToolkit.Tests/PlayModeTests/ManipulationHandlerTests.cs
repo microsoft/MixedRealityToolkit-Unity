@@ -24,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ManipulationHandlerTests
     {
+        // Intentionally empty to show that validation still works, will
+        // delete after folks code review this.
         /// <summary></summary>
         private readonly List<Action> cleanupAction = new List<Action>();
 

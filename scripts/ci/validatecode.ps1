@@ -378,6 +378,7 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
     Write-Host "Checking only changed files for code issues: $ChangesFile"
     $changedFiles = GetChangedFiles -Filename $ChangesFile -RepoRoot $RepoRoot
     ForEach ($changedFile in $changedFiles) {
+        Write-Host "Checking file: $changedFile"
         if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
             ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
