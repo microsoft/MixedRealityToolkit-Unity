@@ -2,7 +2,7 @@
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.HandCoach
 {
     /// <summary>
     /// This class provides functionality to move the hand hint from a tracking position to a target position over time.
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return trackingObject;
             }
-            protected set
+            set
             {
                 trackingObject = value;
             }
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return targetObject;
             }
-            protected set
+            set
             {
                 targetObject = value;
             }
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return rootObject;
             }
-            protected set
+            set
             {
                 rootObject = value;
             }
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return duration;
             }
-            protected set
+            set
             {
                 duration = value;
             }
@@ -99,18 +99,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return targetOffset;
             }
-            protected set
+            set
             {
                 targetOffset = value;
             }
         }
 
-        [Tooltip("Lerp curve.")]
+        [Tooltip("Lerp curve that controls the animation position over time from the trackingObject to the targetObject.")]
         [SerializeField]
         private AnimationCurve animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         /// <summary>
-        /// Lerp curve.
+        /// Lerp curve that controls the animation position over time from the trackingObject to the targetObject.
         /// </summary>
         public AnimationCurve AnimationCurve
         {
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return animationCurve;
             }
-            protected set
+            set
             {
                 animationCurve = value;
             }

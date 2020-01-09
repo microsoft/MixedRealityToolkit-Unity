@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI.HandCoach
 {
     /// <summary>
     /// This class provides functionality to rotate the hand hint around a pivot point over time.
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return centeredParent;
             }
-            protected set
+            set
             {
                 centeredParent = value;
             }
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return inverseParent;
             }
-            protected set
+            set
             {
                 inverseParent = value;
             }
@@ -61,18 +61,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return pivotPosition;
             }
-            protected set
+            set
             {
                 pivotPosition = value;
             }
         }
 
-        [Tooltip("Duration of rotation around the CenteredParent.")]
+        [Tooltip("Duration of rotation around the CenteredParent in seconds.")]
         [SerializeField]
         private float duration = 1.38f;
 
         /// <summary>
-        /// Duration of rotation around the CenteredParent.
+        /// Duration of rotation around the CenteredParent in seconds.
         /// </summary>
         public float Duration
         {
@@ -80,18 +80,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return duration;
             }
-            protected set
+            set
             {
                 duration = value;
             }
         }
 
-        [Tooltip("Lerp curve.")]
+        [Tooltip("Lerp curve that controls the animation rotation over time.")]
         [SerializeField]
         private AnimationCurve animationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         /// <summary>
-        /// Lerp curve.
+        /// Lerp curve that controls the animation rotation over time.
         /// </summary>
         public AnimationCurve AnimationCurve
         {
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return animationCurve;
             }
-            protected set
+            set
             {
                 animationCurve = value;
             }
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return rotationVector;
             }
-            protected set
+            set
             {
                 rotationVector = value;
             }
