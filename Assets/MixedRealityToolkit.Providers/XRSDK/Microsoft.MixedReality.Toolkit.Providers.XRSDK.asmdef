@@ -1,10 +1,9 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK",
     "references": [
-        "GUID:a7a4c34601384f9389d5c4207f3c6331",
-        "GUID:92703082f92b41ba80f0d6912de66115",
-        "GUID:e40ba710768534012815d3193fa296cb"
+        "Microsoft.MixedReality.Toolkit"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -13,18 +12,5 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.management",
-            "expression": "",
-            "define": "XR_MANAGEMENT_ENABLED"
-        },
-        {
-            "name": "com.unity.xr.arsubsystems",
-            "expression": "",
-            "define": "ARSUBSYSTEMS_ENABLED"
-        }
-    ],
-    "noEngineReferences": false
+    ]
 }
