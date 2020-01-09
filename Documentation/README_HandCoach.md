@@ -4,7 +4,7 @@
 Hand Coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand Coach could be used to represent pressing a button or picking up a hologram.
 
 
-The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing JIT hands:
+The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing Hand Coach examples:
 
 - Near Tap – Used for buttons or close interactable objects
 - Far Select- Used for objects that are far away
@@ -15,7 +15,7 @@ The current interaction model represents a wide variety of gesture controls such
 - Scroll – Used for scrolling a list or a long document
 
 ## Example scene
-You can find examples in the **HancCoachExample** scene under:
+You can find examples in the **HandCoachExample** scene under:
 [MixedRealityToolkit.Examples/Experimental/HandCoach/Scenes](/Assets/MixedRealityToolkit.Examples/Experimental/HandCoach/Scenes)
 
 ## Hand 3D Assets
