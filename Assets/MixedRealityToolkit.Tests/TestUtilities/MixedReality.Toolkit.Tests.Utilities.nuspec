@@ -21,12 +21,13 @@
     </contentFiles>
   </metadata>
   <files>
+    <!-- There is nothing to include in the MRTK folder-->
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
-    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
+    <file src="..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
-    <file src="..\..\..\Assets\MixedRealityToolkit.Tests.Utilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tests.Utilities" />
+    <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
+    <file src="..\..\..\..\Assets\MixedRealityToolkit.Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tests\TestUtilities" />
   </files>
 </package>
