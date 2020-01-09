@@ -21,7 +21,7 @@
     In particular, this will checkout (via this command:
     git fetch --force --tags --prune --progress --no-recurse-submodules origin $(System.PullRequest.TargetBranch))
 .EXAMPLE
-    .\githubchanges.ps1 -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
+    .\githubchanges.ps1 -OutputFile c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
 #>
 param(
     # The ID of the pull request. (e.g. 1234)
@@ -49,10 +49,10 @@ if ([string]::IsNullOrEmpty($PullRequestId) -or [string]::IsNullOrEmpty($TargetB
 }
 
 # If the output file already exists, blow it away. Each run should get a new set of changed files.
-if (Test-Path $Output -PathType leaf) {
-    Remove-Item $Output
+if (Test-Path $OutputFile -PathType leaf) {
+    Remove-Item $OutputFile
 }
-New-Item -ItemType File -Force -Path $Output
+New-Item -ItemType File -Force -Path $OutputFile
 
 # The path to the .git file is necessary when invoking the git command below, as the working
 # directory may not actually be pointed toward the git path.
@@ -80,6 +80,6 @@ foreach ($changedFile in $changedFiles) {
     # of the file, in case this set of information is used later in the pipeline on a different
     # machine/context.
     if (Test-Path $joinedPath -PathType leaf) {
-        Add-Content -Path $Output -Value $changedFile
+        Add-Content -Path $OutputFile -Value $changedFile
     }
 }

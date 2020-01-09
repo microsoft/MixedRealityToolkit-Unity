@@ -12,5 +12,5 @@ steps:
     arguments: >
       -PullRequestId: $(System.PullRequest.PullRequestNumber)
       -TargetBranch: '$(System.PullRequest.TargetBranch)'
-      -OutputFile: '$(parameters.changesFile)'
+      -OutputFile: '${{ parameters.changesFile }}'
       -RepoRoot: '$(Build.SourcesDirectory)'
