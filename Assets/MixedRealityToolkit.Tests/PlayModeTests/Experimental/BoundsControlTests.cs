@@ -156,6 +156,89 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test bounds control rotation via far interaction
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaFarInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            bbox.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 87f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(bbox.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(bbox.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via near interaction
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaNearInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            bbox.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 92f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(bbox.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(bbox.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
         /// Tests scaling of bounds control by grabbing a corner with the far interaction hand ray
         /// </summary>
         /// <returns></returns>
