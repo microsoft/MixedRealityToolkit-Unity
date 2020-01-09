@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// <summary>
     /// This class provides wrapper functionality for triggering animations and fades for the hand rig.
     /// </summary>
-    public class InteractionHint : MonoBehaviour
+    public class HandInteractionHint : MonoBehaviour
     {
         public GameObject VisualsRoot { get; protected set; }
 
@@ -326,15 +326,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 while (VisualsRoot.activeSelf && playCount < Repeats)
                 {
                     // hide if hand is present, but maxTimer was not hit
-                    bool bShouldHide = ShouldHideVisuals();
-                    bool bFadeOut = Time.time - visibleTime >= animationHideTime;
-                    if (bShouldHide || bFadeOut)
+                    bool shouldHide = ShouldHideVisuals();
+                    bool fadeOut = Time.time - visibleTime >= animationHideTime;
+                    if (shouldHide || fadeOut)
                     {
                         // Yield while deactivate anim is playing (or instant deactivate if not animating)
                         yield return FadeOutHint();
 
                         // if fade out was caused by user interacting, we've reached the repeat limit, or we've stopped the loop, break out
-                        if (bShouldHide || playCount == Repeats - 1 || !loopRunning)
+                        if (shouldHide || playCount == Repeats - 1 || !loopRunning)
                         {
                             break;
                         }
@@ -353,13 +353,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        private void SetActive(GameObject root, bool bShow)
+        private void SetActive(GameObject root, bool show)
         {
             if (root != null)
             {
-                root.SetActive(bShow);
+                root.SetActive(show);
 
-                if (bShow)
+                if (show)
                 {
                     animator.Play(fadeInAnimationState);
                 }
@@ -392,14 +392,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private bool ShouldHideVisuals()
         {
             // Check hand tracking, if configured to do so
-            bool bShouldHide = HideIfHandTracked && IsHandTracked();
+            bool shouldHide = HideIfHandTracked && IsHandTracked();
 
             // Check the custom show visuals function
-            if (!bShouldHide)
+            if (!shouldHide)
             {
-                bShouldHide |= CustomShouldHideVisuals();
+                shouldHide |= CustomShouldHideVisuals();
             }
-            return bShouldHide;
+            return shouldHide;
         }
 
         /// <summary>
