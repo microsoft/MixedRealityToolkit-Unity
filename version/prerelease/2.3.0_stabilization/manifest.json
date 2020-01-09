@@ -4723,6 +4723,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/SaveNewSource.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/SaveNewSource.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/NuGet/SearchBox.png",
       "output": {
         "resource": {
@@ -6427,7 +6438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "T31VHMDj/5SZx+7bkjcWQg=="
+          "hash": "b032ftAvvstZvOq+63kKEQ=="
         }
       },
       "is_incremental": false,
@@ -25330,10 +25341,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1517,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -25349,11 +25361,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1517,
           "skipped_file_count": 0
         }
       }
