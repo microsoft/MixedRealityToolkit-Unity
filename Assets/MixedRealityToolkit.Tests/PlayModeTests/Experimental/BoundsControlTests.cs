@@ -239,6 +239,56 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaHololens1Interaction()
+        {
+
+
+            BoundsControl control = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(control);
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            // move camera to look at rotation sphere
+            CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
+
+            var startHandPos = new Vector3(0.364f, -0.157f, 0.437f);
+            var endPoint = new Vector3(0.141f, -0.163f, 0.485f);
+
+            // perform tab with hand and drag to left 
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.MoveTo(endPoint);
+
+            // make sure only Y axis rotation was performed and no other transform values have changed
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            control.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 86f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(control.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(control.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(control.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
+            yield return null;
+        }
+
+        /// <summary>
         /// Tests scaling of bounds control by grabbing a corner with the far interaction hand ray
         /// </summary>
         /// <returns></returns>
