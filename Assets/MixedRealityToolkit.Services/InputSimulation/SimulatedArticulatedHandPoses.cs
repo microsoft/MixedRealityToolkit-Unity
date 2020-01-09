@@ -8,7 +8,8 @@ using static Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// TODO: Troy - Fill in
+    /// This stores the joint pose JSON data that defines various articulated hand gestures for input simulation.
+    /// The JSON data that defines each joint position and orientation is stored in strings to avoid file loading/targeting during runtime
     /// </summary>
     public static class SimulatedArticulatedHandPoses
     {
