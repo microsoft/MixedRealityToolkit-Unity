@@ -7,10 +7,11 @@ Hand Coach is 3D modeled hand which is triggered when the system does not detect
 The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing Hand Coach examples:
 
 - Near Tap – Used for buttons or close interactable objects
-- Far Select- Used for objects that are far away
-- Move- Used to move a hologram in space
-- Rotate- Used to show how to rotate holograms or objects
-- Scale- Used to show how to manipulate holograms to be bigger or smaller
+- Far Select – Used for objects that are far away
+- Move – Used to move a hologram in space
+- Rotate – Used to show how to rotate holograms or objects
+- Scale – Used to show how to manipulate holograms to be bigger or smaller
+- Hand Flip – Used for bringing up a UI start panel or Hand Menus
 - Palm up – Used for hummingbird moment in out of the box experience. Another suggestion could be to bring up a UI start panel
 - Scroll – Used for scrolling a list or a long document
 
