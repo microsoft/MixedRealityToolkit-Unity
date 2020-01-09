@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
-    Given a GitHub PullRequest ID, target branch and repo root, this figures out the set of
-    changed files that have occured in this PR.
+    This script generates a list of changed files in a given pull request and outputs
+    that list to a file.
 .DESCRIPTION
     Generates a file containing a list of all modified files (added/modified) in
     the given pull request. The output file contains a list that is newline delimited, for
@@ -10,25 +10,32 @@
     Assets/MixedRealityToolkit.SDK/AssemblyInfo.cs
     Assets/MixedRealityToolkit.Tests/PlayModeTests/ManipulationHandlerTests.cs
 
-    The file will not contain files that have been completely deleted
+    The file will not contain files that have been completely deleted (for example, if
+    a change deleted Assets/MixedRealityToolkit.SDK/DeletedFile.cs), that line will not exist
+    in the output file.
 
-    Note that this script doesn't use the GitHub API, because doing so would require
-    secret access to be publicly exposed - instead, this uses information that already
-    exists on the local repo copy itself that had been copied down at Git checkout time.
-.PARAMETER PullRequestId
-    The ID of the pull request.
-.PARAMETER Output
-    The output filename containing the list of modified files.
-.PARAMETER RepoRoot
-    The root folder of the repo - used to detect which files no longer exist
+    Note that this script assumes that the local git repo doesn't already contain the
+    target branch (e.g. mrtk_development). This is what happens by default on Azure DevOps
+    pipeline integrations with Github pull requests.
+
+    In particular, this will checkout (via this command:
+    git fetch --force --tags --prune --progress --no-recurse-submodules origin $(System.PullRequest.TargetBranch))
 .EXAMPLE
     .\githubchanges.ps1 -Output c:\path\to\changes\file.txt -PullRequestId 1234 -RepoRoot c:\path\to\mrtk -TargetBranch mrtk_development
 #>
 param(
+    # The ID of the pull request. (e.g. 1234)
     [string]$PullRequestId,
+
+    # The target branch that the pull request will merge into (e.g. mrtk_development)
     [string]$TargetBranch,
+
+    # The output filename (e.g. c:\path\to\output.txt)
     [Parameter(Mandatory=$true)]
-    [string]$Output,
+    [string]$OutputFile,
+
+    # The root folder of the repo (e.g. c:\repo)
+    # This primarily used to filter out files that were deleted.
     [Parameter(Mandatory=$true)]
     [string]$RepoRoot
 )
@@ -37,34 +44,42 @@ param(
 # and the target branch might not be set in which case there's nothing to validate.
 if ([string]::IsNullOrEmpty($PullRequestId) -or [string]::IsNullOrEmpty($TargetBranch))
 {
-    Write-Host "PullRequestId and TargetBranch aren't specified, skipping."
+    Write-Warning "PullRequestId and TargetBranch aren't specified, skipping."
     exit 0;
 }
 
-# If the output file already exists, blow it away.
-# Each run should get a new set of changed files.
+# If the output file already exists, blow it away. Each run should get a new set of changed files.
 if (Test-Path $Output -PathType leaf) {
     Remove-Item $Output
 }
 New-Item -ItemType File -Force -Path $Output
 
-# Create the path to the .git file in the repo root.
+# The path to the .git file is necessary when invoking the git command below, as the working
+# directory may not actually be pointed toward the git path.
 $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 
+# Fetches the target branch so that the git diffing down below will actually be possible. git diff will list
+# the set of changed files between two different commit stamps (or branches, in this case), and needs
+# both branches to exist in order to make this happen.
 git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
-Write-Output "git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch"
-
 # The set of changed files is the diff between the target branch and the pull request
-# branch that was checked out locally
-$ChangedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch 2>&1)
+# branch that was checked out locally. Note that the format of the pull request branch
+# (i.e. "pull/$PullRequestId/merge") is based on the format that Azure DevOps does for its
+# local checkout of the pull request code.
+# WARNING: This is a loose dependency on Azure DevOps git checkout mechanism - if this errors out
+# we'd likely need to another fetch. Something like:
+#
+# git fetch origin pull/$PullRequestId/head:local_branch
+# $changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only local_branch origin/$TargetBranch 2>&1)
+$changedFiles=$(git --git-dir=$gitDir --work-tree=$RepoRoot diff --name-only pull/$PullRequestId/merge origin/$TargetBranch 2>&1)
 
-foreach ($ChangedFile in $ChangedFiles) {
-    $JoinedPath = Join-Path -Path $RepoRoot -ChildPath $ChangedFile
+foreach ($changedFile in $changedFiles) {
+    $joinedPath = Join-Path -Path $RepoRoot -ChildPath $changedFile
     # Only save the path if the file still exists - also, do not store the absolute path
     # of the file, in case this set of information is used later in the pipeline on a different
     # machine/context.
-    if (Test-Path $JoinedPath -PathType leaf) {
-        Add-Content -Path $Output -Value $ChangedFile
+    if (Test-Path $joinedPath -PathType leaf) {
+        Add-Content -Path $Output -Value $changedFile
     }
 }

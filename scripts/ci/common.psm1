@@ -1,68 +1,110 @@
 <#
 .SYNOPSIS
-    Given a path to the list of Github changes, gets a list of
+    Given the path to the list of raw git changes, returns an array of
+    those changes rooted in the git root directory.
+.DESCRIPTION
+    For example, the raw git changes will contain lines like:
+
+    Assets/File.cs
+
+    This function will return a list of paths that look like (assuming
+    that RepoRoot is C:\repo):
+
+    C:\repo\Assets\File.cs
 #>
 function GetChangedFiles { 
+    [CmdletBinding()]
     param(
         [string]$Filename,
         [string]$RepoRoot
     )
-    $RawContent = Get-Content -Path $Filename
-    $ProcessedContent = @()
-    foreach ($Filename in $RawContent) {
-        $joinedPath = Join-Path -Path $RepoRoot -ChildPath $Filename
-        $ProcessedContent += $joinedPath
+    process {
+        $rawContent = Get-Content -Path $Filename
+        $processedContent = @()
+        foreach ($line in $rawContent) {
+            $joinedPath = Join-Path -Path $RepoRoot -ChildPath $line
+            $processedContent += $joinedPath
+        }
+        $processedContent
     }
-    
-    $ProcessedContent
 }
 
 <#
 .SYNOPSIS
     Returns true if the given file is a markdown document and
-    false otherwise
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
 #>
-function IsMarkdown { param([string]$Filename)
-    $extension = [IO.Path]::GetExtension($Filename).ToLower()
-    return $extension -eq ".md"
+function IsMarkdownFile {
+    [CmdletBinding()]
+    param(
+        [string]$Filename)
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".md"
+    }
 }
 
 <#
 .SYNOPSIS
     Returns true if the given file is a csharp file and
-    false otherwise
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
 #>
-function IsCSharp { param([string]$Filename)
-    $extension = [IO.Path]::GetExtension($Filename).ToLower()
-    return $extension -eq ".cs"
+function IsCSharpFile {
+    [CmdletBinding()]
+    param(
+        [string]$Filename)
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".cs"
+    }
 }
 
 <#
 .SYNOPSIS
     Returns true if the given file is a .asset file and
-    false otherwise
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
 #>
-function IsAsset { param([string]$Filename)
-    $extension = [IO.Path]::GetExtension($Filename).ToLower()
-    return $extension -eq ".asset"
+function IsAssetFile {
+    [CmdletBinding()]
+    param(
+        [string]$Filename)
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".asset"
+    }
 }
 
 <#
 .SYNOPSIS
     Returns true if the given file is a Unity scene and
-    false otherwise
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
 #>
-function IsUnityScene { param([string]$Filename)
-    $extension = [IO.Path]::GetExtension($Filename).ToLower()
-    return $extension -eq ".unity"
+function IsUnityScene {
+    [CmdletBinding()]
+    param(
+        [string]$Filename)
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".unity"
+    }
 }
 
 <#
 .SYNOPSIS
     Returns true if the given file is a Unity meta file and
-    false otherwise
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
 #>
-function IsMetaFile { param([string]$Filename)
-    $extension = [IO.Path]::GetExtension($Filename).ToLower()
-    return $extension -eq ".meta"
+function IsMetaFile {
+    [CmdletBinding()]
+    param(
+        [string]$Filename)
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".meta"
+    }
 }
