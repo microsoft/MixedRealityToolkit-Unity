@@ -1,17 +1,17 @@
-# Hand Coach
+# Hand coach
 ![](../Documentation/Images/HandCoach/MRTK_UX_HandCoach_Main.jpg)
 
-Hand Coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand Coach could be used to represent pressing a button or picking up a hologram.
+Hand coach is 3D modeled hand which is triggered when the system does not detect the user’s hands. This is implemented as a “teaching” component that helps guide the user when the gesture has not been taught. If users have not done the specified gesture for a period, the hands will loop with a delay. Hand coach could be used to represent pressing a button or picking up a hologram.
 
 
-The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing Hand Coach examples:
+The current interaction model represents a wide variety of gesture controls such as scrolling, far select, and near tap. Below is a full list of existing Hand coach examples:
 
-- Near Tap – Used for buttons or close interactable objects
-- Far Select – Used for objects that are far away
+- Near tap – Used for buttons or close interactable objects
+- Far select – Used for objects that are far away
 - Move – Used to move a hologram in space
 - Rotate – Used to show how to rotate holograms or objects
 - Scale – Used to show how to manipulate holograms to be bigger or smaller
-- Hand Flip – Used for bringing up a UI start panel or Hand Menus
+- Hand flip – Used for bringing up a UI start panel or Hand Menus
 - Palm up – Used for hummingbird moment in out of the box experience. Another suggestion could be to bring up a UI start panel
 - Scroll – Used for scrolling a list or a long document
 
@@ -25,7 +25,7 @@ You can find the assets under:
 
 
 ## Scripts
-### Interaction Hint
+### Interaction hint
 The `InteractionHint.cs` script provides wrapper functionality for triggering animations and fades for the hand rig.
 
 #### How to set up an interaction hint
