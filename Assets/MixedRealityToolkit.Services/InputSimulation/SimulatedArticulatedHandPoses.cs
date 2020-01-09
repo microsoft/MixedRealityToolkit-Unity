@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             { GestureId.OpenSteadyGrabPoint, ArticulatedHandPose_OpenSteadyGrabPoint},
             { GestureId.Pinch, ArticulatedHandPose_Pinch},
             { GestureId.PinchSteadyWrist, ArticulatedHandPose_PinchSteadyWrist},
+            { GestureId.Poke, ArticulatedHandPose_Poke },
             { GestureId.ThumbsUp, ArticulatedHandPose_ThumbsUp},
             { GestureId.Victory, ArticulatedHandPose_Victory},
         };
