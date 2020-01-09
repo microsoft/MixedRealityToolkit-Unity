@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public class HandInteractionHint : MonoBehaviour
     {
-        public GameObject VisualsRoot { get; protected set; }
+        public GameObject VisualsRoot { get; set; }
 
         [Tooltip("React to hand tracking state to hide visuals when hands are being tracked. If false, only the customShouldHideHands function will be evaluated.")]
         [SerializeField]
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return hideIfHandTracked;
             }
-            protected set
+            set
             {
                 hideIfHandTracked = value;
             }
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return minDelay;
             }
-            protected set
+            set
             {
                 minDelay = value;
             }
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return maxDelay;
             }
-            protected set
+            set
             {
                 maxDelay = value;
             }
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return useMaxDelay;
             }
-            protected set
+            set
             {
                 useMaxDelay = value;
             }
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return repeats;
             }
-            protected set
+            set
             {
                 repeats = value;
             }
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return autoActivate;
             }
-            protected set
+            set
             {
                 autoActivate = value;
             }
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return animationState;
             }
-            protected set
+            set
             {
                 animationState = value;
             }
@@ -160,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return repeatDelay;
             }
-            protected set
+            set
             {
                 repeatDelay = value;
             }
