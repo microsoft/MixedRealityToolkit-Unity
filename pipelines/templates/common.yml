@@ -28,7 +28,7 @@ steps:
 - ${{ if eq(parameters.validateCode, true) }}:
   - template: tasks/validatecode.yml
     parameters:
-      scopedValidation: parameters.scopedValidation
+      scopedValidation: ${{ parameters.scopedValidation }}
       changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
 
 # Build Standalone x86.

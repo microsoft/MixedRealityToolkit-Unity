@@ -25,5 +25,5 @@ steps:
       filePath: ./scripts/ci/validatecode.ps1
       arguments: >
         -Directory: '$(Build.SourcesDirectory)\Assets'
-        -ChangesFile: '$(parameters.changesFile)'
+        -ChangesFile: '${{ parameters.changesFile }}'
         -RepoRoot: '$(Build.SourcesDirectory)'
