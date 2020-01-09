@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
-    public class BaseSpatialSceneObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessSceneUnderstandingObserver
+    public abstract class BaseSpatialSceneObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
         public BaseSpatialSceneObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
