@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -15,6 +15,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     [InitializeOnLoad]
     static class XRSDKConfigurationChecker
     {
+        private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
+        private const string XRManagementReference = "Unity.XR.Management";
+        private const string ARSubsystemsReference = "Unity.XR.ARSubsystems";
+
+#if UNITY_2019_3_OR_NEWER
+        private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
+        private static readonly VersionDefine ARSubsystemsDefine = new VersionDefine("com.unity.xr.arsubsystems", "", "ARSUBSYSTEMS_ENABLED");
+#endif // UNITY_2019_3_OR_NEWER
+
         static XRSDKConfigurationChecker()
         {
             UpdateAsmDef();
@@ -35,23 +44,22 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </remarks>
         private static void UpdateAsmDef()
         {
-            string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
-            FileInfo[] asmDefFiles = FileUtilities.FindFilesInAssets(asmDefFileName);
+            FileInfo[] asmDefFiles = FileUtilities.FindFilesInAssets(AsmDefFileName);
 
             if (asmDefFiles.Length == 0)
             {
-                Debug.LogWarning($"Unable to locate file: {asmDefFileName}");
+                Debug.LogWarning($"Unable to locate file: {AsmDefFileName}");
                 return;
             }
             if (asmDefFiles.Length > 1)
             {
-                Debug.LogWarning($"Multiple ({asmDefFiles.Length}) {asmDefFileName} instances found. Modifying only the first.");
+                Debug.LogWarning($"Multiple ({asmDefFiles.Length}) {AsmDefFileName} instances found. Modifying only the first.");
             }
 
             AssemblyDefinition asmDef = AssemblyDefinition.Load(asmDefFiles[0].FullName);
             if (asmDef == null)
             {
-                Debug.LogWarning($"Unable to load file: {asmDefFileName}");
+                Debug.LogWarning($"Unable to load file: {AsmDefFileName}");
                 return;
             }
 
@@ -61,35 +69,51 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 references.AddRange(asmDef.References);
             }
 
-            // ARFoundation assembly names
-            const string xrManagementReference = "Unity.XR.Management";
-            const string arSubsystemsReference = "Unity.XR.ARSubsystems";
             bool changed = false;
 
 #if UNITY_2019_3_OR_NEWER
-            if (!references.Contains(xrManagementReference))
+            List<VersionDefine> versionDefines = new List<VersionDefine>();
+            if (asmDef.VersionDefines != null)
+            {
+                versionDefines.AddRange(asmDef.VersionDefines);
+            }
+
+            if (!references.Contains(XRManagementReference))
             {
                 // Add a reference to the ARFoundation assembly
-                references.Add(xrManagementReference);
+                references.Add(XRManagementReference);
                 changed = true; 
             }
-            if (!references.Contains(arSubsystemsReference))
+            if (!references.Contains(ARSubsystemsReference))
             {
                 // Add a reference to the spatial tracking assembly
-                references.Add(arSubsystemsReference);
+                references.Add(ARSubsystemsReference);
+                changed = true;
+            }
+
+            if (!versionDefines.Contains(XRManagementDefine))
+            {
+                // Add the XRManagement #define
+                versionDefines.Add(XRManagementDefine);
+                changed = true;
+            }
+            if (!versionDefines.Contains(ARSubsystemsDefine))
+            {
+                // Add the ARSubsystems #define
+                versionDefines.Add(ARSubsystemsDefine);
                 changed = true;
             }
 #else
-            if (references.Contains(xrManagementReference))
+            if (references.Contains(XRManagementReference))
             {
                 // Remove the reference to the spatial tracking assembly
-                references.Remove(xrManagementReference);
+                references.Remove(XRManagementReference);
                 changed = true;
             }
-            if (references.Contains(arSubsystemsReference))
+            if (references.Contains(ARSubsystemsReference))
             {
                 // Add a reference to the spatial tracking assembly
-                references.Remove(arSubsystemsReference);
+                references.Remove(ARSubsystemsReference);
                 changed = true;
             }
 #endif
@@ -97,6 +121,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             if (changed)
             {
                 asmDef.References = references.ToArray();
+#if UNITY_2019_3_OR_NEWER
+                asmDef.VersionDefines = versionDefines.ToArray();
+#endif // UNITY_2019_3_OR_NEWER
                 asmDef.Save(asmDefFiles[0].FullName);
             }
         }
