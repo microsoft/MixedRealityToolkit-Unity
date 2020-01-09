@@ -561,7 +561,7 @@ Prefer using DateTime.UtcNow unless you actually need the localized times (a leg
 
 ## PowerShell coding conventions
 
-A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the PoshCode style.
+A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the [PoshCode style](https://poshcode.gitbooks.io/powershell-practice-and-style/).
 
 ## See also
 
