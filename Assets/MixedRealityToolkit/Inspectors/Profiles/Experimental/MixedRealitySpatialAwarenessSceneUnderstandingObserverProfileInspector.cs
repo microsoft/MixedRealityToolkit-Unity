@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty serializedScene;
         private SerializedProperty generateMeshes;
         private SerializedProperty generatePlanes;
+        private SerializedProperty createGameObjects;
         private SerializedProperty generateEnvironmentMesh;
         private SerializedProperty inferRegions;
         private SerializedProperty firstUpdateDelay;
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             defaultMaterial = serializedObject.FindProperty("defaultMaterial");
             generatePlanes = serializedObject.FindProperty("generatePlanes");
             generateMeshes = serializedObject.FindProperty("generateMeshes");
+            createGameObjects = serializedObject.FindProperty("createGameObjects");
             generateEnvironmentMesh = serializedObject.FindProperty("generateEnvironmentMesh");
 
             physicsLayer = serializedObject.FindProperty("physicsLayer");
@@ -95,20 +97,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
                 EditorGUILayout.LabelField("Observer", EditorStyles.boldLabel);
                 {
+                    EditorGUILayout.PropertyField(surfaceTypes);
                     EditorGUILayout.PropertyField(queryRadius);
                     EditorGUILayout.PropertyField(levelOfDetail);
                     EditorGUILayout.PropertyField(usePersistentObjects);
                     EditorGUILayout.PropertyField(inferRegions);
+                    EditorGUILayout.PropertyField(generatePlanes);
+                    EditorGUILayout.PropertyField(generateMeshes);
+                    EditorGUILayout.PropertyField(generateEnvironmentMesh);
                 }
                 EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("Instantiation", EditorStyles.boldLabel);
                 {
-                    EditorGUILayout.PropertyField(surfaceTypes);
+                    EditorGUILayout.PropertyField(createGameObjects);
                     EditorGUILayout.PropertyField(instantiationBatchRate);
-                    EditorGUILayout.PropertyField(generatePlanes);
-                    EditorGUILayout.PropertyField(generateMeshes);
-                    EditorGUILayout.PropertyField(generateEnvironmentMesh);
                     EditorGUILayout.PropertyField(physicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
                     EditorGUILayout.PropertyField(visualizeOcclusionMask);

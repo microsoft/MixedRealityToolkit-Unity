@@ -57,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         public override void Initialize()
         {
+            Debug.Log("Initialize");
             base.Initialize();
             MeshExtensions.CreateMeshFromQuad(normalizedQuadMesh, 1, 1);
         }
@@ -64,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Enable()
         {
+            Debug.Log("Enable");
+
             firstUpdateTimer = new Timer()
             {
                 Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
@@ -97,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Update()
         {
+            //Debug.Log("Update");
+
             if (canUpdateScene)
             {
                 canUpdateScene = false;
@@ -105,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             if (instantiationQueue.Count > 0)
             {
-                Debug.Log($"Got {instantiationQueue.Count} things to instantiate.");
+                //Debug.Log($"Got {instantiationQueue.Count} things to instantiate.");
 
                 // Make our new objects in batches and tell observers about it
                 int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
@@ -114,8 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     var saso = instantiationQueue.Dequeue();
 
-                    // Create GameObjects for our data
-                    Instantiate(saso);
+                    if (CreateGameObjects)
+                    {
+                        Instantiate(saso);
+                    }
 
                     if (!sceneObjects.ContainsKey(saso.Guid))
                     {
@@ -197,7 +204,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 return;
             }
-
 
             canUpdateScene = true;
         }
@@ -324,7 +330,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             if (canGetScene)
             {
                 canGetScene = false;
-                await GetSceneAsync();
+                var task = GetSceneAsync();
+                try
+                {
+                    await task;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
                 canGetScene = true;
             }
         }
@@ -351,15 +365,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (VisualizeOcclusionMask)
                     {
-                        try
-                        {
-                            occlusionMaskBytes = new byte[OcclusionMaskResolution.x * OcclusionMaskResolution.y];
-                            sceneQuad.GetSurfaceMask((ushort)OcclusionMaskResolution.x, (ushort)OcclusionMaskResolution.y, occlusionMaskBytes);
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogException(e);
-                        }
+                        occlusionMaskBytes = new byte[OcclusionMaskResolution.x * OcclusionMaskResolution.y];
+                        sceneQuad.GetSurfaceMask((ushort)OcclusionMaskResolution.x, (ushort)OcclusionMaskResolution.y, occlusionMaskBytes);
                     }
 
                     var extents = new Vector2(sceneQuad.Extents.X, sceneQuad.Extents.Y);
@@ -424,12 +431,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private async Task GetSceneAsync()
         {
+            //Debug.Log("GetSceneAsync()");
             Scene scene = null;
 
             var sasos = new List<SpatialAwarenessSceneObject>();
 
             if (ShouldLoadFromFile)
             {
+                //Debug.Log("GetSceneAsync() ShouldLoadFromFile");
+
                 // For this particular workflow
                 // Build DemoSpatialAwareness example, save bytes
                 // Take bytes off device
@@ -437,32 +447,51 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // If running on device (vs editor) save bytes to unity StreamingAssets
                 // Now the bytes file will be loaded from file
 
-                Assert.IsNotNull(SerializedScene); // if this is null, sceneBytes is no bueno
+                //Assert.IsNotNull(sceneBytes);
+
+                if (sceneBytes == null)
+                {
+                    Debug.LogError("sceneBytes is null!");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"Found bytes with length {sceneBytes.Length}");
+                }
 
                 // Move onto a background thread for the expensive scene loading stuff
 
-                await new WaitForBackgroundThread();
-                {
-                    try
-                    {
+                //await new WaitForBackgroundThread();
+                //{
+                    //try
+                    //{
                         scene = GetSceneWithBytes(sceneBytes);
                         var validSurfaceTypesSU = FilterSelectedSurfaceTypes(scene.SceneObjects);
                         sasos = ConvertSceneObjects(validSurfaceTypesSU);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
-                    }
-                }
-                await new WaitForEndOfFrame();
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Debug.LogException(e);
+                    //}
+                //}
+                //await new WaitForEndOfFrame();
 
-                Assert.IsNotNull(scene);
+                if (scene == null)
+                {
+                    Debug.LogError("Something went wrong - scene is null!");
+                    return;
+                }
+
+                //Assert.IsNotNull(scene);
 
                 // Orient data so floor with largest area is aligned to XZ plane
                 if (sceneNeedsAlignment)
                 {
                     Quaternion sceneRotation = AlignedRotationWithScene(sasos);
                     ObservedObjectParent.transform.rotation = sceneRotation;
+
+                    // Update scene objects positon and rotation with the scene transform
+
                     sceneNeedsAlignment = false;
                 }
 
@@ -476,9 +505,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
-            var canAccess = await CanAccessObserver();
+            var canAccessTask = CanAccessObserver();
+            await canAccessTask;
 
-            if (canAccess)
+            if (canAccessTask.Status == TaskStatus.Faulted)
+            {
+                Debug.LogException(canAccessTask.Exception);
+            }
+
+            if (canAccessTask.Result)
             {
                 SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
                 {
@@ -496,8 +531,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                 Guid sceneGuid = new Guid();
 
-                await new WaitForBackgroundThread();
-                {
+                //await new WaitForBackgroundThread();
+                //{
                     Task<Scene> task;
 
                     if (UsePersistentObjects)
@@ -517,15 +552,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
                     }
 
-                    try
-                    {
+                    //try
+                    //{
                         await task;
                         scene = task.Result;
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
-                    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Debug.LogException(e);
+                    //}
 
                     Assert.IsNotNull(scene);
 
@@ -540,10 +575,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     sceneGuid = scene.OriginSpatialGraphNodeId;
 
                     sasos = ConvertSceneObjects(validSurfaceTypes);
-                }
+                //}
 
-                // Return to the main thread
-                await new WaitForEndOfFrame();
+                //// Return to the main thread
+                //await new WaitForEndOfFrame();
 
                 Debug.Log($"Got {sasos.Count} objects");
 
@@ -552,7 +587,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     CleanupSceneObjects();
                 }
 
-                UpdateObserverTransformWithSceneGuid(sceneGuid);
+                System.Numerics.Matrix4x4 sceneToUnityTransform = GetSceneObjectToUnityTransform(sceneGuid);
+                SetTransformFromMatrix4x4(ObservedObjectParent.transform, sceneToUnityTransform);
+
+                //UpdateObserverTransformWithSceneGuid(sceneGuid);
 
                 AddUniqueTo(sasos, instantiationQueue);
             }
@@ -566,6 +604,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void ReadProfile()
         {
+            Debug.Log("ReadProfile");
+
             if (ConfigurationProfile == null)
             {
                 return;
@@ -584,6 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             SurfaceTypes = profile.SurfaceTypes;
             GenerateMeshes = profile.GenerateMeshes;
             GeneratePlanes = profile.GeneratePlanes;
+            CreateGameObjects = profile.CreateGameObjects;
             GenerateEnvironmentMesh = profile.GenerateEnvironmentMesh;
             UsePersistentObjects = profile.UsePersistentObjects;
             UpdateInterval = profile.UpdateInterval;
@@ -621,20 +662,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 if (SceneObserver.IsSupported())
                 {
-                    try
-                    {
+                    //try
+                    //{
                         var access = await SceneObserver.RequestAccessAsync();
                         if (access == SceneObserverAccessStatus.Allowed)
                         {
+                            Debug.Log("CanAccessObserver() SceneObserverAccessStatus.Allowed");
                             IsRunning = true;
                             return true;
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
-                        throw;
-                    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Debug.LogException(e);
+                    //}
                 }
             }
 
@@ -680,18 +721,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-        private void UpdateObserverTransformWithSceneGuid(Guid sceneGuid)
-        {
-            System.Numerics.Matrix4x4 sceneToUnityTransform = GetSceneObjectToUnityTransform(sceneGuid);
-            SetTransformFromMatrix4x4(ObservedObjectParent.transform, sceneToUnityTransform);
-        }
+        //private void UpdateObserverTransformWithSceneGuid(Guid sceneGuid)
+        //{
+        //}
 
         private Scene GetSceneWithBytes(byte[] sceneData)
         {
             Scene result = null;
 
-            try
-            {
+            //try
+            //{
                 if (UsePersistentObjects && previousScene != null)
                 {
                     result = Scene.Deserialize(sceneData, previousScene);
@@ -699,14 +738,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 else
                 {
                     // This happens first time through as we have no history yet
+                    //Debug.Log("GetSceneWithBytes() Scene.Deserialize(sceneData)");
                     result = Scene.Deserialize(sceneData);
                 }
                 previousScene = result;
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.LogException(e);
+            //}
 
             return result;
         }
@@ -715,17 +755,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             // Until this point the SASO has been a data representation
 
-            surfaceTypeName = saso.SurfaceType.ToString();
+            surfaceTypeName = $"{saso.SurfaceType.ToString()} {saso.Guid.ToString()}";
 
             saso.GameObject = new GameObject(surfaceTypeName)
             {
                 layer = PhysicsLayer
             };
 
-            SetTransformFromMatrix4x4(
-                saso.GameObject.transform,
-                SwapRuntimeAndUnityCoordinateSystem(saso.TransformMatrix),
-                true);
+            saso.GameObject.transform.localPosition = saso.Position;
+            saso.GameObject.transform.localRotation = saso.Rotation;
+
+            //SetTransformFromMatrix4x4(
+            //    saso.GameObject.transform,
+            //    SwapRuntimeAndUnityCoordinateSystem(saso.TransformMatrix),
+            //    true);
 
             saso.GameObject.transform.SetParent(ObservedObjectParent.transform, false);
 
@@ -815,18 +858,27 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             // Transfer the invalidation mask onto the texture.
             Color[] pixels = result.GetPixels();
 
+            var numPixels = pixels.Length;
 
-            for (int i = 0; i < pixels.Length; ++i)
+            for (int i = 0; i < numPixels; ++i)
             {
                 var value = textureBytes[i];
 
-                if (value == (byte)SceneUnderstanding.SceneRegionSurfaceKind.NotSurface)
+                switch (value)
                 {
-                    pixels[i] = Color.clear;
-                }
-                else
-                {
-                    pixels[i] = Color.white;
+                    case (byte)SceneRegionSurfaceKind.NotSurface:
+                        pixels[i] = Color.clear;
+                        break;
+                    case (byte)SceneRegionSurfaceKind.SurfaceObserved:
+                        pixels[i] = Color.green;
+                        break;
+                    case (byte)SceneRegionSurfaceKind.SurfaceInferred:
+                        pixels[i] = Color.blue;
+                        break;
+                    default:
+                        Debug.LogWarning($"Got unknown surface kind {value.ToString()}");
+                        pixels[i] = Color.red;
+                        break;
                 }
             }
 
@@ -897,11 +949,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     return SceneMeshLevelOfDetail.Coarse;
 
                 case SpatialAwarenessMeshLevelOfDetail.Medium:
-                default:
                     return SceneMeshLevelOfDetail.Medium;
 
                 case SpatialAwarenessMeshLevelOfDetail.Fine:
                     return SceneMeshLevelOfDetail.Fine;
+
+                default:
+                    return SceneMeshLevelOfDetail.Medium;
             }
         }
 
@@ -931,7 +985,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// </summary>
         /// <param name="matrix">The Right handed <see cref="System.Numerics.Matrix4x4"/>.</param>
         /// <returns>The <see cref="System.Numerics.Matrix4x4"/> in left hand form.</returns>
-        private static System.Numerics.Matrix4x4 SwapRuntimeAndUnityCoordinateSystem(System.Numerics.Matrix4x4 matrix)
+        public static System.Numerics.Matrix4x4 SwapRuntimeAndUnityCoordinateSystem(System.Numerics.Matrix4x4 matrix)
         {
             matrix.M13 = -matrix.M13;
             matrix.M23 = -matrix.M23;
@@ -1009,6 +1063,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         /// <summary>
         /// Orients the root game object, such that the Scene Understanding floor lies on the Unity world's X-Z plane.
+        /// The floor type with the largest area is choosen as the reference.
+        /// If no floor is found....???
         /// </summary>
         /// <param name="scene">Scene Understanding scene.</param>
         private Quaternion AlignedRotationWithScene(List<SpatialAwarenessSceneObject> sasos)
@@ -1052,13 +1108,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 System.Numerics.Vector3 point2 = new System.Numerics.Vector3(halfWidthMeters, -halfHeightMeters, 0);
                 System.Numerics.Vector3 point3 = new System.Numerics.Vector3(-halfWidthMeters, halfHeightMeters, 0);
 
-                System.Numerics.Matrix4x4 floorTransform = floorSceneObject.TransformMatrix;
+                System.Numerics.Matrix4x4 sceneTransformMatrix = floorSceneObject.SceneTransformMatrix;
 
-                floorTransform = SwapRuntimeAndUnityCoordinateSystem(floorTransform);
+                sceneTransformMatrix = SwapRuntimeAndUnityCoordinateSystem(sceneTransformMatrix);
 
-                System.Numerics.Vector3 tPoint1 = System.Numerics.Vector3.Transform(point1, floorTransform);
-                System.Numerics.Vector3 tPoint2 = System.Numerics.Vector3.Transform(point2, floorTransform);
-                System.Numerics.Vector3 tPoint3 = System.Numerics.Vector3.Transform(point3, floorTransform);
+                System.Numerics.Vector3 tPoint1 = System.Numerics.Vector3.Transform(point1, sceneTransformMatrix);
+                System.Numerics.Vector3 tPoint2 = System.Numerics.Vector3.Transform(point2, sceneTransformMatrix);
+                System.Numerics.Vector3 tPoint3 = System.Numerics.Vector3.Transform(point3, sceneTransformMatrix);
 
                 System.Numerics.Vector3 p21 = tPoint2 - tPoint1;
                 System.Numerics.Vector3 p31 = tPoint3 - tPoint1;
@@ -1125,26 +1181,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             switch (label)
             {
                 case SceneObjectKind.Background:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Background;
+                    return SpatialAwarenessSurfaceTypes.Background;
 
                 case SceneObjectKind.Wall:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Wall;
+                    return SpatialAwarenessSurfaceTypes.Wall;
 
                 case SceneObjectKind.Floor:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Floor;
+                    return SpatialAwarenessSurfaceTypes.Floor;
 
                 case SceneObjectKind.Ceiling:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Ceiling;
+                    return SpatialAwarenessSurfaceTypes.Ceiling;
 
                 case SceneObjectKind.Platform:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Platform;
+                    return SpatialAwarenessSurfaceTypes.Platform;
 
                 case SceneObjectKind.World:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.World;
+                    return SpatialAwarenessSurfaceTypes.World;
 
                 case SceneObjectKind.Unknown:
                 default:
-                    return Toolkit.SpatialAwareness.SpatialAwarenessSurfaceTypes.Unknown;
+                    return SpatialAwarenessSurfaceTypes.Unknown;
             }
         }
 

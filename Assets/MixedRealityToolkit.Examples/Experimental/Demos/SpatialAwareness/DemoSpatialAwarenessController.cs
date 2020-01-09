@@ -7,6 +7,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
     public class DemoSpatialAwarenessController : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
     {
+        public GameObject SceneObjectPrefab;
+
+        public Transform Parent;
+
         public IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
         Animator animator;
@@ -45,9 +49,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
-            Debug.Log($"Added {eventData.SpatialObject.Guid} {eventData.SpatialObject.SurfaceType} with {eventData.SpatialObject.Meshes.Count} meshes.");
-
-            //animator.SetBool("Persistent", true);
+            var sceneObject = eventData.SpatialObject;
+            var go = Instantiate(SceneObjectPrefab);
+            go.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
+            foreach (var x in go.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
+            {
+                x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
+            }
         }
 
         public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)

@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public int PhysicsLayer { get; set; }
         public bool ShouldLoadFromFile { get; set; }
         public int InstantiationBatchRate { get; set; }
-        public bool RenderInferredRegions { get; set; }
+        public bool InferRegions { get; set; }
         public bool GenerateEnvironmentMesh { get; set; }
         public bool GenerateMeshes { get; set; }
         public bool GeneratePlanes { get; set; }
@@ -126,6 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public float QueryRadius { get; set; }
         public bool VisualizeOcclusionMask { get; set; }
         public Vector2Int OcclusionMaskResolution { get; set; }
-
+        public bool CreateGameObjects { get; set; }
     }
 }

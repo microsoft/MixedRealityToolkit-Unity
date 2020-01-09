@@ -82,6 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public TextAsset SerializedScene => serializedScene;
 
         [SerializeField]
+        [Tooltip("Create game objects for observed surface types. When off, only events will be sent to subscribers.")]
+        private bool createGameObjects = true;
+        /// <summary>
+        /// When updating planes, save data to file.
+        /// </summary>
+        public bool CreateGameObjects => createGameObjects;
+
+        [SerializeField]
         [Tooltip("Generate plane objects for surface types.")]
         private bool generatePlanes = true;
         /// <summary>
