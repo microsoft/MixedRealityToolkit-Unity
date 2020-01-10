@@ -263,6 +263,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #include "UnityCG.cginc"
             #include "UnityStandardConfig.cginc"
             #include "UnityStandardUtils.cginc"
+            #include "MixedRealityShaderUtils.cginc"
 
             // This define will get commented in by the UpgradeShaderForLightweightRenderPipeline method.
             //#define _LIGHTWEIGHT_RENDER_PIPELINE
@@ -604,29 +605,6 @@ Shader "Mixed Reality Toolkit/Standard"
             {
                 fixed3 color = lerp(centerColor.rgb, middleColor.rgb, smoothstep(centerColor.a, middleColor.a, t));
                 return lerp(color, outerColor, smoothstep(middleColor.a, outerColor.a, t));
-            }
-#endif
-
-#if defined(_CLIPPING_PLANE)
-            inline float PointVsPlane(float3 worldPosition, float4 plane)
-            {
-                float3 planePosition = plane.xyz * plane.w;
-                return dot(worldPosition - planePosition, plane.xyz);
-            }
-#endif
-
-#if defined(_CLIPPING_SPHERE)
-            inline float PointVsSphere(float3 worldPosition, float4 sphere)
-            {
-                return distance(worldPosition, sphere.xyz) - sphere.w;
-            }
-#endif
-
-#if defined(_CLIPPING_BOX)
-            inline float PointVsBox(float3 worldPosition, float3 boxSize, float4x4 boxInverseTransform)
-            {
-                float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - boxSize;
-                return length(max(distance, 0.0)) + min(max(distance.x, max(distance.y, distance.z)), 0.0);
             }
 #endif
 
