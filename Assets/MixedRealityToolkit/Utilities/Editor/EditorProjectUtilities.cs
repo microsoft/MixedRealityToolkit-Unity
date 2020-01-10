@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void CheckMinimumEditorVersion()
         {
-#if !UNITY_2018_3_OR_NEWER
+#if !UNITY_2018_4_OR_NEWER
             DisplayIncorrectEditorVersionDialog();
 #endif
         }
