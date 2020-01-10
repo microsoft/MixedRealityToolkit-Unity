@@ -6,8 +6,10 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Management;
+
+#if WMR_ENABLED
 using UnityEngine.XR.WindowsMR;
+#endif // WMR_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -53,6 +55,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 {
                     Resume();
                 }
+            }
+            else
+            {
+                Debug.Log("Observer is null :(");
             }
         }
 
@@ -390,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 case VolumeType.AxisAlignedCube:
                     XRSDKSubsystemHelpers.MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
                     break;
-
+#if WMR_ENABLED
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
                     XRSDKSubsystemHelpers.MeshSubsystem.SetBoundingVolumeSphere(ObserverOrigin, ObservationExtents.x);
@@ -399,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 case VolumeType.UserAlignedCube:
                     XRSDKSubsystemHelpers.MeshSubsystem.SetBoundingVolumeOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
                     break;
-
+#endif // WMR_ENABLED
                 default:
                     Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
                     break;
