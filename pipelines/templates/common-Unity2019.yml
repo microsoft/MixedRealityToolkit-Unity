@@ -1,12 +1,6 @@
 # [Template] Common build tasks shared between CI builds and PR validation.
 
 steps:
-# Copy files over to setup project for Unity 2019.
-- task: PowerShell@2
-  displayName: 'Setup for Unity 2019'
-  inputs:
-    targetType: filePath
-    filePath: ./scripts/support2019/setup_for_2019.ps1
 # Build UWP ARM64.
 - template: tasks/unitybuild.yml
   parameters:
