@@ -9,9 +9,16 @@ using UnityEngine.XR.Management;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
+    /// <summary>
+    /// A helper class to provide easier access to active Unity XR SDK subsystems.
+    /// </summary>
     public static class XRSDKSubsystemHelpers
     {
         private static XRInputSubsystem inputSubsystem;
+
+        /// <summary>
+        /// The XR SDK input subsystem for the currently loaded XR plug-in.
+        /// </summary>
         public static XRInputSubsystem InputSubsystem
         {
             get
