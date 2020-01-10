@@ -78,6 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}. Did you forget to add a Mixed Reality Line Renderer?");
             }
+
+            for (int i = 0; i < lineRenderers.Length; i++)
+            {
+                lineRenderers[i].enabled = true;
+            }
         }
 
         #region MonoBehaviour Implementation

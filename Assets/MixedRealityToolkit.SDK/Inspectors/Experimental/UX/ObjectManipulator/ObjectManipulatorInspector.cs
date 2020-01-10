@@ -157,8 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     EditorGUILayout.LabelField(constraintName);
                     if (GUILayout.Button("Go to component"))
                     {
-                        Debug.Log($"Highlighting {ObjectNames.NicifyVariableName(constraintName)} (Script)");
                         Highlighter.Highlight("Inspector", $"{ObjectNames.NicifyVariableName(constraintName)} (Script)");
+                        EditorGUIUtility.ExitGUI();
                     }
                     EditorGUILayout.EndHorizontal();
                 }
