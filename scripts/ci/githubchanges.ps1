@@ -61,7 +61,9 @@ $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 # Fetches the target branch so that the git diffing down below will actually be possible. git diff will list
 # the set of changed files between two different commit stamps (or branches, in this case), and needs
 # both branches to exist in order to make this happen.
-git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
+# Uses a shallow fetch (i.e. depth=1) because only the latest commit from the target branch is
+# needed to do the diff.
+git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
 # The set of changed files is the diff between the target branch and the pull request
 # branch that was checked out locally. Note that the format of the pull request branch
