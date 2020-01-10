@@ -18,8 +18,6 @@ Shader "Mixed Reality Toolkit/Text3DShader"
         [HideInInspector] _StencilWriteMask("Stencil Write Mask", Float) = 255
         [HideInInspector] _StencilReadMask("Stencil Read Mask", Float) = 255
         [HideInInspector] _ColorMask("Color Mask", Float) = 15
-
-        _ClipRect("Clip Rect", vector) = (-32767, -32767, 32767, 32767)
     }
 
     SubShader
