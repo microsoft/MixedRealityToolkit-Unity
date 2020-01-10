@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System;
+
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System.Runtime.InteropServices;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -64,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (spatialCoordinateSystem == null && UtilitiesProvider != null)
+                if (spatialCoordinateSystem == null && UtilitiesProvider != null && UtilitiesProvider.ISpatialCoordinateSystemPtr != IntPtr.Zero)
                 {
 #if ENABLE_DOTNET
                     spatialCoordinateSystem = GetSpatialCoordinateSystem(UtilitiesProvider.ISpatialCoordinateSystemPtr);
@@ -89,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (UtilitiesProvider == null)
+                if (UtilitiesProvider == null || UtilitiesProvider.IHolographicFramePtr == IntPtr.Zero)
                 {
                     return null;
                 }
@@ -107,13 +108,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-        [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
+        [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
             return vector.ToUnityVector3();
         }
 
-        [System.Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
+        [Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
         public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
             return quaternion.ToUnityQuaternion();
