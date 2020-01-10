@@ -44,7 +44,7 @@ param(
 # and the target branch might not be set in which case there's nothing to validate.
 if ([string]::IsNullOrEmpty($PullRequestId) -or [string]::IsNullOrEmpty($TargetBranch))
 {
-    Write-Warning "PullRequestId and TargetBranch aren't specified, skipping."
+    Write-Warning "PullRequestId or TargetBranch aren't specified, skipping."
     exit 0;
 }
 
