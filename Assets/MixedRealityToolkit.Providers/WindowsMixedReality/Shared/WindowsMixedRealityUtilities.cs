@@ -21,6 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     public static class WindowsMixedRealityUtilities
     {
+        /// <summary>
+        /// The provider that should be used for the corresponding utilities.
+        /// </summary>
+        /// <remarks>
+        /// This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
+        /// different APIs to access these native objects.
+        /// </remarks>
+        public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
+
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 #if ENABLE_DOTNET
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
@@ -50,8 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 #endif //ENABLE_DOTNET
-
-        public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
 
         /// <summary>
         /// Access the underlying native spatial coordinate system.
