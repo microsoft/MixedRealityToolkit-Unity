@@ -86,6 +86,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MixedRealityToolkit.Providers/UnityAR/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MixedRealityToolkit.Providers/UnityAR/README.html",
+          "hash": "pwQOPJolTLjrRQf2bA+H0A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md",
       "output": {
         ".html": {
@@ -295,30 +307,6 @@
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/toc.html",
           "hash": "o1ih/q/z+Pj2mgu2IceiCw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Staging/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Staging/README.html",
-          "hash": "RveIKClMMTPC2weTuq5Dtw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Staging/UnityAR/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Staging/UnityAR/README.html",
-          "hash": "Wf06//BkQvAKGtLB/pHuUQ=="
         }
       },
       "is_incremental": false,
@@ -4735,6 +4723,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/SaveNewSource.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/SaveNewSource.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/NuGet/SearchBox.png",
       "output": {
         "resource": {
@@ -6439,7 +6438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "T31VHMDj/5SZx+7bkjcWQg=="
+          "hash": "b032ftAvvstZvOq+63kKEQ=="
         }
       },
       "is_incremental": false,
@@ -25349,16 +25348,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 145,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1517,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 144,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
