@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// To ensure proper compilation on each Unity version, the following steps are performed:
         /// - Load the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
         /// - If Unity 2018: nothing
-        /// - If Unity 2019 and newer: Unity.XR.Management, 
+        /// - If Unity 2019 and newer: Unity.XR.Management and Unity.XR.ARSubsystems
         /// - Save the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
         /// This will result in Unity reloading the assembly with the appropriate dependencies.
         /// </remarks>
