@@ -6,7 +6,7 @@
     ],
     "m_SettingValues": [
         "True",
-        "False",
-        ",Standalone,Android"
+        "True",
+        "Standalone,Android"
     ]
 }
