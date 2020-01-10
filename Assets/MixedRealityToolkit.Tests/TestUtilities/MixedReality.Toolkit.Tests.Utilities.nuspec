@@ -21,7 +21,7 @@
     </contentFiles>
   </metadata>
   <files>
-    <!-- There is nothing to include in the MRTK folder-->
+     <!-- Keep the following line to include extra files-->
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
