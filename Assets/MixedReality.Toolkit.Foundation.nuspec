@@ -34,19 +34,23 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" /> -->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Providers folder -->
-    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*;..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR\**\*.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" /> -->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" /> -->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" /> -->
 
     <!-- 

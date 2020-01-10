@@ -27,6 +27,7 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Tests\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tests" /> -->
   </files>
 </package>
