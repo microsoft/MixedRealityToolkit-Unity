@@ -245,8 +245,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator RotateViaHololens1Interaction()
         {
-
-
             BoundsControl control = InstantiateSceneAndDefaultBbox();
             yield return VerifyInitialBoundsCorrect(control);
             PlayModeTestUtilities.PushHandSimulationProfile();
