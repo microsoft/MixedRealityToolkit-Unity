@@ -37,7 +37,7 @@
     <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" /> -->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Providers folder -->
-    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*" target="Plugins\" />
     <!-- <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" /> -->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.SDK folder -->
