@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         // Intentionally empty to show that validation still works, will
         // delete after folks code review this.
-        /// <summary></summary>
+        /// <returns></returns>
         private readonly List<Action> cleanupAction = new List<Action>();
 
         [SetUp]
