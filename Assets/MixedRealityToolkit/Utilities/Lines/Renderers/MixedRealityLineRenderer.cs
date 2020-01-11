@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 enabled = false;
             }
 
-            if (FadeLineBrightnessOnEnable)
+            if (FadeLineBrightnessOnEnable && Application.isPlaying)
             {
                 fadeLine = StartCoroutine(FadeLine(FadeLinePercentage, FadeLineAnimationTime));
             }
