@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
-        private static List<Vector3> inFoVConeBoundsCornerPoints = new List<Vector3>();
+        private static List<Vector3> inFOVConeBoundsCornerPoints = new List<Vector3>();
 
         /// <summary>
         /// Returns true if a collider's bounds is within the camera FOV. 
@@ -70,14 +70,14 @@ namespace Microsoft.MixedReality.Toolkit
                 return result;
             }
 
-            inFoVConeBoundsCornerPoints.Clear();
-            BoundsExtensions.GetColliderBoundsPoints(myCollider, inFoVConeBoundsCornerPoints, 0);
+            inFOVConeBoundsCornerPoints.Clear();
+            BoundsExtensions.GetColliderBoundsPoints(myCollider, inFOVConeBoundsCornerPoints, 0);
 
             float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
             float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-            for (int i = 0; i < inFoVConeBoundsCornerPoints.Count; i++)
+            for (int i = 0; i < inFOVConeBoundsCornerPoints.Count; i++)
             {
-                var corner = inFoVConeBoundsCornerPoints[i];
+                var corner = inFOVConeBoundsCornerPoints[i];
                 if (cam.IsInFOVCone(corner, 0))
                 {
                     inFOVConecolliderCache.Add(myCollider, true);
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Returns true if a point is in the a cone inscribed into the Camera's frustrum, false otherwise
+        /// Returns true if a point is in the a cone inscribed into the Camera's frustum, false otherwise
         /// The cone is inscribed to a radius equal to the vertical height of the camera's FOV.
         /// By default, the cone's tip is "chopped off" by an amount defined by the camera's
         /// far and near clip planes.
