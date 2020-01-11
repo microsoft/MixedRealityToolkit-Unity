@@ -23,6 +23,12 @@ You can find examples in the **HandCoachExample** scene under:
 You can find the assets under:
 [MixedRealityToolkit.SDK/Experimental/HandCoach](/Assets/MixedRealityToolkit.SDK/Experimental/HandCoach/)
 
+## Quality
+If you notice distortions on the skinned mesh, you need to make sure your project is using the proper amount of joints. 
+Go to Unity's Edit > Project Settings > Quality > Other > Blend Weights. Make sure "4 bones" are selected to see Smooth Joints. 
+![](/Documentation/Images/HandCoach/MRTK_ProjectSettings.png)
+
+
 
 ## Scripts
 ### Interaction hint
