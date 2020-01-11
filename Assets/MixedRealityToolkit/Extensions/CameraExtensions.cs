@@ -43,13 +43,13 @@ namespace Microsoft.MixedReality.Toolkit
 
 
         // Help to clear caches when new frame runs
-        static private int lastCalculatedFrame = -1;
+        static private int inFOVConeLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
-        private static Dictionary<Collider, bool> colliderCache = new Dictionary<Collider, bool>();
+        private static Dictionary<Collider, bool> inFOVConecolliderCache = new Dictionary<Collider, bool>();
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
-        private static List<Vector3> corners = new List<Vector3>();
+        private static List<Vector3> inFoVConeBoundsCornerPoints = new List<Vector3>();
 
         /// <summary>
         /// Returns true if a collider's bounds is within the camera FOV. 
@@ -59,28 +59,28 @@ namespace Microsoft.MixedReality.Toolkit
         public static bool IsInFOVConeCached(this Camera cam,
             Collider myCollider)
         {
-            if (lastCalculatedFrame != Time.frameCount)
+            if (inFOVConeLastCalculatedFrame != Time.frameCount)
             {
-                colliderCache.Clear();
-                lastCalculatedFrame = Time.frameCount;
+                inFOVConecolliderCache.Clear();
+                inFOVConeLastCalculatedFrame = Time.frameCount;
             }
 
-            if (colliderCache.TryGetValue(myCollider, out bool result))
+            if (inFOVConecolliderCache.TryGetValue(myCollider, out bool result))
             {
                 return result;
             }
 
-            corners.Clear();
-            BoundsExtensions.GetColliderBoundsPoints(myCollider, corners, 0);
+            inFoVConeBoundsCornerPoints.Clear();
+            BoundsExtensions.GetColliderBoundsPoints(myCollider, inFoVConeBoundsCornerPoints, 0);
 
             float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
             float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-            for (int i = 0; i < corners.Count; i++)
+            for (int i = 0; i < inFoVConeBoundsCornerPoints.Count; i++)
             {
-                var corner = corners[i];
+                var corner = inFoVConeBoundsCornerPoints[i];
                 if (cam.IsInFOVCone(corner, 0))
                 {
-                    colliderCache.Add(myCollider, true);
+                    inFOVConecolliderCache.Add(myCollider, true);
                     return true;
                 }
 
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit
                 && yMin <= cameraPos.y && cameraPos.y <= yMax
                 && zMin <= cameraPos.z && cameraPos.z <= zMax;
 
-            colliderCache.Add(myCollider, result);
+            inFOVConecolliderCache.Add(myCollider, result);
 
             return result;
         }
