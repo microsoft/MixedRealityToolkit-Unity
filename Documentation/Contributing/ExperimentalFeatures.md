@@ -60,7 +60,7 @@ Adding a component menu:
 ```
 
 ### Documentation
-Follow the following steps to add documentation for your experimental feature:
+Follow these steps to add documentation for your experimental feature:
 
 1. Any documentation for an experimental feature should go in a `README.md` file in the experimental folder. For example, [`MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md`](../../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md). 
 
