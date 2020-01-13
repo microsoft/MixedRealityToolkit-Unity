@@ -7193,7 +7193,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "4BqNDWQK//tvFBUODk1WRQ=="
+          "hash": "AS2U7u9Qa8TBDAx0T4aOZQ=="
         }
       },
       "is_incremental": false,
@@ -7309,6 +7309,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Boundary.BaseBoundarySystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.BaseBoundarySystem.html",
+          "hash": "XrAvdGefe2dAc4lbm47flg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Boundary.BoundaryEventData.yml",
       "output": {
         ".html": {
@@ -7409,7 +7421,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html",
-          "hash": "yfQd5iKDJjflW5xGSuxLjA=="
+          "hash": "dbrxZm2Dzdk2fCEaNj3VLw=="
         }
       },
       "is_incremental": false,
@@ -7433,7 +7445,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.html",
-          "hash": "9u/XeI1ckUXj+xN7fnmMOA=="
+          "hash": "ZddPONhNWWdxTXZmAHwxdQ=="
         }
       },
       "is_incremental": false,
@@ -22025,7 +22037,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssemblyDefinition.html",
-          "hash": "+yzUDYNe95kT9gkN+9eEYA=="
+          "hash": "WVaslrxQV3ROxCBYk2niig=="
         }
       },
       "is_incremental": false,
@@ -25285,6 +25297,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem.html",
+          "hash": "zJZNcESYbvIULiAk3BPUxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKSubsystemHelpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.XRSDKSubsystemHelpers.html",
+          "hash": "BqacJFeDBJKUFQjZ5V5gWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.html",
+          "hash": "sypCWdwcDsu/C2YmDHzkxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.yml",
       "output": {
         ".html": {
@@ -25301,7 +25349,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "SYOpfCy3TuH4GRJo6Y175g=="
+          "hash": "oiGjT8kEKL6uqTm5vVqvGg=="
         }
       },
       "is_incremental": false,
@@ -25353,16 +25401,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1518,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 144,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1522,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
