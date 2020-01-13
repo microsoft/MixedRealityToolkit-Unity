@@ -204,6 +204,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // store the root's animator
             animator = VisualsRoot.GetComponent<Animator>();
 
+            if (animator == null)
+            {
+                Debug.LogError("Hand rig does not have an animator. Disabling gameObject");
+                gameObject.SetActive(false);
+            }
+
             // hide visuals by default
             if (VisualsRoot != null)
             {
@@ -211,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             // When component is enabled, start up the timer logic if auto activate is specified
             if (AutoActivate)
@@ -220,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        public void OnDisable()
+        private void OnDisable()
         {
             // Stop all logic when the component is disabled, even if not using auto activate
             if (loopRunning)
@@ -317,7 +323,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 // show the root
                 SetActive(VisualsRoot, true);
-                animator.Play(stateToPlay);
+                if (animator != null)
+                {
+                    animator.Play(stateToPlay);
+                }
 
                 float visibleTime = Time.time;
                 int playCount = 0;
@@ -343,7 +352,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         {
                             yield return new WaitForSeconds(RepeatDelay);
                             SetActive(VisualsRoot, true);
-                            animator.Play(stateToPlay);
+                            if (animator != null)
+                            {
+                                animator.Play(stateToPlay);
+                            }
                             visibleTime = Time.time;
                             playCount++;
                         }
@@ -359,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 root.SetActive(show);
 
-                if (show)
+                if (show && animator != null)
                 {
                     animator.Play(fadeInAnimationState);
                 }
@@ -371,12 +383,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public float GetAnimationDuration(string animationStateName)
         {
-            RuntimeAnimatorController ac = animator.runtimeAnimatorController;
-            for (int i = 0; i < ac.animationClips.Length; i++)
+            if (animator != null)
             {
-                if (ac.animationClips[i].name.StartsWith(animationStateName))
+                RuntimeAnimatorController ac = animator.runtimeAnimatorController;
+                for (int i = 0; i < ac.animationClips.Length; i++)
                 {
-                    return ac.animationClips[i].length;
+                    if (ac.animationClips[i].name.StartsWith(animationStateName))
+                    {
+                        return ac.animationClips[i].length;
+                    }
                 }
             }
 
@@ -406,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Return true if either of the user's hands are being tracked.
         /// Return false if neither of the user's hands are being tracked.
         /// </summary>
-        bool IsHandTracked()
+        private bool IsHandTracked()
         {
             return HandJointUtils.FindHand(Handedness.Right) != null || HandJointUtils.FindHand(Handedness.Left) != null;
         }
