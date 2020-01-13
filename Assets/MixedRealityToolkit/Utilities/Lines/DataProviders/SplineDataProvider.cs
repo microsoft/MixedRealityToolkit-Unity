@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/SplineDataProvider")]
     public class SplineDataProvider : BaseMixedRealityLineDataProvider
     {
+        [Tooltip("List of positions and orientations that define control points to generate the spline")]
         [SerializeField]
         private MixedRealityPose[] controlPoints =
         {
@@ -20,6 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             new MixedRealityPose(Vector3.right, Quaternion.identity),
         };
 
+        /// <summary>
+        /// List of positions and orientations that define control points to generate the spline
+        /// </summary>
         public MixedRealityPose[] ControlPoints => controlPoints;
 
         [SerializeField]
@@ -27,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public bool AlignAllControlPoints
         {
-            get { return alignAllControlPoints; }
+            get => alignAllControlPoints;
             set
             {
                 if (alignAllControlPoints != value)
@@ -43,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public void ForceUpdateAlignment()
         {
-            if (alignAllControlPoints)
+            if (AlignAllControlPoints)
             {
                 for (int i = 0; i < PointCount; i++)
                 {
@@ -54,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void UpdatePointAlignment(int pointIndex)
         {
-            if (alignAllControlPoints)
+            if (AlignAllControlPoints)
             {
                 int prevControlPoint;
                 int changedControlPoint;
@@ -187,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 pointIndex = 0;
             }
 
-            if (alignAllControlPoints)
+            if (AlignAllControlPoints)
             {
                 if (pointIndex % 3 == 0)
                 {

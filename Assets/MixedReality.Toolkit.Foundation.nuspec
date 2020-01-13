@@ -34,21 +34,30 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" />
+    
+    <!-- The following line is commented out because of a path length issue in nuget for unity -->
+    <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" /> -->
+    
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Providers folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" />
 
+    <!-- The following line is commented out because of a path length issue in nuget for unity -->
+    <!-- <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" /> -->
+    
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" />
-
+    
+    <!-- The following line is commented out because of a path length issue in nuget for unity -->
+    <!-- <file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" />-->
+    
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" />
 
+    <!-- The following line is commented out because of a path length issue in nuget for unity -->
+    <!-- <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" /> -->
+    
     <!-- 
       link.xml is copied to the root location, so that it can catch IL2CPP
       bytecode stripping issues for all scripts included in this package.

@@ -9,7 +9,7 @@ steps:
     targetType: filePath
     filePath: ./scripts/packaging/unitypackage.ps1
     arguments: >
-      -UnityDirectory ${Env:Unity2018.3.7f1}
+      -UnityDirectory ${Env:$(Unity2018Version)}
       -OutputDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\output
       -RepoDirectory $(Get-Location)
       -LogDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\logs

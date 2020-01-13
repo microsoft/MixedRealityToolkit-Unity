@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     ///  Utility class to use a simulated hand
     /// </summary>
-    internal class TestHand
+    public class TestHand
     {
         private Handedness handedness;
         private Vector3 position;
