@@ -44,7 +44,7 @@ MRTK is a community project, modified by a diverse range of contributors. These 
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
-## Coding conventions
+## C# Coding conventions
 
 ### Script license information headers
 
@@ -558,6 +558,10 @@ This chart can help you decide which `#if` to use, depending on your use cases a
 DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. [Others have hit the same issue](https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now).
 
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
+
+## PowerShell coding conventions
+
+A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the [PoshCode style](https://poshcode.gitbooks.io/powershell-practice-and-style/).
 
 ## See also
 
