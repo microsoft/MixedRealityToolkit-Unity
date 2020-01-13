@@ -52,7 +52,7 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
     <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" /> -->
-
+    
     <!-- 
       link.xml is copied to the root location, so that it can catch IL2CPP
       bytecode stripping issues for all scripts included in this package.

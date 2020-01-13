@@ -1,8 +1,29 @@
+parameters:
+  # If true, validation scripts will only be run on the set of changed files
+  # associated with a given pull request. Note that this is only valid to use
+  # for pull request validation, since this functionality requires a pull request
+  # ID in order to determine the two commits to diff. Only relevant if validateCode
+  # is true.
+  scopedValidation: false
+  # The file containing the list of changes, used if scopedValidation is true.  
+  changesFile: ''
+
 steps:
-- task: PowerShell@2
-  displayName: 'Validate code'
-  inputs:
-    targetType: filePath
-    filePath: ./scripts/ci/validatecode.ps1
-    arguments: >
-      -Directory: '$(Build.SourcesDirectory)\Assets'
+- ${{ if eq(parameters.scopedValidation, false) }}:
+  - task: PowerShell@2
+    displayName: 'Global code validation'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/ci/validatecode.ps1
+      arguments: >
+        -Directory: '$(Build.SourcesDirectory)\Assets'
+- ${{ if eq(parameters.scopedValidation, true) }}:
+  - task: PowerShell@2
+    displayName: 'Scoped code validation'
+    inputs:
+      targetType: filePath
+      filePath: ./scripts/ci/validatecode.ps1
+      arguments: >
+        -Directory: '$(Build.SourcesDirectory)\Assets'
+        -ChangesFile: '${{ parameters.changesFile }}'
+        -RepoRoot: '$(Build.SourcesDirectory)'
