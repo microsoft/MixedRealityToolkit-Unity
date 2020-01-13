@@ -255,6 +255,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(MixedRealityRaycastHit);
+                raycastHit.point = hitPointOnObject;
+                raycastHit.normal = hitNormalOnObject;
+                raycastHit.distance = rayDistance;
+                raycastHit.transform = result.gameObject.transform;
+                raycastHit.raycastValid = false;
+
                 graphicsRaycastResult = result;
 
                 this.hitObject = result.gameObject;
@@ -264,6 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
                 this.rayDistance = rayDistance;
+                
             }
         }
 
@@ -557,10 +564,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
-                gazeHitResult = hitResult3d;
+                //gazeHitResult = hitResult3d;
+
+                hitResultUi.Clear();
+                RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+
+                gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                TruncatePointerRayToHit(gazeProviderPointingData.Pointer, gazeHitResult);
             }
 
             CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+            Debug.LogWarning((gazeHitResult.raycastHit.transform != null) ? gazeHitResult.raycastHit.transform.name : "nothing");
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
@@ -957,11 +971,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
-                    {
-                        gazeHitResult = hitResult3d;
-                    }
-
                     int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
                     if (hitResult3dLayer == 0)
                     {
@@ -982,6 +991,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
 
+                   
+
                     if (hit != hitResult3d || hitResult3dLayer > 0)
                     {
                         // Truncate if we didn't already for this hit
@@ -996,6 +1007,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // Apply the hit result only now so changes in the current target are detected only once per frame.
                     pointerData.UpdateHit(hit);
+
+                    // set gaze hit result - make sure to include unity ui hits
+                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    {
+                        gazeHitResult = hit;
+                    }
 
                     // Set the pointer's result last
                     pointerData.Pointer.Result = pointerData;
