@@ -16,8 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Creates a new, empty assembly definition.
         /// </summary>
-        public AssemblyDefinition()
-        { }
+        public AssemblyDefinition() { }
 
         [SerializeField]
         private string name = null;
@@ -31,57 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             set => name = value;
         }
 
-        // General
-        [SerializeField]
-        private bool allowUnsafeCode = false;
-
-        /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
-        /// </summary>
-        public bool AllowUnsafeCode
-        {
-            get => allowUnsafeCode;
-            set => allowUnsafeCode = value;
-        }
-
-        [SerializeField]
-        private bool autoReferenced = true;
-
-        /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
-        /// </summary>
-        public bool AutoReferenced
-        {
-            get => autoReferenced;
-            set => autoReferenced = value;
-        }
-
-        [SerializeField]
-        private bool overrideReferences = false;
-
-        /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
-        /// </summary>
-        public bool OverrideReferences
-        {
-            get => overrideReferences;
-            set => overrideReferences = value;
-        }
-
-        // Define constraints
-        [SerializeField]
-        private string[] defineConstraints = null;
-
-        /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
-        /// </summary>
-        public string[] DefineConstraints
-        {
-            get => defineConstraints;
-            set => defineConstraints = value;
-        }
-
-        // Assembly references
         [SerializeField]
         private string[] references = null;
 
@@ -94,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             set => references = value;
         }
 
-        // Unity references
+#if !UNITY_2019_3_OR_NEWER
         [SerializeField]
         private string[] optionalUnityReferences = null;
 
@@ -106,8 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             get => optionalUnityReferences;
             set => optionalUnityReferences = value;
         }
+#endif // !UNITY_2019_3_OR_NEWER
 
-        // Platforms
         [SerializeField]
         private string[] includePlatforms = null;
 
@@ -131,6 +79,92 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             get => excludePlatforms;
             set => excludePlatforms = value;
         }
+
+        [SerializeField]
+        private bool allowUnsafeCode = false;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public bool AllowUnsafeCode
+        {
+            get => allowUnsafeCode;
+            set => allowUnsafeCode = value;
+        }
+
+        [SerializeField]
+        private bool overrideReferences = false;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public bool OverrideReferences
+        {
+            get => overrideReferences;
+            set => overrideReferences = value;
+        }
+
+        [SerializeField]
+        private string[] precompiledReferences = null;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public string[] PrecompiledReferences
+        {
+            get => precompiledReferences;
+            set => precompiledReferences = value;
+        }
+
+        [SerializeField]
+        private bool autoReferenced = true;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public bool AutoReferenced
+        {
+            get => autoReferenced;
+            set => autoReferenced = value;
+        }
+
+        [SerializeField]
+        private string[] defineConstraints = null;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public string[] DefineConstraints
+        {
+            get => defineConstraints;
+            set => defineConstraints = value;
+        }
+
+#if UNITY_2019_3_OR_NEWER
+        [SerializeField]
+        private VersionDefine[] versionDefines = null;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public VersionDefine[] VersionDefines
+        {
+            get => versionDefines;
+            set => versionDefines = value;
+        }
+
+        [SerializeField]
+        private bool noEngineReferences = false;
+
+        /// <summary>
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
+        /// </summary>
+        public bool NoEngineReferences
+        {
+            get => noEngineReferences;
+            set => noEngineReferences = value;
+        }
+#endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
         /// Loads an existing assembly definition file.
@@ -186,4 +220,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
     }
+
+#if UNITY_2019_3_OR_NEWER
+    /// <summary>
+    /// Represents a subclass of a Unity assembly definition (asmdef) file.
+    /// </summary>
+    [Serializable]
+    public struct VersionDefine : IEquatable<VersionDefine>
+    {
+        public VersionDefine(string name, string expression, string define)
+        {
+            this.name = name;
+            this.expression = expression;
+            this.define = define;
+        }
+
+        [SerializeField]
+        private string name;
+
+        [SerializeField]
+        private string expression;
+
+        [SerializeField]
+        private string define;
+
+        bool IEquatable<VersionDefine>.Equals(VersionDefine other)
+        {
+            return name.Equals(other.name) &&
+                expression.Equals(other.expression) &&
+                define.Equals(other.define);
+        }
+    }
+#endif // UNITY_2019_3_OR_NEWER
 }
