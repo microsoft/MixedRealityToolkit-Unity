@@ -331,7 +331,8 @@ function CheckAsset {
             }
         }
 
-        if (CheckForMetaFile $FileName) {
+        # Filter out the ProjectSettings .asset files, which don't have a meta file and don't need one.
+        if ((-not $FileName.Contains("\ProjectSettings\")) -and (CheckForMetaFile $FileName)) {
             $containsIssue = $true
         }
 

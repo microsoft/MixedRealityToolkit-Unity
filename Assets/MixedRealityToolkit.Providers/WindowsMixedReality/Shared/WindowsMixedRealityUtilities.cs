@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System;
+
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using System.Runtime.InteropServices;
 #if WINDOWS_UWP
 using Windows.Perception.Spatial;
@@ -21,6 +22,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     public static class WindowsMixedRealityUtilities
     {
+        /// <summary>
+        /// The provider that should be used for the corresponding utilities.
+        /// </summary>
+        /// <remarks>
+        /// This is intended to be used to support both XR SDK and Unity's legacy XR pipeline, which provide
+        /// different APIs to access these native objects.
+        /// </remarks>
+        public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
+
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 #if ENABLE_DOTNET
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
@@ -51,8 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         }
 #endif //ENABLE_DOTNET
 
-        public static IWindowsMixedRealityUtilitiesProvider UtilitiesProvider { get; set; } = null;
-
         /// <summary>
         /// Access the underlying native spatial coordinate system.
         /// </summary>
@@ -64,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (spatialCoordinateSystem == null && UtilitiesProvider != null)
+                if (spatialCoordinateSystem == null && UtilitiesProvider != null && UtilitiesProvider.ISpatialCoordinateSystemPtr != IntPtr.Zero)
                 {
 #if ENABLE_DOTNET
                     spatialCoordinateSystem = GetSpatialCoordinateSystem(UtilitiesProvider.ISpatialCoordinateSystemPtr);
@@ -89,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (UtilitiesProvider == null)
+                if (UtilitiesProvider == null || UtilitiesProvider.IHolographicFramePtr == IntPtr.Zero)
                 {
                     return null;
                 }
@@ -107,13 +115,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private static SpatialCoordinateSystem spatialCoordinateSystem = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-        [System.Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
+        [Obsolete("Use the System.Numerics.Vector3 extension method ToUnityVector3 instead.")]
         public static UnityEngine.Vector3 SystemVector3ToUnity(System.Numerics.Vector3 vector)
         {
             return vector.ToUnityVector3();
         }
 
-        [System.Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
+        [Obsolete("Use the System.Numerics.Quaternion extension method ToUnityQuaternion instead.")]
         public static UnityEngine.Quaternion SystemQuaternionToUnity(System.Numerics.Quaternion quaternion)
         {
             return quaternion.ToUnityQuaternion();

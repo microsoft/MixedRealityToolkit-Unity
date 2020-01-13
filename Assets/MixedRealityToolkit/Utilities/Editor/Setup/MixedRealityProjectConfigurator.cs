@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            // Load the manfiest file.
+            // Load the manifest file.
             string manifestFileContents = File.ReadAllText(manifestPath);
             if (string.IsNullOrWhiteSpace(manifestFileContents))
             {
