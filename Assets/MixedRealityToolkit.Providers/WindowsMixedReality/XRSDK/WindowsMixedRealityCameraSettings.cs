@@ -3,13 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine.XR;
-using UnityEngine.XR.Management;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// Camera settings provider for use with Windows Mixed Reality.
+    /// Camera settings provider for use with Windows Mixed Reality and XR SDK.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
@@ -17,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         "XR SDK Windows Mixed Reality Camera Settings",
         "WindowsMixedReality/Shared/Profiles/DefaultWindowsMixedRealityCameraSettingsProfile.asset",
         "MixedRealityToolkit.Providers")]
-    public class XRSDKWindowsMixedRealityCameraSettings : BaseWindowsMixedRealityCameraSettings
+    public class WindowsMixedRealityCameraSettings : BaseWindowsMixedRealityCameraSettings
     {
         /// <summary>
         /// Constructor.
@@ -26,39 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// <param name="name">Friendly name of the provider.</param>
         /// <param name="priority">Provider priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The provider's configuration profile.</param>
-        public XRSDKWindowsMixedRealityCameraSettings(
+        public WindowsMixedRealityCameraSettings(
             IMixedRealityCameraSystem cameraSystem,
             string name = null,
             uint priority = DefaultPriority,
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
-        private XRDisplaySubsystem displaySubsystem;
-        private XRDisplaySubsystem DisplaySubsystem
-        {
-            get
-            {
-                if (displaySubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
-                {
-                    displaySubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRDisplaySubsystem>();
-                }
-
-                return displaySubsystem;
-            }
-        }
-
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public override bool IsOpaque =>
-#if UNITY_WSA
-            DisplaySubsystem?.displayOpaque ?? true;
-#else
-            false;
-#endif
+        public override bool IsOpaque => XRSDKSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
 
         #endregion IMixedRealityCameraSettings
     }

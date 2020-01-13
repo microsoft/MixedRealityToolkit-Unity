@@ -1,16 +1,14 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
     "references": [
-        "GUID:a7a4c34601384f9389d5c4207f3c6331",
-        "GUID:3d9f59ae91c131e408fec0e5f661c340",
-        "GUID:92703082f92b41ba80f0d6912de66115",
-        "GUID:e40ba710768534012815d3193fa296cb",
-        "GUID:a37fab06e2e557e46930b8f918e51980"
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
-        "WSA",
-        "WindowsStandalone64"
+        "WSA"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -19,23 +17,5 @@
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_2019_3_OR_NEWER"
-    ],
-    "versionDefines": [
-        {
-            "name": "com.unity.xr.windowsmr",
-            "expression": "",
-            "define": "WMR_ENABLED"
-        },
-        {
-            "name": "com.unity.xr.management",
-            "expression": "",
-            "define": "XR_MANAGEMENT_ENABLED"
-        },
-        {
-            "name": "com.unity.xr.arsubsystems",
-            "expression": "",
-            "define": "ARSUBSYSTEMS_ENABLED"
-        }
-    ],
-    "noEngineReferences": false
+    ]
 }

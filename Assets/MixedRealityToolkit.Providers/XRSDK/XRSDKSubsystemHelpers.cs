@@ -59,5 +59,28 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return meshSubsystem;
             }
         }
+
+        private static XRDisplaySubsystem displaySubsystem = null;
+
+        /// <summary>
+        /// The XR SDK display subsystem for the currently loaded XR plug-in.
+        /// </summary>
+        public static XRDisplaySubsystem DisplaySubsystem
+        {
+            get
+            {
+#if XR_MANAGEMENT_ENABLED
+                if (displaySubsystem == null &&
+                    XRGeneralSettings.Instance != null &&
+                    XRGeneralSettings.Instance.Manager != null &&
+                    XRGeneralSettings.Instance.Manager.activeLoader != null)
+                {
+                    displaySubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRDisplaySubsystem>();
+                }
+#endif // XR_MANAGEMENT_ENABLED
+
+                return displaySubsystem;
+            }
+        }
     }
 }
