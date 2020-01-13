@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PlayModeTestUtilities
    | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.0.0">
+    <meta name="generator" content="docfx 2.48.1.0">
     
     <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -201,6 +201,52 @@ slow test hand mode has been engaged.</p>
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_CalculateNumSteps_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.CalculateNumSteps*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_CalculateNumSteps_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.CalculateNumSteps(System.Int32)">CalculateNumSteps(Int32)</h4>
+  <div class="markdown level1 summary"><p>Given a numSteps value, determines if the value is a 'sentinel' value of
+HandMoveStepsSentinelValue, which should be converted to the current
+default value of HandMoveSteps. If it's not the sentinel value,
+this returns numSteps unchanged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int CalculateNumSteps(int numSteps)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numSteps</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule">EnsureInputModule()</h4>
   <div class="markdown level1 summary"><p>Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.</p>
@@ -382,6 +428,136 @@ slow test hand mode has been engaged.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_HideHand_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.HideHand(Handedness,InputSimulationService)">HideHand(Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator HideHand(Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_InstallTextMeshProEssentials_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.InstallTextMeshProEssentials*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_InstallTextMeshProEssentials" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.InstallTextMeshProEssentials">InstallTextMeshProEssentials()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void InstallTextMeshProEssentials()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.MoveHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveHand_Vector3_Vector3_ArticulatedHandPose_GestureId_Handedness_InputSimulationService_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.MoveHand(Vector3,Vector3,ArticulatedHandPose.GestureId,Handedness,InputSimulationService,System.Int32)">MoveHand(Vector3, Vector3, ArticulatedHandPose.GestureId, Handedness, InputSimulationService, Int32)</h4>
+  <div class="markdown level1 summary"><p>Moves the the hand from startPos to endPos.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator MoveHand(Vector3 startPos, Vector3 endPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService, int numSteps = -1)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">startPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">endPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ArticulatedHandPose.GestureId</span></td>
+        <td><span class="parametername">gestureId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numSteps</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_MoveHand_Vector3_Vector3_ArticulatedHandPose_GestureId_Handedness_InputSimulationService_System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+default number of steps should be used (i.e. HandMoveSteps). HandMoveSteps is not a compile
+time constant, which is a requirement for default parameter values.</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopHandSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopHandSimulationProfile*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopHandSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopHandSimulationProfile">PopHandSimulationProfile()</h4>
   <div class="markdown level1 summary"></div>
@@ -402,6 +578,162 @@ slow test hand mode has been engaged.</p>
   </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandRotation_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandRotation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandRotation_Quaternion_Quaternion_Vector3_ArticulatedHandPose_GestureId_Handedness_System_Int32_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandRotation(Quaternion,Quaternion,Vector3,ArticulatedHandPose.GestureId,Handedness,System.Int32,InputSimulationService)">SetHandRotation(Quaternion, Quaternion, Vector3, ArticulatedHandPose.GestureId, Handedness, Int32, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator SetHandRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, int numSteps, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">fromRotation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">toRotation</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">handPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ArticulatedHandPose.GestureId</span></td>
+        <td><span class="parametername">gestureId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">numSteps</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandSimulationMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandSimulationMode_HandSimulationMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode)">SetHandSimulationMode(HandSimulationMode)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SetHandSimulationMode(HandSimulationMode mode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HandSimulationMode</span></td>
+        <td><span class="parametername">mode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandState_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetHandState_Vector3_ArticulatedHandPose_GestureId_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetHandState(Vector3,ArticulatedHandPose.GestureId,Handedness,InputSimulationService)">SetHandState(Vector3, ArticulatedHandPose.GestureId, Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">handPos</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ArticulatedHandPose.GestureId</span></td>
+        <td><span class="parametername">gestureId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup">Setup()</h4>
   <div class="markdown level1 summary"><p>Creates a play mode test scene, creates an MRTK instance, initializes playspace.</p>
@@ -411,6 +743,138 @@ slow test hand mode has been engaged.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static void Setup()</code></pre>
   </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetupMrtkWithoutGlobalInputHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_SetupMrtkWithoutGlobalInputHandlers" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.SetupMrtkWithoutGlobalInputHandlers">SetupMrtkWithoutGlobalInputHandlers()</h4>
+  <div class="markdown level1 summary"><p>Initializes the MRTK such that there are no other input system listeners
+(global or per-interface).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator SetupMrtkWithoutGlobalInputHandlers()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowHand_Handedness_InputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowHand(Handedness,InputSimulationService)">ShowHand(Handedness, InputSimulationService)</h4>
+  <div class="markdown level1 summary"><p>Shows the hand in the open state, at the origin</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_ShowHand_Handedness_InputSimulationService_ArticulatedHandPose_GestureId_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.ShowHand(Handedness,InputSimulationService,ArticulatedHandPose.GestureId,Vector3)">ShowHand(Handedness, InputSimulationService, ArticulatedHandPose.GestureId, Vector3)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService, ArticulatedHandPose.GestureId handPose, Vector3 handLocation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><span class="parametername">inputSimulationService</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">ArticulatedHandPose.GestureId</span></td>
+        <td><span class="parametername">handPose</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">handLocation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TearDown*"></a>
@@ -436,6 +900,64 @@ slow test hand mode has been engaged.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Workaround for #5116</p>
 </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_WaitForEnterKey_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.WaitForEnterKey*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_WaitForEnterKey" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.WaitForEnterKey">WaitForEnterKey()</h4>
+  <div class="markdown level1 summary"><p>Waits for the user to press the enter key before a test continues.
+Not actually used by any test, but it is useful when debugging since you can
+pause the state of the test and inspect the scene.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator WaitForEnterKey()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_WaitForInputSystemUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.WaitForInputSystemUpdate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_WaitForInputSystemUpdate" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.WaitForInputSystemUpdate">WaitForInputSystemUpdate()</h4>
+  <div class="markdown level1 summary"><p>Sometimes it take a few frames for inputs raised via InputSystem.OnInput*
+to actually get sent to input handlers. This method waits for enough frames
+to pass so that any events raised actually have time to send to handlers.
+We set it fairly conservatively to ensure that after waiting
+all input events have been sent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerator WaitForInputSystemUpdate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           

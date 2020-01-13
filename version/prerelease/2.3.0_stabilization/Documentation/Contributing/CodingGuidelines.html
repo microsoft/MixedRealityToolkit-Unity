@@ -8,7 +8,7 @@
     <title>Coding guidelines | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Coding guidelines | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.48.0.0">
+    <meta name="generator" content="docfx 2.48.1.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -104,7 +104,7 @@
 <h3 id="prioritize-writing-tests">Prioritize writing tests</h3>
 <p>MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. <a href="https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build?definitionId=16">MRTK runs continuous integration tests</a> before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.</p>
 <p>When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.</p>
-<h2 id="coding-conventions">Coding conventions</h2>
+<h2 id="c-coding-conventions">C# Coding conventions</h2>
 <h3 id="script-license-information-headers">Script license information headers</h3>
 <p>All Microsoft employees contributing new files should add the following standard License header at the top of any new files, exactly as shown below:</p>
 <pre><code class="lang-c#">// Copyright (c) Microsoft Corporation.
@@ -532,6 +532,8 @@ public class MyClass
 <h3 id="prefer-datetimeutcnow-over-datetimenow">Prefer DateTime.UtcNow over DateTime.Now</h3>
 <p>DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. <a href="https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now">Others have hit the same issue</a>.</p>
 <p>Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.</p>
+<h2 id="powershell-coding-conventions">PowerShell coding conventions</h2>
+<p>A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the <a href="https://poshcode.gitbooks.io/powershell-practice-and-style/">PoshCode style</a>.</p>
 <h2 id="see-also">See also</h2>
 <p><a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# coding conventions from MSDN</a></p>
 </article>
