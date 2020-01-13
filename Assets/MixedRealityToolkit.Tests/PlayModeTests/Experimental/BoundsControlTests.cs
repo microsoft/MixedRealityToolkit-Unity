@@ -289,7 +289,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Tests scaling of bounds control by grabbing a corner with the far interaction hand ray
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleViaFarInteraction()
         {
