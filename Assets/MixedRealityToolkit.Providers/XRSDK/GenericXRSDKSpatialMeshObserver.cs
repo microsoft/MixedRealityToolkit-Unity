@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class XRSDKSpatialMeshObserver :
+    public class GenericXRSDKSpatialMeshObserver :
         BaseSpatialMeshObserver,
         IMixedRealityCapabilityCheck
     {
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public XRSDKSpatialMeshObserver(
+        public GenericXRSDKSpatialMeshObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,

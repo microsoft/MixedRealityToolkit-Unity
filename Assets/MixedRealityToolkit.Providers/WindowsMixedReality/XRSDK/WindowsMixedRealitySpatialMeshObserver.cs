@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         "MixedRealityToolkit.SDK")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class WindowsMixedRealitySpatialMeshObserver :
-        XRSDKSpatialMeshObserver,
+        GenericXRSDKSpatialMeshObserver,
         IMixedRealityCapabilityCheck
     {
         /// <summary>
