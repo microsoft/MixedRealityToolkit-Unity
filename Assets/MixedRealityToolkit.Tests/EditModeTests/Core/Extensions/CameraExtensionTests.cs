@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
     public class CameraExtensionTests
     {
         private static Camera testCamera = null;
+        private static Camera testCamera2 = null;
         private const float MarginTolerance = 0.005f;
 
         private class TestPoint
@@ -35,6 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             testCamera.fieldOfView = 60.0f;
             testCamera.orthographic = false;
             testCamera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+            var obj2 = new GameObject("TestCamera2");
+            testCamera2 = obj.AddComponent<Camera>();
+            testCamera2.nearClipPlane = 0.3f;
+            testCamera2.farClipPlane = 1000.0f;
+            testCamera2.fieldOfView = 60.0f;
+            testCamera2.orthographic = false;
+            testCamera2.transform.SetPositionAndRotation(Vector3.zero, Quaternion.Euler(0f, 180f, 0f));
 
             // Create test data with pre-determined points.
             // This data expects the same results for both IsInFOVCone and IsInFOV
