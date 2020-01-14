@@ -25,11 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
 #if XR_MANAGEMENT_ENABLED
                 if (inputSubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
+                    ActiveLoader != null)
                 {
-                    inputSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRInputSubsystem>();
+                    inputSubsystem = ActiveLoader.GetLoadedSubsystem<XRInputSubsystem>();
                 }
 #endif //XR_MANAGEMENT_ENABLED
 
@@ -48,11 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
 #if XR_MANAGEMENT_ENABLED
                 if (meshSubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
+                    ActiveLoader != null)
                 {
-                    meshSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRMeshSubsystem>();
+                    meshSubsystem = ActiveLoader.GetLoadedSubsystem<XRMeshSubsystem>();
                 }
 #endif // XR_MANAGEMENT_ENABLED
 
@@ -71,16 +67,31 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
 #if XR_MANAGEMENT_ENABLED
                 if (displaySubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
+                    ActiveLoader != null)
                 {
-                    displaySubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRDisplaySubsystem>();
+                    displaySubsystem = ActiveLoader.GetLoadedSubsystem<XRDisplaySubsystem>();
                 }
 #endif // XR_MANAGEMENT_ENABLED
 
                 return displaySubsystem;
             }
         }
+
+#if XR_MANAGEMENT_ENABLED
+        private static XRLoader ActiveLoader
+        {
+            get
+            {
+                if (XRGeneralSettings.Instance != null &&
+                    XRGeneralSettings.Instance.Manager != null &&
+                    XRGeneralSettings.Instance.Manager.activeLoader != null)
+                {
+                    return XRGeneralSettings.Instance.Manager.activeLoader;
+                }
+
+                return null;
+            }
+        }
+#endif // XR_MANAGEMENT_ENABLED
     }
 }
