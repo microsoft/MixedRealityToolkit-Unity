@@ -703,7 +703,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (uiRaycastCamera != null)
             {
-                UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
+                // To avoid a race condition where the uiRaycastCamera is technically still present
+                // in the scene after calling Destroy(), we call DestroyImmediate() to ensure it gets
+                // re-created appropriately.
+                UnityEngine.Object.DestroyImmediate(uiRaycastCamera.gameObject);
             }
             uiRaycastCamera = null;
         }
