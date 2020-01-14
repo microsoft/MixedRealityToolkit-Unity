@@ -559,22 +559,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // another raycast if it's not populated
             if (gazeHitResult == null)
             {
+                // get 3d hit
                 hitResult3d.Clear();
                 var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
-                //gazeHitResult = hitResult3d;
 
+                // get ui hit
                 hitResultUi.Clear();
                 RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
+                // set gaze hit according to distance and priorization layer mask
                 gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
-                TruncatePointerRayToHit(gazeProviderPointingData.Pointer, gazeHitResult);
             }
 
             CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
-            Debug.LogWarning((gazeHitResult.raycastHit.transform != null) ? gazeHitResult.raycastHit.transform.name : "nothing");
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
