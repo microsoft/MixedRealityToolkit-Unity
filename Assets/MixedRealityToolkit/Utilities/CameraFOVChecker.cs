@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Extension methods for the Unity's Camera class
+    /// Camera extension methods to test if colliders are within an FOV cone. Uses
+    /// caching to improve performance and ensure values are only computed once per frame
     /// </summary>
     public static class CameraFOVChecker
     {
