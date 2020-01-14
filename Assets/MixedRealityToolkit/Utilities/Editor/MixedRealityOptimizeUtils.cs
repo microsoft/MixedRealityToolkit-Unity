@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else if (IsBuildTargetUWP())
             {
-#if UNITY_2019
+#if UNITY_2019_1_OR_NEWER
                 PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
 #else
                 var playerSettings = GetSettingsObject("PlayerSettings");
@@ -91,13 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             PlayerSettings.VRDaydream.depthFormat = depthFormat;
 
             var playerSettings = GetSettingsObject("PlayerSettings");
-#if UNITY_2019
-        PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
+#if UNITY_2019_1_OR_NEWER
+            PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ?
+                PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
+                PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
 
-        ChangeProperty(playerSettings, 
-                "vrSettings.lumin.depthFormat", 
+            ChangeProperty(playerSettings,
+                "vrSettings.lumin.depthFormat",
                 property => property.intValue = depthFormat);
 #else
             ChangeProperty(playerSettings,
@@ -108,27 +108,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public static bool IsRealtimeGlobalIlluminationEnabled()
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
             return property != null && property.boolValue;
         }
 
         public static void SetRealtimeGlobalIlluminationEnabled(bool enabled)
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             ChangeProperty(lightmapSettings, "m_GISettings.m_EnableRealtimeLightmaps", property => property.boolValue = enabled);
         }
 
         public static bool IsBakedGlobalIlluminationEnabled()
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableBakedLightmaps");
             return property != null && property.boolValue;
         }
 
         public static void SetBakedGlobalIlluminationEnabled(bool enabled)
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             ChangeProperty(lightmapSettings, "m_GISettings.m_EnableBakedLightmaps", property => property.boolValue = enabled);
         }
 
@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return new SerializedObject(settings);
         }
 
-        public static SerializedObject GetLighmapSettings()
+        public static SerializedObject GetLightmapSettings()
         {
             var getLightmapSettingsMethod = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", BindingFlags.Static | BindingFlags.NonPublic);
             var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as UnityEngine.Object;

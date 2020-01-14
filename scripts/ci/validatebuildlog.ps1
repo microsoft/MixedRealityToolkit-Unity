@@ -8,42 +8,45 @@
     because they are not build errors.
 
     Returns 0 if there are no errors, non-zero if there are.
-.PARAMETER LogFile
-    The log file to validate
 .EXAMPLE
     .\validatebuildlog.ps1 -LogFile c:\path\to\log.txt
 #>
 param(
+    # The log file to validate
     [string]$LogFile
 )
 
-function CheckDuplicateGuids(
-    [string[]]$LogFileContent,
-    [int]$LineNumber
-) {
-    <#
-    .SYNOPSIS
-        Checks if the given log file has a conflict guid at the specified line number.
-        Outputs to console if such an error exists.
-        Returns true if there is a duplicate guid.
-    #>
-    if ($LogFileContent[$LineNumber] -match "GUID \[[a-g0-9]{32}?\] for asset '.*' conflicts with") {
-        for ($i = $LineNumber; $i -lt $LogFileContent.Length; $i++) {
-            if ($LogFileContent[$i] -eq "Assigning a new guid.") {
-                Write-Host "Found duplicated GUID, Unity will non-deterministically use one of them, please manually "
-                Write-Host "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally."
+<#
+.SYNOPSIS
+    Checks if the given log file has a conflict guid at the specified line number.
+    Outputs to console if such an error exists.
+    Returns true if there is a duplicate guid.
+#>
+function CheckDuplicateGuids {
+    [CmdletBinding()]
+    param(
+        [string[]]$LogFileContent,
+        [int]$LineNumber
+    )
+    process {
+        if ($LogFileContent[$LineNumber] -match "GUID \[[a-g0-9]{32}?\] for asset '.*' conflicts with") {
+            for ($i = $LineNumber; $i -lt $LogFileContent.Length; $i++) {
+                if ($LogFileContent[$i] -eq "Assigning a new guid.") {
+                    Write-Host "Found duplicated GUID, Unity will non-deterministically use one of them, please manually "
+                    Write-Host "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally."
 
-                # Found the end of the guid conflict message - output to the console
-                # all lines between these two locations (including the assigning a new guid message
-                # in case it falls on the same line)
-                for ($j = $LineNumber; $j -le $i; $j++) {
-                    Write-Host $LogFileContent[$j]
+                    # Found the end of the guid conflict message - output to the console
+                    # all lines between these two locations (including the assigning a new guid message
+                    # in case it falls on the same line)
+                    for ($j = $LineNumber; $j -le $i; $j++) {
+                        Write-Host $LogFileContent[$j]
+                    }
+                    $true
                 }
-                return $true
             }
         }
+        $false
     }
-    return $false
 }
 
 if (-not $LogFile) {

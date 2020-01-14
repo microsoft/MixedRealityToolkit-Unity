@@ -3,7 +3,7 @@
 variables:
   Unity2018Version: Unity2018.3.7f1
   Unity2019Version: Unity2019.2.0f1
-  MRTKVersion: 2.3.0
+  MRTKVersion: 2.4.0
 
 jobs:
 - job: PRValidation
@@ -22,4 +22,8 @@ jobs:
       # the ongoing rolling CI build. This build in particular is highly correlated
       # the .NET x86 build and ARM IL2CPP build.
       buildUWPX86: false
+      # For mrtk_pr builds, validation scripts (code and docs) should be scoped to only
+      # the set of changed files, so that we can save some time. There's no need to
+      # check unchanged files for code style/doc style violations.
+      scopedValidation: true
   - template: templates/end.yml

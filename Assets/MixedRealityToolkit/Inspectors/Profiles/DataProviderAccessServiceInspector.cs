@@ -161,6 +161,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SerializedProperty provider = providerConfigurations.GetArrayElementAtIndex(index);
             ServiceConfigurationProperties providerProperties = GetDataProviderConfigurationProperties(provider);
 
+            var serviceType = GetDataProviderConfiguration(index).ComponentType;
+
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 using (new EditorGUILayout.HorizontalScope())
@@ -176,8 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (providerFoldouts[index])
                 {
-                    var serviceType = GetDataProviderConfiguration(index).ComponentType;
-
                     using (var c = new EditorGUI.ChangeCheckScope())
                     {
                         EditorGUILayout.PropertyField(providerProperties.componentType, ComponentTypeLabel);
@@ -195,6 +195,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     changed |= RenderProfile(providerProperties.providerProfile, dataProviderProfileType, true, false, serviceType);
 
                     serializedObject.ApplyModifiedProperties();
+                }
+
+                if (IsProfileRequired(serviceType) &&
+                    (providerProperties.providerProfile.objectReferenceValue == null))
+                {
+                    EditorGUILayout.HelpBox($"{providerProperties.componentName.stringValue} requires a profile.", MessageType.Warning);
                 }
             }
 

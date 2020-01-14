@@ -24,12 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public uint MaxNumberOfCameras;
 
         /// <summary>
-        /// The current native root <see href="https://docs.microsoft.com/uwp/api/windows.perception.spatial.spatialcoordinatesystem">ISpatialCoordinateSystem</see>).
+        /// The current native root <see href="https://docs.microsoft.com/uwp/api/windows.perception.spatial.spatialcoordinatesystem">ISpatialCoordinateSystem</see>.
         /// </summary>
         public IntPtr ISpatialCoordinateSystemPtr;
         
         /// <summary>
-        /// The current native <see href="https://docs.microsoft.com/uwp/api/Windows.Graphics.Holographic.HolographicFrame">IHolographicFrame</see>).
+        /// The current native <see href="https://docs.microsoft.com/uwp/api/Windows.Graphics.Holographic.HolographicFrame">IHolographicFrame</see>.
         /// </summary>
         public IntPtr IHolographicFramePtr;
 

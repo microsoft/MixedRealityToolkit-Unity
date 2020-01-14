@@ -382,11 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestDirectionalIndicator()
         {
             // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             const float ANGLE_THRESHOLD = 30.0f;
 
@@ -418,6 +414,188 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return WaitForFrames(2);
             Assert.IsFalse(indicatorMesh.enabled);
+        }
+
+        /// <summary>
+        /// Test the Follow solver distance clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowDistance()
+        {
+            // Reset view to origin
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Test distance remains within min/max bounds
+            float distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.back * 2;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.forward * 4;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            // Test VerticalMaxDistance
+            followSolver.VerticalMaxDistance = 0.1f;
+            targetTransform.position = Vector3.forward;
+            targetTransform.rotation = Quaternion.identity;
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.LookAt(Vector3.forward + Vector3.up);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            float yDistance = targetTransform.position.y - CameraCache.Main.transform.position.y;
+            Assert.AreEqual(followSolver.VerticalMaxDistance, yDistance);
+
+            followSolver.VerticalMaxDistance = 0f;
+        }
+
+        /// <summary>
+        /// Test the Follow solver orientation options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowOrientation()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // Test orientation deadzone
+            followSolver.OrientToControllerDeadzoneDegrees = 70;
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.back;
+                p.LookAt(Vector3.forward);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            
+            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
+
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
+
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreNotEqual(targetTransform.rotation, Quaternion.identity, "Target did not rotate after we moved beyond the deadzone");
+
+            // Test FaceUserDefinedTargetTransform
+            var hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward + Vector3.right);
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            followSolver.FaceUserDefinedTargetTransform = true;
+            followSolver.TargetToFace = CameraCache.Main.transform;
+
+            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+
+            yield return hand.MoveTo(Vector3.forward + Vector3.left, 1);
+            yield return null;
+
+            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+        }
+
+        /// <summary>
+        /// Test the Follow solver angular clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowDirection()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // variables and lambdas to test direction remains within bounds
+            var maxXAngle = followSolver.MaxViewHorizontalDegrees / 2;
+            var maxYAngle = followSolver.MaxViewVerticalDegrees / 2;
+            Vector3 directionToHead() => CameraCache.Main.transform.position - targetTransform.position;
+            float xAngle() => (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.right)) * Mathf.Rad2Deg) - 90;
+            float yAngle() => 90 - (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.up)) * Mathf.Rad2Deg);
+
+            // Test without rotation
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+
+            // Test y axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            
+            // Test x axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.right, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+
+            // Test translation
+            MixedRealityPlayspace.PerformTransformation(p => p.Translate(Vector3.back, Space.World));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
         }
 
         #endregion
