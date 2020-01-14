@@ -312,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         /// <summary>
-        /// Removes the <see cref="SpatialAwarenessMeshObject"/> associated with the specified id.
+        /// Removes the <see cref="SpatialAwareness.SpatialAwarenessMeshObject"/> associated with the specified id.
         /// </summary>
         /// <param name="id">The id of the mesh to be removed.</param>
         protected void RemoveMeshObject(int id)
@@ -333,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         /// <summary>
-        /// Reclaims the <see cref="SpatialAwarenessMeshObject"/> to allow for later reuse.
+        /// Reclaims the <see cref="SpatialAwareness.SpatialAwarenessMeshObject"/> to allow for later reuse.
         /// </summary>
         protected void ReclaimMeshObject(SpatialAwarenessMeshObject availableMeshObject)
         {
@@ -380,12 +380,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 
         /// <summary>
-        /// Handles the SurfaceObserver's OnSurfaceChanged event.
+        /// Updates meshes based on the result of the MeshSubsystem.TryGetMeshInfos method.
         /// </summary>
-        /// <param name="id">The identifier assigned to the surface which has changed.</param>
-        /// <param name="changeType">The type of change that occurred on the surface.</param>
-        /// <param name="bounds">The bounds of the surface.</param>
-        /// <param name="updateTime">The date and time at which the change occurred.</param>
         private void UpdateMeshes(List<MeshInfo> meshInfos)
         {
             if (!IsRunning) { return; }
