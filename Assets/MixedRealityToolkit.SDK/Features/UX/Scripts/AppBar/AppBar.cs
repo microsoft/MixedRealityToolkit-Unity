@@ -47,6 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Private Serialized Fields with Public Properties
 
         [Header("Target Bounding Box")]
+        /// <summary>
+        /// The bounding box this AppBar will use for its placement and control for manipulation
+        /// </summary>
+        [Tooltip("The bounding box this AppBar will use for its placement and control for manipulation")]
         [SerializeField]
         private BoundingBox boundingBox = null;
 
@@ -56,6 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { boundingBox = value; }
         }
 
+        /// <summary>
+        /// The parent game object for the renderable objects in the AppBar
+        /// </summary>
+        [Tooltip("The parent game object for the renderable objects in the app bar")]
         [SerializeField]
         private GameObject baseRenderer = null;
         public GameObject BaseRenderer
@@ -64,6 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => baseRenderer = value;
         }
 
+        /// <summary>
+        /// The parent transform for the button collection
+        /// </summary>
+        [Tooltip("The parent transform for the button collection")]
         [SerializeField]
         private Transform buttonParent = null;
         public Transform ButtonParent
@@ -72,6 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => buttonParent = value;
         }
 
+        /// <summary>
+        /// The background gameobject, scales to fill area behind buttons
+        /// </summary>
+        [Tooltip("The background gameobject, scales to fill area behind buttons")]
         [SerializeField]
         private GameObject backgroundBar = null;
         public GameObject BackgroundBar
@@ -81,6 +97,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         
         [Header("States")]
+        /// <summary>
+        /// The AppBar's display type, default is Manipulation
+        /// </summary>
+        [Tooltip("The AppBar's display type, default is Manipulation")]
         [SerializeField]
         private AppBarDisplayTypeEnum displayType = AppBarDisplayTypeEnum.Manipulation;
         public AppBarDisplayTypeEnum DisplayType
@@ -89,6 +109,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { displayType = value; }
         }
 
+        /// <summary>
+        /// The AppBar's current state
+        /// </summary>
+        [Tooltip("The AppBar's current state")]
         [SerializeField]
         private AppBarStateEnum state = AppBarStateEnum.Default;
         public AppBarStateEnum State
@@ -97,7 +121,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { state = value; }
         }
 
+
         [Header("Default Button Options")]
+        /// <summary>
+        /// Should the AppBar have a Remove button
+        /// </summary>
+        [Tooltip("Should the AppBar have a Remove button")]
         [SerializeField]
         private bool useRemove = true;
         public bool UseRemove
@@ -106,6 +135,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { useRemove = value; }
         }
 
+        /// <summary>
+        /// Should the AppBar have an Adjust button
+        /// </summary>
+        [Tooltip("Should the AppBar have an Adjust button")]
         [SerializeField]
         private bool useAdjust = true;
         public bool UseAdjust
@@ -114,6 +147,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { useAdjust = value; }
         }
 
+        /// <summary>
+        /// Should the AppBar have a Hide button
+        /// </summary>
+        [Tooltip("Should the AppBar have a Hide button")]
         [SerializeField]
         private bool useHide = true;
         public bool UseHide
@@ -123,6 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Default Button Icons")]
+        /// <summary>
+        /// The Adjust button texture
+        /// </summary>
+        [Tooltip("The Adjust button texture")]
         [SerializeField]
         private Texture adjustIcon = null;
         public Texture AdjustIcon
@@ -131,6 +172,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => adjustIcon = value;
         }
 
+        /// <summary>
+        /// The Done button texture
+        /// </summary>
+        [Tooltip("The Done button texture")]
         [SerializeField]
         private Texture doneIcon = null;
         public Texture DoneIcon
@@ -139,6 +184,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => doneIcon = value;
         }
 
+        /// <summary>
+        /// The Hide button texture
+        /// </summary>
+        [Tooltip("The Hide button texture")]
         [SerializeField]
         private Texture hideIcon = null;
         public Texture HideIcon
@@ -147,6 +196,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => hideIcon = value;
         }
 
+        /// <summary>
+        /// The Remove button texture
+        /// </summary>
+        [Tooltip("The Remove button texture")]
         [SerializeField]
         private Texture removeIcon = null;
         public Texture RemoveIcon
@@ -155,6 +208,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => removeIcon = value;
         }
 
+        /// <summary>
+        /// The Show button texture
+        /// </summary>
+        [Tooltip("The Show button texture")]
         [SerializeField]
         private Texture showIcon = null;
         public Texture ShowIcon
@@ -202,8 +259,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { hoverOffsetZ = value; }
         }
 
-        
 
+        /// <summary>
+        /// The button width for each button
+        /// </summary>
+        [Tooltip("The button width for each button")]
         [SerializeField]
         private float buttonWidth = 0.032f;
         public float ButtonWidth
@@ -211,7 +271,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => buttonWidth;
             set => buttonWidth = value;
         }
-        
+
+        /// <summary>
+        /// The button depth for each button
+        /// </summary>
+        [Tooltip("The button depth for each button")]
         [SerializeField]
         private float buttonDepth = 0.016f;
         public float ButtonDepth
