@@ -56,10 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     Resume();
                 }
             }
-            else
-            {
-                Debug.Log("Observer is null :(");
-            }
         }
 
         /// <summary>

@@ -18,12 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
         private const string XRManagementReference = "Unity.XR.Management";
         private const string ARSubsystemsReference = "Unity.XR.ARSubsystems";
-        private const string WindowsMixedRealityReference = "Unity.XR.WindowsMixedReality";
 
 #if UNITY_2019_3_OR_NEWER
         private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
         private static readonly VersionDefine ARSubsystemsDefine = new VersionDefine("com.unity.xr.arsubsystems", "", "ARSUBSYSTEMS_ENABLED");
-        private static readonly VersionDefine WindowsMixedRealityDefine = new VersionDefine("com.unity.xr.windowsmr", "", "WMR_ENABLED");
 #endif // UNITY_2019_3_OR_NEWER
 
         static XRSDKConfigurationChecker()
@@ -92,12 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 references.Add(ARSubsystemsReference);
                 changed = true;
             }
-            if (!references.Contains(WindowsMixedRealityReference))
-            {
-                // Add a reference to the Windows Mixed Reality assembly
-                references.Add(WindowsMixedRealityReference);
-                changed = true;
-            }
 
             if (!versionDefines.Contains(XRManagementDefine))
             {
@@ -111,12 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 versionDefines.Add(ARSubsystemsDefine);
                 changed = true;
             }
-            if (!versionDefines.Contains(WindowsMixedRealityDefine))
-            {
-                // Add the WindowsMR #define
-                versionDefines.Add(WindowsMixedRealityDefine);
-                changed = true;
-            }
 #else
             if (references.Contains(XRManagementReference))
             {
@@ -128,12 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 // Add a reference to the spatial tracking assembly
                 references.Remove(ARSubsystemsReference);
-                changed = true;
-            }
-            if (references.Contains(WindowsMixedRealityReference))
-            {
-                // Add a reference to the spatial tracking assembly
-                references.Remove(WindowsMixedRealityReference);
                 changed = true;
             }
 #endif
