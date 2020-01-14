@@ -168,6 +168,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             style.fontStyle = previousStyle;
 
             serializedObject.ApplyModifiedProperties();
+
+            // Draws warning message for deprecated object with button for migration option
+            DrawDeprecated();
+        }
+
+        private void DrawDeprecated()
+        {
+            EditorGUILayout.HelpBox("This Component is deprecated. Please migrate object to up to date version", UnityEditor.MessageType.Warning);
+            if (GUILayout.Button("Migrate Object"))
+            {
+                MigrationTool migrationTool = new MigrationTool();
+
+                var component = (ManipulationHandler)target;
+
+                migrationTool.TryAddObjectForMigration((GameObject)component.gameObject);
+                migrationTool.MigrateSelection(typeof(ObjectManipulatorMigrationHandler), true);
+            }
         }
     }
 }

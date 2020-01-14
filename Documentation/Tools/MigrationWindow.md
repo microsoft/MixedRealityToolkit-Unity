@@ -1,38 +1,34 @@
 
-# Migration Window
+# Migration window
 
-When SDK components get obsolete and need upgrade, large projects might require an upgrade tool to allow user controlled Migration.
-The [Migration Window](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.SDK/Experimental/Features/Utilities/Migration/Tools/MigrationWindow) allows the user to select Scene Objects, entire Scenes or the Complete Project for Migration of specific obsolete Components. 
+As the MRTK undergoes changes, some components might get deprecated and replacements will get introduced. 
+The migration window is a tool that helps users to automatically migrate a subset of those deprecated components to the new replacements.
 
 ![Migration window](../../Documentation/Images/MigrationWindow/MRTK_Migration_Window.png)
 
 
 ## Usage
-To open the window, select *Mixed Reality Toolkit->Utilities->Migration Window*. Once the Migration Window is open, the selection mode navigation tabs can be enabled by choosing the Component-specific implementation of the Migration Handler.  
+To open the window, select *Mixed Reality Toolkit->Utilities->Migration Window*. Once the migration window is open, the selection mode navigation tabs can be enabled by choosing the component specific implementation of the migration handler.  
 
 ![Migration selection modes](../../Documentation/Images/MigrationWindow/MRTK_Migration_Modes.png)
 
 
-### Object Mode
-Selecting the Objects tab, enables the Object Field to where the user can Drag and Drop any Game Objects from the currently open Scene or Prefabs from the Project folder to be Migrated.
-Pressing the Remove *(-)* button displayed at the right side of the listed object removes the object from the Selection list.
+### Object mode
+Selecting the objects tab enables the object Field to where the user can drag and drop any Game objects from the currently open scene or prefabs from the project folder to be migrated.
+Pressing the remove *(-)* button displayed at the right side of the listed object removes the object from the selection list.
 
-Once all the desired objects are in the list, pressing the *Migrate* button will apply the changes required by the chosen Migration Handler implementation to all components in the selection that match the implementation.
+Once all the desired objects are in the list, pressing the *Migrate* button will apply the changes required by the chosen migration handler implementation to all components in the selection that match the implementation.
 
-![Selection Migration](../../Documentation/Images/MigrationWindow/MRTK_Object_Migration.png)
-
-
-### Scene Mode
-Allows user to Drag and Drop Scene Assets containing objects to be Migrated.
-
-![Selecting Scenes for Migration](../../Documentation/Images/MigrationWindow/MRTK_Scene_Selection.png)
+![Selection migration](../../Documentation/Images/MigrationWindow/MRTK_Object_Migration.png)
 
 
-### Project Mode
-Pressing the *Migrate* button will update the component targeted by the Migration Handler implementation for all Prefabs and Scenes in the Project.
+### Scene mode
+Allows user to drag and drop scene assets containing objects to be migrated.
 
-![Migrating a complete Project](../../Documentation/Images/MigrationWindow/MRTK_Project_Migration.png)
+![Selecting scenes for migration](../../Documentation/Images/MigrationWindow/MRTK_Scene_Selection.png)
 
 
-> [!NOTE]
-> Migration of custom Components require implementation of the IMigrationHandler interface specific for the Component.
+### Project mode
+Pressing the *Migrate* button will update the component targeted by the migration handler implementation for all prefabs and scenes in the project.
+
+![Migrating a complete project](../../Documentation/Images/MigrationWindow/MRTK_Project_Migration.png)

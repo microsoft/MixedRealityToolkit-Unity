@@ -1,65 +1,50 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 
 using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     /// <summary>
-    /// This tool allows the migration of game object obsolete components into up-to-date versions.
-    /// Requires Implementation of IMigrationhandler.
+    /// This is an Utility Window for the MigrationTool. 
     /// </summary>
     public class MigrationWindow : EditorWindow
     {
-        private enum ToolbarOption 
-        { 
-            Objects = 0, 
-            Scenes = 1, 
-            Project = 2 
+        private enum ToolbarOption
+        {
+            GameObjects = 0,
+            Scenes = 1,
+            Project = 2
         };
 
         private static readonly string[] toolbarTitles =
-{
-            "Objects",
+        {
+            "Game Objects",
             "Scenes",
             "Full Project"
         };
 
-        private ToolbarOption selectedToolbar = ToolbarOption.Objects;
+        private ToolbarOption selectedToolbar = ToolbarOption.GameObjects;
         private Vector2 scrollPosition = Vector2.zero;
 
-        private const string DependencyWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
+        private const string MigrationWindowURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html";
         private const string WindowTitle = "Migration Window";
-        private const string WindowDescription = "This tool allows the migration of obsolete components into up-to-date versions. Component-specific implementation of the MigrationHandler Interface is required.";
+        private const string WindowDescription = "This tool allows the migration of obsolete components into up-to-date versions.";
 
-        private const string SceneExtension = ".unity";
-        private const string PrefabExtension = ".prefab";
-
-        private Dictionary<string, Type> migrationTypesMap = new Dictionary<string, Type>();
-        private String[] migrationTypeNames;
         private int selectedMigrationHandlerIndex;
-        private List<Object> migrationObjects = new List<Object>();
-        private Object selection;
+        private string[] migrationHandlerTypeNames;
+        private bool isMigrationEnabled;
+        private Type selectedMigrationHandlerType;
 
-        private dynamic migrationTypeInstance
-        {
-            get
-            {
-                var selectedMigrationTypeName = migrationTypeNames[selectedMigrationHandlerIndex];
-                var migrationHandlerType = migrationTypesMap[selectedMigrationTypeName];
-                return Activator.CreateInstance(migrationHandlerType) as IMigrationHandler;
-            }
-        }
+        private readonly MigrationTool migrationTool = new MigrationTool();
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Migration Window", false, 4)]
         private static void ShowWindow()
@@ -70,41 +55,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             window.Show();
         }
 
+        private void OnEnable()
+        {
+            isMigrationEnabled = false;
+            migrationTool.ClearMigrationList();
+
+            // Adds empty as first option for MigrationHandler selector 
+            var migrationTypeNamesList = new List<string> { "" };
+            migrationTypeNamesList.AddRange(migrationTool.MigrationHandlerTypes
+                                  .Select(x => x.FullName)
+                                  .ToList());
+            migrationHandlerTypeNames = migrationTypeNamesList.ToArray();
+
+            selectedMigrationHandlerIndex = 0;
+        }
+
         private void OnGUI()
         {
-            if (EditorApplication.isPlaying || EditorApplication.isPaused)
+            using (new EditorGUI.DisabledGroupScope(EditorApplication.isPlaying || EditorApplication.isPaused))
             {
-                GUI.enabled = false;
-            }
-            DrawHeader();
-            DrawMigrationTypeSelector();
-            DrawMigrationToolbars();
-        }
+                DrawHeader();
+                DrawMigrationTypeSelector();
 
-        private void OnFocus()
-        {
-            RefreshAvailableTypes();
-        }
-
-        private void RefreshAvailableTypes()
-        {
-            var type = typeof(IMigrationHandler);
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .Where(x => type.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).ToList();
-
-            foreach (var migrationHandlerType in types)
-            {
-                if (!migrationTypesMap.ContainsKey(migrationHandlerType.Name))
+                using (new EditorGUI.DisabledGroupScope(!isMigrationEnabled))
                 {
-                    migrationTypesMap.Add(migrationHandlerType.Name, migrationHandlerType);
-                }
-            }
-            migrationTypeNames = new String[migrationTypesMap.Count + 1];
+                    DrawMigrationToolbars();
 
-            for (int i = 0; i < migrationTypesMap.Count; i++)
-            {
-                migrationTypeNames[i + 1] = migrationTypesMap.ElementAt(i).Key;
+                    if (isMigrationEnabled)
+                    {
+                        DrawObjectSelection();
+                        DrawObjectsForMigration();
+                    }
+                }
             }
         }
 
@@ -115,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Migration Window", EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocumentationButton(DependencyWindowURL);
+                InspectorUIUtility.RenderDocumentationButton(MigrationWindowURL);
             }
             EditorGUILayout.LabelField(WindowDescription, EditorStyles.wordWrappedLabel);
 
@@ -128,12 +110,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             using (var horizontal = new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Migration Handler Selection", EditorStyles.boldLabel);
-                selectedMigrationHandlerIndex = EditorGUILayout.Popup(selectedMigrationHandlerIndex, migrationTypeNames, GUILayout.Width(400));
-            }
 
-            if (selectedMigrationHandlerIndex == 0)
-            {
-                GUI.enabled = false;
+                EditorGUI.BeginChangeCheck();
+
+                selectedMigrationHandlerIndex = EditorGUILayout.Popup(selectedMigrationHandlerIndex, migrationHandlerTypeNames, GUILayout.Width(500));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    SetMigrationHandlerType();
+                }
             }
         }
 
@@ -143,274 +127,117 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 EditorGUILayout.Space();
 
-                ToolbarOption previousSelectedToolbar = selectedToolbar;
-                selectedToolbar = (ToolbarOption)GUILayout.Toolbar((int)selectedToolbar, toolbarTitles);
-
-                if (previousSelectedToolbar != selectedToolbar)
+                using (var check = new EditorGUI.ChangeCheckScope())
                 {
-                    scrollPosition = Vector2.zero;
-                    migrationObjects.Clear();
-                }
-
-                if (selectedToolbar == ToolbarOption.Project)
-                {
-                    DrawProjectToolbar();
-                }
-                else
-                {
-                    DrawObjectsToolbar();
+                    selectedToolbar = (ToolbarOption)GUILayout.Toolbar((int)selectedToolbar, toolbarTitles);
+                    if (check.changed)
+                    {
+                        scrollPosition = Vector2.zero;
+                        migrationTool.ClearMigrationList();
+                    }
                 }
             }
         }
 
-        private void DrawObjectsToolbar()
+        private void DrawObjectSelection()
         {
             EditorGUILayout.Space();
 
             using (new GUILayout.HorizontalScope())
             {
-                string tooltip = $"Drag and Drop {toolbarTitles[(int)selectedToolbar]} for Migration.";
-                EditorGUILayout.LabelField(new GUIContent($"{toolbarTitles[(int)selectedToolbar]} Selection", InspectorUIUtility.InfoIcon, tooltip));
-
-                var selectionType = selectedToolbar == ToolbarOption.Objects ? typeof(GameObject) : typeof(Object);
-                var allowSceneObjects = selectedToolbar == ToolbarOption.Objects;
-
-                selection = EditorGUILayout.ObjectField(null, selectionType, allowSceneObjects);
-                if (selection)
+                if (selectedToolbar == ToolbarOption.Project)
                 {
-                    AddSelection();
-                }
-            }
-            EditorGUILayout.Space();
-
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-            {
-                DrawMigrationObjectsList();
-            }
-        }
-
-        private void DrawProjectToolbar()
-        {
-            EditorGUILayout.Space();
-            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-            {
-                using (new GUILayout.VerticalScope(EditorStyles.helpBox))
-                {
-                    if (GUILayout.Button("Migrate"))
-                    {                        
-                        MigrateAllPrefabs();
-                        MigrateAllScenes();
-                    }
-
-                    using (new EditorGUILayout.HorizontalScope())
+                    if (GUILayout.Button("Add full project for Migration"))
                     {
-                        GUILayout.FlexibleSpace();
-
-                        string tooltip = "All Scenes and Prefabs Selected";
-                        EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
+                        migrationTool.AddProjectForMigration();
                     }
-                }
-            }
-        }
-
-        private void DrawMigrationObjectsList()
-        {
-            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-
-            foreach (var migrationObject in migrationObjects)
-            {
-                using (var horizontal = new GUILayout.HorizontalScope())
-                {
-                    using (new EditorGUI.DisabledGroupScope(true))
-                    {
-                        EditorGUILayout.ObjectField(migrationObject, typeof(Object), false);
-                    }
-                    var icon = EditorGUIUtility.IconContent("winbtn_win_min_h");
-
-                    if (GUILayout.Button(icon, GUILayout.Width(30)))
-                    {
-                        migrationObjects.Remove(migrationObject);
-                        break;
-                    }
-                }
-            }
-            EditorGUILayout.Space();
-
-            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
-            {
-                if (migrationObjects.Count == 0)
-                {
-                    GUI.enabled = false;
-                }
-
-                if (GUILayout.Button("Migrate"))
-                {
-                    MigrateSelection();
-                }
-
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    if (migrationObjects.Count > 0)
-                    {
-                        GUILayout.FlexibleSpace();
-
-                        string tooltip = $"{migrationObjects.Count} {toolbarTitles[(int)selectedToolbar]} selected for migration";
-                        EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
-                    }
-                }
-            }
-            EditorGUILayout.EndScrollView();
-        }
-
-        private void AddSelection()
-        {
-            if (selectedToolbar == ToolbarOption.Objects)
-            {
-                if (!migrationObjects.Contains(selection))
-                {
-                    migrationObjects.Add(selection);
-                }
-            }
-            else
-            {
-                if (!migrationObjects.Contains(selection) && IsExtension(AssetDatabase.GetAssetPath(selection), SceneExtension))
-                {
-                    migrationObjects.Add(selection);
-                }
-            }
-        }
-
-        private void MigrateAllScenes()
-        {
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-                 
-            var previousScenePath = EditorSceneManager.GetActiveScene().path;
-
-            String[] scenePaths = FindAllAssets(SceneExtension);
-
-            for (int i = 0; i < scenePaths.Length; i++)
-            {
-                MigrateScene(scenePaths[i]);
-            }
-        }
-
-        private void MigrateScene(String path)
-        {
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-
-            var previousScenePath = EditorSceneManager.GetActiveScene().path;
-            Scene currentScene = EditorSceneManager.OpenScene(path);
-
-            foreach (var parent in currentScene.GetRootGameObjects())
-            {
-                MigrateGameObjectHierarchy(parent);
-            }
-            EditorSceneManager.SaveScene(currentScene);
-            EditorSceneManager.OpenScene(Directory.GetCurrentDirectory() + "/" + previousScenePath);
-        }
-
-        private void MigrateAllPrefabs()
-        {
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-
-            foreach (var path in FindAllAssets(PrefabExtension))
-            {
-                using (var editScope = new EditPrefabAsset(path))
-                {
-                    MigrateGameObjectHierarchy(editScope.root);
-                }
-            }
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-        }
-
-        private void MigrateSelection()
-        {
-            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-
-            foreach (var migrationObject in migrationObjects)
-            {
-                string path = AssetDatabase.GetAssetPath(migrationObject);
-
-                if (IsAsset(path))
-                {
-                    if (IsExtension(path, PrefabExtension))
-                    {
-                        // Modify and save Prefab Asset
-                        using (var editScope = new EditPrefabAsset(path))
-                        {
-                            GameObject parent = editScope.root;
-                            MigrateGameObjectHierarchy(parent);
-                        }
-                    }
-                    else if (IsExtension(path, SceneExtension))
-                    {
-                        MigrateScene(path);
-                    }
+                    return;
                 }
                 else
                 {
-                    MigrateGameObjectHierarchy((GameObject)migrationObject);
+                    string tooltip = $"Drag and Drop {toolbarTitles[(int)selectedToolbar]} for Migration.";
+                    EditorGUILayout.LabelField(new GUIContent($"{toolbarTitles[(int)selectedToolbar]} Selection", InspectorUIUtility.InfoIcon, tooltip));
+
+                    var selectionType = selectedToolbar == ToolbarOption.GameObjects ? typeof(GameObject) : typeof(SceneAsset);
+                    var allowSceneObjects = selectedToolbar == ToolbarOption.GameObjects;
+
+                    using (var check = new EditorGUI.ChangeCheckScope())
+                    {
+                        var selection = EditorGUILayout.ObjectField(null, selectionType, allowSceneObjects);
+
+                        if (check.changed && selection)
+                        {
+                            migrationTool.TryAddObjectForMigration(selection);
+                        }
+                    }
                 }
             }
-            migrationObjects.Clear();
+            EditorGUILayout.Space();
         }
 
-        private void MigrateGameObjectHierarchy(GameObject gameObject)
+        private void DrawObjectsForMigration()
         {
-            foreach (var child in gameObject.GetComponentsInChildren<Transform>())
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                if (migrationTypeInstance.CanMigrate(child.gameObject))
+                using (new EditorGUILayout.ScrollViewScope(scrollPosition))
                 {
-                    migrationTypeInstance.Migrate(child.gameObject);
+                    var migrationObjects = migrationTool.MigrationObjects;
+                    foreach (var migrationObject in migrationObjects)
+                    {
+                        using (new GUILayout.HorizontalScope())
+                        {
+                            using (new EditorGUI.DisabledGroupScope(true))
+                            {
+                                EditorGUILayout.ObjectField(migrationObject, typeof(Object), false);
+                            }
+
+                            var removeIcon = EditorGUIUtility.IconContent("winbtn_win_min_h");
+                            if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
+                            {
+                                migrationTool.RemoveObjectForMigration(migrationObject);
+                                break;
+                            }
+                        }
+                    }
+                    EditorGUILayout.Space();
+
+                    using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        using (new EditorGUI.DisabledGroupScope(migrationObjects.Count == 0))
+                        {
+                            if (GUILayout.Button("Migrate"))
+                            {
+                                migrationTool.MigrateSelection(selectedMigrationHandlerType, true);
+                            }
+
+                            if (migrationObjects.Count > 0)
+                            {
+                                using (new EditorGUILayout.HorizontalScope())
+                                {
+                                    GUILayout.FlexibleSpace();
+
+                                    string tooltip = $"{migrationObjects.Count} Objects selected for migration";
+                                    EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        private string[] FindAllAssets(string extension)
+        private void SetMigrationHandlerType()
         {
-
-            string[] scenePaths = Directory.GetFiles(Application.dataPath, "*" + extension, SearchOption.AllDirectories);
-
-            for (int i = 0; i < scenePaths.Length; ++i)
+            try
             {
-
-                var scenePath = scenePaths[i];
-                var path = scenePath.Substring(0, scenePath.Length - extension.Length);
-
-                if (!IsAsset(path))
-                {
-                    continue;
-                }
+                selectedMigrationHandlerType = Type.GetType(migrationHandlerTypeNames[selectedMigrationHandlerIndex], true);
             }
-            return scenePaths;
-        }
-
-        private bool IsAsset(string path)
-        {
-            return File.Exists(path);
-        }
-
-        private bool IsExtension(string path, string extension)
-        {
-            return Path.GetExtension(path).ToLowerInvariant().Equals(extension);
-        }
-
-        private class EditPrefabAsset : IDisposable
-        {
-            public readonly string path;
-            public readonly GameObject root;
-
-            public EditPrefabAsset(string path)
+            catch (TypeLoadException e)
             {
-                this.path = path;
-                root = PrefabUtility.LoadPrefabContents(path);
+                Debug.Log($"{e.GetType().Name}: Unable to load type for Migration");
+                isMigrationEnabled = false;
             }
-
-            public void Dispose()
-            {
-                PrefabUtility.SaveAsPrefabAsset(root, path);
-                PrefabUtility.UnloadPrefabContents(root);
-            }
+            isMigrationEnabled = true;
         }
     }
 }
