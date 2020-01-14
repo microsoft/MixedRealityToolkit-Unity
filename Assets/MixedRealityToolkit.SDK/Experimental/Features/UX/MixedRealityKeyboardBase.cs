@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Returns true if the keyboard is currently open.
         /// </summary>
-        public bool Visible { get { return state == KeyboardState.Showing; } }
+        public bool Visible => state == KeyboardState.Showing;
 
         /// <summary>
         /// Returns the index of the caret within the text.
@@ -66,6 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { onHideKeyboard = value; }
         }
 
+        #endregion properties
+
+        #region Private enums
+
         private enum KeyboardState
         {
             Hiding,
@@ -73,30 +77,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Showing,
         }
 
-        #endregion properties
+        #endregion Private enums
 
-
-        #region private fields
+        #region Private fields
 
         private KeyboardState state = KeyboardState.Hidden;
 
-        #endregion private fields
-
 #if WINDOWS_UWP
-
-        #region private fields
-
         private InputPane inputPane = null;
-
-        private bool multiLine = false;
 
         private TouchScreenKeyboard keyboard = null;
 
         private Coroutine stateUpdate;
+#endif
 
-        #endregion private fields
+        private bool multiLine = false;
 
-        #region Unity functions
+        #endregion Private fields
 
         #region MonoBehaviour Implementation
 
@@ -105,51 +102,62 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         protected virtual void Start()
         {
+ #if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 inputPane = InputPane.GetForCurrentView();
                 inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
                 inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
             }, false);
+#endif
         }
 
-        protected virtual IEnumerator UpdateState()
+#if WINDOWS_UWP
+        private IEnumerator UpdateState()
         {
             while (true)
             {
                 switch (state)
                 {
                     case KeyboardState.Showing:
-                        Text = keyboard?.text;
+                        {
+                            UpdateText();
+                        }
                         break;
 
                     case KeyboardState.Hiding:
-                        if (onHideKeyboard != null)
                         {
-                            onHideKeyboard.Invoke();
+                            if (onHideKeyboard != null)
+                            {
+                                onHideKeyboard.Invoke();
+                            }
                         }
-                        ClearText();
                         break;
                 }
 
                 yield return null;
             }
         }
+#endif
 
         private void OnDisable()
         {
             HideKeyboard();
         }
 
-        #endregion unity functions
+#endregion MonoBehaviour Implementation
 
         /// <summary>
         /// Closes the keyboard for user interaction.
         /// </summary>
         public void HideKeyboard()
         {
-            ClearText();
-            state = KeyboardState.Hidden;
+            if (state != KeyboardState.Hidden)
+            {
+                state = KeyboardState.Hidden;
+            }
+
+#if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
 
             if (stateUpdate != null)
@@ -157,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 StopCoroutine(stateUpdate);
                 stateUpdate = null;
             }
+#endif
         }
 
         /// <summary>
@@ -179,6 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             state = KeyboardState.Showing;
 
+#if WINDOWS_UWP
             if (keyboard != null)
             {
                 keyboard.text = Text;
@@ -198,6 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 stateUpdate = StartCoroutine(UpdateState());
             }
+#endif
         }
 
         /// <summary>
@@ -207,13 +218,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             Text = string.Empty;
             CaretIndex = 0;
-
+#if WINDOWS_UWP
             if (keyboard != null)
             {
-                keyboard.text = Text;
+                keyboard.text = string.Empty;
             }
+#endif
         }
 
+#if WINDOWS_UWP
         private void UpdateText()
         {
             if (keyboard != null)
@@ -284,6 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
             }
         }
+#endif
 
         private bool IsPreviewCaretAtEnd()
         {
@@ -305,17 +319,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void OnKeyboardShowing() { }
 
-        #endregion Input pane event handlers
-
-
-        private void ClearText()
-        {
-            if (keyboard != null)
-            {
-                keyboard.text = string.Empty;
-            }
-        }
-#endif
         public abstract string Text { get; protected set; }
     }
 }

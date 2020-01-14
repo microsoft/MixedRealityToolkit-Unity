@@ -13,15 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     [RequireComponent(typeof(TMP_InputField))]
     public class TMP_KeyboardInputField : KeyboardInputFieldBase<TMP_InputField>
     {
-#if WINDOWS_UWP
-        public override void ShowKeyboard()
-        {
-            base.ShowKeyboard();
-            KeyboardText = inputField.text;
-        }
-#endif
         public override string Text { get => inputField.text; protected set => inputField.text = value; }
-
         protected override Graphic TextGraphic(TMP_InputField inputField) => inputField.textComponent;
         protected override Graphic PlaceHolderGraphic(TMP_InputField inputField) => inputField.placeholder;
     }

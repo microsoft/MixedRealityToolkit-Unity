@@ -12,15 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     [RequireComponent(typeof(InputField))]
     public class UI_KeyboardInputField : KeyboardInputFieldBase<InputField>
     {
-#if WINDOWS_UWP
-        public override void ShowKeyboard()
-        {
-            base.ShowKeyboard();
-            Text = inputField.text;
-        }
-#endif
         public override string Text { get => inputField.text; protected set => inputField.text = value; }
-
         protected override Graphic TextGraphic(InputField inputField) => inputField.textComponent;
         protected override Graphic PlaceHolderGraphic(InputField inputField) => inputField.placeholder;
     }
