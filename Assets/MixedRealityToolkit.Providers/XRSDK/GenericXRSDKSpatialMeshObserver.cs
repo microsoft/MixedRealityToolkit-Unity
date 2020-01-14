@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         #region IMixedRealitySpatialAwarenessObserver Implementation
 
         /// <summary>
-        /// A queue of TrackableId that need their meshes created (or updated).
+        /// A queue of MeshId that need their meshes created (or updated).
         /// </summary>
         private readonly Queue<MeshId> meshWorkQueue = new Queue<MeshId>();
 
