@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Ensure that if a controller model was desired that we have attempted initialization.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        public async Task EnsureControllerModel(InteractionSource interactionSource)
+        internal async Task EnsureControllerModel(InteractionSource interactionSource)
         {
             GameObject controllerModel;
 
