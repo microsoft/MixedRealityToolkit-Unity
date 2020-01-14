@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
     /// <summary>
-    /// Camera settings provider for use with Windows Mixed Reality and XR SDK.
+    /// Camera settings provider for use with XR SDK.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
