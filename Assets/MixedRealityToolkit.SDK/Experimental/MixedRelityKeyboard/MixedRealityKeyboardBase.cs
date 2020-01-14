@@ -115,22 +115,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         protected virtual IEnumerator UpdateState()
         {
-            switch (state)
+            while (true)
             {
-                case KeyboardState.Showing:
-                    Text = keyboard?.text;
-                    break;
+                switch (state)
+                {
+                    case KeyboardState.Showing:
+                        Text = keyboard?.text;
+                        break;
 
-                case KeyboardState.Hiding:
-                    if (onHideKeyboard != null)
-                    {
-                        onHideKeyboard.Invoke();
-                    }
-                    ClearText();
-                    break;
+                    case KeyboardState.Hiding:
+                        if (onHideKeyboard != null)
+                        {
+                            onHideKeyboard.Invoke();
+                        }
+                        ClearText();
+                        break;
+                }
+
+                yield return null;
             }
-
-            yield return null;
         }
 
         private void OnDisable()
