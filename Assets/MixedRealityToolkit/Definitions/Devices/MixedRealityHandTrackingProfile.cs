@@ -2,14 +2,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Hand Tracking Profile", fileName = "MixedRealityHandTrackingProfile", order = (int)CreateProfileMenuItemIndices.HandTracking)]
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSystem/HandTracking.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/HandTracking.html")]
     public class MixedRealityHandTrackingProfile : BaseMixedRealityProfile
     {
         [SerializeField]

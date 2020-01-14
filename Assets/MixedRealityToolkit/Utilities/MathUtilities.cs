@@ -46,6 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Retrieve angular measurement describing how large a sphere or circle appears from a given point of view.
+        /// Takes an angle (at given point of view) and a distance and returns the actual diameter of the object.
+        /// </summary>
+        public static float ScaleFromAngularSizeAndDistance(float angle, float distance)
+        {
+            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
+            return scale;
+        }
+
+        [System.Obsolete("Method obsolete. Use ScaleFromAngularSizeAndDistance instead")]
+        public static float AngularScaleFromDistance(float angle, float distance)
+        {
+            return ScaleFromAngularSizeAndDistance(angle, distance);
+        }
+
+        /// <summary>
         /// Takes a ray in the coordinate space specified by the "from" transform and transforms it to be the correct ray in the coordinate space specified by the "to" transform
         /// </summary>
         public static Ray TransformRayFromTo(Transform from, Transform to, Ray rayToConvert)
@@ -352,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             // now find and count actual inliers and do least-squares to find best fit
-            var inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
+            IEnumerable<Ray> inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
             numActualInliers = inlierList.Count();
             if (numActualInliers >= 2)
             {
@@ -437,6 +453,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Clamps via a lerp for a "soft" clamp effect
+        /// </summary>
+        /// <param name="pos">number to clamp</param>
+        /// <param name="min">if pos is less than min, then lerp clamps to this value</param>
+        /// <param name="max">if pos is more than max, lerp clamps to this value</param>
+        /// <param name="clampFactor"> Range from 0.0f to 1.0f of how close to snap to min and max </param>
+        /// <returns>A soft clamped value</returns>
+        public static float CLampLerp(float pos, float min, float max, float clampFactor)
+        {
+            clampFactor = Mathf.Clamp(clampFactor, 0.0f, 1.0f);
+            if (pos < min)
+            {
+                return Mathf.Lerp(pos, min, clampFactor);
+            }
+            else if (pos > max)
+            {
+                return Mathf.Lerp(pos, max, clampFactor);
+            }
+
+            return pos;
+        }
+        
+        /// <summary>
         /// Calculates the direction vector from a rotation.
         /// </summary>
         /// <param name="rotation">Quaternion representing the rotation of the object.</param>
@@ -446,6 +485,65 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static Vector3 GetDirection(Quaternion rotation)
         {
             return (rotation * Vector3.forward).normalized;
+        }
+
+        /// <summary>
+        /// Returns if a point lies within a frame of reference view as defined by arguments
+        /// </summary>
+        /// <remarks>
+        /// Field of view parameters are in degrees and plane distances are in meters 
+        /// </remarks>
+        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, 
+            float verticalFOV, float horizontalFOV, 
+            float minPlaneDistance, float maxPlaneDistance)
+        {
+            Vector3 deltaPos = testPosition - frameOfReference.position;
+            Vector3 referenceDeltaPos = TransformDirectionFromTo(null, frameOfReference, deltaPos);
+
+            if (referenceDeltaPos.z < minPlaneDistance || referenceDeltaPos.z > maxPlaneDistance)
+            {
+                return false;
+            }
+
+            float verticalFovHalf = verticalFOV * 0.5f;
+            float horizontalFovHalf = horizontalFOV * 0.5f;
+
+            referenceDeltaPos = referenceDeltaPos.normalized;
+            float yaw = Mathf.Asin(referenceDeltaPos.x) * Mathf.Rad2Deg;
+            float pitch = Mathf.Asin(referenceDeltaPos.y) * Mathf.Rad2Deg;
+
+            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
+        }
+
+        /// <summary>
+        /// Returns true if a point lies inside the cone described with given parameters, false otherwise.
+        /// The cone is inscribed to a radius equal to the vertical height of the provided FOV.
+        /// The test also ensures the distance from the point to the cone lies within the given range.
+        /// </summary>
+        /// <param name="cone">The transform that defines the orientation and position of the cone</param>
+        /// <param name="point">The point to test if it lies within the cone FOV</param>
+        /// <param name="fieldOfView">Field of view for the cone which calculates its radius</param>
+        /// <param name="minDist">Point must be at least this far away (along direction forward) from the cone </param>
+        /// <param name="maxDist">Point must be at most this far away (along direction forward) from the cone. </param>
+        /// <remarks>
+        /// Field of view parameter is in degrees and distances are in meters.
+        /// </remarks>
+        public static bool IsInFOVCone(Transform cone, 
+            Vector3 point,
+            float fieldOfView,
+            float minDist = 0.05f,
+            float maxDist = 100f)
+        {
+            var dirToPoint = point - cone.position;
+
+            var pointDist = Vector3.Dot(cone.forward, dirToPoint);
+            if (pointDist < minDist || pointDist > maxDist)
+            {
+                return false;
+            }
+
+            var degrees = Mathf.Acos(pointDist / dirToPoint.magnitude) * Mathf.Rad2Deg;
+            return degrees < fieldOfView * 0.5f;
         }
 
     }

@@ -10,6 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class MixedRealityOptimizeUtils
     {
+        public static bool IsSinglePassInstanced()
+        {
+            return PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+        }
+
+        public static void SetSinglePassInstanced()
+        {
+            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+        }
+
         /// <summary>
         /// Checks if the project has depth buffer sharing enabled.
         /// </summary>
@@ -23,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     return true;
                 }
             }
-            else if (IsBuildTargetWMR())
+            else if (IsBuildTargetUWP())
             {
 #if UNITY_2019_1_OR_NEWER
                 if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
@@ -49,9 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
             }
-            else if (IsBuildTargetWMR())
+            else if (IsBuildTargetUWP())
             {
-#if UNITY_2019
+#if UNITY_2019_1_OR_NEWER
                 PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
 #else
                 var playerSettings = GetSettingsObject("PlayerSettings");
@@ -81,13 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             PlayerSettings.VRDaydream.depthFormat = depthFormat;
 
             var playerSettings = GetSettingsObject("PlayerSettings");
-#if UNITY_2019
-        PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ? 
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
-            PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
+#if UNITY_2019_1_OR_NEWER
+            PlayerSettings.VRWindowsMixedReality.depthBufferFormat = set16BitDepthBuffer ?
+                PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit :
+                PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat24Bit;
 
-        ChangeProperty(playerSettings, 
-                "vrSettings.lumin.depthFormat", 
+            ChangeProperty(playerSettings,
+                "vrSettings.lumin.depthFormat",
                 property => property.intValue = depthFormat);
 #else
             ChangeProperty(playerSettings,
@@ -98,27 +108,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public static bool IsRealtimeGlobalIlluminationEnabled()
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
             return property != null && property.boolValue;
         }
 
         public static void SetRealtimeGlobalIlluminationEnabled(bool enabled)
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             ChangeProperty(lightmapSettings, "m_GISettings.m_EnableRealtimeLightmaps", property => property.boolValue = enabled);
         }
 
         public static bool IsBakedGlobalIlluminationEnabled()
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableBakedLightmaps");
             return property != null && property.boolValue;
         }
 
         public static void SetBakedGlobalIlluminationEnabled(bool enabled)
         {
-            var lightmapSettings = GetLighmapSettings();
+            var lightmapSettings = GetLightmapSettings();
             ChangeProperty(lightmapSettings, "m_GISettings.m_EnableBakedLightmaps", property => property.boolValue = enabled);
         }
 
@@ -128,9 +138,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64;
         }
 
-        public static bool IsBuildTargetWMR()
+        public static bool IsBuildTargetUWP()
         {
             return EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
+        }
+
+        public static bool IsBuildTargetAndroid()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
+        }
+
+        public static bool IsBuildTargetIOS()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS;
         }
 
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
@@ -150,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return new SerializedObject(settings);
         }
 
-        public static SerializedObject GetLighmapSettings()
+        public static SerializedObject GetLightmapSettings()
         {
             var getLightmapSettingsMethod = typeof(LightmapEditorSettings).GetMethod("GetLightmapSettings", BindingFlags.Static | BindingFlags.NonPublic);
             var lightmapSettings = getLightmapSettingsMethod.Invoke(null, null) as UnityEngine.Object;

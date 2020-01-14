@@ -28,23 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public delegate void HandJointDataGenerator(MixedRealityPose[] jointPoses);
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         public void Copy(SimulatedHandData other)
         {
             isTracked = other.isTracked;
@@ -62,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="isTrackedNew">True if the hand is currently tracked.</param>
         /// <param name="isPinchingNew">True if the hand is in a pinching pose that causes a "Select" action.</param>
         /// <param name="generator">Generator function that produces joint positions and rotations. The joint data generator is only used when the hand is tracked.</param>
-        /// <remarks>The timestamp of the hand data will be the current time, see [DateTime.UtcNow](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.utcnow?view=netframework-4.8).</remarks>
+        /// <remarks>The timestamp of the hand data will be the current time, see [DateTime.UtcNow](https://docs.microsoft.com/dotnet/api/system.datetime.utcnow?view=netframework-4.8).</remarks>
         public bool Update(bool isTrackedNew, bool isPinchingNew, HandJointDataGenerator generator)
         {
             bool handDataChanged = false;
@@ -120,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+            CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
 
             UpdateVelocity();
 

@@ -1,13 +1,14 @@
-# Monitoring Content Loading
+# Monitoring content loading
 
-## Scene Operation Progress
+## Scene operation progress
 
 When content is being loaded or unloaded, the `SceneOperationInProgress` property will return true. You can monitor the progress of this operation via the `SceneOperationProgress` property.
 
 The `SceneOperationProgress` value is the average of all current async scene operations. At the start of a content load, `SceneOperationProgress` will be zero. Once fully completed, `SceneOperationProgress` will be set to 1 and will remain at 1 until the next operation takes place. Note that only content scene operations affect these properties.
 
 These properties reflect the state of an *entire operation* from start to finish, even if that operation includes multiple steps:
-```
+
+```c#
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 // First do an additive scene load
@@ -24,18 +25,19 @@ await sceneSystem.LoadContent("ContentScene1");
 sceneSystem.LoadContent("ContentScene2", LoadSceneMode.Single)
 ```
 
-### Examples
+### Progress examples
 
 `SceneOperationInProgress` can be useful if activity should be suspended while content is being loaded:
-```
-public class FooManager : MonoBehavior
+
+```c#
+public class FooManager : MonoBehaviour
 {
-    private void Update() 
+    private void Update()
     {
         IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
         // Don't update foos while a scene operation is in progress
-        if (sceneSystem.SceneOperationInProgress) 
+        if (sceneSystem.SceneOperationInProgress)
         {
             return;
         }
@@ -48,14 +50,15 @@ public class FooManager : MonoBehavior
 ```
 
 `SceneOperationProgress` can be used to display progress dialogs:
-```
-public class ProgressDialog : MonoBehavior
+
+```c#
+public class ProgressDialog : MonoBehaviour
 {
-    private void Update() 
+    private void Update()
     {
         IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
-        if (sceneSystem.SceneOperationInProgress) 
+        if (sceneSystem.SceneOperationInProgress)
         {
             DisplayProgressIndicator(sceneSystem.SceneOperationProgress);
         }
@@ -67,8 +70,10 @@ public class ProgressDialog : MonoBehavior
     ...
 }
 ```
+
 ---
-## Monitoring With Actions
+
+## Monitoring with actions
 
 The Scene System provides several actions to let you know when scenes are being loaded or unloaded. Each action relays the name of the affected scene.
 
@@ -79,26 +84,28 @@ On the flip side, because *OnLoaded* actions are only invoked when all scenes ar
 Action | When it's invoked | Content Scenes | Lighting Scenes | Manager Scenes
 --- | --- | --- | --- | --- | ---
 `OnWillLoadContent` | Just prior to a content scene load | • | |  
-`OnContentLoaded` | After all content scenes in a load operation have been fully loaded and activated | • | |  
-`OnWillUnloadContent` | Just prior to a content scene unload operation | • | | 
-`OnContentUnloaded` | After all content scenes in an unload operation have been fully unloaded | • | | 
-`OnWillLoadLighting` | Just prior to a lighting scene load | | • | 
-`OnLightingLoaded` | After a lighting scene has been fully loaded and activated| | • | 
-`OnWillUnloadLighting` | Just prior to a lighting scene unload | | • | 
-`OnLightingUnloaded` | After a lighting scene has been fully unloaded | | • | 
+`OnContentLoaded` | After all content scenes in a load operation have been fully loaded and activated | • | |
+`OnWillUnloadContent` | Just prior to a content scene unload operation | • | |
+`OnContentUnloaded` | After all content scenes in an unload operation have been fully unloaded | • | |
+`OnWillLoadLighting` | Just prior to a lighting scene load | | • |
+`OnLightingLoaded` | After a lighting scene has been fully loaded and activated| | • |
+`OnWillUnloadLighting` | Just prior to a lighting scene unload | | • |
+`OnLightingUnloaded` | After a lighting scene has been fully unloaded | | • |
 `OnWillLoadScene` | Just prior to a scene load | • | • | •
 `OnSceneLoaded` | After all scenes in an operation are fully loaded and activated | • | • | •
 `OnWillUnloadScene` | Just prior to a scene unload | • | • | •
 `OnSceneUnloaded` | After a scene is fully unloaded |  • | • | •
 
-### Examples
+### Action examples
+
 Another progress dialog example using actions and a coroutine instead of Update:
-```
-public class ProgressDialog : MonoBehavior
+
+```c#
+public class ProgressDialog : MonoBehaviour
 {
     private bool displayingProgress = false;
 
-    private void Start() 
+    private void Start()
     {
         IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
         sceneSystem.OnWillLoadContent += HandleSceneOperation;
@@ -111,18 +118,18 @@ public class ProgressDialog : MonoBehavior
         // So filter the events appropriately.
         if (displayingProgress)
         {
-            return;            
+            return;
         }
 
         displayingProgress = true;
         StartCoroutine(DisplayProgress());
     }
 
-    private IEnumerator DisplayProgress() 
+    private IEnumerator DisplayProgress()
     {
         IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
-        while (sceneSystem.SceneOperationInProgress) 
+        while (sceneSystem.SceneOperationInProgress)
         {
             DisplayProgressIndicator(sceneSystem.SceneOperationProgress);
             yield return null;
@@ -135,13 +142,14 @@ public class ProgressDialog : MonoBehavior
     ...
 }
 ```
+
 ---
 
-## Controlling Scene Activation
+## Controlling scene activation
 
 By default content scenes are set to activate when loaded. If you want to control scene activation manually, you can pass a `SceneActivationToken` to any content load method. If multiple content scenes are being loaded by a single operation, this activation token will apply to all scenes.
 
-```
+```c#
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 SceneActivationToken activationToken = new SceneActivationToken();
@@ -166,12 +174,14 @@ while (sceneSystem.SceneOperationInProgress)
 
 // Proceed with experience
 ```
+
 ---
 
 ## Checking which content is loaded
+
 The `ContentSceneNames` property provides an array of available content scenes in order of build index. You can check whether these scenes are loaded via `IsContentLoaded(string contentName)`.
 
-```
+```c#
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
 
 string[] contentSceneNames = sceneSystem.ContentSceneNames;
@@ -181,5 +191,4 @@ for (int i = 0; i < contentSceneNames.Length; i++>)
 {
     loadStatus[i] = sceneSystem.IsContentLoaded(contentSceneNames[i]);
 }
-
 ```

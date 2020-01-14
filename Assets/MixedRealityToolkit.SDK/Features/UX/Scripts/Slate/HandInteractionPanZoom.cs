@@ -8,9 +8,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
-
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [AddComponentMenu("Scripts/MRTK/SDK/HandInteractionPanZoom")]
     public class HandInteractionPanZoom : 
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
@@ -642,7 +642,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else//is far
             {
-                if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
+                if (data.currentPointer is GGVPointer)
+                {
+                    data.touchingInitialPt = SnapFingerToQuad(data.currentPointer.Position);
+                    data.touchingPoint = data.touchingInitialPt;
+                    data.touchingPointSmoothed = data.touchingInitialPt;
+                }
+                else if (TryGetHandRayPoint(controller, out Vector3 handRayPt) == true)
                 {
                     data.touchingInitialPt = SnapFingerToQuad(handRayPt);
                     data.touchingPoint = data.touchingInitialPt;
@@ -651,7 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
-                }
+                }              
             }
 
             //store value in case of MRController

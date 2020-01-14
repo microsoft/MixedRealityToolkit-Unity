@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// This script allows to zoom into and pan the texture of a GameObject. 
     /// It also allows for scrolling by restricting panning to one direction.  
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/PanZoomBaseTexture")]
     public class PanZoomBaseTexture : PanZoomBase
     {
         protected Renderer textureRenderer = null;
@@ -189,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     Vector3 halfsize = gameObject.transform.lossyScale / 2;
 
                     // Let's transform back to the origin: Translate & Rotate
-                    Vector3 transfHitPnt = InputSystem.EyeGazeProvider.HitPosition - center;
+                    Vector3 transfHitPnt = CoreServices.InputSystem.EyeGazeProvider.HitPosition - center;
 
                     // Rotate around the y axis
                     transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transfHitPnt;

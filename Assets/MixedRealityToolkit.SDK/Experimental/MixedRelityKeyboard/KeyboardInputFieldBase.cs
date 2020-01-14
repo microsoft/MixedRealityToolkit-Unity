@@ -28,8 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             inputField = GetComponent<T>();
 
-            DisableRaycastTarget(Text(inputField));
-            DisableRaycastTarget(PlaceHolder(inputField));
+            DisableRaycastTarget(TextGraphic(inputField));
+            DisableRaycastTarget(PlaceHolderGraphic(inputField));
         }
 
         private void DisableRaycastTarget(Graphic graphic)
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #endregion
 
 #endif
-        protected abstract Graphic Text(T inputField);
-        protected abstract Graphic PlaceHolder(T inputField);
+        protected abstract Graphic TextGraphic(T inputField);
+        protected abstract Graphic PlaceHolderGraphic(T inputField);
     }
 }

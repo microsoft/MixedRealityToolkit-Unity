@@ -16,12 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public override void ShowKeyboard()
         {
             base.ShowKeyboard();
-            KeyboardText = inputField.text;
+            Text = inputField.text;
         }
 #endif
-        protected override void UpdateText(string text) => inputField.text = text;
+        public override string Text { get => inputField.text; protected set => inputField.text = value; }
 
-        protected override Graphic Text(InputField inputField) => inputField.textComponent;
-        protected override Graphic PlaceHolder(InputField inputField) => inputField.placeholder;
+        protected override Graphic TextGraphic(InputField inputField) => inputField.textComponent;
+        protected override Graphic PlaceHolderGraphic(InputField inputField) => inputField.placeholder;
     }
 }

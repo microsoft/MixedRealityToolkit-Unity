@@ -94,7 +94,15 @@ namespace Microsoft.MixedReality.Toolkit
                         continue;
                     }
 
-                    eventHandler.Invoke((T)handlerEntry.handler, eventData);
+                    try
+                    {
+                        // Ensure client code does not crash our input system
+                        eventHandler.Invoke((T)handlerEntry.handler, eventData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
                 }
             }
 
@@ -263,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             foreach (var listener in EventListeners)
             {
-                Debug.LogError("Event system is destroyed, while still having a registered listener. " +
+                Debug.LogError($"Event system {Name} is destroyed, while still having a registered listener. " +
                     "Make sure that all global event listeners have been unregistered before destroying the event system. " +
                     $"Dangling listener: object {listener.name}");
             }
@@ -273,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit
                 for (int index = 0; index < typeEntry.Value.Count; index++)
                 {
                     var handlerEntry = typeEntry.Value[index];
-                    Debug.LogError("Event system is being destroyed while still having a registered listener. " +
+                    Debug.LogError($"Event system {Name} is being destroyed while still having a registered listener. " +
                         "Make sure that all global event listeners have been unregistered before destroying the event system. " +
                         $"Dangling listener: handler {handlerEntry.handler}");
                 }

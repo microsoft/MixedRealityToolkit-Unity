@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             KeyboardText = inputField.text;
         }
 #endif
-        protected override void UpdateText(string text) => inputField.text = text;
+        public override string Text { get => inputField.text; protected set => inputField.text = value; }
 
-        protected override Graphic Text(TMP_InputField inputField) => inputField.textComponent;
-        protected override Graphic PlaceHolder(TMP_InputField inputField) => inputField.placeholder;
+        protected override Graphic TextGraphic(TMP_InputField inputField) => inputField.textComponent;
+        protected override Graphic PlaceHolderGraphic(TMP_InputField inputField) => inputField.placeholder;
     }
 }

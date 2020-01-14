@@ -7,9 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     internal class TestExtensionService3 : BaseTestExtensionService, ITestExtensionService3
     {
         public TestExtensionService3(
-            IMixedRealityServiceRegistrar registrar,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base( name, priority, profile) { }
     }
 }

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows for dynamically blending out a target after it has been looked at for a certain amount of time. 
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/BlendOut")]
     public class BlendOut : MonoBehaviour
     {
         #region Serialized variables

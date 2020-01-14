@@ -11,31 +11,23 @@ using Windows.UI.ViewManagement;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Class for manually handling the Windows Mixed Reality system keyboard
+    /// Class that can launch and hide a system keyboard specifically for Windows Mixed Reality
+    /// devices (HoloLens 2, Windows Mixed Reality).
+    /// 
+    /// Implements a workaround for UWP TouchScreenKeyboard bug which prevents
+    /// UWP keyboard from showing up again after it is closed.
+    /// Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityKeyboard")]
     public class MixedRealityKeyboard : MixedRealityKeyboardBase
     {
-        #region Properties
-
-        private string text;
-        public string Text
+        /// <summary>
+        /// Returns the committed text.
+        /// </summary>
+        public override string Text
         {
-            get
-            {
-                return text;
-            }
-
-            private set
-            {
-                if (text != value)
-                {
-                    text = value;
-                }
-            }
-        }
-
-        #endregion Properties
-
-        protected override void UpdateText(string text) => Text = text;
+            get;
+            protected set;
+        } = string.Empty;
     }
 }

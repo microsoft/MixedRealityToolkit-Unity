@@ -89,7 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent fluentLightIntensity = new GUIContent("Light Intensity", "Intensity Scaler for All Hover and Proximity Lights");
             public static GUIContent roundCorners = new GUIContent("Round Corners", "(Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent roundCornerRadius = new GUIContent("Unit Radius", "Rounded Rectangle Corner Unit Sphere Radius");
+            public static GUIContent roundCornersRadius = new GUIContent("Corners Radius", "UpLeft-UpRight-BottomRight-BottomLeft");
             public static GUIContent roundCornerMargin = new GUIContent("Margin %", "Distance From Geometry Edge");
+            public static GUIContent independentCorners = new GUIContent("Independent Corners", "Manage each corner separately");
             public static GUIContent borderLight = new GUIContent("Border Light", "Enable Border Lighting (Assumes UVs Specify Borders of Surface, Works Best on Unity Cube, Quad, and Plane)");
             public static GUIContent borderLightUsesHoverColor = new GUIContent("Use Hover Color", "Border Color Comes From Hover Light Color Override");
             public static GUIContent borderLightReplacesAlbedo = new GUIContent("Replace Albedo", "Border Light Replaces Albedo (Replacement Rather Than Additive)");
@@ -173,6 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty roundCorners;
         protected MaterialProperty roundCornerRadius;
         protected MaterialProperty roundCornerMargin;
+        protected MaterialProperty independentCorners;
+        protected MaterialProperty roundCornersRadius;
         protected MaterialProperty borderLight;
         protected MaterialProperty borderLightUsesHoverColor;
         protected MaterialProperty borderLightReplacesAlbedo;
@@ -258,7 +262,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             fluentLightIntensity = FindProperty("_FluentLightIntensity", props);
             roundCorners = FindProperty("_RoundCorners", props);
             roundCornerRadius = FindProperty("_RoundCornerRadius", props);
+            roundCornersRadius = FindProperty("_RoundCornersRadius", props);
             roundCornerMargin = FindProperty("_RoundCornerMargin", props);
+            independentCorners = FindProperty("_IndependentCorners", props);
             borderLight = FindProperty("_BorderLight", props);
             borderLightUsesHoverColor = FindProperty("_BorderLightUsesHoverColor", props);
             borderLightReplacesAlbedo = FindProperty("_BorderLightReplacesAlbedo", props);
@@ -403,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUI.indentLevel += 2;
                 materialEditor.TexturePropertySingleLine(Styles.channelMap, channelMap);
-                GUILayout.Box("Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)", EditorStyles.helpBox, new GUILayoutOption[0]);
+                GUILayout.Box("Metallic (Red), Occlusion (Green), Emission (Blue), Smoothness (Alpha)", EditorStyles.helpBox, Array.Empty<GUILayoutOption>());
                 EditorGUI.indentLevel -= 2;
             }
 
@@ -516,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 (RenderingMode)renderingMode.floatValue != RenderingMode.Cutout)
             {
                 materialEditor.ShaderProperty(blendedClippingWidth, Styles.blendedClippingWidth);
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, Array.Empty<GUILayoutOption>());
             }
 
             materialEditor.ShaderProperty(clippingBorder, Styles.clippingBorder);
@@ -525,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 materialEditor.ShaderProperty(clippingBorderWidth, Styles.clippingBorderWidth, 2);
                 materialEditor.ShaderProperty(clippingBorderColor, Styles.clippingBorderColor, 2);
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, Array.Empty<GUILayoutOption>());
             }
 
             materialEditor.ShaderProperty(nearPlaneFade, Styles.nearPlaneFade);
@@ -550,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (PropertyEnabled(hoverLight))
             {
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(HoverLight), Styles.hoverLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(HoverLight), Styles.hoverLight.text), EditorStyles.helpBox, Array.Empty<GUILayoutOption>());
 
                 materialEditor.ShaderProperty(enableHoverColorOverride, Styles.enableHoverColorOverride, 2);
 
@@ -575,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 materialEditor.ShaderProperty(proximityLightSubtractive, Styles.proximityLightSubtractive, 2);
                 materialEditor.ShaderProperty(proximityLightTwoSided, Styles.proximityLightTwoSided, 2);
-                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ProximityLight), Styles.proximityLight.text), EditorStyles.helpBox, new GUILayoutOption[0]);
+                GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ProximityLight), Styles.proximityLight.text), EditorStyles.helpBox, Array.Empty<GUILayoutOption>());
             }
 
             materialEditor.ShaderProperty(borderLight, Styles.borderLight);
@@ -615,7 +621,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (PropertyEnabled(roundCorners))
             {
-                materialEditor.ShaderProperty(roundCornerRadius, Styles.roundCornerRadius, 2);
+                materialEditor.ShaderProperty(independentCorners, Styles.independentCorners, 2);
+                if (PropertyEnabled(independentCorners))
+                {
+                    materialEditor.ShaderProperty(roundCornersRadius, Styles.roundCornersRadius, 2);
+                }
+                else
+                {
+                    materialEditor.ShaderProperty(roundCornerRadius, Styles.roundCornerRadius, 2);
+                }
+
                 materialEditor.ShaderProperty(roundCornerMargin, Styles.roundCornerMargin, 2);
             }
 

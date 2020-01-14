@@ -39,8 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         [SerializeField]
         private BaseSpatialAwarenessObserverProfile observerProfile;
 
+        /// <inheritdoc />
+        public BaseMixedRealityProfile Profile => observerProfile;
+
         /// <summary>
-        /// 
+        /// Spatial Observer specific configuration profile.
         /// </summary>
         public BaseSpatialAwarenessObserverProfile ObserverProfile => observerProfile;
 

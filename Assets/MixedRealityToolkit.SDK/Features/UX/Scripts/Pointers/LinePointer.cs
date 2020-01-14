@@ -10,13 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A simple line pointer for drawing lines from the input source origin to the current pointer position.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/LinePointer")]
     public class LinePointer : BaseControllerPointer
     {
-        [Range(1, 50)]
-        [SerializeField]
-        [Tooltip("This setting has a high performance cost. Values above 20 are not recommended.")]
-        protected int LineCastResolution = 10;
-
         [SerializeField]
         protected Gradient LineColorSelected = new Gradient();
 
@@ -50,11 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// If no line renderers are specified, this array will be auto-populated on startup.
         /// </remarks>
-        public BaseMixedRealityLineRenderer[] LineRenderers
-        {
-            get { return lineRenderers; }
-            set { lineRenderers = value; }
-        }
+        public BaseMixedRealityLineRenderer[] LineRenderers => lineRenderers;
+
+        /// <inheritdoc />
+        public override bool IsInteractionEnabled =>
+                // If IsTracked is not true, then we don't have position data yet (or have stale data),
+                // so remain disabled until we know where to appear (not just at the origin).
+                IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
+
+        private Vector3 lineStartPoint;
+        private Vector3 lineEndPoint;
 
         private void CheckInitialization()
         {
@@ -77,6 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.LogError($"No Mixed Reality Line Renderers found on {gameObject.name}. Did you forget to add a Mixed Reality Line Renderer?");
             }
+
+            for (int i = 0; i < lineRenderers.Length; i++)
+            {
+                lineRenderers[i].enabled = true;
+            }
         }
 
         #region MonoBehaviour Implementation
@@ -91,9 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnDisable();
 
-            foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
+            for (int i = 0; i < lineRenderers.Length; i++)
             {
-                lineRenderer.enabled = false;
+                lineRenderers[i].enabled = false;
             }
         }
 
@@ -104,35 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            Debug.Assert(lineBase != null);
+            PreUpdateLineRenderers();
 
-            lineBase.UpdateMatrix();
-
-            // Set our first and last points
-            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
-            {
-                // Make the final point 'stick' to the target at the distance of the target
-                SetLinePoints(Position, Result.Details.Point, Result.Details.RayDistance);
-            }
-            else
-            {
-                SetLinePoints(Position, Position + Rotation * Vector3.forward * DefaultPointerExtent, DefaultPointerExtent);
-            }
-
-            // Make sure our array will hold
-            if (Rays == null || Rays.Length != LineCastResolution)
-            {
-                Rays = new RayStep[LineCastResolution];
-            }
-
-            float stepSize = 1f / Rays.Length;
-            Vector3 lastPoint = lineBase.GetUnClampedPoint(0f);
-            for (int i = 0; i < Rays.Length; i++)
-            {
-                Vector3 currentPoint = lineBase.GetUnClampedPoint(stepSize * (i + 1));
-                Rays[i].UpdateRayStep(ref lastPoint, ref currentPoint);
-                lastPoint = currentPoint;
-            }
+            UpdateRays();
         }
 
         /// <inheritdoc />
@@ -142,9 +122,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             bool isEnabled = IsInteractionEnabled;
             LineBase.enabled = isEnabled;
-            BaseCursor?.SetVisibility(isEnabled);
+            if (BaseCursor != null)
+            {
+                BaseCursor.SetVisibility(isEnabled);
+            }
 
-            if (!isEnabled) 
+            PostUpdateLineRenderers();
+        }
+
+        protected virtual void PreUpdateLineRenderers()
+        {
+            Debug.Assert(lineBase != null);
+
+            lineBase.UpdateMatrix();
+
+            // Set our first and last points
+            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
+            {
+                // Make the final point 'stick' to the target at the distance of the target
+                SetLinePoints(Position, Result.Details.Point);
+            }
+            else
+            {
+                SetLinePoints(Position, Position + Rotation * Vector3.forward * DefaultPointerExtent);
+            }
+        }
+
+        protected virtual void PostUpdateLineRenderers()
+        {
+            if (!IsInteractionEnabled)
             {
                 return;
             }
@@ -152,11 +158,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // The distance the ray travels through the world before it hits something. Measured in world-units (as opposed to normalized distance).
             float clearWorldLength;
             Gradient lineColor = LineColorNoTarget;
+
             if (Result?.CurrentPointerTarget != null)
             {
                 // We hit something
                 clearWorldLength = Result.Details.RayDistance;
-                lineColor = LineColorValid;
+                lineColor = IsSelectPressed ? LineColorSelected : LineColorValid;
             }
             else
             {
@@ -169,12 +176,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 lineColor = LineColorLockFocus;
             }
 
-            int maxClampLineSteps = LineCastResolution;
-            foreach (BaseMixedRealityLineRenderer lineRenderer in lineRenderers)
+            int maxClampLineSteps = 2;
+            for (int i = 0; i < LineRenderers.Length; i++)
             {
                 // Renderers are enabled by default if line is enabled
-                maxClampLineSteps = Mathf.Max(maxClampLineSteps, lineRenderer.LineStepCount);
-                lineRenderer.LineColor = lineColor;
+                maxClampLineSteps = Mathf.Max(maxClampLineSteps, LineRenderers[i].LineStepCount);
+                LineRenderers[i].LineColor = lineColor;
             }
 
             // Used to ensure the line doesn't extend beyond the cursor
@@ -195,17 +202,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        protected virtual void SetLinePoints(Vector3 startPoint, Vector3 endPoint, float distance)
+        protected virtual void UpdateRays()
         {
+            const int LineLength = 1;
+
+            // Make sure our array will hold
+            if (Rays == null || Rays.Length != LineLength)
+            {
+                Rays = new RayStep[LineLength];
+            }
+
+            Rays[0].UpdateRayStep(ref lineStartPoint, ref lineEndPoint);
+        }
+
+        protected void SetLinePoints(Vector3 startPoint, Vector3 endPoint)
+        {
+            lineStartPoint = startPoint;
+            lineEndPoint = endPoint;
+
             lineBase.FirstPoint = startPoint;
             lineBase.LastPoint = endPoint;
         }
 
-        /// <inheritdoc />
-        public override bool IsInteractionEnabled =>
-                // If IsTracked is not true, then we don't have position data yet (or have stale data),
-                // so remain disabled until we know where to appear (not just at the origin).
-                IsFocusLocked || (IsTracked && Controller.IsInPointingPose && base.IsInteractionEnabled);
 
         #endregion IMixedRealityPointer Implementation
     }

@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// Provides a solver that follows the TrackedObject/TargetTransform in an orbital motion.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/Orbital")]
     public class Orbital : Solver
     {
         [SerializeField]
@@ -75,11 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [Range(2, 24)]
         [SerializeField]
-        [Tooltip("The division of steps this object can tether to. Higher the number, the more snapple steps.")]
+        [Tooltip("The division of steps this object can tether to. Higher the number, the more snapping steps.")]
         private int tetherAngleSteps = 6;
 
         /// <summary>
-        /// The division of steps this object can tether to. Higher the number, the more snapple steps.
+        /// The division of steps this object can tether to. Higher the number, the more snapping steps.
         /// </summary>
         public int TetherAngleSteps
         {

@@ -166,9 +166,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void OnDisable()
         {
-            if (IsSelectPressed && InputSystem != null)
+            if (IsSelectPressed)
             {
-                InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
             }
 
             base.OnDisable();
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (isCursorInstantiatedFromPrefab)
             {
                 // Manually reset base cursor before destroying it
-                BaseCursor.Destroy();
+                BaseCursor?.Destroy();
                 DestroyCursorInstance();
                 isCursorInstantiatedFromPrefab = false;
             }
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override IMixedRealityController Controller
         {
-            get { return base.Controller; }
+            get => base.Controller;
             set
             {
                 base.Controller = value;
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (pointerId == 0)
                 {
-                    pointerId = InputSystem.FocusProvider.GenerateNewPointerId();
+                    pointerId = CoreServices.InputSystem.FocusProvider.GenerateNewPointerId();
                 }
 
                 return pointerId;
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public string PointerName
         {
-            get { return pointerName; }
+            get => pointerName;
             set
             {
                 pointerName = value;
@@ -284,8 +284,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public virtual bool IsActive { get; set; }
-
 
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
@@ -312,9 +312,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (overrideGlobalPointerExtent)
                 {
-                    if (InputSystem?.FocusProvider != null)
+                    if (CoreServices.InputSystem?.FocusProvider != null)
                     {
-                        return InputSystem.FocusProvider.GlobalPointingExtent;
+                        return CoreServices.InputSystem.FocusProvider.GlobalPointingExtent;
                     }
                 }
 
@@ -336,8 +336,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float DefaultPointerExtent
         {
-            get { return Mathf.Min(defaultPointerExtent, PointerExtent); }
-            set { defaultPointerExtent = value; }
+            get => Mathf.Min(defaultPointerExtent, PointerExtent);
+            set => defaultPointerExtent = value;
         }
 
         /// <inheritdoc />
@@ -367,8 +367,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public float SphereCastRadius
         {
-            get { return sphereCastRadius; }
-            set { sphereCastRadius = value; }
+            get => sphereCastRadius;
+            set => sphereCastRadius = value;
         }
 
         /// <inheritdoc />
@@ -385,12 +385,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (IsSelectPressed)
             {
-                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
             }
         }
 
-        ///  <inheritdoc />
+        /// <inheritdoc />
         public virtual void OnPreCurrentPointerTargetChange() { }
+
+        /// <inheritdoc />
+        public virtual void Reset()
+        {
+            Controller = null;
+            IsActive = false;
+            IsFocusLocked = false;
+        }
 
         #endregion IMixedRealityPointer Implementation
 
@@ -458,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (IsSelectPressed)
                 {
-                    InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
                 }
 
                 IsSelectPressed = false;
@@ -487,8 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     IsSelectPressed = false;
 
-                    InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                    CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
                 }
             }
         }
@@ -514,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (IsInteractionEnabled)
                     {
-                        InputSystem.RaisePointerDown(this, pointerAction, Handedness);
+                        CoreServices.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
                     }
                 }
             }

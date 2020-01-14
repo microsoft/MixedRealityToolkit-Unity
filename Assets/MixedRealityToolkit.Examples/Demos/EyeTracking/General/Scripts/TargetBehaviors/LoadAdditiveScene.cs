@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// When the button is selected, it triggers starting the specified scene.
     /// </summary>
     [RequireComponent(typeof(EyeTrackingTarget))]
+    [AddComponentMenu("Scripts/MRTK/Examples/LoadAdditiveScene")]
     public class LoadAdditiveScene : MonoBehaviour
     {
         [SerializeField]

@@ -87,6 +87,17 @@ foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
     }
 }
 
+$AssetsDir = Get-Item (Join-Path $GitRoot "Assets")
+
+foreach ($file in (Get-ChildItem -Path $AssetsDir -Recurse))
+{
+    if ($file.Name -eq "AssemblyInfo.cs")
+    {
+        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=AssemblyVersion[(][""])(\d+\.\d+\.\d+)(?=\.\d+)") -Strict $True
+        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=AssemblyFileVersion[(][""])(\d+\.\d+\.\d+)(?=\.\d+)") -Strict $True
+    }
+}
+
 Pop-Location  # restore original working directory
 
 if ($errors)

@@ -15,6 +15,7 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/UserInputPlayback")]
     public class UserInputPlayback : MonoBehaviour
     {
         [SerializeField]

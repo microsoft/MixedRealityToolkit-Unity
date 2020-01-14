@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private bool editorManageBuildSettings = true;
 
         [SerializeField]
-        [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content. Disable this if you want total control over scene heirarchy.")]
+        [Tooltip("If true, the service will ensure manager scene is displayed first in scene hierarchy, followed by lighting and then content. Disable this if you want total control over scene hierarchy.")]
         private bool editorEnforceSceneOrder = true;
 
         [SerializeField]

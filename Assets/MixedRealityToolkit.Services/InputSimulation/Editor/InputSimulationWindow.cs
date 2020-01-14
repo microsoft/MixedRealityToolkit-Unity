@@ -30,11 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (simulationService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        simulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
-                    }
+                    simulationService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
                 }
+
                 return simulationService;
             }
         }
@@ -46,11 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (recordingService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        recordingService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
-                    }
+                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
                 }
+
                 return recordingService;
             }
         }
@@ -62,11 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (playbackService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        playbackService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
-                    }
+                    playbackService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
                 }
+
                 return playbackService;
             }
         }
@@ -280,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RecordingService.UseBufferTimeLimit = newUseTimeLimit;
                 }
 
-                using (new GUIEnabledWrapper(RecordingService.UseBufferTimeLimit))
+                using (new EditorGUI.DisabledGroupScope(!RecordingService.UseBufferTimeLimit))
                 {
                     float newTimeLimit = EditorGUILayout.FloatField(RecordingService.RecordingBufferTimeLimit);
                     if (newTimeLimit != RecordingService.RecordingBufferTimeLimit)
@@ -330,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            using (new GUIEnabledWrapper(PlaybackService != null))
+            using (new EditorGUI.DisabledGroupScope(PlaybackService == null))
             {
                 bool wasPlaying = PlaybackService.IsPlaying;
 

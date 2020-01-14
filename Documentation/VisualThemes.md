@@ -1,5 +1,5 @@
 
-# Visual Themes
+# Visual themes
 
 Themes allow for flexible control of UX assets in response to various states transitions. This may involve changing a button's color, resizing an element in response to focus, etc. The Visual Themes framework is made up of two key pieces: 1) configuration and 2) runtime engines.
 
@@ -31,7 +31,7 @@ To create a new [`State`](xref:Microsoft.MixedReality.Toolkit.UI.States) asset:
 
 A [`State`](xref:Microsoft.MixedReality.Toolkit.UI.States) ScriptableObject defines both the list of states as well as the type of *StateModel* to create for these states. A *StateModel* is a class that extends [`BaseStateModel`](xref:Microsoft.MixedReality.Toolkit.UI.BaseStateModel) and implements the state machine logic to generate the current state at runtime. The current state from this class is generally used by Theme Engines at runtime to dictate what values to set against material properties, GameObject transforms, and more.
 
-### Theme Engine properties
+### Theme engine properties
 
 Outside of *States*, a [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme) asset also defines a list of Theme Engines and the associated properties for these engines. A [Theme engine](#theme-engines) again defines the logic to set the correct values against a GameObject at runtime.
 
@@ -59,7 +59,7 @@ To help expedite development, the following helper methods are useful for simpli
 
 [`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
 
-```csharp
+```c#
 // This code example builds a Theme ScriptableObject that can be used with an Interactable component.
 // A random color is selected for the on pressed state every time this code is executed.
 
@@ -84,11 +84,11 @@ testTheme.States = defaultStates;
 testTheme.Definitions = new List<ThemeDefinition>() { newThemeType };
 ```
 
-## Theme Engines
+## Theme engines
 
 A [Theme Engine](#theme-engines) is a class that extends from the [`InteractableThemeBase`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase) class. These classes are instantiated at runtime and configured with a [`ThemeDefinition`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) object as outlined earlier.
 
-### Default Theme Engines
+### Default theme engines
 
 MRTK ships with a default set of Theme Engines listed below:
 
@@ -109,7 +109,7 @@ MRTK ships with a default set of Theme Engines listed below:
 
 The default Theme Engines can be found under [MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines).
 
-### Custom Theme Engines
+### Custom theme engines
 
 As stated, a Theme Engine is defined as a class that extends from the [`InteractableThemeBase`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase) class. Thus, new Theme Engine need only extend this class and implement the following:
 
@@ -118,7 +118,7 @@ As stated, a Theme Engine is defined as a class that extends from the [`Interact
 `public abstract void SetValue(ThemeStateProperty property, int index, float percentage)`
 (xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue)
 
-For the given property, which can be identified by `ThemeStateProperty.Name`, set it's current state value on the targeted GameObject host (i.e set the material color, etc). The *index* indicates the current state value to access and the *percentage*, a float between 0 and 1, is used for easing/lerping between values.
+For the given property, which can be identified by `ThemeStateProperty.Name`, set its current state value on the targeted GameObject host (i.e set the material color, etc). The *index* indicates the current state value to access and the *percentage*, a float between 0 and 1, is used for easing/lerping between values.
 
 `public abstract ThemePropertyValue GetProperty(ThemeStateProperty property)`(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty)
 
@@ -154,11 +154,11 @@ If the custom Theme Engine can support targeting shader properties. It is recomm
 > - [`InteractableTextureTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme)
 > - [`ScaleOffsetColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme)
 
-### Custom Theme Engine example
+### Custom theme engine example
 
-The class below is an example of a custom new Theme Engine. This implementation will find a [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html) component on the initialized host object and control it's visibility based on the current state.
+The class below is an example of a custom new Theme Engine. This implementation will find a [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html) component on the initialized host object and control its visibility based on the current state.
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
@@ -236,7 +236,7 @@ Extending off of the custom Theme Engine defined in the earlier section, the cod
 > [!NOTE]
 > `theme.OnUpdate(state,force)` should generally be called in the Update() method to support Theme Engines that utilize easing/lerping between values.
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
@@ -263,7 +263,7 @@ public class MeshVisibilityController : MonoBehaviour
 
     private void Update()
     {
-        // Update the theme engine to set our MeshRenderer visibility 
+        // Update the theme engine to set our MeshRenderer visibility
         // based on our current state (i.e the hideMesh variable)
         themeEngine.OnUpdate(Convert.ToInt32(hideMesh));
     }

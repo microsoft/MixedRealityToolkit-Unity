@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// Checks whether the user is calibrated and prompts a notification to encourage the user to calibrate.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/EyeCalibrationChecker")]
     public class EyeCalibrationChecker : MonoBehaviour
     {
         [Tooltip("For testing purposes, you can manually assign whether the user is eye calibrated or not.")]
@@ -20,25 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         public UnityEvent OnNoEyeCalibrationDetected;
 
         private bool? prevCalibrationStatus = null;
-        private IMixedRealityInputSystem inputSystem = null;
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             bool? calibrationStatus;
 
@@ -48,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
             else
             {
-                calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+                calibrationStatus = CoreServices.InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
             }
 
             if (calibrationStatus != null)

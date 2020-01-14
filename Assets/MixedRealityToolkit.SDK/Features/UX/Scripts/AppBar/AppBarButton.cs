@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Button class used by AppBar.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/AppBarButton")]
     public class AppBarButton : MonoBehaviour
     {
         private const float changeSpeed = 5f;

@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/MaterialInstance.html")]
     [ExecuteAlways, RequireComponent(typeof(Renderer))]
+    [AddComponentMenu("Scripts/MRTK/Core/MaterialInstance")]
     public class MaterialInstance : MonoBehaviour
     {
         /// <summary>
@@ -123,27 +124,17 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         [SerializeField, HideInInspector]
         private Material[] defaultMaterials = null;
         private Material[] instanceMaterials = null;
+        private bool initialized = false;
         private bool materialsInstanced = false;
-        private HashSet<Object> materialOwners = new HashSet<Object>();
+        private readonly HashSet<Object> materialOwners = new HashSet<Object>();
 
         private const string instancePostfix = " (Instance)";
 
-#region MonoBehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void Awake()
         {
-            if (CachedRenderer != null)
-            {
-                // Cache the default materials if ones do not already exist.
-                if (defaultMaterials == null || defaultMaterials.Length == 0)
-                {
-                    defaultMaterials = CachedRenderer.sharedMaterials;
-                }
-                else if (!materialsInstanced) // Restore the clone to it's initial state.
-                {
-                    CachedRenderer.sharedMaterials = defaultMaterials;
-                }
-            }
+            Initialize();
         }
 
         private void Update()
@@ -187,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void OnDestroy()
         {
-            if (CachedRenderer != null)
+            if (CachedRenderer != null && defaultMaterials != null)
             {
                 CachedRenderer.sharedMaterials = defaultMaterials;
             }
@@ -196,7 +187,25 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             instanceMaterials = null;
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
+
+        private void Initialize()
+        {
+            if (!initialized && CachedRenderer != null)
+            {
+                // Cache the default materials if ones do not already exist.
+                if (!HasValidMaterial(defaultMaterials))
+                {
+                    defaultMaterials = CachedRenderer.sharedMaterials;
+                }
+                else if (!materialsInstanced) // Restore the clone to it's initial state.
+                {
+                    CachedRenderer.sharedMaterials = defaultMaterials;
+                }
+
+                initialized = true;
+            }
+        }
 
         private void AcquireInstances()
         {
@@ -211,10 +220,13 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void CreateInstances()
         {
+            // Initialize must get called to set the defaultMaterials in case CreateInstances get's invoked before Awake.
+            Initialize();
+
             DestroyMaterials(instanceMaterials);
             instanceMaterials = InstanceMaterials(defaultMaterials);
 
-            if (CachedRenderer != null)
+            if (CachedRenderer != null && instanceMaterials != null)
             {
                 CachedRenderer.sharedMaterials = instanceMaterials;
             }
@@ -253,7 +265,10 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             {
                 if (source[i] != null)
                 {
-                    Debug.Assert(!IsInstanceMaterial(source[i]), "A material which is already instanced was instanced multiple times.");
+                    if (IsInstanceMaterial(source[i]))
+                    {
+                        Debug.LogWarning($"A material ({source[i].name}) which is already instanced was instanced multiple times.");
+                    }
 
                     output[i] = new Material(source[i]);
                     output[i].name += instancePostfix;
@@ -277,6 +292,22 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private static bool IsInstanceMaterial(Material material)
         {
             return ((material != null) && material.name.Contains(instancePostfix));
+        }
+
+        private static bool HasValidMaterial(Material[] materials)
+        {
+            if (materials != null)
+            {
+                foreach (var material in materials)
+                {
+                    if (material != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static void DestorySafe(UnityEngine.Object toDestroy)

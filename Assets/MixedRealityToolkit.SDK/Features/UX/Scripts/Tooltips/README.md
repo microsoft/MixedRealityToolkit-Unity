@@ -7,17 +7,19 @@ Currently we provide components for:
 ## Tooltips
 
 Manages the bulk of the tooltip display, content sizing and anchor behaviors. Also contains the text field for what a tooltip's text field should convey.
-	Provides a field to show the connected Line Data Provider (see Lines section)
+
+* Provides a field to show the connected Line Data Provider (see Lines section)
 
 ## Lines
 
 Mixed Reality Toolkit has a line concept built on top of Unity's LineRenderer concept allowing for more expressive lines.
 Begin with a LineDataProvider (Such as SimpleLine, Spline, or Parabola). A tooltip will look for a LineDataProvider automatically and then attempt to use it to connect the tooltip to the indicated Anchor.
-The line appearance and behavior can be styled and controlled in a MixedRealityLineRenderer component. 
+The line appearance and behavior can be styled and controlled in a MixedRealityLineRenderer component.
 
 Note: Not all LineDataProviders will work with Tooltips in a predictable manner.
-	SimpleLine, Spline, ParabolaConstrainted are the reasonable examples (and a prefab for each exists)
-	Ellipse, Rectangle, ParabolaLine and ParabolaPhysicalLine tend to be less reliable or produce non-useful results.
+
+* SimpleLine, Spline, ParabolaConstrained are the reasonable examples (and a prefab for each exists)
+* Ellipse, Rectangle, ParabolaLine and ParabolaPhysicalLine tend to be less reliable or produce non-useful results.
 
 ### TooltipSpawner
 

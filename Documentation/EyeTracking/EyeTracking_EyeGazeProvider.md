@@ -32,25 +32,25 @@ This will return the *head* gaze direction if 'IsEyeGazeValid' is false.
 Information about the currently gazed at target.
 Again, if 'IsEyeGazeValid' is false, this will be based on the user's *head* gaze.
 
-
 ## Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider
 
 Here is an example from the [FollowEyeGaze.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze):
 
 - Get the point of a hologram that the user is looking at:
 
-```csharp
+```c#
 // Show the object at the hit position of the user's eye gaze ray with the target.
-gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition; 
+gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition;
 ```
 
 - Showing a visual asset at a fixed distance from where the user is currently looking:
 
-```csharp
+```c#
 // If no target is hit, show the object at a default distance along the gaze ray.
-gameObject.transform.position = 
+gameObject.transform.position =
 MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin +
 MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 ```
+
 ---
 [Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)

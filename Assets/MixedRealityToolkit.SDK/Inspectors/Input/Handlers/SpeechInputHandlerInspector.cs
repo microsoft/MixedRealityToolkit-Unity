@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 // remove the keywords already assigned from the registered list
                 var handler = (SpeechInputHandler)target;
-                var availableKeywords = new string[0];
+                var availableKeywords = System.Array.Empty<string>();
 
                 if (handler.Keywords != null && distinctRegisteredKeywords != null)
                 {

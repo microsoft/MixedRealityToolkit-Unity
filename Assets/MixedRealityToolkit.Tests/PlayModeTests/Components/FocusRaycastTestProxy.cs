@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// including positioning (through <see cref="RayLineData"/>), as well as the GameObject that the test author expects to be selected
     /// as the pointer's new focus target after the values are set on the <see cref="TestPointer"/>, and it is updated by the <see cref="Toolkit.Input.FocusProvider"/>.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Tests/FocusRaycastTestProxy")]
     public class FocusRaycastTestProxy : MonoBehaviour
     {
         /// <summary>
@@ -28,19 +29,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// The number of RaySteps to generate from <see cref="RayLineData"/>.
-        /// Corresponds to <see cref="Toolkit.Input.LinePointer.LineCastResolution"/> and is used to set that value on the <see cref="TestPointer"/>.
+        /// Corresponds to <see cref="Toolkit.Input.CurvePointer.LineCastResolution"/> and is used to set that value on the <see cref="TestPointer"/>.
         /// </summary>
         public int LineCastResolution = 10;
 
         /// <summary>
         /// The object that is expected to be set for the <see cref="TestPointer"/>'s <see cref="Toolkit.Input.IPointerResult.CurrentPointerTarget"/> after <see cref="Toolkit.Input.FocusProvider.Update"/>.
-        /// If the target object doeesn't match, it will fail the test.
+        /// If the target object doesn't match, it will fail the test.
         /// </summary>
         public GameObject ExpectedHitObject = null;
 
         private void Awake()
         {
-            RayLineData = RayLineData ?? GetComponent<BaseMixedRealityLineDataProvider>();
+            if (RayLineData == null)
+            {
+                RayLineData = GetComponent<BaseMixedRealityLineDataProvider>();
+            }
         }
 
         private void OnDrawGizmos()

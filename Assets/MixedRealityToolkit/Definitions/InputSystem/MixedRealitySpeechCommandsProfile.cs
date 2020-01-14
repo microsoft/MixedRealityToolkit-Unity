@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The list of Speech Commands users use in your application.")]
-        private SpeechCommands[] speechCommands = new SpeechCommands[0];
+        private SpeechCommands[] speechCommands = System.Array.Empty<SpeechCommands>();
 
         /// <summary>
         /// The list of Speech Commands users use in your application.

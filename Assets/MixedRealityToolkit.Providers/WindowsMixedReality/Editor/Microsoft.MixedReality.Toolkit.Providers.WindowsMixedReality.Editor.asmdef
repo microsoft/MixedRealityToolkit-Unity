@@ -1,0 +1,20 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
