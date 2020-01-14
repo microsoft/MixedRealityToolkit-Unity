@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        private void GetOrAddController(InteractionSourceState interactionSourceState)
+        private async void GetOrAddController(InteractionSourceState interactionSourceState)
         {
             // If this is a new detected controller, raise source detected event with input system
             // check needs to be here because GetOrAddController adds it to the activeControllers Dictionary
@@ -390,12 +390,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             if (controller != null)
             {
-                if (raiseSourceDetected)
+                var mrtkController = controller as WindowsMixedRealityController;
+
+                if (mrtkController != null)
                 {
-                    Service?.RaiseSourceDetected(controller.InputSource, controller);
+                    await mrtkController.EnsureControllerModel(interactionSourceState.source);
                 }
 
-                controller.UpdateController(interactionSourceState);
+                // Does the controller still exist after we loaded the controller model?
+                if (GetOrAddController(interactionSourceState.source, false) != null)
+                {
+                    if (raiseSourceDetected)
+                    {
+                        Service?.RaiseSourceDetected(controller.InputSource, controller);
+                    }
+
+                    controller.UpdateController(interactionSourceState);
+                }
+
             }
         }
 
@@ -643,8 +655,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         // Return null so we don't raise the source detected.
                         return null;
                     }
-                    else
-                        ((WindowsMixedRealityController)detectedController).EnsureControllerModel(interactionSource);
                 }
                 else
                 {

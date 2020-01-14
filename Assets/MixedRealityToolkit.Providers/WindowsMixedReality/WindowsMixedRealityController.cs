@@ -8,6 +8,7 @@ using System;
 
 #if UNITY_WSA
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
@@ -71,8 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public override void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
-
-            EnsureControllerModel(interactionSourceState.source);
 
             base.UpdateController(interactionSourceState);
 
@@ -238,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Ensure that if a controller model was desired that we have attempted initialization.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        public void EnsureControllerModel(InteractionSource interactionSource)
+        public async Task EnsureControllerModel(InteractionSource interactionSource)
         {
             GameObject controllerModel;
 
@@ -258,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             controllerModelInitialized = true;
-            CreateControllerModelFromPlatformSDK(interactionSource);
+            await CreateControllerModelFromPlatformSDK(interactionSource);
         }
 
         /// <inheritdoc />
@@ -279,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             return false;
         }
 
-        private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
+        private async Task CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
         {
             Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
