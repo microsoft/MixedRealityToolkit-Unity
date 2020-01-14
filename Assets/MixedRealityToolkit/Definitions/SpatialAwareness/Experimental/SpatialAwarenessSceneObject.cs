@@ -12,18 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public SpatialAwarenessSceneObject(
             System.Guid guid,
             SpatialAwarenessSurfaceTypes surfaceType,
-            System.Numerics.Matrix4x4 sceneTransformMatrix,
+            Vector3 position,
+            Quaternion rotation,
             List<Quad> quads,
             List<MeshData> meshDatas
             )
         {
             Guid = guid;
             SurfaceType = surfaceType;
-            SceneTransformMatrix = sceneTransformMatrix;
 
-            Vector3 position;
-            Quaternion rotation;
-            GetPosRotFromMatrix4x4(SwapRuntimeAndUnityCoordinateSystem(sceneTransformMatrix), out position, out rotation);
             Position = position;
             Rotation = rotation;
 
@@ -32,12 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         }
 
         public System.Guid Guid
-        {
-            get;
-            private set;
-        }
-
-        public System.Numerics.Matrix4x4 SceneTransformMatrix
         {
             get;
             private set;
@@ -92,55 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             get;
             private set;
-        }
-
-        public byte[] OcclusionMaskBytes
-        {
-            get;
-            private set;
-        }
-
-        private static System.Numerics.Matrix4x4 SwapRuntimeAndUnityCoordinateSystem(System.Numerics.Matrix4x4 matrix)
-        {
-            matrix.M13 = -matrix.M13;
-            matrix.M23 = -matrix.M23;
-            matrix.M43 = -matrix.M43;
-
-            matrix.M31 = -matrix.M31;
-            matrix.M32 = -matrix.M32;
-            matrix.M34 = -matrix.M34;
-
-            return matrix;
-        }
-
-        private static void SetTransformFromMatrix4x4(Transform unityTransform, System.Numerics.Matrix4x4 transformationMatrix, bool updateLocalTransformOnly = false)
-        {
-            Vector3 t;
-            Quaternion r;
-
-            GetPosRotFromMatrix4x4(transformationMatrix, out t, out r);
-
-            if (updateLocalTransformOnly)
-            {
-                unityTransform.localPosition = t;
-                unityTransform.localRotation = r;
-            }
-            else
-            {
-                unityTransform.SetPositionAndRotation(t, r);
-            }
-        }
-
-        private static void GetPosRotFromMatrix4x4(System.Numerics.Matrix4x4 matrix, out Vector3 translation, out Quaternion rotation)
-        {
-            System.Numerics.Vector3 t;
-            System.Numerics.Vector3 s; // ignored but required for signature
-            System.Numerics.Quaternion r;
-
-            System.Numerics.Matrix4x4.Decompose(matrix, out s, out r, out t);
-
-            translation = new Vector3(t.X, t.Y, t.Z);
-            rotation = new Quaternion(r.X, r.Y, r.Z, r.W);
         }
     }
 }

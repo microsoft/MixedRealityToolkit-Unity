@@ -24,5 +24,11 @@ namespace Microsoft.MixedReality.Toolkit
         {
             return new UnityEngine.Quaternion(-quaternion.X, -quaternion.Y, quaternion.Z, quaternion.W);
         }
+
+        public static System.Numerics.Matrix4x4 ToSystemNumerics(this UnityEngine.Matrix4x4 m) => new System.Numerics.Matrix4x4(
+             m.m00, m.m10, -m.m20, m.m30,
+             m.m01, m.m11, -m.m21, m.m31,
+            -m.m02, -m.m12, m.m22, -m.m32,
+             m.m03, m.m13, -m.m23, m.m33);
     }
 }
