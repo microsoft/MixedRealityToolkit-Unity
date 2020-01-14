@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Check to draw a tether point from the handles to the hand when manipulating.
         /// </summary>
-        public bool DrawTetherWhenManipulating => drawTetherWhenManipulating;
+        public bool DrawTetherWhenManipulating { get => drawTetherWhenManipulating; set => drawTetherWhenManipulating = value;}
 
         [SerializeField]
         [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
         /// </summary>
-        public Collider HandlesIgnoreCollider => handlesIgnoreCollider;
+        public Collider HandlesIgnoreCollider { get => handlesIgnoreCollider; set => handlesIgnoreCollider = value; }
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -207,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Bounds control box display configuration section.
         /// </summary>
-        public BoxDisplayConfiguration BoxDisplayConfiguration => boxDisplayConfiguration;
+        public BoxDisplayConfiguration BoxDisplayConfiguration { get => boxDisplayConfiguration; set => boxDisplayConfiguration = value; }
 
         [SerializeField]
         [Tooltip("This section defines the links / lines that are drawn between the corners of the control.")]
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// This section defines the links / lines that are drawn between the corners of the control.
         /// </summary>
-        public LinksConfiguration LinksConfiguration => linksConfiguration;
+        public LinksConfiguration LinksConfiguration { get => linksConfiguration; set => LinksConfiguration = value; }
 
         [SerializeField]
         [Tooltip("Configuration of the scale handles.")]
@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration of the scale handles.
         /// </summary>
-        public ScaleHandlesConfiguration ScaleHandlesConfiguration => scaleHandlesConfiguration;
+        public ScaleHandlesConfiguration ScaleHandlesConfiguration { get => scaleHandlesConfiguration; set => scaleHandlesConfiguration = value; }
 
         [SerializeField]
         [Tooltip("Configuration of the rotation handles.")]
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration of the rotation handles.
         /// </summary>
-        public RotationHandlesConfiguration RotationHandles => rotationHandlesConfiguration;
+        public RotationHandlesConfiguration RotationHandles { get => rotationHandlesConfiguration; set => rotationHandlesConfiguration = value; }
 
         [SerializeField]
         [Tooltip("Configuration for Proximity Effect to scale handles or change materials on proximity.")]
@@ -239,14 +239,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration for Proximity Effect to scale handles or change materials on proximity.
         /// </summary>
-        public ProximityEffectConfiguration HandleProximityEffectConfiguration => handleProximityEffectConfiguration;
+        public ProximityEffectConfiguration HandleProximityEffectConfiguration { get => handleProximityEffectConfiguration; set => handleProximityEffectConfiguration = value; }
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
+        private TextMesh debugText;
         /// <summary>
         /// Component used to display debug messages.
         /// </summary>
-        public TextMesh debugText;
+        public TextMesh DebugText { get => debugText; set => debugText = value; }
 
         [SerializeField]
         [Tooltip("Determines whether to hide GameObjects (i.e handles, links etc) created and managed by this component in the editor")]
@@ -275,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Event that gets fired when interaction with a rotation handle starts.
         /// </summary>
-        public UnityEvent RotateStarted => rotateStarted;
+        public UnityEvent RotateStarted { get => rotateStarted; set => rotateStarted = value; }
 
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a rotation handle stops.")]
@@ -283,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Event that gets fired when interaction with a rotation handle stops.
         /// </summary>
-        public UnityEvent RotateStopped => rotateStopped;
+        public UnityEvent RotateStopped { get => rotateStopped; set => rotateStopped = value; }
 
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a scale handle starts.")]
@@ -291,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Event that gets fired when interaction with a scale handle starts.
         /// </summary>
-        public UnityEvent ScaleStarted => scaleStarted;
+        public UnityEvent ScaleStarted { get => scaleStarted; set => scaleStarted = value; }
 
         [SerializeField]
         [Tooltip("Event that gets fired when interaction with a scale handle stops.")]
@@ -299,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Event that gets fired when interaction with a scale handle stops.
         /// </summary>
-        public UnityEvent ScaleStopped => scaleStopped;
+        public UnityEvent ScaleStopped { get => scaleStopped; set => scaleStopped = value; }
 
         #endregion Serialized Fields
 
