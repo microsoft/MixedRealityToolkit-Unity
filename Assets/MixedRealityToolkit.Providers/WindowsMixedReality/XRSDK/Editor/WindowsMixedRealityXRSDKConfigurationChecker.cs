@@ -7,24 +7,22 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// Class to perform checks for configuration checks for the XR SDK provider.
+    /// Class to perform checks for configuration checks for the WMR XR SDK provider.
     /// </summary>
     [InitializeOnLoad]
-    static class XRSDKConfigurationChecker
+    static class WindowsMixedRealityXRSDKConfigurationChecker
     {
-        private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
-        private const string XRManagementReference = "Unity.XR.Management";
-        private const string ARSubsystemsReference = "Unity.XR.ARSubsystems";
+        private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef";
+        private const string WindowsMixedRealityReference = "Unity.XR.WindowsMixedReality";
 
 #if UNITY_2019_3_OR_NEWER
-        private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
-        private static readonly VersionDefine ARSubsystemsDefine = new VersionDefine("com.unity.xr.arsubsystems", "", "ARSUBSYSTEMS_ENABLED");
+        private static readonly VersionDefine WindowsMixedRealityDefine = new VersionDefine("com.unity.xr.windowsmr", "", "WMR_ENABLED");
 #endif // UNITY_2019_3_OR_NEWER
 
-        static XRSDKConfigurationChecker()
+        static WindowsMixedRealityXRSDKConfigurationChecker()
         {
             UpdateAsmDef();
         }
@@ -36,10 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// Versions of Unity may have different factorings of components. To address this, the UpdateAsmDef
         /// method conditionally compiles for the version currently in use.
         /// To ensure proper compilation on each Unity version, the following steps are performed:
-        /// - Load the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
+        /// - Load the Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef file
         /// - If Unity 2018: nothing
-        /// - If Unity 2019 and newer: Unity.XR.Management and Unity.XR.ARSubsystems
-        /// - Save the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
+        /// - If Unity 2019 and newer: Unity.XR.WindowsMixedReality
+        /// - Save the Microsoft.MixedReality.Toolkit.Providers.XRSDK.WMR.asmdef file
         /// This will result in Unity reloading the assembly with the appropriate dependencies.
         /// </remarks>
         private static void UpdateAsmDef()
@@ -78,42 +76,24 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 versionDefines.AddRange(asmDef.VersionDefines);
             }
 
-            if (!references.Contains(XRManagementReference))
+            if (!references.Contains(WindowsMixedRealityReference))
             {
-                // Add a reference to the ARFoundation assembly
-                references.Add(XRManagementReference);
+                // Add a reference to the XR SDK WMR assembly
+                references.Add(WindowsMixedRealityReference);
                 changed = true; 
             }
-            if (!references.Contains(ARSubsystemsReference))
-            {
-                // Add a reference to the spatial tracking assembly
-                references.Add(ARSubsystemsReference);
-                changed = true;
-            }
 
-            if (!versionDefines.Contains(XRManagementDefine))
+            if (!versionDefines.Contains(WindowsMixedRealityDefine))
             {
-                // Add the XRManagement #define
-                versionDefines.Add(XRManagementDefine);
-                changed = true;
-            }
-            if (!versionDefines.Contains(ARSubsystemsDefine))
-            {
-                // Add the ARSubsystems #define
-                versionDefines.Add(ARSubsystemsDefine);
+                // Add the WMR #define
+                versionDefines.Add(WindowsMixedRealityDefine);
                 changed = true;
             }
 #else
-            if (references.Contains(XRManagementReference))
+            if (references.Contains(WindowsMixedRealityReference))
             {
-                // Remove the reference to the spatial tracking assembly
-                references.Remove(XRManagementReference);
-                changed = true;
-            }
-            if (references.Contains(ARSubsystemsReference))
-            {
-                // Add a reference to the spatial tracking assembly
-                references.Remove(ARSubsystemsReference);
+                // Remove the reference to the XR SDK WMR assembly
+                references.Remove(WindowsMixedRealityReference);
                 changed = true;
             }
 #endif
