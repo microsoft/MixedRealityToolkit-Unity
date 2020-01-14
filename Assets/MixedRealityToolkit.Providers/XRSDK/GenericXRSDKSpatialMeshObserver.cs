@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc />
         protected override int LookupTriangleDensity(SpatialAwarenessMeshLevelOfDetail levelOfDetail)
         {
-            // For non - custom levels, the enum value is the appropriate triangles per cubic meter.
+            // For non-custom levels, the enum value is the appropriate triangles per cubic meter.
             int level = (int)levelOfDetail;
             if (XRSDKSubsystemHelpers.MeshSubsystem != null)
             {
@@ -283,7 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             string meshName = ("SpatialMesh - " + meshId);
 
             SpatialAwarenessMeshObject newMesh;
-            //WorldAnchor worldAnchor;
 
             if (spareMeshObject == null)
             {
@@ -293,17 +292,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     meshName,
                     meshId.GetHashCode());
 
-                // The WorldAnchor component places its object where the anchor is in the same space as the camera. 
-                // But since the camera is repositioned by the MixedRealityPlayspace's transform, the meshes' transforms
-                // should also the WorldAnchor position repositioned by the MixedRealityPlayspace's transform.
-                // So rather than put the WorldAnchor on the mesh's GameObject, the WorldAnchor is placed out of the way in the scene,
-                // and its transform is concatenated with the Playspace transform to compute the transform on the mesh's object.
-                // That adapting the WorldAnchor's transform into playspace is done by the internal PlayspaceAdapter component.
-                // The GameObject the WorldAnchor is placed on is unimportant, but it is convenient for cleanup to make it a child
-                // of the GameObject whose transform will track it.
                 GameObject anchorHolder = new GameObject(meshName + "_anchor");
-                anchorHolder.AddComponent<PlayspaceAdapter>(); // replace with required component?
-                //worldAnchor = anchorHolder.AddComponent<WorldAnchor>(); // replace with required component and GetComponent()? 
+                anchorHolder.AddComponent<PlayspaceAdapter>();
+                // Right now, we don't add an anchor to the mesh. This may be resolved with the AnchorSubsystem.
                 anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
             }
             else
@@ -314,14 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 newMesh.GameObject.name = meshName;
                 newMesh.Id = meshId.GetHashCode();
                 newMesh.GameObject.SetActive(true);
-
-                //// There should be exactly one child on the newMesh.GameObject, and that is the GameObject added above
-                //// to hold the WorldAnchor component and adapter.
-                //Debug.Assert(newMesh.GameObject.transform.childCount == 1, "Expecting a single child holding the WorldAnchor");
-                //worldAnchor = newMesh.GameObject.transform.GetChild(0).gameObject.GetComponent<WorldAnchor>();
             }
-
-            //Debug.Assert(worldAnchor != null);
 
             XRSDKSubsystemHelpers.MeshSubsystem.GenerateMeshAsync(meshId, newMesh.Filter.mesh, newMesh.Collider, MeshVertexAttributes.Normals, (MeshGenerationResult meshGenerationResult) => MeshGenerationAction(meshGenerationResult));
             outstandingMeshObject = newMesh;
