@@ -17,5 +17,6 @@ jobs:
   steps:
   - template: templates/ci-common.yml
     parameters:
-      packagingEnabled: true
-      packagePublishing: true
+      performCommonStep: false
+      packagingEnabled: false
+      packagePublishing: false

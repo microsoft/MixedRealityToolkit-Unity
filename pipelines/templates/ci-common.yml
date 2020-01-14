@@ -1,12 +1,14 @@
 # CI build for developer builds.
 parameters:
+  performCommonStep: true
   packagingEnabled: true
   packagePublishing: true
 
 steps:
-- template: common.yml
-  parameters:
-    buildUWPDotNet: false
+- ${{ if eq(parameters.performCommonStep, true) }}:
+  - template: common.yml
+    parameters:
+      buildUWPDotNet: false
 - template: compilemsbuild.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
   - template: tasks/unitypackages.yml
