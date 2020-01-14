@@ -270,7 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.ray = ray;
                 this.rayStepIndex = rayStepIndex;
                 this.rayDistance = rayDistance;
-                
             }
         }
 
@@ -990,8 +989,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
-
-                   
 
                     if (hit != hitResult3d || hitResult3dLayer > 0)
                     {

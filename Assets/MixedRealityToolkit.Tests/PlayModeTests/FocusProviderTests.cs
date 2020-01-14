@@ -18,7 +18,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
