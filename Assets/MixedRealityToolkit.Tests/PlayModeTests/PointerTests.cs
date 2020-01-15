@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 
-        private IEnumerator TestPointerViewOfViewHelper(IMixedRealityPointer myPointer, GameObject cube, TestHand testHand)
+        private IEnumerator TestPointerFieldOfViewHelper(IMixedRealityPointer myPointer, GameObject cube, TestHand testHand)
         {
             yield return testHand.Show(Vector3.zero);
             cube.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -166,8 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
             var pokePointer = PointerUtils.GetPointer<PokePointer>(Handedness.Right);
 
-            yield return TestPointerViewOfViewHelper(spherePointer, cube, rightHand);
-            yield return TestPointerViewOfViewHelper(pokePointer, cube, rightHand);
+            yield return TestPointerFieldOfViewHelper(spherePointer, cube, rightHand);
+            yield return TestPointerFieldOfViewHelper(pokePointer, cube, rightHand);
 
             rightHand.Hide();
             GameObject.Destroy(cube);
