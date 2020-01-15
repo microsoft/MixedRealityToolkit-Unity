@@ -162,6 +162,5 @@ PrefabInstance:
       propertyPath: m_text
       value: Say "Select"
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5168285722132125214, guid: f15ddb9bd0bf19d478c51ea991c6a7ce, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f15ddb9bd0bf19d478c51ea991c6a7ce, type: 3}
