@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void AddAllAssetsOfTypeForMigration(Type[] types)
         {
-            if (types != null)
+            if (types == null)
             {
                 return;
             }

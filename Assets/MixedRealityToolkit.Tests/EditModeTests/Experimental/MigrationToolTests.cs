@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class MigrationToolTest
+    public class MigrationToolTests
     {
         private readonly MigrationTool migrationTool = new MigrationTool();
 
