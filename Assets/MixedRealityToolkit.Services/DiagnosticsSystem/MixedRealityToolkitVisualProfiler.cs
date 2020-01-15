@@ -38,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private static readonly string usedMemoryString = "Used: ";
         private static readonly string peakMemoryString = "Peak: ";
         private static readonly string limitMemoryString = "Limit: ";
+        private static readonly string voiceCommandString = "Say \"Toggle Profiler\" to show/hide";
+        private static readonly string visualProfilerTitleString = "MRTK Visual Profiler";
 
         public Transform WindowParent { get; set; } = null;
 
@@ -546,8 +548,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
                 peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
                 limitMemoryText = CreateText("LimitMemoryText", new Vector3(0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, limitMemoryString);
-                voiceCommandText = CreateText("VoiceCommandText", new Vector3(-0.53f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, Color.white, "Say \"Toggle Profiler\"");
-                mrtkText = CreateText("MRTKText", new Vector3(0.52f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, "MRTK Visual Profiler");
+                voiceCommandText = CreateText("VoiceCommandText", new Vector3(-0.53f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, Color.white, voiceCommandString);
+                mrtkText = CreateText("MRTKText", new Vector3(0.52f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, visualProfilerTitleString);
                 voiceCommandText.fontSize = 32;
                 mrtkText.fontSize = 32;
 
