@@ -112,31 +112,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(myPointer);
             Assert.IsTrue(myPointer.IsInteractionEnabled, "Pointer should be enabled because it is inside giant cube.");
 
+            cube.transform.localScale = Vector3.one * 0.1f;
             // Move cube in front of camera so it is visible
             cube.transform.Translate(Vector3.forward * 1f);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because it is near cube and visible.");
+            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled. Cube size {cube.transform.localScale} location {cube.transform.position}.");
 
             // Make cube no longer visible
             cube.transform.Translate(Vector3.up * 10);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.IsFalse(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should NOT be enabled because hand is near object that is not in FOV.");
+            Assert.IsFalse(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should NOT be enabled, cube not in FOV. Cube size {cube.transform.localScale} location {cube.transform.position}.");
 
-            // For sphere and poke pointers, test that setting 
+            // For sphere and poke pointers, test that setting IgnoreCollidersNotInFOV works
             if (myPointer is SpherePointer spherePointer)
             {
                 spherePointer.IgnoreCollidersNotInFOV = false;
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-                Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled.");
+                Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because IgnoreCollidersNotInFOV is false.");
                 spherePointer.IgnoreCollidersNotInFOV = true;
             }
             else if (myPointer is PokePointer pokePointer)
             {
                 pokePointer.IgnoreCollidersNotInFOV = false;
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-                Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled.");
+                Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because IgnoreCollidersNotInFOV is false.");
                 pokePointer.IgnoreCollidersNotInFOV = true;
             }
 
@@ -144,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             cube.transform.Translate(Vector3.up * -10f);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because it is near object inside of FOV.");
+            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because it is near object inside of FOV. Cube size {cube.transform.localScale} location {cube.transform.position}.");
         }
 
         /// <summary>
