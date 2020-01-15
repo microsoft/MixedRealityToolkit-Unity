@@ -47,49 +47,53 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Private Serialized Fields with Public Properties
 
         [Header("Target Bounding Box")]
-        /// <summary>
-        /// The bounding box this AppBar will use for its placement and control for manipulation
-        /// </summary>
+
         [Tooltip("The bounding box this AppBar will use for its placement and control for manipulation")]
         [SerializeField]
         private BoundingBox boundingBox = null;
 
+        /// <summary>
+        /// The bounding box this AppBar will use for its placement and control for manipulation
+        /// </summary>
         public BoundingBox TargetBoundingBox
         {
             get { return boundingBox; }
             set { boundingBox = value; }
         }
 
-        /// <summary>
-        /// The parent game object for the renderable objects in the AppBar
-        /// </summary>
         [Tooltip("The parent game object for the renderable objects in the app bar")]
         [SerializeField]
         private GameObject baseRenderer = null;
+
+        /// <summary>
+        /// The parent game object for the renderable objects in the AppBar
+        /// </summary>
         public GameObject BaseRenderer
         {
             get => baseRenderer;
             set => baseRenderer = value;
         }
 
-        /// <summary>
-        /// The parent transform for the button collection
-        /// </summary>
         [Tooltip("The parent transform for the button collection")]
         [SerializeField]
         private Transform buttonParent = null;
+
+        /// <summary>
+        /// The parent transform for the button collection
+        /// </summary>
         public Transform ButtonParent
         {
             get => buttonParent;
             set => buttonParent = value;
         }
 
-        /// <summary>
-        /// The background gameobject, scales to fill area behind buttons
-        /// </summary>
         [Tooltip("The background gameobject, scales to fill area behind buttons")]
         [SerializeField]
         private GameObject backgroundBar = null;
+
+        /// <summary>
+        /// The background gameobject, scales to fill area behind buttons
+        /// </summary>
         public GameObject BackgroundBar
         {
             get => backgroundBar;
@@ -97,24 +101,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         
         [Header("States")]
-        /// <summary>
-        /// The AppBar's display type, default is Manipulation
-        /// </summary>
-        [Tooltip("The AppBar's display type, default is Manipulation")]
+
+        [Tooltip("The AppBar's display type; default is Manipulation")]
         [SerializeField]
         private AppBarDisplayTypeEnum displayType = AppBarDisplayTypeEnum.Manipulation;
+
+        /// <summary>
+        /// The AppBar's display type; default is Manipulation
+        /// </summary>
         public AppBarDisplayTypeEnum DisplayType
         {
             get { return displayType; }
             set { displayType = value; }
         }
 
-        /// <summary>
-        /// The AppBar's current state
-        /// </summary>
         [Tooltip("The AppBar's current state")]
         [SerializeField]
         private AppBarStateEnum state = AppBarStateEnum.Default;
+
+        /// <summary>
+        /// The AppBar's current state
+        /// </summary>
         public AppBarStateEnum State
         {
             get { return state; }
@@ -123,36 +130,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
         [Header("Default Button Options")]
-        /// <summary>
-        /// Should the AppBar have a Remove button
-        /// </summary>
-        [Tooltip("Should the AppBar have a Remove button")]
+
+        [Tooltip("Should the AppBar have a remove button")]
         [SerializeField]
         private bool useRemove = true;
+
+        /// <summary>
+        /// Should the AppBar have a remove button
+        /// </summary>
         public bool UseRemove
         {
             get { return useRemove; }
             set { useRemove = value; }
         }
 
-        /// <summary>
-        /// Should the AppBar have an Adjust button
-        /// </summary>
-        [Tooltip("Should the AppBar have an Adjust button")]
+        [Tooltip("Should the AppBar have an adjust button")]
         [SerializeField]
         private bool useAdjust = true;
+
+        /// <summary>
+        /// Should the AppBar have an adjust button
+        /// </summary>
         public bool UseAdjust
         {
             get { return useAdjust; }
             set { useAdjust = value; }
         }
 
-        /// <summary>
-        /// Should the AppBar have a Hide button
-        /// </summary>
-        [Tooltip("Should the AppBar have a Hide button")]
+        [Tooltip("Should the AppBar have a hide button")]
         [SerializeField]
         private bool useHide = true;
+
+        /// <summary>
+        /// Should the AppBar have a hide button
+        /// </summary>
         public bool UseHide
         {
             get { return useHide; }
@@ -160,60 +171,66 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Default Button Icons")]
-        /// <summary>
-        /// The Adjust button texture
-        /// </summary>
-        [Tooltip("The Adjust button texture")]
+
+        [Tooltip("The adjust button texture")]
         [SerializeField]
         private Texture adjustIcon = null;
+
+        /// <summary>
+        /// The adjust button texture
+        /// </summary>
         public Texture AdjustIcon
         {
             get => adjustIcon;
             set => adjustIcon = value;
         }
 
-        /// <summary>
-        /// The Done button texture
-        /// </summary>
-        [Tooltip("The Done button texture")]
+        [Tooltip("The done button texture")]
         [SerializeField]
         private Texture doneIcon = null;
+
+        /// <summary>
+        /// The done button texture
+        /// </summary>
         public Texture DoneIcon
         {
             get => doneIcon;
             set => doneIcon = value;
         }
 
-        /// <summary>
-        /// The Hide button texture
-        /// </summary>
-        [Tooltip("The Hide button texture")]
+        [Tooltip("The hide button texture")]
         [SerializeField]
         private Texture hideIcon = null;
+
+        /// <summary>
+        /// The hide button texture
+        /// </summary>
         public Texture HideIcon
         {
             get => hideIcon;
             set => hideIcon = value;
         }
 
-        /// <summary>
-        /// The Remove button texture
-        /// </summary>
         [Tooltip("The Remove button texture")]
         [SerializeField]
         private Texture removeIcon = null;
+
+        /// <summary>
+        /// The remove button texture
+        /// </summary>
         public Texture RemoveIcon
         {
             get => removeIcon;
             set => removeIcon = value;
         }
 
-        /// <summary>
-        /// The Show button texture
-        /// </summary>
-        [Tooltip("The Show button texture")]
+        [Tooltip("The show button texture")]
         [SerializeField]
         private Texture showIcon = null;
+
+        /// <summary>
+        /// The show button texture
+        /// </summary>
         public Texture ShowIcon
         {
             get => showIcon;
@@ -221,63 +238,68 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Scale & Position Options")]
-        /// <summary>
-        /// Uses an alternate follow style that works better for very oblong objects
-        /// </summary>
+
         [SerializeField]
         [Tooltip("Uses an alternate follow style that works better for very oblong objects.")]
         private bool useTightFollow = false;
+
+        /// <summary>
+        /// Uses an alternate follow style that works better for very oblong objects
+        /// </summary>
         public bool UseTightFollow
         {
             get { return useTightFollow; }
             set { useTightFollow = value; }
         }
 
+        [SerializeField]
+        [Tooltip("Where to display the app bar on the y axis. This can be set to negative values to force the app bar to appear below the object.")]
+        private float hoverOffsetYScale = 0.25f;
+
         /// <summary>
         /// Where to display the app bar on the y axis
         /// This can be set to negative values
         /// to force the app bar to appear below the object
         /// </summary>
-        [SerializeField]
-        [Tooltip("Where to display the app bar on the y axis. This can be set to negative values to force the app bar to appear below the object.")]
-        private float hoverOffsetYScale = 0.25f;
         public float HoverOffsetYScale
         {
             get { return hoverOffsetYScale; }
             set { hoverOffsetYScale = value; }
         }
 
-        /// <summary>
-        /// Pushes the app bar away from the object
-        /// </summary>
         [SerializeField]
         [Tooltip("Pushes the app bar away from the object.")]
         private float hoverOffsetZ = 0f;
+
+        /// <summary>
+        /// Pushes the app bar away from the object
+        /// </summary>
         public float HoverOffsetZ
         {
             get { return hoverOffsetZ; }
             set { hoverOffsetZ = value; }
         }
 
+        [Tooltip("The button width for each button")]
+        [SerializeField]
+        private float buttonWidth = 0.032f;
 
         /// <summary>
         /// The button width for each button
         /// </summary>
-        [Tooltip("The button width for each button")]
-        [SerializeField]
-        private float buttonWidth = 0.032f;
         public float ButtonWidth
         {
             get => buttonWidth;
             set => buttonWidth = value;
         }
 
-        /// <summary>
-        /// The button depth for each button
-        /// </summary>
         [Tooltip("The button depth for each button")]
         [SerializeField]
         private float buttonDepth = 0.016f;
+
+        /// <summary>
+        /// The button depth for each button
+        /// </summary>
         public float ButtonDepth
         {
             get => buttonDepth;
