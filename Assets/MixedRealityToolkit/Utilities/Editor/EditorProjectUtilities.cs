@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void CheckMinimumEditorVersion()
         {
-#if !UNITY_2018_4_OR_NEWER
+#if !UNITY_2018_4_OR_NEWER && !UNITY_2019_1_OR_NEWER
             DisplayIncorrectEditorVersionDialog();
 #endif
         }
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorUtility.DisplayDialog(
                 "Mixed Reality Toolkit",
-                "The Mixed Reality Toolkit requires Unity 2018.3 or newer.\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
+                "The Mixed Reality Toolkit requires Unity 2018.4 or newer.\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
                 "Continue", "Close Editor"))
             {
                 EditorApplication.Exit(0);
