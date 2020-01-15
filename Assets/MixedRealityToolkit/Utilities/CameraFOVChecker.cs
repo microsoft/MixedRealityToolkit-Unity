@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
         // Help to clear caches when new frame runs
         static private int inFOVConeLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
-        private static Dictionary<Collider, bool> inFOVConeColliderCache = new Dictionary<Collider, bool>();
+        private static Dictionary<(Collider collider, Camera camera), bool> inFOVConeColliderCache = new Dictionary<(Collider collider, Camera camera), bool>();
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
@@ -36,13 +36,14 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 return false;
             }
+            
             if (inFOVConeLastCalculatedFrame != Time.frameCount)
             {
                 inFOVConeColliderCache.Clear();
                 inFOVConeLastCalculatedFrame = Time.frameCount;
             }
-
-            if (inFOVConeColliderCache.TryGetValue(myCollider, out bool result))
+            var cameraColliderPair = (collider: myCollider, camera: cam);
+            if (inFOVConeColliderCache.TryGetValue(cameraColliderPair, out bool result))
             {
                 Debug.Log($"Cache hit! Returning {result}");
                 return result;
@@ -58,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit
                 var corner = inFOVConeBoundsCornerPoints[i];
                 if (cam.IsInFOVCone(corner, 0))
                 {
-                    inFOVConeColliderCache.Add(myCollider, true);
+                    inFOVConeColliderCache.Add(cameraColliderPair, true);
                     return true;
                 }
 
@@ -77,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit
                 && yMin <= cameraPos.y && cameraPos.y <= yMax
                 && zMin <= cameraPos.z && cameraPos.z <= zMax;
 
-            inFOVConeColliderCache.Add(myCollider, result);
+            inFOVConeColliderCache.Add(cameraColliderPair, result);
 
             return result;
         }
