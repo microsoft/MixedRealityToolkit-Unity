@@ -31,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit
         public static bool IsInFOVConeCached(this Camera cam,
             Collider myCollider)
         {
+            // if the collider's size is zero, it is not visible. Return false.
+            if(myCollider.bounds.size == Vector3.zero)
+            {
+                return false;
+            }
             if (inFOVConeLastCalculatedFrame != Time.frameCount)
             {
                 inFOVConeColliderCache.Clear();
@@ -39,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (inFOVConeColliderCache.TryGetValue(myCollider, out bool result))
             {
+                Debug.Log($"Cache hit! Returning {result}");
                 return result;
             }
 
