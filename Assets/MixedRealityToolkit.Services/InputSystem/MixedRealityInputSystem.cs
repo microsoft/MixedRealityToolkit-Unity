@@ -308,13 +308,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (Application.isPlaying)
                 {
                     GazeProvider.GazePointer.BaseCursor.Destroy();
-                    UnityEngine.Object.Destroy(GazeProvider as Component);
+//                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
-                else
-                {
-                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
-                }
+                //else
+                //{
+                //    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
+                //}
 
+                //GazeProvider.Destroy();
+                UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
                 GazeProvider = null;
             }
 
@@ -443,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 try
                 {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                    // When shutting down a game, we can sometimes get old references to game objects that have been cleaned up.
                     // We'll ignore when this happens.
                     ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
 

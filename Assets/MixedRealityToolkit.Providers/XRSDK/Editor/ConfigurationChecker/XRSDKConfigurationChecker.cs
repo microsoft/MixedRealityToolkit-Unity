@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
     /// <summary>
-    /// Class to perform checks for configuration checks for the UnityAR provider.
+    /// Class to perform checks for configuration checks for the XR SDK provider.
     /// </summary>
     [InitializeOnLoad]
     static class XRSDKConfigurationChecker

@@ -12,7 +12,7 @@
     <description>Test Utilities for the Mixed Reality Toolkit.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK Test</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
     </dependencies>
@@ -28,6 +28,6 @@
     <file src="..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
 
     <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
-    <file src="..\..\..\..\Assets\MixedRealityToolkit.Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tests\TestUtilities" />
+    <!-- <file src="..\..\..\..\Assets\MixedRealityToolkit.Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tests\TestUtilities" /> -->
   </files>
 </package>
