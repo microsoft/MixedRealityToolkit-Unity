@@ -112,7 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
         }
 
 
-
+        /// <summary>
+        /// Test that the Camera extension method IsInFOVConeCached returns valid results for colliders whose bounds are renderable to the camera
+        /// </summary>
         [Test]
         public void TestIsInFOVConeCached()
         {
@@ -123,6 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             }
         }
 
+        /// <summary>
+        /// Test that extension method IsInFOVConeCached gives expected results when called from multiple cameras
+        /// facing different directions.
+        /// </summary>
         [Test]
         public void TestIsInFOVConeCachedSecondCamera()
         {
