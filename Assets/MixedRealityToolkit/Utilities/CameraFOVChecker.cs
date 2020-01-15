@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit
             Collider myCollider)
         {
             // if the collider's size is zero, it is not visible. Return false.
-            if(myCollider.bounds.size == Vector3.zero)
+            if(myCollider.bounds.size == Vector3.zero || myCollider.transform.localScale == Vector3.zero)
             {
                 return false;
             }

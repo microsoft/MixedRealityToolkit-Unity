@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             TestColliders = new List<TestCollider>()
             {
                 new TestCollider(-Vector3.forward, smallCubeSize, false, true),
-                new TestCollider(-Vector3.forward - Vector3.right, smallCubeSize, false, true),
+                new TestCollider(-Vector3.forward - Vector3.right, largeCubeSize, false, true),
                 new TestCollider(Vector3.forward, smallCubeSize, true, false),
                 new TestCollider(Vector3.forward, smallCubeSize, true, false),
                 new TestCollider(Vector3.zero, Vector3.zero, false, false),
@@ -129,7 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             for (int i = 0; i < TestColliders.Count; i++)
             {
                 var test = TestColliders[i];
-                Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVConeCached(test.Collider), $"TestColliderSecondCamera[{i}] did not match");
             }
         }
 
