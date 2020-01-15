@@ -134,7 +134,11 @@ Performant plane, sphere, and box shape clipping with the ability to specify whi
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-[`ClippingPlane.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [`ClippingSphere.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [`ClippingBox.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties.
+[`ClippingPlane.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [`ClippingSphere.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [`ClippingBox.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties. Use these components with the following shaders to leverage clipping scenarios. 
+
+- *Mixed Reality Toolkit/Standard*
+- *Mixed Reality Toolkit/TextMeshPro*
+- *Mixed Reality Toolkit/Text3DShader*
 
 ![primitive clipping gizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
 

@@ -103,6 +103,7 @@ SubShader {
 
         #include "UnityCG.cginc"
         #include "UnityUI.cginc"
+        #include "MixedRealityShaderUtils.cginc"
 
 #if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX)
         #define _CLIPPING_PRIMITIVE
@@ -139,8 +140,6 @@ SubShader {
         uniform samplerCUBE    _Cube;                        // Cube / sphere map
         uniform fixed4         _ReflectFaceColor;            // RGB intensity
         uniform fixed4        _ReflectOutlineColor;
-        //uniform float        _EnvTiltX;                    // v[-1, 1]
-        //uniform float        _EnvTiltY;                    // v[-1, 1]
         uniform float3      _EnvMatrixRotation;
         uniform float4x4    _EnvMatrix;
         
@@ -175,15 +174,10 @@ SubShader {
         uniform float        _VertexOffsetX;
         uniform float        _VertexOffsetY;
         
-        //uniform float        _UseClipRect;
         uniform float        _MaskID;
         uniform sampler2D    _MaskTex;
         uniform float4        _MaskCoord;
         uniform float4        _ClipRect;    // bottom left(x,y) : top right(z,w)
-        //uniform float        _MaskWipeControl;
-        //uniform float        _MaskEdgeSoftness;
-        //uniform fixed4        _MaskEdgeColor;
-        //uniform bool        _MaskInverse;
         
         uniform float        _MaskSoftnessX;
         uniform float        _MaskSoftnessY;
@@ -201,34 +195,17 @@ SubShader {
 #if defined(_CLIPPING_PLANE)
         fixed _ClipPlaneSide;
         float4 _ClipPlane;
-
-        inline float PointVsPlane(float3 worldPosition, float4 plane)
-        {
-            float3 planePosition = plane.xyz * plane.w;
-            return dot(worldPosition - planePosition, plane.xyz);
-        }
 #endif
 
 #if defined(_CLIPPING_SPHERE)
         fixed _ClipSphereSide;
         float4 _ClipSphere;
-
-        inline float PointVsSphere(float3 worldPosition, float4 sphere)
-        {
-            return distance(worldPosition, sphere.xyz) - sphere.w;
-        }
 #endif
 
 #if defined(_CLIPPING_BOX)
         fixed _ClipBoxSide;
         float4 _ClipBoxSize;
         float4x4 _ClipBoxInverseTransform;
-
-        inline float PointVsBox(float3 worldPosition, float3 boxSize, float4x4 boxInverseTransform)
-        {
-            float3 distance = abs(mul(boxInverseTransform, float4(worldPosition, 1.0))) - boxSize;
-            return length(max(distance, 0.0)) + min(max(distance.x, max(distance.y, distance.z)), 0.0);
-        }
 #endif
 
         struct vertex_t {
