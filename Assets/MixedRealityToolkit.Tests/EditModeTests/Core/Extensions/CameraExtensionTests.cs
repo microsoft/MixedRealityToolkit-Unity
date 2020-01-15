@@ -130,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             {
                 var test = TestColliders[i];
                 Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
-                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
                 Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVConeCached(test.Collider), $"TestColliderSecondCamera[{i}] did not match");
             }
         }
