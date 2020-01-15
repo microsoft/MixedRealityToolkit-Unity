@@ -24,9 +24,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             }
         }
 
+        private class TestCollider
+        {
+            public bool ShouldBeInFOVCamera1, ShouldBeInFOVCamera2;
+            public Vector3 Position { get; private set; }
+            public Vector3 Bounds { get; private set; }
+            public Collider Collider { get; private set; }
+            public TestCollider(Vector3 point, Vector3 bounds, bool isInFOVCamera1, bool isInFOVCamera2)
+            {
+                ShouldBeInFOVCamera1 = isInFOVCamera1;
+                ShouldBeInFOVCamera2 = isInFOVCamera2;
+                Position = point;
+                Bounds = bounds;
+                GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                obj.transform.position = Position;
+                obj.transform.localScale = bounds;
+                Collider = obj.GetComponent<BoxCollider>();
+            }
+        }
+
         private static List<TestPoint> TestPoints = new List<TestPoint>();
-        private List<TestCollider> TestCollidersCamera1 = new List<TestCollider>();
-        private List<TestCollider> TestCollidersCamera2 = new List<TestCollider>();
+        private List<TestCollider> TestColliders = new List<TestCollider>();
 
         [SetUp]
         public void SetUp()
@@ -69,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             Vector3 smallCubeSize = Vector3.one * 0.01f;
             Vector3 largeCubeSize = Vector3.one;
             Vector3 zeroCubeSize = Vector3.zero;
-            TestCollidersCamera1 = new List<TestCollider>()
+            TestColliders = new List<TestCollider>()
             {
                 new TestCollider(-Vector3.forward, smallCubeSize, false, true),
                 new TestCollider(-Vector3.forward - Vector3.right, smallCubeSize, false, true),
@@ -77,15 +95,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
                 new TestCollider(Vector3.forward, smallCubeSize, true, false),
                 new TestCollider(Vector3.zero, Vector3.zero, false, false),
                 new TestCollider(Vector3.zero, largeCubeSize, true, true),
-
                 new TestCollider(new Vector3(0.0f, 0.0f, testCamera.nearClipPlane), smallCubeSize, true, false),
-
                 new TestCollider(new Vector3(0.0f, 0.0f, testCamera.farClipPlane), smallCubeSize, true, false),
-
+                new TestCollider(new Vector3(0.0f, 0.0f, -testCamera.nearClipPlane), smallCubeSize, false, true),
+                new TestCollider(new Vector3(0.0f, 0.0f, -testCamera.farClipPlane), smallCubeSize, false, true),
                 new TestCollider(2.0f * Vector3.right, smallCubeSize, false, false),
-                new TestCollider(2.0f * Vector3.right, largeCubeSize, true, true),
                 new TestCollider(2.0f * Vector3.up, smallCubeSize, false, false),
-                new TestCollider(2.0f * Vector3.up, largeCubeSize, true, true)
             };
 
         }
@@ -97,37 +112,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
         }
 
 
-        private class TestCollider
-        {
-            public bool ShouldBeInFOVCamera1, ShouldBeInFOVCamera2;
-            public Vector3 Position {get; private set;}
-            public Vector3 Bounds {get; private set;}
-            public Collider Collider{ get; private set; }
-            public TestCollider(Vector3 point, Vector3 bounds, bool isInFOVCamera1, bool isInFOVCamera2)
-            {
-                ShouldBeInFOVCamera1 = isInFOVCamera1;
-                ShouldBeInFOVCamera2 = isInFOVCamera2;
-                Position = point;
-                Bounds = bounds;
-                GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                obj.transform.position =  Position;
-                obj.transform.localScale = bounds;
-                Collider = obj.GetComponent<BoxCollider>();
-            }
-        }
+
         [Test]
         public void TestIsInFOVConeCached()
         {
-            for (int i = 0; i < TestCollidersCamera1.Count; i++)
+            for (int i = 0; i < TestColliders.Count; i++)
             {
-                var test = TestCollidersCamera1[i];
+                var test = TestColliders[i];
                 Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
             }
         }
 
-        public void TestIsInFOVConeCachedTwoCameras()
+        [Test]
+        public void TestIsInFOVConeCachedSecondCamera()
         {
-
+            for (int i = 0; i < TestColliders.Count; i++)
+            {
+                var test = TestColliders[i];
+                Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
+            }
         }
 
         /// <summary>
@@ -137,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
         public void TestIsInFOV()
         {
             for (int i = 0; i < TestPoints.Count; i++)
-            { 
+            {
                 var test = TestPoints[i];
                 Assert.AreEqual(test.ShouldBeInFOV, testCamera.IsInFOV(test.Point), $"TestPoint[{i}] at {test.Point} did not match");
             }
