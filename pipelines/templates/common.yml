@@ -46,22 +46,22 @@ steps:
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
 
-# # Build UWP x86
-# - ${{ if eq(parameters.buildUWPX86, true) }}:
-#   - template: tasks/unitybuild.yml
-#     parameters:
-#       Arch: 'x86'
-#       Platform: 'UWP'
-#       PublishArtifacts: true
+# Build UWP x86
+- ${{ if eq(parameters.buildUWPX86, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'x86'
+      Platform: 'UWP'
+      PublishArtifacts: true
 
-# # Build UWP ARM
-# - ${{ if eq(parameters.buildUWPArm, true) }}:
-#   - template: tasks/unitybuild.yml
-#     parameters:
-#       Arch: 'arm'
-#       Platform: 'UWP'
-#       PublishArtifacts: true
-#       PackagingDir: 'ARM'
+# Build UWP ARM
+- ${{ if eq(parameters.buildUWPArm, true) }}:
+  - template: tasks/unitybuild.yml
+    parameters:
+      Arch: 'arm'
+      Platform: 'UWP'
+      PublishArtifacts: true
+      PackagingDir: 'ARM'
 
 # # Build UWP x86 .NET backend
 # - ${{ if eq(parameters.buildUWPDotNet, true) }}:
