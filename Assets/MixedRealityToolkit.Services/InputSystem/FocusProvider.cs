@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 raycastHit.normal = hitNormalOnObject;
                 raycastHit.distance = rayDistance;
                 raycastHit.transform = result.gameObject.transform;
-                raycastHit.raycastValid = false; //we can't populate all fields of MixedRealityRaycastHit in case of a GraphicsRaycast so we flag the hit data as invalid 
+                raycastHit.raycastValid = true;
 
                 graphicsRaycastResult = result;
 
