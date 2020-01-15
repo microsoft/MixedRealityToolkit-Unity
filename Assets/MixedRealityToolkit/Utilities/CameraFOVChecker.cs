@@ -37,15 +37,14 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
             
+            var cameraColliderPair = (collider: myCollider, camera: cam);
+            bool result = false;
             if (inFOVConeLastCalculatedFrame != Time.frameCount)
             {
                 inFOVConeColliderCache.Clear();
                 inFOVConeLastCalculatedFrame = Time.frameCount;
-            }
-            var cameraColliderPair = (collider: myCollider, camera: cam);
-            if (inFOVConeColliderCache.TryGetValue(cameraColliderPair, out bool result))
+            } else if (inFOVConeColliderCache.TryGetValue(cameraColliderPair, out result))
             {
-                Debug.Log($"Cache hit! Returning {result}");
                 return result;
             }
 
@@ -71,8 +70,6 @@ namespace Microsoft.MixedReality.Toolkit
                 zMax = Mathf.Max(zMax, corner.z);
             }
 
-            // edge case: check if camera is inside the entire bounds of the collider;
-            // Consider simplifying to myCollider.bounds.Contains(CameraCache.main.transform.position)
             var cameraPos = cam.transform.position;
             result = xMin <= cameraPos.x && cameraPos.x <= xMax
                 && yMin <= cameraPos.y && cameraPos.y <= yMax
