@@ -134,7 +134,7 @@ if (-not $UnityDirectory) {
 
 $unityEditor = Get-ChildItem $UnityDirectory -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 if (-not $unityEditor) {
-    throw "Unable to find the unity editor executable in $UnityDirectory"
+    throw "Unable to find the Unity editor executable in $UnityDirectory"
 }
 Write-Verbose $unityEditor;
 
