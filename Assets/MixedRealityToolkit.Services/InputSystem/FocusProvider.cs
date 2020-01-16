@@ -705,7 +705,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // To avoid a race condition where the uiRaycastCamera is technically still present
                 // in the scene after calling Destroy(), we call DestroyImmediate() to ensure it gets
-                // re-created appropriately.
+                // recreated appropriately.
+                // We acknowledge and are willing to accept the small performance hit that
+                // will occur during service tear down / restart.
                 UnityEngine.Object.DestroyImmediate(uiRaycastCamera.gameObject);
             }
             uiRaycastCamera = null;
@@ -1015,7 +1017,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointerData.UpdateHit(hit);
 
                     // set gaze hit result - make sure to include unity ui hits
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if ((gazeProviderPointingData?.Pointer != null) &&
+                        (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId))
                     {
                         gazeHitResult = hit;
                     }

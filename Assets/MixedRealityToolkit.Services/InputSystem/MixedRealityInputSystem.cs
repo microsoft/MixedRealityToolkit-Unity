@@ -310,9 +310,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GazeProvider.GazePointer.BaseCursor.Destroy();
                 }
 
-                // To avoid a race condition where the input system may believe there is a
-                // GazeProvider after it has been destroyed, use DestroyImmediate to ensure
-                // that it gets recreated appropriately.
+                // To avoid a race condition where the GazeProvider is technically still present
+                // in the scene after calling Destroy(), we call DestroyImmediate() to ensure it gets
+                // recreated appropriately.
+                // We acknowledge and are willing to accept the small performance hit that
+                // will occur during service tear down / restart.
                 UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
 
                 GazeProvider = null;
