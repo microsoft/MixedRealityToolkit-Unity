@@ -419,6 +419,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        private void OnDestroy()
+        {
+            if (GazeCursor != null)
+            {
+                Destroy(GazeCursor.GameObjectReference);
+            }
+        }
+
         #endregion MonoBehaviour Implementation
 
         #region InputSystemGlobalHandlerListener Implementation
