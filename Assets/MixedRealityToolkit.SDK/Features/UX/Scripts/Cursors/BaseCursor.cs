@@ -225,6 +225,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void Destroy()
         {
+            // The GazeProvider does not have a clear mechanism to clean up the cursor object that it
+            // adds to the scene. Clean it up here.
+            if (gameObject != null)
+            {
+                Destroy(gameObject);
+            }
+
             // Cursor needs to unregister its input handlers explicitly, while input system is still active.
             // If this would be done from OnDestroy, it will happen in the end of Update loop,
             // when the input system itself is already destroyed.
