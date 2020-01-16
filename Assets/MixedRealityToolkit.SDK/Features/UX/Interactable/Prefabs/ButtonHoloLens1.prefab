@@ -142,8 +142,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Say "Button"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -326,7 +324,8 @@ GameObject:
   - component: {fileID: 65091470401894616}
   - component: {fileID: 114809329666163580}
   - component: {fileID: 5253365468919551739}
-  - component: {fileID: 4750325155802407204}
+  - component: {fileID: 4427044058340059368}
+  - component: {fileID: 8306945661674645382}
   m_Layer: 5
   m_Name: ButtonHoloLens1
   m_TagString: Untagged
@@ -378,21 +377,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
-  Profiles:
+  voiceRequiresFocus: 1
+  profiles:
   - Target: {fileID: 1264397046495974}
     Themes:
     - {fileID: 11400000, guid: d37afabc007bf774d9431b9a7cbe6fba, type: 2}
@@ -405,14 +400,10 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   Events:
   - Event:
       m_PersistentCalls:
         m_Calls: []
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
     ClassName: InteractableAudioReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableAudioReceiver,
       Microsoft.MixedReality.Toolkit.SDK
@@ -445,10 +436,8 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &5253365468919551739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,7 +457,7 @@ MonoBehaviour:
   localCenter: {x: 0, y: 0, z: -0.01}
   bounds: {x: 0.12, y: 0.12}
   touchableCollider: {fileID: 65091470401894616}
---- !u!114 &4750325155802407204
+--- !u!114 &4427044058340059368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,46 +466,88 @@ MonoBehaviour:
   m_GameObject: {fileID: 1210820392543280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 093b74c6a1bc6234b92de4381632b9e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 63c897c097799da4a900032ad3471c47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnTouchStarted:
+  movingButtonVisuals: {fileID: 0}
+  distanceSpaceMode: 1
+  startPushDistance: -0.014683562
+  maxPushDistance: 0.2
+  pressDistance: 0.0044628847
+  releaseDistanceDelta: 0.009215563
+  returnSpeed: 25
+  releaseOnTouchEnd: 1
+  enforceFrontPush: 1
+  TouchBegin:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114809329666163580}
-        m_MethodName: SetInputDown
-        m_Mode: 1
+      - m_Target: {fileID: 8306945661674645382}
+        m_MethodName: OnHandPressTouched
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnTouchCompleted:
+  TouchEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114809329666163580}
-        m_MethodName: SetInputUp
-        m_Mode: 1
+      - m_Target: {fileID: 8306945661674645382}
+        m_MethodName: OnHandPressCompleted
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnTouchUpdated:
+  ButtonPressed:
     m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      m_Calls:
+      - m_Target: {fileID: 8306945661674645382}
+        m_MethodName: OnHandPressTriggered
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  ButtonReleased:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8306945661674645382}
+        m_MethodName: OnHandPressCompleted
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8306945661674645382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210820392543280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881d1ff8f009f5148b9f192e6ba31223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  routingTarget: {fileID: 114809329666163580}
+  InteractableOnClick: 1
 --- !u!1 &1264397046495974
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,8 +889,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
