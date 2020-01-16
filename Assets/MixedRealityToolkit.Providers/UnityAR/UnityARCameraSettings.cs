@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
         "UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Staging")]
+        "MixedRealityToolkit.Providers")]
     public class UnityARCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
