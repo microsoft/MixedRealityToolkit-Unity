@@ -984,10 +984,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 0}
   distanceSpaceMode: 1
-  startPushDistance: -0.01003539
+  startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: 0.0005859416
-  releaseDistanceDelta: 0.004655842
+  pressDistance: -0.004
+  releaseDistanceDelta: 0.0008
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
@@ -1223,10 +1223,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 0}
   distanceSpaceMode: 1
-  startPushDistance: -0.01003539
+  startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: 0.0005859416
-  releaseDistanceDelta: 0.004655842
+  pressDistance: -0.004
+  releaseDistanceDelta: 0.008
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
@@ -1644,10 +1644,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 0}
   distanceSpaceMode: 1
-  startPushDistance: -0.010035393
+  startPushDistance: -0.01
   maxPushDistance: 0.2
-  pressDistance: 0.0005859416
-  releaseDistanceDelta: 0.0046558417
+  pressDistance: -0.004
+  releaseDistanceDelta: 0.008
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
