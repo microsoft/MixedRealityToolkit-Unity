@@ -51,8 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public SolverSafeZone SafeZone
         {
-            get { return safeZone; }
-            set { safeZone = value; }
+            get => safeZone;
+            set => safeZone = value;
         }
 
         [SerializeField]
@@ -64,8 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float SafeZoneBuffer
         {
-            get { return safeZoneBuffer; }
-            set { safeZoneBuffer = value; }
+            get => safeZoneBuffer;
+            set => safeZoneBuffer = value;
         }
 
         [SerializeField]
@@ -77,8 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool UpdateWhenOppositeHandNear
         {
-            get { return updateWhenOppositeHandNear; }
-            set { updateWhenOppositeHandNear = value; }
+            get => updateWhenOppositeHandNear;
+            set => updateWhenOppositeHandNear = value;
         }
 
         [SerializeField]
@@ -90,8 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool HideHandCursorsOnActivate
         {
-            get { return hideHandCursorsOnActivate; }
-            set { hideHandCursorsOnActivate = value; }
+            get => hideHandCursorsOnActivate;
+            set => hideHandCursorsOnActivate = value;
         }
 
         /// <summary>
@@ -123,8 +123,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public SolverRotationBehavior RotationBehavior
         {
-            get { return rotationBehavior; }
-            set { rotationBehavior = value; }
+            get => rotationBehavior;
+            set => rotationBehavior = value;
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public SolverOffsetBehavior OffsetBehavior
         {
-            get { return offsetBehavior; }
-            set { offsetBehavior = value; }
+            get => offsetBehavior;
+            set => offsetBehavior = value;
         }
 
         [SerializeField]
@@ -164,8 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public UnityEvent OnHandActivate
         {
-            get { return onHandActivate; }
-            set { onHandActivate = value; }
+            get => onHandActivate;
+            set => onHandActivate = value;
         }
 
         [SerializeField]
@@ -177,8 +177,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public UnityEvent OnHandDeactivate
         {
-            get { return onHandDeactivate; }
-            set { onHandDeactivate = value; }
+            get => onHandDeactivate;
+            set => onHandDeactivate = value;
         }
 
         [SerializeField]
@@ -190,8 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public UnityEvent OnFirstHandDetected
         {
-            get { return onFirstHandDetected; }
-            set { onFirstHandDetected = value; }
+            get => onFirstHandDetected;
+            set => onFirstHandDetected = value;
         }
 
         [SerializeField]
@@ -203,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public UnityEvent OnLastHandLost
         {
-            get { return onLastHandLost; }
-            set { onLastHandLost = value; }
+            get => onLastHandLost;
+            set => onLastHandLost = value;
         }
 
         private Handedness previousHandedness = Handedness.None;

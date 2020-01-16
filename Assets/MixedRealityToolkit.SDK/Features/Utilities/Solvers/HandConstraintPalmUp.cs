@@ -26,8 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float FacingCameraTrackingThreshold
         {
-            get { return facingCameraTrackingThreshold; }
-            set { facingCameraTrackingThreshold = value; }
+            get => facingCameraTrackingThreshold;
+            set => facingCameraTrackingThreshold = value;
         }
 
         [SerializeField]
@@ -39,8 +39,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool RequireFlatHand
         {
-            get { return requireFlatHand; }
-            set { requireFlatHand = value; }
+            get => requireFlatHand;
+            set => requireFlatHand = value;
         }
 
         [SerializeField]
@@ -53,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float FlatHandThreshold
         {
-            get { return flatHandThreshold; }
-            set { flatHandThreshold = value; }
+            get => flatHandThreshold;
+            set => flatHandThreshold = value;
         }
 
         [SerializeField]
@@ -66,8 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool FollowHandUntilFacingCamera
         {
-            get { return followHandUntilFacingCamera; }
-            set { followHandUntilFacingCamera = value; }
+            get => followHandUntilFacingCamera;
+            set => followHandUntilFacingCamera = value;
         }
 
         [SerializeField]
@@ -79,8 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float FollowHandCameraFacingThresholdAngle
         {
-            get { return followHandCameraFacingThresholdAngle; }
-            set { followHandCameraFacingThresholdAngle = value; }
+            get => followHandCameraFacingThresholdAngle;
+            set => followHandCameraFacingThresholdAngle = value;
         }
 
         /// <summary>
