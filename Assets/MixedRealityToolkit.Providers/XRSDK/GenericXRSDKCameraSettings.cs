@@ -3,6 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
+using UnityEngine.SpatialTracking;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -29,10 +31,37 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
+        private TrackedPoseDriver trackedPoseDriver = null;
+
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
         public override bool IsOpaque => XRSDKSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
+
+        /// <inheritdoc/>
+        public override void Enable()
+        {
+            base.Enable();
+
+            // Only track the TrackedPoseDriver if we added it ourselves.
+            // There may be a pre-configured TrackedPoseDriver on the camera.
+            if (!CameraCache.Main.GetComponent<TrackedPoseDriver>())
+            {
+                trackedPoseDriver = CameraCache.Main.gameObject.AddComponent<TrackedPoseDriver>();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            if (trackedPoseDriver != null)
+            {
+                Object.Destroy(trackedPoseDriver);
+                trackedPoseDriver = null;
+            }
+
+            base.Disable();
+        }
 
         #endregion IMixedRealityCameraSettings
     }
