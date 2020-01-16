@@ -10,22 +10,22 @@ PrefabInstance:
     - target: {fileID: 5168285722132125204, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: m_Name
-      value: UnityUIInteractableToggleButton
+      value: UnityUIToggleButton
       objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: profiles.Array.data[0].Themes.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: profiles.Array.data[1].Themes.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: profiles.Array.data[2].Themes.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
@@ -36,20 +36,17 @@ PrefabInstance:
         type: 3}
       propertyPath: profiles.Array.data[0].Themes.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: cbde7890146c3024d928b7afc2e16065,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: profiles.Array.data[1].Themes.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 29b20ecfcc16eef4dad8989c360f2988,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: profiles.Array.data[2].Themes.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 6a4ada4b285469047946e8662531da54,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125211, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: m_LocalPosition.x
