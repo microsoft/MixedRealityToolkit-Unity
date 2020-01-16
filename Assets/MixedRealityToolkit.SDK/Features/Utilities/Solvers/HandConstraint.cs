@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Specifies how the solver should rotate when tracking the hand. ")]
+        [Tooltip("Specifies how the solver should rotate when tracking the hand.")]
         private SolverRotationBehavior rotationBehavior = SolverRotationBehavior.LookAtMainCamera;
 
         /// <summary>
@@ -125,6 +125,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             get { return rotationBehavior; }
             set { rotationBehavior = value; }
+        }
+
+        /// <summary>
+        /// Specifies how the solver's offset relative to the hand will be computed.
+        /// </summary>
+        public enum SolverOffsetBehavior
+        {
+            /// <summary>
+            /// Uses the look at camera rotation to compute an offset independent of hand rotation.
+            /// </summary>
+            LookAtCameraRotation,
+            /// <summary>
+            /// Uses the hand rotation to compute an offset independent of look at camera rotation.
+            /// </summary>
+            TrackedObjectRotation
+        }
+
+        [SerializeField]
+        [Tooltip("Specifies how the solver's offset relative to the hand will be computed.")]
+        private SolverOffsetBehavior offsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
+
+        /// <summary>
+        /// Specifies how the solver's offset relative to the hand will be computed.
+        /// </summary>
+        public SolverOffsetBehavior OffsetBehavior
+        {
+            get { return offsetBehavior; }
+            set { offsetBehavior = value; }
         }
 
         [SerializeField]
@@ -303,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, RotationBehavior);
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, SolverHandler.TransformTarget, trackedController, safeZone, OffsetBehavior);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
@@ -407,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverRotationBehavior rotationBehavior)
+        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
         {
             Vector3 direction;
 
@@ -416,7 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 default:
                 case SolverSafeZone.UlnarSide:
                     {
-                        if (rotationBehavior == SolverRotationBehavior.LookAtTrackedObject)
+                        if (offsetBehavior == SolverOffsetBehavior.TrackedObjectRotation)
                         {
                             direction = targetTransform.right;
                         }
@@ -436,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case SolverSafeZone.RadialSide:
                     {
 
-                        if (rotationBehavior == SolverRotationBehavior.LookAtTrackedObject)
+                        if (offsetBehavior == SolverOffsetBehavior.TrackedObjectRotation)
                         {
                             direction = -targetTransform.right;
                         }
@@ -455,13 +483,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 case SolverSafeZone.AboveFingerTips:
                     {
-                        direction = CameraCache.Main.transform.up;
+                        if (offsetBehavior == SolverOffsetBehavior.TrackedObjectRotation)
+                        {
+                            direction = targetTransform.forward;
+                        }
+                        else
+                        {
+                            direction = CameraCache.Main.transform.up;
+                        }
                     }
                     break;
 
                 case SolverSafeZone.BelowWrist:
                     {
-                        direction = -CameraCache.Main.transform.up;
+                        if (offsetBehavior == SolverOffsetBehavior.TrackedObjectRotation)
+                        {
+                            direction = -targetTransform.forward;
+                        }
+                        else
+                        {
+                            direction = -CameraCache.Main.transform.up;
+                        }
                     }
                     break;
             }

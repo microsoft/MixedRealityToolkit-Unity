@@ -61,9 +61,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera.")]
         private bool followHandUntilFacingCamera = false;
 
+        /// <summary>
+        /// With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera.
+        /// </summary>
+        public bool FollowHandUntilFacingCamera
+        {
+            get { return followHandUntilFacingCamera; }
+            set { followHandUntilFacingCamera = value; }
+        }
+
         [SerializeField]
         [Tooltip("Angle (in degrees) between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.")]
         private float followHandCameraFacingThresholdAngle = 60f;
+
+        /// <summary>
+        /// Angle (in degrees) between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.
+        /// </summary>
+        public float FollowHandCameraFacingThresholdAngle
+        {
+            get { return followHandCameraFacingThresholdAngle; }
+            set { followHandCameraFacingThresholdAngle = value; }
+        }
 
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
@@ -118,11 +136,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         if (palmCameraAngle > followHandCameraFacingThresholdAngle)
                         {
                             RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
+                            OffsetBehavior = SolverOffsetBehavior.TrackedObjectRotation;
                         }
                         // If we are within the threshold angle, we snap to follow the camera
                         else
                         {
                             RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
+                            OffsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
                         }
                     }
                 }
