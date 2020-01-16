@@ -92,6 +92,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
         }
 
+        [UnityTest]
+        public IEnumerator TestGazeProviderTargetUnityUi()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // spawn 3d object 
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
+            cube.transform.localScale = Vector3.one * 0.5f;
+            yield return null;
+
+            // make sure we get the 3d object as a gaze target
+            Assert.AreEqual(CoreServices.InputSystem.GazeProvider.GazeTarget, cube, "GazeProvider target is not set to 3d object (cube)");
+
+            // spawn 2d unity ui
+            var canvas = UnityUiUtilities.CreateCanvas(0.002f);
+            var toggle = UnityUiUtilities.CreateToggle(Color.gray, Color.blue, Color.green);
+            toggle.transform.SetParent(canvas.transform, false);
+            canvas.transform.position = Vector3.forward * 0.5f;
+            yield return null;
+
+            // check if gaze target has changed to unity ui
+            Assert.AreEqual(CoreServices.InputSystem.GazeProvider.GazeTarget, toggle.gameObject, "GazeProvider target is not set to toggle unity ui");
+
+            // destroy unity ui
+            Object.DestroyImmediate(canvas.gameObject);
+            yield return null;
+
+            // make sure gaze is back at 3d object
+            Assert.AreEqual(CoreServices.InputSystem.GazeProvider.GazeTarget, cube, "GazeProvider target is not set to 3d object (cube)");
+
+            yield return null;
+        }
+
         /// <summary>
         /// Ensure FocusProvider's FocusDetails can be overridden.
         /// </summary>

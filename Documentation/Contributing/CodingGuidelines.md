@@ -44,7 +44,7 @@ MRTK is a community project, modified by a diverse range of contributors. These 
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
-## Coding conventions
+## C# Coding conventions
 
 ### Script license information headers
 
@@ -97,13 +97,26 @@ Omitting the namespace for an interface, class or data type will cause your chan
 
 ### Adding new MonoBehaviour scripts
 
-When adding new MonoBehaviour scripts with a pull-request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+When adding new MonoBehaviour scripts with a pull request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
 
 In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
 
 ```c#
 [AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
 public class MyNewComponent : MonoBehaviour
+```
+
+### Adding new ScriptableObjects
+
+When adding new ScriptableObject scripts, ensure the [`CreateAssetMenu`](https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+
+In the example below, the *Subfolder* should be filled with the MRTK subfolder, if applicable. If placing an item in *MixedRealityToolkit.Providers* folder, then the package will be *Providers*. If placing an item in the *MixedRealityToolkit* folder, set this to "Profiles".
+
+In the example below, the *MyNewService | MyNewProvider* should be filled with the your new class' name, if applicable. If placing an item in the *MixedRealityToolkit* folder, leave this string out.
+
+```c#
+[CreateAssetMenu(fileName = "MyNewProfile", menuName = "Mixed Reality Toolkit/{Subfolder}/{MyNewService | MyNewProvider}/MyNewProfile")]
+public class MyNewProfile : ScriptableObject
 ```
 
 ### Spaces vs tabs
@@ -558,6 +571,10 @@ This chart can help you decide which `#if` to use, depending on your use cases a
 DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. [Others have hit the same issue](https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now).
 
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
+
+## PowerShell coding conventions
+
+A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the [PoshCode style](https://poshcode.gitbooks.io/powershell-practice-and-style/).
 
 ## See also
 
