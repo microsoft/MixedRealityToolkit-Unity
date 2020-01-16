@@ -481,7 +481,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if ((GazeCursor == null) &&
                 (GazeCursorPrefab != null))
             {
-                Debug.Log("Instantiating a new cursor");
                 GameObject cursor = Instantiate(GazeCursorPrefab);
                 MixedRealityPlayspace.AddChild(cursor.transform);
                 SetGazeCursor(cursor);
