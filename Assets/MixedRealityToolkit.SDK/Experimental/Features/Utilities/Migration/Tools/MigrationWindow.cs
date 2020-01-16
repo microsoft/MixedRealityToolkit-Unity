@@ -14,7 +14,7 @@ using Object = UnityEngine.Object;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     /// <summary>
-    /// This is an Utility Window for the MigrationTool. 
+    /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html"/>This is an utility window for the MigrationTool. 
     /// </summary>
     public class MigrationWindow : EditorWindow
     {
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void DrawMigrationTypeSelector()
         {
-            using (var horizontal = new EditorGUILayout.HorizontalScope())
+            using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Migration Handler Selection", EditorStyles.boldLabel);
 
@@ -147,20 +147,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 if (selectedToolbar == ToolbarOption.Project)
                 {
-                    if (GUILayout.Button("Add full project for Migration"))
+                    if (GUILayout.Button("Add full project for migration"))
                     {
-                        migrationTool.AddProjectForMigration();
+                        migrationTool.TryAddProjectForMigration();
                     }
                     return;
                 }
                 else
                 {
-                    string tooltip = $"Drag and Drop {toolbarTitles[(int)selectedToolbar]} for Migration.";
+                    string tooltip = $"Drag and drop {toolbarTitles[(int)selectedToolbar]} for migration.";
                     EditorGUILayout.LabelField(new GUIContent($"{toolbarTitles[(int)selectedToolbar]} Selection", InspectorUIUtility.InfoIcon, tooltip));
 
-                    var selectionType = selectedToolbar == ToolbarOption.GameObjects ? typeof(GameObject) : typeof(SceneAsset);
                     var allowSceneObjects = selectedToolbar == ToolbarOption.GameObjects;
-
+                    var selectionType = allowSceneObjects ? typeof(GameObject) : typeof(SceneAsset);
+                    
                     using (var check = new EditorGUI.ChangeCheckScope())
                     {
                         var selection = EditorGUILayout.ObjectField(null, selectionType, allowSceneObjects);
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             catch (TypeLoadException e)
             {
-                Debug.Log($"{e.GetType().Name}: Unable to load type for Migration");
+                Debug.Log($"{e.GetType().Name}: Unable to load type for migration");
                 isMigrationEnabled = false;
             }
             isMigrationEnabled = true;

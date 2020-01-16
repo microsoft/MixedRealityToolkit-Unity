@@ -24,64 +24,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// Returns a copy of all loadable implementation types of IMigrationHandler
         /// </summary>
-        public List<Type> MigrationHandlerTypes { get { return new List<Type>(migrationHandlerTypes); } }
+        public List<Type> MigrationHandlerTypes => new List<Type>(migrationHandlerTypes); 
 
         private List<Object> migrationObjects = new List<Object>();
         /// <summary>
-        /// Returns a copy of all Game Objects, Prefabs and Scene assets selected for migration
+        /// Returns a copy of all game objects, prefabs and scene assets selected for migration
         /// </summary>
-        public List<Object> MigrationObjects { get { return new List<Object>(migrationObjects); } }
+        public List<Object> MigrationObjects => new List<Object>(migrationObjects); 
 
         private dynamic migrationHandlerInstance;
-
-        private bool SetMigrationHandlerInstance(Type type)
-        {
-            if (type == null || !typeof(IMigrationHandler).IsAssignableFrom(type))
-            {
-                Debug.LogError($"{type.Name} is not a valid implementation of IMigrationHandler");
-                return false;
-            }
-
-            if (!migrationHandlerTypes.Contains(type))
-            {
-                Debug.LogError($"{type.Name} might not be a valid implementation of IMigrationHandler");
-                return false;
-            }
-
-            try
-            {
-                migrationHandlerInstance = Activator.CreateInstance(type) as IMigrationHandler;
-            }
-            catch (Exception)
-            {
-                Debug.LogError("Selected MigrationHandler implementation could not be Instanciated");
-                return false;
-            }
-            return true;
-        }
 
         public MigrationTool()
         {
             RefreshAvailableTypes();
         }
 
-        private void RefreshAvailableTypes()
-        {
-            var type = typeof(IMigrationHandler);
-            migrationHandlerTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(x => x.GetLoadableTypes())
-                .Where(x => type.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).ToList();
-        }
-
         /// <summary>
-        /// Adds Object to the list of objects to be migrated. Return false if Object is not of a GameObject, a Prefab or a Scene asset.
+        /// Adds selectedObject to the list of objects to be migrated. Return false if the object is not of type GameObject, or SceneAsset.
         /// </summary>
-        /// <param name="selectedObject">Unity object of type of a GameObject or SceneAsset</param>
+        /// <param name="selectedObject">Unity Object of type GameObject or SceneAsset</param>
         public bool TryAddObjectForMigration(Object selectedObject)
         {
             if (!selectedObject)
             {
-                Debug.LogError("Selection is Empty. Could not add for Migration.");
+                Debug.LogError("Selection is Empty. Could not add for migration.");
                 return false;
             }
 
@@ -90,35 +56,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 if (!migrationObjects.Contains(selectedObject))
                 {
                     migrationObjects.Add(selectedObject);
-                    Debug.Log($"{selectedObject.name} object added for Migration");
+                    Debug.Log($"{selectedObject.name} object added for migration");
                 }
                 return true;
             }
-            Debug.LogError("Object must be a GameObject, Prefab or SceneAsset. Could not add object for Migration");
+            Debug.LogError("Object must be a GameObject, Prefab or SceneAsset. Could not add object for migration");
             return false;
         }
 
         /// <summary>
-        /// Adds all prefabs and scene assets found on the Assets folder to the list of objects to be migrated
+        /// Adds all prefabs and scene assets found on the assets folder to the list of objects to be migrated
         /// </summary>
-        public void AddProjectForMigration()
+        public void TryAddProjectForMigration()
         {
             AddAllAssetsOfTypeForMigration(new Type[] { typeof(GameObject), typeof(SceneAsset) });
-        }
-
-        private void AddAllAssetsOfTypeForMigration(Type[] types)
-        {
-            if (types == null)
-            {
-                return;
-            }
-            foreach (var type in types)
-            {
-                foreach (var path in FindAllAssetsOfType(type))
-                {
-                    TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(path, type));
-                }
-            }
         }
 
         /// <summary>
@@ -150,37 +101,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return false;
             }
 
-            if (askToSaveCurrentScene)
+            if (askToSaveCurrentScene && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
-                if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-                {
-                    Debug.Log("d");
                     return false;
-                }
             }
             var previousScenePath = EditorSceneManager.GetActiveScene().path;
 
-            foreach (var migrationObject in migrationObjects)
+            for (int i = 0; i <  migrationObjects.Count; i++)
             {
-                string assetPath = AssetDatabase.GetAssetPath(migrationObject);
+                var progress = (float)i / migrationObjects.Count;
+                if (EditorUtility.DisplayCancelableProgressBar("Migration Tool", $"Migrating all {type.Name} components from selection", progress))
+                {
+                    break;
+                }
+                string assetPath = AssetDatabase.GetAssetPath(migrationObjects[i]);
 
-                // Object migrationObject is a scene Game Object
+                // Object migrationObject is a scene game object
                 if (String.IsNullOrEmpty(assetPath))
                 {
-                    MigrateGameObjectHierarchy((GameObject)migrationObject);
+                    MigrateGameObjectHierarchy((GameObject)migrationObjects[i]);
                 }
                 else
                 {
-                    if (migrationObject is GameObject)
+                    if (migrationObjects[i] is GameObject)
                     {
                         MigratePrefab(assetPath);
                     }
-                    else if (migrationObject is SceneAsset)
+                    else if (migrationObjects[i] is SceneAsset)
                     {
                         MigrateScene(assetPath);
                     }
                 }
             }
+            EditorUtility.ClearProgressBar();
             migrationObjects.Clear();
 
             if (!String.IsNullOrEmpty(previousScenePath) && previousScenePath != EditorSceneManager.GetActiveScene().path)
@@ -188,6 +141,57 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 EditorSceneManager.OpenScene(Directory.GetCurrentDirectory() + "/" + previousScenePath);
             }
             return true;
+        }
+
+        private void AddAllAssetsOfTypeForMigration(Type[] types)
+        {
+            if (types == null)
+            {
+                return;
+            }
+
+            var assetPaths = FindAllAssetsOfType(types);
+            if (assetPaths != null)
+            {
+                foreach (var path in assetPaths)
+                {
+                    TryAddObjectForMigration(AssetDatabase.LoadMainAssetAtPath(path));
+                }
+            }
+        }
+
+        private bool SetMigrationHandlerInstance(Type type)
+        {
+            if (type == null || !typeof(IMigrationHandler).IsAssignableFrom(type))
+            {
+                Debug.LogError($"{type.Name} is not a valid implementation of IMigrationHandler");
+                return false;
+            }
+
+            if (!migrationHandlerTypes.Contains(type))
+            {
+                Debug.LogError($"{type.Name} might not be a valid implementation of IMigrationHandler");
+                return false;
+            }
+
+            try
+            {
+                migrationHandlerInstance = Activator.CreateInstance(type) as IMigrationHandler;
+            }
+            catch (Exception)
+            {
+                Debug.LogError("Selected MigrationHandler implementation could not be instanciated");
+                return false;
+            }
+            return true;
+        }
+
+        private void RefreshAvailableTypes()
+        {
+            var type = typeof(IMigrationHandler);
+            migrationHandlerTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetLoadableTypes())
+                .Where(x => type.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract).ToList();
         }
 
         private void MigrateScene(String path)
@@ -238,17 +242,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{e.Message}: GameObject {parent.name} could not be Migrated");
+                    Debug.LogError($"{e.Message}: GameObject {parent.name} could not be migrated");
                 }
             }
         }
 
-        private static List<string> FindAllAssetsOfType(Type type)
+        private static List<string> FindAllAssetsOfType(Type[] types)
         {
-            return AssetDatabase.GetAllAssetPaths()
-                .Select(x => x)
-                .Where(x => AssetDatabase.GetMainAssetTypeAtPath(x) == type)
-                .ToList();
+            if(types==null)
+            {
+                return null;
+            }
+            var filter = string.Join(" ", types
+                                          .Select(x => string.Format("t{0}", x.Name))
+                                          .ToArray());
+            return AssetDatabase.FindAssets(filter).Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
         }
     }
 }

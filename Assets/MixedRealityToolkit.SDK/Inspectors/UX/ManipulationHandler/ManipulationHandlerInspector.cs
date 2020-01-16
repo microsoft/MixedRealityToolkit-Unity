@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawDeprecated()
         {
-            EditorGUILayout.HelpBox("This Component is deprecated. Please migrate object to up to date version", UnityEditor.MessageType.Warning);
+            EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", UnityEditor.MessageType.Warning);
             if (GUILayout.Button("Migrate Object"))
             {
                 MigrationTool migrationTool = new MigrationTool();

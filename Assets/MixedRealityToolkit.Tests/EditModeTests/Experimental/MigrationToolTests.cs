@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly MigrationTool migrationTool = new MigrationTool();
 
         /// <summary>
-        /// Checks if MigrationTool can process migration on a GameObject containing a deprecated ManipulationHandler component.
+        /// Checks if MigrationTool can process migration on a gameobject containing a deprecated ManipulationHandler component.
         /// </summary>
         [Test]
         public void GameObjectCanBeMigrated()
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Checks if MigrationTool can process migration on a Prefab containing a deprecated ManipulationHandler component.
+        /// Checks if MigrationTool can process migration on a prefab containing a deprecated ManipulationHandler component.
         /// </summary>
         [Test]
         public void PrefabCanBeMigrated()
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Checks if MigrationTool can process migration on a Scene root GameObject that contains a deprecated ManipulationHandler component.
+        /// Checks if MigrationTool can process migration on a scene root game object that contains a deprecated ManipulationHandler component.
         /// </summary>
         [Test]
         public void SceneCanBeMigrated()
@@ -87,8 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var openScene = EditorSceneManager.OpenScene(scenePath);
             foreach (var sceneGameObject in openScene.GetRootGameObjects())
             {
-                Assert.IsNull(sceneGameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
-                Assert.IsNotNull(sceneGameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
+                Assert.IsNull(sceneGameObject.GetComponent(oldType), $"Migrated component of type {oldType.Name} could not be removed");
+                Assert.IsNotNull(sceneGameObject.GetComponent(newType), $"Migrated component of type {newType.Name} could not be added");
 
                 GameObject.DestroyImmediate(sceneGameObject);
             }
