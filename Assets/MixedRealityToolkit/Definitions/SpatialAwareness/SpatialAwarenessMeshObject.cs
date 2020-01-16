@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public MeshCollider Collider { get; set; }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         private SpatialAwarenessMeshObject() : base() { }
 

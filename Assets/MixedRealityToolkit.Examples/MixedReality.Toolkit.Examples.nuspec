@@ -28,6 +28,7 @@
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
-    <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" />
+    <!-- The following line is commented out because of a path length issue -->
+    <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" /> -->
   </files>
 </package>

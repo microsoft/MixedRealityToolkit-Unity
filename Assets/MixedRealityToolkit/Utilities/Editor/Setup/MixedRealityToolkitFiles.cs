@@ -41,10 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
     /// for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
     /// within the project.
-    ///
-    /// If the MRTK is being consumed as code that sits within the Assets folder, the "root"
-    /// MRTK folder must be at most three directories deep - this search code will only reason
-    /// over MRTK folders that sit in a depth range [0, 3].
     /// </remarks>
     [InitializeOnLoad]
     public static class MixedRealityToolkitFiles

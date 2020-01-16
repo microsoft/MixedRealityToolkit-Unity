@@ -24,10 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
         public string Uri
         {
-            get
-            {
-                return uri;
-            }
+            get => uri;
         }
 
         [SerializeField]
@@ -45,11 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             if (!File.Exists(path))
             {
                 Debug.LogError($"Unable to find the glTF object at {path}");
-                this.DebugText.SetActive(true);
+                DebugText.SetActive(true);
                 return;
             }
 
-            this.DebugText.SetActive(false);
+            DebugText.SetActive(false);
 
             GltfObject gltfObject = null;
 
@@ -64,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             }
             catch (Exception e)
             {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+                Debug.LogError($"TestGltfLoading start failed - {e.Message}\n{e.StackTrace}");
             }
 
             if (gltfObject != null)

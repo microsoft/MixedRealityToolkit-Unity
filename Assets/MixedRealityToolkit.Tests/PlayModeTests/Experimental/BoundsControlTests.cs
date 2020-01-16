@@ -53,12 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cube.transform.position = boundsControlStartCenter;
             BoundsControl bbox = cube.AddComponent<BoundsControl>();
 
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(cube.transform.position);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             bbox.transform.localScale = boundsControlStartScale;
             bbox.Active = true;
@@ -140,12 +135,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // front right corner is corner 3
             var frontRightCornerPos = bbox.gameObject.transform.Find("rigRoot/corner_3").position;
 
+
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(initialHandPosition, frontRightCornerPos, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.MoveHand(frontRightCornerPos, frontRightCornerPos + delta, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService, numSteps);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
@@ -156,7 +153,166 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
+        }
 
+        /// <summary>
+        /// Test bounds control rotation via far interaction
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaFarInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.121f, -0.127f, 0.499f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            bbox.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 87f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(bbox.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(bbox.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via near interaction
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaNearInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 rightFrontRotationHandlePoint = new Vector3(0.248f, 0.001f, 1.226f); // position of hand for far interacting with front right rotation sphere 
+            Vector3 endRotation = new Vector3(-0.284f, -0.001f, 1.23f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.Show(pointOnCube);
+            // grab front right rotation point
+            yield return hand.MoveTo(rightFrontRotationHandlePoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            // move to left side of cube
+            yield return hand.MoveTo(endRotation);
+
+            // make sure rotation is as expected and no other transform values have been modified through this
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            bbox.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 92f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(bbox.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(bbox.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateViaHololens1Interaction()
+        {
+            BoundsControl control = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(control);
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            // move camera to look at rotation sphere
+            CameraCache.Main.transform.LookAt(new Vector3(0.248f, 0.001f, 1.226f)); // rotation sphere front right
+
+            var startHandPos = new Vector3(0.364f, -0.157f, 0.437f);
+            var endPoint = new Vector3(0.141f, -0.163f, 0.485f);
+
+            // perform tab with hand and drag to left 
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(startHandPos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.MoveTo(endPoint);
+
+            // make sure only Y axis rotation was performed and no other transform values have changed
+            Vector3 expectedPosition = new Vector3(0f, 0f, 1.5f);
+            Vector3 expectedSize = Vector3.one * 0.5f;
+            float angle;
+            Vector3 axis = new Vector3();
+            control.transform.rotation.ToAngleAxis(out angle, out axis);
+            float expectedAngle = 86f;
+            float angleDiff = Mathf.Abs(expectedAngle - angle);
+            Vector3 expectedAxis = new Vector3(0f, 1f, 0f);
+            TestUtilities.AssertAboutEqual(axis, expectedAxis, "Rotated around wrong axis");
+            Assert.IsTrue(angleDiff <= 1f, "cube didn't rotate as expected");
+            TestUtilities.AssertAboutEqual(control.transform.position, expectedPosition, "cube moved while rotating");
+            TestUtilities.AssertAboutEqual(control.transform.localScale, expectedSize, "cube scaled while rotating");
+
+            GameObject.Destroy(control.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+            // Restore the input simulation profile
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests scaling of bounds control by grabbing a corner with the far interaction hand ray
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleViaFarInteraction()
+        {
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+            
+            Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
+            Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
+            Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
+
+            TestHand hand = new TestHand(Handedness.Left);
+            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.MoveTo(rightCornerInteractionPoint);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(scalePoint);
+            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
+            Vector3 expectedSize = Vector3.one * 0.59f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
         }
 
         /// <summary>
@@ -331,6 +487,117 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             bbox.gameObject.SetActive(true);
             yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
             Assert.AreEqual(afterTransformScale, bbox.transform.localScale);
+        }
+
+        /// <summary>
+        /// Tests proximity scaling on scale handles of bounds control
+        /// Verifies default behavior of handles with effect enabled / disabled as well as custom runtime configured scaling / distance values
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ProximityOnScaleHandles()
+        {
+            var bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            // 1. test no proximity scaling active per default
+            ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
+            Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0f);
+            // this is specific to scale handles
+            Transform scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
+            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            var frontRightCornerPos = scaleHandle.position; // front right corner is corner 
+            Assert.IsNotNull(proximityScaledVisual, "Couldn't get visual gameobject for scale handle");
+            Assert.IsTrue(proximityScaledVisual.name == "visuals", "scale visual has unexpected name");
+
+            yield return null;
+            // verify no proximity scaling applied per default
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
+            TestHand hand = new TestHand(Handedness.Left);
+            Vector3 initialScale = bbox.transform.localScale;
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos);
+            yield return null;
+
+            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
+
+            //// reset hand
+            yield return hand.MoveTo(initialHandPosition);
+
+            // 2. enable proximity scaling and test defaults
+            ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
+            proximityConfig.ProximityEffectActive = true;
+            proximityConfig.CloseGrowRate = 1.0f;
+            proximityConfig.MediumGrowRate = 1.0f;
+            proximityConfig.FarGrowRate = 1.0f;
+            bbox.CreateRig();
+            yield return null; // wait so rig gameobjects get recreated
+            yield return TestCurrentProximityConfiguration(bbox, hand, "Defaults");
+
+            // reset hand
+            yield return hand.MoveTo(initialHandPosition);
+
+            // 3. now test custom configuration is applied during runtime
+            proximityConfig.CloseScale = 4.0f;
+            proximityConfig.MediumScale = 3.0f;
+            proximityConfig.FarScale = 2.0f;
+
+            proximityConfig.ObjectMediumProximity = 0.2f;
+            proximityConfig.ObjectCloseProximity = 0.1f;
+
+            bbox.CreateRig();
+            yield return null; // wait so rig gameobjects get recreated
+            yield return TestCurrentProximityConfiguration(bbox, hand, "Custom runtime config max");
+        }
+
+        /// <summary>
+        /// This tests far, medium and close proximity scaling on scale handles by moving the test hand in the corresponding distance ranges
+        /// </summary>
+        /// <param name="bbox">Bounds Control to test on</param>
+        /// <param name="hand">Test hand to use for testing proximity to handle</param>
+        private IEnumerator TestCurrentProximityConfiguration(BoundsControl bbox, TestHand hand, string testDescription)
+        {
+            // get config and scaling handle
+            ScaleHandlesConfiguration scaleHandleConfig = bbox.ScaleHandlesConfiguration;
+            Vector3 defaultHandleSize = Vector3.one * scaleHandleConfig.HandleSize;
+            Transform scaleHandle = bbox.gameObject.transform.Find("rigRoot/corner_3");
+            Transform proximityScaledVisual = scaleHandle.GetChild(0)?.GetChild(0);
+            var frontRightCornerPos = scaleHandle.position;
+            // check far scale applied
+            ProximityEffectConfiguration proximityConfig = bbox.HandleProximityEffectConfiguration;
+            Vector3 expectedFarScale = defaultHandleSize * proximityConfig.FarScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedFarScale, testDescription + " - Proximity far scale wasn't applied to handle");
+
+            // move into medium range and check if scale was applied
+            Vector3 mediumProximityTestDist = frontRightCornerPos;
+            mediumProximityTestDist.x += proximityConfig.ObjectMediumProximity;
+            yield return hand.MoveTo(mediumProximityTestDist);
+            Vector3 expectedMediumScale = defaultHandleSize * proximityConfig.MediumScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedMediumScale, testDescription + " - Proximity medium scale wasn't applied to handle");
+
+            // move into close scale range and check if scale was applied
+            Vector3 closeProximityTestDir = frontRightCornerPos;
+            closeProximityTestDir.x += proximityConfig.ObjectCloseProximity;
+            yield return hand.MoveTo(closeProximityTestDir);
+            Vector3 expectedCloseScale = defaultHandleSize * proximityConfig.CloseScale;
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedCloseScale, testDescription + " - Proximity close scale wasn't applied to handle");
+
+            // move out of close scale again - should fall back to medium proximity
+            closeProximityTestDir = mediumProximityTestDist;
+            yield return hand.MoveTo(closeProximityTestDir);
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedMediumScale, testDescription + " - Proximity medium scale wasn't applied to handle");
+
+            // move out of medium proximity and check if far scaling is applied
+            mediumProximityTestDist = Vector3.zero;
+            yield return hand.MoveTo(mediumProximityTestDist);
+            Assert.AreEqual(proximityScaledVisual.localScale, expectedFarScale, testDescription + " - Proximity far scale wasn't applied to handle");
+
+            yield return null;
         }
 
         /// <summary>

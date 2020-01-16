@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void LateUpdate()
         {
-            if (targetRenderer != null && prevScale != transform.lossyScale)
+            if (prevScale != transform.lossyScale && targetRenderer != null)
             {
                 prevScale = transform.lossyScale;
 
