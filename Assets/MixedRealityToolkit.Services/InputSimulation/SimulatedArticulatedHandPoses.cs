@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Load default hand poses for supported gestures. Clears and overwrites original gesture poses
         /// </summary>
-        private static void LoadDefaultGesturePoses()
+        public static void LoadDefaultGesturePoses()
         {
             gesturePoses = new Dictionary<GestureId, ArticulatedHandPose>();
 
