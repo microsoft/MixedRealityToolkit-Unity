@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
-            start.Vector3 = hostTransform.eulerAngles;
+            start.Vector3 = hostTransform.localEulerAngles;
             return start;
         }
 
