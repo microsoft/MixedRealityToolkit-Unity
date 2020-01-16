@@ -30,6 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => facingCameraTrackingThreshold = value;
         }
 
+        [System.Obsolete("Use FacingCameraTrackingThreshold property instead")]
+        public float FacingThreshold
+        {
+            get => FacingCameraTrackingThreshold;
+            set => FacingCameraTrackingThreshold = value;
+        }
+
         [SerializeField]
         [Tooltip("Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by IMixedRealityHand controllers.")]
         private bool requireFlatHand = false;
