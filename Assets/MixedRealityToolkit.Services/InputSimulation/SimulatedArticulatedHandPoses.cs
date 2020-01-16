@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (gesturePoses == null)
             {
-                LoadGesturePoses();
+                LoadDefaultGesturePoses();
             }
 
             if (gesturePoses.TryGetValue(gesture, out ArticulatedHandPose pose))
@@ -47,9 +47,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Load pose data from files.
+        /// Set hand pose data for supported gesture. Useful to overwrite loaded defaults
         /// </summary>
-        private static void LoadGesturePoses()
+        public static void SetGesturePose(GestureId key, ArticulatedHandPose value)
+        {
+            if (value != null)
+            {
+                gesturePoses[key] = value;
+            }
+        }
+
+        /// <summary>
+        /// Load default hand poses for supported gestures. Clears and overwrites original gesture poses
+        /// </summary>
+        private static void LoadDefaultGesturePoses()
         {
             gesturePoses = new Dictionary<GestureId, ArticulatedHandPose>();
 
