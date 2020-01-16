@@ -364,7 +364,7 @@ public class ProfileSwapper : MonoBehaviour
 }
 ```
 
-Instead of "RuntimeSwapparoo.asset" it's possible to have some arbitrary set of profiles which apply to
+Instead of "RuntimeSwapparoo.asset", it's possible to have some arbitrary set of profiles which apply to
 specific platforms (for example, one for HoloLens 1, one for VR, one for HoloLens 2, etc). It's possible
 to use various other indicators (i.e. https://docs.unity3d.com/ScriptReference/SystemInfo.html, or
 whether or not the camera is opaque/transparent), to figure out which profile to load.
