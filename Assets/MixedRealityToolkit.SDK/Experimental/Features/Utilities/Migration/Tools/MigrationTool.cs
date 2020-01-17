@@ -93,17 +93,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// Migrates all objects from list of objects to be migrated using the selected IMigrationHandler implementation. 
         /// </summary>
         /// <param name="type">A type that implements IMigrationhandler</param>
-        /// <returns></returns>
         public bool MigrateSelection(Type type, bool askToSaveCurrentScene)
         {
-            if (!SetMigrationHandlerInstance(type))
+            if (type == null || !SetMigrationHandlerInstance(type))
             {
                 return false;
             }
 
             if (askToSaveCurrentScene && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
-                    return false;
+                return false;
             }
             var previousScenePath = EditorSceneManager.GetActiveScene().path;
 
@@ -138,18 +137,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (!String.IsNullOrEmpty(previousScenePath) && previousScenePath != EditorSceneManager.GetActiveScene().path)
             {
-                EditorSceneManager.OpenScene(Directory.GetCurrentDirectory() + "/" + previousScenePath);
+                EditorSceneManager.OpenScene(Path.Combine(Directory.GetCurrentDirectory(), previousScenePath));
             }
             return true;
         }
 
         private void AddAllAssetsOfTypeForMigration(Type[] types)
         {
-            if (types == null)
-            {
-                return;
-            }
-
             var assetPaths = FindAllAssetsOfType(types);
             if (assetPaths != null)
             {
@@ -162,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private bool SetMigrationHandlerInstance(Type type)
         {
-            if (type == null || !typeof(IMigrationHandler).IsAssignableFrom(type))
+            if (!typeof(IMigrationHandler).IsAssignableFrom(type))
             {
                 Debug.LogError($"{type.Name} is not a valid implementation of IMigrationHandler");
                 return false;
@@ -225,11 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void MigrateGameObjectHierarchy(GameObject parent)
         {
-            if (!parent)
-            {
-                return;
-            }
-
             foreach (var child in parent.GetComponentsInChildren<Transform>())
             {
                 try
@@ -249,10 +238,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private static List<string> FindAllAssetsOfType(Type[] types)
         {
-            if(types==null)
-            {
-                return null;
-            }
             var filter = string.Join(" ", types
                                           .Select(x => string.Format("t{0}", x.Name))
                                           .ToArray());

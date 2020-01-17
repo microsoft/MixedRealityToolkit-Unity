@@ -6,19 +6,39 @@ using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class MigrationToolTests
     {
         private readonly MigrationTool migrationTool = new MigrationTool();
+        private readonly HashSet<string> assetsForDeletion = new HashSet<string>();
 
         /// <summary>
-        /// Checks if MigrationTool can process migration on a gameobject containing a deprecated ManipulationHandler component.
+        /// Deletes all assets created during tests
+        /// </summary>
+        [TearDown]
+        public void TearDown()
+        {
+            foreach (var assetPath in assetsForDeletion)
+            {
+                if (AssetDatabase.LoadMainAssetAtPath(assetPath))
+                {
+                    AssetDatabase.DeleteAsset(assetPath);
+                }
+            }
+            AssetDatabase.Refresh();
+        }
+
+        /// <summary>
+        /// Checks if MigrationTool can process migration on a game object containing a deprecated ManipulationHandler component.
         /// </summary>
         [Test]
         public void GameObjectCanBeMigrated()
@@ -51,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
             PrefabUtility.SaveAsPrefabAsset(gameObject, prefabPath);
+            assetsForDeletion.Add(prefabPath);
 
             migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
             migrationTool.MigrateSelection(migrationHandlerType, false);
@@ -60,10 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(prefabGameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
             Assert.IsNotNull(prefabGameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
 
-            PrefabUtility.UnloadPrefabContents(prefabGameObject);
-            AssetDatabase.DeleteAsset(prefabPath);
             GameObject.DestroyImmediate(gameObject);
-            AssetDatabase.Refresh();
         }
 
         /// <summary>
@@ -80,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
             EditorSceneManager.SaveScene(scene, scenePath);
+            assetsForDeletion.Add(scenePath);
 
             migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(scenePath, typeof(SceneAsset)));
             migrationTool.MigrateSelection(migrationHandlerType, false);
@@ -92,10 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 GameObject.DestroyImmediate(sceneGameObject);
             }
-
-            AssetDatabase.DeleteAsset(scenePath);
             GameObject.DestroyImmediate(gameObject);
-            AssetDatabase.Refresh();
         }
 
         private static GameObject SetUpGameObjectWithComponentOfType(Type type)
