@@ -4,17 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using UnityEngine.XR.Management;
 
 #if WINDOWS_UWP
-using System.Runtime.InteropServices;
+using UnityEngine.XR.Management;
 using UnityEngine.XR.WindowsMR;
 using Windows.Perception.People;
-using Windows.Perception.Spatial;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
 
@@ -56,9 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
         private int[] handMeshTriangleIndices = null;
         private bool hasRequestedHandMeshObserver = false;
         private Vector2[] handMeshUVs;
-
-        private SpatialCoordinateSystem spatialCoordinateSystem;
-        private SpatialCoordinateSystem SpatialCoordinateSystem => spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WindowsMREnvironment.OriginSpatialCoordinateSystem) as SpatialCoordinateSystem);
 
         protected void InitializeUVs(Vector3[] neutralPoseVertices)
         {
@@ -243,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
                         var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
                         handMeshVertexState.GetVertices(vertexAndNormals);
 
-                        var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(SpatialCoordinateSystem);
+                        var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
                         if (meshTransform.HasValue)
                         {
                             System.Numerics.Vector3 scale;
