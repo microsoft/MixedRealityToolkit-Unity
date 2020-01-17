@@ -275,7 +275,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
 
-            float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.deltaTime;
+            // This line explicitly uses unscaledDeltaTime because we don't want input simulation
+            // to lag when the time scale is set to a value other than 1. Input should still continue
+            // to move freely.
+            float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
         }
