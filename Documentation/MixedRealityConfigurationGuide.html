@@ -103,10 +103,6 @@
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" width="650px" style="display:block;">
 <p>If you select a MixedRealityToolkitConfigurationProfile asset without the MixedRealityToolkit in the scene, it will ask you if you want the MRTK to automatically setup the scene for you. This is optional, however, there must be an active MixedRealityToolkit object in the scene to access all the configuration screens.</p>
 <p>This houses the current active runtime configuration for the project.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>Almost any profile can be swapped out at runtime, with the exception of the InputActions configuration (see later). The profiles with then automatically adapt to the new configuration / runtime environment automatically.</p>
-</div>
 <p>From here you can navigate to all the configuration profiles for the MRTK, including:</p>
 <ul>
 <li><a href="#experience">Experience settings</a></li>
@@ -352,6 +348,50 @@ or later programmatically as well as setting the extents for the field of view.<
 <p>To ensure a scene renders all necessary data to the depth buffer, developers can toggle the <em>Render Depth Buffer</em> feature under <em>Editor Settings</em> in the Configuration Profile. This will take the current depth buffer and render it as color to the scene view by applying a post-processing effect, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer.html"><code>DepthBufferRenderer</code></a>, to the main camera.</p>
 <p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif" alt="Render Depth Buffer Utility">
 <sup>The blue cylinder in the scene has a material with ZWrite off so no depth data is written</sup></p>
+<h2 id="changing-profiles-at-runtime">Changing profiles at runtime</h2>
+<p>It is possible to update profiles at runtime, and there are generally two different
+scenarios and times in which in this is helpful:</p>
+<ol>
+<li>At startup, before the MRTK is initialized, swapping the profile to enable/disable
+different features based on the device capabilities. For example, if the experience is running
+in VR that doesn't have spatial mapping hardware it probably doesn't make sense to have spatial
+mapping component enabled.</li>
+<li>After startup, after the MRTK is initialized, swapping the profile to change the way certain features
+behave. For example, there may be a specific sub-experience in the application that wants far hand
+pointers completely removed. <strong>Note</strong> that this type of swapping currently doesn't work due to
+this issue: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289</a>.</li>
+</ol>
+<h2 id="swapping-profiles-prior-to-mrtk-initialization">Swapping profiles prior to MRTK initialization</h2>
+<p>This can be accomplished by attaching a MonoBehaviour (example below) which runs before MRTK initialization:</p>
+<pre><code class="lang-csharp">using Microsoft.MixedReality.Toolkit;
+using UnityEditor;
+using UnityEngine;
+
+/// &lt;summary&gt;
+/// Sample MonoBehaviour that will run before the MixedRealityToolkit object, and change
+/// the profile, so that when the MRTK initializes it uses the profile specified below
+/// rather than the one that is saved in its scene.
+/// &lt;/summary&gt;
+/// &lt;remarks&gt;
+/// Note that this script must have a higher priority in the script execution order compared
+/// to that of MixedRealityToolkit.cs. See https://docs.unity3d.com/Manual/class-MonoManager.html
+/// for more information on script execution order.
+/// &lt;/remarks&gt;
+public class ProfileSwapper : MonoBehaviour
+{
+    void Start()
+    {
+        // Here you could choose any arbitrary MixedRealityToolkitConfigurationProfile (for example, you could
+        // add some platform checking code here to determine which profile to load).
+        var profile = AssetDatabase.LoadAssetAtPath&lt;MixedRealityToolkitConfigurationProfile&gt;(&quot;Assets/MixedRealityToolkit.Generated/CustomProfiles/RuntimeSwapparoo.asset&quot;);
+        MixedRealityToolkit.Instance.ActiveProfile = profile;
+    }
+}
+</code></pre>
+<p>Instead of &quot;RuntimeSwapparoo.asset&quot;, it's possible to have some arbitrary set of profiles which apply to
+specific platforms (for example, one for HoloLens 1, one for VR, one for HoloLens 2, etc). It's possible
+to use various other indicators (i.e. <a href="https://docs.unity3d.com/ScriptReference/SystemInfo.html">https://docs.unity3d.com/ScriptReference/SystemInfo.html</a>, or
+whether or not the camera is opaque/transparent), to figure out which profile to load.</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="hologram-stabilization.html">Hologram Stabilization</a></li>
