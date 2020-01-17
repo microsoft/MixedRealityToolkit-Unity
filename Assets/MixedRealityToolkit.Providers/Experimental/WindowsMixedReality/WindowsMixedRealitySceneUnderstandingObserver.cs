@@ -93,8 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             updateTimer.Elapsed += UpdateTimerEventHandler;
 
             firstUpdateTimer.Start();
-
-            //sceneNeedsAlignment = true;
         }
 
         /// <inheritdoc />
@@ -257,7 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private byte[] sceneBytes;
         private bool canGetScene = true;
         private bool canUpdateScene = false;
-        //private bool sceneNeedsAlignment;
         private Mesh normalizedQuadMesh = new Mesh();
         private string surfaceTypeName;
 
@@ -363,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     byte[] occlusionMaskBytes = null;
 
-                    if (VisualizeOcclusionMask)
+                    if (GetOcclusionMask)
                     {
                         occlusionMaskBytes = new byte[OcclusionMaskResolution.x * OcclusionMaskResolution.y];
                         sceneQuad.GetSurfaceMask((ushort)OcclusionMaskResolution.x, (ushort)OcclusionMaskResolution.y, occlusionMaskBytes);
@@ -444,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private async Task GetSceneObjectsAsync()
         {
-            //Debug.Log("GetSceneAsync()");
+            Debug.Log("GetSceneAsync() start");
             Scene scene = null;
             Guid sceneGuid = new Guid();
             var sasos = new List<SpatialAwarenessSceneObject>();
@@ -474,11 +471,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                 if (canAccessTask.Status == TaskStatus.Faulted)
                 {
+                    Debug.Log("Something bad in CanAccessObserverAsync");
                     Debug.LogException(canAccessTask.Exception);
                 }
 
+                Debug.Log($"canAccessTask.Result={canAccessTask.Result}");
+
                 if (canAccessTask.Result)
                 {
+                    Debug.Log("making sqs");
                     SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
                     {
                         EnableSceneObjectQuads = GeneratePlanes,
@@ -499,6 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                         if (UsePersistentObjects)
                         {
+                            Debug.Log("UsePersistentObjects");
                             if (previousScene != null)
                             {
                                 task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene);
@@ -514,6 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                             task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
                         }
 
+                        Debug.Log("Assigning scene result");
                         await task;
                         scene = task.Result;
                     }
@@ -521,9 +524,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (UsePersistentObjects)
                     {
+                        Debug.Log("updating previous scene.");
                         previousScene = scene;
                     }
                 }
+                Debug.Log("GetSceneAsync() end");
+
             }
 
             // Filter the scene objects we're interested in
@@ -546,11 +552,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             System.Numerics.Matrix4x4 sceneTransform = GetSceneTransform(sceneGuid);
 
+            Debug.Log($"sceneTransform={sceneTransform}");
+
             // If not on HoloLens....
             // Orient data so floor with largest area is aligned to XZ plane
 
-            if (CoreServices.CameraSystem.IsOpaque)
+            if (OrientScene && CoreServices.CameraSystem.IsOpaque)
             {
+                Debug.Log("Orienting scene");
                 Quaternion toUp = ToUpFromBiggestFloor(scene.SceneObjects);
                 var rotation = Matrix4x4.TRS(Vector3.zero, toUp, Vector3.one).ToSystemNumerics();
                 sceneTransform = rotation * sceneTransform;
@@ -604,12 +613,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             InstantiationBatchRate = profile.InstantiationBatchRate;
             ObservationExtents = profile.ObservationExtents;
             QueryRadius = profile.QueryRadius;
-            VisualizeOcclusionMask = profile.VisualizeOcclusionMask;
+            GetOcclusionMask = profile.GetOcclusionMask;
             OcclusionMaskResolution = profile.OcclusionMaskResolution;
+            OrientScene = profile.OrientScene;
         }
 
         private async Task<bool> CanAccessObserverAsync()
         {
+            Debug.Log("CanAccessObserverAsync start");
+
             if (IsRunning)
             {
                 return true;
@@ -630,6 +642,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 if (SceneObserver.IsSupported())
                 {
+                    Debug.Log("CanAccessObserverAsync IsSupported");
+
                     var access = await SceneObserver.RequestAccessAsync();
                     if (access == SceneObserverAccessStatus.Allowed)
                     {
@@ -639,6 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     }
                 }
             }
+
+            Debug.Log("CanAccessObserverAsync end");
 
             return false;
         }
@@ -747,7 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         meshRenderer.sharedMaterial = DefaultMaterial;
                     }
 
-                    if (VisualizeOcclusionMask)
+                    if (GetOcclusionMask)
                     {
                         if (quad.occlusionMask != null)
                         {
@@ -815,14 +831,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         pixels[i] = Color.clear;
                         break;
                     case (byte)SceneRegionSurfaceKind.SurfaceObserved:
-                        pixels[i] = Color.green;
+                        pixels[i] = Color.cyan;
                         break;
                     case (byte)SceneRegionSurfaceKind.SurfaceInferred:
-                        pixels[i] = Color.blue;
+                        pixels[i] = Color.yellow;
                         break;
                     default:
                         Debug.LogWarning($"Got unknown surface kind {value.ToString()}");
-                        pixels[i] = Color.red;
+                        pixels[i] = Color.magenta;
                         break;
                 }
             }
@@ -846,6 +862,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void CleanupSceneObjects()
         {
+            Debug.Log("CleanupSceneObjects");
             if (observedObjectParent != null)
             {
                 int kidCount = observedObjectParent.transform.childCount;

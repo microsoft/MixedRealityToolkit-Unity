@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
     {
         public GameObject SceneObjectPrefab;
 
-        public Transform Parent;
+        public Transform ParentGameObject;
 
         public IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             var sceneObject = eventData.SpatialObject;
             var go = Instantiate(SceneObjectPrefab);
             go.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
+            go.transform.SetParent(ParentGameObject);
             foreach (var x in go.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
             {
                 x.OnSpatialAwarenessSceneObjectCreated(sceneObject);

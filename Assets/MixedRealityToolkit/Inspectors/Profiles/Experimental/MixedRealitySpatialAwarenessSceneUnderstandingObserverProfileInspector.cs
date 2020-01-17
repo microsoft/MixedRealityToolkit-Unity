@@ -33,8 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty levelOfDetail;
         private SerializedProperty usePersistentObjects;
         private SerializedProperty queryRadius;
-        private SerializedProperty visualizeOcclusionMask;
+        private SerializedProperty getOcclusionMask;
         private SerializedProperty occlusionMaskResolution;
+        private SerializedProperty orientScene;
 
         private const string ProfileTitle = "Scene Understanding Observer Settings";
         private const string ProfileDescription = "Settings for high-level environment representation";
@@ -66,8 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
             inferRegions = serializedObject.FindProperty("inferRegions");
             queryRadius = serializedObject.FindProperty("queryRadius");
-            visualizeOcclusionMask = serializedObject.FindProperty("visualizeOcclusionMask");
+            getOcclusionMask = serializedObject.FindProperty("getOcclusionMask");
             occlusionMaskResolution = serializedObject.FindProperty("occlusionMaskResolution");
+            orientScene = serializedObject.FindProperty("orientScene");
         }
 
         public override void OnInspectorGUI()
@@ -88,13 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 }
                 EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField("Storage", EditorStyles.boldLabel);
-                {
-                    EditorGUILayout.PropertyField(shouldLoadFromFile);
-                    EditorGUILayout.PropertyField(serializedScene);
-                }
-                EditorGUILayout.Space();
-
                 EditorGUILayout.LabelField("Observer", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(surfaceTypes);
@@ -105,17 +100,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(generatePlanes);
                     EditorGUILayout.PropertyField(generateMeshes);
                     EditorGUILayout.PropertyField(generateEnvironmentMesh);
+                    EditorGUILayout.PropertyField(getOcclusionMask);
+                    EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
                 EditorGUILayout.Space();
 
-                EditorGUILayout.LabelField("Instantiation", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Observer Debugging", EditorStyles.boldLabel);
                 {
+                    EditorGUILayout.PropertyField(shouldLoadFromFile);
+                    EditorGUILayout.PropertyField(serializedScene);
+                    EditorGUILayout.PropertyField(orientScene);
                     EditorGUILayout.PropertyField(createGameObjects);
                     EditorGUILayout.PropertyField(instantiationBatchRate);
                     EditorGUILayout.PropertyField(physicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
-                    EditorGUILayout.PropertyField(visualizeOcclusionMask);
-                    EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
 
                 serializedObject.ApplyModifiedProperties();

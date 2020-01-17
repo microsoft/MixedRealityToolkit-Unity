@@ -156,11 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         [SerializeField]
         [Tooltip("When instantiating quads, show the occlusion mask texture")]
-        private bool visualizeOcclusionMask = true;
+        private bool getOcclusionMask = true;
         /// <summary>
         /// When instantiating quads, show the occlusion mask texture
         /// </summary>
-        public bool VisualizeOcclusionMask => visualizeOcclusionMask;
+        public bool GetOcclusionMask => getOcclusionMask;
 
         [SerializeField]
         [Tooltip("Sets pixel resolution of occlusion mask")]
@@ -169,5 +169,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// When instantiating quads, show the occlusion mask texture
         /// </summary>
         public Vector2Int OcclusionMaskResolution => occlusionMaskResolution;
+
+        [SerializeField]
+        [Tooltip("Attempt to align scene to largest found floor's normal. Does nothing on HoloLens.")]
+        private bool orientScene = true;
+        /// <summary>
+        /// When NOT on HoloLens, attempt to align scene to largest found floor's normal
+        /// </summary>
+        public bool OrientScene => orientScene;
+
     }
 }
