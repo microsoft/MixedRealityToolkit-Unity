@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
@@ -11,13 +10,12 @@ using UnityEngine;
 using UnityEngine.XR;
 
 #if WINDOWS_UWP
-using UnityEngine.XR.Management;
 using UnityEngine.XR.WindowsMR;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
     /// XR SDK implementation of the Windows Mixed Reality motion controllers.
@@ -96,23 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
         private async void SetHandMeshObserver(SpatialInteractionSourceState sourceState)
         {
             handMeshObserver = await sourceState.Source.TryCreateHandMeshObserverAsync();
-        }
-
-        private XRInputSubsystem inputSubsystem;
-        private XRInputSubsystem InputSubsystem
-        {
-            get
-            {
-                if (inputSubsystem == null &&
-                    XRGeneralSettings.Instance != null &&
-                    XRGeneralSettings.Instance.Manager != null &&
-                    XRGeneralSettings.Instance.Manager.activeLoader != null)
-                {
-                    inputSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRInputSubsystem>();
-                }
-
-                return inputSubsystem;
-            }
         }
 #endif // WINDOWS_UWP
 
@@ -194,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
             }
 
             List<object> states = new List<object>();
-            InputSubsystem?.GetCurrentSourceStates(states);
+            XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
             foreach (SpatialInteractionSourceState sourceState in states)
             {

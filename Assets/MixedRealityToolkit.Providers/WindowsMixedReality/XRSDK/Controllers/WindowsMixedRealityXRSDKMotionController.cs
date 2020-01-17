@@ -3,9 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Windows
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
     /// XR SDK implementation of the Windows Mixed Reality motion controllers.

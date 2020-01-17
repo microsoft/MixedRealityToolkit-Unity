@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -10,7 +11,7 @@ using UnityEngine.XR;
 using Unity.XR.WindowsMR;
 #endif // WMR_ENABLED
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
     /// A Windows Mixed Reality Source instance.
