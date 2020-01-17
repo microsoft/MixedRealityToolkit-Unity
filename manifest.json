@@ -3206,6 +3206,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/InputSimulationSupportedPlatforms.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/InputSimulationSupportedPlatforms.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png",
       "output": {
         "resource": {
@@ -6460,7 +6471,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "y1Rkb2SoA8l0Nm2udIV73g=="
+          "hash": "o7jZp55IB1S5sqQWgLuHyw=="
         }
       },
       "is_incremental": false,
@@ -14543,6 +14554,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHandPoses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHandPoses.html",
+          "hash": "+fPgx5kJIuDAF4tCZ6O8Og=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.yml",
       "output": {
         ".html": {
@@ -14955,7 +14978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "bBQ7Z1dnr/TTXwYqhTXOxg=="
+          "hash": "Q9YIdky+eXCUz94bxzwLkg=="
         }
       },
       "is_incremental": false,
@@ -25491,7 +25514,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "r2YVmrrBSU7t74dTpqrYyg=="
+          "hash": "4Pt2uIxGFe/woMg73Xlxaw=="
         }
       },
       "is_incremental": false,
@@ -25543,11 +25566,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1532,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -25556,15 +25578,16 @@
           "total_file_count": 145,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1531,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
