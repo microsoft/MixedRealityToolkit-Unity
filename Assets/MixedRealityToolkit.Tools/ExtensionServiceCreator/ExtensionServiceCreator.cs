@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Check to see whether editor prefs exist of our persistent state
             // If it does, load that now and clear the state
             string persistentState = SessionState.GetString(PersistentStateKey, string.Empty);
-            if (false && !string.IsNullOrEmpty(persistentState))
+            if (!string.IsNullOrEmpty(persistentState))
             {
                 state = JsonUtility.FromJson<PersistentState>(persistentState);
                 // If we got this far we know we were successful
