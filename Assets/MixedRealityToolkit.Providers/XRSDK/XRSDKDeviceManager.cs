@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using Microsoft.MixedReality.Toolkit.XRSDK.Windows;
@@ -49,9 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             get
             {
                 if (inputSubsystem == null &&
-                XRGeneralSettings.Instance != null &&
-                XRGeneralSettings.Instance.Manager != null &&
-                XRGeneralSettings.Instance.Manager.activeLoader != null)
+                    XRGeneralSettings.Instance != null &&
+                    XRGeneralSettings.Instance.Manager != null &&
+                    XRGeneralSettings.Instance.Manager.activeLoader != null)
                 {
                     inputSubsystem = XRGeneralSettings.Instance.Manager.activeLoader.GetLoadedSubsystem<XRInputSubsystem>();
                 }
@@ -88,6 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                     }
 
+                    RemoveController(leftInputDevice);
                     wasLeftInputDeviceValid = false;
                 }
 
@@ -120,6 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                         CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
                     }
 
+                    RemoveController(rightInputDevice);
                     wasRightInputDeviceValid = false;
                 }
 
@@ -178,6 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             var currentControllerType = GetCurrentControllerType(inputDevice);
             Type controllerType;
+            InputSourceType inputSourceType;
 
             switch (currentControllerType)
             {
@@ -198,18 +200,21 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 //    break;
                 case SupportedControllerType.WindowsMixedReality:
                     controllerType = typeof(WindowsMixedRealityXRSDKMotionController);
+                    inputSourceType = InputSourceType.Controller;
+                    break;
+                case SupportedControllerType.ArticulatedHand:
+                    controllerType = typeof(WindowsMixedRealityXRSDKArticulatedHand);
+                    inputSourceType = InputSourceType.Hand;
                     break;
                 default:
                     return null;
             }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
+            IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
 
-            var pointers = RequestPointers(currentControllerType, controllingHand);
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
-
-            if (detectedController == null)
+            if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
             {
                 Debug.LogError($"Failed to create {controllerType.Name} controller");
                 return null;
@@ -232,30 +237,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             return detectedController;
         }
 
-        ///// <inheritdoc />
-        //protected override void RemoveController(string joystickName)
-        //{
-        //    var controller = GetOrAddController(joystickName);
+        /// <inheritdoc />
+        protected virtual void RemoveController(InputDevice inputDevice)
+        {
+            GenericXRSDKController controller = GetOrAddController(inputDevice);
 
-        //    if (controller != null)
-        //    {
-        //        foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
-        //        {
-        //            if (pointer != null)
-        //            {
-        //                pointer.Controller = null;
-        //            }
-        //        }
+            if (controller != null)
+            {
+                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
+                {
+                    if (pointer != null)
+                    {
+                        pointer.Controller = null;
+                    }
+                }
 
-        //        if (controller.Visualizer != null &&
-        //            controller.Visualizer.GameObjectProxy != null)
-        //        {
-        //            controller.Visualizer.GameObjectProxy.SetActive(false);
-        //        }
-        //    }
+                if (controller.Visualizer != null &&
+                    controller.Visualizer.GameObjectProxy != null)
+                {
+                    controller.Visualizer.GameObjectProxy.SetActive(false);
+                }
 
-        //    base.RemoveController(joystickName);
-        //}
+                ActiveControllers.Remove(inputDevice.name);
+            }
+        }
 
         /// <inheritdoc />
         protected virtual SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
@@ -266,6 +271,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             if (inputDevice.manufacturer.Contains("1118"))
             {
                 return SupportedControllerType.WindowsMixedReality;
+            }
+
+            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
+            {
+                return SupportedControllerType.ArticulatedHand;
             }
 
             //if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
