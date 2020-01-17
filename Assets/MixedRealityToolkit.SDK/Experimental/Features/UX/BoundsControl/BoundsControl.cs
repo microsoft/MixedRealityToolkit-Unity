@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
-        IMixedRealityFocusHandler
+        IMixedRealityFocusHandler,
+        IBoundsTargetProvider
     {
         #region Serialized Fields and Properties
         [SerializeField]
@@ -215,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// This section defines the links / lines that are drawn between the corners of the control.
         /// </summary>
-        public LinksConfiguration LinksConfiguration { get => linksConfiguration; set => LinksConfiguration = value; }
+        public LinksConfiguration LinksConfiguration { get => linksConfiguration; set => linksConfiguration = value; }
 
         [SerializeField]
         [Tooltip("Configuration of the scale handles.")]
@@ -430,6 +431,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// </summary>
         public void CreateRig()
         {
+            if (!IsInitialized())
+            {
+                return;
+            }
+
             DestroyRig();
             InitializeRigRoot();
             InitializeDataStructures();
@@ -786,7 +792,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
  
-        
+        private bool IsInitialized()
+        {
+            return scaleHandles != null && rotationHandles != null && boxDisplay != null && links != null && proximityEffect != null;
+        }
 
         private bool DoesActivationMatchFocus(FocusEventData eventData)
         {
@@ -857,6 +866,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void UpdateRigVisibilityInInspector()
         {
+            if (!IsInitialized())
+                return;
+
             HideFlags desiredFlags = hideElementsInInspector ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
             scaleHandles.UpdateVisibilityInInspector(desiredFlags);
             links.UpdateVisibilityInInspector(desiredFlags);
@@ -1108,7 +1120,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void ResetVisuals()
         {
-            if (currentPointer != null)
+            if (currentPointer != null || !IsInitialized())
             {
                 return;
             }

@@ -26,46 +26,58 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             var boundingBox = gameObject.GetComponent<BoundingBox>();
             var boundsControl = gameObject.AddComponent<BoundsControl>();
 
-            // migrate logic settings
-            boundsControl.Target = boundingBox.Target;
-            boundsControl.BoundsOverride = boundingBox.BoundsOverride;
-            boundsControl.CalculationMethod = MigrateCalculationMethod(boundingBox.CalculationMethod);
-            boundsControl.BoundsControlActivation = MigrateActivationFlag(boundingBox.BoundingBoxActivation);
-
-            // only carry over min max scaling values if user hasn't attached min max scale constraint component yet 
-            if (gameObject.GetComponent<MinMaxScaleConstraint>() == null)
             {
-                MinMaxScaleConstraint scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
+                Undo.RecordObject(gameObject, "BoundsControl migration: swapping BoundingBox with BoundsControl.");
+                
+                // migrate logic settings
+                boundsControl.Target = boundingBox.Target;
+                boundsControl.BoundsOverride = boundingBox.BoundsOverride;
+                boundsControl.CalculationMethod = MigrateCalculationMethod(boundingBox.CalculationMethod);
+                boundsControl.BoundsControlActivation = MigrateActivationFlag(boundingBox.BoundingBoxActivation);
+
+                // only carry over min max scaling values if user hasn't attached min max scale constraint component yet 
+                if (gameObject.GetComponent<MinMaxScaleConstraint>() == null)
+                {
 #pragma warning disable 0618
-                scaleConstraint.ScaleMinimum = boundingBox.ScaleMinimum;
-                scaleConstraint.ScaleMaximum = boundingBox.ScaleMaximum;
+                    // create a minmaxscaleconstraint in case there's a min max scale set up
+                    if (boundingBox.ScaleMinimum != 0.0f || boundingBox.ScaleMaximum != 0.0f)
+                    {
+                        MinMaxScaleConstraint scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
+                        scaleConstraint.ScaleMinimum = boundingBox.ScaleMinimum;
+                        scaleConstraint.ScaleMaximum = boundingBox.ScaleMaximum;
+                    }
 #pragma warning restore 0618
+                }
+
+                // migrate visuals
+                boundsControl.DrawTetherWhenManipulating = boundingBox.DrawTetherWhenManipulating;
+                boundsControl.HandlesIgnoreCollider = boundingBox.HandlesIgnoreCollider;
+                boundsControl.FlattenAxis = MigrateFlattenAxis(boundingBox.FlattenAxis);
+                boundsControl.BoxPadding = boundingBox.BoxPadding;
+                string configDir = GetBoundsControlConfigDirectory(boundingBox);
+                MigrateBoxDisplay(boundsControl, boundingBox, configDir);
+                MigrateLinks(boundsControl, boundingBox, configDir);
+                MigrateScaleHandles(boundsControl, boundingBox, configDir);
+                MigrateRotationHandles(boundsControl, boundingBox, configDir);
+                MigrateProximityEffect(boundsControl, boundingBox, configDir);
+
+                // debug properties
+                boundsControl.DebugText = boundingBox.debugText;
+                boundsControl.HideElementsInInspector = boundingBox.HideElementsInInspector;
+
+                // events
+                boundsControl.RotateStarted = boundingBox.RotateStarted;
+                boundsControl.RotateStopped = boundingBox.RotateStopped;
+                boundsControl.ScaleStarted = boundingBox.ScaleStarted;
+                boundsControl.ScaleStopped = boundingBox.ScaleStopped;
+
+                // destroy obsolete component
+                Object.DestroyImmediate(boundingBox);
             }
 
-            // migrate visuals
-            boundsControl.DrawTetherWhenManipulating = boundingBox.DrawTetherWhenManipulating;
-            boundsControl.HandlesIgnoreCollider = boundingBox.HandlesIgnoreCollider;
-            boundsControl.FlattenAxis = MigrateFlattenAxis(boundingBox.FlattenAxis);
-            boundsControl.BoxPadding = boundingBox.BoxPadding;
-            string configDir = GetBoundsControlConfigDirectory(boundingBox);
-            MigrateBoxDisplay(boundsControl, boundingBox, configDir);
-            MigrateLinks(boundsControl, boundingBox, configDir);
-            MigrateScaleHandles(boundsControl, boundingBox, configDir);
-            MigrateRotationHandles(boundsControl, boundingBox, configDir);
-            MigrateProximityEffect(boundsControl, boundingBox, configDir);
+            // look in the scene for app bars and upgrade them too to point to the new component
+            MigrateAppBar(boundingBox, boundsControl);
 
-            // debug properties
-            boundsControl.DebugText = boundingBox.debugText;
-            boundsControl.HideElementsInInspector = boundingBox.HideElementsInInspector;
-
-            // events
-            boundsControl.RotateStarted = boundingBox.RotateStarted;
-            boundsControl.RotateStopped = boundingBox.RotateStopped;
-            boundsControl.ScaleStarted = boundingBox.ScaleStarted;
-            boundsControl.ScaleStopped = boundingBox.ScaleStopped;
-
-            // destroy obsolete component
-            UnityEngine.Object.DestroyImmediate(boundingBox);
         }
 
         private string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
@@ -75,17 +87,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (scene != null)
             {
                 string scenePath = scene.path;
-                string dirPath = System.IO.Path.GetDirectoryName(scenePath);
-                string configPath = System.IO.Path.Combine(dirPath, "BoundsControlConfigs/");
-                return configPath;
+                string sceneDir = System.IO.Path.GetDirectoryName(scenePath);
+
+                const string configDir = "BoundsControlConfigs";
+                string configPath = System.IO.Path.Combine(sceneDir, configDir);
+                if (AssetDatabase.IsValidFolder(configPath))
+                {
+                    return configPath;
+                }
+                else
+                {
+                    string guid = AssetDatabase.CreateFolder(sceneDir, configDir);
+                    return AssetDatabase.GUIDToAssetPath(guid);
+                }
             }
 
             return "";
         }
         private string GenerateUniqueConfigName(string directory, GameObject migratingFrom, string configName)
         {
-            return directory + migratingFrom.name + migratingFrom.GetInstanceID() + configName + ".asset";
+            return directory + "/" + migratingFrom.name + migratingFrom.GetInstanceID() + configName + ".asset";
         }
+
+        #region Flags Migration
 
         private BoundsCalculationMethod MigrateCalculationMethod(BoundingBox.BoundsCalculationMethod calculationMethod)
         {
@@ -173,9 +197,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return RotationHandlePrefabCollider.Sphere;
         }
 
+        #endregion Flags Migration
+
+        #region Visuals Configuration Migration
+
         private void MigrateBoxDisplay(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
-            BoxDisplayConfiguration config = new BoxDisplayConfiguration();
+            BoxDisplayConfiguration config = ScriptableObject.CreateInstance<BoxDisplayConfiguration>();
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "BoxDisplayConfiguration"));
 
             config.BoxMaterial = box.BoxMaterial;
@@ -187,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void MigrateLinks(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
-            LinksConfiguration config = new LinksConfiguration();
+            LinksConfiguration config = ScriptableObject.CreateInstance<LinksConfiguration>();
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "LinksConfiguration"));
             
             config.WireframeMaterial = box.WireframeMaterial;
@@ -201,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void MigrateScaleHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
-            ScaleHandlesConfiguration config = new ScaleHandlesConfiguration();
+            ScaleHandlesConfiguration config = ScriptableObject.CreateInstance<ScaleHandlesConfiguration>();
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
             
             config.HandleSlatePrefab = box.ScaleHandleSlatePrefab;
@@ -217,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
-            RotationHandlesConfiguration config = new RotationHandlesConfiguration();
+            RotationHandlesConfiguration config = ScriptableObject.CreateInstance<RotationHandlesConfiguration>();
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
             
             config.RotationHandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
@@ -235,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void MigrateProximityEffect(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
-            ProximityEffectConfiguration config = new ProximityEffectConfiguration();
+            ProximityEffectConfiguration config = ScriptableObject.CreateInstance<ProximityEffectConfiguration>();
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
             
             config.ProximityEffectActive = box.ProximityEffectActive;
@@ -249,6 +277,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.CloseGrowRate = box.CloseGrowRate;            
 
             control.HandleProximityEffectConfiguration = config;
+        }
+
+        #endregion Visuals Configuration Migration
+        private void MigrateAppBar(BoundingBox boundingBox, BoundsControl boundsControl)
+        {
+            // note: this might be expensive for larger scenes but we don't know where the appbar is 
+            // placed in the hierarchy so we have to search the scene for it
+            AppBar[] appBars = Object.FindObjectsOfType<AppBar>(); 
+            for (int i = 0; i < appBars.Length; ++i)
+            {
+                AppBar appBar = appBars[i];
+                if (appBar.BoundingBox == boundingBox)
+                {
+                    Undo.RecordObject(appBar, "BoundsControl migration: changed target of app bar.");
+                    appBar.BoundingBox = boundsControl;
+                }
+            }
         }
     }
 }

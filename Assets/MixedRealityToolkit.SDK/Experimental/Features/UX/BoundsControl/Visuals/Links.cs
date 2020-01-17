@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
-            if (links != null)
+            if (links != null && config.ShowWireFrame)
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);

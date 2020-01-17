@@ -111,7 +111,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Target Bounding Box")]
         [SerializeField]
-        private BoundingBox boundingBox = null;
+        [Tooltip("Object the app bar is controlling - This object must implement the IBoundsTargetProvider.")]
+        private MonoBehaviour boundingBox = null;
+        /// <summary>
+        /// Object the app bar is controlling - This object must implement the IBoundsTargetProvider.
+        /// </summary>
+        public MonoBehaviour BoundingBox { get => boundingBox; set => boundingBox = value; }
 
         [SerializeField]
         private GameObject baseRenderer = null;
@@ -200,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void Reset()
         {
             state = AppBarStateEnum.Default;
-            FollowBoundingBox(false);
+            FollowTargetObject(false);
             lastTimeTapped = Time.time + coolDownTime;
         }
                
@@ -241,8 +246,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void OnClickRemove()
         {
             // Set the app bar and bounding box to inactive
-            boundingBox.Target.SetActive(false);
-            boundingBox.gameObject.SetActive(false);
+            var boundsProvider = BoundingBox as IBoundsTargetProvider;
+            if (boundsProvider != null)
+            {
+                boundsProvider.Target.SetActive(false);
+            }
+            BoundingBox.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -275,8 +284,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void UpdateAppBar()
         {
             UpdateButtons();
-            UpdateBoundingBox();
-            FollowBoundingBox(true);
+            UpdateTargetObject();
+            FollowTargetObject(true);
         }
 
         private void UpdateButtons()
@@ -331,9 +340,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             backgroundBar.transform.localPosition = Vector3.forward * buttonDepth / 2;
         }
 
-        private void UpdateBoundingBox()
+        private void UpdateTargetObject()
         {
-            if (boundingBox == null || boundingBox.Target == null)
+            var boundsProvider = BoundingBox as IBoundsTargetProvider;
+            if (boundsProvider == null || boundsProvider.Target == null)
             {
                 if (displayType == AppBarDisplayTypeEnum.Manipulation)
                 {
@@ -347,28 +357,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            // BoundingBox can't update in editor mode
+            // Target can't be updated in editor mode
             if (!Application.isPlaying)
                 return;
 
-            if (boundingBox == null)
+            if (boundsProvider == null)
                 return;
 
             switch (state)
             {
                 case AppBarStateEnum.Manipulation:
-                    boundingBox.Active = true;
+                    boundsProvider.Active = true;
                     break;
 
                 default:
-                    boundingBox.Active = false;
+                    boundsProvider.Active = false;
                     break;
             }
         }
 
-        private void FollowBoundingBox(bool smooth)
+        private void FollowTargetObject(bool smooth)
         {
-            if (boundingBox == null)
+            var boundsProvider = BoundingBox as IBoundsTargetProvider;
+            if (boundsProvider == null)
                 return;
 
             //calculate best follow position for AppBar
@@ -376,7 +387,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 headPosition = CameraCache.Main.transform.position;
             boundsPoints.Clear();
 
-            helper.UpdateNonAABoundingBoxCornerPositions(boundingBox, boundsPoints);
+            helper.UpdateNonAABoundsCornerPositions(boundsProvider.TargetBounds, boundsPoints);
             int followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
             Vector3 faceNormal = helper.GetFaceNormal(followingFaceIndex);
 
@@ -387,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             transform.position = smooth ? Vector3.Lerp(transform.position, finalPosition, Time.deltaTime * backgroundBarMoveSpeed) : finalPosition;
 
             // Rotate on the y axis
-            Vector3 direction = (boundingBox.TargetBounds.bounds.center - finalPosition).normalized;
+            Vector3 direction = (boundsProvider.TargetBounds.bounds.center - finalPosition).normalized;
             if (direction != Vector3.zero)
             {
                 Vector3 eulerAngles = Quaternion.LookRotation(direction, Vector3.up).eulerAngles;

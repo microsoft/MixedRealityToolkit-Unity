@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
-        IMixedRealityFocusHandler
+        IMixedRealityFocusHandler,
+        IBoundsTargetProvider
     {
         #region Enums
 
