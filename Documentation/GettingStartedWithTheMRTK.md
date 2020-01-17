@@ -155,18 +155,18 @@ The in-editor input simulation allows you to test virtual object behavior given 
 
 How to move around in the scene:
 
-- Use **W/A/S/D** keys to move the camera forward/left/back/right.
-- Use **Q/E** to move the camera vertically.
-- Press and hold the **right mouse button** to rotate the camera.
+* Use **W/A/S/D** keys to move the camera forward/left/back/right.
+* Use **Q/E** to move the camera vertically.
+* Press and hold the **right mouse button** to rotate the camera.
 
 How to simulate hand input:
 
-- Press and hold the **spacebar** to enable the right hand.
-- While holding the space bar, move your mouse to move the hand.
-- Use the mouse **scroll wheel** to adjust the depth of the hand.
-- Click the **left mouse button** to simulate pinch gesture.
-- Use **T/Y** keys to make the hand persistent in the view.
-- Hold **CTRL** key and move the mouse to rotate the hand.
+* Press and hold the **spacebar** to enable the right hand.
+* While holding the space bar, move your mouse to move the hand.
+* Use the mouse **scroll wheel** to adjust the depth of the hand.
+* Click the **left mouse button** to simulate pinch gesture.
+* Use **T/Y** keys to make the hand persistent in the view.
+* Hold **CTRL** key and move the mouse to rotate the hand.
 
 Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
