@@ -211,8 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Initialize();
 
-            ArticulatedHandPose.LoadGesturePoses();
-
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
         }
 
@@ -220,8 +218,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Destroy()
         {
             base.Destroy();
-
-            ArticulatedHandPose.ResetGesturePoses();
         }
 
         /// <inheritdoc />

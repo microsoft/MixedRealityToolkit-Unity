@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             gestureBlending = 1.0f;
 
-            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
+            ArticulatedHandPose gesturePose = SimulatedArticulatedHandPoses.GetGesturePose(gesture);
             if (gesturePose != null)
             {
                 pose.Copy(gesturePose);
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
         {
-            ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
+            ArticulatedHandPose gesturePose = SimulatedArticulatedHandPoses.GetGesturePose(gesture);
             if (gesturePose != null)
             {
                 if (gestureBlending > poseBlending)
