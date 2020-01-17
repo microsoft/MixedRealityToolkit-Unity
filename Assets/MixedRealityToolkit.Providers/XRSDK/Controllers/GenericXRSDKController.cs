@@ -303,8 +303,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
                     }
                     break;
-                default:
-                    return;
             }
         }
     }

@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
         }
 
+        private Vector3 currentPointerPosition = Vector3.zero;
+        private Quaternion currentPointerRotation = Quaternion.identity;
+        private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
         /// <summary>
         /// Update spatial pointer and spatial grip data.
@@ -33,45 +36,35 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
-            InputFeatureUsage<Vector3> positionUsage;
-            InputFeatureUsage<Quaternion> rotationUsage;
+            base.UpdatePoseData(interactionMapping, inputDevice);
 
             // Update the interaction data source
             switch (interactionMapping.InputType)
             {
-                case DeviceInputType.SpatialPointer:
 #if WMR_ENABLED
-                    positionUsage = WindowsMRUsages.PointerPosition;
-                    rotationUsage = WindowsMRUsages.PointerRotation;
+                case DeviceInputType.SpatialPointer:
+                    if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerPosition, out currentPointerPosition))
+                    {
+                        currentPointerPose.Position = currentPointerPosition;
+                    }
+
+                    if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerRotation, out currentPointerRotation))
+                    {
+                        currentPointerPose.Rotation = currentPointerRotation;
+                    }
+
+                    interactionMapping.PoseData = currentPointerPose;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system event if it's enabled
+                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
+                    }
                     break;
-#else
-                    return;
 #endif // WMR_ENABLED
-                case DeviceInputType.SpatialGrip:
-                    positionUsage = CommonUsages.devicePosition;
-                    rotationUsage = CommonUsages.deviceRotation;
-                    break;
                 default:
                     return;
-            }
-
-            if (inputDevice.TryGetFeatureValue(positionUsage, out Vector3 position))
-            {
-                CurrentControllerPose.Position = position;
-            }
-
-            if (inputDevice.TryGetFeatureValue(rotationUsage, out Quaternion rotation))
-            {
-                CurrentControllerPose.Rotation = rotation;
-            }
-
-            interactionMapping.PoseData = CurrentControllerPose;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }
     }
