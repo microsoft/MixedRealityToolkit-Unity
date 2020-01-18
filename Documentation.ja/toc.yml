@@ -1,0 +1,202 @@
+- name: MRTK を始める
+  href: GettingStartedWithTheMRTK.md
+  items:
+  - name: HTK からの移植ガイド
+    href: HTKToMRTKPortingGuide.md
+  - name: Updating from earlier versions
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
+  - name: MRTK のビルドとデプロイ
+    href: BuildAndDeploy.md
+  - name: Performance
+    href: Performance/PerfGettingStarted.md
+  - name: Hologram Stabilization (ホログラムの安定化)
+    href: Hologram-Stabilization.md
+- name: アーキテクチャ
+  items:
+  - name: 全体像
+    href: Architecture/Overview.md
+  - name: フレームワークとランタイム
+    href: Architecture/FrameworkAndRuntime.md
+  - name: Input System (入力システム)
+    items:
+    - name: 用語
+      href: Architecture/InputSystem/Terminology.md
+    - name: Core System
+      href: Architecture/InputSystem/CoreSystem.md
+    - name: Controllers, Pointers, and Focus
+      href: Architecture/InputSystem/ControllersPointersAndFocus.md
+  - name: Systems, Extension Services and Data Providers
+    href: Architecture/SystemsExtensionsProviders.md
+- name: 機能概要
+  items:
+  - name: Profile（プロファイル）
+    href: Profiles/Profiles.md
+  - name: プロファイル設定
+    href: MixedRealityConfigurationGuide.md
+  - name: Input (入力)
+    items:
+    - name: 入力の概要
+      href: Input/Overview.md
+    - name: Input Providers
+      href: Input/InputProviders.md
+    - name: Input Events
+      href: Input/InputEvents.md
+    - name: Input Actions
+      href: Input/InputActions.md
+    - name: Controllers (コントローラー)
+      href: Input/Controllers.md
+    - name: Pointers
+      href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
+    - name: ジェスチャ
+      href: Input/Gestures.md
+    - name: Speech (音声コマンド)
+      href: Input/Speech.md
+    - name: Dictation (ディクテーション)
+      href: Input/Dictation.md
+    - name: Hands
+      href: Input/HandTracking.md
+    - name: Gaze (ゲイズ)
+      href: Input/Gaze.md
+    - name: Eyes
+      href: EyeTracking/EyeTracking_Main.md
+    - name: Creating an input data provider
+      href: Input/CreateDataProvider.md
+  - name: エディター内入力シミュレーション
+    href: InputSimulation/InputSimulationService.md
+  - name: UX ビルディング ブロック
+    items:
+    - name: Interactable (インタラクタブル)
+      href: README_Interactable.md
+    - name: Button (ボタン)
+      href: README_Button.md
+    - name: Bounding Box
+      href: README_BoundingBox.md
+    - name: Object Manipulation (物体操作)
+      href: README_ManipulationHandler.md
+    - name: Sliders (スライダー)
+      href: README_Sliders.md
+    - name: Fingertip Visualization
+      href: README_FingertipVisualization.md
+    - name: App Bar
+      href: README_AppBar.md
+    - name: Object Collection (オブジェクトコレクション)
+      href: README_ObjectCollection.md
+    - name: Slate (スレート)
+      href: README_Slate.md
+    - name: System Keyboard (システム キーボード)
+      href: README_SystemKeyboard.md
+    - name: Tooltips (ツールチップ)
+      href: README_Tooltip.md
+    - name: Solvers (ソルバー)
+      href: README_Solver.md
+    - name: ハンド インタラクションのサンプル シーン
+      href: README_HandInteractionExamples.md
+    - name: Eye Tracking Interaction Example (アイ トラッキング インタラクション サンプル)
+      href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: プラットフォームの Capabilities (機能) を検出する
+    href: DetectingPlatformCapabilities.md
+  - name: MRTK Standard Shader
+    href: README_MRTKStandardShader.md
+  - name: Spatial Awareness (空間認識)
+    items:
+    - name: はじめに
+      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
+    - name: Configuring Observers for Device
+      href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Configuring Observers for Editor
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
+    - name: Controlling Observers via Code
+      href: SpatialAwareness/UsageGuide.md
+    - name: Creating a custom Observer
+      href: SpatialAwareness/CreateDataProvider.md
+  - name: Multi Scene System
+    items:
+    - name: Multi Scene System Overview
+      href: SceneSystem/SceneSystemGettingStarted.md
+    - name: Scene Types
+      href: SceneSystem/SceneSystemSceneTypes.md
+    - name: Content Scene Loading
+      href: SceneSystem/SceneSystemContentLoading.md
+    - name: Monitoring Content Loading
+      href: SceneSystem/SceneSystemLoadProgress.md
+    - name: Lighting Scene Operations
+      href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System (テレポートシステム)
+    href: TeleportSystem/Overview.md
+  - name: Boundary System
+    items:
+    - name: Boundary System Overview
+      href: Boundary/BoundarySystemGettingStarted.md
+    - name: Configuring the Boundary Visualization
+      href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Diagnostic System（診断システム）
+    items:
+    - name: 診断システムの概要
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
+    - name: 診断システムの構成
+      href: Diagnostics/ConfiguringDiagnostics.md
+    - name: ビジュアル プロファイラーを使用する
+      href: Diagnostics/UsingVisualProfiler.md
+  - name: Services (サービス)
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: MixedRealityServiceRegistry と IMixedRealityServiceRegistrar とは何か
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
+    - name: Extension services
+      href: Extensions/ExtensionServices.md
+  - name: パッケージ
+    items:
+    - name: MRTK パッケージ
+      href: Packaging/MRTK_Packages.md
+    - name: MRTK Componentization
+      href: Packaging/MRTK_Modularization.md
+  - name: ツール
+    items:
+    - name: Dependency Window（依存関係ウィンドウ）
+      href: Tools/DependencyWindow.md
+    - name: Optimize Window
+      href: Tools/OptimizeWindow.md
+    - name: Input Animation Recording
+      href: InputSimulation/InputAnimationRecording.md
+      items:
+      - name: Input Animation File Format Specification
+        href: InputSimulation/InputAnimationFileFormat.md
+    - name: Extension Service Creation Wizard
+      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
+  - name: Scene Transition Service
+    href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+  - name: Experimental Features
+    href: ExperimentalFeatures.md
+- name: Contributing
+  items:
+  - name: Contributing Overview
+    href: Contributing/CONTRIBUTING.md
+  - name: Feature Contribution Process
+    href: Contributing/Feature_Contribution_Process.md
+  - name: Coding Guidelines
+    href: Contributing/CodingGuidelines.md
+  - name: Documentation guide
+    href: Contributing/DocumentationGuide.md
+  - name: Developer portal generation with DocFX
+    href: Contributing/DevDocGuide.md
+  - name: Testing
+    href: Contributing/UnitTests.md
+  - name: Breaking Changes
+    href: Contributing/BreakingChanges.md
+- name: Planning
+  items:
+  - name: Roadmap
+    href: Contributing/Roadmap.md
+- name: Notice
+  href: Legal/NOTICE.md
+- name: Authors
+  href: Authors.md

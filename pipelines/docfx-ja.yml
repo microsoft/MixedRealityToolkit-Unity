@@ -1,0 +1,69 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- feature/mrtk_documentation_ja
+# - feature/mrtk_documentation_ja_docfx
+
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+# Install the DocFX nuget package
+- task: NuGetCommand@2
+  displayName: 'Install DocFX'
+  inputs:
+    command: custom
+    arguments: 'install docfx.console'
+
+# Run DocFX to generate the user manual and API reference
+- powershell: |
+    # Find the folder where DocFX was installed; the path depends on the version
+    $DocFxDir = Get-ChildItem | Where-Object {$_.PSIsContainer -eq $true -and $_.Name -match "docfx"} | Select-Object -first 1
+    Write-Host "Using DocFX from '$DocFxDir/'."
+    
+    # Invoke docfx.exe to build the docs, and output both to console and to a variable $output
+    $output = ""
+    Invoke-Expression "$($DocFxDir.FullName)\tools\docfx.exe docfx.json" | Tee-Object -Variable output | Write-Host
+
+    # # Check the console output stored in $output for any error or warning message,
+    # # and force the task to fail if there is any.
+    # $results = $output | Out-String
+    # if ($results -match "(?<warningCount>\d*) Warning\(s\)\s*(?<errorCount>\d*) Error\(s\)")
+    # {
+    #   if ($Matches.errorCount -gt 0 -or $Matches.warningCount -gt 0)
+    #   {
+    #     Write-Host "##vso[task.complete result=Failed;]DONE"
+    #   }
+    # }
+  displayName: 'Generate docs'
+
+- powershell: |
+    $env:GIT_REDIRECT_STDERR = '2>&1'
+    Remove-Item -Recurse -Force docfx.console.*
+    git checkout gh-pages
+    Write-Host "remove old files"
+    Remove-Item -Recurse -Force api
+    Remove-Item -Recurse -Force Assets
+    Remove-Item -Recurse -Force Documentation
+    Remove-Item -Recurse -Force Documentation.ja
+    Remove-Item -Recurse -Force fonts
+    Remove-Item -Recurse -Force styles
+    Remove-Item -Recurse -Force web
+    Move-Item doc\* -Force
+    Remove-Item -Recurse -Force obj
+    
+    git add .
+    Write-Host "setup author info"
+    git config user.email github_admin@hololab.co.jp
+    git config user.name "hololab-inc"
+    Write-Host "git commit with message"
+    git commit -a -m "Update documents"
+    Write-Host "git push"
+    git push https://$(access-token)@github.com/HoloLabInc/MixedRealityToolkit-Unity.git gh-pages
+    
+  displayName: 'Commit to gh-pages'

@@ -1,5 +1,13 @@
 - name: Features and Architecture
   href: Documentation/
-  homepage: Documentation/WelcomeToMRTK.md
+  topicHref: Documentation/WelcomeToMRTK.md
+  dropdown: true
+  items:
+  - name: English
+    href: Documentation/
+    homepage: Documentation/WelcomeToMRTK.md
+  - name: 日本語
+    href: Documentation.ja/
+    homepage: Documentation/WelcomeToMRTK.md
 - name: API Documentation
   href: obj/api/
