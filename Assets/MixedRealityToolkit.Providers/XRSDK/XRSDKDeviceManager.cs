@@ -3,14 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.XRSDK.Input;
-using Microsoft.MixedReality.Toolkit.XRSDK.Windows;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-namespace Microsoft.MixedReality.Toolkit.XRSDK
+namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
     /// <summary>
     /// Manages Open VR Devices using unity's input system.
@@ -35,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
-        public bool CheckCapability(MixedRealityCapability capability)
+        public virtual bool CheckCapability(MixedRealityCapability capability)
         {
             // The OpenVR platform supports motion controllers.
             return (capability == MixedRealityCapability.MotionController);
@@ -160,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             Debug.Log(controllingHand + " | " + inputDevice.manufacturer + " | " + inputDevice.serialNumber);
 
             var currentControllerType = GetCurrentControllerType(inputDevice);
-            Type controllerType;
-            InputSourceType inputSourceType;
+            Type controllerType = typeof(GenericXRSDKController);
+            InputSourceType inputSourceType = InputSourceType.Controller;
 
             switch (currentControllerType)
             {
@@ -180,43 +178,35 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 //case SupportedControllerType.OculusRemote:
                 //    controllerType = typeof(OculusRemoteController);
                 //    break;
-                case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityXRSDKMotionController);
-                    inputSourceType = InputSourceType.Controller;
-                    break;
-                case SupportedControllerType.ArticulatedHand:
-                    controllerType = typeof(WindowsMixedRealityXRSDKArticulatedHand);
-                    inputSourceType = InputSourceType.Hand;
-                    break;
                 default:
                     return null;
             }
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-            IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+            //IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            //IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
+            //IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
 
-            if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
-            {
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-                return null;
-            }
+            //if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
+            //{
+            //    Debug.LogError($"Failed to create {controllerType.Name} controller");
+            //    return null;
+            //}
 
-            if (!detectedController.SetupConfiguration(controllerType))
-            {
-                // Controller failed to be set up correctly.
-                Debug.LogError($"Failed to set up {controllerType.Name} controller");
-                // Return null so we don't raise the source detected.
-                return null;
-            }
+            //if (!detectedController.SetupConfiguration(controllerType))
+            //{
+            //    // Controller failed to be set up correctly.
+            //    Debug.LogError($"Failed to set up {controllerType.Name} controller");
+            //    // Return null so we don't raise the source detected.
+            //    return null;
+            //}
 
-            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-            {
-                detectedController.InputSource.Pointers[i].Controller = detectedController;
-            }
+            //for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            //{
+            //    detectedController.InputSource.Pointers[i].Controller = detectedController;
+            //}
 
-            ActiveControllers.Add(inputDevice.name, detectedController);
-            return detectedController;
+            //ActiveControllers.Add(inputDevice.name, detectedController);
+            //return detectedController;
         }
 
         /// <inheritdoc />
@@ -226,13 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             if (controller != null)
             {
-                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
-                {
-                    if (pointer != null)
-                    {
-                        pointer.Controller = null;
-                    }
-                }
+                RecyclePointers(controller.InputSource);
 
                 if (controller.Visualizer != null &&
                     controller.Visualizer.GameObjectProxy != null)
@@ -247,19 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc />
         protected virtual SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            Debug.Log(inputDevice.name);
-
-            // 1118 is valid for Windows Mixed Reality controllers
-            if (inputDevice.manufacturer.Contains("1118"))
-            {
-                return SupportedControllerType.WindowsMixedReality;
-            }
-
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
-            {
-                return SupportedControllerType.ArticulatedHand;
-            }
-
             //if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
             //{
             //    return 0;
@@ -292,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             //Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
 
-            return SupportedControllerType.GenericOpenVR;
+            return SupportedControllerType.GenericUnity;
         }
 
         #endregion Controller Utilities
