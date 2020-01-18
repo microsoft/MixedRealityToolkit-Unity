@@ -129,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     scrollPos = scrollView.scrollPosition;
 
+                    // bucket categories?
                     // TODO: Download SDK path? or other module*
                     // TODO: Search bar*
 
