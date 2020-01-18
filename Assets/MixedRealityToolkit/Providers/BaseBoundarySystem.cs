@@ -22,6 +22,36 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             ExperienceScale scale) : base(profile)
         {
             Scale = scale;
+            ReadProfile();
+        }
+
+        /// <summary>
+        /// Reads the visualization profile contents and stores the values in class properties.
+        /// </summary>
+        private void ReadProfile()
+        {
+            BoundaryHeight = BoundaryVisualizationProfile.BoundaryHeight;
+
+            showFloor = BoundaryVisualizationProfile.ShowFloor;
+            floorMaterial = BoundaryVisualizationProfile.FloorMaterial;
+            floorScale = BoundaryVisualizationProfile.FloorScale;
+            floorPhysicsLayer = BoundaryVisualizationProfile.FloorPhysicsLayer;
+
+            showPlayArea = BoundaryVisualizationProfile.ShowPlayArea;
+            playAreaMaterial = BoundaryVisualizationProfile.PlayAreaMaterial;
+            playAreaPhysicsLayer = BoundaryVisualizationProfile.PlayAreaPhysicsLayer;
+            
+            showTrackedArea = BoundaryVisualizationProfile.ShowTrackedArea;
+            trackedAreaMaterial = BoundaryVisualizationProfile.TrackedAreaMaterial;
+            trackedAreaPhysicsLayer = BoundaryVisualizationProfile.TrackedAreaPhysicsLayer;
+
+            showBoundaryWalls = BoundaryVisualizationProfile.ShowBoundaryWalls;
+            boundaryWallsMaterial = BoundaryVisualizationProfile.BoundaryWallMaterial;
+            boundaryWallsPhysicsLayer = BoundaryVisualizationProfile.BoundaryWallsPhysicsLayer;
+
+            showBoundaryCeiling = BoundaryVisualizationProfile.ShowBoundaryCeiling;
+            boundaryCeilingMaterial = BoundaryVisualizationProfile.BoundaryCeilingMaterial;
+            boundaryCeilingPhysicsLayer = BoundaryVisualizationProfile.CeilingPhysicsLayer;
         }
 
         #region IMixedRealityService Implementation
@@ -36,26 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         {
             if (!Application.isPlaying || !XRDevice.isPresent) { return; }
 
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return; }
-
             boundaryEventData = new BoundaryEventData(EventSystem.current);
-
-            BoundaryHeight = profile.BoundaryHeight;
 
             SetTrackingSpace();
             CalculateBoundaryBounds();
-
-            ShowFloor = profile.ShowFloor;
-            FloorPhysicsLayer = profile.FloorPhysicsLayer;
-            ShowPlayArea = profile.ShowPlayArea;
-            PlayAreaPhysicsLayer = profile.PlayAreaPhysicsLayer;
-            ShowTrackedArea = profile.ShowTrackedArea;
-            TrackedAreaPhysicsLayer = profile.TrackedAreaPhysicsLayer;
-            ShowBoundaryWalls = profile.ShowBoundaryWalls;
-            BoundaryWallsPhysicsLayer = profile.BoundaryWallsPhysicsLayer;
-            ShowBoundaryCeiling = profile.ShowBoundaryCeiling;
-            CeilingPhysicsLayer = profile.CeilingPhysicsLayer;
 
             if (ShowFloor)
             {
@@ -73,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 GetBoundaryWallVisualization();
             }
-            if (ShowBoundaryWalls)
+            if (ShowBoundaryCeiling)
             {
                 GetBoundaryCeilingVisualization();
             }
@@ -167,12 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
                 currentCeilingObject = null;
             }
-
-            showFloor = false;
-            showPlayArea = false;
-            showTrackedArea = false;
-            showBoundaryWalls = false;
-            showCeiling = false;
 
             RaiseBoundaryVisualizationChanged();
         }
@@ -310,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public float BoundaryHeight { get; set; } = 3f;
 
-        private bool showFloor = false;
+        protected bool showFloor;
 
         /// <inheritdoc/>
         public bool ShowFloor
@@ -337,9 +345,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private bool showPlayArea = false;
+        protected Material floorMaterial;
 
-        private int floorPhysicsLayer;
+        protected Vector2 floorScale;
+
+        protected int floorPhysicsLayer;
 
         /// <inheritdoc/>
         public int FloorPhysicsLayer
@@ -362,6 +372,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
         }
+
+        protected bool showPlayArea;
 
         /// <inheritdoc/>
         public bool ShowPlayArea
@@ -388,9 +400,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private bool showTrackedArea = false;
+        protected Material playAreaMaterial;
 
-        private int playAreaPhysicsLayer;
+        protected int playAreaPhysicsLayer;
 
         /// <inheritdoc/>
         public int PlayAreaPhysicsLayer
@@ -414,6 +426,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
         }
+
+        protected bool showTrackedArea;
 
         /// <inheritdoc/>
         public bool ShowTrackedArea
@@ -440,9 +454,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private bool showBoundaryWalls = false;
+        protected Material trackedAreaMaterial;
 
-        private int trackedAreaPhysicsLayer;
+        protected int trackedAreaPhysicsLayer;
 
         /// <inheritdoc/>
         public int TrackedAreaPhysicsLayer
@@ -466,6 +480,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
         }
+
+        protected bool showBoundaryWalls;
 
         /// <inheritdoc/>
         public bool ShowBoundaryWalls
@@ -492,9 +508,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private bool showCeiling = false;
+        protected Material boundaryWallsMaterial;
 
-        private int boundaryWallsPhysicsLayer;
+        protected int boundaryWallsPhysicsLayer;
 
         /// <inheritdoc/>
         public int BoundaryWallsPhysicsLayer
@@ -519,15 +535,17 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
+        protected bool showBoundaryCeiling;
+
         /// <inheritdoc/>
         public bool ShowBoundaryCeiling
         {
-            get { return showCeiling; }
+            get { return showBoundaryCeiling; }
             set
             {
-                if (showCeiling != value)
+                if (showBoundaryCeiling != value)
                 {
-                    showCeiling = value;
+                    showBoundaryCeiling = value;
 
                     if (value && (currentCeilingObject == null))
                     {
@@ -544,7 +562,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        private int ceilingPhysicsLayer;
+        protected Material boundaryCeilingMaterial;
+
+        protected int boundaryCeilingPhysicsLayer;
 
         /// <inheritdoc/>
         public int CeilingPhysicsLayer
@@ -553,18 +573,18 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 if (currentCeilingObject != null)
                 {
-                    ceilingPhysicsLayer = currentCeilingObject.layer;
+                    boundaryCeilingPhysicsLayer = currentCeilingObject.layer;
                 }
 
-                return ceilingPhysicsLayer;
+                return boundaryCeilingPhysicsLayer;
             }
             set
             {
-                ceilingPhysicsLayer = value;
+                boundaryCeilingPhysicsLayer = value;
 
                 if (currentCeilingObject != null)
                 {
-                    currentFloorObject.layer = ceilingPhysicsLayer;
+                    currentFloorObject.layer = boundaryCeilingPhysicsLayer;
                 }
             }
         }
@@ -654,16 +674,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 return currentFloorObject;
             }
 
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return null; }
-
             if (!FloorHeight.HasValue)
             {
                 // We were unable to locate the floor.
                 return null;
             }
-
-            Vector2 floorScale = profile.FloorScale;
 
             // Render the floor.
             currentFloorObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -674,7 +689,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 FloorHeight.Value - (currentFloorObject.transform.localScale.y * 0.5f),
                 MixedRealityPlayspace.Position.z));
             currentFloorObject.layer = FloorPhysicsLayer;
-            currentFloorObject.GetComponent<Renderer>().sharedMaterial = profile.FloorMaterial;
+            currentFloorObject.GetComponent<Renderer>().sharedMaterial = floorMaterial;
 
             return currentFloorObject;
         }
@@ -688,9 +703,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 return currentPlayAreaObject;
             }
-
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return null; }
 
             // Get the rectangular bounds.
             Vector2 center;
@@ -716,7 +728,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             currentPlayAreaObject.transform.Translate(new Vector3(center.x, boundaryObjectRenderOffset, center.y));
             currentPlayAreaObject.transform.Rotate(new Vector3(90, -angle, 0));
             currentPlayAreaObject.transform.localScale = new Vector3(width, height, 1.0f);
-            currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = profile.PlayAreaMaterial;
+            currentPlayAreaObject.GetComponent<Renderer>().sharedMaterial = playAreaMaterial;
 
             currentPlayAreaObject.transform.parent = BoundaryVisualizationParent.transform;
 
@@ -732,9 +744,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 return currentTrackedAreaObject;
             }
-
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return null; }
 
             if (Bounds.Length == 0)
             {
@@ -766,7 +775,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // Configure the renderer properties.
             float lineWidth = 0.01f;
             LineRenderer lineRenderer = currentTrackedAreaObject.GetComponent<LineRenderer>();
-            lineRenderer.sharedMaterial = profile.TrackedAreaMaterial;
+            lineRenderer.sharedMaterial = trackedAreaMaterial;
             lineRenderer.useWorldSpace = false;
             lineRenderer.startWidth = lineWidth;
             lineRenderer.endWidth = lineWidth;
@@ -787,9 +796,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 return currentBoundaryWallObject;
             }
-
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return null; }
 
             if (!FloorHeight.HasValue)
             {
@@ -814,7 +820,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 wall.name = $"Wall {i}";
-                wall.GetComponent<Renderer>().sharedMaterial = profile.BoundaryWallMaterial;
+                wall.GetComponent<Renderer>().sharedMaterial = boundaryWallsMaterial;
                 wall.transform.localScale = new Vector3((Bounds[i].PointB - Bounds[i].PointA).magnitude, BoundaryHeight, wallDepth);
                 wall.layer = ignoreRaycastLayerValue;
 
@@ -842,9 +848,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 return currentCeilingObject;
             }
 
-            MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
-            if (profile == null) { return null; }
-
             if (Bounds.Length == 0)
             {
                 // If we do not have boundary edges, we cannot render a ceiling.
@@ -869,7 +872,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 boundaryBoundingBox.center.x,
                 BoundaryHeight + (currentCeilingObject.transform.localScale.y * 0.5f),
                 boundaryBoundingBox.center.z));
-            currentCeilingObject.GetComponent<Renderer>().sharedMaterial = profile.BoundaryCeilingMaterial;
+            currentCeilingObject.GetComponent<Renderer>().sharedMaterial = boundaryCeilingMaterial;
             currentCeilingObject.layer = CeilingPhysicsLayer;
             currentCeilingObject.transform.parent = BoundaryVisualizationParent.transform;
 
