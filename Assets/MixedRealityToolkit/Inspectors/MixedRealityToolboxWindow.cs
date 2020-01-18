@@ -8,7 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public class MixedRealityToolboxWindow : EditorWindow //UnityEditor.Editor //EditorWindow,
     {
+        private static readonly string searchDisplaySearchFieldKey = "MixedRealityToolboxWindow.SearchField";
         private const string WindowTitle = "MRTK Toolbox";
+
+        private GUIStyle labelStyle;
+        private Vector2 scrollPos;
 
         private class ToolboxItem
         {
@@ -24,8 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             public string IconPath 
                 => MixedRealityToolkitFiles.MapRelativeFilePath(IconModule, RelativeIconPath);
 
-            public GameObject Prefab;
-            public Texture Icon;
+            public string DocURL;
+
+            public GameObject Prefab { get; protected set; }
+            public Texture Icon { get; protected set; }
 
             public void Init()
             {
@@ -34,7 +40,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private ToolboxItem[] AssetPaths =
+        //IndeterminateLoader 
+        //ProgressIndicatorRotatingOrbs 
+        //ProgressIndicatorLoadingBar 
+        //ProgressIndicatorRotatingObject
+        
+        private ToolboxItem[] ToolboxPrefabs =
         {
             new ToolboxItem()
             {
@@ -43,15 +54,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
                 IconModule = MixedRealityToolkitModuleType.SDK,
                 RelativeIconPath = @"StandardAssets\Textures\IconRefresh.png",
+                DocURL = "www.google.com",
             },
 
             new ToolboxItem()
             {
-                Name = "PressableButton HoloLens2",
+                Name = "Progress Indicator LoadingBar",
                 AssetModule = MixedRealityToolkitModuleType.SDK,
                 RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
-                IconModule = MixedRealityToolkitModuleType.SDK,
-                RelativeIconPath = @"StandardAssets\Textures\IconRefresh.png",
+                IconModule = MixedRealityToolkitModuleType.Core,
+                RelativeIconPath = @"progress-bar.gif",
             },
 
             new ToolboxItem()
@@ -83,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void OnEnable()
         {
-            foreach (var item in AssetPaths)
+            foreach (var item in ToolboxPrefabs)
             {
                 item.Init();
             }
@@ -91,46 +103,80 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void OnGUI()
         {
-            // TODO: MRTK logo
-            // TODO: scroll view
-            // TODO: Search bar*
-            // TODO: documentation button*
+            labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.wordWrap = true;
+            labelStyle.alignment = TextAnchor.MiddleCenter;
 
-            // GUILayout.SelectionGrid
-            for (int i = 0; i < AssetPaths.Length; i++)
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                var item = AssetPaths[i];
-
-                if (i % 2 == 0)
-                    EditorGUILayout.BeginHorizontal();
-
-                using (new EditorGUILayout.VerticalScope())
-                {
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        GUILayout.FlexibleSpace();
-                        // Use it in a button, this is sumple formatting for example
-                        if (GUILayout.Button(new GUIContent(item.Icon), GUILayout.Width(100), GUILayout.Height(100)))
-                        {
-                            Selection.activeObject = Instantiate(item.Prefab);
-                        }
-                        GUILayout.FlexibleSpace();
-                    }
-
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        GUILayout.FlexibleSpace();
-                        EditorGUILayout.LabelField(item.Name);
-                        GUILayout.FlexibleSpace();
-                    }
-                }
+                EditorGUILayout.LabelField("Search: ", GUILayout.MaxWidth(70));
+                string searchString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty);
+                searchString = EditorGUILayout.TextField(searchString, GUILayout.ExpandWidth(true));
                 
-                if (i % 2 != 0)
-                    EditorGUILayout.EndHorizontal();
+                if (GUILayout.Button("Clear", EditorStyles.miniButton, GUILayout.MaxWidth(50)))
+                {
+                    searchString = string.Empty;
+                }
+
+                SessionState.SetString(searchDisplaySearchFieldKey, searchString);
             }
 
-            if (AssetPaths.Length % 2 != 0)
-                EditorGUILayout.EndHorizontal();
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+                {
+                    scrollPos = scrollView.scrollPosition;
+
+                    // TODO: Download SDK path? or other module*
+                    // TODO: Search bar*
+
+                    int itemsPerRow = (int)(position.width / 128.0f);
+
+                    // Render grid of toolbox items
+                    for (int row = 0; row < ToolboxPrefabs.Length / itemsPerRow; row++)
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
+                        {
+                            int startIndex = row * itemsPerRow;
+                            for (int col = 0; col < itemsPerRow; col++)
+                            {
+                                RenderToolboxItem(ToolboxPrefabs[startIndex + col]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RenderToolboxItem(ToolboxItem item)
+        {
+            using (new EditorGUILayout.VerticalScope())
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    // Use it in a button, this is sumple formatting for example
+                    if (GUILayout.Button(new GUIContent(item.Icon), GUILayout.Width(64), GUILayout.Height(64)))
+                    {
+                        Selection.activeObject = Instantiate(item.Prefab);
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.LabelField(item.Name, labelStyle);
+                    GUILayout.FlexibleSpace();
+                }
+
+                if (!string.IsNullOrEmpty(item.DocURL))
+                {
+                    InspectorUIUtility.RenderDocumentationButton(item.DocURL);
+                }
+            }
         }
     }
 }
