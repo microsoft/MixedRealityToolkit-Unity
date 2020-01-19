@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         IMixedRealityInputHandler<MixedRealityPose>
     {
         /// <summary>
-        /// The controller handedness to synchronize with.
+        /// The controller handedness this component is synchronized with.
         /// </summary>
         Handedness Handedness { get; }
 

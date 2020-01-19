@@ -4,7 +4,7 @@
 name: $(Date:yyyyMMdd)v$(Rev:r)
 
 variables:
-  Unity2018Version: Unity2018.3.7f1
+  Unity2018Version: Unity2018.4.12f1
   Unity2019Version: Unity2019.2.0f1
   MRTKVersion: 2.4.0  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
@@ -15,7 +15,7 @@ jobs:
   pool:
     name: Analog On-Prem
     demands:
-    - Unity2018.3.7f1  # variable expansion not allowed here
+    - Unity2018.4.12f1  # variable expansion not allowed here
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:

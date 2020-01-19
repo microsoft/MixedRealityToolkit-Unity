@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (base.Controller != null && this != null)
                 {
-                    pointerName = gameObject.name;
+                    PointerName = gameObject.name;
                     InputSourceParent = base.Controller.InputSource;
                 }
             }

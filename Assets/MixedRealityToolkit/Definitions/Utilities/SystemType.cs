@@ -5,6 +5,7 @@
 using Microsoft.MixedReality.Toolkit;
 #endif // WINDOWS_UWP && !ENABLE_IL2CPP
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -73,6 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
+            // Class references may move between asmdef or be renamed throughout MRTK development
+            // Check to see if we need to update our reference value
+            reference = TryMigrateReference(reference);
+
             type = !string.IsNullOrEmpty(reference) ? Type.GetType(reference) : null;
         }
 
@@ -88,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </exception>
         public Type Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (value != null)
@@ -127,6 +132,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public override string ToString()
         {
             return Type?.FullName ?? "(None)";
+        }
+
+        // Key == original reference string entry, value == new migrated placement
+        // String values are broken into {namespace.classname, asmdef}
+        private static Dictionary<string, string> ReferenceMappings = new Dictionary<string, string>()
+        { 
+            { "Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+            "Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation" },
+            
+            { "Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+            "Microsoft.MixedReality.Toolkit.Input.InputPlaybackService, Microsoft.MixedReality.Toolkit.Services.InputSimulation" },
+        };
+
+        /// <summary>
+        /// This function checks if there are any known migrations for old class names, namespaces, and/or asmdef files
+        /// If so, the new reference string is returned and utilized for editor runtime and will be serialized to disk
+        /// </summary>
+        private static string TryMigrateReference(string reference)
+        {
+            if (ReferenceMappings.ContainsKey(reference))
+            {
+                return ReferenceMappings[reference];
+            }
+
+            return reference;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// </remarks>
         private static void UpdateAsmDef(bool arFoundationPresent)
         {
-            string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
+            const string asmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef";
             FileInfo[] asmDefFiles = FileUtilities.FindFilesInAssets(asmDefFileName);
 
             if (asmDefFiles.Length == 0)
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
             if (asmDefFiles.Length > 1)
             {
-                Debug.LogWarning($"Mutliple ({asmDefFiles.Length}) {asmDefFileName} instances found. Modifying only the first.");
+                Debug.LogWarning($"Multiple ({asmDefFiles.Length}) {asmDefFileName} instances found. Modifying only the first.");
             }
 
             AssemblyDefinition asmDef = AssemblyDefinition.Load(asmDefFiles[0].FullName);
@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 #elif UNITY_2018
                 if (references.Contains(spatialTrackingReference))
                 {
-                    // Remove the refernece to the spatial tracking assembly
+                    // Remove the reference to the spatial tracking assembly
                     references.Remove(spatialTrackingReference);
                     changed = true;
                 }

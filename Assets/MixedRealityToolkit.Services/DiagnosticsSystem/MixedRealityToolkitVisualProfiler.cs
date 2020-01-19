@@ -33,11 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private static readonly int frameRange = 30;
         private static readonly Vector2 defaultWindowRotation = new Vector2(10.0f, 20.0f);
         private static readonly Vector3 defaultWindowScale = new Vector3(0.2f, 0.04f, 1.0f);
-        private static readonly Vector3[] backgroundScales = { new Vector3(1.0f, 1.0f, 1.0f), new Vector3(1.0f, 0.5f, 1.0f), new Vector3(1.0f, 0.25f, 1.0f) };
+        private static readonly Vector3[] backgroundScales = { new Vector3(1.05f, 1.2f, 1.2f), new Vector3(1.0f, 0.5f, 1.0f), new Vector3(1.0f, 0.25f, 1.0f) };
         private static readonly Vector3[] backgroundOffsets = { new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.25f, 0.0f), new Vector3(0.0f, 0.375f, 0.0f) };
         private static readonly string usedMemoryString = "Used: ";
         private static readonly string peakMemoryString = "Peak: ";
         private static readonly string limitMemoryString = "Limit: ";
+        private static readonly string voiceCommandString = "Say \"Toggle Profiler\" to show/hide";
+        private static readonly string visualProfilerTitleString = "MRTK Visual Profiler";
 
         public Transform WindowParent { get; set; } = null;
 
@@ -129,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         }
 
         [SerializeField, Tooltip("A list of colors to display for different percentage of target frame rates.")]
-        private FrameRateColor[] frameRateColors = new FrameRateColor[] 
+        private FrameRateColor[] frameRateColors = new FrameRateColor[]
         {
             // Green
             new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
@@ -156,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private TextMesh usedMemoryText;
         private TextMesh peakMemoryText;
         private TextMesh limitMemoryText;
+        private TextMesh voiceCommandText;
+        private TextMesh mrtkText;
         private Transform usedAnchor;
         private Transform peakAnchor;
         private Quaternion windowHorizontalRotation;
@@ -347,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 else
                 {
                     // If a instanced material is not available, fall back to non-instanced rendering.
-                    for (int i  = 0; i < frameInfoMatrices.Length; ++i)
+                    for (int i = 0; i < frameInfoMatrices.Length; ++i)
                     {
                         frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
                         Graphics.DrawMesh(quadMesh, parentLocalToWorldMatrix * frameInfoMatrices[i], defaultMaterial, 0, null, 0, frameInfoPropertyBlock, false, false, false);
@@ -544,6 +548,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
                 peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
                 limitMemoryText = CreateText("LimitMemoryText", new Vector3(0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, limitMemoryString);
+                voiceCommandText = CreateText("VoiceCommandText", new Vector3(-0.525f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, Color.white, voiceCommandString);
+                mrtkText = CreateText("MRTKText", new Vector3(0.52f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, visualProfilerTitleString);
+                voiceCommandText.fontSize = 32;
+                mrtkText.fontSize = 32;
 
                 GameObject limitBar = CreateQuad("LimitBar", memoryStats);
                 InitializeRenderer(limitBar, defaultMaterial, colorID, memoryLimitColor);

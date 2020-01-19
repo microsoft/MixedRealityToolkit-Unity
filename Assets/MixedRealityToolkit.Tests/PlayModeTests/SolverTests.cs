@@ -69,37 +69,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestTargetTypes()
         {
             Vector3 rightHandPos = Vector3.right * 50.0f;
+            Vector3 leftHandPos = -rightHandPos;
             Vector3 customTransformPos = Vector3.up * 50.0f;
 
             var transformOverride = new GameObject("Override");
             transformOverride.transform.position = customTransformPos;
 
             var testObjects = InstantiateTestSolver<Orbital>();
-
-            // Set solver handler to track hands
-            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+                yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
+            }
+
+            // Test orbital around left hand line pointer
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.ControllerRay;
+                testObjects.handler.TrackedHandness = Handedness.Left;
+
+                yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
+            }
 
             // Test orbital around head
-            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+            }
 
             // Test orbital around custom override
-            testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.TransformOverride = transformOverride.transform;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
+                testObjects.handler.TransformOverride = transformOverride.transform;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
+            }
         }
 
         /// <summary>
@@ -122,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
 
             // Test orbital around left hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, leftHandPos, Handedness.Left);
+            yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
 
             // Test orbital with both hands visible
             yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
@@ -602,15 +614,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Test Helpers
 
-        private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
+        private IEnumerator TestHandSolver(SetupData testData, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
+            Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay 
+                || testData.handler.TrackedTargetType == TrackedObjectType.HandJoint, "TestHandSolver supports on ControllerRay and HandJoint tracked target types");
+
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
             yield return WaitForFrames(2);
 
-            Vector3 handOrbitalPos = target.transform.position;
+            Vector3 handOrbitalPos = testData.target.transform.position;
             Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
+
+            Transform expectedTransform = null;
+            if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
+            {
+                expectedTransform = PointerUtils.GetPointer<LinePointer>(hand)?.transform;
+            }
+            else
+            {
+                var handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>();
+                expectedTransform = handJointService.RequestJointTransform(testData.handler.TrackedHandJoint, hand);
+            }
+
+            Assert.AreEqual(testData.handler.CurrentTrackedHandedness, hand);
+            Assert.IsNotNull(expectedTransform);
+            
+            // SolverHandler creates a dummy GameObject to provide a transform for tracking so it can be managed (allocated/deleted)
+            // Look at the parent to compare transform equality for what we should be tracking against
+            Assert.AreEqual(testData.handler.TransformTarget.parent, expectedTransform);
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
