@@ -288,10 +288,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             for (int i = 0; i < appBars.Length; ++i)
             {
                 AppBar appBar = appBars[i];
-                if (appBar.BoundingBox == boundingBox)
+                if (appBar.Target == boundingBox)
                 {
                     Undo.RecordObject(appBar, "BoundsControl migration: changed target of app bar.");
-                    appBar.BoundingBox = boundsControl;
+                    appBar.Target = boundsControl;
+                    EditorUtility.SetDirty(appBar);
                 }
             }
         }
