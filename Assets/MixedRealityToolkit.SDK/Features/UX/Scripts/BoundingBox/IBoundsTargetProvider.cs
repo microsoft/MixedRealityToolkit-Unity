@@ -5,7 +5,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Interface for defining a bounds target used by <see cref="AppBar"/>
-    /// Implement this interface if you have a component that should be activated / deactivated by the AppBar
+    /// Implement this interface to enable AppBar controlled modifications
     /// </summary>
     internal interface IBoundsTargetProvider
     {
