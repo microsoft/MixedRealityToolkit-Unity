@@ -1,33 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
-internal interface IBoundsTargetProvider
+namespace Microsoft.MixedReality.Toolkit.UI
 {
-
     /// <summary>
-    /// Indicates if the provider is currently active
+    /// Interface for defining a bounds target used by <see cref="AppBar"/>
+    /// Implement this interface if you have a component that should be activated / deactivated by the AppBar
     /// </summary>
-    bool Active
+    internal interface IBoundsTargetProvider
     {
-        get;
-        set;
-    }
 
-    /// <summary>
-    /// The object that this component is targeting
-    /// </summary>
-    GameObject Target
-    {
-        get;
-        set;
-    }
+        /// <summary>
+        /// Indicates if the provider is currently active
+        /// </summary>
+        bool Active
+        {
+            get;
+            set;
+        }
 
-    /// <summary>
-    /// The collider reference tracking the bounds utilized by this component during runtime
-    /// </summary>
-    BoxCollider TargetBounds
-    {
-        get;
+        /// <summary>
+        /// The object that this component is targeting
+        /// </summary>
+        GameObject Target
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The collider reference tracking the bounds utilized by this component during runtime
+        /// </summary>
+        BoxCollider TargetBounds
+        {
+            get;
+        }
     }
 }
