@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Object the app bar is controlling - This object must implement the IBoundsTargetProvider.
         /// </summary>
-        public BoundingBox TargetBoundingBox
+        public MonoBehaviour Target
         {
             get { return boundingBox; }
             set { boundingBox = value; }
@@ -373,12 +373,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected virtual void OnClickRemove()
         {
             // Set the app bar and bounding box to inactive
-            var boundsProvider = TargetBoundingBox as IBoundsTargetProvider;
+            var boundsProvider = Target as IBoundsTargetProvider;
             if (boundsProvider != null)
             {
                 boundsProvider.Target.SetActive(false);
             }
-            BoundingBox.gameObject.SetActive(false);
+            Target.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -469,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateTargetObject()
         {
-            var boundsProvider = BoundingBox as IBoundsTargetProvider;
+            var boundsProvider = Target as IBoundsTargetProvider;
             if (boundsProvider == null || boundsProvider.Target == null)
             {
                 if (DisplayType == AppBarDisplayTypeEnum.Manipulation)
@@ -505,7 +505,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void FollowTargetObject(bool smooth)
         {
-            var boundsProvider = BoundingBox as IBoundsTargetProvider;
+            var boundsProvider = Target as IBoundsTargetProvider;
             if (boundsProvider == null)
                 return;
 
