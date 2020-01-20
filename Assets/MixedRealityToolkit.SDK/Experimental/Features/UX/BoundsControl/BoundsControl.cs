@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of bounds control.")]
         [SerializeField]
-        [FormerlySerializedAs("BoxColliderToUse")]
         private BoxCollider boundsOverride = null;
 
         /// <summary>
