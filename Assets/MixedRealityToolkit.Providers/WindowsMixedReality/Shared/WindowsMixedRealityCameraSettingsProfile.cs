@@ -7,9 +7,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
     /// <summary>
-    /// Configuration profile for the Windows Mixed Reality Camera settings provider.
+    /// Configuration profile for the Windows Mixed Reality camera settings provider.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Windows Mixed Reality Camera Settings Profile", fileName = "WindowsMixedRealityCameraSettingsProfile", order = 100)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Providers/Windows Mixed Reality/Windows Mixed Reality Camera Settings Profile", fileName = "WindowsMixedRealityCameraSettingsProfile", order = 100)]
     [MixedRealityServiceProfile(typeof(BaseWindowsMixedRealityCameraSettings))]
     public class WindowsMixedRealityCameraSettingsProfile : BaseCameraSettingsProfile
     {
