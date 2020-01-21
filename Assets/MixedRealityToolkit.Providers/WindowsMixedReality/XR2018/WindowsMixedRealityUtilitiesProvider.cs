@@ -10,6 +10,9 @@ using UnityEngine.XR.WSA;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
+    /// <summary>
+    /// An implementation of <see cref="IWindowsMixedRealityUtilitiesProvider"/> for Unity's in-box XR pipeline.
+    /// </summary>
     public class WindowsMixedRealityUtilitiesProvider : IWindowsMixedRealityUtilitiesProvider
     {
         /// <inheritdoc />
