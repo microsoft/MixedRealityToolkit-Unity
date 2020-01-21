@@ -49,79 +49,34 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
-#region Controller Utilities
+        #region Controller Utilities
 
         /// <inheritdoc />
-        protected override GenericXRSDKController GetOrAddController(InputDevice inputDevice)
+        protected override Type GetControllerType(SupportedControllerType supportedControllerType)
         {
-            // If a device is already registered with the ID provided, just return it.
-            if (ActiveControllers.ContainsKey(inputDevice.name))
-            {
-                var controller = ActiveControllers[inputDevice.name];
-                Debug.Assert(controller != null);
-                return controller;
-            }
-
-            Handedness controllingHand;
-
-            if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left))
-            {
-                controllingHand = Handedness.Left;
-            }
-            else if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
-            {
-                controllingHand = Handedness.Right;
-            }
-            else
-            {
-                controllingHand = Handedness.None;
-            }
-
-            Debug.Log(controllingHand + " | " + inputDevice.manufacturer + " | " + inputDevice.serialNumber);
-
-            var currentControllerType = GetCurrentControllerType(inputDevice);
-            Type controllerType;
-            InputSourceType inputSourceType;
-
-            switch (currentControllerType)
+            switch (supportedControllerType)
             {
                 case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityXRSDKMotionController);
-                    inputSourceType = InputSourceType.Controller;
-                    break;
+                    return typeof(WindowsMixedRealityXRSDKMotionController);
                 case SupportedControllerType.ArticulatedHand:
-                    controllerType = typeof(WindowsMixedRealityXRSDKArticulatedHand);
-                    inputSourceType = InputSourceType.Hand;
-                    break;
+                    return typeof(WindowsMixedRealityXRSDKArticulatedHand);
                 default:
                     return null;
             }
+        }
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-            IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
-
-            if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
+        /// <inheritdoc />
+        protected override InputSourceType GetInputSourceType(SupportedControllerType supportedControllerType)
+        {
+            switch (supportedControllerType)
             {
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-                return null;
+                case SupportedControllerType.WindowsMixedReality:
+                    return InputSourceType.Controller;
+                case SupportedControllerType.ArticulatedHand:
+                    return InputSourceType.Hand;
+                default:
+                    return InputSourceType.Other;
             }
-
-            if (!detectedController.SetupConfiguration(controllerType))
-            {
-                // Controller failed to be set up correctly.
-                Debug.LogError($"Failed to set up {controllerType.Name} controller");
-                // Return null so we don't raise the source detected.
-                return null;
-            }
-
-            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-            {
-                detectedController.InputSource.Pointers[i].Controller = detectedController;
-            }
-
-            ActiveControllers.Add(inputDevice.name, detectedController);
-            return detectedController;
         }
 
         /// <inheritdoc />
@@ -144,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             return SupportedControllerType.GenericUnity;
         }
 
-#endregion Controller Utilities
+        #endregion Controller Utilities
     }
 }
 

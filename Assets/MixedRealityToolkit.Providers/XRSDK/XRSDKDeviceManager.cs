@@ -158,55 +158,34 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             Debug.Log(controllingHand + " | " + inputDevice.manufacturer + " | " + inputDevice.serialNumber);
 
             var currentControllerType = GetCurrentControllerType(inputDevice);
-            Type controllerType = typeof(GenericXRSDKController);
-            InputSourceType inputSourceType = InputSourceType.Controller;
+            Type controllerType = GetControllerType(currentControllerType);
+            InputSourceType inputSourceType = GetInputSourceType(currentControllerType);
 
-            switch (currentControllerType)
+            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+            IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
+            IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+
+            if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
             {
-                //case SupportedControllerType.GenericOpenVR:
-                //    controllerType = typeof(GenericOpenVRController);
-                //    break;
-                //case SupportedControllerType.ViveWand:
-                //    controllerType = typeof(ViveWandController);
-                //    break;
-                //case SupportedControllerType.ViveKnuckles:
-                //    controllerType = typeof(ViveKnucklesController);
-                //    break;
-                //case SupportedControllerType.OculusTouch:
-                //    controllerType = typeof(OculusTouchController);
-                //    break;
-                //case SupportedControllerType.OculusRemote:
-                //    controllerType = typeof(OculusRemoteController);
-                //    break;
-                default:
-                    return null;
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
+                return null;
             }
 
-            //IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            //IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
-            //IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+            if (!detectedController.SetupConfiguration(controllerType))
+            {
+                // Controller failed to be set up correctly.
+                Debug.LogError($"Failed to set up {controllerType.Name} controller");
+                // Return null so we don't raise the source detected.
+                return null;
+            }
 
-            //if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
-            //{
-            //    Debug.LogError($"Failed to create {controllerType.Name} controller");
-            //    return null;
-            //}
+            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+            {
+                detectedController.InputSource.Pointers[i].Controller = detectedController;
+            }
 
-            //if (!detectedController.SetupConfiguration(controllerType))
-            //{
-            //    // Controller failed to be set up correctly.
-            //    Debug.LogError($"Failed to set up {controllerType.Name} controller");
-            //    // Return null so we don't raise the source detected.
-            //    return null;
-            //}
-
-            //for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-            //{
-            //    detectedController.InputSource.Pointers[i].Controller = detectedController;
-            //}
-
-            //ActiveControllers.Add(inputDevice.name, detectedController);
-            //return detectedController;
+            ActiveControllers.Add(inputDevice.name, detectedController);
+            return detectedController;
         }
 
         /// <inheritdoc />
@@ -228,41 +207,30 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
         }
 
+        /// <summary>
+        /// Gets the concrete type of the detected controller, based on the <see cref="SupportedControllerType"/> and defined per-platform.
+        /// </summary>
+        /// <param name="supportedControllerType">The current controller type from the enum.</param>
+        /// <returns>The concrete type of the currently detected controller.</returns>
+        protected virtual Type GetControllerType(SupportedControllerType supportedControllerType)
+        {
+            return typeof(GenericXRSDKController);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="InputSourceType"/> of the currently detected controller, based on the <see cref="SupportedControllerType"/>.
+        /// </summary>
+        /// <param name="supportedControllerType">The current controller type from the enum.</param>
+        /// <returns>The enum value of the currently detected controller's InputSource type.</returns>
+        protected virtual InputSourceType GetInputSourceType(SupportedControllerType supportedControllerType)
+        {
+            return InputSourceType.Controller;
+        }
+
         /// <inheritdoc />
         protected virtual SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            //if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
-            //{
-            //    return 0;
-            //}
-
-            //if (joystickName.Contains("Oculus Rift CV1"))
-            //{
-            //    return SupportedControllerType.OculusTouch;
-            //}
-
-            //if (joystickName.Contains("Oculus remote"))
-            //{
-            //    return SupportedControllerType.OculusRemote;
-            //}
-
-            //if (joystickName.Contains("Vive Wand"))
-            //{
-            //    return SupportedControllerType.ViveWand;
-            //}
-
-            //if (joystickName.Contains("Vive Knuckles"))
-            //{
-            //    return SupportedControllerType.ViveKnuckles;
-            //}
-
-            //if (joystickName.Contains("WindowsMR"))
-            //{
-            //    return SupportedControllerType.WindowsMixedReality;
-            //}
-
-            //Debug.Log($"{joystickName} does not have a defined controller type, falling back to generic controller type");
-
+            Debug.Log($"{inputDevice.name} does not have a defined controller type, falling back to generic controller type");
             return SupportedControllerType.GenericUnity;
         }
 
