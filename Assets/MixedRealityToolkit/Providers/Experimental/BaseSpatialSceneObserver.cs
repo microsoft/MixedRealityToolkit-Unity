@@ -124,8 +124,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public bool GeneratePlanes { get; set; }
         public bool UsePersistentObjects { get; set; }
         public float QueryRadius { get; set; }
-        public bool VisualizeOcclusionMask { get; set; }
+        public bool GetOcclusionMask { get; set; }
         public Vector2Int OcclusionMaskResolution { get; set; }
         public bool CreateGameObjects { get; set; }
+        public bool OrientScene { get; set; }
     }
 }
