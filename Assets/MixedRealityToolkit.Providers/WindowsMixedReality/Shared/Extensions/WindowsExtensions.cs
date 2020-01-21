@@ -3,7 +3,11 @@
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Utilities;
+#if WINDOWS_UWP
 using Windows.UI.Input.Spatial;
+#elif DOTNETWINRT_PRESENT
+using Microsoft.Windows.UI.Input.Spatial;
+#endif
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
