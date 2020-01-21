@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GazeProvider = null;
             }
 
-            foreach(var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
+            foreach (var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
                 if (provider != null)
                 {
@@ -998,13 +998,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 currentObject = currentGameObject.transform;
             }
             IMixedRealityPointerHandler ancestorPointerHandler = null;
-            while(currentObject != null && ancestorPointerHandler == null)
+            while (currentObject != null && ancestorPointerHandler == null)
             {
-                foreach(var component in currentObject.GetComponents<Component>())
+                foreach (var component in currentObject.GetComponents<Component>())
                 {
                     if (component is IMixedRealityPointerHandler)
                     {
-                        ancestorPointerHandler = (IMixedRealityPointerHandler) component;
+                        ancestorPointerHandler = (IMixedRealityPointerHandler)component;
                         break;
                     }
                 }
