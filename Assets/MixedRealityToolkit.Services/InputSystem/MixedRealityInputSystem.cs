@@ -248,10 +248,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
             // If the system gets disabled, the gaze provider is destroyed.
-            // Ensure that it gets recreated on when reenabled.
-            if (GazeProvider == null)
+            // Ensure that it gets recreated on when re-enabled.
+            if (GazeProvider == null && profile != null)
             {
-                InstantiateGazeProvider(profile?.PointerProfile);
+                InstantiateGazeProvider(profile.PointerProfile);
             }
 
             if ((GetDataProviders().Count == 0) && (profile != null))
@@ -272,7 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
         {
-            if (pointerProfile?.GazeProviderType?.Type != null)
+            if (pointerProfile != null && pointerProfile.GazeProviderType?.Type != null)
             {
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GazeProvider = null;
             }
 
-            foreach(var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
+            foreach (var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
                 if (provider != null)
                 {
@@ -991,15 +991,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
             // Only lock the object if there is a grabbable above in the hierarchy
-            Transform currentObject = pointer.Result?.Details.Object?.transform;
-            IMixedRealityPointerHandler ancestorPointerHandler = null;
-            while(currentObject != null && ancestorPointerHandler == null)
+            Transform currentObject = null;
+            GameObject currentGameObject = pointer.Result?.Details.Object;
+            if (currentGameObject != null)
             {
-                foreach(var component in currentObject.GetComponents<Component>())
+                currentObject = currentGameObject.transform;
+            }
+            IMixedRealityPointerHandler ancestorPointerHandler = null;
+            while (currentObject != null && ancestorPointerHandler == null)
+            {
+                foreach (var component in currentObject.GetComponents<Component>())
                 {
                     if (component is IMixedRealityPointerHandler)
                     {
-                        ancestorPointerHandler = (IMixedRealityPointerHandler) component;
+                        ancestorPointerHandler = (IMixedRealityPointerHandler)component;
                         break;
                     }
                 }
