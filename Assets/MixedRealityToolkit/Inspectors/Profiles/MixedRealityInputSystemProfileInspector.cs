@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static bool showDataProviders = false;
         private const string ShowInputSystem_DataProviders_PreferenceKey = "ShowInputSystem_DataProviders_PreferenceKey";
-        private SerializedProperty dataProviderConfigurations;
 
         private SerializedProperty focusProviderType;
         private SerializedProperty focusQueryBufferSize;
