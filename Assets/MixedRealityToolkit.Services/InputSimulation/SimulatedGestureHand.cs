@@ -59,7 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             initializedFromProfile = true;
 
-            var gestureProfile = CoreServices.InputSystem?.InputSystemProfile?.GesturesProfile;
+            MixedRealityGesturesProfile gestureProfile = null;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile != null)
+            {
+                gestureProfile = inputSystemProfile.GesturesProfile;
+            }
             if (gestureProfile != null)
             {
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
