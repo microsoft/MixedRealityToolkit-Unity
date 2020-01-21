@@ -15,7 +15,7 @@ using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// Manages Open VR Devices using unity's input system.
+    /// Manages XR SDK devices on the Windows Mixed Reality platform.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),

@@ -3,13 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
 #if WINDOWS_UWP
+using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using UnityEngine.XR.WindowsMR;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
@@ -18,12 +18,11 @@ using Windows.UI.Input.Spatial;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// XR SDK implementation of the Windows Mixed Reality motion controllers.
+    /// XR SDK implementation of Windows Mixed Reality articulated hands.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
-        new[] { Handedness.Left, Handedness.Right },
-        "StandardAssets/Textures/MotionController")]
+        new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityXRSDKArticulatedHand : BaseWindowsMixedRealityXRSDKSource
     {
         /// <summary>

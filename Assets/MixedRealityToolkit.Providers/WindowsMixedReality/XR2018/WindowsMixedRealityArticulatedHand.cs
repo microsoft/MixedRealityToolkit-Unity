@@ -27,7 +27,7 @@ using Microsoft.Windows.UI.Input.Spatial;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
-    /// A Windows Mixed Reality Controller Instance.
+    /// A Windows Mixed Reality articulated hand instance.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,

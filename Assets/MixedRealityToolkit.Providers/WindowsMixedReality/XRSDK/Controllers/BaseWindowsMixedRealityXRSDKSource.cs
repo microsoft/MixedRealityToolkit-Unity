@@ -14,7 +14,7 @@ using Unity.XR.WindowsMR;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// A Windows Mixed Reality Source instance.
+    /// A Windows Mixed Reality source instance.
     /// </summary>
     public abstract class BaseWindowsMixedRealityXRSDKSource : GenericXRSDKController
     {

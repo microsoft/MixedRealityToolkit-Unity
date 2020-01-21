@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// XR SDK implementation of the Windows Mixed Reality motion controllers.
+    /// XR SDK implementation of Windows Mixed Reality motion controllers.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,

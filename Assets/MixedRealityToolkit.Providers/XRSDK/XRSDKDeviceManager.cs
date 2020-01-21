@@ -11,7 +11,7 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 {
     /// <summary>
-    /// Manages Open VR Devices using unity's input system.
+    /// Manages XR SDK devices.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <inheritdoc />
         public virtual bool CheckCapability(MixedRealityCapability capability)
         {
-            // The OpenVR platform supports motion controllers.
+            // The XR SDK platform supports motion controllers.
             return (capability == MixedRealityCapability.MotionController);
         }
 
@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         private bool wasLeftInputDeviceValid = false;
         private bool wasRightInputDeviceValid = false;
 
+        /// <inheritdoc/>
         public override void Update()
         {
             base.Update();
@@ -126,9 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         #region Controller Utilities
 
         /// <summary>
-        /// Gets or adds a controller using the joystick name provided.
+        /// Gets or adds a controller using the InputDevice name provided.
         /// </summary>
-        /// <param name="joystickName">The name of the joystick from Unity's <see href="https://docs.unity3d.com/ScriptReference/Input.GetJoystickNames.html">Input.GetJoystickNames</see></param>
+        /// <param name="inputDevice">The InputDevice from XR SDK.</param>
         /// <returns>The controller reference.</returns>
         protected virtual GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
@@ -188,7 +189,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             return detectedController;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the current controller type for the InputDevice name provided.
+        /// </summary>
+        /// <param name="inputDevice">The InputDevice from XR SDK.</param>
         protected virtual void RemoveController(InputDevice inputDevice)
         {
             GenericXRSDKController controller = GetOrAddController(inputDevice);
@@ -210,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <summary>
         /// Gets the concrete type of the detected controller, based on the <see cref="SupportedControllerType"/> and defined per-platform.
         /// </summary>
-        /// <param name="supportedControllerType">The current controller type from the enum.</param>
+        /// <param name="supportedControllerType">The current controller type.</param>
         /// <returns>The concrete type of the currently detected controller.</returns>
         protected virtual Type GetControllerType(SupportedControllerType supportedControllerType)
         {
@@ -220,14 +224,18 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <summary>
         /// Returns the <see cref="InputSourceType"/> of the currently detected controller, based on the <see cref="SupportedControllerType"/>.
         /// </summary>
-        /// <param name="supportedControllerType">The current controller type from the enum.</param>
+        /// <param name="supportedControllerType">The current controller type.</param>
         /// <returns>The enum value of the currently detected controller's InputSource type.</returns>
         protected virtual InputSourceType GetInputSourceType(SupportedControllerType supportedControllerType)
         {
             return InputSourceType.Controller;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the current controller type for the InputDevice name provided.
+        /// </summary>
+        /// <param name="inputDevice">The InputDevice from XR SDK.</param>
+        /// <returns>The supported controller type.</returns>
         protected virtual SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
             Debug.Log($"{inputDevice.name} does not have a defined controller type, falling back to generic controller type");
