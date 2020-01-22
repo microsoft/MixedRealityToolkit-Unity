@@ -29,7 +29,7 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ### Optional
 
-* [Getting started tutorials](#get-the-latest-mrtk-unity-packages)
+* [Getting started tutorials](#getting-started-tutorials)
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
