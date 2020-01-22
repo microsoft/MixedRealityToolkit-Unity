@@ -227,7 +227,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     HandPose handPose = sourceState.TryGetHandPose();
 
 #if WINDOWS_UWP
-                    if (CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+                    MixedRealityHandTrackingProfile handTrackingProfile = null;
+                    MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+                    if (inputSystemProfile != null)
+                    {
+                        handTrackingProfile = inputSystemProfile.HandTrackingProfile;
+                    }
+
+                    if (handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)

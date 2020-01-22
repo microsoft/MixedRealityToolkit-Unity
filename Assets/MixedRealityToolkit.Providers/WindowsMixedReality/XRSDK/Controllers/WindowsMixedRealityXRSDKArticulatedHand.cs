@@ -158,7 +158,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
 
 #if WINDOWS_UWP
-            if (!CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+            MixedRealityHandTrackingProfile handTrackingProfile = null;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile != null)
+            {
+                handTrackingProfile = inputSystemProfile.HandTrackingProfile;
+            }
+
+            if (handTrackingProfile == null || !handTrackingProfile.EnableHandMeshVisualization)
             {
                 // if hand mesh visualization is disabled make sure to destroy our hand mesh observer if it has already been created
                 if (handMeshObserver != null)
