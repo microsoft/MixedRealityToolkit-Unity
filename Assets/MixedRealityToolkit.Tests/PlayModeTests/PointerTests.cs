@@ -103,27 +103,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestPointerFieldOfViewHelper(IMixedRealityPointer myPointer, GameObject cube, TestHand testHand)
         {
-            yield return testHand.Show(Vector3.zero);
-            cube.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            cube.transform.localScale = Vector3.one;
-
-            // Test case where pointer is inside of giant object
-            yield return testHand.MoveTo(cube.transform.position);
-            Assert.IsNotNull(myPointer);
-            Assert.IsTrue(myPointer.IsInteractionEnabled, "Pointer should be enabled because it is inside giant cube.");
-
+            cube.transform.SetPositionAndRotation(Vector3.forward * 1f, Quaternion.identity);
             cube.transform.localScale = Vector3.one * 0.1f;
-            // Move cube in front of camera so it is visible
-            cube.transform.Translate(Vector3.forward * 1f);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled. Cube size {cube.transform.localScale} location {cube.transform.position}.");
+            Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled, cube in front camera. Cube size {cube.transform.localScale} location {cube.transform.position}.");
 
             // Make cube no longer visible
             cube.transform.Translate(Vector3.up * 10);
             yield return testHand.MoveTo(cube.transform.position);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-            Assert.IsFalse(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should NOT be enabled, cube not in FOV. Cube size {cube.transform.localScale} location {cube.transform.position}.");
+            Assert.IsFalse(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should NOT be enabled, cube behind camera. Cube size {cube.transform.localScale} location {cube.transform.position}.");
 
             // For sphere and poke pointers, test that setting IgnoreCollidersNotInFOV works
             if (myPointer is SpherePointer spherePointer)
@@ -171,6 +161,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return TestPointerFieldOfViewHelper(pokePointer, cube, rightHand);
 
             rightHand.Hide();
+            GameObject.Destroy(cube);
+        }
+
+        
+        /// <summary>
+        /// Tests that sphere pointer grabs object when hand is inside a giant grabbable
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSpherePointerInsideGrabbable()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionGrabbable>();
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            var spherePointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
+            Assert.IsNotNull(spherePointer, "Right hand does not have a sphere pointer");
+            Assert.IsTrue(spherePointer.IsInteractionEnabled, "Sphere pointer should be enabled because it is near grabbable cube and visible, even if inside a giant cube.");
             GameObject.Destroy(cube);
         }
 
