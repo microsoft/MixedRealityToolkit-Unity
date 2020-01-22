@@ -122,9 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     case AxisType.SixDof:
                         UpdatePoseData(Interactions[i], inputDevice);
                         break;
-                    default:
-                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");
-                        break;
                 }
             }
         }

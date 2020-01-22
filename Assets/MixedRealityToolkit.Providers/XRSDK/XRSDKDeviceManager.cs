@@ -53,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
             if (XRSDKSubsystemHelpers.InputSubsystem == null || !XRSDKSubsystemHelpers.InputSubsystem.running)
             {
-                Debug.Log($"Input system null {XRSDKSubsystemHelpers.InputSubsystem == null}");
                 return;
             }
 
@@ -155,8 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             {
                 controllingHand = Handedness.None;
             }
-
-            Debug.Log(controllingHand + " | " + inputDevice.manufacturer + " | " + inputDevice.serialNumber);
 
             var currentControllerType = GetCurrentControllerType(inputDevice);
             Type controllerType = GetControllerType(currentControllerType);

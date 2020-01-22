@@ -125,8 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(InputDevice inputDevice)
         {
-            Debug.Log(inputDevice.name);
-
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
             {
                 return SupportedControllerType.ArticulatedHand;
@@ -136,8 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 return SupportedControllerType.WindowsMixedReality;
             }
-
-            Debug.Log($"{inputDevice.name} does not have a defined controller type, falling back to generic controller type");
 
             return base.GetCurrentControllerType(inputDevice);
         }
