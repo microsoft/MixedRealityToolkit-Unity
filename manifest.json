@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.html",
-          "hash": "zAxZrDbU9/p2kFwyZp5Z5w=="
+          "hash": "zVjbdUI8taKS1TEHCIuSSg=="
         }
       },
       "is_incremental": false,
@@ -666,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/ExperimentalFeatures.html",
-          "hash": "IJ8DsklvLlLAPVfaPuEF2A=="
+          "hash": "on0gSw0M/xyJiz430HzhMg=="
         }
       },
       "is_incremental": false,
@@ -942,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "2NiBCIzKim7k4ItBNXi45w=="
+          "hash": "GixsqjDsL33sUWi+ZeqCww=="
         }
       },
       "is_incremental": false,
@@ -7083,7 +7083,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "gT5FY7zIhoulL1RlfuOBmQ=="
+          "hash": "8W2Wl3rekaD9FKXt92RsUw=="
         }
       },
       "is_incremental": false,
@@ -25330,6 +25330,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsExtensions.html",
+          "hash": "6dLDXcGv/AQLUt0o31YBMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings.yml",
       "output": {
         ".html": {
@@ -25382,7 +25394,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityUtilitiesProvider.html",
-          "hash": "99zSEci+AjkGIgZdnJTsYw=="
+          "hash": "zTYWov3/v6gLBLk4z5n/aA=="
         }
       },
       "is_incremental": false,
@@ -25394,7 +25406,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.html",
-          "hash": "Lre5Wt86E+1NWFDswtmzMg=="
+          "hash": "zKbYVjcxQqJq7srSalp9sA=="
         }
       },
       "is_incremental": false,
@@ -25406,7 +25418,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.GenericXRSDKCameraSettings.html",
-          "hash": "1xNVwglG3IRa6m9y209Wtw=="
+          "hash": "KyI7GdfOt++qjYMwkQ6I/g=="
         }
       },
       "is_incremental": false,
@@ -25450,11 +25462,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.XRSDKWindowsMixedRealityUtilitiesProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.XRSDKWindowsMixedRealityUtilitiesProvider.html",
+          "hash": "9EjzZkNYD18nZ0STzodc7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.html",
-          "hash": "BJmA2GHSB0KpwZfBEGp9Ng=="
+          "hash": "UaEHUdsZCAg60zEPz1creg=="
         }
       },
       "is_incremental": false,
@@ -25514,7 +25538,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4Pt2uIxGFe/woMg73Xlxaw=="
+          "hash": "OyBYFA9rQ6TZoa/C8bQCCg=="
         }
       },
       "is_incremental": false,
@@ -25566,20 +25590,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -25589,7 +25599,21 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1532,
+          "total_file_count": 1534,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

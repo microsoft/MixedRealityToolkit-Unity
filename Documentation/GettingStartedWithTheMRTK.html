@@ -107,7 +107,7 @@ when building for OpenVR.</p>
 </ol>
 <h3 id="optional">Optional</h3>
 <ul>
-<li><a href="#get-the-latest-mrtk-unity-packages">Getting started tutorials</a></li>
+<li><a href="#getting-started-tutorials">Getting started tutorials</a></li>
 <li><a href="#learn-about-the-core-building-blocks-of-mrtk">Learn about the core building blocks of MRTK</a></li>
 <li><a href="#run-the-handinteractionexamples-scene-in-the-unity-editor">Run the HandInteractionExamples scene in the Unity Editor</a></li>
 </ul>
@@ -173,8 +173,11 @@ when building for OpenVR.</p>
 Profiles configure the behavior of MRTK core components and are described in more detail in the <a href="Profiles/Profiles.html">profiles</a> article.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>If you are getting started on the HoloLens or HoloLens 2, you should choose the &quot;DefaultHoloLens1ConfigurationProfile&quot; or DefaultHoloLens2ConfigurationProfile&quot; instead.
-See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</p>
+<ul>
+<li>If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the &quot;DefaultXRSDKConfigurationProfile&quot;. This profile is set up with MRTK's XR SDK systems and providers, where needed.</li>
+<li>If you're getting started on the HoloLens or HoloLens 2, you should choose the &quot;DefaultHoloLens1ConfigurationProfile&quot; or DefaultHoloLens2ConfigurationProfile&quot; instead.</li>
+<li>See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</li>
+</ul>
 </div>
 <p>You will then see the following in your Scene hierarchy:</p>
 <p><img src="Images/MRTK_SceneSetup.png" alt="MRTK Scene Setup"></p>
@@ -246,6 +249,23 @@ See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for mor
 </ul>
 <h2 id="upgrading-from-the-holotoolkit-htkmrtk-v1">Upgrading from the HoloToolkit (HTK/MRTK v1)</h2>
 <p>There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the <a href="HTKToMRTKPortingGuide.html">HoloToolkit to Mixed Reality Toolkit Porting Guide</a></p>
+<h2 id="getting-started-with-unitys-xr-sdk">Getting started with Unity's XR SDK</h2>
+<p>If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the &quot;DefaultXRSDKConfigurationProfile&quot; as your active profile. This profile is set up with MRTK's XR SDK systems and providers, where needed.
+Then, follow these steps to set up support in Unity:</p>
+<ol>
+<li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following are all installed:
+<ol>
+<li>XR Management</li>
+<li>Windows XR Plugin</li>
+<li>XR Legacy Input Helpers</li>
+</ol>
+</li>
+<li>Go to Edit &gt; Project Settings.</li>
+<li>Click on the XR Plugin Management tab in the Project Settings window.</li>
+<li>Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.</li>
+<li>Ensure that Initialize on Startup is checked.</li>
+<li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.</li>
+</ol>
 </article>
           </div>
           
