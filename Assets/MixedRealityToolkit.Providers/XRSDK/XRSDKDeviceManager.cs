@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         }
 
         /// <summary>
-        /// Gets the concrete type of the detected controller, based on the <see cref="SupportedControllerType"/> and defined per-platform.
+        /// Gets the concrete type of the detected controller, based on the <see cref="Toolkit.Input.SupportedControllerType"/> and defined per-platform.
         /// </summary>
         /// <param name="supportedControllerType">The current controller type.</param>
         /// <returns>The concrete type of the currently detected controller.</returns>
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         }
 
         /// <summary>
-        /// Returns the <see cref="InputSourceType"/> of the currently detected controller, based on the <see cref="SupportedControllerType"/>.
+        /// Returns the <see cref="Toolkit.Input.InputSourceType"/> of the currently detected controller, based on the <see cref="Toolkit.Input.SupportedControllerType"/>.
         /// </summary>
         /// <param name="supportedControllerType">The current controller type.</param>
         /// <returns>The enum value of the currently detected controller's InputSource type.</returns>
