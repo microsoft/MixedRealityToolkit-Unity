@@ -47,6 +47,8 @@ function createDropdown()
 	versionDropDiv.appendChild(btn);
 	versionDropDiv.appendChild(innerDiv);
 	
+	return;
+	
 	var isDefaultInVersionFolder = false;
 	// create version entries
 	for (i = 0; i<versionArray.length; i++)
