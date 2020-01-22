@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,23 +17,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private GUIStyle labelStyle;
         private Vector2 scrollPos;
 
+        [Serializable]
+        private class ToolboxItemCollection
+        {
+            [SerializeField]
+            public ToolboxItem[] Items = null;
+        }
+
+        [Serializable]
         private class ToolboxItem
         {
-            public string Name;
-            public string RelativeAssetPath;
+            public string Name = string.Empty;
+
+            public string RelativeAssetPath = string.Empty;
+
             public MixedRealityToolkitModuleType AssetModule = MixedRealityToolkitModuleType.Core;
 
             public string AssetPath =>
                 MixedRealityToolkitFiles.MapRelativeFilePath(AssetModule, RelativeAssetPath);
 
             public MixedRealityToolkitModuleType IconModule = MixedRealityToolkitModuleType.Core;
-            public string RelativeIconPath;
+
+            public string RelativeIconPath = string.Empty;
+
             public string IconPath 
                 => MixedRealityToolkitFiles.MapRelativeFilePath(IconModule, RelativeIconPath);
 
-            public string DocURL;
+            public string DocURL = string.Empty;
 
             public GameObject Prefab { get; protected set; }
+
             public Texture Icon { get; protected set; }
 
             public void Init()
@@ -40,50 +56,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        //IndeterminateLoader 
-        //ProgressIndicatorRotatingOrbs 
-        //ProgressIndicatorLoadingBar 
-        //ProgressIndicatorRotatingObject
-        
-        private ToolboxItem[] ToolboxPrefabs =
+        private const string RelativeJSONDataPath = @"Inspectors\Data\DefaultToolboxItems.json";
+        private string JSONDataPath => MixedRealityToolkitFiles.MapRelativeFilePath(RelativeJSONDataPath);
+
+        private ToolboxItemCollection toolBoxCollection;
+        private ToolboxItem[] ToolboxPrefabs
         {
-            new ToolboxItem()
+            get
             {
-                Name = "PressableButton HoloLens2",
-                AssetModule = MixedRealityToolkitModuleType.SDK,
-                RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
-                IconModule = MixedRealityToolkitModuleType.SDK,
-                RelativeIconPath = @"StandardAssets\Textures\IconRefresh.png",
-                DocURL = "www.google.com",
-            },
+                if (toolBoxCollection == null)
+                {
+                    Debug.Log("TEST");
+                    toolBoxCollection = JsonUtility.FromJson<ToolboxItemCollection>(File.ReadAllText(JSONDataPath));
 
-            new ToolboxItem()
-            {
-                Name = "Progress Indicator LoadingBar",
-                AssetModule = MixedRealityToolkitModuleType.SDK,
-                RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
-                IconModule = MixedRealityToolkitModuleType.Core,
-                RelativeIconPath = @"progress-bar.gif",
-            },
+                    foreach (var item in toolBoxCollection.Items)
+                    {
+                        item.Init();
+                    }
+                }
 
-            new ToolboxItem()
-            {
-                Name = "PressableButton HoloLens2",
-                AssetModule = MixedRealityToolkitModuleType.SDK,
-                RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
-                IconModule = MixedRealityToolkitModuleType.SDK,
-                RelativeIconPath = @"StandardAssets\Textures\IconRefresh.png",
-            },
+                return toolBoxCollection.Items;
+            }
 
-            new ToolboxItem()
-            {
-                Name = "PressableButton HoloLens2",
-                AssetModule = MixedRealityToolkitModuleType.SDK,
-                RelativeAssetPath = @"Features\UX\Interactable\Prefabs\PressableButtonHoloLens2.prefab",
-                IconModule = MixedRealityToolkitModuleType.SDK,
-                RelativeIconPath = @"StandardAssets\Textures\IconRefresh.png",
-            },
-        };
+        }
 
         [MenuItem("Mixed Reality Toolkit/Toolbox Window", false, 3)]
         private static void ShowWindow()
@@ -93,18 +88,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             window.Show();
         }
 
-        private void OnEnable()
-        {
-            foreach (var item in ToolboxPrefabs)
-            {
-                item.Init();
-            }
-        }
-
         private void OnGUI()
         {
             labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.wordWrap = true;
+            //labelStyle.wordWrap = true;
             labelStyle.alignment = TextAnchor.MiddleCenter;
 
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
@@ -130,10 +117,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     scrollPos = scrollView.scrollPosition;
 
                     // bucket categories?
-                    // TODO: Download SDK path? or other module*
                     // TODO: Search bar*
 
-                    int itemsPerRow = (int)(position.width / 128.0f);
+                    /*
+                    foreach (var item in ToolboxPrefabs)
+                    {
+                        RenderToolboxItem(item);
+                    }
+                    */
+                    
+                    int itemsPerRow = (int)(position.width / 250f);
 
                     // Render grid of toolbox items
                     for (int row = 0; row < ToolboxPrefabs.Length / itemsPerRow; row++)
@@ -153,6 +146,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void RenderToolboxItem(ToolboxItem item)
         {
+            if (item == null || item.Prefab == null)
+            {
+                // TODO: Download SDK path? or other module*
+                return;
+            }
+
+            var buttonContent = new GUIContent()
+            {
+                image = item.Icon,
+                text = item.Name,
+                //tooltip = docURL,
+            };
+
+            using (new EditorGUILayout.VerticalScope())
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    // The documentation button should always be enabled.
+                    using (new EditorGUI.DisabledGroupScope(false))
+                    {
+                        if (GUILayout.Button(buttonContent, GUILayout.MaxHeight(64f), GUILayout.Width(250f)))
+                        {
+                            Selection.activeObject = Instantiate(item.Prefab);
+                        }
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    if (!string.IsNullOrEmpty(item.DocURL))
+                    {
+                        InspectorUIUtility.RenderDocumentationButton(item.DocURL);
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+            }
+
+            /*
             using (new EditorGUILayout.VerticalScope())
             {
                 using (new EditorGUILayout.HorizontalScope())
@@ -177,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     InspectorUIUtility.RenderDocumentationButton(item.DocURL);
                 }
-            }
+            }*/
         }
     }
 }

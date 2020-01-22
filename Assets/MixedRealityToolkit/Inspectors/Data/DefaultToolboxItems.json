@@ -1,0 +1,92 @@
+{
+  "Items": [
+    {
+      "Name": "HoloLens2 Button",
+      "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+    },
+    {
+      "Name": "Slate",
+      "RelativeAssetPath": "Features/UX/Prefabs/Slate/Slate.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Slate.html"
+    },
+    {
+      "Name": "Slider",
+      "RelativeAssetPath": "Features/UX/Prefabs/Sliders/PinchSlider.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html"
+    },
+    {
+      "Name": "AppBar",
+      "RelativeAssetPath": "Features/UX/Prefabs/AppBar/AppBar.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_AppBar.html"
+    },
+    {
+      "Name": "Bezier Tooltip",
+      "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Bezier ToolTip.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
+    },
+    {
+      "Name": "Simple Line Tooltip",
+      "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Simple Line ToolTip.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
+    },
+    {
+      "Name": "Spline Tooltip",
+      "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Spline ToolTip.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
+    },
+    {
+      "Name": "Progress Indicator Loading Bar",
+      "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab",
+      "AssetModule": 5,
+      "IconModule": 1,
+      "RelativeIconPath": "progress-bar.gif",
+      "DocURL": ""
+    },
+    {
+      "Name": "Indeterminate Progress Indicator",
+      "RelativeAssetPath": "Features/UX/Prefabs/Loader/IndeterminateLoader.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": ""
+    },
+    {
+      "Name": "Progress Indicator Rotating Orbs",
+      "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": ""
+    },
+    {
+      "Name": "Progress Indicator Rotating Object",
+      "RelativeAssetPath": "Features/UX/Materials/ProgressIndicatorRotatingObject.mat",
+      "AssetModule": 5,
+      "IconModule": 5,
+      "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+      "DocURL": ""
+    }
+  ]
+}
