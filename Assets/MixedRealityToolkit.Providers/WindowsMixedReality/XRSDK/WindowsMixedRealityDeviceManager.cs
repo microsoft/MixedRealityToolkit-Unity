@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(WindowsMixedRealityXRSDKArticulatedHand);
                 default:
-                    return null;
+                    return base.GetControllerType(supportedControllerType);
             }
         }
 
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case SupportedControllerType.ArticulatedHand:
                     return InputSourceType.Hand;
                 default:
-                    return InputSourceType.Other;
+                    return base.GetInputSourceType(supportedControllerType);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
             Debug.Log($"{inputDevice.name} does not have a defined controller type, falling back to generic controller type");
 
-            return SupportedControllerType.GenericUnity;
+            return base.GetCurrentControllerType(inputDevice);
         }
 
         #endregion Controller Utilities
