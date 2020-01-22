@@ -3,11 +3,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
