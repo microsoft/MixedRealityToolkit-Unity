@@ -1,5 +1,5 @@
 <Project>
-
+  <!-- Check if MSBuildForUnity is being used to resolve, by checking if it's version is present or not -->
   <PropertyGroup Condition="'$(MSBuildForUnityVersion)' == ''">
     <!-- If $(UnityPlayer) is not set, default to Standalone. -->
     <MRTKUnityPlayer Condition=" '$(MRTKUnityPlayer)' == '' ">Standalone</MRTKUnityPlayer>
