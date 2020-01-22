@@ -24,8 +24,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
     /// <summary>
-    /// TODO: This test still needs to be adjusted 
-    /// Currently it's just a copy of whatever was tested in Bounding Box
+    /// Tests for runtime behavior of bounds control
     /// </summary>
     public class BoundsControlTests
     {
