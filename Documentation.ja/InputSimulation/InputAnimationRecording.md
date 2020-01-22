@@ -12,11 +12,11 @@ Recording input is a useful tool in a variety of situations:
   The recording system supports a "rolling buffer" concept that allows recording recent input in the background.
   See [Input Recording Service](#input-recording-service).
 
-# Recording and Playback services
+## Recording and Playback services
 
 Two input system services are provided to record and play back input respectively.
 
-## Input Recording Service
+### Input Recording Service
 
 [`InputRecordingService`](xref:Microsoft.MixedReality.Toolkit.Input.InputRecordingService) takes data from the main camera transform and active hand controllers and stores it in an internal buffer. When requested this data is then serialized into binary files for storage and later replay.
 
@@ -32,7 +32,7 @@ The data in the recording buffer can be saved in a binary file using the [SaveIn
 
 For details on the binary file format see [Input Animation File Format Specification](InputAnimationFileFormat.md).
 
-## Input Playback Service
+### Input Playback Service
 
 [`InputPlaybackService`](xref:Microsoft.MixedReality.Toolkit.Input.InputPlaybackService) reads a binary file with input animation data and then applies this data through the [InputSimulationService](xref:Microsoft.MixedReality.Toolkit.Input.InputSimulationService) to recreate the recorded movements.
 
@@ -49,7 +49,7 @@ The current animation time can also be controlled directly with the [LocalTime](
 > [!WARNING]
 > Looping or resetting input animation or setting [`LocalTime`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.LocalTime) directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.
 
-## Editor tools for recording and playing input animation
+### Editor tools for recording and playing input animation
 
 A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the [input simulation tools window](InputSimulationService.md#input-simulation-tools-window), which can be opened from the _Mixed Reality Toolkit > Utilities > Input Simulation_ menu.
 
@@ -71,9 +71,9 @@ The input recording window has two modes:
 
   The time control buttons from left to right are:
 
-    - _Reset_ the playback time to the start of the animation.
-    - _Play_ animation continuously over time.
-    - _Step_ forward one time step.
+  - _Reset_ the playback time to the start of the animation.
+  - _Play_ animation continuously over time.
+  - _Step_ forward one time step.
 
   The slider can also be used to scrub through the animation timeline.
 

@@ -1,23 +1,31 @@
 # Scene Transition Service
+
 This extension simplifies the business of fading out a scene, displaying a progress indicator, loading a scene, then fading back in.
 
 Scene operations are driven by the SceneSystem service, but any Task-based operation can be used to drive a transition.
 
 ## Enabling the extension
+
 To enable the extension, open your RegisteredServiceProvider profile. Click Register a new Service Provider to add a new configuration. In the Component Type field, select SceneTransitionService. In the Configuration Profile field, select the default scene transition profile included with the extension.
 
 ## Profile Options
+
 ### Use Default Progress Indicator
+
 If checked, the default progress indicator prefab will be used when no progress indicator object is provided when calling `DoSceneTransition.` If a progress indicator object is provided, the default will be ignored.
 
 ### Use Fade Color
+
 If checked, the transition service will apply a fade during your transition. This setting can be changed at runtime via the service's `UseFadeColor` property.
 
 ### Fade Color
-Controls the color of the fade effect. Alpha is ingored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
+
+Controls the color of the fade effect. Alpha is ignored. This setting can be changed at runtime prior to a transition via the service's `FadeColor` property.
 
 ### Fade Targets
+
 Controls which cameras will have a fade effect applied to them. This setting can be changed at runtime via the service's `FadeTargets` property.
+
 Setting | Targeted Cameras
 --- | --- | ---
 Main | Applies fade effect to the main camera.
@@ -26,16 +34,18 @@ All | Applies to both main and UI cameras.
 Custom | Applies to a custom set of cameras provided via `SetCustomFadeTargetCameras`
 
 ### Fade Out Time / Fade In Time
+
 Default settings for the duration of a fade on entering / exiting a transition. These settings can be changed at runtime via the service's `FadeOutTime` and `FadeInTime` properties.
 
 ### Camera Fader Type
+
 Which `ICameraFader` class to use for applying a fade effect to cameras. The default `CameraFaderQuad` class instantiates a quad with a transparent material in front of the target camera close to the clip plane. Another approach might be to use a post effects system.
 
-# Using the Extension
+## Using the Extension
 
 You use the transition service by passing Tasks that are run while the camera is faded out.
 
-## Using Scene System Tasks
+### Using Scene System Tasks
 
 In most cases you will be using Tasks supplied by the SceneSystem service:
 
@@ -54,7 +64,8 @@ private async void TransitionToScene()
 }
 ```
 
-## Using Custom Tasks
+### Using Custom Tasks
+
 In other cases you may want to perform a transition without actually loading a scene:
 
 ```csharp
@@ -70,13 +81,14 @@ private async void TransitionToScene()
         );
 }
 
-private async Task ResetScene() 
+private async Task ResetScene()
 {
-    // Go through all enemies in the current scene and move them back to starting positions   
+    // Go through all enemies in the current scene and move them back to starting positions
 }
 ```
 
 Or you may want to load a scene without using the SceneSystem service:
+
 ```csharp
 private async void TransitionToScene()
 {
@@ -100,8 +112,10 @@ private async Task LoadScene(string sceneName)
 }
 ```
 
-## Using Multiple Tasks
+### Using Multiple Tasks
+
 You can also supply multiple tasks, which will be executed in order:
+
 ```csharp
 private async void TransitionToScene()
 {

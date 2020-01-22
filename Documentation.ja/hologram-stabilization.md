@@ -6,7 +6,7 @@
 
 ## 環境トラッキング
 
-安定したホログラフィック レンダリングは、プラットフォームとデバイスによるヘッドポーズ トラッキングに大きく依存します。Unity は、基礎となるプラットフォームによって推定および提供されるカメラ ポーズから、シーンをフレームごとにレンダリングします。このトラッキングが実際のヘッドの動きに正確に追従しない場合、ホログラムは視覚的に不正確に見えます。HoloLens のような AR デバイスでは、ユーザーがバーチャル ホログラムを現実世界に関連付けることができるため、これは特に明白で重要です。パフォーマンスは信頼性の高いヘッド トラッキングに重要ですが、[そのほかにも重要な特徴](https://docs.microsoft.com/ja-jp/hololens/hololens-environment-considerations) があります。ユーザ エクスペリエンスに影響を与える環境要素のタイプは、対象となるプラットフォームの仕様によって異なります。
+安定したホログラフィック レンダリングは、プラットフォームとデバイスによるヘッドポーズ トラッキングに大きく依存します。Unity は、基礎となるプラットフォームによって推定および提供されるカメラ ポーズから、シーンをフレームごとにレンダリングします。このトラッキングが実際のヘッドの動きに正確に追従しない場合、ホログラムは視覚的に不正確に見えます。HoloLens のような AR デバイスでは、ユーザーがバーチャル ホログラムを現実世界に関連付けることができるため、これは特に明白で重要です。パフォーマンスは信頼性の高いヘッド トラッキングに重要ですが、[そのほかにも重要な特徴](https://docs.microsoft.com/ja-jp/windows/mixed-reality/environment-considerations-for-hololens) があります。ユーザ エクスペリエンスに影響を与える環境要素のタイプは、対象となるプラットフォームの仕様によって異なります。
 
 ## Windows Mixed Reality
 
@@ -36,6 +36,9 @@ Windows Mixed Reality デバイス上で動作するデバイス エンドポイ
 
 HoloLens を開発のターゲットとする場合は、24 ビットよりも 16 ビット デプス バッファー フォーマットを使用することを強くお勧めします。これにより、デプス値の精度は低くなりますが、パフォーマンスが大幅に向上します。精度の低さを補い [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) を回避するには、[far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) の値を Unity で設定されているデフォルト値の 1000m から減らすことをお勧めします。 
 
+> [!NOTE]
+> もし *16-bit depth format* を使う場合、[Unity はステンシル バッファーを作成しない](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html)ため、ステンシル バッファーが必要なエフェクトは動作しません。逆に、*24-bit depth format* を選択した場合、グラフィックのプラットフォームで適用できる場合は、一般的に [8 ビットのステンシル バッファー](https://docs.unity3d.com/Manual/SL-Stencil.html)が作成されます。
+
 #### Unity での Depth Buffer Sharing (デプス バッファー シェアリング)
 
 デプス ベースの LSR を利用するために、開発者が取る必要のある2つの重要なステップがあります。
@@ -45,6 +48,9 @@ HoloLens を開発のターゲットとする場合は、24 ビットよりも 1
 1. 画面上でカラーをレンダリングする場合は、デプスも同様にレンダリングします。
 
 一般に、Unity の [Opaque GameObjects](https://docs.unity3d.com/Manual/StandardShaderMaterialParameterRenderingMode.html) は、デプスに自動的に書き込みます。ただし、透明およびテキスト オブジェクトは、通常、デフォルトではデプスに書き込みません。MRTK Standard Shader、または、Text Mesh Pro を使用している場合は、簡単に修正できます。
+
+> [!NOTE]
+> シーン内のどのオブジェクトがデプス バッファーに書き込まないのかを視覚的に素早く決定するには、MRTK Configuration プロファイルの *Editor Settings* 以下にある [*Render Depth Buffer* ユーティリティ](MixedRealityConfigurationGuide.md#editor-utilities)を利用できます。
 
 ##### Transparent MRTK Standard Shader
 

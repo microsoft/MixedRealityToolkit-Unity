@@ -2,16 +2,17 @@
 
 Mixed Reality Toolkit 診断システムは、アプリケーションの問題の分析を可能にするツールです。
 
-診断システムの最初のリリースには、アプリケーションの使用中にパフォーマンスの問題を分析するためのビジュアル プロファイラー (Visual Profiler) が含まれています。
+診断システムの最初のリリースには、アプリケーションの使用中にパフォーマンスの問題を分析するための[ビジュアル プロファイラー (Visual Profiler)](UsingVisualProfiler.md) が含まれています。
 
 ## はじめに
 
 > [!IMPORTANT]
 > 診断システムは、製品開発サイクル全体を通じて有効にし、最終バージョンをビルドしてリリースする前の最後の変更として無効にすることを **_強く_** お勧めします。
 
+診断システムを使い始めるには、2つのキー ステップがあります。
+
 1. [診断を有効にする](#診断を有効にする)
 2. [診断のオプションを設定する](#診断のオプションを設定する)
-3. [ビルドとデプロイ](#ビルドとデプロイ)
 
 ### 診断を有効にする
 
@@ -21,18 +22,18 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 1. シーンの \[Hierarchy](ヒエラルキー) ウィンドウで MixedRealityToolkit オブジェクトを選択します。
 
-![シーン ヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+    ![シーン ヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. \[Inspector](インスペクター) ウィンドウで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
+1. \[Inspector](インスペクター) ウィンドウで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
 
-![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
+    ![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
 
-3. 診断システムの実行を選択する
+1. 診断システムの実行を選択する
 
-![診断システムの実装を選択する](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
+    ![診断システムの実装を選択する](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
 > [!NOTE]
-> デフォルトのプロファイル (DefaultMixedRealityToolkitConfigurationProfiel) を使うユーザーは、事前に設定された診断システム MixedRealityDiagnosticsSystem オブジェクトを使用します。
+> デフォルトのプロファイル [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) を使うユーザーは、[`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) オブジェクトを使う事前に設定された診断システムを持ちます。
 
 ### 診断のオプションを設定する
 
@@ -40,13 +41,9 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 ![診断の設定オプション](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png)
 
-### ビルドとデプロイ
-
-診断システムが望ましいオプションで設定されていれば、プロジェクトをターゲット プラットフォームにビルド、デプロイできます。
-
-> [!NOTE]
+> [!IMPORTANT]
 > アプリケーションを開発する際、ビルドとデプロイの手順が不要な Unity の Play モードを利用することも可能ですが、ターゲット ハードウェアとプラットフォーム上で実行されているコンパイル済みアプリケーションを使用して診断システムの結果を評価することが重要です。
-> ビジュアル プロファイラー (Visual Profiler) などのパフォーマンス診断では、エディター内から実行されたときに実際のアプリケーション のパフォーマンスが正確に反映されない場合があります。
+> [ビジュアル プロファイラー (Visual Profiler)](UsingVisualProfiler.md) などのパフォーマンス診断では、エディター内から実行されたときに実際のアプリケーション のパフォーマンスが正確に反映されない場合があります。
 
 ## 関連項目
 

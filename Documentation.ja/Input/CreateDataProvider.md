@@ -29,7 +29,7 @@ For example, an input data provider created by the Contoso company may be "Conto
 
 ### Recommended folder structure
 
-It is recommended that the source code for data providers be layed out in a folder heirarchy as shown in the following image.
+It is recommended that the source code for data providers be layed out in a folder hierarchy as shown in the following image.
 
 ![Example folder structure](../../Documentation/Images/Input/ExampleProviderFolderStructure.png)
 
@@ -44,7 +44,7 @@ contains images of the supported controllers, and Profiles contains one or more 
 ### Specify interface and/or base class inheritance
 
 All input system data providers must implement the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
-interface, which specifies the minimium functionality required by the input system. The MRTK foundation includes the [`BaseInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
+interface, which specifies the minimum functionality required by the input system. The MRTK foundation includes the [`BaseInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
 class which provides a default implementation of this required functionality. For devices that build upon Unity's UInput class, the [`UnityJoystickManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager)
 class can be used as a base class.
 
@@ -52,8 +52,8 @@ class can be used as a base class.
 > The `BaseInputDeviceManager` and `UnityJoystickManager` classes provide the required `IMixedRealityInputDeviceManager` implementation.
 
 ``` c#
-public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 ```
@@ -71,8 +71,8 @@ attribute to the class. This step enables setting the default profile and platfo
     typeof(IMixedRealityInputSystem),
     SupportedPlatforms.WindowsUniversal,
     "Windows Mixed Reality Device Manager")]
-public class WindowsMixedRealityDeviceManager : 
-    BaseInputDeviceManager, 
+public class WindowsMixedRealityDeviceManager :
+    BaseInputDeviceManager,
     IMixedRealityCapabilityCheck
 { }
 ```
@@ -83,7 +83,7 @@ Once the class has been defined, the next step is to provide the implementation 
 interface.
 
 > [!Note]
-> The `BaseInputDevicemManager` class, via the `BaseService` class, provides only empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
+> The `BaseInputDeviceManager` class, via the `BaseService` class, provides only empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
 
 The methods that should be implemented by the data provider are:
 
@@ -113,7 +113,7 @@ The next step is to add the logic for managing the input devices, including any 
 
 #### Apply the MixedRealityController attribute
 
-Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute) attribute to the class. This attribute speficies the type of controller
+Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute) attribute to the class. This attribute specifies the type of controller
 (ex: articulated hand), the handedness (ex: left or right) and an optional controller image.
 
 ``` c#
@@ -193,7 +193,7 @@ public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
 { }
 ```
 
-The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the 
+The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the
 **Create > Assets > Mixed Reality Toolkit > Profiles** menu.
 
 ### Implement the inspector

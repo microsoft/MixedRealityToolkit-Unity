@@ -10,6 +10,7 @@ Button (ボタン) を使うと、ユーザは即座にアクションを引き�
 
 ### Unity UI の 画像/グラフィック ベースのボタン
 
+* [`UnityUIInteractableButton.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/UnityUIInteractableButton.prefab)
 * [`PressableButtonUnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUI.prefab)
 * [`PressableButtonUnityUICircular.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUICircular.prefab)
 * [`PressableButtonHoloLens2UnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2UnityUI.prefab)
@@ -33,10 +34,10 @@ Button (ボタン) を使うと、ユーザは即座にアクションを引き�
 
 ### Unity UI ベースのボタン
 
-以下の設定で Canvas を作成します。
-* Render Mode を World Space に設定
-* スケールを 0.001 に
-* CanvasUtility コンポーネントを追加
+シーン上に Canvas を作成します (GameObject -> UI -> Canvas)。Canvas のインスペクター パネルにて以下を行います。
+* "Convert to MRTK Canvas" をクリック
+* "Add NearInteractionTouchableUnityUI" をクリック
+* Rect Transform コンポーネントの X, Y, Z のスケールを 0.001 に設定
 
 その後、[`PressableButtonUnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUI.prefab)、 [`PressableButtonUnityUICircular.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUICircular.prefab)、または [`PressableButtonHoloLens2UnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2UnityUI.prefab) を Canvas にドラッグしてください。
 

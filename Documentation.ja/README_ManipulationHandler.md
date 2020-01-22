@@ -75,6 +75,9 @@
 * *Y-Axis Only (Y軸のみ)*
 * *Z-Axis Only (Z軸のみ)*
 
+**Use Local Space For Constraint**
+Constraint (制約) をワールド座標の軸で適用するか、ローカル座標の軸で適用するかを切り替えるトグル。
+
 **Constraints on Movement**
 * *None*
 * *Fix distance from head (ヘッドからの距離を修正)*

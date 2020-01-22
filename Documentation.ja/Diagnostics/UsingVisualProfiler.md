@@ -1,8 +1,8 @@
 # ビジュアル プロファイラー (Visual Profiler) を使用する
 
-ビジュアル プロファイラー (Visual Profiler) は、Mixed Reality アプリケーションのパフォーマンスを観察できる、便利な機能を提供します。プロファイラーは、以下の Mixed Reality Toolkit プラットフォームでサポートされています：
+ビジュアル プロファイラー (Visual Profiler) は、簡単に使える、Mixed Reality アプリケーションのパフォーマンスをアプリケーション内で表示する機能を提供します。プロファイラーは、以下の Mixed Reality Toolkit プラットフォームでサポートされています：
 
-- Microsoft HoloLens
+- Microsoft HoloLens (第一世代)
 - Microsoft HoloLens 2
 - Windows Mixed Reality 没入型ヘッドセット
 - OpenVR

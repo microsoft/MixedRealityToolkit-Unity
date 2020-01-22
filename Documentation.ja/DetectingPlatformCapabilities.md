@@ -3,17 +3,16 @@
 MRTK についてよくある質問は、アプリケーションを実行するのにどのデバイス
 （例えば Microsoft HoloLens 2) が使われているのかを知る方法に関するものです。
 正確なハードウェアを特定することは、プラットフォームによっては困難です。
-代わりに、MRTK はシステムの特定の機能（例えば、システムが Articulated hand（多関節ハンド）の機能を持っているかどうか）を特定する方法を提供しています。
+代わりに、MRTK は実行時に特定の機能を持つことを確認する方法を提供しています（例えば、現在のデバイスが Articulated hand（多関節ハンド）をサポートしているかどうか）。
 
 ## Capabilities（機能）
 
-Mixed Reality Toolkit は [MixedRealityCapability](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
+Mixed Reality Toolkit は [`MixedRealityCapability`](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
 という列挙型を提供しており、これはアプリケーションがランタイムで問い合わせを行うための機能のセットを定義しています。
-この列挙型は Mixed Reality Toolkit がチェック可能な機能の完全なセットを含んでいます。
 
 ### Input System capabilities（インプットシステムの機能）
 
-インプットシステムは、以下の機能の問い合わせをサポートしています。
+デフォルトの MRTK のインプット システムは、以下の機能の問い合わせをサポートしています。
 
 | 機能 | 説明 |
 |---|---|
@@ -24,20 +23,12 @@ Mixed Reality Toolkit は [MixedRealityCapability](xref:Microsoft.MixedReality.T
 | VoiceCommand | アプリで定義したキーワードを使ったボイス コマンド |
 | VoiceDictation | 音声によるテキスト ディクテーション |
 
-以下の例は、多関節ハンドをサポートしたデータ プロバイダーをインプット システムがロードしたかどうかをチェックしています。
+以下のサンプルコードは、多関節ハンドをサポートしたデータ プロバイダーをインプット システムがロードしたかどうかをチェックしています。
 
 ``` C#
-// input system を取得する
-IMixedRealityInputSystem inputSystem = null;
-MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-if (inputSystem == null)
-{
-    // input system の取得に失敗
-}
-
 bool supportsArticulatedHands = false;
 
-IMixedRealityCapabilityCheck capabilityCheck = inputSystem as IMixedRealityCapabilityCheck;
+IMixedRealityCapabilityCheck capabilityCheck = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
 if (capabilityCheck != null)
 {
     supportsArticulatedHands = capabilityCheck.CheckCapability(MixedRealityCapability.ArticulatedHand);
@@ -46,7 +37,7 @@ if (capabilityCheck != null)
 
 ### Spatial Awareness capabilities（空間認識の機能）
 
-空間認識システムは、以下の機能の問い合わせをサポートしています。
+デフォルトの MRTK の空間認識システムは、以下の機能の問い合わせをサポートしています。
 
 | 機能 | 説明 |
 |---|---|
@@ -57,17 +48,9 @@ if (capabilityCheck != null)
 以下の例は、空間メッシュをサポートしたデータ プロバイダーを空間認識システムがロードしたかどうかをチェックしています。
 
 ``` C#
-// spatial awareness system を取得する
-IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
-if (spatialAwarenessSystem == null)
-{
-    // spatial awareness system の取得に失敗
-}
-
 bool supportsSpatialMesh = false;
 
-IMixedRealityCapabilityCheck capabilityCheck = spatialAwarenessSystem as IMixedRealityCapabilityCheck;
+IMixedRealityCapabilityCheck capabilityCheck = CoreServices.SpatialAwarenessSystem as IMixedRealityCapabilityCheck;
 if (capabilityCheck != null)
 {
     supportsSpatialMesh = capabilityCheck.CheckCapability(MixedRealityCapability.SpatialAwarenessMesh);

@@ -1,4 +1,4 @@
-# System keyboard (システム キーボード) #
+# System keyboard (システム キーボード)
 
 ![System keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)
 
@@ -36,4 +36,4 @@ Unity アプリケーションならば、いつでもシステム キーボー�
 ```
 
 ## System keyboard (システム キーボード) のサンプル ##
-システム キーボードを表示する簡単な例は、[`OpenKeyboard.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Script/OpenKeyboard.cs) にて見ることができます。
+システム キーボードを表示する簡単な例は、[`MixedRealityKeyboard.cs`](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/UX/MixedRealityKeyboard.cs) にて見ることができます。

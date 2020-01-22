@@ -1,16 +1,16 @@
 # Controllers, Pointers, and Focus
 
-Controllers, pointers, and focus are higher level concepts that build upon the foundation established by the core input system. Together they provide a large portion of the mechanism for interacting with objects in the scene.
+Controllers, pointers, and focus are higher-level concepts that build upon the foundation established by the core input system. Together, they provide a large portion of the mechanism for interacting with objects in the scene.
 
 ## Controllers
 
-Controllers are representations of a physical controller (6-degree of freedom, articulated hand, etc). They are created by device managers, and are responsible for communicating with the corresponding underlying system and translating that data into MRTK-shaped data and events.
+Controllers are representations of a physical controller (6-degrees of freedom, articulated hand, etc). They are created by device managers and are responsible for communicating with the corresponding underlying system and translating that data into MRTK-shaped data and events.
 
 For example, on the Windows Mixed Reality platform, the [`WindowsMixedRealityArticulatedHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand) is a controller that is responsible for interfacing with the underlying Windows [hand tracking APIs](https://docs.microsoft.com/en-us/uwp/api/windows.ui.input.spatial.spatialinteractionsourcestate) to get information about the joints, pose, and other properties of the hand. It is responsible for turning this data into relevant MRTK events (for example, by calling RaisePoseInputChanged or RaiseHandJointsUpdated) and by updating its own internal state so that queries for [`TryGetJointPose`](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils.TryGetJointPose(TrackedHandJoint,Handedness,MixedRealityPose@)) will return correct data.
 
 Generally, a controller's lifecycle will involve:
 
-1. A controller gets created by a device manager upon detection of a new source(for example, the detects and starts tracking a hand).
+1. A controller gets created by a device manager upon detection of a new source (for example, the detects and starts tracking a hand).
 
 2. In the controller's Update() loop, it calls into its underlying API system.
 
@@ -26,11 +26,11 @@ Pointers generally fall into one of the following categories:
 
 - **Far pointers**
 
-  These types of pointers are used to interact with objects that are far away from the user (where far away is defined as simply “not near”). These types of pointers generally cast lines that can go far into the world and allow the user the interact with and manipulate objects that are not immediately next to them.
+  These types of pointers are used to interact with objects that are far away from the user (far away is defined as simply “not near”). These types of pointers generally cast lines that can go far into the world and allow the user to interact with and manipulate objects that are not immediately next to them.
 
 - **Near pointers**
 
-  These types of pointers are used to interact with objects that are close enough to the user to grab, touch, and manipulate. Generally these types of pointers interact with objects by looking for objects in the nearby vicinity (either by doing raycasting at small distances, doing spherical casting looking for objects in the vicinity, or enumerating lists of objects that are considered grabbable/touchable).
+  These types of pointers are used to interact with objects that are close enough to the user to grab, touch, and manipulate. Generally, these types of pointers interact with objects by looking for objects in the nearby vicinity (either by doing raycasting at small distances, doing spherical casting looking for objects in the vicinity, or enumerating lists of objects that are considered grabbable/touchable).
 
 - **Teleport pointers**
 
@@ -43,7 +43,7 @@ Because a single controller can have multiple pointers (for example, the articul
 For example, as the user’s hand approaches a pressable button, the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) should stop showing, and the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) should be engaged.
 
 This is handled by the [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator),
-which is responsible for determining which pointers are active based on the state of all pointers. One of the key things this does is [disable far pointers when a near pointer is close to an object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127).
+which is responsible for determining which pointers are active, based on the state of all pointers. One of the key things this does is [disable far pointers when a near pointer is close to an object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127).
 
 It's possible to provide an alternate implementation of the pointer mediator by changing the [`PointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.PointerMediator) property on the pointer profile.
 
@@ -93,9 +93,9 @@ In each `Update()` call, this will:
 
 The lifetime of a pointer is generally the following:
 
-1. A device manager will detect the presence of a controller - this device manager will then create the set of pointers associated with the controller via a call to [`RequestPointers`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager).
+1. A device manager will detect the presence of a controller. This device manager will then create the set of pointers associated with the controller via a call to [`RequestPointers`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager).
 
-2. The FocusProvider, in its Update() loop, will iterate over all of the valid pointers and do the associated raycast or hit detection logic - this is used to determine the object that is focused by each particular pointer.
+2. The FocusProvider, in its Update() loop, will iterate over all of the valid pointers and do the associated raycast or hit detection logic. This is used to determine the object that is focused by each particular pointer.
 
     - Because it's possible to have multiple sources of input active at the same time (for example, two hands active present), it's also possible to have multiple objects that have focus at the same time.
 

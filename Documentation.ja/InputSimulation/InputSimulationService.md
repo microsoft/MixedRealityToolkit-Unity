@@ -36,11 +36,11 @@ _Mixed Reality Toolkit > Utilities > Input Simulation_ メニューから、入�
 * ![Controlled hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png "Controlled hand icon") ハンドは追跡されており、ユーザーにコントロールされています。クリックでハンドを非表示にします。
 * ![Reset hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png "Reset hand icon") クリックしてハンドをデフォルトの位置にリセットします。
 
-# カメラ コントロール
+## カメラ コントロール
 
 頭の動きは入力シミュレーション サービスでエミュレートされます。
 
-## カメラを回転させるには:
+### カメラの回転
 
 1. Editor ウィンドウにカーソルを合わせます。_ボタンを押しても動作しない場合は、フォーカスを得るためにウィンドウをクリックする必要があります。_
 1. __Mouse Look Button__ (デフォルト: 右マウスボタン)を押したままにします
@@ -51,7 +51,7 @@ _Mixed Reality Toolkit > Utilities > Input Simulation_ メニューから、入�
 
 または、カメラを回転させるために __Look Horizo​​ntal__/__Look Vertical__ 軸を使用します（デフォルト:ゲームコントローラの右スティック）
 
-## カメラを移動させるには:
+### カメラの移動
 
 __Move Horizontal__/__Move Vertical__ 軸を使用してカメラを移動させます（規定:WASDキーまたはゲームコントローラーの左スティック）
 
@@ -59,11 +59,11 @@ __Move Horizontal__/__Move Vertical__ 軸を使用してカメラを移動させ
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-# ハンド シミュレーション
+## ハンド シミュレーション
 
 入力シミュレーション サービスは、ハンド デバイスをサポートします。バーチャル ハンドは、ボタンやグラブ可能オブジェクトなどの、通常のハンド デバイスをサポートしたオブジェクトとインタラクションできます。
 
-## ハンド シミュレーション モード
+### ハンド シミュレーション モード
 
 [入力シミュレーション ツール ウィンドウ](#入力シミュレーション-ツール-ウィンドウ) 内で、 __Hand Simulation Mode__ は、２つの異なる入力モデルの切り替えを行います。
 デフォルトのモードは入力シミュレーション プロファイルでもセットできます。
@@ -80,20 +80,20 @@ __Move Horizontal__/__Move Vertical__ 軸を使用してカメラを移動させ
 
    フォーカスは視線ポインターを使ってコントロールします。_Air Tap_ ジェスチャでボタンと対話します
 
-## ハンドの動きのコントロール
+### ハンドの動きのコントロール
 
-__Left/Right Hand Control Key__ （デフォルト:左Shift/Space がそれぞれ 左ハンド/右ハンド に対応）を押し続けてそれぞれのハンドをコントロールします。操作キーを押し続けている間、ハンドが表示されます。操作キーが押されなくなると、短い __Hand Hide Timeout__ の後にハンドは表示されなくなります。
+__Left/Right Hand Control Key__ （デフォルト: *左 Shift* が左ハンド、*Space* が右ハンド）を押し続けてそれぞれのハンドをコントロールします。操作キーを押し続けている間、ハンドが表示されます。操作キーが押されなくなると、短い __Hand Hide Timeout__ の後にハンドは表示されなくなります。
 
 
-ハンドは[入力シミュレーション ツール ウィンドウ](#入力シミュレーション-ツール-ウィンドウ)内、または __Toggle Left/Right Hand Key__ （デフォルト:T/Y が 左ハンド/右ハンド に対応）を押すことで、永続的に表示を切り替えられます。Toggle キーを再度押すと、再度ハンドの表示を消すことができます。
+ハンドは[入力シミュレーション ツール ウィンドウ](#入力シミュレーション-ツール-ウィンドウ)内、または __Toggle Left/Right Hand Key__ （デフォルト: *T* が左ハンド、*Y* が右ハンド）を押すことで、永続的に表示を切り替えられます。Toggle キーを再度押すと、再度ハンドの表示を消すことができます。
 
 マウスの動きは、ビュー内でハンドの動きとなります。ハンドは、__mouse wheel__ を使ってカメラから遠ざけたり近づけたりすることができます。
 
-マウスを使用してハンドを回転させるには、__Left / Right Hand Control Key__（シフト/スペース）_と_ __Hand Rotate Button__（デフォルト:マウスの右ボタン）の両方を押します。入力シミュレーション プロファイルの __Mouse Hand Rotation Speed__ 設定を変更することにより、ハンドの回転速度を設定できます。
+マウスを使用してハンドを回転させるには、__Left / Right Hand Control Key__（*左 Shift* か *Space*）_と_ __Hand Rotate Button__（デフォルト: *ctrl* ボタン）の両方を押し、マウスを動かしてハンドを回転させます。入力シミュレーション プロファイルの __Mouse Hand Rotation Speed__ 設定を変更することにより、ハンドの回転速度を設定できます。
 
 全てのハンドの配置（ハンドをデフォルトの状態にリセットすることも含む）は[入力シミュレーション ツール ウィンドウ](#入力シミュレーション-ツール-ウィンドウ)でも変更することができます。
 
-## 追加のプロファイル設定
+### 追加のプロファイル設定
 
 * __Hand Depth Multiplier__ は、マウス スクロール ホイールの深さの動きの感度を制御します。数値を大きくすると、ハンドのズームが速くなります。
 * __Default Hand Distance__ は、カメラからのハンドの初期距離です。 __Reset__ ボタンのハンドをクリックすると、ハンドもこの距離に配置されます。
@@ -101,24 +101,24 @@ __Left/Right Hand Control Key__ （デフォルト:左Shift/Space がそれぞ�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## ハンド ジェスチャ
+### ハンド ジェスチャ
 
-ピンチ、グラブ、指差しなどのハンド ジェスチャをシミュレートできます
+ピンチ、グラブ、指差しなどのハンド ジェスチャをシミュレートできます。
 
-1. 最初に、Manipuration キー（左Shift/Space）を使ってハンドを有効にしてください
+1. 最初に、 __Left/Right Hand Control Key__ (*左 Shift* か *Space*) を使ってハンドを有効にしてください。
 
-   別の方法では、Toggle キー（T/Y）を使ってハンドの on/off を切り替えることもできます
+   別の方法としては、Toggle キー (*T* か *Y*) を使ってハンドの on/off を切り替えることもできます。
 
-2. 操作の間、マウスのボタンを押し続けることによってハンド ジェスチャを実行することができます
+2. 操作の間、マウスのボタンを押し続けることによってハンド ジェスチャを実行することができます。
 
 _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、それぞれのマウスのボタンを、ハンドの形が異なるジェスチャにマップすることができます。 _Default Hand Gesture_ は、どのボタンも押されていないときのハンドの形です。
 
 > [!NOTE]
 > _Pinch_ ジェスチャは、この時点では "Select" アクションを発生させる唯一のジェスチャです
 
-## 片手での操作
+### 片手での操作
 
-1. ハンドをコントロールするキー（Space/左Shift）を押し続けてください
+1. __Left/Right Hand Control Key__ (*左 Shift* か *Space*) を押し続けてください
 2. オブジェクトをポイントしてください
 3. マウスのボタンを押し続けるとピンチ操作となります
 4. マウスでオブジェクトを動かしてください
@@ -126,21 +126,21 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、それぞれの�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## 両手での操作
+### 両手での操作
 
 オブジェクトを両手で操作するには、ハンドを永続化するモードが推奨されます
 
 1. Toggle キー（T/Y）を押すことで両手の表示を切り替えることができます
 1. １回に１つのハンドを操作します
-1. _Space_ を押し続けて右ハンドを操作します
-1. グラブしたいオブジェクトにハンドを動かします
-1. マウスのボタンを押して _Pinch_ ジェスチャを有効にします。永続化モードではマウスのボタンを離すまでジェスチャが有効になります
+    1. _Space_ を押し続けて右ハンドを操作します
+    1. グラブしたいオブジェクトにハンドを動かします
+    1. マウスのボタンを押して _Pinch_ ジェスチャを有効にします。永続化モードではマウスのボタンを離すまでジェスチャが有効になります
 1. 同じ手順をもう片方のハンドで繰り返します。同じオブジェクトの別のポイントをグラブします
 1. これで両手で同じオブジェクトをグラブした状態になるので、どちらかのハンドを動かして両手での操作を行います
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## GGV インタラクション
+### GGV インタラクション
 
 1. [Input Simulation Profile](#入力シミュレーション-サービスの有効化) で、__Hand Simulation Mode__ を _Gestures_ にすることにより、GGV のシミュレーションに切り替えることができます
 1. カメラを回転させて、視線カーソルをインタラクション可能なオブジェクトにポイントします（マウスの右クリックを使用）
@@ -150,6 +150,6 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、それぞれの�
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## アイ トラッキング
+### アイ トラッキング
 
 [Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) は、[Input Simulation Profile](#enabling-the-input-simulation-service) の __Simulate Eye Position__ オプションをチェックすることで有効になります。これは GGV スタイルのインタラクションでは使用すべきではありません（ですので、 __Hand Simulation Mode__ が _Articulated_ にセットされていることを確認してください）

@@ -10,7 +10,7 @@ MRTK Examples Hub は、複数の scene (シーン)を簡単に体験できる U
 MRTK Examples Hub は、[Scene Transition Service](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation.ja/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html) および関連スクリプトを使用します。Unity パッケージを介して、MRTK を使用している場合は、 [release packages](https://github.com/microsoft/MixedRealityToolkit-Unity/releases) の一部である **Microsoft.MixedReality.Toolkit.Unity.Extensions.x.x.x.unitypackage** をインポートしてください。リポジトリをクローンして MRTK を使っている場合は、すでに **MixedRealityToolkit.Extensions** フォルダがプロジェクタ内にあるはずです。
 
 ## MRTKExamplesHub シーンとシーン システム ##
-``MixedRealityToolkit.Examples/Demos/ExamplesHub/Scenes/`` にある **MRTKExamplesHub.unity** を開きます。これは、MixedRealityToolkit、MixedRealityPlayspace および LoadHubOnStartup を含む空のシーンです。このシーンは、MRTK のシーン システムを使うように設定されています。MixedRealityToolkit 配下の ``MixedRealitySceneSystem`` をクリックします。Inspector (インスペクター) パネルにシーン システムの情報が表示されます。
+``MixedRealityToolkit.Examples/Experimental/Demos/ExamplesHub/Scenes/`` にある **MRTKExamplesHub.unity** を開きます。これは、MixedRealityToolkit、MixedRealityPlayspace および LoadHubOnStartup を含む空のシーンです。このシーンは、MRTK のシーン システムを使うように設定されています。MixedRealityToolkit 配下の ``MixedRealitySceneSystem`` をクリックします。Inspector (インスペクター) パネルにシーン システムの情報が表示されます。
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_Hierarchy.png" width="300">
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_Inspector1.png" width="450">
 

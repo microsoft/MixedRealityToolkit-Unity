@@ -3,14 +3,14 @@
 Extension services are components that extend the functionality of the Mixed Reality Toolkit. These services may be provided
 by the MRTK or by other parties.
 
-## Creating an extenison service
+## Creating an extension service
 
 The most efficient way to create an extension service is to use the [extension service creation wizard](../Tools/ExtensionServiceCreationWizard.md).
 To start the extension service creation wizard, select **Mixed Reality Toolkit > Utilities > Create Extension Service**.
 
 ![Extension service creation wizard](../../Documentation/Images/ExtensionWizard/ExtensionServiceCreationWizard.png)
 
-The wizard automates the creation of the service components and ensures the proper interface inheritance. 
+The wizard automates the creation of the service components and ensures the proper interface inheritance.
 
 ![Components created by the extension service creation wizard](../../Documentation/Images/ExtensionWizard/ExtensionServiceComponents.png)
 
@@ -30,7 +30,7 @@ The extension service creation wizard can be used to register the service.
 
 The service can also be manually registered using the Mixed Reality Toolkit configuration inspector.
 
-![Manual extension service registration](../../Documentation/Images/Profiles/RegisterExtensionService.png) 
+![Manual extension service registration](../../Documentation/Images/Profiles/RegisterExtensionService.png)
 
 If the extension service uses a profile, please ensure that it is specified in the inspector.
 

@@ -49,12 +49,12 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 * [Speech commands（音声コマンド）](#speech)
 * [Controller mapping configuration（コントローラー マッピングの設定）](#mapping)
 * [Controller visualization settings（コントローラーの可視化の設定）](#visualization)
-* [Service Inspectors（サービス インスペクター）](#inspectors)
+* [Editor Utilities](#editor-utilities)
 
 これらの設定プロファイルについては、以下の関連セクションで詳しく説明します。
 
 ---
-<a name="experience"/>
+<a name="experience"></a>
 
 ## Experience settings（エクスペリエンスの設定）
 
@@ -63,7 +63,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 
 ---
-<a name="camera"/>
+<a name="camera"></a>
 
 ## Camera settings（カメラの設定）
 
@@ -73,7 +73,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 
 
 ---
-<a name="inputsystem"/>
+<a name="inputsystem"></a>
 
 ## Input system settings（入力システムの設定）
 
@@ -98,7 +98,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 
 ---
-<a name="boundary"/>
+<a name="boundary"></a>
 
 ## Boundary visualization settings（境界可視化の設定）
 
@@ -108,7 +108,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 
 ---
-<a name="teleportation"/>
+<a name="teleportation"></a>
 
 ## Teleportation system selection（テレポーテーション システムの選択）
 
@@ -117,7 +117,7 @@ Mixed Reality プロジェクトは、プロジェクトでのテレポーテー
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
 
 ---
-<a name="spatialawareness"/>
+<a name="spatialawareness"></a>
 
 ## Spatial awareness settings（空間認識の設定）
 
@@ -134,11 +134,11 @@ Mixed Reality Toolkit の空間認識設定を使用すると、どのように�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="diagnostic"/>
+<a name="diagnostic"></a>
 
 ## Diagnostics settings（診断の設定）
 
-オプションですが、MRTK の非常に便利な機能は、プラグイン診断機能です。これは、シーンへのデバッグ ログのスタイルです。
+オプションですが、MRTK の非常に便利な機能は、プラグイン診断機能です。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
 
@@ -148,7 +148,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、どのように�
 
 
 ---
-<a name="scenesystem"/>
+<a name="scenesystem"></a>
 
 ## Scene system settings（シーン システムの設定）
 
@@ -157,13 +157,12 @@ MRTK は、複雑なシーンのロード/アンロードの管理に役立つ�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="services"/>
+<a name="services"></a>
 
 ## 追加サービスの設定
 
 Mixed Reality Toolkit のより高度な領域の1つは、フレームワークに任意の「サービス」の登録を可能にする[サービス ロケーター パターン](https://en.wikipedia.org/wiki/Service_locator_pattern)の実装です。これにより、フレームワークに新しい機能/システムを簡単に拡張できるだけでなく、プロジェクトはこれらの機能を利用して独自のランタイムコンポーネントを登録することもできます。
 
-[Stephen Hodgson の Mixed Reality フレームワークに関する記事](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)で、基礎となるフレームワークとその実装についての詳細を読むことができます。
 
 登録済みのサービスは、MonoBehaviour または不格好なシングルトン パターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセスの両方で、シーン オーバーヘッドのない純粋な C# コンポーネントを使用できます。例えば、スポーン システム、ランタイム ゲーム ロジックなど、実質的には全てのもので利用できます。
 
@@ -171,7 +170,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 
 ---
-<a name="inputactions"/>
+<a name="inputactions"></a>
 
 ## Input actions settings（入力アクションの設定）
 
@@ -198,7 +197,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="inputactionrules"/>
+<a name="inputactionrules"></a>
 
 ## Input action rules （入力アクション ルール）
 
@@ -213,7 +212,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 ---
-<a name="pointer"/>
+<a name="pointer"></a>
 
 ## Pointer configuration（ポインターの設定）
 
@@ -233,7 +232,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 必要に応じて Gaze のなにか特定の値をオーバーライドするために、Gaze Provider にすばやくジャンプするための追加のヘルパーボタンがあります。
 
 ---
-<a name="gestures"/>
+<a name="gestures"></a>
 
 ## Gestures configuration（ジェスチャの設定）
 
@@ -245,11 +244,14 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="speech"/>
+<a name="speech"></a>
 
 ## Speech Commands（音声コマンド）
 
-ジェスチャと同様に、一部のランタイム プラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、登録済みの 「単語」を設定し、プロジェクトで受信できる入力アクションに変換できます。必要に応じて、キーボード アクションにアタッチすることもできます。
+ジェスチャと同様に、一部のランタイム プラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、以下の設定ができます。
+
+1. General Settings - "Start Behavior" を Auto Start に設定するか Manual Start に設定するかによって、KeywordRecognizer を入力システムの起動時に初期化するか、KeywordRecognizer をいつ初期化するかをプロジェクトに決めさせるかが決定されます。"Recognition Confidence Level" は Unity の [KeywordRecognizer API](https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer-ctor.html) を初期化するのに使われます。
+2. Speech Commands - 「単語」を登録し、プロジェクトで受信できる入力アクションに変換します。必要に応じて、キーボード アクションにアタッチすることもできます。
 
 > [!IMPORTANT]
 > このシステムは現在、HoloLens や Windows 10 デスクトップなどの Windows 10 プラットフォームで実行されている場合にのみ音声認識をサポートしており、将来 MRTK に他のシステムが追加される際に拡張される予定です (日付は未定です)。
@@ -258,7 +260,7 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 
 
 ---
-<a name="mapping"/>
+<a name="mapping"></a>
 
 ## Controller mapping configuration（コントローラー マッピングの設定）
 
@@ -282,12 +284,12 @@ MRTK は、以下のコントローラー / システムのデフォルト設定
 
 あらかじめ構築されたコントローラー システムのいずれかの画像をクリックすると、対応するすべての入力に対して 1 つの入力アクションを設定できます (例えば、以下の Oculus Touch コントローラーの設定画面をご覧ください)。
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png" width="650px" style="display:block;">
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_WindowsMixedRealityControllerConfigScreen.png" width="650px" style="display:block;">
 
 上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
 ---
-<a name="visualization"/>
+<a name="visualization"></a>
 
 ## Controller visualization settings（コントローラーの可視化の設定）
 
@@ -302,17 +304,31 @@ MRTK は、以下のコントローラー / システムのデフォルト設定
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
 
+<a name="editor-utilities"></a>
 
-<a name="inspectors"/>
+## Editor Utilities
 
-## Service Inspectors（サービス インスペクター）
+以下のユーティリティはエディターでのみ動作し、開発の生産性を向上させるのに役に立ちます。
 
-サービス インスペクターは、アクティブなサービスを表すシーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、\[Inspector]（インスペクター）にドキュメントへのリンク、エディターでの可視化のコントロール、サービスの状態に関する情報が表示されます。
+![MRTK Editor Configuration Utilities](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png)
+
+### Service Inspectors（サービス インスペクター）
+
+サービス インスペクターは、アクティブなサービスを表すシーン内オブジェクトを生成する、エディター上のみの機能です。これらのオブジェクトを選択すると、\[Inspector]（インスペクター）にドキュメントへのリンク、エディターでの可視化のコントロール、サービスの状態に関する情報が表示されます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
 
-Configuration Profile の Editor Settings の \[Use Service Inspectors] をチェックすると、サービス インスペクターを有効にできます。
+Configuration Profile の *Editor Settings* の *Use Service Inspectors* をチェックすると、サービス インスペクターを有効にできます。
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
-<sup>サービス インスペクターを有効にする</sup>
+### Depth Buffer Renderer (デプス バッファー レンダラー)
 
+いくつかの mixed reality プラットフォームではデプス バッファーを共有することで[ホログラムの安定性]を向上させることができます。例えば、Windows Mixed Reality プラットフォームでは、フレームを描画するのにかかる時間でのわずかな頭の動きを考慮して、ピクセルごとに描画したシーンを修正できます。しかしながらこれらの技術は、オブジェクトの形状がユーザーからどこにどれくらい離れているのかを知るために、正確なデータをもったデプス バッファーが必要です。 
+
+シーンが必要なデータすべてをデプス バッファーに描画していることを確かめるため、開発者は Configuration Profile の *Editor Settings* 以下の *Render Depth Buffer* 機能をトグルしてください。これは、現在のデプス バッファーを使い、[`DepthBufferRenderer`](xref:Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer) というポストプロセッシング エフェクトを適用することでメイン カメラのシーン ビューに色をつけて描画します。
+
+![Render Depth Buffer Utility](Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
+<sup>シーン内の青い円柱は ZWrite off のマテリアルを持っているため、デプス データは書き込まれません</sup>
+
+## 関連項目
+
+- [ホログラムの安定化](hologram-stabilization.md)
