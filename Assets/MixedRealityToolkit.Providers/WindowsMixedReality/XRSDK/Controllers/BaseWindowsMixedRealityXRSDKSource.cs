@@ -22,9 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Constructor.
         /// </summary>
         protected BaseWindowsMixedRealityXRSDKSource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, sourceHandedness, inputSource, interactions)
-        {
-        }
+                : base(trackingState, sourceHandedness, inputSource, interactions) { }
 
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;

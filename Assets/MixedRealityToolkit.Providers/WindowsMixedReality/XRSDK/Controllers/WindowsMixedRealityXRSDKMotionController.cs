@@ -19,9 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// Constructor.
         /// </summary>
         public WindowsMixedRealityXRSDKMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-        }
+            : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
