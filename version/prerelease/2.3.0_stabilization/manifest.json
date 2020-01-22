@@ -7647,7 +7647,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraExtensions.html",
-          "hash": "/nyqkv3FLZr+VcJ3uYC/1Q=="
+          "hash": "k50+wLmGvW2zZgTebv0OLA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraFOVChecker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraFOVChecker.html",
+          "hash": "f3vL6A16zGJ/2NpT15WQfg=="
         }
       },
       "is_incremental": false,
@@ -14487,7 +14499,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html",
-          "hash": "bidkdJnI51E19AH3sKs6BA=="
+          "hash": "vX8M/WCUv6hBdo4kTZuc7w=="
         }
       },
       "is_incremental": false,
@@ -19299,7 +19311,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Extensions.CameraExtensionTests.html",
-          "hash": "mTp+LU9rL7cbY1WjahNlMw=="
+          "hash": "2JJ1MSnz0n1KPPJQ/mPBKA=="
         }
       },
       "is_incremental": false,
@@ -19551,7 +19563,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PointerTests.html",
-          "hash": "85maquIrXJraM4eoMKMwgA=="
+          "hash": "GrJke6BBqb29YWUatDdNSQ=="
         }
       },
       "is_incremental": false,
@@ -25503,7 +25515,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "XHVD3TqSVa/jtlbv2m5NPA=="
+          "hash": "1xsdHVF9OjS8r6XNVrtoZA=="
         }
       },
       "is_incremental": false,
@@ -25515,7 +25527,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4OvNGJx7aNzK2jaTBHxKOw=="
+          "hash": "ZRNcy2lw3GDErYs7KBgFYg=="
         }
       },
       "is_incremental": false,
@@ -25574,16 +25586,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1534,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 145,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1533,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
