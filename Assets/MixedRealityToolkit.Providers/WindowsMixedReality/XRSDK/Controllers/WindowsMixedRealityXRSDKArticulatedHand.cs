@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
         new[] { Handedness.Left, Handedness.Right })]
-    public class WindowsMixedRealityXRSDKArticulatedHand : BaseWindowsMixedRealityXRSDKSource
+    public class WindowsMixedRealityXRSDKArticulatedHand : BaseWindowsMixedRealityXRSDKSource, IMixedRealityHand
     {
         /// <summary>
         /// Constructor.
@@ -277,6 +277,46 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case HandFinger.Ring: return TrackedHandJoint.RingMetacarpal + index;
                 case HandFinger.Pinky: return TrackedHandJoint.PinkyMetacarpal + index;
                 default: return TrackedHandJoint.None;
+            }
+        }
+
+        #region IMixedRealityHand Implementation
+
+        /// <inheritdoc/>
+        public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => unityJointPoses.TryGetValue(joint, out pose);
+
+        #endregion IMixedRealityHand Implementation
+
+        private readonly float CursorBeamBackwardTolerance = 0.5f;
+        private readonly float CursorBeamUpTolerance = 0.8f;
+
+        /// <inheritdoc/>
+        public override bool IsInPointingPose
+        {
+            get
+            {
+                bool valid = true;
+                MixedRealityPose palmJoint;
+                if (unityJointPoses.TryGetValue(TrackedHandJoint.Palm, out palmJoint))
+                {
+                    Vector3 palmNormal = palmJoint.Rotation * (-1 * Vector3.up);
+                    if (CursorBeamBackwardTolerance >= 0)
+                    {
+                        Vector3 cameraBackward = -CameraCache.Main.transform.forward;
+                        if (Vector3.Dot(palmNormal.normalized, cameraBackward) > CursorBeamBackwardTolerance)
+                        {
+                            valid = false;
+                        }
+                    }
+                    if (valid && CursorBeamUpTolerance >= 0)
+                    {
+                        if (Vector3.Dot(palmNormal, Vector3.up) > CursorBeamUpTolerance)
+                        {
+                            valid = false;
+                        }
+                    }
+                }
+                return valid;
             }
         }
 

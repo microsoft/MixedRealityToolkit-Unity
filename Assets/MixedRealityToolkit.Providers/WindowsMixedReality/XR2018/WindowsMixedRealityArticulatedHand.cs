@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion IMixedRealityHand Implementation
 
+        /// <inheritdoc/>
         public override bool IsInPointingPose
         {
             get
