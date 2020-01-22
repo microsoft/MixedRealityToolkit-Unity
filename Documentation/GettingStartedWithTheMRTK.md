@@ -29,7 +29,7 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ### Optional
 
-* [Getting started tutorials](#get-the-latest-mrtk-unity-packages)
+* [Getting started tutorials](#getting-started-tutorials)
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
@@ -101,8 +101,9 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     Profiles configure the behavior of MRTK core components and are described in more detail in the [profiles](Profiles/Profiles.md) article.
 
     > [!NOTE]
-    > If you are getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.
-    > See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
+    > * If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the "DefaultXRSDKConfigurationProfile". This profile is set up with MRTK's XR SDK systems and providers, where needed.  
+    > * If you're getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.  
+    > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
 
@@ -155,18 +156,18 @@ The in-editor input simulation allows you to test virtual object behavior given 
 
 How to move around in the scene:
 
-- Use **W/A/S/D** keys to move the camera forward/left/back/right.
-- Use **Q/E** to move the camera vertically.
-- Press and hold the **right mouse button** to rotate the camera.
+* Use **W/A/S/D** keys to move the camera forward/left/back/right.
+* Use **Q/E** to move the camera vertically.
+* Press and hold the **right mouse button** to rotate the camera.
 
 How to simulate hand input:
 
-- Press and hold the **spacebar** to enable the right hand.
-- While holding the space bar, move your mouse to move the hand.
-- Use the mouse **scroll wheel** to adjust the depth of the hand.
-- Click the **left mouse button** to simulate pinch gesture.
-- Use **T/Y** keys to make the hand persistent in the view.
-- Hold **CTRL** key and move the mouse to rotate the hand.
+* Press and hold the **spacebar** to enable the right hand.
+* While holding the space bar, move your mouse to move the hand.
+* Use the mouse **scroll wheel** to adjust the depth of the hand.
+* Click the **left mouse button** to simulate pinch gesture.
+* Use **T/Y** keys to make the hand persistent in the view.
+* Hold **CTRL** key and move the mouse to rotate the hand.
 
 Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
@@ -188,3 +189,18 @@ Here are some suggested next steps:
 ## Upgrading from the HoloToolkit (HTK/MRTK v1)
 
 There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+
+## Getting started with Unity's XR SDK
+
+If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the "DefaultXRSDKConfigurationProfile" as your active profile. This profile is set up with MRTK's XR SDK systems and providers, where needed.
+Then, follow these steps to set up support in Unity:
+
+1. Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following are all installed:
+   1. XR Management
+   1. Windows XR Plugin
+   1. XR Legacy Input Helpers
+1. Go to Edit > Project Settings.
+1. Click on the XR Plugin Management tab in the Project Settings window.
+1. Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.
+1. Ensure that Initialize on Startup is checked.
+1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.

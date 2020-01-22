@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                     {
                         // Spatial pointer raises Pose events
-                        MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                        controllerPose = MixedRealityPose.ZeroIdentity;
                         controllerPose.Rotation = Quaternion.Euler(mouseDelta);
                         Interactions[i].PoseData = controllerPose;
 

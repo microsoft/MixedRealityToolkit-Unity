@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
         "UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Staging")]
+        "MixedRealityToolkit.Providers")]
     public class UnityARCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
@@ -173,9 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             trackedPoseDriver.SetPoseSource(
                 TrackedPoseDriver.DeviceType.GenericXRDevice,
-                ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource));
-            trackedPoseDriver.trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
-            trackedPoseDriver.updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
+                ArEnumConversion.ToUnityTrackedPose(poseSource));
+            trackedPoseDriver.trackingType = ArEnumConversion.ToUnityTrackingType(trackingType);
+            trackedPoseDriver.updateType = ArEnumConversion.ToUnityUpdateType(updateType);
             trackedPoseDriver.UseRelativeTransform = false;
 
             isInitialized = true;
