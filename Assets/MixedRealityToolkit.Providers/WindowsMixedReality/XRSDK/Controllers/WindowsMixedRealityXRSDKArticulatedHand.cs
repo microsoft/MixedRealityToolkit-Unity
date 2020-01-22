@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 {
                     maxY = p.y;
                 }
-                float d = p.x * p.x + p.y * p.y;
             }
 
             float scale = 1.0f / (maxY - minY);

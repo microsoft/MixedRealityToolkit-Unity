@@ -171,8 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             float minY = neutralPoseVertices[0].y;
             float maxY = minY;
 
-            float maxMagnitude = 0.0f;
-
             for (int ix = 1; ix < neutralPoseVertices.Length; ix++)
             {
                 Vector3 p = neutralPoseVertices[ix];
@@ -185,11 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     maxY = p.y;
                 }
-                float d = p.x * p.x + p.y * p.y;
-                if (d > maxMagnitude) maxMagnitude = d;
             }
 
-            maxMagnitude = Mathf.Sqrt(maxMagnitude);
             float scale = 1.0f / (maxY - minY);
 
             handMeshUVs = new Vector2[neutralPoseVertices.Length];
