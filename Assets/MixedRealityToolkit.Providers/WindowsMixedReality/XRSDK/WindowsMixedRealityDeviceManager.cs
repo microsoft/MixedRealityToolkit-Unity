@@ -7,10 +7,15 @@ using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
 using UnityEngine;
 using UnityEngine.XR;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
+#if WINDOWS_UWP
+using WindowsInputSpatial = Windows.UI.Input.Spatial;
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
@@ -48,6 +53,44 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
     }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
+        #region IMixedRealityCapabilityCheck Implementation
+
+        /// <inheritdoc />
+        public override bool CheckCapability(MixedRealityCapability capability)
+        {
+            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
+            {
+#if WINDOWS_UWP
+                switch (capability)
+                {
+                    case MixedRealityCapability.ArticulatedHand:
+                    case MixedRealityCapability.GGVHand:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
+
+                    case MixedRealityCapability.MotionController:
+                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
+                }
+#endif // WINDOWS_UWP
+            }
+            else // Pre-Windows 10 1903.
+            {
+                if (XRSDKSubsystemHelpers.DisplaySubsystem != null && !XRSDKSubsystemHelpers.DisplaySubsystem.displayOpaque)
+                {
+                    // HoloLens supports GGV hands
+                    return capability == MixedRealityCapability.GGVHand;
+                }
+                else
+                {
+                    // Windows Mixed Reality Immersive devices support motion controllers
+                    return capability == MixedRealityCapability.MotionController;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion IMixedRealityCapabilityCheck Implementation
 
         #region Controller Utilities
 
