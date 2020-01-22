@@ -127,11 +127,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Generates an asset path out of the given configname and test instance id
+        /// Generates an asset path out of the given config name and test instance id
         /// </summary>
-        /// <param name="configName">name of the config to be saved</param>
-        /// <param name="testInstanceId">test instance id that makes sure this path is unique</param>
-        /// <returns></returns>
+        /// <param name="configName">Name of the config to be saved</param>
+        /// <param name="testInstanceId">Test instance id that makes sure this path is unique</param>
+        /// <returns>Asset path</returns>
         private string GeneratePath(string configName, int testInstanceId)
         {
             return "Assets/" + configName + testInstanceId + ".asset";
