@@ -10,7 +10,9 @@ using UnityEngine.XR;
 
 #if WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
+#if WMR_ENABLED
 using UnityEngine.XR.WindowsMR;
+#endif // WMR_ENABLED
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
@@ -171,7 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             }
 
             List<object> states = new List<object>();
+#if WMR_ENABLED
             XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
+#endif // WMR_ENABLED
 
             foreach (SpatialInteractionSourceState sourceState in states)
             {
