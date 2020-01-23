@@ -12,9 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     public interface IMixedRealitySpatialAwarenessSceneUnderstandingObserver : IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
-        /// Load a previously serialized scene file from the device
+        /// Loads the serialized scene file
         /// </summary>
-        void LoadScene(string filename);
+        void LoadScene(byte[] serializedScene);
 
         /// <summary>
         /// Save a scene file to the device

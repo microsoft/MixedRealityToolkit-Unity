@@ -11,10 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public Transform ParentGameObject;
 
-        public IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
+        public TextAsset SerializedScene;
+
+        IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
         Animator animator;
         public bool triggered = false;
+
+        private bool generatePlanes;
+        private bool generateMeshes;
+        private bool generateEnvironment;
 
         void OnEnable()
         {
@@ -36,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 return;
             }
 
-            Debug.Log($"observer.UpdateInterval = {observer.UpdateInterval}");
+            //Debug.Log($"observer.UpdateInterval = {observer.UpdateInterval}");
 
             animator = GetComponent<Animator>();
             animator.SetBool("Persistent", observer.UsePersistentObjects);
@@ -72,6 +78,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public void HandleIt()
         {
             Debug.Log("Got it");
+        }
+
+        public void LoadScene()
+        {
+            if (SerializedScene.bytes != null)
+            {
+                observer.LoadScene(SerializedScene.bytes);
+            }
+        }
+
+        public void ToggleGeneratePlanes()
+        {
+            observer.GeneratePlanes = generatePlanes;
+            generatePlanes = !generatePlanes;
+            observer.Update();
+        }
+
+        public void ToggleGenerateMeshes()
+        {
+            observer.GenerateMeshes = generateMeshes;
+            generateMeshes = !generateMeshes;
+            observer.Update();
+        }
+
+        public void ToggleGenerateEnvironmentMesh()
+        {
+            observer.GenerateEnvironmentMesh = generateEnvironment;
+            generateEnvironment = !generateEnvironment;
+            observer.Update();
         }
     }
 }
