@@ -178,6 +178,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 flattenedHandles = new int[] { 9, 10, 8, 11 };
             }
+            else
+            {
+                flattenedHandles = null;
+            }
         }
 
         [SerializeField]
