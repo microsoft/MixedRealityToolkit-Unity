@@ -634,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             else
             {
-                var handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>();
+                var handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
                 expectedTransform = handJointService.RequestJointTransform(testData.handler.TrackedHandJoint, hand);
             }
 
