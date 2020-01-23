@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public States States
         {
-            get { return states; }
+            get => states;
             set
             {
                 states = value;
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool IsGlobal
         {
-            get { return isGlobal; }
+            get => isGlobal;
             set
             {
                 if (isGlobal != value)
@@ -123,9 +123,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int NumOfDimensions
         {
-            get { return Dimensions; }
+            get
+            {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return -1;
+                }
+
+                return Dimensions;
+            }
             set
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return;
+                }
+
                 if (Dimensions != value)
                 {
                     // Value cannot be negative or zero
@@ -158,9 +173,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int CurrentDimension
         {
-            get { return dimensionIndex; }
+            get
+            {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return -1;
+                }
+
+                return dimensionIndex;
+            }
             set
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return;
+                }
+
                 if (dimensionIndex != value)
                 {
                     // If valid value and not our current value, then update
@@ -196,13 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// SelectionModes.Toggle => Dimensions == 2
         /// SelectionModes.MultiDimension => Dimensions > 2
         /// </remarks>
-        public SelectionModes ButtonMode
-        {
-            get
-            {
-                return ConvertToSelectionMode(NumOfDimensions);
-            }
-        }
+        public SelectionModes ButtonMode => ConvertToSelectionMode(NumOfDimensions);
 
         /// <summary>
         /// The Dimension value to set on start
@@ -239,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool VoiceRequiresFocus
         {
-            get { return voiceRequiresFocus; }
+            get => voiceRequiresFocus;
             set
             {
                 if (voiceRequiresFocus != value)
@@ -265,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public List<InteractableProfileItem> Profiles
         {
-            get { return profiles; }
+            get => profiles;
             set
             {
                 profiles = value;
@@ -285,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public List<InteractableEvent> InteractableEvents
         {
-            get { return Events; }
+            get => Events;
             set
             {
                 Events = value;
@@ -339,9 +363,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public virtual bool IsEnabled
         {
             // Note the inverse setting since targeting "Disable" state but property is concerning "Enabled"
-            get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
+            get
+            {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return false;
+                }
+
+                return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0);
+            }
             set
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return;
+                }
+
                 if (IsEnabled != value)
                 {
                     // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
@@ -360,9 +399,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasFocus
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0; }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0;
             set
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.HasFocus because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return;
+                }
+
                 if (HasFocus != value)
                 {
                     if (!value && HasPress)
@@ -384,8 +429,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasPress
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Pressed) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Pressed, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Pressed) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Pressed, value);
         }
 
         /// <summary>
@@ -394,8 +439,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsTargeted
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Targeted) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Targeted, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Targeted) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Targeted, value);
         }
 
         /// <summary>
@@ -404,8 +449,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsInteractive
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Interactive) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Interactive, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Interactive) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Interactive, value);
         }
 
         /// <summary>
@@ -414,8 +459,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasObservationTargeted
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, value);
         }
 
         /// <summary>
@@ -424,8 +469,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasObservation
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Observation) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Observation, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Observation) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Observation, value);
         }
 
         /// <summary>
@@ -433,8 +478,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsVisited
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Visited) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Visited, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Visited) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Visited, value);
         }
 
         /// <summary>
@@ -447,10 +492,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return false;
+                }
+
                 return GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
             }
             set
             {
+                if (!isInitialized)
+                {
+                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    return;
+                }
+
                 if (IsToggled != value)
                 {
                     // We can only change Toggle state if we are in Toggle mode
@@ -473,8 +530,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasGesture
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Gesture) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Gesture, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Gesture) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Gesture, value);
         }
 
         /// <summary>
@@ -482,8 +539,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasGestureMax
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.GestureMax) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.GestureMax, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.GestureMax) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.GestureMax, value);
         }
 
         /// <summary>
@@ -491,8 +548,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasCollision
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Collision) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Collision, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Collision) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Collision, value);
         }
 
         /// <summary>
@@ -500,8 +557,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasVoiceCommand
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.VoiceCommand, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.VoiceCommand, value);
         }
 
         /// <summary>
@@ -509,8 +566,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasPhysicalTouch
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, value);
         }
 
         /// <summary>
@@ -519,8 +576,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasCustom
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Custom) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Custom, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Custom) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Custom, value);
         }
 
         /// <summary>
@@ -528,8 +585,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasGrab
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Grab) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Grab, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Grab) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Grab, value);
         }
 
         #endregion
@@ -551,7 +608,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        
+
         /// <summary>
         /// Amount of time to "simulate" press states for interactions that do not utilize input up/down such as voice command
         /// This allows for visual feedbacks and other typical UX responsiveness and behavior to occur
@@ -579,10 +636,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
+        // Track that the GameObject has been activated (i.e Awake() has been called)
+        private bool isInitialized = false;
+
         #region MonoBehaviour Implementation
 
         protected virtual void Awake()
         {
+            isInitialized = true;
+
             if (States == null)
             {
                 States = GetDefaultInteractableStates();
@@ -700,6 +762,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void RefreshSetup()
         {
+            if (!isInitialized)
+            {
+                Debug.LogError($"Cannot setup Interactable because {gameObject.name} has not been initialized. Ensure Awake() has been called");
+                return;
+            }
+
             SetupEvents();
             SetupThemes();
             SetupStates();
@@ -800,6 +868,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int GetStateValue(InteractableStates.InteractableStateEnum state)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError($"Cannot access value for Interactable State {state} because {gameObject.name} has not been initialized. Ensure Awake() has been called");
+                return -1;
+            }
+
             if (StateManager != null)
             {
                 return StateManager.GetStateValue((int)state);
@@ -813,6 +887,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void SetState(InteractableStates.InteractableStateEnum state, bool value)
         {
+            if (!isInitialized)
+            {
+                Debug.LogError($"Cannot set value for Interactable State {state} because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                return;
+            }
+
             if (StateManager != null)
             {
                 StateManager.SetStateValue(state, value ? 1 : 0);
@@ -834,6 +914,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetInputTrackingStates()
         {
+            if (!isInitialized)
+            {
+                Debug.LogError($"Cannot reset input tracking states for Interactable because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                return;
+            }
+
             HasFocus = false;
             HasPress = false;
             HasPhysicalTouch = false;
@@ -856,6 +942,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetAllStates()
         {
+            if (!isInitialized)
+            {
+                Debug.LogError($"Cannot reset all states for Interactable because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                return;
+            }
+
             focusingPointers.Clear();
             pressingInputSources.Clear();
 
@@ -985,6 +1077,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return (T)InteractableEvents[i].Receiver;
                 }
             }
+
             return null;
         }
 
