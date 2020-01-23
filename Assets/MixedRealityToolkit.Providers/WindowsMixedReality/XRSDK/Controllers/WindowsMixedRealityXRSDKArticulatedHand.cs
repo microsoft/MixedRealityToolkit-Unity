@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private int[] handMeshTriangleIndices = null;
         private bool hasRequestedHandMeshObserver = false;
         private Vector2[] handMeshUVs;
+        private readonly List<object> states = new List<object>();
 
         protected void InitializeUVs(Vector3[] neutralPoseVertices)
         {
@@ -179,7 +180,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 return;
             }
 
-            List<object> states = new List<object>();
 #if WMR_ENABLED
             XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 #endif // WMR_ENABLED
