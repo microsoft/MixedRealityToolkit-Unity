@@ -177,12 +177,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", UnityEditor.MessageType.Warning);
             if (GUILayout.Button("Migrate Object"))
             {
+#if UNITY_EDITOR
                 MigrationTool migrationTool = new MigrationTool();
 
                 var component = (ManipulationHandler)target;
 
                 migrationTool.TryAddObjectForMigration((GameObject)component.gameObject);
                 migrationTool.MigrateSelection(typeof(ObjectManipulatorMigrationHandler), true);
+#endif
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.using System;
 
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,13 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// Returns a copy of all loadable implementation types of IMigrationHandler
         /// </summary>
-        public List<Type> MigrationHandlerTypes => new List<Type>(migrationHandlerTypes); 
+        public List<Type> MigrationHandlerTypes => new List<Type>(migrationHandlerTypes);
 
         private List<Object> migrationObjects = new List<Object>();
         /// <summary>
         /// Returns a copy of all game objects, prefabs and scene assets selected for migration
         /// </summary>
-        public List<Object> MigrationObjects => new List<Object>(migrationObjects); 
+        public List<Object> MigrationObjects => new List<Object>(migrationObjects);
 
         private dynamic migrationHandlerInstance;
 
@@ -106,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             var previousScenePath = EditorSceneManager.GetActiveScene().path;
 
-            for (int i = 0; i <  migrationObjects.Count; i++)
+            for (int i = 0; i < migrationObjects.Count; i++)
             {
                 var progress = (float)i / migrationObjects.Count;
                 if (EditorUtility.DisplayCancelableProgressBar("Migration Tool", $"Migrating all {type.Name} components from selection", progress))
@@ -245,5 +246,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
     }
 }
-
+#endif
 
