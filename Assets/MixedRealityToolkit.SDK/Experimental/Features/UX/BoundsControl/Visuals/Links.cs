@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         private List<Link> links = new List<Link>();
-        private List<Renderer> linkRenderers = new List<Renderer>();
 
         private LinksConfiguration config;
 
@@ -63,11 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (links != null)
             {
-                for (int i = 0; i < linkRenderers.Count; ++i)
+                for (int i = 0; i < links.Count; ++i)
                 {
-                    if (linkRenderers[i] != null)
+                    Renderer linkRenderer = links[i].transform.gameObject.GetComponent<Renderer>();
+                    if (linkRenderer != null)
                     {
-                        linkRenderers[i].enabled = isVisible;
+                        linkRenderer.enabled = isVisible;
                     }
                 }
             }
@@ -122,11 +122,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void Flatten(ref int[] flattenedHandles)
         {
-            if (flattenedHandles != null && linkRenderers != null)
+            if (flattenedHandles != null)
             {
                 for (int i = 0; i < flattenedHandles.Length; ++i)
                 {
-                    linkRenderers[flattenedHandles[i]].enabled = false;
+                    Renderer linkRenderer = links[flattenedHandles[i]].transform.gameObject.GetComponent<Renderer>();
+                    if (linkRenderer)
+                    {
+                        linkRenderer.enabled = false;
+                    }
                 }
             }
         }
@@ -173,7 +177,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     link.transform.position = rotationHandles.GetEdgeCenter(i);
                     link.transform.parent = parent;
                     Renderer linkRenderer = link.GetComponent<Renderer>();
-                    linkRenderers.Add(linkRenderer);
 
                     if (config.WireframeMaterial != null)
                     {
