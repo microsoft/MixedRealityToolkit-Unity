@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit
         // Help to clear caches when new frame runs
         static private int inFOVConeLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
-        private static Dictionary<(Collider collider, Camera camera), bool> inFOVConeColliderCache = new Dictionary<(Collider collider, Camera camera), bool>();
+        private static Dictionary<Tuple<Collider, Camera>, bool> inFOVConeColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
@@ -37,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
             
-            var cameraColliderPair = (collider: myCollider, camera: cam);
+            Tuple<Collider, Camera> cameraColliderPair = new Tuple<Collider, Camera>(myCollider, cam);
             bool result = false;
             if (inFOVConeLastCalculatedFrame != Time.frameCount)
             {
