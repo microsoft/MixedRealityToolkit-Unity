@@ -21,6 +21,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
+using static Microsoft.MixedReality.Toolkit.UI.PressableButton;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -297,6 +298,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Tests if button pressed event is triggered when a second button is overlapping right behind the first button
+        /// </summary>
+        [UnityTest]
+        public IEnumerator PressButtonWhenSecondButtonIsNearby([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        {
+            GameObject testButton1 = InstantiateDefaultPressableButton(prefabFilename);
+            GameObject testButton2 = InstantiateDefaultPressableButton(prefabFilename);
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            PressableButton buttonComponent = testButton1.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+            Assert.IsTrue(buttonComponent.EnforceFrontPush, "Button default behavior should have enforce front push enabled");
+
+            // Positioning the start push plane of the second button just before first button max push plane, creating a small overlap
+            float distance = Mathf.Abs(buttonComponent.MaxPushDistance) + Mathf.Abs(buttonComponent.StartPushDistance);
+            distance = buttonComponent.DistanceSpaceMode == SpaceMode.Local ? distance * buttonComponent.LocalToWorldScale : distance;
+            testButton2.transform.position += Vector3.forward * distance;
+            
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            // Move the hand so the pointer passes through the two buttons 
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            float handReach = 0.1f;
+            int numSteps = (int)Mathf.Ceil(handReach / (distance * 0.5f)); // Maximum hand speed in order to trigger touch started in the first button before the second button becomes the closest touchable to pointer
+            Vector3 p1 = new Vector3(0, 0, -handReach/2);
+            Vector3 p2 = new Vector3(0, 0, handReach/2);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when a second button is nearby");
+
+            Object.Destroy(testButton1);
+            Object.Destroy(testButton2);
+
+            yield return null;
+        }
 
         /// <summary>
         /// This test verifies that buttons will trigger with far interaction
