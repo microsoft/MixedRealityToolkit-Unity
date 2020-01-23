@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Text;
@@ -12,9 +13,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Experimental/Examples/BoundsControlRuntimeExample")]
     /// <summary>
-    /// TODO: This demo probably needs to be adjusted
-    /// Currently it's just a copy of BoundingBoxExampleTest
+    /// This example script demonstrates various bounds control runtime configurations
     /// </summary>
     public class BoundsControlRuntimeExample : MonoBehaviour, IMixedRealitySpeechHandler
     {
@@ -67,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 SetStatus("Instantiate BoundsControl");
                 boundsControl = cube.AddComponent<BoundsControl>();
                 boundsControl.HideElementsInInspector = false;
-                boundsControl.BoundsControlActivation = Toolkit.Experimental.UI.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
+                boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
                 var mh = cube.AddComponent<ManipulationHandler>();
                 yield return WaitForSpeechCommand();
 
@@ -98,15 +99,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenX");
-                boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+                boundsControl.FlattenAxis = FlattenModeType.FlattenX;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenY");
-                boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenY;
+                boundsControl.FlattenAxis = FlattenModeType.FlattenY;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenNone");
-                boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+                boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe false");
@@ -170,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe shape cylinder");
-                boundsControl.LinksConfiguration.WireframeShape = Toolkit.Experimental.UI.BoundsControlTypes.WireframeType.Cylindrical;
+                boundsControl.LinksConfiguration.WireframeShape = WireframeType.Cylindrical;
                 yield return WaitForSpeechCommand();
 
                 Destroy(cube);
@@ -199,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 }
 
                 boundsControl = multiRoot.AddComponent<BoundsControl>();
-                boundsControl.BoundsControlActivation = Toolkit.Experimental.UI.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
+                boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
                 boundsControl.HideElementsInInspector = false;
                 boundsControl.LinksConfiguration.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();
