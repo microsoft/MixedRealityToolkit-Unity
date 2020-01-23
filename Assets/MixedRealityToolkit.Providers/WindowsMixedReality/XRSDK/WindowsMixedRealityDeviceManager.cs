@@ -3,11 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using System;
-using UnityEngine;
 using UnityEngine.XR;
-using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 WindowsMixedRealityUtilities.UtilitiesProvider = new XRSDKWindowsMixedRealityUtilitiesProvider();
             }
-    }
+        }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         #region IMixedRealityCapabilityCheck Implementation
