@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         protected BaseWindowsMixedRealityXRSDKSource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, sourceHandedness, inputSource, interactions) { }
 
+#if WMR_ENABLED
         private Vector3 currentPointerPosition = Vector3.zero;
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
@@ -40,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             // Update the interaction data source
             switch (interactionMapping.InputType)
             {
-#if WMR_ENABLED
                 case DeviceInputType.SpatialPointer:
                     if (inputDevice.TryGetFeatureValue(WindowsMRUsages.PointerPosition, out currentPointerPosition))
                     {
@@ -61,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
                     }
                     break;
-#endif // WMR_ENABLED
                 default:
                     return;
             }
         }
+#endif // WMR_ENABLED
     }
 }
