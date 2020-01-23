@@ -643,20 +643,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Awake()
         {
-            isInitialized = true;
-
-            if (States == null)
-            {
-                States = GetDefaultInteractableStates();
-            }
-
-            InputAction = ResolveInputAction(InputActionId);
-
-            CurrentDimension = startDimensionIndex;
-
-            RefreshSetup();
-
-            IsEnabled = enabledOnStart;
+            Initialize();
         }
 
         protected virtual void OnEnable()
@@ -756,6 +743,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion MonoBehaviour Implementation
 
         #region Interactable Initiation
+
+        /// <summary>
+        /// Initialize and setup this Interactable component.
+        /// Generally called on Awake() but may be utilized to force intialization of buttons that are disabled on start
+        /// </summary>
+        public void Initialize()
+        {
+            if (!isInitialized)
+            {
+                isInitialized = true;
+
+                InternalInitialize();
+            }
+        }
+
+        protected virtual void InternalInitialize()
+        {
+            if (States == null)
+            {
+                States = GetDefaultInteractableStates();
+            }
+
+            InputAction = ResolveInputAction(InputActionId);
+
+            CurrentDimension = startDimensionIndex;
+
+            RefreshSetup();
+
+            IsEnabled = enabledOnStart;
+        }
 
         /// <summary>
         /// Force re-initialization of Interactable from events, themes and state references
