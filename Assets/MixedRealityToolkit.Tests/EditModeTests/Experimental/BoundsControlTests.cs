@@ -11,8 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     /// Tests for edit mode behavior of bounds control
     /// </summary>
     public class BoundsControlTests
-    {
-        
+    {       
         [Test]
         /// <summary>
         /// Tests configuring every property of bounds control in edit mode
