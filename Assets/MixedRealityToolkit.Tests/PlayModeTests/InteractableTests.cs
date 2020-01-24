@@ -778,7 +778,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestForceInitialize()
         {
             Object checkboxesPrefab = AssetDatabase.LoadAssetAtPath(DisabledInitializedPrefabAssetPath, typeof(Object));
-            var interactables = (Object.Instantiate(checkboxesPrefab) as GameObject).GetComponentsInChildren<Interactable>(true);
+            var result = Object.Instantiate(checkboxesPrefab, Vector3.forward * 1.0f, Quaternion.identity) as GameObject;
+            var interactables = result.GetComponentsInChildren<Interactable>(true);
 
             const int ExpectedCheckboxCount = 2;
             Assert.AreEqual(ExpectedCheckboxCount, interactables.Length);
@@ -801,19 +802,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Checkbox should still behave as expected even though it was pre-initialized
             {
                 disabledCheckbox.gameObject.SetActive(true);
+                disabledCheckbox.IsToggled = false;
 
                 // Subscribe to interactable's on click so we know the click went through
                 bool wasClicked = false;
                 disabledCheckbox.OnClick.AddListener(() => { wasClicked = true; });
 
-                yield return TestButtonUtilities.MoveHandToButton(disabledCheckbox.transform);
-                yield return TestButtonUtilities.MoveHandAwayFromButton(disabledCheckbox.transform);
+                Vector3 end = disabledCheckbox.transform.position - new Vector3(0f, 0.05f, 0f);
+                Vector3 start = end - new Vector3(0f, 0f, 0.5f);
 
-                yield return PlayModeTestUtilities.WaitForEnterKey();
+                yield return TestButtonUtilities.MoveHand(start, end);
+                yield return TestButtonUtilities.MoveHand(end, start);
 
-                //yield return TestButtonUtilities.TestClickPushButton(interactable.transform, targetStartPosition, translateTargetObject);
                 Assert.True(wasClicked, "Interactable was not clicked.");
             }
+
+            GameObject.Destroy(result);
         }
 
             #region Test Helpers
