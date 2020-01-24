@@ -252,6 +252,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
+            if (!isEnabled)
+            {
+
+            }
             base.Update();
 
             var profile = InputSimulationProfile;

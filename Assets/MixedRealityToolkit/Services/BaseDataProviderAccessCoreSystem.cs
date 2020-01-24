@@ -43,11 +43,27 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Update()
         {
+            if (!isEnabled)
+            {
+                return;
+            }
+
             base.Update();
 
             foreach (var provider in dataProviders)
             {
                 provider.Update();
+            }
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            base.Disable();
+
+            foreach (var provider in dataProviders)
+            {
+                provider.Disable();
             }
         }
 
