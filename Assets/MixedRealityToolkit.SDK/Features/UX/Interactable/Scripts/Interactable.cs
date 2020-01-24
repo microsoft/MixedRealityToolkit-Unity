@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return -1;
                 }
 
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return;
                 }
 
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return -1;
                 }
 
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return;
                 }
 
@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return false;
                 }
 
@@ -377,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return;
                 }
 
@@ -404,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.HasFocus because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.HasFocus because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return;
                 }
 
@@ -494,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return false;
                 }
 
@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (!isInitialized)
                 {
-                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Awake() has been called");
+                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
                     return;
                 }
 
@@ -636,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
-        // Track that the GameObject has been activated (i.e Awake() has been called)
+        // Track that the GameObject has been activated (i.e Awake() or Initialize() has been called)
         private bool isInitialized = false;
 
         #region MonoBehaviour Implementation
@@ -745,8 +745,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Interactable Initiation
 
         /// <summary>
-        /// Initialize and setup this Interactable component.
-        /// Generally called on Awake() but may be utilized to force intialization of buttons that are disabled on start
+        /// Initialize Interactable component and setups appropriate configuration
+        /// Generally called on Awake() but may be utilized to force intialization earlier. For example, if GameObject is disabled on start.
         /// </summary>
         public void Initialize()
         {
@@ -781,7 +781,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isInitialized)
             {
-                Debug.LogError($"Cannot setup Interactable because {gameObject.name} has not been initialized. Ensure Awake() has been called");
+                Debug.LogError($"Cannot setup Interactable because {gameObject.name} has not been initialized. Ensure Initialize() has been called");
                 return;
             }
 
@@ -887,7 +887,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isInitialized)
             {
-                Debug.LogError($"Cannot access value for Interactable State {state} because {gameObject.name} has not been initialized. Ensure Awake() has been called");
+                Debug.LogError($"Cannot access value for Interactable State {state} because {gameObject.name} has not been initialized. Ensure Initialize() has been called");
                 return -1;
             }
 
@@ -906,7 +906,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isInitialized)
             {
-                Debug.LogError($"Cannot set value for Interactable State {state} because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                Debug.LogError($"Cannot set value for Interactable State {state} because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
                 return;
             }
 
@@ -933,7 +933,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isInitialized)
             {
-                Debug.LogError($"Cannot reset input tracking states for Interactable because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                Debug.LogError($"Cannot reset input tracking states for Interactable because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
                 return;
             }
 
@@ -961,7 +961,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (!isInitialized)
             {
-                Debug.LogError($"Cannot reset all states for Interactable because {gameObject.name}  has not been initialized. Ensure Awake() has been called");
+                Debug.LogError($"Cannot reset all states for Interactable because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
                 return;
             }
 

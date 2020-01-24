@@ -201,7 +201,7 @@ One can create a simple button by adding the *Interactable* component to a GameO
 Take the button one step further, by creating a new profile, assigning the GameObject itself and creating a new theme. Furthermore, use the *OnClick* event to make something happen.
 
 > [!NOTE]
-> Making a [button pressable](README_Button.md) requires the`PressableButton` component. Additionally, the `PhysicalPressEventRouter` component is needed to funnel press events to the *Interactable* component.
+> Making a [button pressable](README_Button.md) requires the [`PressableButton`](xref:Microsoft.MixedReality.Toolkit.UI.PressableButton) component. Additionally, the [`PhysicalPressEventRouter`](xref:Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter) component is needed to funnel press events to the *Interactable* component.
 
 ### Creating toggle and multi-dimension buttons
 
@@ -225,6 +225,24 @@ myInteractable.IsToggled = true;
 
 // Get whether the Interactable is selected or not
 bool isSelected = myInteractable.IsToggled;
+```
+
+> [!IMPORTANT]
+> Most of the public properties and states on [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) require that the component be initialized before use. An example of this includes the `Interactable.IsToggled` property. *Interactable* is generally initialized via it's `Awake()`. However, `Awake()` will not be called for GameObject's that are disabled on start in a scene even though the GameObject is in the scene hierarchy.
+
+To force an Interactable to initialize and thus, be able to set various properties, call `Interactable.Initialize()` on Unity's main thread.
+
+```c#
+public MyController : MonoBehaviour
+{
+    public Interactable myButton;
+    ...
+    public void Setup()
+    {
+        myButton.Initialize();
+        myButton.IsToggled = true;
+    }
+}
 ```
 
 ##### Toggle button collection
