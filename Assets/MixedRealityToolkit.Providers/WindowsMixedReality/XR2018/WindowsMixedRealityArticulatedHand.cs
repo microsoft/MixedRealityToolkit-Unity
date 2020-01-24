@@ -3,12 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections.Generic;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 #if WINDOWS_UWP
 using Windows.Foundation.Metadata;
@@ -40,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            handDefinition = new WindowsMixedRealityArticulatedHandDefinition(inputSource, controllerHandedness);
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             articulatedHandApiAvailable = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionSourceState", "TryGetHandPose");
 #endif
@@ -49,62 +50,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// The Windows Mixed Reality articulated hands default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right articulated hands.</remarks>
-        public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
-        {
-            new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer),
-            new MixedRealityInteractionMapping(1, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
-            new MixedRealityInteractionMapping(2, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(3, "Grab", AxisType.SingleAxis, DeviceInputType.TriggerPress),
-            new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger)
-        };
+        public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
+
+        private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
+        private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
 
         #region IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
-        {
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            return unityJointPoses.TryGetValue(joint, out pose);
-#else
-            pose = MixedRealityPose.ZeroIdentity;
-            return false;
-#endif
-        }
+        public bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => unityJointPoses.TryGetValue(joint, out pose);
 
         #endregion IMixedRealityHand Implementation
 
         /// <inheritdoc/>
-        public override bool IsInPointingPose
-        {
-            get
-            {
-                bool valid = true;
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-                Vector3 palmNormal = unityJointOrientations[(int)HandJointKind.Palm] * (-1 * Vector3.up);
-                if (CursorBeamBackwardTolerance >= 0)
-                {
-                    Vector3 cameraBackward = -CameraCache.Main.transform.forward;
-                    if (Vector3.Dot(palmNormal.normalized, cameraBackward) > CursorBeamBackwardTolerance)
-                    {
-                        valid = false;
-                    }
-                }
-                if (valid && CursorBeamUpTolerance >= 0)
-                {
-                    if (Vector3.Dot(palmNormal, Vector3.up) > CursorBeamUpTolerance)
-                    {
-                        valid = false;
-                    }
-                }
-#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-                return valid;
-            }
-        }
+        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
 
 #if UNITY_WSA
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
-        private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
-
         private SpatialInteractionManager spatialInteractionManager = null;
         private SpatialInteractionManager SpatialInteractionManager
         {
@@ -122,25 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-#if WINDOWS_UWP
-        private HandMeshObserver handMeshObserver = null;
-        private int[] handMeshTriangleIndices = null;
-        private bool hasRequestedHandMeshObserver = false;
-        private Vector2[] handMeshUVs;
-#endif // WINDOWS_UWP
-
-        private readonly float CursorBeamBackwardTolerance = 0.5f;
-        private readonly float CursorBeamUpTolerance = 0.8f;
-
         private readonly bool articulatedHandApiAvailable = false;
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         #region Update data functions
 
-        /// <summary>
-        /// Update the controller data from the provided platform state
-        /// </summary>
-        /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
+        /// <inheritdoc />
         public override void UpdateController(InteractionSourceState interactionSourceState)
         {
             if (!Enabled) { return; }
@@ -154,54 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 switch (Interactions[i].InputType)
                 {
                     case DeviceInputType.IndexFinger:
-                        UpdateIndexFingerData(interactionSourceState, Interactions[i]);
+                        handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                         break;
                 }
             }
         }
-
-#if WINDOWS_UWP
-        protected void InitializeUVs(Vector3[] neutralPoseVertices)
-        {
-            if (neutralPoseVertices.Length == 0)
-            {
-                Debug.LogError("Loaded 0 verts for neutralPoseVertices");
-            }
-
-            float minY = neutralPoseVertices[0].y;
-            float maxY = minY;
-
-            for (int ix = 1; ix < neutralPoseVertices.Length; ix++)
-            {
-                Vector3 p = neutralPoseVertices[ix];
-
-                if (p.y < minY)
-                {
-                    minY = p.y;
-                }
-                else if (p.y > maxY)
-                {
-                    maxY = p.y;
-                }
-            }
-
-            float scale = 1.0f / (maxY - minY);
-
-            handMeshUVs = new Vector2[neutralPoseVertices.Length];
-
-            for (int ix = 0; ix < neutralPoseVertices.Length; ix++)
-            {
-                Vector3 p = neutralPoseVertices[ix];
-
-                handMeshUVs[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
-            }
-        }
-
-        private async void SetHandMeshObserver(SpatialInteractionSourceState sourceState)
-        {
-            handMeshObserver = await sourceState.Source.TryCreateHandMeshObserverAsync();
-        }
-#endif // WINDOWS_UWP
 
         /// <summary>
         /// Update the hand data from the device.
@@ -224,148 +130,38 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 if (sourceState.Source.Id.Equals(interactionSourceState.source.id))
                 {
-                    HandPose handPose = sourceState.TryGetHandPose();
-
 #if WINDOWS_UWP
-                    MixedRealityHandTrackingProfile handTrackingProfile = null;
-                    MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
-                    if (inputSystemProfile != null)
-                    {
-                        handTrackingProfile = inputSystemProfile.HandTrackingProfile;
-                    }
-
-                    if (handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization)
-                    {
-                        // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
-                        if (handMeshObserver == null && !hasRequestedHandMeshObserver)
-                        {
-                            SetHandMeshObserver(sourceState);
-                            hasRequestedHandMeshObserver = true;
-                        }
-
-                        if (handMeshObserver != null && handMeshTriangleIndices == null)
-                        {
-                            uint indexCount = handMeshObserver.TriangleIndexCount;
-                            ushort[] indices = new ushort[indexCount];
-                            handMeshObserver.GetTriangleIndices(indices);
-                            handMeshTriangleIndices = new int[indexCount];
-                            Array.Copy(indices, handMeshTriangleIndices, (int)handMeshObserver.TriangleIndexCount);
-
-                            // Compute neutral pose
-                            Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
-                            HandPose neutralPose = handMeshObserver.NeutralPose;
-                            var vertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
-                            HandMeshVertexState handMeshVertexState = handMeshObserver.GetVertexStateForPose(neutralPose);
-                            handMeshVertexState.GetVertices(vertexAndNormals);
-
-                            for (int i = 0; i < handMeshObserver.VertexCount; i++)
-                            {
-                                neutralPoseVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                            }
-
-                            // Compute UV mapping
-                            InitializeUVs(neutralPoseVertices);
-                        }
-
-                        if (handPose != null && handMeshObserver != null && handMeshTriangleIndices != null)
-                        {
-                            var vertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
-                            var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
-                            handMeshVertexState.GetVertices(vertexAndNormals);
-
-                            var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
-                            if (meshTransform.HasValue)
-                            {
-                                System.Numerics.Vector3 scale;
-                                System.Numerics.Quaternion rotation;
-                                System.Numerics.Vector3 translation;
-                                System.Numerics.Matrix4x4.Decompose(meshTransform.Value, out scale, out rotation, out translation);
-
-                                var handMeshVertices = new Vector3[handMeshObserver.VertexCount];
-                                var handMeshNormals = new Vector3[handMeshObserver.VertexCount];
-
-                                for (int i = 0; i < handMeshObserver.VertexCount; i++)
-                                {
-                                    handMeshVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                                    handMeshNormals[i] = vertexAndNormals[i].Normal.ToUnityVector3();
-                                }
-
-                                HandMeshInfo handMeshInfo = new HandMeshInfo
-                                {
-                                    vertices = handMeshVertices,
-                                    normals = handMeshNormals,
-                                    triangles = handMeshTriangleIndices,
-                                    uvs = handMeshUVs,
-                                    position = translation.ToUnityVector3(),
-                                    rotation = rotation.ToUnityQuaternion()
-                                };
-
-                                CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // if hand mesh visualization is disabled make sure to destroy our hand mesh observer if it has already been created
-                        if (handMeshObserver != null)
-                        {
-                            // notify that hand mesh has been updated (cleared)
-                            HandMeshInfo handMeshInfo = new HandMeshInfo();
-                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
-                            hasRequestedHandMeshObserver = false;
-                            handMeshObserver = null;
-                        }
-                    }
+                    handDefinition?.UpdateHandMesh(sourceState);
 #endif // WINDOWS_UWP
+
+                    HandPose handPose = sourceState.TryGetHandPose();
 
                     if (handPose != null && handPose.TryGetJoints(WindowsMixedRealityUtilities.SpatialCoordinateSystem, jointIndices, jointPoses))
                     {
                         for (int i = 0; i < jointPoses.Length; i++)
                         {
-                            unityJointOrientations[i] = jointPoses[i].Orientation.ToUnityQuaternion();
-                            unityJointPositions[i] = jointPoses[i].Position.ToUnityVector3();
+                            Vector3 jointPosition = jointPoses[i].Position.ToUnityVector3();
+                            Quaternion jointOrientation = jointPoses[i].Orientation.ToUnityQuaternion();
 
-                            // We want the controller to follow the Playspace, so fold in the playspace transform here to 
-                            // put the controller pose into world space.
-                            unityJointPositions[i] = MixedRealityPlayspace.TransformPoint(unityJointPositions[i]);
-                            unityJointOrientations[i] = MixedRealityPlayspace.Rotation * unityJointOrientations[i];
+                            // We want the joints to follow the playspace, so fold in the playspace transform here to 
+                            // put the joint pose into world space.
+                            jointPosition = MixedRealityPlayspace.TransformPoint(jointPosition);
+                            jointOrientation = MixedRealityPlayspace.Rotation * jointOrientation;
 
-                            if (jointIndices[i] == HandJointKind.IndexTip)
+                            TrackedHandJoint handJoint = ConvertHandJointKindToTrackedHandJoint(jointIndices[i]);
+
+                            if (handJoint == TrackedHandJoint.IndexTip)
                             {
                                 lastIndexTipRadius = jointPoses[i].Radius;
                             }
 
-                            TrackedHandJoint handJoint = ConvertHandJointKindToTrackedHandJoint(jointIndices[i]);
-
-                            if (!unityJointPoses.ContainsKey(handJoint))
-                            {
-                                unityJointPoses.Add(handJoint, new MixedRealityPose(unityJointPositions[i], unityJointOrientations[i]));
-                            }
-                            else
-                            {
-                                unityJointPoses[handJoint] = new MixedRealityPose(unityJointPositions[i], unityJointOrientations[i]);
-                            }
+                            unityJointPoses[handJoint] = new MixedRealityPose(jointPosition, jointOrientation);
                         }
-                        CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
+
+                        handDefinition?.UpdateHandJoints(unityJointPoses);
                     }
+                    break;
                 }
-            }
-#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
-        }
-
-        private void UpdateIndexFingerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
-        {
-#if WINDOWS_UWP || DOTNETWINRT_PRESENT
-            UpdateCurrentIndexPose();
-
-            // Update the interaction data source
-            interactionMapping.PoseData = currentIndexPose;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
@@ -404,9 +200,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         };
 
         private readonly JointPose[] jointPoses = new JointPose[jointIndices.Length];
-        private readonly Vector3[] unityJointPositions = new Vector3[jointIndices.Length];
-        private readonly Quaternion[] unityJointOrientations = new Quaternion[jointIndices.Length];
-        private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private float lastIndexTipRadius = 0;
 
         private TrackedHandJoint ConvertHandJointKindToTrackedHandJoint(HandJointKind handJointKind)
@@ -449,18 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 default: return TrackedHandJoint.None;
             }
         }
-
-        #region Protected InputSource Helpers
-
-        protected void UpdateCurrentIndexPose()
-        {
-            currentIndexPose.Rotation = unityJointOrientations[(int)HandJointKind.IndexTip];
-
-            var skinOffsetFromBone = (currentIndexPose.Rotation * Vector3.forward * lastIndexTipRadius);
-            currentIndexPose.Position = (unityJointPositions[(int)HandJointKind.IndexTip] + skinOffsetFromBone);
-        }
-
-        #endregion Private InputSource Helpers
 
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 #endif // UNITY_WSA
