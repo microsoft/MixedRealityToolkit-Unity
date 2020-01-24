@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (eventSystemReference != null)
             {
-                if (Application.isEditor)
+                if (!Application.isPlaying)
                 {
                     Object.DestroyImmediate(eventSystemReference);
                 }
