@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// The state logic class for storing & comparing states which determines the current value.
+        /// The state logic class for storing and comparing states which determines the current value.
         /// </summary>
         public InteractableStates StateManager { get; protected set; }
 
