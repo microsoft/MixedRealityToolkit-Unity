@@ -454,6 +454,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #endregion Public Properties
 
+        #region Private Properties
+        private bool IsInitialized
+        {
+            get
+            {
+                return scaleHandles != null &&
+                    rotationHandles != null &&
+                    boxDisplay != null &&
+                    links != null &&
+                    proximityEffect != null;
+            }
+        }
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -478,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// </summary>
         public void CreateRig()
         {
-            if (!IsInitialized())
+            if (!IsInitialized)
             {
                 return;
             }
@@ -838,12 +853,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
- 
-        private bool IsInitialized()
-        {
-            return scaleHandles != null && rotationHandles != null && boxDisplay != null && links != null && proximityEffect != null;
-        }
-
         private bool DoesActivationMatchFocus(FocusEventData eventData)
         {
             switch (activation)
@@ -913,7 +922,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void UpdateRigVisibilityInInspector()
         {
-            if (!IsInitialized())
+            if (!IsInitialized)
             {
                 return;
             }
@@ -1169,7 +1178,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private void ResetVisuals()
         {
-            if (currentPointer != null || !IsInitialized())
+            if (currentPointer != null || !IsInitialized)
             {
                 return;
             }
