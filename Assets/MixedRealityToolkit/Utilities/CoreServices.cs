@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets first matching data provider of provided type T registered to the provided mixed reality service.
         /// </summary>
-        /// <typeparam name="T">Type of data provider to return. Must implement and/or extend from <see cref="IMixedRealityDataProvider" /></typeparam>
+        /// <typeparam name="T">Type of data provider to return. Must implement and/or extend from <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider" /></typeparam>
         /// <param name="service">This function will attempt to get first available data provider registered to this service.</param>
         /// <remarks>
         /// Service parameter is expected to implement <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess" />. If not, then will return default(T)
