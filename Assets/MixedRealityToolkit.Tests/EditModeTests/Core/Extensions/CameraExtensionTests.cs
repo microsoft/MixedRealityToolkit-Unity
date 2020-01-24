@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Extensions
 {
     public class CameraExtensionTests
     {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
 {
     /// <summary>
     /// Tests for edit mode behavior of bounds control
