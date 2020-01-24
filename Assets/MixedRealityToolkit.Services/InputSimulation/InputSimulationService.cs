@@ -48,16 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
-        private HandSimulationMode handSimulationMode;
         /// <inheritdoc />
-        public HandSimulationMode HandSimulationMode
-        {
-            get => handSimulationMode;
-            set
-            {
-                handSimulationMode = value;
-            }
-        }
+        public HandSimulationMode HandSimulationMode { get; set; }
 
         /// <inheritdoc />
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
@@ -72,42 +64,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsAlwaysVisibleHandLeft
         {
-            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false; }
+            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false;
             set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleLeft = value; } }
         }
 
         /// <inheritdoc />
         public bool IsAlwaysVisibleHandRight
         {
-            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false; }
+            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false;
             set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleRight = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 HandPositionLeft
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
+            get => handDataProvider != null ? handDataProvider.HandStateLeft.ViewportPosition : Vector3.zero;
             set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 HandPositionRight
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
+            get => handDataProvider != null ? handDataProvider.HandStateRight.ViewportPosition : Vector3.zero;
             set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportPosition = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 HandRotationLeft
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
+            get => handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero;
             set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
         public Vector3 HandRotationRight
         {
-            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
+            get => handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero;
             set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportRotation = value; } }
         }
 
@@ -215,12 +207,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
-        /// <inheritdoc />
         public override void Enable()
         {
             base.Enable();
@@ -252,6 +238,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             base.Update();
 
             var profile = InputSimulationProfile;

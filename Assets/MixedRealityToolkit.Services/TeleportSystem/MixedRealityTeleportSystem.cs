@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <param name="hotSpot">The teleport target</param>
         private void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }

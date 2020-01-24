@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Update()
         {
-            if (!isEnabled)
+            if (!IsEnabled)
             {
                 return;
             }

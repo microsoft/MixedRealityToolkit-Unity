@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-
 namespace Microsoft.MixedReality.Toolkit
 {
     public abstract class BaseCoreSystem : BaseEventSystem
@@ -15,22 +14,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             ConfigurationProfile = profile;
             Priority = 5; // Core systems have a higher default priority than other services
-        }
-
-        protected bool isEnabled = false;
-
-        /// <inheritdoc />
-        public override void Enable()
-        {
-            base.Enable();
-            isEnabled = true;
-        }
-
-        /// <inheritdoc />
-        public override void Disable()
-        {
-            base.Disable();
-            isEnabled = false;
         }
 
         #region Obsolete
