@@ -156,11 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         ///</summary>
         public bool IsTouching
         {
-            get
-            {
-                return isTouching;
-            }
-
+            get => isTouching;
             private set
             {
                 if (value != isTouching)
@@ -189,18 +185,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool IsPressing { get; private set; }
 
-
         /// <summary>
         /// Transform for local to world space in the world direction of a press
         /// Multiply local scale positions by this value to convert to world space
         /// </summary>
-        public float LocalToWorldScale
-        {
-            get
-            {
-                return 1.0f / WorldToLocalScale;
-            }
-        }
+        public float LocalToWorldScale => 1.0f / WorldToLocalScale;
 
         /// <summary>
         /// The press direction of the button as defined by a NearInteractionTouchableSurface.
@@ -221,20 +210,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Transform PushSpaceSourceTransform
         {
-            get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
+            get => movingButtonVisuals != null ? movingButtonVisuals.transform : transform; 
         }
 
         /// <summary>
         /// Transform for world to local space in the world direction of press
         /// Multiply world scale positions by this value to convert to local space
         /// </summary>
-        private float WorldToLocalScale
-        {
-            get
-            {
-                return transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
-            }
-        }
+        private float WorldToLocalScale => transform.InverseTransformVector(WorldSpacePressDirection).magnitude;
         
         /// <summary>
         /// Initial offset from moving visuals to button
@@ -421,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (touchPoints.ContainsKey(eventData.Controller))
             {
-                // Giving a last chance to check if pressed ocurred before another Near interaction becomes the closest to pointer
+                // When focus is lost, before removing controller, update the respective touch point to give a last chance for checking if pressed occurred 
                 touchPoints[eventData.Controller] = eventData.InputData;
                 UpdateTouch();
 

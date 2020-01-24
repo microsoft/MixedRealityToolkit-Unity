@@ -82,15 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         private IEnumerator PressButtonWithHand()
         {
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             Vector3 p1 = new Vector3(0, 0, 0.5f);
             Vector3 p2 = new Vector3(0, 0, 1.08f);
             Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, p1);
-            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(p1);
+            yield return hand.MoveTo(p2);
+            yield return hand.MoveTo(p3);
         }
 
         #endregion
@@ -282,14 +281,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             // move the hand quickly from very far distance into the button and check if it was pressed
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            TestHand hand = new TestHand(Handedness.Right);
             int numSteps = 2;
             Vector3 p1 = new Vector3(0, 0, -20.0f);
             Vector3 p2 = new Vector3(0, 0, 0.02f);
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return hand.Show(p1);
+            yield return hand.MoveTo(p2, numSteps);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
 
@@ -326,15 +324,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             // Move the hand so the pointer passes through the two buttons 
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            TestHand hand = new TestHand(Handedness.Right);
             float handReach = 0.1f;
             int numSteps = (int)Mathf.Ceil(handReach / (distance * 0.5f)); // Maximum hand speed in order to trigger touch started in the first button before the second button becomes the closest touchable to pointer
-            Vector3 p1 = new Vector3(0, 0, -handReach/2);
-            Vector3 p2 = new Vector3(0, 0, handReach/2);
 
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService, numSteps);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return hand.Show(new Vector3(0, 0, -handReach / 2));
+            yield return hand.Move(new Vector3(0,0, handReach), numSteps);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when a second button is nearby");
 
@@ -678,7 +673,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var method = typeof(PressableButton).GetMethod("UpdateMovingVisualsPosition", BindingFlags.NonPublic | BindingFlags.Instance);
             method.Invoke(button, System.Array.Empty<object>());
         }
-
 
         /// <summary>
         /// Tests if Interactable is internally disabled, then the PhysicalPressEventRouter
