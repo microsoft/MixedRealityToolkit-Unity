@@ -3,12 +3,12 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections.Generic;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 #if WINDOWS_UWP
 using Windows.Foundation.Metadata;
