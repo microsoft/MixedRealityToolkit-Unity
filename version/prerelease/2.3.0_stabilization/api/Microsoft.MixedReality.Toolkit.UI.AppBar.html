@@ -470,14 +470,14 @@ to force the app bar to appear below the object</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_AppBar_TargetBoundingBox_" data-uid="Microsoft.MixedReality.Toolkit.UI.AppBar.TargetBoundingBox*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_AppBar_TargetBoundingBox" data-uid="Microsoft.MixedReality.Toolkit.UI.AppBar.TargetBoundingBox">TargetBoundingBox</h4>
-  <div class="markdown level1 summary"><p>The bounding box this AppBar will use for its placement and control for manipulation</p>
+  <a id="Microsoft_MixedReality_Toolkit_UI_AppBar_Target_" data-uid="Microsoft.MixedReality.Toolkit.UI.AppBar.Target*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_AppBar_Target" data-uid="Microsoft.MixedReality.Toolkit.UI.AppBar.Target">Target</h4>
+  <div class="markdown level1 summary"><p>Object the app bar is controlling - This object must implement the IBoundsTargetProvider.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoundingBox TargetBoundingBox { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public MonoBehaviour Target { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -489,7 +489,7 @@ to force the app bar to appear below the object</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.html">BoundingBox</a></td>
+        <td><span class="xref">MonoBehaviour</span></td>
         <td></td>
       </tr>
     </tbody>

@@ -107,7 +107,7 @@ of the object. It further provides a proximity effect for scale and rotation han
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BoundingBox : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class BoundingBox : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IBoundsTargetProvider</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -420,6 +420,32 @@ of the object. It further provides a proximity effect for scale and rotation han
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseGrowRate_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseGrowRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseGrowRate" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseGrowRate">CloseGrowRate</h4>
+  <div class="markdown level1 summary"><p>Scaling animation velocity from medium to close proximity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CloseGrowRate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseScale*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseScale" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseScale">CloseScale</h4>
   <div class="markdown level1 summary"><p>A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger handle size</p>
@@ -466,6 +492,32 @@ of the object. It further provides a proximity effect for scale and rotation han
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FarGrowRate_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FarGrowRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FarGrowRate" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FarGrowRate">FarGrowRate</h4>
+  <div class="markdown level1 summary"><p>Scaling animation velocity from medium to far proximity state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FarGrowRate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -550,6 +602,32 @@ of the object. It further provides a proximity effect for scale and rotation han
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleCloseProximity_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleCloseProximity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleCloseProximity" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleCloseProximity">HandleCloseProximity</h4>
+  <div class="markdown level1 summary"><p>Distance between handle and hand that will trigger the close proximity effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float HandleCloseProximity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial">HandleGrabbedMaterial</h4>
   <div class="markdown level1 summary"><p>Material applied to handles while they are a grabbed</p>
@@ -602,6 +680,32 @@ of the object. It further provides a proximity effect for scale and rotation han
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMediumProximity_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMediumProximity*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMediumProximity" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMediumProximity">HandleMediumProximity</h4>
+  <div class="markdown level1 summary"><p>Distance between handle and hand before proximity scaling will be triggered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float HandleMediumProximity { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandlesIgnoreCollider_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandlesIgnoreCollider*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandlesIgnoreCollider" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandlesIgnoreCollider">HandlesIgnoreCollider</h4>
   <div class="markdown level1 summary"><p>Add a Collider here if you do not want the handle colliders to interact with another object's collider.</p>
@@ -648,6 +752,32 @@ of the object. It further provides a proximity effect for scale and rotation han
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_MediumGrowRate_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.MediumGrowRate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_MediumGrowRate" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.MediumGrowRate">MediumGrowRate</h4>
+  <div class="markdown level1 summary"><p>Scaling animation velocity from far to medium proximity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MediumGrowRate { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td></td>
       </tr>
     </tbody>
