@@ -1,20 +1,20 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
+namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// A Windows Mixed Reality GGV hand instance.
+    /// A Windows Mixed Reality GGV hand instance for XR SDK.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.GGVHand,
         new[] { Handedness.Left, Handedness.Right, Handedness.None })]
-    public class WindowsMixedRealityGGVHand : BaseWindowsMixedRealitySource
+    public class WindowsMixedRealityXRSDKGGVHand : BaseWindowsMixedRealityXRSDKSource
     {
-        public WindowsMixedRealityGGVHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        public WindowsMixedRealityXRSDKGGVHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
         : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         /// <summary>
