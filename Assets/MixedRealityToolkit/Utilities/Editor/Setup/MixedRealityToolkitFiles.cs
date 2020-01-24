@@ -421,13 +421,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (generatedDirs == null || !generatedDirs.Any())
             {
                 string parentFolderPath = Directory.GetParent(folderPath).FullName;
-                string generatedFolderPath = parentFolderPath + "\\" + "MixedRealityToolkit.Generated";
+                string generatedFolderPath = Path.Combine(parentFolderPath, "MixedRealityToolkit.Generated");
                 if (!Directory.Exists(generatedFolderPath))
                 {
                     Directory.CreateDirectory(generatedFolderPath);
                 }
 
-                string generatedSentinelFilePath = generatedFolderPath + "\\" + "MRTK.Generated.sentinel";
+                string generatedSentinelFilePath = Path.Combine(generatedFolderPath, "MRTK.Generated.sentinel");
                 if (!File.Exists(generatedSentinelFilePath))
                 {
                     // Make sure we create and dispose/close the filestream just created

@@ -26,9 +26,9 @@ The following software is required.
 - [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
 - [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS or 2019 (2019.3 recommended)
 
-NuGet requirements
+**NuGet requirements**
 
-If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
 
 - [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
@@ -62,9 +62,9 @@ The following software is required.
 - [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
 - [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
 
-NuGet requirements
+**NuGet requirements**
 
-If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
 
 - [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
@@ -108,7 +108,7 @@ For the smoothest upgrade path, please use the following steps.
 
 **Updating from NuGet**
 
-If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
+If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
 
 1. Select **NuGet > Manage NuGet Packages**
 1. Select the **Online** tab and click **Refresh**
@@ -359,9 +359,9 @@ The following software is required.
 - Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
 - Unity 2018.4, 2019.1 or 2019.2
 
-NuGet requirements
+**NuGet requirements**
 
-If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended..
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
 
