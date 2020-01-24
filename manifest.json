@@ -6538,7 +6538,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "+dzEjNyx2f6ep7P8EyMuLA=="
+          "hash": "e7AzslX9WZzy7bsmUYcxtw=="
         }
       },
       "is_incremental": false,
@@ -6550,7 +6550,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTK_PackageContents.html",
-          "hash": "vkaDK5hW+PEUGfc5+UPtng=="
+          "hash": "LN0HIg21hDAEll8EbLyIbQ=="
         }
       },
       "is_incremental": false,
@@ -6862,7 +6862,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "S6cSnEwmJNaomPX9xZB1fQ=="
+          "hash": "vJYbglB/ZcaLjcrNp6xLFQ=="
         }
       },
       "is_incremental": false,
@@ -7150,7 +7150,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "8W2Wl3rekaD9FKXt92RsUw=="
+          "hash": "15NHxGsDJ5W1B5eCLjbYpQ=="
         }
       },
       "is_incremental": false,
@@ -7725,7 +7725,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraExtensions.html",
-          "hash": "/nyqkv3FLZr+VcJ3uYC/1Q=="
+          "hash": "k50+wLmGvW2zZgTebv0OLA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraFOVChecker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraFOVChecker.html",
+          "hash": "f3vL6A16zGJ/2NpT15WQfg=="
         }
       },
       "is_incremental": false,
@@ -14577,7 +14589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html",
-          "hash": "bidkdJnI51E19AH3sKs6BA=="
+          "hash": "vX8M/WCUv6hBdo4kTZuc7w=="
         }
       },
       "is_incremental": false,
@@ -19401,7 +19413,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Extensions.CameraExtensionTests.html",
-          "hash": "mTp+LU9rL7cbY1WjahNlMw=="
+          "hash": "2JJ1MSnz0n1KPPJQ/mPBKA=="
         }
       },
       "is_incremental": false,
@@ -19665,7 +19677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PointerTests.html",
-          "hash": "85maquIrXJraM4eoMKMwgA=="
+          "hash": "GrJke6BBqb29YWUatDdNSQ=="
         }
       },
       "is_incremental": false,
@@ -25617,7 +25629,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "XHVD3TqSVa/jtlbv2m5NPA=="
+          "hash": "1xsdHVF9OjS8r6XNVrtoZA=="
         }
       },
       "is_incremental": false,
@@ -25629,7 +25641,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Q8YWv9lJADdkin4aw2Lw6g=="
+          "hash": "mVAx8JsP8L6R99wZrjnWWg=="
         }
       },
       "is_incremental": false,
@@ -25694,17 +25706,17 @@
           "total_file_count": 146,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1537,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1536,
           "skipped_file_count": 0
         }
       }
