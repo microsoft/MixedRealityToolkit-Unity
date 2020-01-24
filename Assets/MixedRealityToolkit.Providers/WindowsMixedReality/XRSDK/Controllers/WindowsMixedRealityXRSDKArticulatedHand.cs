@@ -40,10 +40,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
-        
+
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
+
+#if WINDOWS_UWP && WMR_ENABLED
         private readonly List<object> states = new List<object>();
+#endif // WINDOWS_UWP && WMR_ENABLED
 
         #region IMixedRealityHand Implementation
 
