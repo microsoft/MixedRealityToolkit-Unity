@@ -1153,7 +1153,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Builds.Clear();
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"AppPackages\\{PlayerSettings.productName}" : $"{PlayerSettings.productName}\\AppPackages";
+            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? Path.Combine("AppPackages", PlayerSettings.productName) : Path.Combine(PlayerSettings.productName, "AppPackages");
 
             try
             {

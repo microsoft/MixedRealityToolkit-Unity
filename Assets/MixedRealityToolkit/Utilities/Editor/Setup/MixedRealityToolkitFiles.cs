@@ -101,10 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static Task searchForFoldersTask = null;
         private static CancellationTokenSource searchForFoldersToken;
 
-        private static string NormalizeSeparators(string path) => 
-            path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
-
-        private static string FormatSeparatorsForUnity(string path) => path?.Replace('\\', '/');
+        // This ensures directory separator chars are platform independent. Given path might use \ or /
+        private static string NormalizeSeparators(string path) 
+            => path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 
         private static bool isInitialized = false;
 
@@ -132,7 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
-        public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath)?.Replace(Application.dataPath, "Assets");
+        public static string GetAssetDatabasePath(string absolutePath) 
+            // Use Path.GetFullPath to ensure proper Path.DirectorySeparatorChar is used depending on our editor platform
+            => Path.GetFullPath(absolutePath)?.Replace(Path.GetFullPath(Application.dataPath), "Assets");
 
         /// <summary>
         /// Returns a collection of MRTK Core directories found in the project.
@@ -476,13 +477,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return null;
             }
 
+            mrtkPath = NormalizeSeparators(mrtkPath);
+
             if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
             {
                 string path = modFolders
                     .Select(t => Path.Combine(t, mrtkPath))
                     .FirstOrDefault(t => searchType == SearchType.File ? File.Exists(t) : Directory.Exists(t));
+
                 return path;
             }
+
             return null;
         }
 

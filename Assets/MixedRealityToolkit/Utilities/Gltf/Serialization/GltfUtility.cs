@@ -134,12 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
 
             gltfObject.Uri = uri;
-            int nameStart = uri.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal) + 1;
-            int nameLength = uri.Length - nameStart;
 
             try
             {
-                gltfObject.Name = Path.GetFileNameWithoutExtension(uri.Substring(nameStart, nameLength));
+                gltfObject.Name = Path.GetFileNameWithoutExtension(uri);
             }
             catch (ArgumentException)
             {
