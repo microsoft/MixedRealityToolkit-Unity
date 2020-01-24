@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// The state logic for comparing state
+        /// The state logic class for storing & comparing states which determines the current value.
         /// </summary>
         public InteractableStates StateManager { get; protected set; }
 
@@ -125,21 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return -1;
-                }
-
+                EnsureInitialized();
                 return Dimensions;
             }
             set
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.NumOfDimensions because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return;
-                }
+                EnsureInitialized();
 
                 if (Dimensions != value)
                 {
@@ -175,21 +166,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return -1;
-                }
-
+                EnsureInitialized();
                 return dimensionIndex;
             }
             set
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.CurrentDimension because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return;
-                }
+                EnsureInitialized();
 
                 if (dimensionIndex != value)
                 {
@@ -365,21 +347,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Note the inverse setting since targeting "Disable" state but property is concerning "Enabled"
             get
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return false;
-                }
-
                 return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0);
             }
             set
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.IsEnabled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return;
-                }
+                EnsureInitialized();
 
                 if (IsEnabled != value)
                 {
@@ -402,11 +374,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0;
             set
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.HasFocus because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return;
-                }
+                EnsureInitialized();
 
                 if (HasFocus != value)
                 {
@@ -490,23 +458,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </remarks>
         public virtual bool IsToggled
         {
-            get
-            {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return false;
-                }
-
-                return GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
-            }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
             set
             {
-                if (!isInitialized)
-                {
-                    Debug.LogError($"Cannot access Interactable.IsToggled because {gameObject.name}  has not initialized. Ensure Initialize() has been called");
-                    return;
-                }
+                EnsureInitialized();
 
                 if (IsToggled != value)
                 {
@@ -643,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Awake()
         {
-            Initialize();
+            EnsureInitialized();
         }
 
         protected virtual void OnEnable()
@@ -745,20 +700,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Interactable Initiation
 
         /// <summary>
-        /// Initialize Interactable component and setups appropriate configuration
-        /// Generally called on Awake() but may be utilized to force intialization earlier. For example, if GameObject is disabled on start.
+        /// Ensure this Interactable component has initialized. Must be called on Unity main thread. 
+        /// Returns true if has already been initialized, false otherwise. If has not been initialized, then will call Initialize()
         /// </summary>
-        public void Initialize()
+        private bool EnsureInitialized()
         {
             if (!isInitialized)
             {
                 isInitialized = true;
 
-                InternalInitialize();
+                Initialize();
+
+                return false;
             }
+
+            return true;
         }
 
-        protected virtual void InternalInitialize()
+        protected virtual void Initialize()
         {
             if (States == null)
             {
@@ -777,13 +736,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Force re-initialization of Interactable from events, themes and state references
         /// </summary>
+        /// <remarks>
+        /// This recreates the state machine inside Interactable and thus wipes any pre-existing state values held
+        /// </remarks>
         public void RefreshSetup()
         {
-            if (!isInitialized)
-            {
-                Debug.LogError($"Cannot setup Interactable because {gameObject.name} has not been initialized. Ensure Initialize() has been called");
-                return;
-            }
+            EnsureInitialized();
 
             SetupEvents();
             SetupThemes();
@@ -885,11 +843,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int GetStateValue(InteractableStates.InteractableStateEnum state)
         {
-            if (!isInitialized)
-            {
-                Debug.LogError($"Cannot access value for Interactable State {state} because {gameObject.name} has not been initialized. Ensure Initialize() has been called");
-                return -1;
-            }
+            EnsureInitialized();
 
             if (StateManager != null)
             {
@@ -904,11 +858,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void SetState(InteractableStates.InteractableStateEnum state, bool value)
         {
-            if (!isInitialized)
-            {
-                Debug.LogError($"Cannot set value for Interactable State {state} because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
-                return;
-            }
+            EnsureInitialized();
 
             if (StateManager != null)
             {
@@ -931,11 +881,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetInputTrackingStates()
         {
-            if (!isInitialized)
-            {
-                Debug.LogError($"Cannot reset input tracking states for Interactable because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
-                return;
-            }
+            EnsureInitialized();
 
             HasFocus = false;
             HasPress = false;
@@ -959,11 +905,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetAllStates()
         {
-            if (!isInitialized)
-            {
-                Debug.LogError($"Cannot reset all states for Interactable because {gameObject.name}  has not been initialized. Ensure Initialize() has been called");
-                return;
-            }
+            EnsureInitialized();
 
             focusingPointers.Clear();
             pressingInputSources.Clear();

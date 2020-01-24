@@ -772,7 +772,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test if Button state is reset when it goes out of focus from a pressed state
+        /// Ensure a disabled Interactable initializes when accessing one of it's properties even though it's Awake() has not been called
         /// </summary>
         [UnityTest]
         public IEnumerator TestForceInitialize()
@@ -788,14 +788,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var enabledCheckbox = isFirstActive ? interactables[0] : interactables[1];
             var disabledCheckbox = isFirstActive ? interactables[1] : interactables[0];
 
-            // No error messages should fire
+            // No error messages should fire.
             enabledCheckbox.IsToggled = true;
+            Assert.IsTrue(enabledCheckbox.IsToggled);
 
-            disabledCheckbox.IsToggled = true;
-            LogAssert.Expect(LogType.Error, $"Cannot access Interactable.IsToggled because {disabledCheckbox.name}  has not initialized. Ensure Initialize() has been called");
-
-            // Force initialize and validate that no errors are thrown and values persist
-            disabledCheckbox.Initialize();
+            // Disabled checkbox should auto-initialize even though it's Awake() has not been called
             disabledCheckbox.IsToggled = true;
             Assert.IsTrue(disabledCheckbox.IsToggled);
 

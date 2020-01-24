@@ -227,24 +227,6 @@ myInteractable.IsToggled = true;
 bool isSelected = myInteractable.IsToggled;
 ```
 
-> [!IMPORTANT]
-> Most of the public properties and states on [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) require that the component be initialized before use. An example of this includes the `Interactable.IsToggled` property. *Interactable* is generally initialized via it's `Awake()`. However, `Awake()` will not be called for GameObject's that are disabled on start in a scene even though the GameObject is in the scene hierarchy.
-
-To force an Interactable to initialize and thus, be able to set various properties, call `Interactable.Initialize()` on Unity's main thread.
-
-```c#
-public MyController : MonoBehaviour
-{
-    public Interactable myButton;
-    ...
-    public void Setup()
-    {
-        myButton.Initialize();
-        myButton.IsToggled = true;
-    }
-}
-```
-
 ##### Toggle button collection
 
 It is common to have a list of toggle buttons where only one can be active at any given time, also known as a radial set or radio buttons etc.
