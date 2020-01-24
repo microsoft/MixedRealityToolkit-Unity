@@ -27,6 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Detect when we enter player mode so we can try checking for optimal configuration
             EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
 
+            // Subscribe to editor application update which will call us once the editor is initialized and running
+            EditorApplication.update += OnInit;
+        }
+
+        private static void OnInit()
+        {
+            // We only want to execute once to initialize, unsubscribe from update event
+            EditorApplication.update -= OnInit;
+
             ShowProjectConfigurationDialog();
         }
 

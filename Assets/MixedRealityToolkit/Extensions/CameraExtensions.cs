@@ -36,12 +36,13 @@ namespace Microsoft.MixedReality.Toolkit
             Vector3 screenPoint = camera.WorldToViewportPoint(position);
 
             return screenPoint.z >= camera.nearClipPlane && screenPoint.z <= camera.farClipPlane
-                && screenPoint.x >= 0 && screenPoint.x <= 1 
+                && screenPoint.x >= 0 && screenPoint.x <= 1
                 && screenPoint.y >= 0 && screenPoint.y <= 1;
         }
 
+
         /// <summary>
-        /// Returns true if a point is in the a cone inscribed into the Camera's frustrum, false otherwise
+        /// Returns true if a point is in the a cone inscribed into the Camera's frustum, false otherwise
         /// The cone is inscribed to a radius equal to the vertical height of the camera's FOV.
         /// By default, the cone's tip is "chopped off" by an amount defined by the camera's
         /// far and near clip planes.

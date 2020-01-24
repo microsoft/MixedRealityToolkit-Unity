@@ -9,15 +9,14 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
-    /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>
+    /// The Mixed Reality Toolkit's implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>.
     /// </summary>
     public class MixedRealityTeleportSystem : BaseCoreSystem, IMixedRealityTeleportSystem
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MixedRealityTeleportSystem() : base(null) // Teleport system does not use a profile
-        { }
+        public MixedRealityTeleportSystem() : base(null) { } // Teleport system does not use a profile
 
         private TeleportEventData teleportEventData;
 
@@ -28,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private Vector3 targetRotation = Vector3.zero;
 
         /// <summary>
-        /// only used to clean up event system when shutting down if this system created one.
+        /// Used to clean up event system when shutting down, if this system created one.
         /// </summary>
         private GameObject eventSystemReference = null;
 
@@ -72,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     }
                     else
                     {
-                        Debug.Log("The Input System didn't properly add an event system to your scene. Please make sure the Input System's priority is set higher than the teleport system.");
+                        Debug.Log("The input system didn't properly add an event system to your scene. Please make sure the input system's priority is set higher than the teleport system.");
                     }
                 }
                 else if (eventSystems.Length > 1)
@@ -92,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (eventSystemReference != null)
             {
-                if (Application.isEditor)
+                if (!Application.isPlaying)
                 {
                     Object.DestroyImmediate(eventSystemReference);
                 }
