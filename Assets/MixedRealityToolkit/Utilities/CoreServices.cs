@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets first matching <see cref="IMixedRealityInputDeviceManager"/> or extension thereof for CoreServices.InputSystem
+        /// Gets first matching <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager"/> or extension thereof for CoreServices.InputSystem
         /// </summary>
         public static T GetInputSystemDataProvider<T>() where T : IMixedRealityInputDeviceManager
         {
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets first matching <see cref="IMixedRealitySpatialAwarenessObserver"/> or extension thereof for CoreServices.SpatialAwarenessSystem
+        /// Gets first matching <see cref="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> or extension thereof for CoreServices.SpatialAwarenessSystem
         /// </summary>
         public static T GetSpatialAwarenessSystemDataProvider<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">Type of data provider to return. Must implement and/or extend from <see cref="IMixedRealityDataProvider" /> </typeparam>
         /// <param name="service">This function will attempt to get first available data provider registered to this service.</param>
         /// <remarks>
-        /// Service parameter is expected to implement <see cref="IMixedRealityDataProviderAccess" />. If not, then will return default(T)
+        /// Service parameter is expected to implement <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess" />. If not, then will return default(T)
         /// </remarks>
         public static T GetDataProvider<T>(IMixedRealityService service) where T : IMixedRealityDataProvider
         {
