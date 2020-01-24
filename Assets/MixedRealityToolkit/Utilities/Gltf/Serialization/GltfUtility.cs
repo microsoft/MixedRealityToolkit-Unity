@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (useBackgroundThread) { await BackgroundThread; }
 
-            if (uri.EndsWith(".gltf"))
+            if (uri.ToLower().EndsWith(".gltf"))
             {
                 string gltfJson = File.ReadAllText(uri);
 
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     return null;
                 }
             }
-            else if (uri.EndsWith(".glb"))
+            else if (uri.ToLower().EndsWith(".glb"))
             {
                 byte[] glbData;
 
