@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class TestBaseDataProvider
+    <title>Class TestInputDataProvider
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class TestBaseDataProvider
+    <meta name="title" content="Class TestInputDataProvider
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -81,12 +81,12 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider" class="text-break">Class TestBaseDataProvider
+  <h1 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider" class="text-break">Class TestInputDataProvider
   </h1>
-  <div class="markdown level0 summary"><p>Base class for test data providers</p>
+  <div class="markdown level0 summary"><p>Dummy test IMixedRealityInputDeviceManager implementation only used for testing</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -94,18 +94,39 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html">BaseDataProvider</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>&gt;</div>
-    <div class="level3"><span class="xref">TestBaseDataProvider</span></div>
-      <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Services.TestInputDataProvider.html">TestInputDataProvider</a></div>
-      <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Services.TestSpatialAwarenessDataProvider.html">TestSpatialAwarenessDataProvider</a></div>
+    <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html">TestBaseDataProvider</a></div>
+    <div class="level4"><span class="xref">TestInputDataProvider</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><span class="xref">IDisposable</span></div>
+    <div><span class="xref">IMixedRealityInputDeviceManager</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_IsEnabled">TestBaseDataProvider.IsEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_IsInitialized">TestBaseDataProvider.IsInitialized</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Initialize">TestBaseDataProvider.Initialize()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Reset">TestBaseDataProvider.Reset()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Enable">TestBaseDataProvider.Enable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Disable">TestBaseDataProvider.Disable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestBaseDataProvider.html#Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestBaseDataProvider_Destroy">TestBaseDataProvider.Destroy()</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider-1.html#Microsoft_MixedReality_Toolkit_BaseDataProvider_1_Registrar">BaseDataProvider&lt;IMixedRealityService&gt;.Registrar</a>
     </div>
@@ -161,23 +182,23 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.Services.html">Microsoft.MixedReality.Toolkit.Tests.Services</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.html">Microsoft.MixedReality.Toolkit.Tests.EditMode.Services</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TestBaseDataProvider : BaseDataProvider&lt;IMixedRealityService&gt;, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider, IMixedRealityDataProvider, ITestService, IMixedRealityService, IDisposable, IMixedRealityInputDeviceManager</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityService_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityService,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">TestBaseDataProvider(IMixedRealityService, String, UInt32, BaseMixedRealityProfile)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider__ctor_IMixedRealityInputSystem_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider.#ctor(IMixedRealityInputSystem,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">TestInputDataProvider(IMixedRealityInputSystem, String, UInt32, BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TestBaseDataProvider(IMixedRealityService service, string name = null, uint priority = 10U, BaseMixedRealityProfile profile = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public TestInputDataProvider(IMixedRealityInputSystem inputSystem, string name, uint priority, BaseMixedRealityProfile profile)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -190,8 +211,8 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></td>
-        <td><span class="parametername">service</span></td>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td><span class="parametername">inputSystem</span></td>
         <td></td>
       </tr>
       <tr>
@@ -211,120 +232,33 @@
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_IsEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.IsEnabled*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_IsEnabled" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.IsEnabled">IsEnabled</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsEnabled { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_IsInitialized_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.IsInitialized*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_IsInitialized" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.IsInitialized">IsInitialized</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsInitialized { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Destroy*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Destroy" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Destroy">Destroy()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider_GetActiveControllers_" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider.GetActiveControllers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_EditMode_Services_TestInputDataProvider_GetActiveControllers" data-uid="Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider.GetActiveControllers">GetActiveControllers()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Destroy()</code></pre>
+    <pre><code class="lang-csharp hljs">public IMixedRealityController[] GetActiveControllers()</code></pre>
   </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Destroy">BaseService.Destroy()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Disable_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Disable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Disable" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Disable">Disable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Disable()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Disable">BaseService.Disable()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Enable_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Enable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Enable" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Enable">Enable()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Enable()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Initialize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Initialize" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Initialize">Initialize()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Initialize()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Initialize">BaseService.Initialize()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Reset_" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Reset*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_Services_TestBaseDataProvider_Reset" data-uid="Microsoft.MixedReality.Toolkit.Tests.Services.TestBaseDataProvider.Reset">Reset()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Reset()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a></div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityController</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>
@@ -334,6 +268,9 @@
   </div>
   <div>
       <span class="xref">IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">IMixedRealityInputDeviceManager</span>
   </div>
 </article>
           </div>
