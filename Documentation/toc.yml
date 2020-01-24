@@ -11,6 +11,8 @@
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
+  - name: NuGet Packages
+    href: MRTKNuGetPackage.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization

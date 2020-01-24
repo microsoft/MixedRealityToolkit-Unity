@@ -27,7 +27,7 @@ using Microsoft.Windows.UI.Input.Spatial;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
-    /// A Windows Mixed Reality Controller Instance.
+    /// A Windows Mixed Reality articulated hand instance.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.ArticulatedHand,
@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion IMixedRealityHand Implementation
 
+        /// <inheritdoc/>
         public override bool IsInPointingPose
         {
             get
@@ -170,8 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             float minY = neutralPoseVertices[0].y;
             float maxY = minY;
 
-            float maxMagnitude = 0.0f;
-
             for (int ix = 1; ix < neutralPoseVertices.Length; ix++)
             {
                 Vector3 p = neutralPoseVertices[ix];
@@ -184,11 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     maxY = p.y;
                 }
-                float d = p.x * p.x + p.y * p.y;
-                if (d > maxMagnitude) maxMagnitude = d;
             }
 
-            maxMagnitude = Mathf.Sqrt(maxMagnitude);
             float scale = 1.0f / (maxY - minY);
 
             handMeshUVs = new Vector2[neutralPoseVertices.Length];
@@ -231,7 +227,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     HandPose handPose = sourceState.TryGetHandPose();
 
 #if WINDOWS_UWP
-                    if (CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+                    MixedRealityHandTrackingProfile handTrackingProfile = null;
+                    MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+                    if (inputSystemProfile != null)
+                    {
+                        handTrackingProfile = inputSystemProfile.HandTrackingProfile;
+                    }
+
+                    if (handTrackingProfile != null && handTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)

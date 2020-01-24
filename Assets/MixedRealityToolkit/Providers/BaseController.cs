@@ -216,7 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
                     }
                 }
-
                 else if (inputSourceType == InputSourceType.Hand)
                 {
                     if (ControllerHandedness == Handedness.Left &&

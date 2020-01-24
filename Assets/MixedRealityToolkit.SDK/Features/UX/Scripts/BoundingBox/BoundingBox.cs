@@ -24,7 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class BoundingBox : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
-        IMixedRealityFocusHandler
+        IMixedRealityFocusHandler,
+        IBoundsTargetProvider
     {
         #region Enums
 
@@ -821,18 +822,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
         [Range(0.005f, 0.2f)]
+        private float handleMediumProximity = 0.1f;
         /// <summary>
         /// Distance between handle and hand before proximity scaling will be triggered.
         /// </summary>
-        private float handleMediumProximity = 0.1f;
+        public float HandleMediumProximity => handleMediumProximity;
 
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.1f)]
+        private float handleCloseProximity = 0.03f;
         /// <summary>
         /// Distance between handle and hand that will trigger the close proximity effect.
         /// </summary>
-        private float handleCloseProximity = 0.03f;
+        public float HandleCloseProximity => handleCloseProximity;
 
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range. Default is 0, invisible handle.")]
@@ -894,26 +897,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves from Medium proximity to Far proximity?")]
         [Range(0.0f, 1.0f)]
+        private float farGrowRate = 0.3f;
         /// <summary>
         /// Scaling animation velocity from medium to far proximity state.
         /// </summary>
-        private float farGrowRate = 0.3f;
+        public float FarGrowRate => farGrowRate;
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Medium Scale ?")]
         [Range(0.0f, 1.0f)]
+        private float mediumGrowRate = 0.2f;
         /// <summary>
         /// Scaling animation velocity from far to medium proximity.
         /// </summary>
-        private float mediumGrowRate = 0.2f;
+        public float MediumGrowRate => mediumGrowRate;
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Close Scale ?")]
         [Range(0.0f, 1.0f)]
+        private float closeGrowRate = 0.3f;
         /// <summary>
         /// Scaling animation velocity from medium to close proximity.
         /// </summary>
-        private float closeGrowRate = 0.3f;
+        public float CloseGrowRate => closeGrowRate;
 
         [SerializeField]
         [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
