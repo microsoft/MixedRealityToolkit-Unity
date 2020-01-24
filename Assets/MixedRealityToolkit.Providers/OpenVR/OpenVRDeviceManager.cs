@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     /// <summary>
-    /// Manages Open VR Devices using unity's input system.
+    /// Manages Open VR devices using Unity's input system.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
