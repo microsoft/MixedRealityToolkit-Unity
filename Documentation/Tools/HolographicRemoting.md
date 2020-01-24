@@ -41,7 +41,7 @@ Once the project has been configured, a connection can be established to the Hol
 
 1. Using the IP Address displayed by the Holographic Remoting application, set the **Remote Machine** field.
 
-    ![Select Device Version](../Images/Tools/Remoting/SelectDeviceVersion.png)
+    ![Enter IP Address](../Images/Tools/Remoting/EnterIPAddress.png)
 
 1. Click **Connect**.
 > [!Note]
