@@ -27,10 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <summary>
         /// Constructor.
         /// </summary>
-        public MixedRealityTeleportSystem() : base(null) // Teleport system does not use a profile
-        {
-            IsInputSystemEnabled = CoreServices.InputSystem != null;
-        }
+        public MixedRealityTeleportSystem() : base(null) { } // Teleport system does not use a profile
 
         private TeleportEventData teleportEventData;
 
@@ -137,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <summary>
         /// Is an input system registered?
         /// </summary>
-        private bool IsInputSystemEnabled = false;
+        private bool IsInputSystemEnabled => CoreServices.InputSystem != null;
 
         private float teleportDuration = 0.25f;
 
