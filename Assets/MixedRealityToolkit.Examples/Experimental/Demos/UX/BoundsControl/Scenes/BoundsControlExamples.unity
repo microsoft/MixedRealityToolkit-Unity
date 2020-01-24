@@ -444,14 +444,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: 22c6b5bb7c71b584eaaa6b7d5b50dba5,
+  boxDisplayConfiguration: {fileID: 11400000, guid: a2e15001e42b7ed41810d3c69615f8c0,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: a7ba4babaf9770f41bc8a1517429dfa1, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: ccd55e9b7a1459c47aac412b0106907d,
+  linksConfiguration: {fileID: 11400000, guid: 0fa48bc173de7994ebf1345b18e305fc, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 0848ea1002d95034a80af84187715d65,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: 6cfe29876a9477847875abae3df6617f,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: a8a649d97c4915c4e85e530996520757,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 670da3a9265604641a720223566bdd1a,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: 051125940d621c44ead1ab3d5f2f16a5,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -655,14 +655,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: d2e34e5832eab674a826e9b93546af61,
+  boxDisplayConfiguration: {fileID: 11400000, guid: 4863c6cf55a3e1a45a0f1bbefc88874c,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: dbe62385738b8a149a49d4978b8034d6, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: dc1f65c2a11fda04f96d5f38e0853642,
+  linksConfiguration: {fileID: 11400000, guid: e63ceb41d19a43c46a71f613e72d511a, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 48f98db0a1d90af46be328a94b90a99d,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: 11a86d0c48a628a46aa28347eea5fc21,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: 2c77000b5ab369945b1a3f553b9ecce8,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 8733f3bf27c1b2842ae7465d332cf893,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: 8095f61873d0d374294fe4574703b112,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -2847,14 +2847,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: fb570b60322484648a4dbeb3ee75c6ed,
+  boxDisplayConfiguration: {fileID: 11400000, guid: 2bcf04b9406d0834eb7668aa098481c3,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: 333b39860f275fe4ca41ca50c53e5ea6, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: 6f3493e62beb71c4cacbde3b5fc13276,
+  linksConfiguration: {fileID: 11400000, guid: 1dd24d141d00bd44892830f58aa4f3fe, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 2cfb1ee2b4b67274d8bb9d79f696e677,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: 9488d88a498ca1b479ef6089b6cb06ce,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: 892fc50eed624ec44a9dccd873fa6b59,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 31d3b2ab6805df5449834c5507bb25b3,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: ccb3aba3573e3fc4182a6ff83c5fa98e,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -4189,14 +4189,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: 70e5f8992258ced44a71215b3ee12b47,
+  boxDisplayConfiguration: {fileID: 11400000, guid: f2f500dd35bb5794aaf8c4c1102c77ed,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: 15756942826543e41b815be9bf930735, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: f9d61ee8feb4e6747a4876f12544e979,
+  linksConfiguration: {fileID: 11400000, guid: 696b1d3e5863993449cd958811d60f56, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 078ade111505e9e41bf3c40950992002,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: 3899e0b6a32c5294aadfab02cd05bf85,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: d24e906c6b452054096f758fe07c40ae,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 99e44ec0d0cf6294a8f3b53cefbf8400,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: b77662730ef15c545aa4849329f77f0d,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -4775,14 +4775,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: e0029cf18e912534fad1594ad7736161,
+  boxDisplayConfiguration: {fileID: 11400000, guid: bf32d54870049f24a8cd3ada3512f460,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: 40cd4e4022dc3ac499cacfccec4c5424, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: bdadcb6ccf983d8469086545aedcb9cb,
+  linksConfiguration: {fileID: 11400000, guid: e4bd45fd2bcb0714aabfc5ddbebf1f37, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 859bd308b40fc734f9fbeb23a91fcd24,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: bd760963d211cac498a97b95db8cb131,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: 4f52e83e393bfff4e859adec473072c4,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 7134ec03dab01f446a481d52d70e0c00,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: 9c8fdd3f08e877c46bb22617a24d3772,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -5516,14 +5516,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: e81fcfc537ec58c46a3d94c52a438cc0,
+  boxDisplayConfiguration: {fileID: 11400000, guid: 0f02aa0b684fd6d40ba908527a3539c3,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: 5cbf2b8261295204ca868961d0b5b6fe, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: e925fb64922165a41b6bd7da6d124476,
+  linksConfiguration: {fileID: 11400000, guid: 8e3a0acdfb9453249946913922fcc9fe, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 3a350f547bb54684d802e061215699da,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: df9e4c9162c386e46841d564d8be6647,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: bb08a29737183c24eb0f7bea4713f574,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: 5360934981347684ca4b70a46d95734e,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: 46590d9c698a1084c9628577c687de2b,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:
@@ -6274,14 +6274,14 @@ MonoBehaviour:
   handlesIgnoreCollider: {fileID: 0}
   flattenAxis: 0
   boxPadding: {x: 0, y: 0, z: 0}
-  boxDisplayConfiguration: {fileID: 11400000, guid: fd0c4550a0fc21a4db9ee0c6e4c1a578,
+  boxDisplayConfiguration: {fileID: 11400000, guid: ae9d278a99f5a3041aa52d96eec8055c,
     type: 2}
-  linksConfiguration: {fileID: 11400000, guid: 53817089dcb050748aa730df4e7e6c3e, type: 2}
-  scaleHandlesConfiguration: {fileID: 11400000, guid: c6cdd33f956663c42b62493e3369975f,
+  linksConfiguration: {fileID: 11400000, guid: 1fc314ef32b95ba42b1f88d766ee628d, type: 2}
+  scaleHandlesConfiguration: {fileID: 11400000, guid: 137f09926d6429f49bc95d32796ee275,
     type: 2}
-  rotationHandlesConfiguration: {fileID: 11400000, guid: 4c22de68b4502be4ca569c3db36a3dc2,
+  rotationHandlesConfiguration: {fileID: 11400000, guid: 64a7956b2a5c2b543a26a78b2de1c710,
     type: 2}
-  handleProximityEffectConfiguration: {fileID: 11400000, guid: f12e196b73f471e46aabca9109d6d7e7,
+  handleProximityEffectConfiguration: {fileID: 11400000, guid: 89bdc25d73aad9e4384f9c868852d929,
     type: 2}
   hideElementsInInspector: 0
   rotateStarted:

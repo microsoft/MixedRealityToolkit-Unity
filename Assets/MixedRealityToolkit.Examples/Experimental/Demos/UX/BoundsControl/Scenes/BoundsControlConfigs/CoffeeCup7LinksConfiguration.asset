@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d41f9007c4b948b0808690195e77c, type: 3}
   m_Name: CoffeeCup7LinksConfiguration
   m_EditorClassIdentifier: 
-  wireframeMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9, type: 2}
+  wireframeMaterial: {fileID: 2100000, guid: ccd13293eae6cd2498077eae3f18df0d, type: 2}
   wireframeEdgeRadius: 0.001
   wireframeShape: 0
   showWireframe: 1

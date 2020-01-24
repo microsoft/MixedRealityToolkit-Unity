@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae6b815054539c4cbce3013daf8f276, type: 3}
   m_Name: CoffeeCup1ProximityEffectConfiguration
   m_EditorClassIdentifier: 
-  proximityEffectActive: 0
+  proximityEffectActive: 1
   objectMediumProximity: 0.1
-  objectCloseProximity: 0.03
+  objectCloseProximity: 0.016
   farScale: 0
   mediumScale: 1
   closeScale: 1.5

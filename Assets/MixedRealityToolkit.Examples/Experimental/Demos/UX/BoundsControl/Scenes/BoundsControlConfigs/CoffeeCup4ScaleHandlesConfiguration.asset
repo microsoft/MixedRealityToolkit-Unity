@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d3e2fcd636d0243820f1bebf6e167b, type: 3}
   m_Name: CoffeeCup4ScaleHandlesConfiguration
   m_EditorClassIdentifier: 
-  handleMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9, type: 2}
-  handleGrabbedMaterial: {fileID: 2100000, guid: ac37c7c0a1a7e8646b4f9f3ab4a6bfd9,
+  handleMaterial: {fileID: 2100000, guid: cd4f0804b166a5e4dbefe7a9d10a1438, type: 2}
+  handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
   handlePrefab: {fileID: 0}
   handleSize: 0.016

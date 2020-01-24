@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 240d9483db94993408ff1d02335ea212, type: 3}
   m_Name: CoffeeCup6BoxDisplayConfiguration
   m_EditorClassIdentifier: 
-  boxMaterial: {fileID: 0}
-  boxGrabbedMaterial: {fileID: 0}
+  boxMaterial: {fileID: 2100000, guid: 4a9aae3094118f44593e7f8000e24c31, type: 2}
+  boxGrabbedMaterial: {fileID: 2100000, guid: 7e4095c5609075846b657c8917aae797, type: 2}
   flattenAxisDisplayScale: 0
