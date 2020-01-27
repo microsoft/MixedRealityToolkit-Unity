@@ -92,8 +92,11 @@ var spatialAwarenessService = CoreServices.SpatialAwarenessSystem;
 // Cast to the IMixedRealityDataProviderAccess to get access to the data providers
 var dataProviderAccess = spatialAwarenessService as IMixedRealityDataProviderAccess;
 
-// Get the first Mesh Observer available, generally we have only one registered
 var meshObserver = dataProviderAccess.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+</code></pre>
+<p>The <code>CoreServices.GetSpatialAwarenessSystemDataProvider&lt;T&gt;()</code> helper simplifies this access pattern as demonstrated below.</p>
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var meshObserver = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
 
 // Get the SpatialObjectMeshObserver specifically
 var meshObserverName = &quot;Spatial Object Mesh Observer&quot;;
@@ -101,11 +104,8 @@ var spatialObjectMeshObserver = dataProviderAccess.GetDataProvider&lt;IMixedReal
 </code></pre>
 <h2 id="starting-and-stopping-mesh-observation">Starting and stopping mesh observation</h2>
 <p>One of the most common tasks when dealing with the Spatial Awareness system is turning the feature off/on dynamically at runtime. This is done per Observer via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_Resume"><code>IMixedRealitySpatialAwarenessObserver.Resume</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html#Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_Suspend"><code>IMixedRealitySpatialAwarenessObserver.Suspend</code></a> APIs.</p>
-<pre><code class="lang-c#">// Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
-var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-// Get the first Mesh Observer available, generally we have only one registered
-var observer = access.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
 
 // Suspends observation of spatial mesh data
 observer.Suspend();
@@ -130,11 +130,8 @@ CoreServices.SpatialAwarenessSystem.SuspendObservers();
 meshes known to that Mesh Observer via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html"><code>IMixedRealitySpatialAwarenessMeshObserver</code></a> API.</p>
 <p>If running in editor, one can use the <a href="https://docs.unity3d.com/ScriptReference/AssetDatabase.CreateAsset.html"><code>AssetDatabase.CreateAsset()</code></a> to save the <code>Mesh</code> object to an asset file.</p>
 <p>If running on device, there are many community and store plugins available to serialize the <code>MeshFilter</code> data into a model file type(<a href="http://wiki.unity3d.com/index.php/ObjExporter">OBJ Example</a>).</p>
-<pre><code class="lang-c#">// Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
-var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-// Get the first Mesh Observer available, generally we have only one registered
-var observer = access.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
 
 // Loop through all known Meshes
 foreach (SpatialAwarenessMeshObject meshObject in observer.Meshes.Values)
@@ -145,11 +142,8 @@ foreach (SpatialAwarenessMeshObject meshObject in observer.Meshes.Values)
 </code></pre>
 <h2 id="showing-and-hiding-the-spatial-mesh">Showing and hiding the spatial mesh</h2>
 <p>It's possible to programmatically hide/show meshes using the sample code below:</p>
-<pre><code class="lang-c#">// Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
-var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-// Get the first Mesh Observer available, generally we have only one registered
-var observer = access.GetDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+<pre><code class="lang-c#">// Get the first Mesh Observer available, generally we have only one registered
+var observer = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
 
 // Set to not visible
 observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.None;

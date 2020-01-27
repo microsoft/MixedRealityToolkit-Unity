@@ -154,16 +154,7 @@ visualization turned off in player (because they incur a performance hit).</p>
 </code></pre>
 <h4 id="joint-transform-from-hand-joint-service">Joint transform from hand joint service</h4>
 <p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService.html"><code>IMixedRealityHandJointService</code></a> keeps a persistent set of <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> for tracking joints.</p>
-<pre><code class="lang-c#">IMixedRealityHandJointService handJointService = null;
-if (CoreServices.InputSystem != null)
-{
-    var dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-    if (dataProviderAccess != null)
-    {
-        handJointService = dataProviderAccess.GetDataProvider&lt;IMixedRealityHandJointService&gt;();
-    }
-}
-
+<pre><code class="lang-c#">var handJointService = CoreServices.GetInputSystemDataProvider&lt;IMixedRealityHandJointService&gt;();
 if (handJointService != null)
 {
     Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);

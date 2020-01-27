@@ -113,7 +113,9 @@ they implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolki
 only services to utilize data providers.</p>
 </div>
 <p>To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile.</p>
-<p>Application code accesses data providers via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> interface.</p>
+<p>Application code accesses data providers via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> interface. To simplify access, data providers can also be retrieved via the <code>CoreServices</code> helper class.</p>
+<pre><code class="lang-c#">var inputSimulationService = CoreServices.GetDataProvider&lt;IInputSimulationService&gt;(CoreServices.InputSystem);
+</code></pre>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Although <code>IMixedRealityDataProvider</code> inherits from <code>IMixedRealityService</code>, data providers are not
@@ -124,20 +126,24 @@ query the service instance for which they were registered (ex: input system).</p
 <p>The MRTK input system utilizes only data providers that implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager.html"><code>IMixedRealityInputDeviceManager</code></a>.</p>
 <p><img src="../Images/Input/RegisteredServiceProviders.PNG" alt="Input system data providers"></p>
 <p>The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.</p>
-<pre><code class="lang-c#">if (CoreServices.InputSystem != null)
+<pre><code class="lang-c#">IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+
+if (dataProviderAccess != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+    IInputSimulationService inputSimulation =
+        dataProviderAccess.GetDataProvider&lt;IInputSimulationService&gt;();
 
-    if (dataProviderAccess != null)
+    if (inputSimulation != null)
     {
-        IInputSimulationService inputSimulation =
-            dataProviderAccess.GetDataProvider&lt;IInputSimulationService&gt;();
-
-        if (inputSimulation != null)
-        {
-            inputSimulation.SmoothEyeTracking = !inputSimulation.SmoothEyeTracking;
-        }
+        inputSimulation.SmoothEyeTracking = !inputSimulation.SmoothEyeTracking;
     }
+}
+</code></pre>
+<p>Accessing a data provider for the core input system can also be simplified via use of the <code>CoreServices</code> helper class.</p>
+<pre><code class="lang-c#">var inputSimulationService = CoreServices.GetInputSystemDataProvider&lt;IInputSimulationService&gt;();
+if (inputSimulationService != null)
+{
+    // do something here
 }
 </code></pre>
 <div class="NOTE">
@@ -150,22 +156,26 @@ application is running.</p>
 <p>The MRTK spatial awareness system utilizes only data providers that implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html"><code>IMixedRealitySpatialAwarenessObserver</code></a> interface.</p>
 <p><img src="../Images/SpatialAwareness/SpatialAwarenessProfile.png" alt="Spatial awareness system data providers"></p>
 <p>The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.</p>
-<pre><code class="lang-c#">if (CoreServices.SpatialAwarenessSystem != null)
+<pre><code class="lang-c#">IMixedRealityDataProviderAccess dataProviderAccess =
+    CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+
+if (dataProviderAccess != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess =
-        CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+    IReadOnlyList&lt;IMixedRealitySpatialAwarenessMeshObserver&gt; observers =
+        dataProviderAccess.GetDataProviders&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
 
-    if (dataProviderAccess != null)
+    foreach (IMixedRealitySpatialAwarenessMeshObserver observer in observers)
     {
-        IReadOnlyList&lt;IMixedRealitySpatialAwarenessMeshObserver&gt; observers =
-            dataProviderAccess.GetDataProviders&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
-
-        foreach (IMixedRealitySpatialAwarenessMeshObserver observer in observers)
-        {
-            // Set the mesh to use the occlusion material
-            observer.DisplayOption = SpatialMeshDisplayOptions.Occlusion;
-        }
+        // Set the mesh to use the occlusion material
+        observer.DisplayOption = SpatialMeshDisplayOptions.Occlusion;
     }
+}
+</code></pre>
+<p>Accessing a data provider for the core spatial awareness system can also be simplified via use of the <code>CoreServices</code> helper class.</p>
+<pre><code class="lang-c#">var dataProvider = CoreServices.GetSpatialAwarenessSystemDataProvider&lt;IMixedRealitySpatialAwarenessMeshObserver&gt;();
+if (dataProvider != null)
+{
+    // do something here
 }
 </code></pre>
 <div class="NOTE">
