@@ -6814,7 +6814,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "ny18H6OakIn74LuEgGnaXA=="
+          "hash": "0Sf6HQoxFnFPwdsLGCbCRg=="
         }
       },
       "is_incremental": false,
@@ -19821,7 +19821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SolverTests.html",
-          "hash": "W2/8qZvfVVZw7hMjqqy66Q=="
+          "hash": "XJlWJIJSLtbuykqCAttPdQ=="
         }
       },
       "is_incremental": false,
@@ -24437,6 +24437,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverOffsetBehavior.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverOffsetBehavior.html",
+          "hash": "r7dgFv/4HVBA7+nUeT1v7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverRotationBehavior.yml",
       "output": {
         ".html": {
@@ -24465,7 +24477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html",
-          "hash": "3Hi5qGW1GGJwEkxA4s+gng=="
+          "hash": "B7z2xFIxxgwpFzXLr4z1mg=="
         }
       },
       "is_incremental": false,
@@ -24477,7 +24489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html",
-          "hash": "ZKoHTdV5iQbqC4MAXwVIeg=="
+          "hash": "g08euWr2AOj6M3IDc/2acA=="
         }
       },
       "is_incremental": false,
@@ -24609,7 +24621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.html",
-          "hash": "Co+rxP+EyFga0qZbKRf0Bw=="
+          "hash": "+tZR3m/gvFCR6c6f17RSQA=="
         }
       },
       "is_incremental": false,
@@ -25641,7 +25653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "mVAx8JsP8L6R99wZrjnWWg=="
+          "hash": "C6unaNgqd5TBiPgf95t9kg=="
         }
       },
       "is_incremental": false,
@@ -25693,10 +25705,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1537,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -25705,16 +25718,15 @@
           "total_file_count": 146,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1538,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

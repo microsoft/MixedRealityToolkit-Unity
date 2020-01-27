@@ -210,7 +210,10 @@ public class InFront : Solver
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
 <img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
 <ul>
-<li><strong>Safe Zone</strong>: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.</li>
+<li><p><strong>Safe Zone</strong>: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.</p>
+</li>
+<li><p><strong>Follow Hand Until Facing Camera</strong> With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera. This works by changing the SolverRotationBehavior in the HandConstraintSolver, from LookAtTrackedObject to LookAtMainCamera as the GazeAlignment angle with the solver varies.</p>
+</li>
 </ul>
 <img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
 <ul>

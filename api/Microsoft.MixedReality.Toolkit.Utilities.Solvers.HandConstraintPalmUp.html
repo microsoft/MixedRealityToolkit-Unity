@@ -115,6 +115,9 @@ with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHan
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_RotationBehavior">HandConstraint.RotationBehavior</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OffsetBehavior">HandConstraint.OffsetBehavior</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnHandActivate">HandConstraint.OnHandActivate</a>
     </div>
     <div>
@@ -245,14 +248,40 @@ with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHan
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingThreshold*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingThreshold" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingThreshold">FacingThreshold</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingCameraTrackingThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingCameraTrackingThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingCameraTrackingThreshold" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingCameraTrackingThreshold">FacingCameraTrackingThreshold</h4>
   <div class="markdown level1 summary"><p>The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float FacingThreshold { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float FacingCameraTrackingThreshold { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingThreshold" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingThreshold">FacingThreshold</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use FacingCameraTrackingThreshold property instead&quot;)]
+public float FacingThreshold { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,6 +320,58 @@ with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHan
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FollowHandCameraFacingThresholdAngle_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FollowHandCameraFacingThresholdAngle*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FollowHandCameraFacingThresholdAngle" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FollowHandCameraFacingThresholdAngle">FollowHandCameraFacingThresholdAngle</h4>
+  <div class="markdown level1 summary"><p>Angle (in degrees) between hand up and camera forward, below which the hand menu follows the gaze, if followHandUntilFacingCamera is active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float FollowHandCameraFacingThresholdAngle { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FollowHandUntilFacingCamera_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FollowHandUntilFacingCamera*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FollowHandUntilFacingCamera" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FollowHandUntilFacingCamera">FollowHandUntilFacingCamera</h4>
+  <div class="markdown level1 summary"><p>With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool FollowHandUntilFacingCamera { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
