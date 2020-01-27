@@ -102,6 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     return typeof(WindowsMixedRealityXRSDKMotionController);
                 case SupportedControllerType.ArticulatedHand:
                     return typeof(WindowsMixedRealityXRSDKArticulatedHand);
+                case SupportedControllerType.GGVHand:
+                    return typeof(WindowsMixedRealityXRSDKGGVHand);
                 default:
                     return base.GetControllerType(supportedControllerType);
             }
@@ -115,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case SupportedControllerType.WindowsMixedReality:
                     return InputSourceType.Controller;
                 case SupportedControllerType.ArticulatedHand:
+                case SupportedControllerType.GGVHand:
                     return InputSourceType.Hand;
                 default:
                     return base.GetInputSourceType(supportedControllerType);
@@ -126,7 +129,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.HandTracking))
             {
-                return SupportedControllerType.ArticulatedHand;
+                if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Left) ||
+                    inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Right))
+                {
+                    // If it's a hand with a reported handedness, assume HL2 articulated hand
+                    return SupportedControllerType.ArticulatedHand;
+                }
+                else
+                {
+                    // Otherwise, assume HL1 hand
+                    return SupportedControllerType.GGVHand;
+                }
             }
 
             if (inputDevice.characteristics.HasFlag(InputDeviceCharacteristics.Controller))
