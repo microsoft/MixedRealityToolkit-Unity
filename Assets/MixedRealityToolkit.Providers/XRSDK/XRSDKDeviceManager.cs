@@ -39,12 +39,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             return (capability == MixedRealityCapability.MotionController);
         }
 
-        protected static readonly Dictionary<string, GenericXRSDKController> ActiveControllers = new Dictionary<string, GenericXRSDKController>();
+        protected static readonly Dictionary<InputDevice, GenericXRSDKController> ActiveControllers = new Dictionary<InputDevice, GenericXRSDKController>();
 
-        private InputDevice leftInputDevice;
-        private InputDevice rightInputDevice;
-        private bool wasLeftInputDeviceValid = false;
-        private bool wasRightInputDeviceValid = false;
+        private readonly List<InputDevice> inputDevices = new List<InputDevice>();
+        private readonly List<InputDevice> lastInputDevices = new List<InputDevice>();
 
         /// <inheritdoc/>
         public override void Update()
@@ -56,71 +54,45 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 return;
             }
 
-            if (!leftInputDevice.isValid)
+            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.Controller, inputDevices);
+            foreach (InputDevice device in inputDevices)
             {
-                if (wasLeftInputDeviceValid)
+                if (device.isValid)
                 {
-                    GenericXRSDKController controller = GetOrAddController(leftInputDevice);
+                    GenericXRSDKController controller = GetOrAddController(device);
 
-                    if (controller != null)
+                    if (controller == null)
                     {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                        continue;
                     }
 
-                    RemoveController(leftInputDevice);
-                    wasLeftInputDeviceValid = false;
-                }
-
-                leftInputDevice = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-
-                if (leftInputDevice.isValid)
-                {
-                    wasLeftInputDeviceValid = true;
-                    GenericXRSDKController controller = GetOrAddController(leftInputDevice);
-
-                    if (controller != null)
+                    if (!lastInputDevices.Contains(device))
                     {
                         CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
                     }
-                }
-            }
-            else
-            {
-                GetOrAddController(leftInputDevice)?.UpdateController(leftInputDevice);
-            }
-
-            if (!rightInputDevice.isValid)
-            {
-                if (wasRightInputDeviceValid)
-                {
-                    GenericXRSDKController controller = GetOrAddController(rightInputDevice);
-
-                    if (controller != null)
+                    else
                     {
-                        CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-                    }
-
-                    RemoveController(rightInputDevice);
-                    wasRightInputDeviceValid = false;
-                }
-
-                rightInputDevice = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-
-                if (rightInputDevice.isValid)
-                {
-                    wasRightInputDeviceValid = true;
-                    GenericXRSDKController controller = GetOrAddController(rightInputDevice);
-
-                    if (controller != null)
-                    {
-                        CoreServices.InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+                        // Remove devices from our previously tracked list as we update them.
+                        // This will allow us to remove all stale devices that were tracked
+                        // last frame but not this one.
+                        lastInputDevices.Remove(device);
+                        controller.UpdateController(device);
                     }
                 }
             }
-            else
+
+            foreach (InputDevice device in lastInputDevices)
             {
-                GetOrAddController(rightInputDevice)?.UpdateController(rightInputDevice);
+                GenericXRSDKController controller = GetOrAddController(device);
+                if (controller != null)
+                {
+                    CoreServices.InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                    RemoveController(device);
+                }
             }
+
+            lastInputDevices.Clear();
+            lastInputDevices.AddRange(inputDevices);
         }
 
         #region Controller Utilities
@@ -133,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         protected virtual GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
             // If a device is already registered with the ID provided, just return it.
-            if (ActiveControllers.ContainsKey(inputDevice.name))
+            if (ActiveControllers.ContainsKey(inputDevice))
             {
-                var controller = ActiveControllers[inputDevice.name];
+                var controller = ActiveControllers[inputDevice];
                 Debug.Assert(controller != null);
                 return controller;
             }
@@ -182,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 detectedController.InputSource.Pointers[i].Controller = detectedController;
             }
 
-            ActiveControllers.Add(inputDevice.name, detectedController);
+            ActiveControllers.Add(inputDevice, detectedController);
             return detectedController;
         }
 
@@ -204,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     controller.Visualizer.GameObjectProxy.SetActive(false);
                 }
 
-                ActiveControllers.Remove(inputDevice.name);
+                ActiveControllers.Remove(inputDevice);
             }
         }
 
