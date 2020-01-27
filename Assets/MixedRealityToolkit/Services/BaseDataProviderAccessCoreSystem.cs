@@ -70,6 +70,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             base.LateUpdate();
 
             foreach (var provider in dataProviders)

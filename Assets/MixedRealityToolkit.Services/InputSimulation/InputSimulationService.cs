@@ -302,6 +302,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             base.LateUpdate();
 
             var profile = InputSimulationProfile;
