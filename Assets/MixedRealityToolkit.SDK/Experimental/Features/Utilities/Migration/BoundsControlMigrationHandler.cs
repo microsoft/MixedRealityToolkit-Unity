@@ -204,11 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateBoxDisplay(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
             BoxDisplayConfiguration config = ScriptableObject.CreateInstance<BoxDisplayConfiguration>();
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "BoxDisplayConfiguration"));
-
             config.BoxMaterial = box.BoxMaterial;
             config.BoxGrabbedMaterial = box.BoxGrabbedMaterial;
             config.FlattenAxisDisplayScale = box.FlattenAxisDisplayScale;
+            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "BoxDisplayConfiguration"));
 
             control.BoxDisplayConfiguration = config;
         }
@@ -216,12 +215,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateLinks(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
             LinksConfiguration config = ScriptableObject.CreateInstance<LinksConfiguration>();
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "LinksConfiguration"));
-            
             config.WireframeMaterial = box.WireframeMaterial;
             config.WireframeEdgeRadius = box.WireframeEdgeRadius;
             config.WireframeShape = MigrateWireframeShape(box.WireframeShape);
             config.ShowWireFrame = box.ShowWireFrame;
+            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "LinksConfiguration"));
 
             control.LinksConfiguration = config;
 
@@ -230,8 +228,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateScaleHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
             ScaleHandlesConfiguration config = ScriptableObject.CreateInstance<ScaleHandlesConfiguration>();
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
-            
             config.HandleSlatePrefab = box.ScaleHandleSlatePrefab;
             config.ShowScaleHandles = box.ShowScaleHandles;
             config.HandleMaterial = box.HandleMaterial;
@@ -239,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandlePrefab = box.ScaleHandlePrefab;
             config.HandleSize = box.ScaleHandleSize;
             config.ColliderPadding = box.ScaleHandleColliderPadding;            
+            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
 
             control.ScaleHandlesConfiguration = config;
         }
@@ -246,8 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateRotationHandles(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
             RotationHandlesConfiguration config = ScriptableObject.CreateInstance<RotationHandlesConfiguration>();
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
-            
             config.RotationHandlePrefabColliderType = MigrateRotationHandleColliderType(box.RotationHandlePrefabColliderType);
             config.ShowRotationHandleForX = box.ShowRotationHandleForX;
             config.ShowRotationHandleForY = box.ShowRotationHandleForY;
@@ -257,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandlePrefab = box.RotationHandleSlatePrefab;
             config.HandleSize = box.RotationHandleSize;
             config.ColliderPadding = box.RotateHandleColliderPadding;
+            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
 
             control.RotationHandles = config;
         }
@@ -264,8 +260,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void MigrateProximityEffect(BoundsControl control, BoundingBox box, string configAssetDirectory)
         {
             ProximityEffectConfiguration config = ScriptableObject.CreateInstance<ProximityEffectConfiguration>();
-            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
-            
             config.ProximityEffectActive = box.ProximityEffectActive;
             config.ObjectMediumProximity = box.HandleMediumProximity;
             config.ObjectCloseProximity = box.HandleCloseProximity;
@@ -275,6 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.FarGrowRate = box.FarGrowRate;
             config.MediumGrowRate = box.MediumGrowRate;
             config.CloseGrowRate = box.CloseGrowRate;            
+            AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ProximityEffectConfiguration"));
 
             control.HandleProximityEffectConfiguration = config;
         }
