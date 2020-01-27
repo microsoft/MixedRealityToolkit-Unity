@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
     public class TeleportPointer : CurvePointer, IMixedRealityTeleportPointer, IMixedRealityTeleportHandler
     {
         /// <summary>
-        /// True if a teleport request is being raised, false otherwise
+        /// True if a teleport request is being raised, false otherwise.
         /// </summary>
         public bool TeleportRequestRaised { get; private set; } = false;
 
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private MixedRealityInputAction teleportAction = MixedRealityInputAction.None;
 
         /// <summary>
-        /// Teleport Pointer will only respond to input events for teleportation that match this MixedRealityInputAction
+        /// Teleport pointer will only respond to input events for teleportation that match this MixedRealityInputAction.
         /// </summary>
         public MixedRealityInputAction TeleportInputAction => teleportAction;
 

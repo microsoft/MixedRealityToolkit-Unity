@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             AssetDatabase.ForceReserializeAssets(array);
         }
 
+        [MenuItem("Mixed Reality Toolkit/Utilities/Reserialize/Reserialize Selection")]
         [MenuItem("Assets/Mixed Reality Toolkit/Reserialize Selection")]
         public static void ReserializeSelection()
         {

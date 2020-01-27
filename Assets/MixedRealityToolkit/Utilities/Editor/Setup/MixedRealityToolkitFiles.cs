@@ -320,11 +320,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="module">Module type to search for</param>
         /// <remarks>
-        /// Returns first valid module folder path (relative) found
+        /// Returns first valid module folder path (relative) found. Returns null otherwise.
         /// </remarks>
         public static string MapModulePath(MixedRealityToolkitModuleType module)
         {
-            return GetAssetDatabasePath(MapRelativeFolderPathToAbsolutePath(module, ""));
+            var path = MapRelativeFolderPathToAbsolutePath(module, "");
+            return path != null ? GetAssetDatabasePath(path) : null;
         }
 
         /// <summary>
