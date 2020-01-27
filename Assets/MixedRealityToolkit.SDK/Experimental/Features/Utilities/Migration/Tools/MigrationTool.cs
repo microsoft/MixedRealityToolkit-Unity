@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public List<Object> MigrationObjects => new List<Object>(migrationObjects);
 
-        private dynamic migrationHandlerInstance;
+        private IMigrationHandler migrationHandlerInstance;
 
         public MigrationTool()
         {

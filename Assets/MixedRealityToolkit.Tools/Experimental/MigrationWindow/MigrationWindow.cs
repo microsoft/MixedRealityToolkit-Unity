@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -230,7 +231,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             try
             {
-                selectedMigrationHandlerType = Type.GetType(migrationHandlerTypeNames[selectedMigrationHandlerIndex], true);
+                selectedMigrationHandlerType = AppDomain.CurrentDomain.GetAssemblies()
+                                               .SelectMany(x => x.GetTypes())
+                                               .Where(x => x.FullName == migrationHandlerTypeNames[selectedMigrationHandlerIndex]).First();
             }
             catch (TypeLoadException e)
             {
