@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// </summary>
         private void InitializeReprojectionUpdater()
         {
-            if (reprojectionUpdater == null)
+            if (reprojectionUpdater == null && Profile != null)
             {
                 reprojectionUpdater = CameraCache.Main.EnsureComponent<WindowsMixedRealityReprojectionUpdater>();
                 reprojectionUpdater.ReprojectionMethod = Profile.ReprojectionMethod;

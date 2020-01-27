@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,23 +32,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private BoxCollider targetBounds;
         private bool rawBoundingCornersObtained = false;
 
+
         /// <summary>
         /// Objects that align to an target's bounding box can call this function in the object's UpdateLoop
         /// to get current bound points;
         /// </summary>
+        [Obsolete("Use UpdateNonAABoundsCornerPositions and pass in TargetBounds")]
         public void UpdateNonAABoundingBoxCornerPositions(BoundingBox boundingBox, List<Vector3> boundsPoints)
         {
-            if (boundingBox.TargetBounds != targetBounds || rawBoundingCornersObtained == false)
+            UpdateNonAABoundsCornerPositions(boundingBox.TargetBounds, boundsPoints);
+        }
+        /// <summary>
+        /// Returns the corner points of the given collider bounds
+        /// </summary>
+        /// <param name="colliderBounds">The collider bounds the corner points are calculated from</param>
+        /// <param name="boundsPoints">The corner points calculated from the collider points</param>
+        internal void UpdateNonAABoundsCornerPositions(BoxCollider colliderBounds, List<Vector3> boundsPoints)
+        {
+            if (colliderBounds != targetBounds || rawBoundingCornersObtained == false)
             {
-                GetRawBBCorners(boundingBox);
+                GetRawBoundsCorners(colliderBounds);
             }
 
-            if (boundingBox.TargetBounds == targetBounds && rawBoundingCornersObtained)
+            if (colliderBounds == targetBounds && rawBoundingCornersObtained)
             {
                 boundsPoints.Clear();
                 for (int i = 0; i < rawBoundingCorners.Count; ++i)
                 {
-                    boundsPoints.Add(boundingBox.TargetBounds.transform.localToWorldMatrix.MultiplyPoint(rawBoundingCorners[i]));
+                    boundsPoints.Add(colliderBounds.transform.localToWorldMatrix.MultiplyPoint(rawBoundingCorners[i]));
                 }
 
                 worldBoundingCorners.Clear();
@@ -56,15 +68,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This function gets the untransformed bounding box corner points of a GameObject.
+        /// This function calculates the untransformed bounding box corner points of a GameObject.
         /// </summary>
+        [Obsolete("Use GetRawBBCorners and pass in TargetBounds")]
         public void GetRawBBCorners(BoundingBox boundingBox)
         {
-            targetBounds = boundingBox.TargetBounds;
+            GetRawBoundsCorners(boundingBox.TargetBounds);
+        }
+
+        /// <summary>
+        /// Calculates the untransformed corner points of the given collider bounds
+        /// </summary>
+        /// <param name="colliderBounds">The collider bounds the corner points are calculated from.</param>
+        internal void GetRawBoundsCorners(BoxCollider colliderBounds)
+        {
+            targetBounds = colliderBounds;
             rawBoundingCorners.Clear();
             rawBoundingCornersObtained = false;
 
-            GetUntransformedCornersFromObject(boundingBox.TargetBounds, rawBoundingCorners);
+            GetUntransformedCornersFromObject(colliderBounds, rawBoundingCorners);
 
             if (rawBoundingCorners != null && rawBoundingCorners.Count >= 4)
             {
@@ -216,10 +238,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// static function that performs one-time non-persistent calculation of boundingbox of object without transformation.
+        /// static function that performs one-time non-persistent calculation of corner points of given bounds 
+        /// without taking world transform into account.
         /// </summary>
-        /// <param name="target">The gameObject whose bounding box is desired</param>
-        /// <param name="boundsPoints">the array of 8 points that will be filled</param>
+        /// <param name="targetBounds">the bounds the corner points are to be calculated from</param>
+        /// <param name="boundsPoints">the array of 8 corner points that will be filled</param>
         public static void GetUntransformedCornersFromObject(BoxCollider targetBounds, List<Vector3> boundsPoints)
         {
             Bounds cloneBounds = new Bounds(targetBounds.center, targetBounds.size);
