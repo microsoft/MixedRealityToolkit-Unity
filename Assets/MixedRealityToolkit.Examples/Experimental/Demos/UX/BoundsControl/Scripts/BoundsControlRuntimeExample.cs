@@ -13,7 +13,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 {
-    [AddComponentMenu("Scripts/MRTK/Experimental/Examples/BoundsControlRuntimeExample")]
     /// <summary>
     /// This example script demonstrates various bounds control runtime configurations
     /// </summary>
