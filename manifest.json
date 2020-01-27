@@ -19689,7 +19689,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html",
-          "hash": "FvjXgU7CjOEQaQEMQj8TWw=="
+          "hash": "JdAIr2JGa5IHph2L0gwrDQ=="
         }
       },
       "is_incremental": false,
@@ -21357,7 +21357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html",
-          "hash": "OmODo9H3wAGJIbXbz/WFyA=="
+          "hash": "WDzVZVABURE9XlquWHeGKg=="
         }
       },
       "is_incremental": false,
@@ -21369,7 +21369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html",
-          "hash": "zuBCUboUDdUrIPIFpIp2Jg=="
+          "hash": "AicF2pw+8QWzb/8A1x5K2A=="
         }
       },
       "is_incremental": false,
@@ -25693,11 +25693,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1537,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -25706,10 +25705,11 @@
           "total_file_count": 146,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1537,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
