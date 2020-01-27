@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Core
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
 {
     // Tests for the MixedRealityToolkitFiles utility class
     public class MixedRealityToolkitFilesTests

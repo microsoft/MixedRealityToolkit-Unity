@@ -15,7 +15,7 @@ MonoBehaviour:
   isCustomProfile: 0
   observerConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Tests.Services.TestSpatialAwarenessDataProvider,
+      reference: Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestSpatialAwarenessDataProvider,
         Microsoft.MixedReality.Toolkit.Tests.EditModeTests
     componentName: Test Spatial Awareness Data Provider
     priority: 0

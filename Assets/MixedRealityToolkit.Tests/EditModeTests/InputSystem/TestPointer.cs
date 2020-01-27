@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     // Dummy pointer class used as a placeholder for a proper pointer in some unit test.
     // Only the interfaces required for the tests are implemented. Feel free to add implementations as needed.

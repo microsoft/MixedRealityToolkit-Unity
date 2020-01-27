@@ -15,7 +15,7 @@ MonoBehaviour:
   isCustomProfile: 0
   dataProviderConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.Tests.Services.TestInputDataProvider,
+      reference: Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestInputDataProvider,
         Microsoft.MixedReality.Toolkit.Tests.EditModeTests
     componentName: Test Input Data Provider
     priority: 0
