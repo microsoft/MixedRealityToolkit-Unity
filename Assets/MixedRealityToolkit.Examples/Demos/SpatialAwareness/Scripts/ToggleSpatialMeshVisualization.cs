@@ -17,11 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void ToggleSpatialMeshVisual(bool mode)
         {
-            // Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
-            var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
             // Get the first Mesh Observer available, generally we have only one registered
-            var observer = access.GetDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+            var observer = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
 
             if (mode == true)
             {
