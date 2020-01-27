@@ -19,7 +19,12 @@ namespace Microsoft.MixedReality.Toolkit
         // Variable is static to be shared between all event system instances.
         public static bool enableDanglingHandlerDiagnostics = false;
 
-        private static int eventExecutionDepth = 0;
+        // Tracks the number of HandleEvent calls in flight - while HandleEvent is happening,
+        // set of registered listeners isn't safe to modify because doing so would cause an
+        // update on a collection that is being iterated over. Note that this also could be worked
+        // around by snapshotting the listener collection prior to making callouts, but this would
+        // also incur memory allocation on each event.
+        private int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
 
         private enum Action
@@ -77,7 +82,18 @@ namespace Microsoft.MixedReality.Toolkit
             // This behavior is kept for backwards compatibility. Will be removed together with the IMixedRealityEventSystem.Register(GameObject listener) interface.
             for (int i = EventListeners.Count - 1; i >= 0; i--)
             {
-                ExecuteEvents.Execute(EventListeners[i], eventData, eventHandler);
+                // Ensure client code does not put the event dispatch system into a bad state.
+                // Note that ExecuteEvents.Execute internally safeguards against exceptions, but
+                // this is another layer to ensure that nothing below this layer can affect the state
+                // of our eventExecutionDepth tracker.
+                try
+                {
+                    ExecuteEvents.Execute(EventListeners[i], eventData, eventHandler);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
             }
 
             // Send events to all handlers registered via RegisterHandler API.
@@ -94,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit
                         continue;
                     }
 
+                    // Ensure client code does not put the event dispatch system into a bad state.
                     try
                     {
-                        // Ensure client code does not crash our input system
                         eventHandler.Invoke((T)handlerEntry.handler, eventData);
                     }
                     catch (Exception ex)
