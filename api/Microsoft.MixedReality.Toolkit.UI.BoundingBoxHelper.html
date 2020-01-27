@@ -451,7 +451,7 @@ This could be the headPosition or camera position if the face that was facing th
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxHelper_GetRawBBCorners_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.GetRawBBCorners*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxHelper_GetRawBBCorners_Microsoft_MixedReality_Toolkit_UI_BoundingBox_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.GetRawBBCorners(Microsoft.MixedReality.Toolkit.UI.BoundingBox)">GetRawBBCorners(BoundingBox)</h4>
-  <div class="markdown level1 summary"><p>This function gets the untransformed bounding box corner points of a GameObject.</p>
+  <div class="markdown level1 summary"><p>This function calculates the untransformed bounding box corner points of a GameObject.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -479,7 +479,8 @@ This could be the headPosition or camera position if the face that was facing th
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxHelper_GetUntransformedCornersFromObject_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.GetUntransformedCornersFromObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBoxHelper_GetUntransformedCornersFromObject_BoxCollider_List_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBoxHelper.GetUntransformedCornersFromObject(BoxCollider,List{Vector3})">GetUntransformedCornersFromObject(BoxCollider, List&lt;Vector3&gt;)</h4>
-  <div class="markdown level1 summary"><p>static function that performs one-time non-persistent calculation of boundingbox of object without transformation.</p>
+  <div class="markdown level1 summary"><p>static function that performs one-time non-persistent calculation of corner points of given bounds
+without taking world transform into account.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -499,12 +500,13 @@ This could be the headPosition or camera position if the face that was facing th
       <tr>
         <td><span class="xref">BoxCollider</span></td>
         <td><span class="parametername">targetBounds</span></td>
-        <td></td>
+        <td><p>the bounds the corner points are to be calculated from</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">List</span>&lt;<span class="xref">Vector3</span>&gt;</td>
         <td><span class="parametername">boundsPoints</span></td>
-        <td><p>the array of 8 points that will be filled</p>
+        <td><p>the array of 8 corner points that will be filled</p>
 </td>
       </tr>
     </tbody>
