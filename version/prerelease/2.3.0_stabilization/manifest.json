@@ -3206,6 +3206,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/InputSimulation/InputSimulationSupportedPlatforms.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/InputSimulation/InputSimulationSupportedPlatforms.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png",
       "output": {
         "resource": {
@@ -4310,6 +4321,61 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MigrationWindow/MRTK_Migration_Modes.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MigrationWindow/MRTK_Migration_Modes.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MigrationWindow/MRTK_Migration_Window.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MigrationWindow/MRTK_Migration_Window.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MigrationWindow/MRTK_Object_Migration.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MigrationWindow/MRTK_Object_Migration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MigrationWindow/MRTK_Project_Migration.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MigrationWindow/MRTK_Project_Migration.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MigrationWindow/MRTK_Scene_Selection.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MigrationWindow/MRTK_Scene_Selection.png"
         }
       },
       "is_incremental": false,
@@ -6460,7 +6526,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "y1Rkb2SoA8l0Nm2udIV73g=="
+          "hash": "o7jZp55IB1S5sqQWgLuHyw=="
         }
       },
       "is_incremental": false,
@@ -6496,7 +6562,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "Tt+WYhPuTXo8oDziXWHPRw=="
+          "hash": "FDS6WAoKyRtZqA9t2rPMnA=="
         }
       },
       "is_incremental": false,
@@ -6676,7 +6742,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "Ag0nYk9RJXUae/NyZWK5dQ=="
+          "hash": "GGIzMR32omn2oWEuhqqqaw=="
         }
       },
       "is_incremental": false,
@@ -7001,6 +7067,18 @@
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
           "hash": "xM95o0nDBX6wx9LMHu80+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/MigrationWindow.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/MigrationWindow.html",
+          "hash": "FV5DVSf8RPdHM0WQ0vA42g=="
         }
       },
       "is_incremental": false,
@@ -7347,7 +7425,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.BaseBoundarySystem.html",
-          "hash": "XrAvdGefe2dAc4lbm47flg=="
+          "hash": "nFr7W4YJfVm0G9E6HCFNvA=="
         }
       },
       "is_incremental": false,
@@ -7743,7 +7821,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem.html",
-          "hash": "4mXsoLytSNZmWj2pYlRTBA=="
+          "hash": "kZiROATMZeuOjpNCM1TiXQ=="
         }
       },
       "is_incremental": false,
@@ -7923,7 +8001,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.html",
-          "hash": "uvhbRQbjGXIatIke/ev1Vg=="
+          "hash": "JDPcwTnJ6qfohyIww5GUdQ=="
         }
       },
       "is_incremental": false,
@@ -11435,6 +11513,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.MigrationWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.MigrationWindow.html",
+          "hash": "9izcaewTFx/TxiUYii5HgQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.ObjectManipulatorMigrationHandler.yml",
       "output": {
         ".html": {
@@ -11499,7 +11589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.html",
-          "hash": "9Z6JKe7Tb15KwJdkKFYqiQ=="
+          "hash": "0yTZJK6R3NH40XvrOzaC2g=="
         }
       },
       "is_incremental": false,
@@ -11919,7 +12009,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html",
-          "hash": "F5lBRMi+rQTyKJgXS3VAWw=="
+          "hash": "/TCmSTld8p+BuCczGdD6mg=="
         }
       },
       "is_incremental": false,
@@ -12111,7 +12201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseGenericInputSource.html",
-          "hash": "ARaiFrOHZG+q2f9PpEJ/Qw=="
+          "hash": "1Ftit2yVHjrCeReP37Hd5Q=="
         }
       },
       "is_incremental": false,
@@ -12159,7 +12249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html",
-          "hash": "+KqEZfr7kz4KKLPAmU2QdQ=="
+          "hash": "bBw68O2e0pbVSnn9EsDJ9g=="
         }
       },
       "is_incremental": false,
@@ -14555,6 +14645,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHandPoses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHandPoses.html",
+          "hash": "+fPgx5kJIuDAF4tCZ6O8Og=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.yml",
       "output": {
         ".html": {
@@ -14967,7 +15069,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "bBQ7Z1dnr/TTXwYqhTXOxg=="
+          "hash": "rqUQKg8U/hcAhgDELFQZxg=="
         }
       },
       "is_incremental": false,
@@ -18411,7 +18513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SceneSystem.MixedRealitySceneSystem.html",
-          "hash": "Qbh1k70bHaSzhHwCxDWBxg=="
+          "hash": "bfDDy017M8f3JlV+v1/Q5A=="
         }
       },
       "is_incremental": false,
@@ -18543,7 +18645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html",
-          "hash": "LNOeyTwLo0Hl6+hR6pff8A=="
+          "hash": "KQJtvbJ0DpdelcEEvETWpg=="
         }
       },
       "is_incremental": false,
@@ -19047,7 +19149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem.html",
-          "hash": "8dIhjbqCHtEOs3owWfBKcw=="
+          "hash": "2wgRXTSSqpFc6uY8AgCpnA=="
         }
       },
       "is_incremental": false,
@@ -19107,7 +19209,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer.html",
-          "hash": "71GjuXvcMSsJJbG43bloaA=="
+          "hash": "bpkOhUqXHPTmQizlDxarFw=="
         }
       },
       "is_incremental": false,
@@ -19119,7 +19221,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Teleport.html",
-          "hash": "V72M/vSpdVBE++b65CSPzw=="
+          "hash": "g8Vxssk+6Qkaiypi5AAtFw=="
         }
       },
       "is_incremental": false,
@@ -19607,6 +19709,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.MigrationToolTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.MigrationToolTests.html",
+          "hash": "1mbdPNIuADKQJALiGdPGGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.yml",
       "output": {
         ".html": {
@@ -19671,7 +19785,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html",
-          "hash": "FvjXgU7CjOEQaQEMQj8TWw=="
+          "hash": "JdAIr2JGa5IHph2L0gwrDQ=="
         }
       },
       "is_incremental": false,
@@ -19935,7 +20049,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "rcU8soVUWW6iHZMFIhpbhw=="
+          "hash": "FgXRIdCRU0HSe2QiEzdxzg=="
         }
       },
       "is_incremental": false,
@@ -21267,7 +21381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html",
-          "hash": "OmODo9H3wAGJIbXbz/WFyA=="
+          "hash": "WDzVZVABURE9XlquWHeGKg=="
         }
       },
       "is_incremental": false,
@@ -21279,7 +21393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html",
-          "hash": "zuBCUboUDdUrIPIFpIp2Jg=="
+          "hash": "AicF2pw+8QWzb/8A1x5K2A=="
         }
       },
       "is_incremental": false,
@@ -22563,7 +22677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.html",
-          "hash": "GdaUOrf6uI/J34qxNnItEQ=="
+          "hash": "qfuaek57PPJE51tvDHnmEg=="
         }
       },
       "is_incremental": false,
@@ -25647,7 +25761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "2W8jqg2KfMh0YP9cOuHUcw=="
+          "hash": "YW6z/xvaKmrBBcKgFmEYpQ=="
         }
       },
       "is_incremental": false,
@@ -25699,19 +25813,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 145,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -25719,10 +25820,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 146,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1544,
+          "total_file_count": 1547,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
