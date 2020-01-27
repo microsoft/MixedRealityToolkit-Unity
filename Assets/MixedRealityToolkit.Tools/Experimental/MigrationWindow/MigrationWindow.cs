@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -229,15 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void SetMigrationHandlerType()
         {
-            try
+            selectedMigrationHandlerType = AppDomain.CurrentDomain.GetAssemblies()
+                                           .SelectMany(x => x.GetLoadableTypes())
+                                           .Where(x => x.FullName == migrationHandlerTypeNames[selectedMigrationHandlerIndex]).First();
+            if (selectedMigrationHandlerType == null)
             {
-                selectedMigrationHandlerType = AppDomain.CurrentDomain.GetAssemblies()
-                                               .SelectMany(x => x.GetTypes())
-                                               .Where(x => x.FullName == migrationHandlerTypeNames[selectedMigrationHandlerIndex]).First();
-            }
-            catch (TypeLoadException e)
-            {
-                Debug.Log($"{e.GetType().Name}: Unable to load type for migration");
+                Debug.LogError("Unable to load type for migration");
                 isMigrationEnabled = false;
             }
             isMigrationEnabled = true;
