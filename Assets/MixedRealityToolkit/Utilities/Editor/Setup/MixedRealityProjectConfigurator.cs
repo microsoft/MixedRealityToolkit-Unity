@@ -33,6 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing,
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
+#if UNITY_2019_3_OR_NEWER
+            XRManagerEnabled,
+            // XR Manager platforms
+            XRManagerWindows,
+            XRManagerOculus,
+            XRManagerAndroid,
+            XRManageriOS,
+#endif // UNITY_2019_3_OR_NEWER
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -40,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             InternetClientCapability,
 #if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
-#endif
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             AndroidMultiThreadedRendering = 2000,
@@ -58,8 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
-                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.XRManagerEnabled,  () => { return false; /* todo */ } },
+            { Configurations.XRManagerWindows,  () => { return false; /* todo */ } },
+            { Configurations.XRManagerOculus,  () => { return false; /* todo */ } },
+            { Configurations.XRManagerAndroid,  () => { return false; /* todo */ } },
+            { Configurations.XRManageriOS,  () => { return false; /* todo */ } },
+#endif
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
 #pragma warning disable 0618
             { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
 #pragma warning restore 0618
@@ -73,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput); } },
-#endif
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; } },
@@ -94,6 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.XRManagerEnabled,  () => { /* todo */ } },
+            { Configurations.XRManagerWindows,  () => { /* todo */ } },
+            { Configurations.XRManagerOculus,  () => { /* todo */ } },
+            { Configurations.XRManagerAndroid,  () => { /* todo */ } },
+            { Configurations.XRManageriOS,  () => { /* todo */ } },
+#endif
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
 #pragma warning disable 0618
@@ -109,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
-#endif
+#endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => { PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false); } },
@@ -202,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
 #else
         return true;
-#endif
+#endif // UNITY_2019_3_OR_NEWER
         }
 
         /// <summary>
@@ -213,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
             EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
-#endif
+#endif // UNITY_2019_3_OR_NEWER
         }
 
         /// <summary>
