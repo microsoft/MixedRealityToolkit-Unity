@@ -12,6 +12,11 @@ namespace Microsoft.MixedReality.Toolkit
     {
         public const uint DefaultPriority = 10;
 
+        /// <summary>
+        /// Is this service enabled or not? Generally set via calls to Enable() and Disable().
+        /// </summary>
+        public bool IsEnabled { get; protected set; } = false;
+
         #region IMixedRealityService Implementation
 
         /// <inheritdoc />
@@ -30,16 +35,22 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void Reset() { }
 
         /// <inheritdoc />
-        public virtual void Enable() { }
+        public virtual void Enable()
+        {
+            IsEnabled = true;
+        }
+
+        /// <inheritdoc />
+        public virtual void Disable()
+        {
+            IsEnabled = false;
+        }
 
         /// <inheritdoc />
         public virtual void Update() { }
 
         /// <inheritdoc />
         public virtual void LateUpdate() { }
-
-        /// <inheritdoc />
-        public virtual void Disable() { }
 
         /// <inheritdoc />
         public virtual void Destroy() { }

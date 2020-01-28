@@ -16,17 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
-        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public MixedRealityTeleportSystem(
-            IMixedRealityServiceRegistrar registrar) : base(registrar, null) // Teleport system does not use a profile
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public MixedRealityTeleportSystem() : base(null) { } // Teleport system does not use a profile
 
         private TeleportEventData teleportEventData;
@@ -54,6 +43,18 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             InitializeInternal();
         }
 
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            base.Disable();
+
+            // Reset variables tracking teleportation to defaults
+            isTeleporting = false;
+            isProcessingTeleportRequest = false;
+            targetPosition = Vector3.zero;
+            targetRotation = Vector3.zero;
+        }
+
         private void InitializeInternal()
         {
 #if UNITY_EDITOR
@@ -63,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
                 if (eventSystems.Length == 0)
                 {
-                    if (!IsInputSystemEnabled)
+                    if (CoreServices.InputSystem == null)
                     {
                         eventSystemReference = new GameObject("Event System");
                         eventSystemReference.AddComponent<EventSystem>();
@@ -108,6 +109,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             Debug.Assert(eventData != null);
             var teleportData = ExecuteEvents.ValidateEventData<TeleportEventData>(eventData);
             Debug.Assert(teleportData != null);
@@ -117,24 +123,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             base.HandleEvent(teleportData, eventHandler);
         }
 
-        /// <summary>
-        /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to teleport events.
-        /// </summary>
-        public override void Register(GameObject listener) => base.Register(listener);
-
-        /// <summary>
-        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to teleport events.
-        /// </summary>
-        public override void Unregister(GameObject listener) => base.Unregister(listener);
-
         #endregion IEventSystemManager Implementation
 
         #region IMixedRealityTeleportSystem Implementation
-
-        /// <summary>
-        /// Is an input system registered?
-        /// </summary>
-        private bool IsInputSystemEnabled => CoreServices.InputSystem != null;
 
         private float teleportDuration = 0.25f;
 
@@ -164,6 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportRequest(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             // initialize event
             teleportEventData.Initialize(pointer, hotSpot);
 
@@ -181,6 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportStarted(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             if (isTeleporting)
             {
                 Debug.LogError("Teleportation already in progress");
@@ -212,6 +213,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <param name="hotSpot">The teleport target</param>
         private void RaiseTeleportComplete(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             if (!isTeleporting)
             {
                 Debug.LogError("No Active Teleportation in progress.");
@@ -237,6 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// <inheritdoc />
         public void RaiseTeleportCanceled(IMixedRealityPointer pointer, IMixedRealityTeleportHotSpot hotSpot)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             // initialize event
             teleportEventData.Initialize(pointer, hotSpot);
 
@@ -283,5 +294,20 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             // Raise complete event using the pointer and hot spot provided.
             RaiseTeleportComplete(eventData.Pointer, eventData.HotSpot);
         }
+
+        #region Obsolete
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public MixedRealityTeleportSystem(
+            IMixedRealityServiceRegistrar registrar) : base(registrar, null) // Teleport system does not use a profile
+        {
+            Registrar = registrar;
+        }
+
+        #endregion
     }
 }

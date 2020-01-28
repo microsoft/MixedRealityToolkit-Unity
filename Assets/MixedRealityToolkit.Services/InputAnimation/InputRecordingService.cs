@@ -30,25 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
-        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
-        /// <param name="name">Friendly name of the service.</param>
-        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
-        /// <param name="profile">The service's configuration profile.</param>
-        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public InputRecordingService(
-            IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            string name = null,
-            uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : this( inputSystem, name, priority, profile)
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
@@ -76,11 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <summary>
-        /// Service has been enabled.
-        /// </summary>
-        public bool IsEnabled { get; private set; } = false;
-
         /// <inheritdoc />
         public bool IsRecording { get; private set; } = false;
 
@@ -88,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool UseBufferTimeLimit
         {
-            get { return useBufferTimeLimit; }
+            get => useBufferTimeLimit;
             set
             {
                 if (useBufferTimeLimit && !value)
@@ -159,14 +135,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            IsEnabled = true;
+            base.Enable();
             recordingBuffer = new InputAnimation();
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
-            IsEnabled = false;
+            base.Disable();
             recordingBuffer = null;
             ResetStartTime();
         }
@@ -313,7 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Debug.LogWarning(ex.Message);
                 }
             }
-            return "";
+
+            return string.Empty;
         }
 
         /// Discard keyframes before the cutoff time.
@@ -321,5 +298,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             recordingBuffer.CutoffBeforeTime(StartTime);
         }
+
+        #region Obsolete
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public InputRecordingService(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        #endregion
     }
 }
