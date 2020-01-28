@@ -1,9 +1,10 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {

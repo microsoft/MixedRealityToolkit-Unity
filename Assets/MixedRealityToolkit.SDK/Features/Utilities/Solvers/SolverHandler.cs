@@ -254,7 +254,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private float lastUpdateTime;
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
+        private IMixedRealityHandJointService HandJointService 
+            => handJointService ?? CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
+
         private IMixedRealityHandJointService handJointService = null;
 
         #region MonoBehaviour Implementation
