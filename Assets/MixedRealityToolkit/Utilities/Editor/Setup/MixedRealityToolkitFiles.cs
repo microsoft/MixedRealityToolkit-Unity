@@ -102,6 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static CancellationTokenSource searchForFoldersToken;
 
         // This ensures directory separator chars are platform independent. Given path might use \ or /
+        // Should use string.NormalizeSeparators() extension but blocked by #7152
         private static string NormalizeSeparators(string path) 
             => path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 

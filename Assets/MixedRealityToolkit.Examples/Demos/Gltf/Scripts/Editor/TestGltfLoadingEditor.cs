@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
     [CustomEditor(typeof(TestGltfLoading))]
     public class TestGltfLoadingEditor : UnityEditor.Editor
     {
-        private string GLTFModelsPath = Path.Combine("Demos", "Gltf", "Models");
+        private string GLTFModelsPath = $"Demos{Path.DirectorySeparatorChar}Gltf{Path.DirectorySeparatorChar}Models";
 
         public override void OnInspectorGUI()
         {

@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         [SerializeField]
         [FormerlySerializedAs("uri")]
         [Tooltip("The relative asset path to the glTF asset in the Streaming Assets folder.")]
-        private string relativePath = "\\GltfModels\\Lantern\\glTF\\Lantern.gltf";
+        private string relativePath = "GltfModels/Lantern/glTF/Lantern.gltf";
 
         /// <summary>
         /// The relative asset path to the glTF asset in the Streaming Assets folder.
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
         /// <summary>
         /// Combines Streaming Assets folder path with RelativePath
         /// </summary>
-        public string AbsolutePath => Path.GetFullPath(Application.streamingAssetsPath) + RelativePath;
+        public string AbsolutePath => Path.Combine(Path.GetFullPath(Application.streamingAssetsPath),RelativePath);
 
         [SerializeField]
         [Tooltip("Scale factor to apply on load")]

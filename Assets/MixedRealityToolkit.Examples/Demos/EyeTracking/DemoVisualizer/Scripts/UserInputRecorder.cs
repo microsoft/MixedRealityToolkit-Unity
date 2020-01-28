@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
     public class UserInputRecorder : CustomInputLogger
     {
-        public string FilenameToUse = Path.Combine("test", "folder");
+        public string FilenameToUse = $"test{Path.DirectorySeparatorChar}folder";
 
         [SerializeField]
         private LogStructure logStructure = null;
