@@ -363,6 +363,28 @@ public enum Handedness
     Both = Left | Right
 }
 </code></pre>
+<h3 id="hard-coded-file-paths">Hard-coded file paths</h3>
+<p>When generating string file paths, and in particular writing hard-coded string paths, do the following:</p>
+<ol>
+<li>Use C#'s <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.path?view=netframework-4.8"><code>Path</code> APIs</a> whenever possible such as <code>Path.Combine</code> or <code>Path.GetFullPath</code>.</li>
+<li>Use / or <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8"><code>Path.DirectorySeparatorChar</code></a> instead of \ or \\.</li>
+</ol>
+<p>These steps ensure that MRTK works on both Windows and Unix-based systems.</p>
+<h3 id="dont-9">Don't</h3>
+<pre><code class="lang-c#">private const string Filepath = &quot;Mypath\\to\\a\\file.txt&quot;;
+private const string OtherFilePath = &quot;Mypath\to\a\file.txt&quot;;
+
+string filePath = myVarRootPath + myRelativePath;
+</code></pre>
+<h3 id="do-9">Do</h3>
+<pre><code class="lang-c#">private const string Filepath = &quot;Mypath/to/a/file.txt&quot;;
+private const string OtherFilePath = &quot;folder{Path.DirectorySeparatorChar}file.txt&quot;;
+
+string filePath = Path.Combine(myVarRootPath,myRelativePath);
+
+// Path.GetFullPath() will return the full length path of provided with correct system directory separators
+string cleanedFilePath = Path.GetFullPath(unknownSourceFilePath);
+</code></pre>
 <h2 id="best-practices-including-unity-recommendations">Best practices, including Unity recommendations</h2>
 <p>Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.</p>
 <h3 id="encapsulation">Encapsulation</h3>
@@ -371,7 +393,7 @@ public enum Handedness
 <h5>Note</h5>
 <p>The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>, where a data class is required to have all public fields for the serialization to work.</p>
 </div>
-<h4 id="dont-9">Don't</h4>
+<h4 id="dont-10">Don't</h4>
 <pre><code class="lang-c#">private float myValue1;
 private float myValue2;
 
@@ -387,7 +409,7 @@ public float MyValue2
     set{ myValue2 = value }
 }
 </code></pre>
-<h4 id="do-9">Do</h4>
+<h4 id="do-10">Do</h4>
 <pre><code class="lang-c#">// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
 [SerializeField]
 [ToolTip(&quot;If using a tooltip, the text should match the public property's summary documentation, if appropriate.&quot;)]
@@ -420,13 +442,13 @@ public float AbsMyValue
 </code></pre>
 <h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible</h3>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
-<h4 id="dont-10">Don't</h4>
+<h4 id="dont-11">Don't</h4>
 <pre><code class="lang-c#">void Update()
 {
     gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
 }
 </code></pre>
-<h4 id="do-10">Do</h4>
+<h4 id="do-11">Do</h4>
 <pre><code class="lang-c#">[SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
@@ -446,7 +468,7 @@ private void Update()
 </code></pre>
 <h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time</h3>
 <p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
-<h4 id="dont-11">Don't</h4>
+<h4 id="dont-12">Don't</h4>
 <pre><code class="lang-c#">public class MyClass
 {
     void Update()
@@ -456,7 +478,7 @@ private void Update()
     }
 }
 </code></pre>
-<h4 id="do-11">Do</h4>
+<h4 id="do-12">Do</h4>
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
