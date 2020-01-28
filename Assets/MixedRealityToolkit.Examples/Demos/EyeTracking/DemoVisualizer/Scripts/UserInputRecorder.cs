@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
@@ -10,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
     public class UserInputRecorder : CustomInputLogger
     {
-        public string FilenameToUse = "\\test\folder\\";
+        public string FilenameToUse = $"test{Path.DirectorySeparatorChar}folder";
 
         [SerializeField]
         private LogStructure logStructure = null;
@@ -73,15 +74,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         protected override string GetFileName()
         {
-            string name = "";
-            if (FilenameToUse != "")
+            if (!string.IsNullOrEmpty(FilenameToUse))
             {
-                name = FilenameToUse;
-                return name;
+                return FilenameToUse;
             }
             
-            name = String.Format("{0}-{1}", sessionDescr, UserName);
-            return name;
+            return String.Format("{0}-{1}", sessionDescr, UserName);
         }
 
         private string LimitStringLength(string str, int maxLength)
