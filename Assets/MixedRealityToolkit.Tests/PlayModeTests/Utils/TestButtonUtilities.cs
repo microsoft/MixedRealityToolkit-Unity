@@ -174,6 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 p3 = button.transform.position - button.TransformDirection(ButtonTranslateOffset);
 
             yield return MoveHand(p2, p3);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, PlayModeTestUtilities.GetInputSimulationService());
         }
 
         /// <summary>
