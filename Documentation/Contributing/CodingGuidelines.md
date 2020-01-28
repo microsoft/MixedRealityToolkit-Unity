@@ -407,6 +407,36 @@ public enum Handedness
 }
 ```
 
+### Hard-coded file paths
+
+When generating string file paths, and in particular writing hard-coded string paths, do the following:
+
+1. Use C#'s [`Path` APIs](https://docs.microsoft.com/en-us/dotnet/api/system.io.path?view=netframework-4.8) whenever possible such as `Path.Combine` or `Path.GetFullPath`.
+1. Use / or [`Path.DirectorySeparatorChar`](https://docs.microsoft.com/en-us/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8) instead of \ or \\\\.
+
+These steps ensure that MRTK works on both Windows and Unix-based systems.
+
+### Don't
+
+```c#
+private const string Filepath = "Mypath\\to\\a\\file.txt";
+private const string OtherFilePath = "Mypath\to\a\file.txt";
+
+string filePath = myVarRootPath + myRelativePath;
+```
+
+### Do
+
+```c#
+private const string Filepath = "Mypath/to/a/file.txt";
+private const string OtherFilePath = "folder{Path.DirectorySeparatorChar}file.txt";
+
+string filePath = Path.Combine(myVarRootPath,myRelativePath);
+
+// Path.GetFullPath() will return the full length path of provided with correct system directory separators
+string cleanedFilePath = Path.GetFullPath(unknownSourceFilePath);
+```
+
 ## Best practices, including Unity recommendations
 
 Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.
