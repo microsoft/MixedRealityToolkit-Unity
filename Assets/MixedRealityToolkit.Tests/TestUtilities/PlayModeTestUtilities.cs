@@ -168,8 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns>Returns InputSimulationService registered for playmode test scene</returns>
         public static InputSimulationService GetInputSimulationService()
         {
-            IMixedRealityInputSystem inputSystem = GetInputSystem();
-            InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
+            InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
             inputSimulationService.UserInputEnabled = false;
             return inputSimulationService;

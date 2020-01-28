@@ -297,6 +297,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test the HandConstraintPalm up to make sure the FollowHandUntilFacingCamera behavior works as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverPlacement()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            handConstraintSolver.FollowHandUntilFacingCamera = true;
+
+            // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
+            Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
+
+            var cameraTransform = CameraCache.Main.transform;
+
+            // Place hand 1 meter in front of user, 50 cm below eye level
+            var handTestPos = cameraTransform.position + cameraTransform.forward - (Vector3.up * 0.5f);
+            
+            var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
+
+            // Generate hand rotation with hand palm facing camera
+            var handRoation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
+
+            // Add a right hand.
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(handTestPos);
+            yield return rightHand.SetRotation(handRoation);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtMainCamera);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.LookAtCameraRotation);
+
+            // Rotate hand so palm is no longer within the FollowHandCameraFacingThresholdAngle
+            var newHandRot = handRoation * Quaternion.Euler(-(handConstraintSolver.FollowHandCameraFacingThresholdAngle + 1), 0f, 0f);
+            yield return rightHand.SetRotation(newHandRot);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtTrackedObject);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.TrackedObjectRotation);
+
+            yield return rightHand.Hide();
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+        }
+
+        /// <summary>
         /// Test the Overlap solver and make sure it tracks the left simulated hand exactly
         /// </summary>
         [UnityTest]
@@ -634,7 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             else
             {
-                var handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>();
+                var handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
                 expectedTransform = handJointService.RequestJointTransform(testData.handler.TrackedHandJoint, hand);
             }
 

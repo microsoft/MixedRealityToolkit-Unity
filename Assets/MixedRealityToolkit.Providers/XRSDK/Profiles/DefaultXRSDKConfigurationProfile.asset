@@ -19,8 +19,8 @@ MonoBehaviour:
   cameraSystemType:
     reference: Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem,
       Microsoft.MixedReality.Toolkit.Services.CameraSystem
-  enableInputSystem: 0
-  inputSystemProfile: {fileID: 0}
+  enableInputSystem: 1
+  inputSystemProfile: {fileID: 11400000, guid: 4080e8a1e5549c34fb424e03835795ac, type: 2}
   inputSystemType:
     reference: Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSystem, Microsoft.MixedReality.Toolkit.Services.InputSystem
   enableBoundarySystem: 1
@@ -28,7 +28,7 @@ MonoBehaviour:
     reference: Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem, Microsoft.MixedReality.Toolkit.Providers.XRSDK
   boundaryVisualizationProfile: {fileID: 11400000, guid: 6d28cce596b44bd3897ca86f8b24e076,
     type: 2}
-  enableTeleportSystem: 0
+  enableTeleportSystem: 1
   teleportSystemType:
     reference: Microsoft.MixedReality.Toolkit.Teleport.MixedRealityTeleportSystem,
       Microsoft.MixedReality.Toolkit.Services.TeleportSystem

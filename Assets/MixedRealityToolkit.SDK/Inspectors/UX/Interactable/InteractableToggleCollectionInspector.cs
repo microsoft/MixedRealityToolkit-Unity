@@ -1,12 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,12 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected InteractableToggleCollection instance;
         protected SerializedProperty toggleListProperty;
         protected SerializedProperty currentIndexProperty;
+        protected SerializedProperty onSelectionEventsProperty;
 
         protected virtual void OnEnable()
         {
             instance = (InteractableToggleCollection)target;
             toggleListProperty = serializedObject.FindProperty("toggleList");
             currentIndexProperty = serializedObject.FindProperty("currentIndex");
+            onSelectionEventsProperty = serializedObject.FindProperty("OnSelectionEvents");
         }
 
         public override void OnInspectorGUI()
@@ -45,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 else
                 {
                     instance.SetSelection(currentIndex, true, true);
-                }  
+                }
             }
         }
 
@@ -61,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
 
             EditorGUILayout.PropertyField(currentIndexProperty);
+            EditorGUILayout.PropertyField(onSelectionEventsProperty);
 
             serializedObject.ApplyModifiedProperties();
         }
