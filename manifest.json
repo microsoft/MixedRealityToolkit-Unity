@@ -19313,6 +19313,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary.InscribedRectangleTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary.InscribedRectangleTests.html",
+          "hash": "qWpy9YzMT+VZI+wxjsmXuw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Boundary.html",
+          "hash": "dSuBs8P/7y4M0V1a9t1X3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.MixedRealityToolkitFilesTests.yml",
       "output": {
         ".html": {
@@ -25785,7 +25809,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "NRWq4QRbv2lnAytBPegWrA=="
+          "hash": "Nom2NpgFscy1y1zfLhn8Dw=="
         }
       },
       "is_incremental": false,
@@ -25844,16 +25868,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1549,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 146,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1551,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
