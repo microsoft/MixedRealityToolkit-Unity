@@ -163,7 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             EditorGUILayout.Space();
 
-            if (PlayerSettings.virtualRealitySupported && (m_RenderMode.enumValueIndex == (int)RenderMode.ScreenSpaceOverlay))
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
+            if (PlayerSettings.virtualRealitySupported &&
+#pragma warning restore 0618
+                (m_RenderMode.enumValueIndex == (int)RenderMode.ScreenSpaceOverlay))
             {
                 EditorGUILayout.HelpBox("Using a render mode of ScreenSpaceOverlay while VR is enabled will cause the Canvas to continue to incur a rendering cost, even though the Canvas will not be visible in VR.", MessageType.Warning);
             }

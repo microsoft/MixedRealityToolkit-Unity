@@ -58,7 +58,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
+                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+                // with legacy requirements.
+#pragma warning disable 0618
             { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
+#pragma warning restore 0618
             { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
             { Configurations.EnableMSBuildForUnity, () => { return IsMSBuildForUnityEnabled(); } },
@@ -90,7 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             { Configurations.VirtualRealitySupported,  () => { PlayerSettings.virtualRealitySupported = true; } },
+#pragma warning restore 0618
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
             { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
@@ -297,6 +305,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void ApplyXRSettings()
         {
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
 
             List<string> targetSDKs = new List<string>();
@@ -313,6 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
                 PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
+#pragma warning restore 0618
         }
     }
 }
