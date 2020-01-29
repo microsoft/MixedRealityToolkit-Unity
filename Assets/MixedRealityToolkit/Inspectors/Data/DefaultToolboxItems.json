@@ -7,37 +7,106 @@
           "Name": "HoloLens2 Button",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Button_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Checkbox",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\CheckBox.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Button_Checkbox_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Radial Set",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\RadialSet.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Button_Radial_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Toggle Switch",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\ToggleSwitch.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Button_ToggleSwitch_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Round Push Button",
+          "RelativeAssetPath": "Demos\\UX\\Interactables\\Prefabs\\Model_PushButton.prefab",
+          "AssetModule": 6,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Button_Round_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         }
       ]
     },
     {
-      "CategoryName": "Misc",
+      "CategoryName": "Unity UI",
+      "Items": [
+        {
+          "Name": "Button",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Checkbox",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUICheckboxButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Checkbox_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Radial",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIRadialButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Radial_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Toggle",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIToggleButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        }
+      ]
+    },
+    {
+      "CategoryName": "Miscellaneous",
       "Items": [
         {
           "Name": "Slate",
           "RelativeAssetPath": "Features/UX/Prefabs/Slate/Slate.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Slate_Box_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Slate.html"
         },
         {
           "Name": "Slider",
           "RelativeAssetPath": "Features/UX/Prefabs/Sliders/PinchSlider.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Slider_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html"
         },
         {
           "Name": "AppBar",
           "RelativeAssetPath": "Features/UX/Prefabs/AppBar/AppBar.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Appbar_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_AppBar.html"
         }
       ]
@@ -46,27 +115,27 @@
       "CategoryName": "Tooltips",
       "Items": [
         {
-          "Name": "Bezier Tooltip",
+          "Name": "Bezier",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Bezier ToolTip.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Bezier_Tooltip_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         },
         {
-          "Name": "Simple Line Tooltip",
+          "Name": "Simple Line",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Simple Line ToolTip.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_SimpleLine_Tooltip_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         },
         {
-          "Name": "Spline Tooltip",
+          "Name": "Spline",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Spline ToolTip.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Spline_Tooltip_Icon.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         }
       ]
@@ -75,35 +144,35 @@
       "CategoryName": "Progress indicators",
       "Items": [
         {
-          "Name": "Progress Indicator Loading Bar",
+          "Name": "Loading Bar",
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "progress-bar.gif",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_LoadingBar_Icon.png",
           "DocURL": ""
         },
         {
-          "Name": "Indeterminate Progress Indicator",
+          "Name": "Indeterminate",
           "RelativeAssetPath": "Features/UX/Prefabs/Loader/IndeterminateLoader.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_IndeterminateLoader_Icon.gif",
           "DocURL": ""
         },
         {
-          "Name": "Progress Indicator Rotating Orbs",
+          "Name": "Rotating Orbs",
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Loading_RotatingOrbs_Icon.gif",
           "DocURL": ""
         },
         {
-          "Name": "Progress Indicator Rotating Object",
+          "Name": "Rotating Object",
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab",
           "AssetModule": 5,
-          "IconModule": 5,
-          "RelativeIconPath": "StandardAssets\\Textures\\IconRefresh.png",
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Loading_RotatingObject_Icon.gif",
           "DocURL": ""
         }
       ]

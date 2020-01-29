@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
+    /// <summary>
+    /// Inspector class that render MRTK Toolbox for easy access to creating out-of-box UX prefabs in current scene
+    /// </summary>
     public class MixedRealityToolboxWindow : EditorWindow
     {
         private static readonly string searchDisplaySearchFieldKey = "MixedRealityToolboxWindow.SearchField";
@@ -15,7 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private Vector2 scrollPos;
         private string searchString;
-        private const float ToolboxItemWidth = 250f;
+        private const float ToolboxItemWidth = 210f;
+        private const float ToolboxItemButtonWidth = 125f;
         private const float ToolboxItemHeight = 64f;
 
         [Serializable]
@@ -80,10 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     try
                     {
                         toolBoxCollection = JsonUtility.FromJson<ToolboxItemCollection>(File.ReadAllText(JSONDataPath));
-                    }catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         Debug.LogError(ex);
                     }
+
                     foreach (var bucket in toolBoxCollection.Categories)
                     {
                         foreach (var item in bucket.Items)
@@ -98,11 +104,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         }
 
-        [MenuItem("Mixed Reality Toolkit/Toolbox Window", false, 3)]
+        private GUIStyle centeredStyle;
+
+        [MenuItem("Mixed Reality Toolkit/Toolbox", false, 3)]
         private static void ShowWindow()
         {
             var window = GetWindow<MixedRealityToolboxWindow>(typeof(SceneView));
-            window.titleContent = new GUIContent(WindowTitle, EditorGUIUtility.IconContent("d_EditCollider").image);
+            window.titleContent = new GUIContent(WindowTitle, EditorGUIUtility.IconContent("Grid.BoxTool").image);
             window.Show();
         }
 
@@ -113,6 +121,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void OnGUI()
         {
+            centeredStyle = GUI.skin.GetStyle("Label");
+            centeredStyle.alignment = TextAnchor.UpperCenter;
+
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             using (new EditorGUILayout.HorizontalScope())
@@ -134,8 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     scrollPos = scrollView.scrollPosition;
 
-                    // bucket categories?
-
                     foreach (var bucket in ToolboxPrefabs)
                     {
                         RenderSection(bucket);
@@ -146,22 +155,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void RenderSection(ToolboxCategory bucket)
         {
-            int itemsPerRow = (int)(position.width / ToolboxItemWidth);
-
-            InspectorUIUtility.DrawTitle(bucket.CategoryName);
-
-            // Render grid of toolbox items
-            for (int row = 0; row <= bucket.Items.Length / itemsPerRow; row++)
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                using (new EditorGUILayout.HorizontalScope())
+                string key = $"MixedRealityToolboxWindow_{bucket.CategoryName}";
+                if (InspectorUIUtility.DrawSectionFoldoutWithKey(bucket.CategoryName, key, MixedRealityStylesUtility.BoldTitleFoldoutStyle))
                 {
-                    int startIndex = row * itemsPerRow;
-                    for (int col = 0; col < itemsPerRow && startIndex + col < bucket.Items.Length; col++)
+                    InspectorUIUtility.DrawDivider();
+                    EditorGUILayout.Space();
+
+                    bool isCategoryNameSearchMatch = IsSearchMatch(bucket.CategoryName, searchString);
+
+                    // Render grid of toolbox items
+                    int itemsPerRow = (int)(position.width / ToolboxItemWidth);
+                    for (int row = 0; row <= bucket.Items.Length / itemsPerRow; row++)
                     {
-                        var item = bucket.Items[startIndex + col];
-                        if (IsSearchMatch(item, searchString))
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            RenderToolboxItem(item);
+                            int startIndex = row * itemsPerRow;
+                            for (int col = 0; col < itemsPerRow && startIndex + col < bucket.Items.Length; col++)
+                            {
+                                var item = bucket.Items[startIndex + col];
+                                if (isCategoryNameSearchMatch || IsSearchMatch(item, searchString))
+                                {
+                                    RenderToolboxItem(item);
+                                }
+                            }
                         }
                     }
                 }
@@ -172,15 +190,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (item == null || item.Prefab == null)
             {
-                // TODO: Download SDK path? or other module*
                 return;
             }
 
             var buttonContent = new GUIContent()
             {
                 image = item.Icon,
-                text = item.Name,
-                //tooltip = docURL,
+                text = string.Empty,
+                tooltip = item.DocURL,
             };
 
             using (new EditorGUILayout.VerticalScope())
@@ -188,14 +205,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    // The documentation button should always be enabled.
                     using (new EditorGUI.DisabledGroupScope(false))
                     {
-                        if (GUILayout.Button(buttonContent, GUILayout.MaxHeight(ToolboxItemHeight), GUILayout.Width(ToolboxItemWidth)))
+                        if (GUILayout.Button(buttonContent, GUILayout.MaxHeight(ToolboxItemHeight), GUILayout.Width(ToolboxItemButtonWidth)))
                         {
                             Selection.activeObject = Instantiate(item.Prefab);
                         }
                     }
+                    GUILayout.FlexibleSpace();
+                }
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.LabelField(item.Name, centeredStyle);
                     GUILayout.FlexibleSpace();
                 }
 
@@ -215,7 +238,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static bool IsSearchMatch(ToolboxItem item, string searchContent)
         {
-            return item.Name.IndexOf(searchContent, 0, StringComparison.CurrentCultureIgnoreCase) >= 0;
+            return IsSearchMatch(item.Name, searchContent);
+        }
+
+        private static bool IsSearchMatch(string field, string searchContent)
+        {
+            return field.IndexOf(searchContent, 0, StringComparison.CurrentCultureIgnoreCase) >= 0;
         }
     }
 }
