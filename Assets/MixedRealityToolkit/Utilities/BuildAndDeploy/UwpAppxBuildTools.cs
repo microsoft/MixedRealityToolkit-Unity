@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // to vcxproj file in order to ensure that the build passes
 
             string projectName = PlayerSettings.productName;
-            string projectFilePath = $"{Path.GetFullPath(buildInfo.OutputDirectory)}\\{projectName}\\{projectName}.vcxproj";
+            string projectFilePath = Path.Combine(Path.GetFullPath(buildInfo.OutputDirectory), projectName, $"{projectName}.vcsproj");
 
             if (!File.Exists(projectFilePath))
             {

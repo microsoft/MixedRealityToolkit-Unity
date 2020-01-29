@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             if (useBackgroundThread) { await BackgroundThread; }
 
-            if (uri.EndsWith(".gltf"))
+            if (uri.EndsWith(".gltf", StringComparison.OrdinalIgnoreCase))
             {
                 string gltfJson = File.ReadAllText(uri);
 
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                     return null;
                 }
             }
-            else if (uri.EndsWith(".glb"))
+            else if (uri.EndsWith(".glb", StringComparison.OrdinalIgnoreCase))
             {
                 byte[] glbData;
 
@@ -134,12 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             }
 
             gltfObject.Uri = uri;
-            int nameStart = uri.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal) + 1;
-            int nameLength = uri.Length - nameStart;
 
             try
             {
-                gltfObject.Name = Path.GetFileNameWithoutExtension(uri.Substring(nameStart, nameLength));
+                gltfObject.Name = Path.GetFileNameWithoutExtension(uri);
             }
             catch (ArgumentException)
             {

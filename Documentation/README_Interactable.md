@@ -201,7 +201,7 @@ One can create a simple button by adding the *Interactable* component to a GameO
 Take the button one step further, by creating a new profile, assigning the GameObject itself and creating a new theme. Furthermore, use the *OnClick* event to make something happen.
 
 > [!NOTE]
-> Making a [button pressable](README_Button.md) requires the`PressableButton` component. Additionally, the `PhysicalPressEventRouter` component is needed to funnel press events to the *Interactable* component.
+> Making a [button pressable](README_Button.md) requires the [`PressableButton`](xref:Microsoft.MixedReality.Toolkit.UI.PressableButton) component. Additionally, the [`PhysicalPressEventRouter`](xref:Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter) component is needed to funnel press events to the *Interactable* component.
 
 ### Creating toggle and multi-dimension buttons
 

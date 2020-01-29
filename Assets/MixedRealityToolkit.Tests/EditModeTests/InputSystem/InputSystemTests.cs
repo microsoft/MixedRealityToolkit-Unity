@@ -2,13 +2,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Tests.Services;
+using Microsoft.MixedReality.Toolkit.Tests.EditMode.Services;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     public class InputSystemTests
     {

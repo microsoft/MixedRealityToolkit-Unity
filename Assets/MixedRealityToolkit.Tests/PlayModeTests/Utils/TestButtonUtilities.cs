@@ -162,10 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 p1 = button.transform.position - button.TransformDirection(ButtonTranslateOffset);
             Vector3 p2 = button.transform.position;
 
-            // Move the hand towards
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return MoveHand(p1, p2);
         }
 
         /// <summary>
@@ -176,11 +173,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 p2 = button.transform.position;
             Vector3 p3 = button.transform.position - button.TransformDirection(ButtonTranslateOffset);
 
-            // Move the hand back
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            yield return PlayModeTestUtilities.MoveHand(p2, p3, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return MoveHand(p2, p3);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, PlayModeTestUtilities.GetInputSimulationService());
         }
+
+        /// <summary>
+        /// Move the right hand from point 1 to point 2
+        /// </summary>
+        public static IEnumerator MoveHand(Vector3 p1, Vector3 p2)
+        {
+            // Move the hand towards
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHand(p1, p2, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+        }
+
     }
 }
 

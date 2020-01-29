@@ -6,7 +6,8 @@
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit.Tools.Runtime",
         "Unity.TextMeshPro",
-        "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy"
+        "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
+        "Microsoft.MixedReality.Toolkit.SDK"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

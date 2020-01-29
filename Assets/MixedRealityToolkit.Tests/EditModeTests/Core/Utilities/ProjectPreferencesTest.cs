@@ -6,7 +6,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Core.Utilities.Editor
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
 {
     /// <summary>
     /// Test structure to test <see cref="Microsoft.MixedReality.Toolkit.Utilities.Editor.ProjectPreferences"/>

@@ -17,6 +17,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -33,7 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
         private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
-        private static string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
+        private const string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
+
+        private const string DisabledInitializedPrefabAssetPath = @"Assets\MixedRealityToolkit.Tests\PlayModeTests\Prefabs\TestInteractableInitialize.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
@@ -768,12 +771,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(interactable.gameObject);
         }
 
-        #region Test Helpers
-
         /// <summary>
-        /// Generates an interactable from primitives and assigns a select action.
+        /// Ensure a disabled Interactable initializes when accessing one of it's properties even though it's Awake() has not been called
         /// </summary>
-        private void AssembleInteractableButton(out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
+        [UnityTest]
+        public IEnumerator TestForceInitialize()
+        {
+            Object checkboxesPrefab = AssetDatabase.LoadAssetAtPath(DisabledInitializedPrefabAssetPath, typeof(Object));
+            var result = Object.Instantiate(checkboxesPrefab, Vector3.forward * 1.0f, Quaternion.identity) as GameObject;
+            var interactables = result.GetComponentsInChildren<Interactable>(true);
+
+            const int ExpectedCheckboxCount = 2;
+            Assert.AreEqual(ExpectedCheckboxCount, interactables.Length);
+
+            bool isFirstActive = interactables[0].gameObject.activeInHierarchy;
+            var enabledCheckbox = isFirstActive ? interactables[0] : interactables[1];
+            var disabledCheckbox = isFirstActive ? interactables[1] : interactables[0];
+
+            // No error messages should fire.
+            enabledCheckbox.IsToggled = true;
+            Assert.IsTrue(enabledCheckbox.IsToggled);
+
+            // Disabled checkbox should auto-initialize even though it's Awake() has not been called
+            disabledCheckbox.IsToggled = true;
+            Assert.IsTrue(disabledCheckbox.IsToggled);
+
+            // Checkbox should still behave as expected even though it was pre-initialized
+            {
+                disabledCheckbox.gameObject.SetActive(true);
+                disabledCheckbox.IsToggled = false;
+
+                // Subscribe to interactable's on click so we know the click went through
+                bool wasClicked = false;
+                disabledCheckbox.OnClick.AddListener(() => { wasClicked = true; });
+
+                Vector3 end = disabledCheckbox.transform.position - new Vector3(0f, 0.05f, 0f);
+                Vector3 start = end - new Vector3(0f, 0f, 0.5f);
+
+                yield return TestButtonUtilities.MoveHand(start, end);
+                yield return TestButtonUtilities.MoveHand(end, start);
+
+                Assert.True(wasClicked, "Interactable was not clicked.");
+            }
+
+            GameObject.Destroy(result);
+        }
+
+            #region Test Helpers
+
+            /// <summary>
+            /// Generates an interactable from primitives and assigns a select action.
+            /// </summary>
+            private void AssembleInteractableButton(out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
         {
             // Assemble an interactable out of a set of primitives
             // This will be the button housing
