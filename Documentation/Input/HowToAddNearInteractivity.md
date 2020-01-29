@@ -59,19 +59,58 @@ The default MRTK profile and the default HoloLens 2 profile already contain a *P
 
 ### 3D GameObjects
 
-1. On the GameObject that should be touchable, add a collider and a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) component.
+There are two different ways of adding touch interactions to 3D GameObjects, depending on if your 3d object
+should only have a single touchable plane, or of if it should be touchable based on its entire collider.
+The first way is typically on objects with BoxColliders, where it is desired to only have a single face
+of the collider react to touch events. The other is for objects that need to be touchable from any direction
+based on their collider.
 
-    1. Set **Events to Receive** to *Touch* if using the [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler) interface in your component script below.
+### Single face touch
+
+This is useful to enable situations where only a single face needs to be touchable. This option assumes
+that the game object has a BoxCollider. it's possible to use this with non-BoxCollider objects, in which
+case the 'Bounds' and 'Local Center' properties much be manually set to configure the touchable plane (i.e.
+Bounds should be set to a non-zero-zero value).
+
+1. On the GameObject that should be touchable, add a BoxCollider and a [`NearInteractionTouchable`]
+   (xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) component.
+
+    1. Set **Events to Receive** to *Touch* if using the [`IMixedRealityTouchHandler`]
+       (xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler) interface in your
+       component script below.
 
     1. Click **Fix bounds** and **Fix center**
 
     ![NearInteractionTouchable Gizmos Example](../Images/Input/Pointers/NearInteractionTouchableSetup.gif)
 
-1. On that object or one of its ancestors, add a script component that implements the [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler) interface. Any ancestor of the object with the [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) will be able to receive pointer events, as well.
+1. On that object or one of its ancestors, add a script component that implements the
+   [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
+   interface. Any ancestor of the object with the [`NearInteractionTouchable`]
+   (xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) will be able to receive
+   pointer events, as well.
 
 > [!NOTE]
-> In the editor scene view with the *NearInteractionTouchable* GameObject selected, notice a white outline square and arrow. The arrow points to the "front" of the touchable. The collidable will only be touchable from that direction. To make a collider touchable from all directions, add a [`NearInteractionTouchableVolume`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) instead.
+> In the editor scene view with the *NearInteractionTouchable* GameObject selected, notice a white outline square and arrow. The arrow points to the "front" of the touchable. The collidable will only be touchable from that direction. To make a collider touchable from all directions, see the section on [arbitrary collider touch](#arbitrary-collider-touch).
 > ![NearInteractionTouchable Gizmos Example](../Images/Input/Pointers/NearInteractionTouchableGizmos.png)
+
+### Arbitrary collider touch
+
+This is useful to enable situations where the game object needs to be touchable along its entire collider
+face. For example, this can be used to enable touch interactions for an object with a SphereCollider, where
+the entire collider needs to be touchable.
+
+1. On the GameObject that should be touchable, add a collider and a [`NearInteractionTouchableVolume`]
+   (xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) component.
+
+    1. Set **Events to Receive** to *Touch* if using the [`IMixedRealityTouchHandler`]
+       (xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler) interface in your component
+       script below.
+
+1. On that object or one of its ancestors, add a script component that implements the
+   [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
+   interface. Any ancestor of the object with the [`NearInteractionTouchable`]
+   (xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) will be able to receive
+   pointer events, as well.
 
 ### Unity UI
 
