@@ -159,7 +159,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    // todo
                     RenderToggle(MRConfig.XRManagerWindows, "Windows XR");
                     RenderToggle(MRConfig.XRManagerOculus, "Oculus XR");
                     RenderToggle(MRConfig.XRManagerAndroid, "Android ARCore XR");

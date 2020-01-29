@@ -83,9 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
-#pragma warning disable 0618
-            if (!PlayerSettings.virtualRealitySupported)
-#pragma warning restore 0618
+            if (!XRSettingsUtilities.LegacyXREnabled)
             {
                 Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
             }

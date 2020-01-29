@@ -133,18 +133,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.HelpBox(PerformanceTargetDescriptions[(int)PerfTarget], MessageType.Info);
             EditorGUILayout.Space();
 
-            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-            // with legacy requirements.
-#pragma warning disable 0618
-            if (!PlayerSettings.virtualRealitySupported)
+            if (!XRSettingsUtilities.LegacyXREnabled)
             {
                 EditorGUILayout.HelpBox("Virtual reality support is not enabled in player settings", MessageType.Error);
                 if (GUILayout.Button("Enable Virtual Reality Support"))
                 {
-                    PlayerSettings.virtualRealitySupported = true;
+                    XRSettingsUtilities.LegacyXREnabled = true;
                 }
             }
-#pragma warning disable 0618
             else
             {
                 selectedToolbarIndex = GUILayout.Toolbar(selectedToolbarIndex, ToolbarTitles);
