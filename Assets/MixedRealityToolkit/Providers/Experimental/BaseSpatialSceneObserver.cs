@@ -102,12 +102,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             SpatialAwarenessSystem?.HandleEvent(sceneEventData, OnSceneObjectRemoved);
         }
 
-        public virtual void LoadScene(string filename)
+        public virtual void SaveScene(string filename)
         {
             throw new System.NotImplementedException();
         }
 
-        public virtual void SaveScene(string filename)
+        public void LoadScene(byte[] serializedScene)
         {
             throw new System.NotImplementedException();
         }

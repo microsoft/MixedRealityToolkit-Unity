@@ -33,15 +33,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             int observerIndex = 0;
             foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviderAccess.GetDataProviders())
             {
-                GUI.color = observer.IsRunning ? enabledColor : disabledColor;
+                GUI.color = observer.WaitingForSceneObserverAccess ? enabledColor : disabledColor;
 
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
                 GUI.color = GetObserverColor(observerIndex);
                 GUILayout.Button(observer.Name);
-                GUI.color = observer.IsRunning ? enabledColor : disabledColor;
+                GUI.color = observer.WaitingForSceneObserverAccess ? enabledColor : disabledColor;
 
-                EditorGUILayout.Toggle("Running", observer.IsRunning);
+                EditorGUILayout.Toggle("Running", observer.WaitingForSceneObserverAccess);
                 EditorGUILayout.LabelField("Source", observer.SourceName);
                 EditorGUILayout.Toggle("Is Stationary", observer.IsStationaryObserver);
                 EditorGUILayout.FloatField("Update Interval", observer.UpdateInterval);

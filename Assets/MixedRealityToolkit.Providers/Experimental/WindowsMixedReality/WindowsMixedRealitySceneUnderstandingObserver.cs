@@ -14,6 +14,9 @@ using UnityEngine.Assertions;
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.Extensions;
+using System.Threading;
+using System.Collections.Concurrent;
+using System.Security.Cryptography;
 
 #if WINDOWS_UWP
 using Windows.Storage;
@@ -55,9 +58,43 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             Initialize();
         }
 
+        private async void RunRequestSceneObserverAccess()
+        {
+            Debug.Log($"RunRequestSceneObserverAccess() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
+            var task = RequestSceneObserverAccess();
+            try
+            {
+                await task;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+            }
+        }
+
+        private async Task RequestSceneObserverAccess()
+        {
+            Debug.Log($"RequestSceneObserverAccess() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
+            if (SceneObserver.IsSupported())
+            {
+                Debug.Log("CanAccessObserverAsync IsSupported");
+
+                    var access = await SceneObserver.RequestAccessAsync();
+                    if (access == SceneObserverAccessStatus.Allowed)
+                    {
+                        Debug.Log("CanAccessObserver() SceneObserverAccessStatus.Allowed");
+                        WaitingForSceneObserverAccess = false;
+                        //throw new Exception();
+                    }
+            }
+        }
+
         public override void Initialize()
         {
             //Debug.Log("Initialize");
+            Debug.Log($"Initialize() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             base.Initialize();
             MeshExtensions.CreateMeshFromQuad(normalizedQuadMesh, 1, 1);
         }
@@ -65,15 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Enable()
         {
-            //Debug.Log("Enable");
+            Debug.Log("Enable()");
 
-            firstUpdateTimer = new Timer()
-            {
-                Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
-                AutoReset = false
-            };
-
-            updateTimer = new Timer
+            updateTimer = new System.Timers.Timer
             {
                 Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
                 AutoReset = false
@@ -84,28 +115,44 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 updateTimer.AutoReset = true;
             };
 
-            // After an initial delay, start the auto update
-            firstUpdateTimer.Elapsed += (sender, e) =>
-            {
-                updateTimer.Start();
-            };
-
             updateTimer.Elapsed += UpdateTimerEventHandler;
 
-            firstUpdateTimer.Start();
+            if (StartupBehavior == AutoStartBehavior.AutoStart)
+            {
+                firstUpdateTimer = new System.Timers.Timer()
+                {
+                    Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
+                    AutoReset = false
+                };
+
+                // After an initial delay, start the auto update
+                firstUpdateTimer.Elapsed += (sender, e) =>
+                {
+                    updateTimer.Start();
+                };
+
+                firstUpdateTimer.Start();
+            }
+
+            if (Application.isEditor)
+            {
+                Debug.Log("Skipping request to access observer because we're in editor");
+                WaitingForSceneObserverAccess = false;
+            }
+            else
+            {
+                RunRequestSceneObserverAccess();
+            }
+
+            System.Threading.CancellationToken sceneToken = cancellationTokenSource.Token;
+            bool isOpaque = CoreServices.CameraSystem.IsOpaque;
+            RunGetSceneContinuously(isOpaque, sceneToken);
+            //Task.Run(() => GetSceneContinuously(isOpaque, sceneToken));
         }
 
         /// <inheritdoc />
         public override void Update()
         {
-            //Debug.Log("Update");
-
-            if (canUpdateScene)
-            {
-                canUpdateScene = false;
-                GetScene(); // this is async void, we don't wait on it.
-            }
-
             if (instantiationQueue.Count > 0)
             {
                 //Debug.Log($"Got {instantiationQueue.Count} things to instantiate.");
@@ -113,9 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 // Make our new objects in batches and tell observers about it
                 int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
 
+                SpatialAwarenessSceneObject saso = null;
+
                 for (int i = 0; i < batchCount; ++i)
                 {
-                    var saso = instantiationQueue.Dequeue();
+                    bool status = instantiationQueue.TryDequeue(out saso);
 
                     if (CreateGameObjects)
                     {
@@ -134,12 +183,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Disable()
         {
-            canUpdateScene = false;
         }
 
         /// <inheritdoc />
         public override void Destroy()
         {
+            Debug.Log("Destroy()");
+            cancellationTokenSource.Cancel();
             CleanupObserver();
         }
 
@@ -203,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
-            canUpdateScene = true;
+            sceneUpdateNeeded = true;
         }
 
         #endregion IMixedRealityOnDemandObserver
@@ -244,19 +294,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         #region Private Fields
 
-        private Timer firstUpdateTimer = null;
-        private Timer updateTimer = null;
+        private System.Timers.Timer firstUpdateTimer = null;
+        private System.Timers.Timer updateTimer = null;
         private SceneQuerySettings lastQuerySettings;
         private Dictionary<Guid, SceneMesh> cachedSceneMeshes = new Dictionary<Guid, SceneMesh>(128);
         private Dictionary<Guid, SpatialAwarenessSceneObject.Quad> cachedSceneQuads = new Dictionary<Guid, SpatialAwarenessSceneObject.Quad>(128);
-        private Scene previousScene = null;
-        private Queue<SpatialAwarenessSceneObject> instantiationQueue = new Queue<SpatialAwarenessSceneObject>();
+        private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private TextAsset serializedScene = null;
         private byte[] sceneBytes;
-        private bool canGetScene = true;
-        private bool canUpdateScene = false;
+        private bool sceneUpdateNeeded = false;
         private Mesh normalizedQuadMesh = new Mesh();
         private string surfaceTypeName;
+        private readonly object sharedSceneLock = new object();
+        //private Scene sharedScene = null;
+        private Scene previousScene = null;
+        private enum SceneState
+        {
+            Idle = 0,
+            UpdateRequested,
+            Processing,
+            FinishedProcessing
+        }
+        private SceneState sceneState;
+        System.Threading.CancellationTokenSource cancellationTokenSource = new System.Threading.CancellationTokenSource();
 
 #if WINDOWS_UWP
         /// <summary>
@@ -318,25 +378,174 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         #endregion Public Methods
 
-        #region Private Methods
+        #region Private
 
-        private async void GetScene()
+        private List<SpatialAwarenessSceneObject> filteredResult = new List<SpatialAwarenessSceneObject>(64);
+
+        private async void RunGetSceneContinuously(bool coreServicesCameraSystemIsOpaque, CancellationToken cancellationToken)
         {
-            // Prevent a flood of auto-update messages
-            // finish getting whole scene before getting another
-            if (canGetScene)
+            Debug.Log($"RunGetSceneContinuously() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
+            await GetSceneContinuously(coreServicesCameraSystemIsOpaque, cancellationToken);
+        }
+
+        private async Task GetSceneContinuously(bool coreServicesCameraSystemIsOpaque, CancellationToken cancellationToken)
+        {
+            Debug.Log($"GetSceneContinously() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
+            Scene scene = null;
+
+            while (true)
             {
-                canGetScene = false;
-                var task = GetSceneObjectsAsync();
-                try
+                //await new WaitForUpdate();
+
+                if (cancellationToken.IsCancellationRequested)
                 {
+                    return;
+                }
+
+                if (WaitingForSceneObserverAccess)
+                {
+                    continue;
+                }
+
+                if (sceneUpdateNeeded)
+                {
+                    sceneUpdateNeeded = false;
+                }
+                else
+                {
+                    continue;
+                }
+
+                // First, get the scene and it's objects
+
+                if (ShouldLoadFromFile)
+                {
+                    if (sceneBytes == null)
+                    {
+                        Debug.LogError("sceneBytes is null!");
+                        //return scene;
+                    }
+                    else
+                    {
+                        Debug.Log($"Found bytes with length {sceneBytes.Length}");
+                    }
+
+                    // Move onto a background thread for the expensive scene loading stuff
+
+                    if (UsePersistentObjects && previousScene != null)
+                    {
+                        scene = Scene.Deserialize(sceneBytes, previousScene);
+                    }
+                    else
+                    {
+                        // This happens first time through as we have no history yet
+                        //Debug.Log("GetSceneWithBytes() Scene.Deserialize(sceneData)");
+                        scene = Scene.Deserialize(sceneBytes);
+                    }
+                }
+                else if (!Application.isEditor)
+                {
+                    Debug.Log("making sqs");
+
+                    SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
+                    {
+                        EnableSceneObjectQuads = GeneratePlanes,
+                        EnableSceneObjectMeshes = GenerateMeshes,
+                        EnableOnlyObservedSceneObjects = InferRegions,
+                        EnableWorldMesh = GenerateEnvironmentMesh,
+                        RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(LevelOfDetail)
+                    };
+
+                    //if (!UsePersistentObjects)
+                    //{
+                    //    CleanupSceneObjects();
+                    //}
+
+                    Task<Scene> task;
+
+                    if (UsePersistentObjects)
+                    {
+                        Debug.Log("UsePersistentObjects");
+
+                        if (previousScene != null)
+                        {
+                            task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene);
+                        }
+                        else
+                        {
+                            Debug.Log("SceneObserver.ComputeAsync");
+
+                            // first time through, we have no history
+                            task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
+                        }
+                    }
+                    else
+                    {
+                        task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
+                    }
+
+                    Debug.Log("Assigning scene result");
+
                     await task;
+
+                    Debug.Log($"task status = {task.Status}");
+
+                    scene = task.Result;
+
+                    Debug.Log($"Found {scene.SceneObjects.Count} scene objects");
+
+                    //lock (sharedSceneLock)
+                    //{
+                        //sharedScene = scene;
+                    //}
                 }
-                catch (Exception e)
+
+                if (UsePersistentObjects)
                 {
-                    Debug.LogException(e);
+                    Debug.Log("updating previous scene.");
+                    previousScene = scene;
                 }
-                canGetScene = true;
+
+                // Convert from Scene objects to Spatial Awareness objects
+
+                Debug.Log($"Got {scene.SceneObjects.Count} objects");
+
+                //if (!UsePersistentObjects)
+                //{
+                //    CleanupSceneObjects();
+                //}
+
+                System.Numerics.Matrix4x4 sceneTransform = GetSceneTransform(scene.OriginSpatialGraphNodeId);
+
+                Debug.Log($"sceneTransform={sceneTransform}");
+
+                // If not on HoloLens....
+                // Orient data so floor with largest area is aligned to XZ plane
+
+                if (OrientScene && coreServicesCameraSystemIsOpaque)
+                {
+                    Debug.Log("Orienting scene");
+                    Quaternion toUp = ToUpFromBiggestFloor(scene.SceneObjects);
+                    var rotation = Matrix4x4.TRS(Vector3.zero, toUp, Vector3.one).ToSystemNumerics();
+                    sceneTransform = rotation * sceneTransform;
+                }
+
+                // Add scene objects we're interested in to the stack of GameObjects to instantiate
+
+                if (scene.SceneObjects.Count == 0)
+                {
+                    continue;
+                }
+
+                filteredResult.Clear();
+
+                filteredResult = ConvertSceneObjects(scene.SceneObjects, sceneTransform);
+
+                filteredResult = FilterSelectedSurfaceTypes(filteredResult);
+
+                AddUniqueTo(filteredResult, instantiationQueue);
             }
         }
 
@@ -409,9 +618,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             System.Numerics.Matrix4x4.Decompose(worldTranform, out localScale, out worldRotation, out worldTranslation);
 
+            var sceneObjectKind = sceneObject.Kind;
+
+            Debug.Log("Scene object kind: " + sceneObjectKind.ToString());
+
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
-                SpatialAwarenessSurfaceType(sceneObject.Kind),
+                SpatialAwarenessSurfaceType(sceneObjectKind),
                 worldTranslation.ToUnityVector3(),
                 worldRotation.ToUnityQuaternion(),
                 quads,
@@ -424,6 +637,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private List<SpatialAwarenessSceneObject> ConvertSceneObjects(IReadOnlyList<SceneObject> sceneObjects, System.Numerics.Matrix4x4 sceneTransform)
         {
+            Debug.Log($"ConvertSceneObjects() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
             Assert.IsTrue(sceneObjects.Count > 0);
 
             convertedResult.Clear();
@@ -439,143 +654,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return convertedResult;
         }
 
-        private async Task GetSceneObjectsAsync()
-        {
-            Debug.Log("GetSceneAsync() start");
-            Scene scene = null;
-            Guid sceneGuid = new Guid();
-            var sasos = new List<SpatialAwarenessSceneObject>();
-
-            // First, get the scene and it's objects
-
-            if (ShouldLoadFromFile)
-            {
-                if (sceneBytes == null)
-                {
-                    Debug.LogError("sceneBytes is null!");
-                    return;
-                }
-                else
-                {
-                    Debug.Log($"Found bytes with length {sceneBytes.Length}");
-                }
-
-                // Move onto a background thread for the expensive scene loading stuff
-
-                scene = GetSceneWithBytes(sceneBytes);
-            }
-            else
-            {
-                var canAccessTask = CanAccessObserverAsync();
-                await canAccessTask;
-
-                if (canAccessTask.Status == TaskStatus.Faulted)
-                {
-                    Debug.Log("Something bad in CanAccessObserverAsync");
-                    Debug.LogException(canAccessTask.Exception);
-                }
-
-                Debug.Log($"canAccessTask.Result={canAccessTask.Result}");
-
-                if (canAccessTask.Result)
-                {
-                    Debug.Log("making sqs");
-                    SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
-                    {
-                        EnableSceneObjectQuads = GeneratePlanes,
-                        EnableSceneObjectMeshes = GenerateMeshes,
-                        EnableOnlyObservedSceneObjects = InferRegions,
-                        EnableWorldMesh = GenerateEnvironmentMesh,
-                        RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(LevelOfDetail)
-                    };
-
-                    if (!UsePersistentObjects)
-                    {
-                        CleanupSceneObjects();
-                    }
-
-                    //await new WaitForBackgroundThread();
-                    {
-                        Task<Scene> task;
-
-                        if (UsePersistentObjects)
-                        {
-                            Debug.Log("UsePersistentObjects");
-                            if (previousScene != null)
-                            {
-                                task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene);
-                            }
-                            else
-                            {
-                                // first time through, we have no history
-                                task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
-                            }
-                        }
-                        else
-                        {
-                            task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
-                        }
-
-                        Debug.Log("Assigning scene result");
-                        await task;
-                        scene = task.Result;
-                    }
-                    //await new WaitForUpdate();
-
-                    if (UsePersistentObjects)
-                    {
-                        Debug.Log("updating previous scene.");
-                        previousScene = scene;
-                    }
-                }
-                Debug.Log("GetSceneAsync() end");
-
-            }
-
-            // Filter the scene objects we're interested in
-
-            if (scene == null)
-            {
-                Debug.LogError("Something went wrong - scene is null!");
-                return;
-            }
-
-            // store this so we don't have to reference scene outside this thread
-            sceneGuid = scene.OriginSpatialGraphNodeId;
-
-            Debug.Log($"Got {scene.SceneObjects.Count} objects");
-
-            if (!UsePersistentObjects)
-            {
-                CleanupSceneObjects();
-            }
-
-            System.Numerics.Matrix4x4 sceneTransform = GetSceneTransform(sceneGuid);
-
-            Debug.Log($"sceneTransform={sceneTransform}");
-
-            // If not on HoloLens....
-            // Orient data so floor with largest area is aligned to XZ plane
-
-            if (OrientScene && CoreServices.CameraSystem.IsOpaque)
-            {
-                Debug.Log("Orienting scene");
-                Quaternion toUp = ToUpFromBiggestFloor(scene.SceneObjects);
-                var rotation = Matrix4x4.TRS(Vector3.zero, toUp, Vector3.one).ToSystemNumerics();
-                sceneTransform = rotation * sceneTransform;
-            }
-
-            sasos = ConvertSceneObjects(scene.SceneObjects, sceneTransform);
-
-            // Add scene objects we're interested in to the stack of gameobjects to make
-            var validSurfaceTypes = FilterSelectedSurfaceTypes(sasos);
-
-            AddUniqueTo(validSurfaceTypes, instantiationQueue);
-        }
-
         private void UpdateTimerEventHandler(object sender, ElapsedEventArgs args)
         {
-            canUpdateScene = true;
+            sceneUpdateNeeded = true;
             return;
         }
 
@@ -618,47 +699,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             OrientScene = profile.OrientScene;
         }
 
-        private async Task<bool> CanAccessObserverAsync()
-        {
-            Debug.Log("CanAccessObserverAsync start");
-
-            if (IsRunning)
-            {
-                return true;
-            }
-
-            if (SpatialAwarenessSystem == null)
-            {
-                return false;
-            }
-
-            if (CoreServices.CameraSystem.IsOpaque)
-            {
-                // We're not a HoloLens
-                return false;
-            }
-
-            if (!IsRunning)
-            {
-                if (SceneObserver.IsSupported())
-                {
-                    Debug.Log("CanAccessObserverAsync IsSupported");
-
-                    var access = await SceneObserver.RequestAccessAsync();
-                    if (access == SceneObserverAccessStatus.Allowed)
-                    {
-                        Debug.Log("CanAccessObserver() SceneObserverAccessStatus.Allowed");
-                        IsRunning = true;
-                        return true;
-                    }
-                }
-            }
-
-            Debug.Log("CanAccessObserverAsync end");
-
-            return false;
-        }
-
         private void CleanupObserver()
         {
             Dispose(true);
@@ -685,7 +725,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return filteredSelectedSurfaceTypesResult;
         }
 
-        private void AddUniqueTo(List<SpatialAwarenessSceneObject> newObjects, Queue<SpatialAwarenessSceneObject> existing)
+        private void AddUniqueTo(List<SpatialAwarenessSceneObject> newObjects, ConcurrentQueue<SpatialAwarenessSceneObject> existing)
         {
             int length = newObjects.Count;
 
@@ -696,25 +736,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     existing.Enqueue(newObjects[i]);
                 }
             }
-        }
-
-        private Scene GetSceneWithBytes(byte[] sceneData)
-        {
-            Scene result = null;
-
-            if (UsePersistentObjects && previousScene != null)
-            {
-                result = Scene.Deserialize(sceneData, previousScene);
-            }
-            else
-            {
-                // This happens first time through as we have no history yet
-                //Debug.Log("GetSceneWithBytes() Scene.Deserialize(sceneData)");
-                result = Scene.Deserialize(sceneData);
-            }
-            previousScene = result;
-
-            return result;
         }
 
         private void Instantiate(SpatialAwarenessSceneObject saso)
@@ -874,7 +895,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
 
             sceneObjects.Clear();
-            instantiationQueue.Clear();
+            instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         }
 
 #if WINDOWS_UWP

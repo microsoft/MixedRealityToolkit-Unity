@@ -28,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             Meshes = meshDatas;
         }
 
+        public SpatialAwarenessSceneObject()
+        {
+        }
+
         public System.Guid Guid
         {
             get;

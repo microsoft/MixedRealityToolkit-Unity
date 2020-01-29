@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!IsRunning && StartupBehavior == AutoStartBehavior.AutoStart)
+            if (!WaitingForSceneObserverAccess && StartupBehavior == AutoStartBehavior.AutoStart)
             {
                 Resume();
             }
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Disable()
         {
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Suspend();
             }
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public int DefaultPhysicsLayer { get; } = 31;
 
         /// <inheritdoc />
-        public bool IsRunning { get; protected set; } = false;
+        public bool WaitingForSceneObserverAccess { get; protected set; } = true;
 
         /// <inheritdoc />
         public bool IsStationaryObserver { get; set; } = false;

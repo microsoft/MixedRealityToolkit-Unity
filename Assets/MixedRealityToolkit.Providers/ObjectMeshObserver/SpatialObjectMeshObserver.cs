@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Update()
         {
-            if (!IsRunning) 
+            if (!WaitingForSceneObserverAccess) 
             {
                 return;
             }
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
                 Suspend();
@@ -171,8 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Resume()
         {
-            if (IsRunning) { return; }
-            IsRunning = true;
+            if (WaitingForSceneObserverAccess) { return; }
+            WaitingForSceneObserverAccess = true;
         }
 
         /// <summary>
@@ -188,8 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Suspend()
         {
-            if (!IsRunning) { return; }
-            IsRunning = false;
+            if (!WaitingForSceneObserverAccess) { return; }
+            WaitingForSceneObserverAccess = false;
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// </summary>
         private void CleanupObserver()
         {
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Suspend();
             }

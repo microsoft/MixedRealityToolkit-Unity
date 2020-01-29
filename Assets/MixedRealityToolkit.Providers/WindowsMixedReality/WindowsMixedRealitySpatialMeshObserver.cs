@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             base.Dispose(disposing);
 
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Suspend();
             }
@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         public override void Resume()
         {
 #if UNITY_WSA
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
                 return;
@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             lastUpdated = 0;
 
             // UpdateObserver keys off of this value to start observing.
-            IsRunning = true;
+            WaitingForSceneObserverAccess = true;
 
 #endif // UNITY_WSA
         }
@@ -388,14 +388,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         public override void Suspend()
         {
 #if UNITY_WSA
-            if (!IsRunning)
+            if (!WaitingForSceneObserverAccess)
             {
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently stopped.");
                 return;
             }
 
             // UpdateObserver keys off of this value to stop observing.
-            IsRunning = false;
+            WaitingForSceneObserverAccess = false;
 
             // Halt any outstanding work.
             if (outstandingMeshObject != null)
@@ -496,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             // Only update the observer if it is running.
-            if (IsRunning && (outstandingMeshObject == null))
+            if (WaitingForSceneObserverAccess && (outstandingMeshObject == null))
             {
                 // If we have a mesh to work on...
                 if (meshWorkQueue.Count > 0)
@@ -734,7 +734,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <param name="updateTime">The date and time at which the change occurred.</param>
         private void SurfaceObserver_OnSurfaceChanged(SurfaceId id, SurfaceChange changeType, Bounds bounds, System.DateTime updateTime)
         {
-            if (!IsRunning) { return; }
+            if (!WaitingForSceneObserverAccess) { return; }
 
             switch (changeType)
             {
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <param name="elapsedCookTimeSeconds">Seconds between mesh cook request and propagation of this event.</param>
         private void SurfaceObserver_OnDataReady(SurfaceData cookedData, bool outputWritten, float elapsedCookTimeSeconds)
         {
-            if (!IsRunning) { return; }
+            if (!WaitingForSceneObserverAccess) { return; }
 
             if (outstandingMeshObject == null)
             {
@@ -845,7 +845,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            if (IsRunning)
+            if (WaitingForSceneObserverAccess)
             {
                 Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
                 Suspend();
