@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Inspector class that render MRTK Toolbox for easy access to creating out-of-box UX prefabs in current scene
+    /// Inspector class that renders the MRTK toolbox for easy access to creating out-of-box UX prefabs in the current scene
     /// </summary>
     public class MixedRealityToolboxWindow : EditorWindow
     {
