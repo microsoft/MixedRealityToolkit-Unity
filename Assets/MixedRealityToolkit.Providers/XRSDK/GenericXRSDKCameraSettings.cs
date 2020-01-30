@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+
 #if SPATIALTRACKING_ENABLED
 using UnityEngine.SpatialTracking;
 #endif // SPATIALTRACKING_ENABLED
@@ -42,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <inheritdoc/>
         public override bool IsOpaque => XRSDKSubsystemHelpers.DisplaySubsystem?.displayOpaque ?? true;
 
+#if SPATIALTRACKING_ENABLED
         /// <inheritdoc/>
         public override void Enable()
         {
@@ -66,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
             base.Disable();
         }
+#endif // SPATIALTRACKING_ENABLED
 
 #endregion IMixedRealityCameraSettings
     }
