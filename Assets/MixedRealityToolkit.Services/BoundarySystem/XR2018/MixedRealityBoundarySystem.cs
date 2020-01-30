@@ -61,15 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         protected override List<Vector3> GetBoundaryGeometry()
         {
-            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-            // with legacy requirements.
-#pragma warning disable 0618
             // Boundaries are supported for Room Scale experiences only.
             if (XRDevice.GetTrackingSpaceType() != TrackingSpaceType.RoomScale)
             {
                 return null;
             }
-#pragma warning restore 0618
 
             // Get the boundary geometry.
             var boundaryGeometry = new List<Vector3>(0);
@@ -87,9 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// </summary>
         protected override void SetTrackingSpace()
         {
-            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-            // with legacy requirements.
-#pragma warning disable 0618
             TrackingSpaceType trackingSpace;
 
             // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
@@ -119,7 +112,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 Debug.LogWarning("Tracking space unable to be set.");
             }
-#pragma warning restore 0618
         }
     }
 }
