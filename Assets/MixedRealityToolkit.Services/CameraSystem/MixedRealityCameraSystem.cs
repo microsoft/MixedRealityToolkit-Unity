@@ -56,7 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     }
                 }
 #if UNITY_WSA
+                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+                // with legacy requirements.
+#pragma warning disable 0618
                 else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+#pragma warning restore 0618
                 {
                     currentDisplayType = DisplayType.Transparent;
                 }
