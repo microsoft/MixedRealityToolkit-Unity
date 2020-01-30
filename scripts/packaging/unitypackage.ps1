@@ -175,6 +175,9 @@ $OutputDirectory = Resolve-Path $OutputDirectory
 $LogDirectory = Resolve-Path $LogDirectory
 $RepoDirectory = Resolve-Path $RepoDirectory
 
+Write-Verbose "Cleaning package manifest (removing AR and XR references)"
+CleanPackageManifest
+
 foreach ($entry in $packages.GetEnumerator()) {
     $packageName = $entry.Name;
     $folders = $entry.Value
