@@ -211,7 +211,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/Slate/Slate.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Slate_Box_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Slate.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Slate.html"
         },
         {
@@ -219,7 +219,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/Sliders/PinchSlider.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Slider_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Slider.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html"
         },
         {
@@ -227,7 +227,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/AppBar/AppBar.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Appbar_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_AppBar.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_AppBar.html"
         }
       ]
