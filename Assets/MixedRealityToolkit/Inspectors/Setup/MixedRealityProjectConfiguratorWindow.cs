@@ -15,27 +15,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private readonly Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
         {
-            {MRConfig.ForceTextSerialization, true },
-            {MRConfig.VisibleMetaFiles, true },
-            {MRConfig.VirtualRealitySupported, true },
-            {MRConfig.SinglePassInstancing, true },
-            {MRConfig.SpatialAwarenessLayer, true },
-            {MRConfig.EnableMSBuildForUnity, true },
+            { MRConfig.ForceTextSerialization, true },
+            { MRConfig.VisibleMetaFiles, true },
+            { MRConfig.VirtualRealitySupported, true },
+            { MRConfig.SinglePassInstancing, true },
+            { MRConfig.SpatialAwarenessLayer, true },
+            { MRConfig.EnableMSBuildForUnity, true },
             // UWP Capabilities
-            {MRConfig.MicrophoneCapability, true },
-            {MRConfig.InternetClientCapability, true },
-            {MRConfig.SpatialPerceptionCapability, true },
+            { MRConfig.MicrophoneCapability, true },
+            { MRConfig.InternetClientCapability, true },
+            { MRConfig.SpatialPerceptionCapability, true },
 #if UNITY_2019_3_OR_NEWER
-            {MRConfig.EyeTrackingCapability, true },
-#endif
+            { MRConfig.EyeTrackingCapability, true },
+#endif // UNITY_2019_3_OR_NEWER
+
             // Android Settings
-            {MRConfig.AndroidMultiThreadedRendering, true },
-            {MRConfig.AndroidMinSdkVersion, true },
+            { MRConfig.AndroidMultiThreadedRendering, true },
+            { MRConfig.AndroidMinSdkVersion, true },
 
             // iOS Settings
-            {MRConfig.IOSMinOSVersion, true },
-            {MRConfig.IOSArchitecture, true },
-            {MRConfig.IOSCameraUsageDescription, true },
+            { MRConfig.IOSMinOSVersion, true },
+            { MRConfig.IOSArchitecture, true },
+            { MRConfig.IOSCameraUsageDescription, true },
         };
 
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
-        private bool showConfigurations = false;
+        private bool showConfigurations = true;
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
@@ -141,9 +142,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
             if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
             {
+#if UNITY_2019_3_OR_NEWER
+                RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
+#else
                 RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+#endif // UNITY_2019_3_OR_NEWER
             }
+#if UNITY_2019_3_OR_NEWER
+            RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
+#else
             RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
+#endif // UNITY_2019_3_OR_NEWER
             RenderToggle(MRConfig.SpatialAwarenessLayer, "Set Default Spatial Awareness Layer");
             RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
             EditorGUILayout.Space();

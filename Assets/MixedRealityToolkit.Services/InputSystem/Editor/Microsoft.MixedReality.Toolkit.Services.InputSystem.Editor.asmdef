@@ -1,6 +1,7 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor",
     "references": [
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem"
     ],
