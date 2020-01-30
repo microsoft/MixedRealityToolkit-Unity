@@ -33,14 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing,
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
-#if UNITY_2019_3_OR_NEWER
-            XRManagerEnabled,
-            // XR Manager platforms
-            XRManagerWindows,
-            XRManagerOculus,
-            XRManagerAndroid,
-            XRManageriOS,
-#endif // UNITY_2019_3_OR_NEWER
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -66,13 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
-#if UNITY_2019_3_OR_NEWER
-            { Configurations.XRManagerEnabled,  () => { return false; /* todo */ } },
-            { Configurations.XRManagerWindows,  () => { return false; /* todo */ } },
-            { Configurations.XRManagerOculus,  () => { return false; /* todo */ } },
-            { Configurations.XRManagerAndroid,  () => { return false; /* todo */ } },
-            { Configurations.XRManageriOS,  () => { return false; /* todo */ } },
-#endif
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
 #pragma warning disable 0618
@@ -109,13 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
-#if UNITY_2019_3_OR_NEWER
-            { Configurations.XRManagerEnabled,  () => { /* todo */ } },
-            { Configurations.XRManagerWindows,  () => { /* todo */ } },
-            { Configurations.XRManagerOculus,  () => { /* todo */ } },
-            { Configurations.XRManagerAndroid,  () => { /* todo */ } },
-            { Configurations.XRManageriOS,  () => { /* todo */ } },
-#endif
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
 #pragma warning disable 0618

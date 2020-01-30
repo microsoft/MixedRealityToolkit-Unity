@@ -1,20 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
-
-#if UNITY_2019_3_OR_NEWER
-using UnityEditor.PackageManager;
-using UnityEditor.PackageManager.Requests;
-using PackageInfo = UnityEditor.PackageManager.PackageInfo;
-#endif // UNITY_2019_3_OR_NEWER
-
-#if XR_MANAGEMENT_ENABLED
-using System.Threading;
-using UnityEngine.XR.Management;
-#endif //XR_MANAGEMENT_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -47,6 +34,5 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #pragma warning restore 0618
             }
         }
-
     }
 }

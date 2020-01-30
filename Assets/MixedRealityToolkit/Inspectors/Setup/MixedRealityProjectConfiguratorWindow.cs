@@ -17,14 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             { MRConfig.ForceTextSerialization, true },
             { MRConfig.VisibleMetaFiles, true },
-#if UNITY_2019_3_OR_NEWER
-            { MRConfig.XRManagerEnabled, false },
-            // XR Manager platforms
-            { MRConfig.XRManagerWindows, true },
-            { MRConfig.XRManagerOculus, true },
-            { MRConfig.XRManagerAndroid, false },
-            { MRConfig.XRManageriOS, false },
-#endif // UNITY_2019_3_OR_NEWER
             { MRConfig.VirtualRealitySupported, true },
             { MRConfig.SinglePassInstancing, true },
             { MRConfig.SpatialAwarenessLayer, true },
@@ -56,10 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
         private bool showConfigurations = true;
-
-#if UNITY_2019_3_OR_NEWER
-        private bool showXRManagerPlatforms = true;
-#endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
@@ -152,30 +140,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
             RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
             RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
-#if UNITY_2019_3_OR_NEWER
-            RenderToggle(MRConfig.XRManagerEnabled, "Enable XR Manager");
-            showXRManagerPlatforms = EditorGUILayout.Foldout(showXRManagerPlatforms, "XR Manager Platforms", true);
-            if (showXRManagerPlatforms)
-            {
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    RenderToggle(MRConfig.XRManagerWindows, "Windows XR");
-                    RenderToggle(MRConfig.XRManagerOculus, "Oculus XR");
-                    RenderToggle(MRConfig.XRManagerAndroid, "Android ARCore XR");
-                    RenderToggle(MRConfig.XRManageriOS, "iOS ARKit XR");
-                }
-            }
-#endif // UNITY_2019_3_OR_NEWER
             if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
             {
 #if UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
 #else
-
                 RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
 #endif // UNITY_2019_3_OR_NEWER
             }
+#if UNITY_2019_3_OR_NEWER
+            RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
+#else
             RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
+#endif // UNITY_2019_3_OR_NEWER
             RenderToggle(MRConfig.SpatialAwarenessLayer, "Set Default Spatial Awareness Layer");
             RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
             EditorGUILayout.Space();
