@@ -19,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private Vector2 scrollPos;
         private string searchString;
         private const float ToolboxItemWidth = 210f;
-        private const float ToolboxItemButtonWidth = 125f;
-        private const float ToolboxItemHeight = 64f;
+        private const float ToolboxItemButtonWidth = 174f;
+        private const float ToolboxItemHeight = 98f;
 
         [Serializable]
         private class ToolboxItemCollection
