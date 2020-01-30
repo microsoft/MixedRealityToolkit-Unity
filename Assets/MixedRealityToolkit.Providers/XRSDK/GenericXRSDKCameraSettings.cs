@@ -70,6 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         }
 #endif // SPATIALTRACKING_ENABLED
 
-#endregion IMixedRealityCameraSettings
+        #endregion IMixedRealityCameraSettings
     }
 }
