@@ -236,27 +236,27 @@
       "CategoryName": "Tooltips",
       "Items": [
         {
-          "Name": "Bezier",
+          "Name": "Bezier Tooltip",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Bezier ToolTip.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Bezier_Tooltip_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Bezier_Tooltip.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         },
         {
-          "Name": "Simple Line",
+          "Name": "Simple Line Tooltip",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Simple Line ToolTip.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_SimpleLine_Tooltip_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_SimpleLine_Tooltip.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         },
         {
-          "Name": "Spline",
+          "Name": "Spline Tooltip",
           "RelativeAssetPath": "Features/UX/Prefabs/Tooltips/Spline ToolTip.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Spline_Tooltip_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Spline_Tooltip.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html"
         }
       ]
