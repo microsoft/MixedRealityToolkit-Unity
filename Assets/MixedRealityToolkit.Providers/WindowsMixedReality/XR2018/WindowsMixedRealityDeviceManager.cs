@@ -80,11 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
             else // Pre-Windows 10 1903.
             {
-                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
-#pragma warning disable 0618
                 if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-#pragma warning restore 0618
                 {
                     // HoloLens supports GGV hands
                     return (capability == MixedRealityCapability.GGVHand);
