@@ -12,6 +12,14 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
+          "Name": "HoloLens2 Toggle Button 32x32mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Toggle.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2Toggle_32x32mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
           "Name": "HoloLens2 Button 48x48mm",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2_48x48.prefab",
           "AssetModule": 5,
@@ -138,7 +146,24 @@
           "IconModule": 1,
           "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_RoundButton.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens1 Button",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\ButtonHoloLens1.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens1.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens1 Toggle Button",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\ButtonHoloLens1Toggle.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens1Toggle.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         }
+
       ]
     },
     {
