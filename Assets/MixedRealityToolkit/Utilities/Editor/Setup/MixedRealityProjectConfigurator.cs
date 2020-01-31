@@ -372,10 +372,5 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             return MixedRealityOptimizeUtils.IsBuildTargetUWP() ? PlayerSettings.WSA.GetCapability(capability) : true;
         }
-
-        private static bool GetCapability(PlayerSettings.WSACapability capability)
-        {
-            return MixedRealityOptimizeUtils.IsBuildTargetUWP() ? PlayerSettings.WSA.GetCapability(capability) : true;
-        }
     }
 }
