@@ -54,7 +54,7 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 > 
 > ![Solver](Images/Solver/HandJoint_ForwardUpVectors.png)
 > 
-> To overcome this, update the *Additional Rotation* property on the `SolverHandler` to **<90, 0, 0>**. This will ensure the forward vector supplied to Solvers is pointing through the palm and outward away from the hand.
+> To overcome this, update the *Additional Rotation* property on the `SolverHandler` to **<90, 0, 0>**. This will ensure the forward vector supplied to solvers is pointing through the palm and outward away from the hand.
 >
 > ![Solver](Images/Solver/SolverHandler_AdditionalRotation.png)
 >
