@@ -62,20 +62,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             get
             {
-#if ENABLE_DOTNET
-                return spatialCoordinateSystem ?? (spatialCoordinateSystem = GetSpatialCoordinateSystem(WorldManager.GetNativeISpatialCoordinateSystemPtr()));
-#elif WINDOWS_UWP
-                return spatialCoordinateSystem ?? (spatialCoordinateSystem = Marshal.GetObjectForIUnknown(WorldManager.GetNativeISpatialCoordinateSystemPtr()) as SpatialCoordinateSystem);
-#elif DOTNETWINRT_PRESENT
-                var spatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
-                if (spatialCoordinateSystem == null && spatialCoordinateSystemPtr != IntPtr.Zero)
+                IntPtr newSpatialCoordinateSystemPtr = WorldManager.GetNativeISpatialCoordinateSystemPtr();
+                if (newSpatialCoordinateSystemPtr != currentSpatialCoordinateSystemPtr && newSpatialCoordinateSystemPtr != IntPtr.Zero)
                 {
-                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(WorldManager.GetNativeISpatialCoordinateSystemPtr());
+#if ENABLE_DOTNET
+                    spatialCoordinateSystem = GetSpatialCoordinateSystem(newSpatialCoordinateSystemPtr);
+#elif WINDOWS_UWP
+                    spatialCoordinateSystem = Marshal.GetObjectForIUnknown(newSpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
+#elif DOTNETWINRT_PRESENT
+                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(newSpatialCoordinateSystemPtr);
+#endif
+                    currentSpatialCoordinateSystemPtr = newSpatialCoordinateSystemPtr;
                 }
                 return spatialCoordinateSystem;
-#endif
             }
         }
+
+        private static IntPtr currentSpatialCoordinateSystemPtr = IntPtr.Zero;
 
         /// <summary>
         /// Access the underlying native current holographic frame.
