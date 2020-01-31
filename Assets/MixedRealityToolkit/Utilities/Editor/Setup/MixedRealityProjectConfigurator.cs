@@ -76,6 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 ValidTargets = targets;
             }
 
+            /// <summary>
+            /// Returns true if the active build target is contained in the ValidTargets list or the list contains a BuildTarget.NoTarget entry, false otherwise
+            /// </summary>
             public bool IsActiveBuildTargetValid()
             {
                 foreach (var buildTarget in ValidTargets)
