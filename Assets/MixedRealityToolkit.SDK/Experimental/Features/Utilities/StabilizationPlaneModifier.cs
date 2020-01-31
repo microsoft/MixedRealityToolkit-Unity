@@ -267,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Configures the stabilization plane to update its position based on an object in the scene.        
+        /// Configures the stabilization plane to update its position based on an object in the scene.
         /// </summary>
         private void ConfigureTransformOverridePlane(float deltaTime)
         {
@@ -354,7 +354,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeDirection;
 #elif UNITY_WSA
+#pragma warning disable 0618
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
+#pragma warning restore 0618
 #endif
         }
 
@@ -377,7 +379,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeNormal;
 #elif UNITY_WSA
+#pragma warning disable 0618
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
+#pragma warning restore 0618
 #endif
         }
 
