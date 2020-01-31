@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static string[] MSBuildRegistryScopes = new string[] { "com.microsoft" };
 
         private static string MSBuildPackageName = "com.microsoft.msbuildforunity";
-        private static string MSBuildPackageVersion = "0.8.3";
+        private static string MSBuildPackageVersion = "0.9.1";
 
         /// <summary>
         /// Ensures the required settings exist in the package manager to allow for
