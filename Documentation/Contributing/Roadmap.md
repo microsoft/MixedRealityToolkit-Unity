@@ -4,14 +4,17 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 
 ## Current release
 
-[Microsoft Mixed Reality Toolkit v2.1.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.1.0)
+[Microsoft Mixed Reality Toolkit v2.3.0](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0)
 
 ## Upcoming releases
 
 | Product | Description | Timeline | Project board |
 | --- | --- | --- | --- |
-| [MRTK V2.3](#230) | Next iteration of MRTK | January 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/10 |
-| [MRTK V2.4](#240) | Future iteration of MRTK | TBD | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.4](#240) | Next iteration of MRTK | March 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.5](#250) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.6](#260) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.7](#270) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.8](#280) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
 
 Release details, including backlog items, can be found on the [GitHub milestone pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/milestones). The complete set of open issues can also be found on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
@@ -23,56 +26,60 @@ The Mixed Reality Toolkit will require Unity 2018.4.
 
 > When Unity releases an LTS (Long Term Support) product, the Mixed Reality Toolkit will update to the LTS release. MRTK will also support the latest non-beta (ex: 2019.1) tech branch version of Unity, at the time at which MRTK was released.
 
-### 2.3.0
+### 2.4.0
 
-The version 2.3.0 plan has been finalized. While some details may change as the iteration progresses, the following describes the overall plan for the next MRTK release. For the latest status of the release, please visit the [milestone page]( https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/10).
+For the latest status of the release, please visit the [milestone page]( https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11).
 
 Status: In development
 
-Timeline: January 2029
+Timeline: March 2020
 
 Themes:
 
 - Stability
 - Developer education
-- Unity 2019.3 XR SDK support
 - User Experience
-- Iterate on mobile AR support
+- Hand Extensibility
 
 **Stability**
 
 Quality and stability are the top priority for this and all Microsoft Mixed Reality Toolkit releases. We will continue to prioritize customer and partner issues that impact the stability of MRTK components.
 
-The MRTK build and deploy tools remain a continued area of stability and quality focus.
-
 **Developer education**
 
 [Developer documentation](https://microsoft.github.io/MixedRealityToolkit-Unity) and example scenes are, like stability, an ongoing priority for the MRTK team.
 
-**Unity 2019.3 XR SDK support**
-
-XR SDK is Unity's new mixed reality platform. The Microsoft Mixed Reality Toolkit is committed to supporting our customers on this new platform. All new platform support in MRTK is expected to be delivered via XR SDK.
-
 **User Experience**
 
-User experience (UX) work will include:
-
 - Bug fixes
-- Making it easier to add MRTK UX elements to projects
-- Bounding box and manipulator updates
-- New features
-    - Tap to place (HoloToolkit feature)
-    - Follow solver (https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5713)
+- Hololens Shell parity
+- Graduating experimental features
+- Tests to ensure features do not regress
 
-**Iterate on mobile AR**
+**Hand extensibility**
 
-The Mixed Reality Toolkit will gain experimental support for spatial awareness (planes and points) on mobile AR platforms (Android ARCore and iOS ARKit) via ARFoundation. Refinements to the camera support module shipped in version 2.2.0 are also planned.
+Hand extensibility includes refactors (non-breaking change) that to allow features, such as customizable pointing rays to be easily implemented without need for
+modifying MRTK source.
 
-### 2.4.0
+### 2.5.0
 
-The planning for version 2.4.0 is in the early stages. All of the details below are subject to change. For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11).
+For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/12). All of the details below are subject to change.
 
-Status: Early planning
+Status: Planning
+
+Timeline: TBD 2020
+
+Themes:
+
+- Stability
+- Developer education
+- User Experience
+
+### 2.6.0
+
+For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/14). All of the details below are subject to change.
+
+Status: Planning
 
 Timeline: TBD
 
@@ -80,10 +87,45 @@ Themes:
 
 - Stability
 - Developer education
-
-Potential areas of focus
-
-- Leap Motion support (Unity 2018 and Unity 2019)
-- Enhanced MRTK modularity
-- Integration of Azure services
 - User Experience
+
+### 2.7.0
+
+For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/15). All of the details below are subject to change.
+
+Status: Planning
+
+Timeline: TBD
+
+Themes:
+
+- Stability
+- Developer education
+- User Experience
+
+### 2.8.0
+
+For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/16). All of the details below are subject to change.
+
+Status: Planning
+
+Timeline: TBD
+
+Themes:
+
+- Stability
+- Developer education
+- User Experience
+
+## Backlog
+
+The following list highlights some of the key investments the MRTK team intends to pursue.
+
+- Platform expansion
+- Extensibility
+- Modularity
+- Accessibility features
+- Globalization enhancements
+- Packaging
+- Cloud service support
+- Tools
