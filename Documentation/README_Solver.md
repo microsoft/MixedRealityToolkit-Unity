@@ -49,6 +49,17 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 ![Solver](Images/Solver/TrackedObjectType-Example.gif)  
 *Example of various properties associated with each TrackedTargetType*
 
+> [!IMPORTANT]
+> Most solvers use the forward vector of the tracked transform target supplied by the `SolverHandler`. When using a *Hand Joint* tracked target type, the forward vector of the palm joint may point through the fingers and not through the palm. This depends on the platform supplying the hand joint data. For input simulation and Windows Mixed Reality, it is the *up vector* that points up through the palm (i.e green vector is up, blue vector is forward).
+> 
+> ![Solver](Images/Solver/HandJoint_ForwardUpVectors.png)
+> 
+> To overcome this, update the *Additional Rotation* property on the `SolverHandler` to **<90, 0, 0>**. This will ensure the forward vector supplied to solvers is pointing through the palm and outward away from the hand.
+>
+> ![Solver](Images/Solver/SolverHandler_AdditionalRotation.png)
+>
+> Alternatively, use the *Controller Ray* tracked target type to get similar behavior for pointing with hands.
+
 ## How to chain solvers
 
 It is possible to add multiple `Solver` components to the same GameObject thus chaining their algorithms. The `SolverHandler` components handles updating all solvers on the same GameObject. By default the `SolverHandler` calls `GetComponents<Solver>()` on Start which will return the Solvers in the order that they appear in the inspector.

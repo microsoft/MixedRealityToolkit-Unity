@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// <summary>
             /// Cast from Tracked Target Position to linked solver position
             /// </summary>
-            ToLinkedPosition
+            ToLinkedPosition,
         }
 
         /// <summary>
@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         #endregion
 
         #region SurfaceMagnetism Parameters
+        
         [SerializeField]
         [Tooltip("Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component")]
         private LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };
@@ -74,8 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public LayerMask[] MagneticSurfaces
         {
-            get { return magneticSurfaces; }
-            set { magneticSurfaces = value; }
+            get => magneticSurfaces;
+            set => magneticSurfaces = value;
         }
 
         [SerializeField]
@@ -88,19 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MaxRaycastDistance
         {
-            get { return maxRaycastDistance; }
-            set { maxRaycastDistance = value; }
+            get => maxRaycastDistance;
+            set => maxRaycastDistance = value;
         }
 
-        /// <summary>
-        /// Max distance for raycast to check for surfaces
-        /// </summary>
-        [Obsolete("Use MaxRaycastDistance instead")]
-        public float MaxDistance
-        {
-            get { return maxRaycastDistance; }
-            set { maxRaycastDistance = value; }
-        }
 
         [SerializeField]
         [Tooltip("Closest distance to bring object")]
@@ -112,18 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float ClosestDistance
         {
-            get { return closestDistance; }
-            set { closestDistance = value; }
-        }
-
-        /// <summary>
-        /// Closest distance to bring object
-        /// </summary>
-        [Obsolete("Use ClosestDistance instead")]
-        public float CloseDistance
-        {
-            get { return closestDistance; }
-            set { closestDistance = value; }
+            get => closestDistance;
+            set => closestDistance = value;
         }
 
         [SerializeField]
@@ -135,8 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float SurfaceNormalOffset
         {
-            get { return surfaceNormalOffset; }
-            set { surfaceNormalOffset = value; }
+            get => surfaceNormalOffset;
+            set => surfaceNormalOffset = value;
         }
 
         [SerializeField]
@@ -148,8 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float SurfaceRayOffset
         {
-            get { return surfaceRayOffset; }
-            set { surfaceRayOffset = value; }
+            get => surfaceRayOffset;
+            set => surfaceRayOffset = value;
         }
 
         [SerializeField]
@@ -161,8 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public SceneQueryType RaycastMode
         {
-            get { return raycastMode; }
-            set { raycastMode = value; }
+            get => raycastMode;
+            set => raycastMode = value;
         }
 
         #region Box Raycast Parameters
@@ -176,8 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public int BoxRaysPerEdge
         {
-            get { return boxRaysPerEdge; }
-            set { boxRaysPerEdge = value; }
+            get => boxRaysPerEdge;
+            set => boxRaysPerEdge = value;
         }
 
         [SerializeField]
@@ -189,8 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool OrthographicBoxCast
         {
-            get { return orthographicBoxCast; }
-            set { orthographicBoxCast = value; }
+            get => orthographicBoxCast;
+            set => orthographicBoxCast = value;
         }
 
         [SerializeField]
@@ -202,8 +184,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MaximumNormalVariance
         {
-            get { return maximumNormalVariance; }
-            set { maximumNormalVariance = value; }
+            get => maximumNormalVariance;
+            set => maximumNormalVariance = value;
         }
 
         #endregion
@@ -219,8 +201,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float SphereSize
         {
-            get { return sphereSize; }
-            set { sphereSize = value; }
+            get => sphereSize;
+            set => sphereSize = value;
         }
 
         #endregion
@@ -234,8 +216,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float VolumeCastSizeOverride
         {
-            get { return volumeCastSizeOverride; }
-            set { volumeCastSizeOverride = value; }
+            get => volumeCastSizeOverride;
+            set => volumeCastSizeOverride = value;
         }
 
         [SerializeField]
@@ -247,8 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool UseLinkedAltScaleOverride
         {
-            get { return useLinkedAltScaleOverride; }
-            set { useLinkedAltScaleOverride = value; }
+            get => useLinkedAltScaleOverride;
+            set => useLinkedAltScaleOverride = value;
         }
 
         [SerializeField]
@@ -260,8 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public RaycastDirectionMode CurrentRaycastDirectionMode
         {
-            get { return currentRaycastDirectionMode; }
-            set { currentRaycastDirectionMode = value; }
+            get => currentRaycastDirectionMode;
+            set => currentRaycastDirectionMode = value;
         }
 
         [SerializeField]
@@ -273,8 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public OrientationMode CurrentOrientationMode
         {
-            get { return orientationMode; }
-            set { orientationMode = value; }
+            get => orientationMode;
+            set => orientationMode = value;
         }
 
         [SerializeField]
@@ -286,8 +268,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float OrientationBlend
         {
-            get { return orientationBlend; }
-            set { orientationBlend = value; }
+            get => orientationBlend;
+            set => orientationBlend = value;
         }
 
         [SerializeField]
@@ -299,8 +281,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool KeepOrientationVertical
         {
-            get { return keepOrientationVertical; }
-            set { keepOrientationVertical = value; }
+            get => keepOrientationVertical;
+            set => keepOrientationVertical = value;
         }
 
         [SerializeField]
@@ -312,8 +294,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool DebugEnabled
         {
-            get { return debugEnabled; }
-            set { debugEnabled = value; }
+            get => debugEnabled;
+            set => debugEnabled = value;
         }
 
         #endregion
@@ -786,5 +768,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         /// <returns>Returns true, if normal is vertical.</returns>
         private static bool IsNormalVertical(Vector3 normal) => 1f - Mathf.Abs(normal.y) < 0.01f;
+
+        #region Obsolete
+
+        /// <summary>
+        /// Max distance for raycast to check for surfaces
+        /// </summary>
+        [Obsolete("Use MaxRaycastDistance instead")]
+        public float MaxDistance
+        {
+            get => maxRaycastDistance;
+            set => maxRaycastDistance = value;
+        }
+
+        /// <summary>
+        /// Closest distance to bring object
+        /// </summary>
+        [Obsolete("Use ClosestDistance instead")]
+        public float CloseDistance
+        {
+            get { return closestDistance; }
+            set { closestDistance = value; }
+        }
+
+        #endregion
     }
 }
