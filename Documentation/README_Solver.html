@@ -131,6 +131,14 @@
 </div>
 <p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver"><br>
 <em>Example of various properties associated with each TrackedTargetType</em></p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Most solvers use the forward vector of the tracked transform target supplied by the <code>SolverHandler</code>. When using a <em>Hand Joint</em> tracked target type, the forward vector of the palm joint may point through the fingers and not through the palm. This depends on the platform supplying the hand joint data. For input simulation and Windows Mixed Reality, it is the <em>up vector</em> that points up through the palm (i.e green vector is up, blue vector is forward).</p>
+<p><img src="Images/Solver/HandJoint_ForwardUpVectors.png" alt="Solver"></p>
+<p>To overcome this, update the <em>Additional Rotation</em> property on the <code>SolverHandler</code> to <strong>&lt;90, 0, 0&gt;</strong>. This will ensure the forward vector supplied to solvers is pointing through the palm and outward away from the hand.</p>
+<p><img src="Images/Solver/SolverHandler_AdditionalRotation.png" alt="Solver"></p>
+<p>Alternatively, use the <em>Controller Ray</em> tracked target type to get similar behavior for pointing with hands.</p>
+</div>
 <h2 id="how-to-chain-solvers">How to chain solvers</h2>
 <p>It is possible to add multiple <code>Solver</code> components to the same GameObject thus chaining their algorithms. The <code>SolverHandler</code> components handles updating all solvers on the same GameObject. By default the <code>SolverHandler</code> calls <code>GetComponents&lt;Solver&gt;()</code> on Start which will return the Solvers in the order that they appear in the inspector.</p>
 <p>Furthermore, setting the <em>Updated Linked Transform</em> property to true will instruct that <code>Solver</code> to save its calculated position, orientation, &amp; scale to an intermediary variable accessible by all Solvers (i.e <code>GoalPosition</code>). When false, the <code>Solver</code> will update the GameObject's transform directly. By saving the transform properties to an intermediary location, other Solvers are able to perform their calculations starting from the intermediary variable. This is because Unity does not allow updates to gameObject.transform to stack within the same frame.</p>

@@ -5648,6 +5648,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/HandJoint_ForwardUpVectors.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/HandJoint_ForwardUpVectors.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Solver/InBetweenExample.png",
       "output": {
         "resource": {
@@ -5718,6 +5729,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Solver/RadialViewExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/SolverHandler_AdditionalRotation.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/SolverHandler_AdditionalRotation.png"
         }
       },
       "is_incremental": false,
@@ -6814,7 +6836,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "0Sf6HQoxFnFPwdsLGCbCRg=="
+          "hash": "qDUuVGdEChWsyvujnG26MQ=="
         }
       },
       "is_incremental": false,
@@ -25861,16 +25883,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 146,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1551,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 146,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
