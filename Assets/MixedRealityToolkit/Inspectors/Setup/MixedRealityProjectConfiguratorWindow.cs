@@ -92,15 +92,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
-            RenderChoiceDialog();
-
-            EditorGUILayout.Space();
-
-            showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Modify Configurations", true);
-            if (showConfigurations)
+            if (!MixedRealityProjectConfigurator.IsProjectConfigured())
             {
-                RenderConfigurations();
+                RenderChoiceDialog();
+
+                EditorGUILayout.Space();
+
+                showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Modify Configurations", true);
+                if (showConfigurations)
+                {
+                    RenderConfigurations();
+                }
             }
+            else
+            {
+                RenderConfiguredConfirmation();
+            }
+        }
+
+        private void RenderConfiguredConfirmation()
+        {
+            const string dialogTitle = "Project Configuration Complete";
+            const string dialogContent = "This Unity project is properly configured for the Mixed Reality Toolkit.";
+            EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(dialogContent);
         }
 
         private void RenderChoiceDialog()
