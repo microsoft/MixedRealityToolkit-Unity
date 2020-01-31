@@ -165,20 +165,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                     bool isCategoryNameSearchMatch = IsSearchMatch(bucket.CategoryName, searchString);
 
+                    List<ToolboxItem> validItems = new List<ToolboxItem>();
+                    foreach (var item in bucket.Items)
+                    {
+                        if (item != null && item.Prefab != null 
+                            && (isCategoryNameSearchMatch || IsSearchMatch(item, searchString)))
+                        {
+                            validItems.Add(item);
+                        }
+                    }
+
                     // Render grid of toolbox items
-                    int itemsPerRow = (int)(position.width / ToolboxItemWidth);
-                    for (int row = 0; row <= bucket.Items.Length / itemsPerRow; row++)
+                    int itemsPerRow = Mathf.Max((int)(position.width / ToolboxItemWidth), 1);
+
+                    for (int row = 0; row <= validItems.Count / itemsPerRow; row++)
                     {
                         using (new EditorGUILayout.HorizontalScope())
                         {
                             int startIndex = row * itemsPerRow;
-                            for (int col = 0; col < itemsPerRow && startIndex + col < bucket.Items.Length; col++)
+                            for (int col = 0; col < itemsPerRow && startIndex + col < validItems.Count; col++)
                             {
-                                var item = bucket.Items[startIndex + col];
-                                if (isCategoryNameSearchMatch || IsSearchMatch(item, searchString))
-                                {
-                                    RenderToolboxItem(item);
-                                }
+                                var item = validItems[startIndex + col];
+                                RenderToolboxItem(item);
                             }
                         }
                     }
