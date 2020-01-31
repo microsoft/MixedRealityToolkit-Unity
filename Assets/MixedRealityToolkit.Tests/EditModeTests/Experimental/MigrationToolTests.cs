@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
@@ -20,6 +21,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private readonly MigrationTool migrationTool = new MigrationTool();
         private readonly HashSet<string> assetsForDeletion = new HashSet<string>();
+
+        private struct MigrationTypes
+        {
+            public Type oldType;
+            public Type newType;
+            public Type handler;
+
+            public MigrationTypes(Type oldT, Type newT, Type mHandler)
+            {
+                oldType = oldT;
+                newType = newT;
+                handler = mHandler;
+            }
+        }
+
+        private List<MigrationTypes> migrationList = new List<MigrationTypes>();
+
+        [SetUp]
+        public void Setup()
+        {
+            migrationList.Add(new MigrationTypes(typeof(ManipulationHandler), typeof(ObjectManipulator), typeof(ObjectManipulatorMigrationHandler)));
+            migrationList.Add(new MigrationTypes(typeof(BoundingBox), typeof(BoundsControl), typeof(BoundsControlMigrationHandler)));
+        }
 
         /// <summary>
         /// Deletes all assets created during tests
@@ -43,19 +67,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void GameObjectCanBeMigrated()
         {
-            Type oldType = typeof(ManipulationHandler);
-            Type newType = typeof(ObjectManipulator);
-            Type migrationHandlerType = typeof(ObjectManipulatorMigrationHandler);
+            foreach (var entry in migrationList)
+            {
+                Type oldType = entry.oldType;
+                Type newType = entry.newType;
+                Type migrationHandlerType = entry.handler;
 
-            GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
+                GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
 
-            migrationTool.TryAddObjectForMigration(gameObject);
-            migrationTool.MigrateSelection(migrationHandlerType, false);
+                migrationTool.TryAddObjectForMigration(gameObject);
+                migrationTool.MigrateSelection(migrationHandlerType, false);
 
-            Assert.IsNull(gameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
-            Assert.IsNotNull(gameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
+                Assert.IsNull(gameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
+                Assert.IsNotNull(gameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
 
-            GameObject.DestroyImmediate(gameObject);
+                Object.DestroyImmediate(gameObject);
+            }
         }
 
         /// <summary>
@@ -64,24 +91,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void PrefabCanBeMigrated()
         {
-            Type oldType = typeof(ManipulationHandler);
-            Type newType = typeof(ObjectManipulator);
-            Type migrationHandlerType = typeof(ObjectManipulatorMigrationHandler);
-            String prefabPath = "Assets/_migration.prefab";
+            foreach (var entry in migrationList)
+            {
+                Type oldType = entry.oldType;
+                Type newType = entry.newType;
+                Type migrationHandlerType = entry.handler;
+                string prefabPath = "Assets/_migration.prefab";
 
-            GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
-            PrefabUtility.SaveAsPrefabAsset(gameObject, prefabPath);
-            assetsForDeletion.Add(prefabPath);
+                GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
+                PrefabUtility.SaveAsPrefabAsset(gameObject, prefabPath);
+                assetsForDeletion.Add(prefabPath);
 
-            migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
-            migrationTool.MigrateSelection(migrationHandlerType, false);
+                migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
+                migrationTool.MigrateSelection(migrationHandlerType, false);
 
-            GameObject prefabGameObject = PrefabUtility.LoadPrefabContents(prefabPath);
+                GameObject prefabGameObject = PrefabUtility.LoadPrefabContents(prefabPath);
 
-            Assert.IsNull(prefabGameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
-            Assert.IsNotNull(prefabGameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
+                Assert.IsNull(prefabGameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
+                Assert.IsNotNull(prefabGameObject.GetComponent(newType), $"Migrated Component of type {newType.Name} could not be added");
 
-            GameObject.DestroyImmediate(gameObject);
+                Object.DestroyImmediate(gameObject);
+            }
         }
 
         /// <summary>
@@ -90,28 +120,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Test]
         public void SceneCanBeMigrated()
         {
-            Type oldType = typeof(ManipulationHandler);
-            Type newType = typeof(ObjectManipulator);
-            Type migrationHandlerType = typeof(ObjectManipulatorMigrationHandler);
-            String scenePath = "Assets/_migration.unity";
-
-            Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
-            EditorSceneManager.SaveScene(scene, scenePath);
-            assetsForDeletion.Add(scenePath);
-
-            migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(scenePath, typeof(SceneAsset)));
-            migrationTool.MigrateSelection(migrationHandlerType, false);
-
-            var openScene = EditorSceneManager.OpenScene(scenePath);
-            foreach (var sceneGameObject in openScene.GetRootGameObjects())
+            foreach (var entry in migrationList)
             {
-                Assert.IsNull(sceneGameObject.GetComponent(oldType), $"Migrated component of type {oldType.Name} could not be removed");
-                Assert.IsNotNull(sceneGameObject.GetComponent(newType), $"Migrated component of type {newType.Name} could not be added");
+                Type oldType = entry.oldType;
+                Type newType = entry.newType;
+                Type migrationHandlerType = entry.handler;
+                string scenePath = "Assets/_migration.unity";
 
-                GameObject.DestroyImmediate(sceneGameObject);
+                Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
+                EditorSceneManager.SaveScene(scene, scenePath);
+                assetsForDeletion.Add(scenePath);
+
+                migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(scenePath, typeof(SceneAsset)));
+                migrationTool.MigrateSelection(migrationHandlerType, false);
+
+                var openScene = EditorSceneManager.OpenScene(scenePath);
+                foreach (var sceneGameObject in openScene.GetRootGameObjects())
+                {
+                    Assert.IsNull(sceneGameObject.GetComponent(oldType), $"Migrated component of type {oldType.Name} could not be removed");
+                    Assert.IsNotNull(sceneGameObject.GetComponent(newType), $"Migrated component of type {newType.Name} could not be added");
+
+                    Object.DestroyImmediate(sceneGameObject);
+                }
+                Object.DestroyImmediate(gameObject);
             }
-            GameObject.DestroyImmediate(gameObject);
         }
 
         private static GameObject SetUpGameObjectWithComponentOfType(Type type)
