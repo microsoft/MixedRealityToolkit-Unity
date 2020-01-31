@@ -72,19 +72,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         {
             get
             {
-                if (spatialCoordinateSystem == null && UtilitiesProvider != null && UtilitiesProvider.ISpatialCoordinateSystemPtr != IntPtr.Zero)
+                if (UtilitiesProvider != null)
                 {
+                    IntPtr newSpatialCoordinateSystemPtr = UtilitiesProvider.ISpatialCoordinateSystemPtr;
+                    if (newSpatialCoordinateSystemPtr != currentSpatialCoordinateSystemPtr && newSpatialCoordinateSystemPtr != IntPtr.Zero)
+                    {
 #if ENABLE_DOTNET
-                    spatialCoordinateSystem = GetSpatialCoordinateSystem(UtilitiesProvider.ISpatialCoordinateSystemPtr);
+                        spatialCoordinateSystem = GetSpatialCoordinateSystem(newSpatialCoordinateSystemPtr);
 #elif WINDOWS_UWP
-                    spatialCoordinateSystem = Marshal.GetObjectForIUnknown(UtilitiesProvider.ISpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
+                        spatialCoordinateSystem = Marshal.GetObjectForIUnknown(newSpatialCoordinateSystemPtr) as SpatialCoordinateSystem;
 #elif DOTNETWINRT_PRESENT
-                    spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(UtilitiesProvider.ISpatialCoordinateSystemPtr);
+                        spatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(newSpatialCoordinateSystemPtr);
 #endif
+                        currentSpatialCoordinateSystemPtr = newSpatialCoordinateSystemPtr;
+                    }
                 }
                 return spatialCoordinateSystem;
             }
         }
+
+        private static IntPtr currentSpatialCoordinateSystemPtr = IntPtr.Zero;
 
         /// <summary>
         /// Access the underlying native current holographic frame.
