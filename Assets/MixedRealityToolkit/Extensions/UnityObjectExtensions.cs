@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
+            #if UNITY_EDITOR
                 // Must use DestroyImmediate in edit mode but it is not allowed when called from 
                 // trigger/contact, animation event callbacks or OnValidate. Must use Destroy instead.
                 // Delay call to counter this issue in editor
@@ -43,6 +44,9 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     Object.DestroyImmediate(obj);
                 };
+            #else
+                Object.DestroyImmediate(obj);
+            #endif
             }
         }
 
