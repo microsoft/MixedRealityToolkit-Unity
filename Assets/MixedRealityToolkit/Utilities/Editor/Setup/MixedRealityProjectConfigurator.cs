@@ -101,9 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VisibleMetaFiles, new ConfigGetter(() => { return IsVisibleMetaFiles(); }) },
             // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
             // with legacy requirements.
-#pragma warning disable 0618
-            { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return PlayerSettings.virtualRealitySupported; }) },
-#pragma warning restore 0618
+            { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return XRSettingsUtilities.LegacyXREnabled; }) },
             { Configurations.SinglePassInstancing, new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
