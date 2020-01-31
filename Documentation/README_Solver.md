@@ -50,7 +50,7 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 *Example of various properties associated with each TrackedTargetType*
 
 > [!IMPORTANT]
-> Most Solvers use the forward vector of the tracked transform target supplied by the `SolverHandler`. When using a *Hand Joint* Tracked Target Type, the forward vector of the palm joint may point through the fingers and not through the palm. This depends on the platform supplying the hand joint data. For input simulation and Windows Mixed Reality, it is the *up vector* that points up through the palm (i.e green vector is up, blue vector is forward).
+> Most solvers use the forward vector of the tracked transform target supplied by the `SolverHandler`. When using a *Hand Joint* tracked target type, the forward vector of the palm joint may point through the fingers and not through the palm. This depends on the platform supplying the hand joint data. For input simulation and Windows Mixed Reality, it is the *up vector* that points up through the palm (i.e green vector is up, blue vector is forward).
 > 
 > ![Solver](Images/Solver/HandJoint_ForwardUpVectors.png)
 > 
