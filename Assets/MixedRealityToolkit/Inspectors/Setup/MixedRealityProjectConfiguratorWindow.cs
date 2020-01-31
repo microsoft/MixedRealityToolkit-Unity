@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
 #else
-                RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
 #endif // UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
@@ -178,19 +178,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
                 {
-                    EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField("MSBuild for Unity Support", EditorStyles.boldLabel);
+                    EditorGUILayout.HelpBox("Enable this for additional HoloLens 2 features, like hand joint remoting and depth LSR mode.", MessageType.Info);
+                    RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
+                    EditorGUILayout.Space();
 
+                    EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
                     RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
                     RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
                     RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
 #endif
-                    EditorGUILayout.Space();
-
-                    EditorGUILayout.LabelField("MSBuild for Unity Support", EditorStyles.boldLabel);
-                    EditorGUILayout.HelpBox("Enable this for additional HoloLens 2 features, like hand joint remoting and depth LSR mode.", MessageType.Info);
-                    RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
                 }
                 else
                 {
