@@ -121,7 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void Start()
         {
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             WorldAnchorStore.GetAsync(AnchorStoreReady);
+#pragma warning restore 0618
         }
 
         private void Update()
@@ -151,7 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (!persistentAnchors)
             {
+                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+                // with legacy requirements.
+#pragma warning disable 0618
                 AnchorStore.Clear();
+#pragma warning restore 0618
             }
         }
 
@@ -425,8 +433,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 anchorId = anchoredGameObject.name;
             }
 
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             // Try to load a previously saved world anchor.
             WorldAnchor savedAnchor = AnchorStore.Load(anchorId, anchoredGameObject);
+#pragma warning restore 0618
 
             if (savedAnchor == null)
             {
@@ -527,8 +539,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             var anchor = gameObjectToAnchor.EnsureComponent<WorldAnchor>();
             anchor.name = anchorName;
 
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             // Sometimes the anchor is located immediately. In that case it can be saved immediately.
             if (anchor.isLocated)
+#pragma warning restore 0618
             {
                 SaveAnchor(anchor);
             }
@@ -545,8 +561,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <param name="anchor">Anchor.</param>
         private bool SaveAnchor(WorldAnchor anchor)
         {
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             // Save the anchor to persist holograms across sessions.
             if (AnchorStore.Save(anchor.name, anchor))
+#pragma warning disable 0618
             {
                 if (showDetailedLogs)
                 {
