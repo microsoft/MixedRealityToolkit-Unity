@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
     [CanEditMultipleObjects]
     [CustomEditor(typeof(Canvas))]
-    public class MixedRealityCanvasInspector : Editor
+    public class MixedRealityCanvasInspector : UnityEditor.Editor
     {
         private static readonly GUIContent makeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
         private static readonly GUIContent removeMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
@@ -162,8 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             EditorGUILayout.Space();
-
-            if (PlayerSettings.virtualRealitySupported && (m_RenderMode.enumValueIndex == (int)RenderMode.ScreenSpaceOverlay))
+            if (XRSettingsUtilities.LegacyXREnabled &&
+                (m_RenderMode.enumValueIndex == (int)RenderMode.ScreenSpaceOverlay))
             {
                 EditorGUILayout.HelpBox("Using a render mode of ScreenSpaceOverlay while VR is enabled will cause the Canvas to continue to incur a rendering cost, even though the Canvas will not be visible in VR.", MessageType.Warning);
             }

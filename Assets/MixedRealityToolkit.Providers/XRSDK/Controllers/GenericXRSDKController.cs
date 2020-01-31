@@ -152,16 +152,16 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         buttonUsage = CommonUsages.triggerButton;
                         break;
                     case DeviceInputType.TouchpadTouch:
-                        buttonUsage = CommonUsages.primaryTouch;
+                        buttonUsage = CommonUsages.primary2DAxisTouch;
                         break;
                     case DeviceInputType.TouchpadPress:
-                        buttonUsage = CommonUsages.primaryButton;
+                        buttonUsage = CommonUsages.primary2DAxisClick;
                         break;
                     case DeviceInputType.Menu:
                         buttonUsage = CommonUsages.menuButton;
                         break;
                     case DeviceInputType.ThumbStickPress:
-                        buttonUsage = CommonUsages.secondaryButton;
+                        buttonUsage = CommonUsages.secondary2DAxisClick;
                         break;
                     default:
                         return;
