@@ -16,13 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
-        protected BaseBoundarySystem(
-            MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : base(profile)
-        {
-            Scale = scale;
-        }
+        protected BaseBoundarySystem(MixedRealityBoundaryVisualizationProfile profile) : base(profile) { }
 
         #region IMixedRealityService Implementation
 
@@ -43,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             BoundaryHeight = profile.BoundaryHeight;
 
-            SetTrackingSpace();
             CalculateBoundaryBounds();
 
             ShowFloor = profile.ShowFloor;
@@ -305,6 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         }
 
         /// <inheritdoc/>
+        [System.Obsolete("Use MixedRealityToolkit.AppScale or use XRDevice.GetTrackingSpaceType and XRDevice.SetTrackingSpaceType instead.")]
         public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>
@@ -898,6 +892,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Updates the tracking space on the XR device.
         /// </summary>
+        [System.Obsolete("Use MixedRealityToolkit.AppScale instead")]
         protected abstract void SetTrackingSpace();
 
         /// <summary>
@@ -950,5 +945,24 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // We always use the same seed so that from run to run, the inscribed bounds are consistent.
             RectangularBounds = new InscribedRectangle(Bounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
         }
+
+        #region Obsolete
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        [System.Obsolete("This constructor is obsolete. The IMixedRealityBoundarySystem no longer captures ExperienceScale. Use MixedRealityToolkit.AppScale instead.")]
+        protected BaseBoundarySystem(
+            MixedRealityBoundaryVisualizationProfile profile,
+            ExperienceScale scale) : base(profile)
+        {
+#pragma warning disable 618
+            Scale = scale;
+#pragma warning restore
+        }
+
+        #endregion
     }
 }

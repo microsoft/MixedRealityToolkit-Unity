@@ -18,28 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
-        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public MixedRealityBoundarySystem(
-            IMixedRealityServiceRegistrar registrar,
-            MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : this(profile, scale)
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
-        public MixedRealityBoundarySystem(
-            MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : base(profile, scale)
-        {
-        }
+        public MixedRealityBoundarySystem(MixedRealityBoundaryVisualizationProfile profile) : base(profile) { }
 
         #region IMixedRealityService Implementation
 
@@ -78,40 +58,37 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             return boundaryGeometry;
         }
 
+        #region Obsolete
+
+        /// <inheritdoc/>
+        [System.Obsolete("Use MixedRealityToolkit.AppScale instead")]
+        protected override void SetTrackingSpace() { }
+
         /// <summary>
-        /// Updates the <see href="https://docs.unity3d.com/ScriptReference/XR.TrackingSpaceType.html">TrackingSpaceType</see> on the XR device.
+        /// Constructor.
         /// </summary>
-        protected override void SetTrackingSpace()
+        /// <param name="profile">The configuration profile for the service.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        [System.Obsolete("This constructor is obsolete. The IMixedRealityBoundarySystem no longer captures ExperienceScale. Use MixedRealityToolkit.AppScale instead.")]
+        public MixedRealityBoundarySystem(
+            MixedRealityBoundaryVisualizationProfile profile,
+            ExperienceScale scale) : base(profile, scale) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public MixedRealityBoundarySystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityBoundaryVisualizationProfile profile,
+            ExperienceScale scale) : this(profile, scale)
         {
-            TrackingSpaceType trackingSpace;
-
-            // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
-            // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
-            switch (Scale)
-            {
-                case ExperienceScale.Standing:
-                case ExperienceScale.Room:
-                    trackingSpace = TrackingSpaceType.RoomScale;
-                    break;
-
-                case ExperienceScale.OrientationOnly:
-                case ExperienceScale.Seated:
-                case ExperienceScale.World:
-                    trackingSpace = TrackingSpaceType.Stationary;
-                    break;
-
-                default:
-                    trackingSpace = TrackingSpaceType.Stationary;
-                    Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Stationary tracking space.");
-                    break;
-            }
-
-            bool trackingSpaceSet = XRDevice.SetTrackingSpaceType(trackingSpace);
-
-            if (!trackingSpaceSet)
-            {
-                Debug.LogWarning("Tracking space unable to be set.");
-            }
+            Registrar = registrar;
         }
+
+        #endregion
     }
 }
