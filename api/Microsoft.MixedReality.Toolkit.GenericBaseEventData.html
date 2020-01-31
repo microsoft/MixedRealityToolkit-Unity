@@ -190,6 +190,39 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_GenericBaseEventData_selectedObject_" data-uid="Microsoft.MixedReality.Toolkit.GenericBaseEventData.selectedObject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_GenericBaseEventData_selectedObject" data-uid="Microsoft.MixedReality.Toolkit.GenericBaseEventData.selectedObject">selectedObject</h4>
+  <div class="markdown level1 summary"><p>The BaseEventData.selectedObject is explicitly hidden because access to it
+(either via get or set) throws a NullReferenceException in typical usage within
+the MRTK. Prefer using the subclasses own fields to access information about
+the event instead of fields on BaseEventData.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject selectedObject { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_GenericBaseEventData_selectedObject_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>BaseEventData is only used because it's part of Unity's EventSystem dispatching,
+so this code must subclass it in order to leverage EventSystem.ExecuteEvents</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
