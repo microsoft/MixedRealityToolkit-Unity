@@ -58,7 +58,7 @@ The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.Mixed
 >
 > ![Solver](Images/Solver/SolverHandler_AdditionalRotation.png)
 >
-> Alternatively, use the *Controller Ray* Tracked Target Type to get similar behavior for pointing with hands.
+> Alternatively, use the *Controller Ray* tracked target type to get similar behavior for pointing with hands.
 
 ## How to chain solvers
 
