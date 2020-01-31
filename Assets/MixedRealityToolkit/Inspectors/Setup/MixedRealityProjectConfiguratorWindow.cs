@@ -169,7 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
 #endif // UNITY_2019_3_OR_NEWER
             RenderToggle(MRConfig.SpatialAwarenessLayer, "Set Default Spatial Awareness Layer");
-            RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
             EditorGUILayout.Space();
 
             if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
@@ -182,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
 #endif
+                RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
             }
             else
             {

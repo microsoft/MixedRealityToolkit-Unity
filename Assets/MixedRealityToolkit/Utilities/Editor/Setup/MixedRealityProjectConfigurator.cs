@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #pragma warning restore 0618
             { Configurations.SinglePassInstancing, new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
-            { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return IsMSBuildForUnityEnabled(); }) },
+            { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.SpatialPerception); }, BuildTarget.WSAPlayer) },
