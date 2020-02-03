@@ -40,6 +40,7 @@ Themes:
 - Developer education
 - User Experience
 - Hand Extensibility
+- Platform expansion
 
 **Stability**
 
@@ -60,6 +61,10 @@ Quality and stability are the top priority for this and all Microsoft Mixed Real
 
 Hand extensibility includes refactors (non-breaking change) that to allow features, such as customizable pointing rays to be easily implemented without need for
 modifying MRTK source.
+
+**Platform expansion**
+
+As part of the hand extensibility theme, MRTK plans on adding support for the Leap Motion hands controller and Oculus Quest. Support for Leap Motion is expected to be made available on both Unity 2018.4 and 2019. Oculus Quest, including articulated hands, will be delivered via [Unity's new XR platform](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/).
 
 ### 2.5.0
 
