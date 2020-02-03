@@ -82,12 +82,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             string[] splitLine = line.Split(new char[] { ':' });
                             if (splitLine.Length == 2)
                             {
+                                // Ensure correct formatting of the version string, before we attempt to parse it.
                                 string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
+                                bool replaceOnEquals = false;
+                                if (versionString.Contains("-"))
+                                {
+                                    // The string references a preview version. Truncate at the '-'.
+                                    versionString = versionString.Substring(0, versionString.IndexOf('-'));
+                                    
+                                    // We want to update preview versions to the final.
+                                    replaceOnEquals = true;
+                                }
 
                                 Version version;
                                 if (Version.TryParse(versionString, out version))
                                 {
-                                    isAppropriateVersion = version >= minVersion;
+                                    isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
                                 }
                             }
 
