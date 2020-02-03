@@ -308,12 +308,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (Application.isPlaying)
                 {
                     GazeProvider.GazePointer.BaseCursor.Destroy();
-                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
-                else
-                {
-                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
-                }
+
+                UnityObjectExtensions.DestroyObject(GazeProvider as Component);
 
                 GazeProvider = null;
             }
@@ -339,12 +336,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (Application.isPlaying)
                     {
                         inputModule.DeactivateModule();
-                        UnityEngine.Object.Destroy(inputModule);
                     }
-                    else
-                    {
-                        UnityEngine.Object.DestroyImmediate(inputModule);
-                    }
+
+                    UnityObjectExtensions.DestroyObject(inputModule);
                 }
             }
 
