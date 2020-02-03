@@ -44,54 +44,6 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "HoloLens2 Button Collection 3H",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar3H.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar3H.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
-          "Name": "HoloLens2 Button Collection 3V",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar3V.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar3V.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
-          "Name": "HoloLens2 Button Collection 4H",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar4H.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar4H.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
-          "Name": "HoloLens2 Button Collection 4V",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar4V.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar4V.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
-          "Name": "HoloLens2 Button Collection 5H",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar5H.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar5H.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
-          "Name": "HoloLens2 Button Collection 5V",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar5V.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar5V.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
           "Name": "HoloLens2 Button Circular 32x32mm",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Circular_32x32.prefab",
           "AssetModule": 5,
@@ -167,39 +119,108 @@
       ]
     },
     {
-      "CategoryName": "Unity UI",
+      "CategoryName": "Button Collections",
       "Items": [
         {
-          "Name": "Button",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIButton.prefab",
+          "Name": "HoloLens2 Button Collection 3H",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar3H.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar3H.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Checkbox",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUICheckboxButton.prefab",
+          "Name": "HoloLens2 Button Collection 3V",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar3V.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Checkbox_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar3V.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Radial",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIRadialButton.prefab",
+          "Name": "HoloLens2 Button Collection 4H",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar4H.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Radial_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar4H.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Toggle",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIToggleButton.prefab",
+          "Name": "HoloLens2 Button Collection 4V",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar4V.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar4V.png",
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Button Collection 5H",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar5H.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar5H.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Button Collection 5V",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Bar5V.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Bar5V.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        }
+      ]
+    },
+    {
+      "CategoryName": "Near Menus",
+      "Items": [
+        {
+          "Name": "Near Menu 3x1",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu3x1.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu3x1.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
+        },
+        {
+          "Name": "Near Menu 3x2",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu3x2.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu3x2.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
+        },
+        {
+          "Name": "Near Menu 3x3",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu3x3.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu3x3.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
+        },
+        {
+          "Name": "Near Menu 4x1",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu4x1.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu4x1.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
+        },
+        {
+          "Name": "Near Menu 4x2",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu4x2.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu4x2.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
+        },
+        {
+          "Name": "Near Menu 2x4",
+          "RelativeAssetPath": "Features/UX/Prefabs/Menus/NearMenu2x4.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_NearMenu2x4.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_NearMenu.html"
         }
       ]
     },
@@ -297,6 +318,44 @@
           "DocURL": ""
         }
       ]
+    },
+    {
+      "CategoryName": "Unity UI",
+      "Items": [
+        {
+          "Name": "Button",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Checkbox",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUICheckboxButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Checkbox_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Radial",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIRadialButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Radial_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Toggle",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\UnityUIInteractables\\UnityUIToggleButton.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_UnityUI_Button_Icon.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        }
+      ]
     }
+
   ]
 }
