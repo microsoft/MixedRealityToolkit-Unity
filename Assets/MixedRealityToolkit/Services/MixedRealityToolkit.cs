@@ -320,6 +320,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The scale (ex: World Scale) of the experience.
         /// Updates the <see href="https://docs.unity3d.com/ScriptReference/XR.TrackingSpaceType.html">TrackingSpaceType</see> on the XR device.
+        /// </summary>
         public ExperienceScale AppScale
         {
             get => scale;
