@@ -11,10 +11,10 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 | Product | Description | Timeline | Project board |
 | --- | --- | --- | --- |
 | [MRTK V2.4](#240) | Next iteration of MRTK | March 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
-| [MRTK V2.5](#250) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
-| [MRTK V2.6](#260) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
-| [MRTK V2.7](#270) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
-| [MRTK V2.8](#280) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
+| [MRTK V2.5](#250) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/12 |
+
+Releases are centered around themes (ex: large feature areas) and are scheduled to occur approximately every 8 weeks.
+
 
 Release details, including backlog items, can be found on the [GitHub milestone pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/milestones). The complete set of open issues can also be found on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
@@ -68,48 +68,6 @@ For the latest information, please consult [GitHub](https://github.com/microsoft
 Status: Planning
 
 Timeline: TBD 2020
-
-Themes:
-
-- Stability
-- Developer education
-- User Experience
-
-### 2.6.0
-
-For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/14). All of the details below are subject to change.
-
-Status: Planning
-
-Timeline: TBD
-
-Themes:
-
-- Stability
-- Developer education
-- User Experience
-
-### 2.7.0
-
-For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/15). All of the details below are subject to change.
-
-Status: Planning
-
-Timeline: TBD
-
-Themes:
-
-- Stability
-- Developer education
-- User Experience
-
-### 2.8.0
-
-For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/16). All of the details below are subject to change.
-
-Status: Planning
-
-Timeline: TBD
 
 Themes:
 
