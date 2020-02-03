@@ -46,7 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Reports whether or not the appropriate version of MSBuild for Unity is specified
         /// in the Unity Package Manager manifest.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
+        /// </returns>
         internal static bool IsMSBuildForUnityEnabled()
         {
             string manifestPath = GetPackageManifestFilePath();
