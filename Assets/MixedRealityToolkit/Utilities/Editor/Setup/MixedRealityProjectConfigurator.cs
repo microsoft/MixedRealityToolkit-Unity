@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return XRSettingsUtilities.LegacyXREnabled; }) },
             { Configurations.SinglePassInstancing, new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
-            { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
+            { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return PackageManifestUpdater.IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.SpatialPerception); }, BuildTarget.WSAPlayer) },
@@ -263,36 +263,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool IsForceTextSerialization()
         {
             return EditorSettings.serializationMode == SerializationMode.ForceText;
-        }
-
-        /// <summary>
-        /// Checks package manifest to see if MSBuild for Unity is included in the dependencies.
-        /// </summary>
-        public static bool IsMSBuildForUnityEnabled()
-        {
-            // Locate the full path to the package manifest.
-            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
-            string[] paths = { projectRoot.FullName, "Packages", "manifest.json" };
-            string manifestPath = Path.Combine(paths);
-
-            // Verify that the package manifest file exists.
-            if (!File.Exists(manifestPath))
-            {
-                Debug.LogError($"Package manifest file ({manifestPath}) could not be found.");
-                return false;
-            }
-
-            // Load the manifest file.
-            string manifestFileContents = File.ReadAllText(manifestPath);
-            if (string.IsNullOrWhiteSpace(manifestFileContents))
-            {
-                Debug.LogError($"Failed to read the package manifest file ({manifestPath})");
-                return false;
-            }
-
-            // Attempt to find the MSBuild for Unity package name.
-            const string msBuildPackageName = "com.microsoft.msbuildforunity";
-            return manifestFileContents.Contains(msBuildPackageName);
         }
 
         /// <summary>
