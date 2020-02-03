@@ -408,14 +408,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             modFolders.Add(normalizedFolder);
-
-            if (module == MixedRealityToolkitModuleType.Core)
-            {
-                TryToCreateGeneratedFolder(folderPath);
-            }
         }
 
-        private static void TryToCreateGeneratedFolder(string folderPath)
+        public static void TryToCreateGeneratedFolder(string folderPath)
         {
             var generatedDirs = GetDirectories(MixedRealityToolkitModuleType.Generated);
             if (generatedDirs == null || !generatedDirs.Any())

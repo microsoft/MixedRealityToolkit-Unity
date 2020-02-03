@@ -404,10 +404,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 // AssetDatabase.CreateFolder must be called to create each child of the asset folder
                 // path individually. 
-                // Calling AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated/CustomProfiles")
-                // generates a folder that looks like "Assets/MixedRealityToolkit.Generated_CustomProfiles".
-                AssetDatabase.CreateFolder("Assets", "MixedRealityToolkit.Generated");
+                
+                // Create the MixedRealityToolkit.Generated folder at the root of the Assets
+                MixedRealityToolkitFiles.TryToCreateGeneratedFolder("Assets/");
+
                 AssetDatabase.CreateFolder("Assets/MixedRealityToolkit.Generated", "CustomProfiles");
+
             }
             return AssetDatabase.LoadAssetAtPath(DefaultCustomProfileFolder, typeof(Object));
         }
