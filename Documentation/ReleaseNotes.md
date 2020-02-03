@@ -95,7 +95,7 @@ If your project was created using the [Mixed Reality Toolkit NuGet packages](MRT
 
 MRTK has added initial support for Unity 2019.3's new XR platform. When using the Windows XR plugin, it is recommended using version **2.0.4 (preview.3)** or newer.
 
-Please see [Known issues](#known-issues-in-230) details on known limitations.
+Please see [Known issues](#known-issues-in-230) for details on known limitations.
 
 **Better handing of compiling when using dependencies**
 
