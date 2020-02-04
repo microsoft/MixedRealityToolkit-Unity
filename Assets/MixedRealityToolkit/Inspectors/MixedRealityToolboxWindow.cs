@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private Vector2 scrollPos;
         private string searchString;
-        private const float ToolboxItemWidth = 210f;
-        private const float ToolboxItemButtonWidth = 174f;
-        private const float ToolboxItemHeight = 98f;
+        private const float ToolboxItemWidth = 125f;
+        private const float ToolboxItemButtonWidth = 100f;
+        private const float ToolboxItemHeight = 64f;
 
         [Serializable]
         private class ToolboxItemCollection
@@ -122,8 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void OnGUI()
         {
-            centeredStyle = GUI.skin.GetStyle("Label");
+            centeredStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
             centeredStyle.alignment = TextAnchor.UpperCenter;
+            centeredStyle.wordWrap = true;
 
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
@@ -227,17 +228,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    EditorGUILayout.LabelField(item.Name, centeredStyle);
+                    if (!string.IsNullOrEmpty(item.DocURL))
+                    {
+                        InspectorUIUtility.RenderDocumentationButton(item.DocURL, ToolboxItemButtonWidth);
+                    }
                     GUILayout.FlexibleSpace();
                 }
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    if (!string.IsNullOrEmpty(item.DocURL))
-                    {
-                        InspectorUIUtility.RenderDocumentationButton(item.DocURL);
-                    }
+                    EditorGUILayout.LabelField(item.Name, centeredStyle, GUILayout.MaxWidth(ToolboxItemWidth));
                     GUILayout.FlexibleSpace();
                 }
 

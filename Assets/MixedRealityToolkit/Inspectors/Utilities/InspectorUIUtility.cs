@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="docURL">documentation URL to open on button click</param>
         /// <returns>true if button clicked, false otherwise</returns>
-        public static bool RenderDocumentationButton(string docURL)
+        public static bool RenderDocumentationButton(string docURL, float width = DocLinkWidth)
         {
             if (!string.IsNullOrEmpty(docURL))
             {
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // The documentation button should always be enabled.
                 using (new GUIEnabledWrapper())
                 {
-                    if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                    if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(width)))
                     {
                         Application.OpenURL(docURL);
                         return true;
