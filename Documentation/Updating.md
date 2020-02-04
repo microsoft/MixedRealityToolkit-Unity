@@ -43,6 +43,25 @@ Spatial observers built upon the `BaseSpatialObserver` class now honor the value
 
 No changes are required to take advantage of this fix.
 
+**UX control prefabs updated to use PressableButton**
+
+The following prefabs are now using the PressableButton component instead of TouchHandler for near interaction ([7070](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7070))
+
+- AnimationButton
+- Button
+- ButtonHoloLens1
+- ButtonHoloLens1Toggle
+- CheckBox
+- RadialSet
+- ToggleButton
+- ToggleSwitch
+- UnityUIButton
+- UnityUICheckboxButton
+- UnityUIRadialButton
+- UnityUIToggleButton
+
+Application code may require updating due to this change.
+
 **WindowsMixedRealityUtilities namespace**
 
 The namespace of WindowsMixedRealityUtilities changed from Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input to Microsoft.MixedReality.Toolkit.WindowsMixedReality ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6989)).
