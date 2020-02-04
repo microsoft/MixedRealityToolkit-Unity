@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static Task searchForFoldersTask = null;
         private static CancellationTokenSource searchForFoldersToken;
 
-        private static string NormalizeSeparators(string path) => 
+        private static string NormalizeSeparators(string path) =>
             path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 
         private static string FormatSeparatorsForUnity(string path) => path?.Replace('\\', '/');
@@ -350,6 +350,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType : MixedRealityToolkitModuleType.None;
         }
 
+        /// <summary>
+        /// Creates the MixedRealityToolkit.Generated folder if it does not exist and returns the 
+        /// path to the generated folder.
+        /// </summary>
+        public static string GetGeneratedFolder
+        {
+            get
+            {
+                TryToCreateGeneratedFolder();
+                return MapModulePath(MixedRealityToolkitModuleType.Generated);
+            }
+        }
+
         private static async Task SearchForFoldersAsync(string rootPath)
         {
             if (searchForFoldersToken != null)
@@ -376,6 +389,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         ct.ThrowIfCancellationRequested();
                     }
                 }
+
+                // Create the Generated folder, if the user tries to delete the Generated folder it will be created again
+                TryToCreateGeneratedFolder();
             }
             catch (OperationCanceledException)
             {
@@ -410,13 +426,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             modFolders.Add(normalizedFolder);
         }
 
-        public static void TryToCreateGeneratedFolder(string folderPath)
+        private static void TryToCreateGeneratedFolder()
         {
+            // Always add the the MixedRealityToolkit.Generated folder to Assets
             var generatedDirs = GetDirectories(MixedRealityToolkitModuleType.Generated);
             if (generatedDirs == null || !generatedDirs.Any())
             {
-                string parentFolderPath = Directory.GetParent(folderPath).FullName;
-                string generatedFolderPath = Path.Combine(parentFolderPath, "MixedRealityToolkit.Generated");
+                string generatedFolderPath = Path.Combine("Assets", "MixedRealityToolkit.Generated");
                 if (!Directory.Exists(generatedFolderPath))
                 {
                     Directory.CreateDirectory(generatedFolderPath);
