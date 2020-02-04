@@ -93,21 +93,9 @@ If your project was created using the [Mixed Reality Toolkit NuGet packages](MRT
 
 **Support for Unity 2019.3 new XR platform (Experimental)**
 
-MRTK has added initial support for Unity 2019.3's new XR platform. When using the Windows XR plugin, it is recommended using version **2.0.4 (preview.3)** or newer.
+MRTK has added initial support for [Unity 2019.3's new XR platform](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/). When using the Windows XR plugin, it is recommended using version **2.0.4 (preview.3)** or newer.
 
 Please see [Known issues](#known-issues-in-230) for details on known limitations.
-
-**Better handing of compiling when using dependencies**
-
-This version of MRTK improves upon the support added in 2.2.0 to recognize and enable compilation when dependencies (ex: DotNetWinRT plugin) are required.
-
-Support has been added to automatically add or remove preprocessor defines based on the presence of the required packages and or components. This allows application projects to be more resilient to adding and removing packages. 
-
-**Common MixedRealityToolkit.Plugins folder**
-
-Previous versions of MRTK would place plugins acquired via MSBuild for Unity to a directory co-located with the .csproj file used to specify them. This version updates the .csproj file(s) to place the plugins in a shared MixedRealityToolkit.Plugins folder.
-
-This change helps address issues such as [#6972](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6972).
 
 **Hand physics extension service**
 
