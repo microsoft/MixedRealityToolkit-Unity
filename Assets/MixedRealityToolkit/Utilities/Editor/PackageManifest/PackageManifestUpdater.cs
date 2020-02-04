@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             // Note: The version is in the following format Major.Minor.Revision[-Date.Build]
 
-            // Attept to split the version string into version and float components
+            // Attempt to split the version string into version and float components
             string[] versionComponents = packageVersion.Split(new char[] { '-' }, 2);
 
             // Parse the version component.
