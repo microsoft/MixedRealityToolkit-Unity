@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Version = System.Version;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
@@ -45,14 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return manifestPath;
         }
 
-        private static bool TryGetVersionComponents(
+        internal static bool TryGetVersionComponents(
             string packageVersion,
             out Version version,
             out float prerelease)
         {
-            version = null;
-            prerelease = float.NaN;
-
             char[] trimChars = new char[] { ' ', '\"', ',' };
 
             // Note: The version is in the following format Major.Minor.Revision[-Date.Build]
@@ -62,38 +60,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             // Parse the version component.
             string versionString = versionComponents[0].Trim(trimChars);
-            if (!Version.TryParse(versionString, out version))
+            if (Version.TryParse(versionString, out version))
             {
-                // Reset the version out param.
-                version = null;
-                return false;
-            }
-
-            if (versionComponents.Length == 2)
-            {
-                // Parse the float component
-                string prereleaseString = versionComponents[1].Trim(trimChars);
-                if (!float.TryParse(prereleaseString, out prerelease))
+                if (versionComponents.Length == 2)
                 {
-                    // Reset both out params.
-                    version = null;
-                    prerelease = float.NaN;
-                    return false;
+                    // Parse the float component
+                    string prereleaseString = versionComponents[1].Trim(trimChars);
+                    if (float.TryParse(prereleaseString, out prerelease))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    prerelease = 0f;
+                    return true;
                 }
             }
 
-            return true;
+            version = null;
+            prerelease = float.NaN;
+            return false;
         }
 
         /// <summary>
         /// Reports whether or not the appropriate version of MSBuild for Unity is specified
         /// in the Unity Package Manager manifest.
         /// </summary>
+        /// <param name="minPackageVersion">The minimum version of the package, as listed in the manifest.</param>
         /// <param name="packageVersion">The version of the package, as listed in the manifest.</param>
         /// <returns>
         /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
         /// </returns>
-        private static bool IsAppropriateMBuildVersion(string packageVersion)
+        internal static bool IsAppropriateMBuildVersion(string minPackageVersion, string packageVersion)
         {
             // Get the version of the package.
             // Note: The version is in the following format Major.Minor.Revision[-Date.Build]
@@ -101,7 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Version minVersion;
             float minPrerelease;
 
-            if (!TryGetVersionComponents(MSBuildPackageVersion, out minVersion, out minPrerelease))
+            // Get the min version
+            if (!TryGetVersionComponents(minPackageVersion, out minVersion, out minPrerelease))
             {
                 return false;
             }
@@ -114,11 +114,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            // Compare the version and prerelease values
-            bool isAppropriateVersion = currentVersion >= minVersion;
-            bool isAppropriatePrerelease = currentPrerelease >= minPrerelease;
+            // Evaluate the results.
+            // * (currentVersion > minVersion)                                                                  return true;
+            // * (currentVersion == minVersion && currentPrerelease == minPrerelease)                           return true;
+            // * (currentVersion == minVersion && minPrerelease != 0 && currentPrerelease >= minPrerelease)   return true;
+            // * all other combinatons                                                                          return false;
+            if (currentVersion > minVersion)
+            { return true; }
+            else if (currentVersion == minVersion)
+            {
+                // The current and minumum versions are the same, check the prerelease portion
+                if (currentPrerelease == minPrerelease) 
+                { return true; }
+                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease)) 
+                { return true; };
+            }
 
-            return (isAppropriateVersion && isAppropriatePrerelease);
+            return false;
         }
 
         /// <summary>
@@ -156,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             // Split the line into packageName : packageVersion
                             string[] lineComponents = line.Split(new char[] { ':' }, 2);
 
-                            return IsAppropriateMBuildVersion(lineComponents[1]);
+                            return IsAppropriateMBuildVersion(MSBuildPackageVersion, lineComponents[1]);
                         }
                     }
                 }
