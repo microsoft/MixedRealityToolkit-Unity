@@ -4,8 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Networking;
+using Version = System.Version;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -19,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static string[] MSBuildRegistryScopes = new string[] { "com.microsoft" };
 
         internal const string MSBuildPackageName = "com.microsoft.msbuildforunity";
-        internal const string MSBuildPackageVersion = "0.9.1";
+        internal const string MSBuildPackageVersion = "0.9.1-20200131.12";
 
         /// <summary>
         /// Finds and returns the fully qualified path to the Unity Package Manager manifest
@@ -42,9 +45,110 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return manifestPath;
         }
 
+        private static bool TryGetVersionComponents(
+            string packageVersion,
+            out Version version,
+            out float prerelease)
+        {
+            version = null;
+            prerelease = float.NaN;
+
+            char[] trimChars = new char[] { ' ', '\"', ',' };
+
+            // Note: The version is in the following format Major.Minor.Revision[-Date.Build]
+
+            // Attept to split the version string into version and float components
+            string[] versionComponents = packageVersion.Split(new char[] { '-' }, 2);
+
+            // Parse the version component.
+            string versionString = versionComponents[0].Trim(trimChars);
+            if (!Version.TryParse(versionString, out version))
+            {
+                // Reset the version out param.
+                version = null;
+                return false;
+            }
+
+            if (versionComponents.Length == 2)
+            {
+                // Parse the float component
+                string prereleaseString = versionComponents[1].Trim(trimChars);
+                if (!float.TryParse(prereleaseString, out prerelease))
+                {
+                    // Reset both out params.
+                    version = null;
+                    prerelease = float.NaN;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Reports whether or not the appropriate version of MSBuild for Unity is specified
         /// in the Unity Package Manager manifest.
+        /// </summary>
+        /// <param name="packageVersion">The version of the package, as listed in the manifest.</param>
+        /// <returns>
+        /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
+        /// </returns>
+        private static bool IsAppropriateMBuildVersion(string packageVersion)
+        {
+            // Get the version of the package.
+            // Note: The version is in the following format Major.Minor.Revision[-Date.Build]
+
+            Version minVersion;
+            float minPrerelease;
+
+            if (!TryGetVersionComponents(MSBuildPackageVersion, out minVersion, out minPrerelease))
+            {
+                // todo
+                return false;
+            }
+
+            // Get the current version from the manifest
+            Version currentVersion;
+            float currentPrerelease;
+            if (!TryGetVersionComponents(packageVersion, out currentVersion, out currentPrerelease))
+            {
+                // todo
+                return false;
+            }
+
+            // Compare the version
+            // todo
+
+            // Compare the prerelease indicator
+            // todo
+
+            //string[] versionComponents = packageVersion.Split(new char[] { ':' });
+            //if (splitLine.Length == 2)
+            //{
+            //    // Ensure correct formatting of the version string, before we attempt to parse it.
+            //    string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
+            //    bool replaceOnEquals = false;
+            //    if (versionString.Contains("-"))
+            //    {
+            //        // The string references a preview version. Truncate at the '-'.
+            //        versionString = versionString.Substring(0, versionString.IndexOf('-'));
+
+            //        // We want to update preview versions to the final.
+            //        replaceOnEquals = true;
+            //    }
+
+            //    Version version;
+            //    if (Version.TryParse(versionString, out version))
+            //    {
+            //        isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
+            //    }
+            //}
+
+            return false;
+        }
+
+        /// <summary>
+        /// Reports whether or not the MSBuild for Unity is properly enabled in the Unity Package Manager manifest.
         /// </summary>
         /// <returns>
         /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
@@ -65,9 +169,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Read the package manifest a line at a time.
-            bool msBuildFound = false;
-            bool isAppropriateVersion = false;
-            Version minVersion = Version.Parse(MSBuildPackageVersion);
+            //bool msBuildFound = false;
+            //bool isAppropriateVersion = false;
+            //Version minVersion = Version.Parse(MSBuildPackageVersion);
             using (FileStream manifestStream = new FileStream(manifestPath, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(manifestStream))
@@ -78,38 +182,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         string line = reader.ReadLine();
                         if (line.Contains(MSBuildPackageName))
                         {
-                            msBuildFound = true;
+                            // Split the line into packageName : packageVersion
+                            string[] lineComponents = line.Split(new char[] { ':' }, 2);
 
-                            // Next, check the version.
-                            string[] splitLine = line.Split(new char[] { ':' });
-                            if (splitLine.Length == 2)
-                            {
-                                // Ensure correct formatting of the version string, before we attempt to parse it.
-                                string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
-                                bool replaceOnEquals = false;
-                                if (versionString.Contains("-"))
-                                {
-                                    // The string references a preview version. Truncate at the '-'.
-                                    versionString = versionString.Substring(0, versionString.IndexOf('-'));
+                            return IsAppropriateMBuildVersion(lineComponents[1]);
+                            //if (splitLine.Length == 2)
+                            //{
+                            //    // Ensure correct formatting of the version string, before we attempt to parse it.
+                            //    string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
+                            //    bool replaceOnEquals = false;
+                            //    if (versionString.Contains("-"))
+                            //    {
+                            //        // The string references a preview version. Truncate at the '-'.
+                            //        versionString = versionString.Substring(0, versionString.IndexOf('-'));
                                     
-                                    // We want to update preview versions to the final.
-                                    replaceOnEquals = true;
-                                }
+                            //        // We want to update preview versions to the final.
+                            //        replaceOnEquals = true;
+                            //    }
 
-                                Version version;
-                                if (Version.TryParse(versionString, out version))
-                                {
-                                    isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
-                                }
-                            }
-
-                            break;
+                            //    Version version;
+                            //    if (Version.TryParse(versionString, out version))
+                            //    {
+                            //        isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
+                            //    }
+                            //}
                         }
                     }
                 }
             }
 
-            return (msBuildFound && isAppropriateVersion);
+            return false;
         }
 
         /// <summary>
