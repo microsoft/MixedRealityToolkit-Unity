@@ -551,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         public static void AddCapabilities(XElement rootNode, List<string> capabilities)
         {
-            foreach(string capability in capabilities)
+            foreach (string capability in capabilities)
             {
                 AddCapability(rootNode, rootNode.GetDefaultNamespace() + "DeviceCapability", capability);
             }
