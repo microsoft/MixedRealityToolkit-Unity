@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
@@ -51,5 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Assembly-CSharp project.
         /// </summary>
         public bool AllowUnsafeCode { get; set; } = false;
+
+        /// <summary>
+        /// When present, adds a DeviceCapability for each entry
+        /// in the list to the manifest
+        /// </summary>
+        public List<string> DeviceCapabilities { get; set; } = null;
     }
 }
