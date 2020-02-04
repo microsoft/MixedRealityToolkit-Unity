@@ -103,7 +103,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (!TryGetVersionComponents(MSBuildPackageVersion, out minVersion, out minPrerelease))
             {
-                // todo
                 return false;
             }
 
@@ -112,39 +111,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             float currentPrerelease;
             if (!TryGetVersionComponents(packageVersion, out currentVersion, out currentPrerelease))
             {
-                // todo
                 return false;
             }
 
-            // Compare the version
-            // todo
+            // Compare the version and prerelease values
+            bool isAppropriateVersion = currentVersion >= minVersion;
+            bool isAppropriatePrerelease = currentPrerelease >= minPrerelease;
 
-            // Compare the prerelease indicator
-            // todo
-
-            //string[] versionComponents = packageVersion.Split(new char[] { ':' });
-            //if (splitLine.Length == 2)
-            //{
-            //    // Ensure correct formatting of the version string, before we attempt to parse it.
-            //    string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
-            //    bool replaceOnEquals = false;
-            //    if (versionString.Contains("-"))
-            //    {
-            //        // The string references a preview version. Truncate at the '-'.
-            //        versionString = versionString.Substring(0, versionString.IndexOf('-'));
-
-            //        // We want to update preview versions to the final.
-            //        replaceOnEquals = true;
-            //    }
-
-            //    Version version;
-            //    if (Version.TryParse(versionString, out version))
-            //    {
-            //        isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
-            //    }
-            //}
-
-            return false;
+            return (isAppropriateVersion && isAppropriatePrerelease);
         }
 
         /// <summary>
@@ -169,9 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Read the package manifest a line at a time.
-            //bool msBuildFound = false;
-            //bool isAppropriateVersion = false;
-            //Version minVersion = Version.Parse(MSBuildPackageVersion);
             using (FileStream manifestStream = new FileStream(manifestPath, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(manifestStream))
@@ -186,26 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             string[] lineComponents = line.Split(new char[] { ':' }, 2);
 
                             return IsAppropriateMBuildVersion(lineComponents[1]);
-                            //if (splitLine.Length == 2)
-                            //{
-                            //    // Ensure correct formatting of the version string, before we attempt to parse it.
-                            //    string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
-                            //    bool replaceOnEquals = false;
-                            //    if (versionString.Contains("-"))
-                            //    {
-                            //        // The string references a preview version. Truncate at the '-'.
-                            //        versionString = versionString.Substring(0, versionString.IndexOf('-'));
-                                    
-                            //        // We want to update preview versions to the final.
-                            //        replaceOnEquals = true;
-                            //    }
-
-                            //    Version version;
-                            //    if (Version.TryParse(versionString, out version))
-                            //    {
-                            //        isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
-                            //    }
-                            //}
                         }
                     }
                 }
@@ -291,10 +242,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             int scopedRegistriesEndIndex = -1;
             int packageLine = -1;
 
+            // Presume that we need to add the MSBuild for Unity package. If this value is false,
+            // we will check to see if the currently configured version meets or exceeds the
+            // minimum requirements.
+            bool needToAddPackage = true;
+
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
             // This loop also identifies the dependecies collection line and the start / end of a
             // pre-existing scoped registries collections
-            bool addPackage = true;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
@@ -312,12 +267,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
                     packageLine = i;
-                    addPackage = false;
+                    needToAddPackage = false;
                 }
             }
 
             // If no package was found add it to the dependencies collection.
-            if (addPackage)
+            if (needToAddPackage)
             {
                 // Add the package to the collection (pad the entry with four spaces)
                 manifestFileLines.Insert(dependenciesStartIndex + 1, $"    \"{MSBuildPackageName}\": \"{MSBuildPackageVersion}\",");
