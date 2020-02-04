@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return null;
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         /// <summary>
         /// Load pose data from files.
         /// </summary>
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             handPoses.Clear();
         }
-        #endif
+#endif
 
         /// Utility class to serialize hand pose as a dictionary with full joint names
         [Serializable]
