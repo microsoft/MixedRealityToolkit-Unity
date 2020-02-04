@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Adds the given capabilities to the manifest.
         /// </summary>
-        private static void AddCapabilities(XElement rootNode, List<string> capabilities)
+        public static void AddCapabilities(XElement rootNode, List<string> capabilities)
         {
             foreach(string capability in capabilities)
             {
