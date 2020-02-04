@@ -100,3 +100,4 @@ MSBuildForUnity.Common.props
 /*.msb4u.sln.meta
 *.msb4u.sln.meta
 Dependencies*
+Nuget.config*
