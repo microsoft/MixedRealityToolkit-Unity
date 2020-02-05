@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static string[] MSBuildRegistryScopes = new string[] { "com.microsoft" };
 
         internal const string MSBuildPackageName = "com.microsoft.msbuildforunity";
-        internal const string MSBuildPackageVersion = "0.9.1-20200131.12";
+        internal const string MSBuildPackageVersion = "0.9.1-20200131.14";
 
         /// <summary>
         /// Finds and returns the fully qualified path to the Unity Package Manager manifest
