@@ -259,7 +259,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 return null;
             }
 
-            Debug.Assert(gltfObject.buffers[0].byteLength == chunk1Length, "chunk 1 & buffer 0 length mismatch");
+            // Per the spec, "byte length of BIN chunk could be up to 3 bytes bigger than JSON-defined buffer.byteLength to satisfy GLB padding requirements"
+            // https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/README.md#glb-stored-buffer
+            Debug.Assert(gltfObject.buffers[0].byteLength <= chunk1Length && gltfObject.buffers[0].byteLength >= chunk1Length - 3, "chunk 1 & buffer 0 length mismatch");
 
             gltfObject.buffers[0].BufferData = new byte[chunk1Length];
             Array.Copy(glbData, stride * 7 + chunk0Length, gltfObject.buffers[0].BufferData, 0, chunk1Length);
