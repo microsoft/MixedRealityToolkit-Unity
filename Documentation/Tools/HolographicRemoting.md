@@ -25,15 +25,19 @@ configure the project using the following steps.
 
 ### Debugging HoloLens 2 remoting via Unity package import
 
-If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are three common points of potential issues:
+If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are three common points of potential issues. They're listed below in the order you should check them.
 
-- MSBuildForUnity package import via writing into the package.manifest
-- DotNetWinRT NuGet package resolution
-- `DOTNETWINRT_PRESENT` #define written into player settings
+#### MSBuildForUnity package import via writing into the package.manifest
 
-For the first, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the stops above for running the MRTK Configurator.
-For the second, the best way to check is to search your Assets for DotNetWinRT.dll. If this doesn't exist, you'll want to navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, you should see a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
-For the third, you'll want to navigate to your Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. You'll want to make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
+For the first point, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the stops above for running the MRTK Configurator.
+
+#### DotNetWinRT NuGet package resolution
+
+For the second point, the best way to check is to search your Assets for DotNetWinRT.dll. If this doesn't exist, you'll want to navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, you should see a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
+
+#### `DOTNETWINRT_PRESENT` #define written into player settings
+
+For the third point, you'll want to navigate to your Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. You'll want to make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
 If you're through all three of those, hand joints over remoting should be working! If not, there might be something misconfigured in your profiles for general hand joints on-device. In that case, ask a question on StackOverflow or file an issue on the GitHub repo for help.
 
