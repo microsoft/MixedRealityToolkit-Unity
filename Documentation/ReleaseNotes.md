@@ -155,28 +155,12 @@ MRTK does not fully support profile swapping at runtime. This feature is being i
 
 **Unity 2018: .NET Backend and AR Foundation**
 
-There is an issue in Unity 2018 where, when building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail to install.
+There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.
 
 To work around this issue, please perform one of the following steps:
 
 - Switch the scripting backend to IL2CPP
 - In the Build Settings window, uncheck **Unity C# Projects"
-
-**Unity 2018: .NET Backend and DotNetWinRT plugin**
-
-There is an issue that impacts compiling an application when using the .NET backend and version 0.5.1037 of the DotNetWinRT plugin (acquired by checking Enabling MS Build for Unity in the configure dialog).
-
-This issue can be worked around by switching to the IL2CPP backend or performing the following steps.
-
-- In the Project Window
-  - Expand **Assets**
-  - Expand **MixedRealityToolkit.Providers**
-  - Expand **WindowsMixedReality**
-  - Expand **DotNetAdapter**
-  - Delete the **Plugins** folder
-- Close and reopen Unity
-
-This will cause the MRTK to restore the latest version of the DotNetWinRT package.
 
 ## Version 2.2.0
 
