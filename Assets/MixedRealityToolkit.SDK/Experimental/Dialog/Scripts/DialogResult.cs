@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         }
 
         /// <summary>
-        /// The button press that closed the dialog
+        /// The button type that was pressed to close the dialog
         /// </summary>
         private DialogButtonType result = DialogButtonType.Close;
         /// <summary>
