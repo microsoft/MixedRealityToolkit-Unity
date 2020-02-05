@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     /// <summary>
     /// Enum describing the style (caption) of button on a Dialog.
     /// </summary>
+    [Flags]
     public enum DialogButtonType
     {
         None = 0,

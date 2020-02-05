@@ -6,15 +6,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 {
+    /// <summary>
+    /// This class implements the abstract class Dialog.
+    /// DialogShell class manages a dialog object that can have one or two option buttons.
+    /// If you try to open a dialog with more than two option buttons, it will show the first two.
+    /// </summary>
     public class DialogShell : Dialog
     {
         private GameObject[] twoButtonSet;
 
-        /// <summary>
-        /// This is called after the buttons are generated and
-        /// the title and message have been set.
-        /// Perform here any operations that you'd like
-        /// </summary>
+        /// < inheritdoc / >
         protected override void FinalizeLayout()
         {
         }
@@ -24,14 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             //Get List of ButtonTypes that should be created on Dialog
             List<DialogButtonType> buttonTypes = new List<DialogButtonType>();
             foreach (DialogButtonType buttonType in Enum.GetValues(typeof(DialogButtonType)))
-            {
-                if (buttonType == DialogButtonType.None)
-                {
-                    continue;
-                }
-
+            {                
                 // If this button type flag is set
-                if ((buttonType & result.Buttons) == buttonType)
+                if (buttonType != DialogButtonType.None && result.Buttons.HasFlag(buttonType))
                 {
                     buttonTypes.Add(buttonType);
                 }
@@ -49,8 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             if (buttonTypes.Count > 0)
             {
                 // If we have two buttons then do step 1, else 0
-                int step = buttonTypes.Count == 2 ? 1 : 0;
-                for (int i = 0; i < buttonTypes.Count; ++i)
+                int step = buttonTypes.Count >= 2 ? 1 : 0;
+                for (int i = 0; i < buttonTypes.Count && i<2; ++i)
                 {
                     twoButtonSet[i] = buttonsOnDialog[i + step].gameObject;
                     buttonsOnDialog[i + step].SetTitle(buttonTypes[i].ToString());
@@ -64,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             for (int i = 0; i < buttons.Count; ++i)
             {
                 var flag1 = (count == 1) && (i == 0);
-                var flag2 = (count == 2) && (i > 0);
+                var flag2 = (count >= 2) && (i > 0);
                 buttons[i].ParentDialog = this;
                 buttons[i].gameObject.SetActive(flag1 || flag2);
             }

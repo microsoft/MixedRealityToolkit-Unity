@@ -26,10 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Can be used to monitor result instead of events
         /// </summary>        
-        public DialogResult Result
-        {
-            get => result;
-        }
+        public DialogResult Result => result;        
 
         protected void Launch(DialogResult newResult)
         {
@@ -111,8 +108,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         protected abstract void GenerateButtons();
 
         /// <summary>
+        /// This is called after the buttons are generated and
+        /// the title and message have been set.
+        /// Perform here any operations that you'd like
         /// Lays out the buttons on the dialog
-        /// Eg using an ObjectCollection
+        /// Eg using an ObjectCollection                        
         /// </summary>
         protected abstract void FinalizeLayout();
 
@@ -143,23 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="buttons"></param>
         /// <param name="title"></param>
         /// <param name="message"></param>
-        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message)
-        {
-            GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
-            Dialog dialog = dialogGameObject.GetComponent<Dialog>();
-
-            DialogResult result = new DialogResult
-            {
-                Buttons = buttons,
-                Title = title,
-                Message = message
-            };
-
-            dialog.Launch(result);
-            return dialog;
-        }
-
-        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, System.Object variable)
+        /// <param name="variable"></param>
+        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, System.Object variable = null)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();
