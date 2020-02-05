@@ -5,7 +5,6 @@ The Microsoft Mixed Reality Toolkit is provided as a collection of packages. The
 - [Foundation](#foundation)
 - [Extensions](#extensions)
 - [Tools](#tools)
-- [Providers.UnityAR](#providersunityar)
 - [Examples](#examples)
 
 ## Foundation
@@ -18,6 +17,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | MixedRealityToolkit.Providers | | |
 | | [ObjectMeshObserver](SpatialAwareness/SpatialObjectMeshObserver.md) | Spatial awareness observer using a 3D model as the data. |
 | | OpenVR | Support for OpenVR devices. |
+| | [UnityAR](CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
 | | WindowsVoiceInput | Support for speech and dictation on Microsoft Windows platforms. |
 | MixedRealityToolkit.SDK | | |
@@ -67,16 +67,6 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 | | [RuntimeTools/Tools/ControllerMappingTool](Tools/ControllerMappingTool.md) | Utility enabling developers to quickly determine Unity mappings for hardware controllers. |
 | | ScreenshotUtility | Enables capturing application images in the Unity editor. |
 | | TextureCombinerWindow | Utility to combine graphics textures. |
-
-## Providers.UnityAR
-
-> [!Note]
-> The UnityAR package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
-
-| Folder | Component | Description |
-| --- | --- | --- |
-| MixedRealityToolkit.Staging | | |
-| | [UnityAR](CameraSystem/UnityArCameraSettings.md) | Camera settings provider enabling MRTK use with mobile AR devices. |
 
 ## Examples
 
