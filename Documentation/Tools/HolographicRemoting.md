@@ -29,7 +29,7 @@ If HoloLens 2 hand joints and eye tracking aren't working over remoting, there a
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
-For the first point, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the stops above for running the MRTK Configurator.
+For the first point, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the steps above for running the MRTK Configurator.
 
 #### DotNetWinRT NuGet package resolution
 
