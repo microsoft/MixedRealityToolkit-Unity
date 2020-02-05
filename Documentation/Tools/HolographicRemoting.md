@@ -10,6 +10,8 @@ To enable remoting to a HoloLens, it is important to ensure that the project is 
     - Verify that latest version of the **Windows Mixed Reality** package is installed.
 1. Ensure the latest Holographic Remoting application is installed, on the HoloLens, via the Microsoft Store.
 
+### HoloLens 2
+
 When using a HoloLens 2, support for remoting articulated hand and eye tracking data has been added to MRTK. To enable these features,
 configure the project using the following steps.
 
@@ -20,6 +22,20 @@ configure the project using the following steps.
 
 1. Ensure that **Enable MSBuild for Unity** is selected
 1. Click **Apply**
+
+### Debugging HoloLens 2 remoting via Unity package import
+
+If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are really three main potential points of failure:
+
+- MSBuildForUnity package import via writing into the package.manifest
+- DotNetWinRT NuGet package resolution
+- DOTNETWINRT_PRESENT #define written into player settings
+
+For the first, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the stops above for running the MRTK Configurator.
+For the second, the best way to check is to search your Assets for DotNetWinRT.dll. If this doesn't exist, you'll want to navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, you should see a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
+For the third, you'll want to navigate to your Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. You'll want to make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
+
+If you're through all three of those, hand joints over remoting should be working! If not, there might be something mis-set in your profiles for general hand joints on-device. In that case, ask a question on StackOverflow or file an issue on the GitHub repo for help.
 
 ## Connecting to the HoloLens
 
@@ -44,9 +60,9 @@ Once the project has been configured, a connection can be established to the Hol
     ![Enter IP Address](../Images/Tools/Remoting/EnterIPAddress.png)
 
 1. Click **Connect**.
-> [!Note]
-> If you cannot connect, make sure your HoloLens2 is not plugged in and restart Unity.
 
+> [!NOTE]
+> If you cannot connect, make sure your HoloLens 2 is not plugged in to your PC and restart Unity.
 
 ## Starting a remoting session
 
@@ -54,7 +70,7 @@ With Unity connected to the HoloLens, enter play mode in the editor.
 
 When the session is complete, exit play mode.
 
-> [!Note]
+> [!NOTE]
 > There is a known issue with some versions of Unity where the editor may hang upon entering play mode during a remoting session. This issue may manifest if the Holographic window is open when the project is loaded. To ensure this issue does not occur, always close the Holographic dialog prior to exiting Unity.
 
 ## See also
