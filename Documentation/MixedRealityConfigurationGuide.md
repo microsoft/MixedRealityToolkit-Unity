@@ -64,8 +64,6 @@ These configuration profiles are detailed below in their relevant sections:
 
 Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation of the [Mixed Reality environment scale](https://docs.microsoft.com/en-us/windows/mixed-reality/coordinate-systems-in-unity) for your project.
 
-This value can be modified at runtime via [`MixedRealityToolkit.Instance.AppScale`](xref:Microsoft.MixedReality.Toolkit.MixedRealityToolkit).
-
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 
 ---

@@ -58,11 +58,44 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             return boundaryGeometry;
         }
 
-        #region Obsolete
-
         /// <inheritdoc/>
-        [System.Obsolete("Use MixedRealityToolkit.AppScale instead")]
-        protected override void SetTrackingSpace() { }
+        protected override void SetTrackingSpace()
+        {
+            if (Application.isPlaying)
+            {
+                TrackingSpaceType trackingSpace;
+
+                // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
+                // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
+                switch (Scale)
+                {
+                    case ExperienceScale.Standing:
+                    case ExperienceScale.Room:
+                        trackingSpace = TrackingSpaceType.RoomScale;
+                        break;
+
+                    case ExperienceScale.OrientationOnly:
+                    case ExperienceScale.Seated:
+                    case ExperienceScale.World:
+                        trackingSpace = TrackingSpaceType.Stationary;
+                        break;
+
+                    default:
+                        trackingSpace = TrackingSpaceType.Stationary;
+                        Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Stationary tracking space.");
+                        break;
+                }
+
+                InputTracking.disablePositionalTracking = Scale == ExperienceScale.OrientationOnly;
+
+                if (!XRDevice.SetTrackingSpaceType(trackingSpace))
+                {
+                    Debug.LogWarning($"MRTK was unable to set Tracking Space to {trackingSpace}");
+                }
+            }
+        }
+
+        #region Obsolete
 
         /// <summary>
         /// Constructor.

@@ -20,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// The scale (ex: World Scale) of the experience.
         /// </summary>
-        [System.Obsolete("Use MixedRealityToolkit.AppScale or use XRDevice.GetTrackingSpaceType and XRDevice.SetTrackingSpaceType instead.")]
         ExperienceScale Scale { get; set; }
 
         /// <summary>

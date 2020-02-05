@@ -297,8 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        /// <inheritdoc/>
-        [System.Obsolete("Use MixedRealityToolkit.AppScale or use XRDevice.GetTrackingSpaceType and XRDevice.SetTrackingSpaceType instead.")]
+        /// <inheritdoc/>        
         public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>
@@ -892,7 +891,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Updates the tracking space on the XR device.
         /// </summary>
-        [System.Obsolete("Use MixedRealityToolkit.AppScale instead")]
         protected abstract void SetTrackingSpace();
 
         /// <summary>

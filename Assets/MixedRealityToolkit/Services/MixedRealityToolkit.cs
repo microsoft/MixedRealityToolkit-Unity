@@ -315,54 +315,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         #endregion IMixedRealityServiceRegistrar implementation
 
-        private ExperienceScale scale;
-
-        /// <summary>
-        /// The scale (ex: World Scale) of the experience.
-        /// Updates the <see href="https://docs.unity3d.com/ScriptReference/XR.TrackingSpaceType.html">TrackingSpaceType</see> on the XR device.
-        /// </summary>
-        public ExperienceScale AppScale
-        {
-            get => scale;
-            set
-            {
-                scale = value;
-
-                if (Application.isPlaying)
-                {
-                    TrackingSpaceType trackingSpace;
-
-                    // In current versions of Unity, there are two types of tracking spaces. For boundaries, if the scale
-                    // is not Room or Standing, it currently maps to TrackingSpaceType.Stationary.
-                    switch (scale)
-                    {
-                        case ExperienceScale.Standing:
-                        case ExperienceScale.Room:
-                            trackingSpace = TrackingSpaceType.RoomScale;
-                            break;
-
-                        case ExperienceScale.OrientationOnly:
-                        case ExperienceScale.Seated:
-                        case ExperienceScale.World:
-                            trackingSpace = TrackingSpaceType.Stationary;
-                            break;
-
-                        default:
-                            trackingSpace = TrackingSpaceType.Stationary;
-                            Debug.LogWarning("Unknown / unsupported ExperienceScale. Defaulting to Stationary tracking space.");
-                            break;
-                    }
-
-                    InputTracking.disablePositionalTracking = scale == ExperienceScale.OrientationOnly;
-
-                    if (!XRDevice.SetTrackingSpaceType(trackingSpace))
-                    {
-                        Debug.LogWarning($"MRTK was unable to set Tracking Space to {trackingSpace}");
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
         /// This ensures all services can reference each other once started.
@@ -403,8 +355,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             CoreServices.ResetCacheReferences();
             EnsureMixedRealityRequirements();
-
-            AppScale = ActiveProfile.TargetExperienceScale;
 
             #region Services Registration
 
