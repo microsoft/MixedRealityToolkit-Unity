@@ -46,6 +46,7 @@ The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes add
 | Folder | Component | Description |
 | --- | --- | --- |
 | MixedRealityToolkit.Extensions | |
+| | HandPhysicsService | Service that adds physics support to articulated hands. |
 | | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
 | | [SceneTransitionService](Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
 
