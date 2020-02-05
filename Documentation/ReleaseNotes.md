@@ -110,25 +110,6 @@ The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoo
 ![Y axis slier](https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG)
 ![X axis slider](https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG)
 
-**UX control prefabs updated to use PressableButton**
-
-The following prefabs are now using the PressableButton component instead of TouchHandler for near interaction ([7070](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7070))
-
-- AnimationButton
-- Button
-- ButtonHoloLens1
-- ButtonHoloLens1Toggle
-- CheckBox
-- RadialSet
-- ToggleButton
-- ToggleSwitch
-- UnityUIButton
-- UnityUICheckboxButton
-- UnityUIRadialButton
-- UnityUIToggleButton
-
-![Updated UX prefabs](https://user-images.githubusercontent.com/36998103/72457296-30303100-37be-11ea-827f-d144a65348ff.gif)
-
 ### Known issues in 2.3.0
 
 **Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
@@ -183,30 +164,19 @@ To work around this issue, please perform one of the following steps:
 
 **Unity 2018: .NET Backend and DotNetWinRT plugin**
 
-There is an issue that impacts compiling an application when using the .NET backend and the DotNetWinRT plugin (acquired by checking Enabling MS Build for Unity in the configure dialog).
+There is an issue that impacts compiling an application when using the .NET backend and version 0.5.1037 of the DotNetWinRT plugin (acquired by checking Enabling MS Build for Unity in the configure dialog).
 
 This issue can be worked around by switching to the IL2CPP backend or performing the following steps.
 
-- Close Unity
-- In the project's folder
-  - Open **Packages\manifest.json**
-  - Delete the line containing **"com.microsoft.msbuildforunity"**
-  - Save the file
-- Open Unity
 - In the Project Window
   - Expand **Assets**
   - Expand **MixedRealityToolkit.Providers**
   - Expand **WindowsMixedReality**
   - Expand **DotNetAdapter**
   - Delete the **Plugins** folder
+- Close and reopen Unity
 
-> [!NOTE]
-> Performing these steps will remove support for
-> 
-> - Articulated hand and eye remoting on HoloLens 2
-> - Specifying the Depth Reprojection Method in the Windows Mixed Reality Camera Settings Provider
-
-A fix for this issue will be released in an updated version of the Microsoft.Windows.MixedReality.DotNetWinRT NuGet package. Once it is available, MSBuild for Unity can be re-added to the project via the Unity Package Manager to acquire the latest plugin. 
+This will cause the MRTK to restore the latest version of the DotNetWinRT package.
 
 ## Version 2.2.0
 
