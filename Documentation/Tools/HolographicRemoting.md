@@ -25,17 +25,27 @@ configure the project using the following steps.
 
 ### Debugging HoloLens 2 remoting via Unity package import
 
-If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are really three main potential points of failure:
+If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are three common points of potential issues:
 
 - MSBuildForUnity package import via writing into the package.manifest
 - DotNetWinRT NuGet package resolution
-- DOTNETWINRT_PRESENT #define written into player settings
+- `DOTNETWINRT_PRESENT` #define written into player settings
 
 For the first, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, you can assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity repeat the stops above for running the MRTK Configurator.
 For the second, the best way to check is to search your Assets for DotNetWinRT.dll. If this doesn't exist, you'll want to navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, you should see a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
 For the third, you'll want to navigate to your Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. You'll want to make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
 If you're through all three of those, hand joints over remoting should be working! If not, there might be something mis-set in your profiles for general hand joints on-device. In that case, ask a question on StackOverflow or file an issue on the GitHub repo for help.
+
+### Removing HoloLens 2-specific remoting support
+
+If you're running into conflicts or other issues due to the presence of the DotNetWinRT adapter, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
+
+You can also temporarily remove the adapter to workaround your issue via the following steps:
+
+1. In Unity, go to Window -> Package Manager and uninstall MSBuild for Unity
+1. Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around
+1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity
 
 ## Connecting to the HoloLens
 
