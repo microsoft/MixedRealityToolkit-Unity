@@ -105,6 +105,8 @@
 </li>
 <li><p>OpenVR</p>
 </li>
+<li><p>(Experimental) Unity 2019.3 XR platform</p>
+</li>
 <li><p>(Experimental) Mobile AR</p>
 <ul>
 <li>Android</li>
@@ -125,8 +127,133 @@
 </ul>
 <h3 id="upgrading-projects-to-230">Upgrading projects to 2.3.0</h3>
 <p>The 2.3.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-220-to-230"><strong>Updating 2.2.0 to 2.3.0</strong></a> article.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>At this time, it is not supported to switch between using .unitypackage files and NuGet.</p>
+</div>
+<p><strong>Updating using .unitypackage files</strong></p>
+<p>For the smoothest upgrade path, please use the following steps.</p>
+<ol>
+<li>Close Unity</li>
+<li>Inside the <em>Assets</em> folder, delete most of the <strong>MixedRealityToolkit</strong> folders, along with their .meta files (the project may not have all listed folders)
+<ul>
+<li>MixedRealityToolkit</li>
+<li>MixedRealityToolkit.Examples</li>
+<li>MixedRealityToolkit.Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions have been installed, please make a backup prior to deleting these folders.</p>
+</div>
+<ul>
+<li>MixedRealityToolkit.Providers</li>
+<li>MixedRealityToolkit.SDK</li>
+<li>MixedRealityToolkit.Services</li>
+<li>MixedRealityToolkit.Staging</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.</p>
+</div>
+<ul>
+<li>MixedRealityToolkit.Tools</li>
+</ul>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder, or its .meta file.</p>
+</div>
+</li>
+<li>Delete the <strong>Library</strong> folder</li>
+<li>Re-open the project in Unity</li>
+<li>Import the new unity packages
+<ul>
+<li>Foundation - <em>Import this package first</em></li>
+<li>(Optional) Tools</li>
+<li>(Optional) Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions had been installed, they may need to be re-imported.</p>
+</div>
+<ul>
+<li>(Optional) Examples</li>
+</ul>
+</li>
+<li>Close Unity and Delete the <strong>Library</strong> folder. This step is necessary to force Unity to refresh its
+asset database and reconcile existing custom profiles.</li>
+<li>Launch Unity, and for each scene in the project
+<ul>
+<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.</li>
+<li>Select <strong>MixedRealityToolkit -&gt; Add to Scene and Configure</strong></li>
+<li>Select <strong>MixedRealityToolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles</strong> (only needs to be done once)
+- This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
+</ul>
+</li>
+</ol>
+<p><strong>Updating from NuGet</strong></p>
+<p>If your project was created using the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, please use the following steps.</p>
+<ol>
+<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
+<li>Select the <strong>Online</strong> tab and click <strong>Refresh</strong></li>
+<li>Select the <strong>Installed</strong> tab</li>
+<li>Click the <strong>Update</strong> button for each installed package
+<ul>
+<li>Microsoft.MixedReality.Toolkit.Foundation</li>
+<li>Microsoft.MixedReality.Toolkit.Providers.UnityAR</li>
+<li>Microsoft.MixedReality.Toolkit.Tools</li>
+<li>Microsoft.MixedReality.Toolkit.Extensions</li>
+<li>Microsoft.MixedReality.Toolkit.Examples</li>
+</ul>
+</li>
+<li>Close and re-open the project in Unity</li>
+</ol>
 <h3 id="whats-new-in-230">What's new in 2.3.0</h3>
+<p><strong>Support for Unity 2019.3 new XR platform (Experimental)</strong></p>
+<p>MRTK has added initial support for <a href="https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/">Unity 2019.3's new XR platform</a>. When using the Windows XR plugin, it is recommended using version <strong>2.0.4 (preview.3)</strong> or newer.</p>
+<p>Please see <a href="#known-issues-in-230">Known issues</a> for details on known limitations.</p>
+<p><strong>Hand physics extension service</strong></p>
+<p>A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573">#6573</a>).</p>
+<p><img src="https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif" alt="Hand physics"></p>
+<p><strong>Pinch Slider orientation</strong></p>
+<p>The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858">#6858</a>)</p>
+<p><img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" alt="Y axis slier">
+<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG" alt="X axis slider"></p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
+<p><strong>Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality</strong></p>
+<p>The following issues are known when using the new XR platform and version <strong>2.0.4 (preview.3)</strong> of the Windows XR Plugin:</p>
+<ul>
+<li>AirTap does not work on HoloLens (HoloLens 2 and 1st generation)</li>
+<li>Pointers are using the wrong coordinate system on HoloLens 2 and immersive devices</li>
+</ul>
+<p>It is recommended to periodically check <strong>Window</strong> &gt; <strong>Package Manager</strong> for newer versions of the Windows XR plugin.</p>
+<p><strong>Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platfom</strong></p>
+<p>This release of MRTK does not contain an implementation for Windows Mixed Reality gestures using the new XR platform. It will be added in a future version of MRTK.</p>
+<p><strong>Specifying the Depth Reprojection mode in the Windows Mixed Reality Camera Settings Provider is not supported on Unity 2019.3 and Windows XR plugin</strong></p>
+<p>This issue is expected to be fixed with upcoming releases of MRTK and the Windows XR plugin.</p>
+<p><strong>Mixed Reality Capture setting</strong></p>
+<p>This feature is currently not working correctly on Unity 2019.3.0f6. This issue impacts both the legacy and the new XR platform.</p>
+<p><strong>Long paths</strong></p>
+<p>When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.</p>
+<p>This can manifest as CS0006 errors in Visual Studio that look like:</p>
+<blockquote>
+<p>CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.</p>
+</blockquote>
+<p>This can be worked around by moving the Unity project folder closer to the root of the drive, for example:</p>
+<blockquote>
+<p>C:\src\project</p>
+</blockquote>
+<p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469">this issue</a> for more background information.</p>
+<p><strong>Runtime profile swapping</strong></p>
+<p>MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>,
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465">5465</a> and
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466">5466</a> for more information.</p>
+<p><strong>Unity 2018: .NET Backend and AR Foundation</strong></p>
+<p>There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.</p>
+<p>To work around this issue, please perform one of the following steps:</p>
+<ul>
+<li>Switch the scripting backend to IL2CPP</li>
+<li>In the Build Settings window, uncheck **Unity C# Projects&quot;</li>
+</ul>
 <h2 id="version-220">Version 2.2.0</h2>
 <ul>
 <li><a href="#how-to-upgrade-projects-to-220">How to upgrade projects</a></li>
@@ -225,7 +352,7 @@ asset database and reconcile existing custom profiles.</li>
 <li>Microsoft.MixedReality.Toolkit.Examples</li>
 </ul>
 </li>
-<li>Re-open the project in Unity</li>
+<li>Close and re-open the project in Unity</li>
 </ol>
 <h3 id="whats-new-in-220">What's new in 2.2.0</h3>
 <p><strong>Camera Settings Providers</strong></p>

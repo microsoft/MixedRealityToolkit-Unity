@@ -83,8 +83,8 @@
 <h1 id="updating-the-microsoft-mixed-reality-toolkit">Updating the Microsoft Mixed Reality Toolkit</h1>
 
 <ul>
-<li><a href="#updating-210-to-220">2.1.0 to 2.2.0</a></li>
 <li><a href="#updating-220-to-230">2.2.0 to 2.3.0</a></li>
+<li><a href="#updating-210-to-220">2.1.0 to 2.2.0</a></li>
 <li><a href="#updating-200-to-210">2.0.0 to 2.1.0</a></li>
 <li><a href="#updating-rc2-to-200">RC2 to 2.0.0</a></li>
 </ul>
@@ -97,17 +97,49 @@
 <li><a href="#api-changes-in-230">API changes</a></li>
 </ul>
 <h3 id="api-changes-in-230">API changes in 2.3.0</h3>
-<h4 id="scriptingutilitiescs">ScriptingUtilities.cs</h4>
-<p>The ScriptingUtilities.cs file was moved from the MixedRealityToolkit\Utilities folder to MixedRealityToolkit\Utilities\Editor. As a result, the class has been moved to the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly.</p>
-<p>In addition, the <code>AppendScriptingDefinitions</code> method has a new signature.  It no longer takes the fileName argument.</p>
+<p><strong>ControllerPoseSynchronizer</strong></p>
+<p>The private ControllerPoseSynchronizer.handedness field has been marked as obsolete. This should have minimal impact on applications as the field is not visible outside of its class.</p>
+<p>The public ControllerPoseSynchronizer.Handedness property's setter has been removed (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012">#7012</a>).</p>
+<p><strong>MSBuild for Unity</strong></p>
+<p>This version of MRTK uses a newer version of MSBuild for Unity than previous releases. During project load, if the older version is listed in the Unity Package Manger
+manifest, the configuration dialog will appear, with the Enable MSBuild for Unity option checked. Applying will perform an upgrade.</p>
+<p><strong>ScriptingUtilities</strong></p>
+<p>The ScriptingUtilities class has been marked as obsolete and has been replaced by ScriptUtilities, in the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly. The new class refines previous behavior and adds support for removing scripting definitions.</p>
+<p>While existing code will continue to function in version 2.3.0, it is recommended to update to the new class.</p>
+<p><strong>ShellHandRayPouinter</strong></p>
+<p>The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863">#6863</a>).</p>
+<p>Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.</p>
+<p><strong>Spatial observer StarupBehavior</strong></p>
+<p>Spatial observers built upon the <code>BaseSpatialObserver</code> class now honor the value of StartupBehavior when re-enabled (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919">#6919</a>).</p>
+<p>No changes are required to take advantage of this fix.</p>
+<p><strong>UX control prefabs updated to use PressableButton</strong></p>
+<p>The following prefabs are now using the PressableButton component instead of TouchHandler for near interaction (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7070">7070</a>)</p>
+<ul>
+<li>AnimationButton</li>
+<li>Button</li>
+<li>ButtonHoloLens1</li>
+<li>ButtonHoloLens1Toggle</li>
+<li>CheckBox</li>
+<li>RadialSet</li>
+<li>ToggleButton</li>
+<li>ToggleSwitch</li>
+<li>UnityUIButton</li>
+<li>UnityUICheckboxButton</li>
+<li>UnityUIRadialButton</li>
+<li>UnityUIToggleButton</li>
+</ul>
+<p>Application code may require updating due to this change.</p>
+<p><strong>WindowsMixedRealityUtilities namespace</strong></p>
+<p>The namespace of WindowsMixedRealityUtilities changed from Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input to Microsoft.MixedReality.Toolkit.WindowsMixedReality (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6989">#6863</a>).</p>
+<p>Please update #using statements to resolve compile errors.</p>
 <h2 id="updating-210-to-220">Updating 2.1.0 to 2.2.0</h2>
 <ul>
 <li><a href="#api-changes-in-220">API changes</a></li>
 </ul>
 <h3 id="api-changes-in-220">API changes in 2.2.0</h3>
-<h4 id="imixedrealityboundarysystemcontains">IMixedRealityBoundarySystem.Contains</h4>
+<p><strong>IMixedRealityBoundarySystem.Contains</strong></p>
 <p>This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.</p>
-<h4 id="mixedrealityserviceprofileattribute">MixedRealityServiceProfileAttribute</h4>
+<p><strong>MixedRealityServiceProfileAttribute</strong></p>
 <p>To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.</p>
 <p>A second property, ExcludedTypes has also been added.</p>
 <h2 id="updating-200-to-210">Updating 2.0.0 to 2.1.0</h2>
