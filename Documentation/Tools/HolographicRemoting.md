@@ -39,7 +39,7 @@ For the second point, the best way to check is to search your Assets for DotNetW
 
 For the third point, you'll want to navigate to your Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. You'll want to make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
-If you're through all three of those, hand joints over remoting should be working! If not, there might be something misconfigured in your profiles for general hand joints on-device. In that case, ask a question on StackOverflow or file an issue on the GitHub repo for help.
+If you're through all three of those, hand joints over remoting should be working! If not, there might be something misconfigured in your profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
 
 ### Removing HoloLens 2-specific remoting support
 
