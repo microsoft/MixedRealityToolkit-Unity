@@ -942,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "GixsqjDsL33sUWi+ZeqCww=="
+          "hash": "+VshHEMmQOol7QXpenaIww=="
         }
       },
       "is_incremental": false,
@@ -5945,6 +5945,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/DotNetAdapterInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/DotNetAdapterInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/DotNetWinRTPresent.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/DotNetWinRTPresent.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png",
       "output": {
         "resource": {
@@ -5960,6 +5982,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/MSB4UPackageManager.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/MSB4UPackageManager.png"
         }
       },
       "is_incremental": false,
@@ -7000,7 +7033,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "xM95o0nDBX6wx9LMHu80+g=="
+          "hash": "rWcaEfbgcHd48HoGNBBSwA=="
         }
       },
       "is_incremental": false,
@@ -25735,18 +25768,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 145,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1547,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -25754,11 +25775,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 145,
+          "skipped_file_count": 0
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1547,
           "skipped_file_count": 0
         }
       }
