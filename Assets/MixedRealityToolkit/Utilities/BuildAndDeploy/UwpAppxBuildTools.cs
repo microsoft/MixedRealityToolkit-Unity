@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -484,6 +485,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
 
             Debug.Assert(uwpBuildInfo != null);
+            if (uwpBuildInfo.DeviceCapabilities != null)
+            {
+                AddCapabilities(rootElement, uwpBuildInfo.DeviceCapabilities);
+            }
             if (uwpBuildInfo.GazeInputCapabilityEnabled)
             {
                 AddGazeInputCapability(rootElement);
@@ -539,6 +544,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         public static void AddGazeInputCapability(XElement rootNode)
         {
             AddCapability(rootNode, rootNode.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
+        }
+
+        /// <summary>
+        /// Adds the given capabilities to the manifest.
+        /// </summary>
+        public static void AddCapabilities(XElement rootNode, List<string> capabilities)
+        {
+            foreach (string capability in capabilities)
+            {
+                AddCapability(rootNode, rootNode.GetDefaultNamespace() + "DeviceCapability", capability);
+            }
         }
 
         /// <summary>

@@ -422,7 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                float angle = -AngleBetweenVectorAndPlane(toTarget, refUp);
+                float angle = -AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
                 float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
 
                 if (angle < -minMaxAngle)

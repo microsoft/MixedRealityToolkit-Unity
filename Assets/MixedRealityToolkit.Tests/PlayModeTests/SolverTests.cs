@@ -667,6 +667,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
         }
 
+        /// <summary>
+        /// Test the Follow solver angular clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowStuckBehind()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // variables and lambdas to test direction remains within bounds
+            Vector3 toTarget() => targetTransform.position - CameraCache.Main.transform.position;
+
+            // Test without rotation
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
+
+            // Test y axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 180));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
+        }
+
         #endregion
 
         #region Test Helpers

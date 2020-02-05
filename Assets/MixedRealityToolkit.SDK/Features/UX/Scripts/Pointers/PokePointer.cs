@@ -124,8 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void OnValidate()
         {
-            Debug.Assert(line != null, this);
-            Debug.Assert(visuals != null, this);
             touchableDistance = Mathf.Max(touchableDistance, 0);
             sceneQueryBufferSize = Mathf.Max(sceneQueryBufferSize, 1);
         }

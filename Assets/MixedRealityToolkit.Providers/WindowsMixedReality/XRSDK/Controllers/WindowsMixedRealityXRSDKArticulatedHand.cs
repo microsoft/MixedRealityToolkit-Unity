@@ -44,6 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         private static readonly HandFinger[] handFingers = Enum.GetValues(typeof(HandFinger)) as HandFinger[];
         private readonly List<Bone> fingerBones = new List<Bone>();
 
+        // The rotation offset between the reported grip pose of a hand and the palm joint orientation.
+        // These values were calculated by comparing the platform's reported grip pose and palm pose.
+        private static readonly Quaternion rightPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), Mathf.Sqrt(0.125f), -Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
+        private static readonly Quaternion leftPalmOffset = new Quaternion(Mathf.Sqrt(0.125f), -Mathf.Sqrt(0.125f), Mathf.Sqrt(1.5f) / 2.0f, Mathf.Sqrt(1.5f) / 2.0f);
+
 #if WINDOWS_UWP && WMR_ENABLED
         private readonly List<object> states = new List<object>();
 #endif // WINDOWS_UWP && WMR_ENABLED
@@ -126,7 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         }
 
                         // Unity doesn't provide a palm joint, so we synthesize one here
-                        unityJointPoses[TrackedHandJoint.Palm] = CurrentControllerPose;
+                        MixedRealityPose palmPose = CurrentControllerPose;
+                        palmPose.Rotation *= (ControllerHandedness == Handedness.Left ? leftPalmOffset : rightPalmOffset);
+                        unityJointPoses[TrackedHandJoint.Palm] = palmPose;
                     }
                 }
 
