@@ -11,7 +11,6 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 | Product | Description | Timeline | Project board |
 | --- | --- | --- | --- |
 | [MRTK V2.4](#240) | Next iteration of MRTK | March 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/11 |
-| [MRTK V2.5](#250) | Future iteration of MRTK | TBD 2020 | https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/12 |
 
 Releases are centered around themes (ex: large feature areas) and are scheduled to occur approximately every 8 weeks.
 
@@ -32,7 +31,7 @@ For the latest status of the release, please visit the [milestone page]( https:/
 
 Status: In development
 
-Timeline: March 2020
+Timeline: March/April 2020
 
 Themes:
 
@@ -59,20 +58,6 @@ Quality and stability are the top priority for this and all Microsoft Mixed Real
 **Platform expansion: Hands**
 
 As part of the hand extensibility theme, MRTK plans on adding support for the Leap Motion hands controller and Oculus Quest. Support for Leap Motion is expected to be made available on both Unity 2018.4 and 2019. Oculus Quest, including articulated hands, will be delivered via [Unity's new XR platform](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/).
-
-### 2.5.0
-
-For the latest information, please consult [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/milestone/12). All of the details below are subject to change.
-
-Status: Planning
-
-Timeline: TBD 2020
-
-Themes:
-
-- Stability
-- Developer education
-- User Experience
 
 ## Backlog
 
