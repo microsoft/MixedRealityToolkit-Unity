@@ -237,6 +237,26 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
 <p>We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924">#6294</a>)</p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
+<p><strong>CS0579: Duplicate 'AssemblyVersion' attribute</strong></p>
+<p>After enabling MSBuild for Unity, if Player Settings &gt; Other Settings &gt; API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.</p>
+<p>This is caused by an issue in MSBuild for Unity (<a href="https://github.com/microsoft/MSBuildForUnity/issues/133">#133</a>) where it is not properly removing dependency packages before restoring.</p>
+<p>To resolve these errors:</p>
+<ul>
+<li><p>In the <strong>Project</strong> window, expand <strong>Dependencies</strong></p>
+</li>
+<li><p>Open <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong></p>
+</li>
+<li><p>Expand <strong>Other Settings</strong></p>
+</li>
+<li><p>Examine the value of <strong>Api Compatibility Level</strong></p>
+<p><img src="Images/ReleaseNotes/ApiCompatibilityLevel.png" alt="API Compatibility Level"></p>
+</li>
+<li><p>If set to <strong>.NET Standard 2.0</strong>, delete the <strong>Dependencies\net46</strong> folder</p>
+</li>
+<li><p>If set to <strong>.NET 4.x</strong>, delete the <strong>Dependencies\netstandard20</strong> folder</p>
+<p><img src="Images/ReleaseNotes/DuplicateDependencies.png" alt="Duplicate dependencies"></p>
+</li>
+</ul>
 <p><strong>Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality</strong></p>
 <p>The following issues are known when using the new XR platform and version <strong>2.0.4 (preview.3)</strong> of the Windows XR Plugin:</p>
 <ul>

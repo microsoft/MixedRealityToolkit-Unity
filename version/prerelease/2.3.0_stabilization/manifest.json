@@ -5285,10 +5285,32 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/ApiCompatibilityLevel.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/ApiCompatibilityLevel.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/DuplicateDependencies.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/DuplicateDependencies.png"
         }
       },
       "is_incremental": false,
@@ -6829,7 +6851,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "SwvJ5v5BxthPwktRhSMIHw=="
+          "hash": "qgNXWNyTuiQMmM8VbsYdtg=="
         }
       },
       "is_incremental": false,
