@@ -134,7 +134,17 @@ The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoo
 
 **ObjectManipulator and BoundsControl (Experimental)**
 
-ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
+ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. They also include a few new behavior changes:
+
+ObjectManipulator correctly responds to physics.
+
+<img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
+
+Improved ability to configure constraints for object manipulation.
+
+<img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
+
+We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
 ### Known issues in 2.3.0
 
