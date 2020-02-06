@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsEyeGazeValid { get; }
 
         /// <summary>
+        /// Whether eye tracking data is available.
+        /// </summary>
+        bool IsEyeTrackingAvailable { get; }
+
+        /// <summary>
         /// Whether the user is eye calibrated. It returns 'null', if the value has not yet received data from the eye tracking system.
         /// </summary>
         bool? IsEyeCalibrationValid { get; }

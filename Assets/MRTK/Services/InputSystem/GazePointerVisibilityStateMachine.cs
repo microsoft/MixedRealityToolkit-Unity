@@ -51,28 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 eyeGazeValid = isEyeGazeValid;
             }
 
-            if (isEyeGazeValid)
-            {
-                UpdateStateEyeGaze(numNearPointersActive, numFarPointersActive);
-            }
-            else
-            {
-                UpdateStateHeadGaze(numNearPointersActive, numFarPointersActive, numFarPointersWithoutCursorActive);
-            }
-        }
-
-        private void UpdateStateEyeGaze(int numNearPointersActive, int numFarPointersActive)
-        {
-            // Only enable eye gaze as a pointer if there are no other near or far pointers active.
-            bool isEyeGazePointerActive = numFarPointersActive == 0 && numNearPointersActive == 0;
-
-            gazePointerState = isEyeGazePointerActive ?
-                GazePointerState.GazePointerActive :
-                GazePointerState.GazePointerInactive;
-        }
-
-        private void UpdateStateHeadGaze(int numNearPointersActive, int numFarPointersActive, int numFarPointersWithoutCursorActive)
-        {
             bool canGazeCursorShow = numFarPointersActive == 0 && numNearPointersActive == 0;
             switch (gazePointerState)
             {
@@ -110,13 +88,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Flags user intention to re activate eye or head based gaze cursor
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            if (!eyeGazeValid && eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
+            if (eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
             {
                 activateGazeKeywordIsSet = true;
             }
         }
     }
-
 }

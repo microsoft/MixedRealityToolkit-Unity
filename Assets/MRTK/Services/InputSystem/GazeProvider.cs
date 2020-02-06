@@ -82,12 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("If true, eye-based tracking will be used when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
+        [Tooltip("If true, eye-based gaze will be used when eye tracking data available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
         [Help("When enabling eye tracking, please follow the instructions at "
                + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
                + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
         [FormerlySerializedAs("preferEyeTracking")]
-        private bool useEyeTracking = true;
+        private bool useEyeTracking;
 
         /// <inheritdoc />
         public bool UseEyeTracking
@@ -553,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
         /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
         /// </summary>
-        private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
+        public bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
         /// <summary>
         /// Boolean to check whether the user went through the eye tracking calibration. 
