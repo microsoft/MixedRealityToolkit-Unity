@@ -19,7 +19,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | [ObjectMeshObserver](SpatialAwareness/SpatialObjectMeshObserver.md) | Spatial awareness observer using a 3D model as the data. |
 | | OpenVR | Support for OpenVR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
-| | WindowsVoiceInput | Support for speech and dicatation on Microsoft Windows platforms. |
+| | WindowsVoiceInput | Support for speech and dictation on Microsoft Windows platforms. |
 | MixedRealityToolkit.SDK | | |
 | | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
 | | Features | Functionality that builds upon the Foundation package. |
@@ -48,7 +48,6 @@ The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes add
 | MixedRealityToolkit.Extensions | |
 | | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
 | | [SceneTransitionService](Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
-
 
 ## Tools
 
