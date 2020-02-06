@@ -148,6 +148,26 @@ We are hoping to eventually deprecate ManipulationHandler and BoundingBox in fav
 
 ### Known issues in 2.3.0
 
+**CS0579: Duplicate 'AssemblyVersion' attribute**
+
+After enabling MSBuild for Unity, if Player Settings > Other Settings > API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.
+
+This is caused by an issue in MSBuild for Unity ([#133](https://github.com/microsoft/MSBuildForUnity/issues/133)) where it is not properly removing dependency packages before restoring.
+
+To resolve these errors:
+
+- In the **Project** window, expand **Dependencies**
+- Open **Edit** > **Project Settings** > **Player**
+- Expand **Other Settings**
+- Examine the value of **Api Compatibility Level**
+
+    ![API Compatibility Level](Images/ReleaseNotes/ApiCompatibilityLevel.png)
+
+- If set to **.NET Standard 2.0**, delete the **Dependencies\net46** folder
+- If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
+
+    ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
+
 **Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
 
 The following issues are known when using the new XR platform and version **2.0.4 (preview.3)** of the Windows XR Plugin:
