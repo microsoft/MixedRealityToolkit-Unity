@@ -81,7 +81,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
     ![iOS Settings](../Images/CameraSystem/UncheckStripEngineCodeiOS.png)
 
     > [!NOTE]
-    > Unchecking Strip Engine Code is the short term solution to an error in Xcode [#6646](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6646).  We are working on a long term solution for MRTK 2.3.0.
+    > Unchecking Strip Engine Code is the short term solution to an error in Xcode [#6646](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6646).  We are working on a long term solution.
 
 1. Build and run the scene
 
