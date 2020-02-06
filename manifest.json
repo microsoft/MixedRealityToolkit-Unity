@@ -510,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "v5Nec94jrul3o9IEFlfJVA=="
+          "hash": "j1axZGrX6yOtnBLEWVeGZA=="
         }
       },
       "is_incremental": false,
@@ -702,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/Roadmap.html",
-          "hash": "OGzPVsTNhfgMtICsFYy80w=="
+          "hash": "b+ebykSyE8R9nh3BBqh6NQ=="
         }
       },
       "is_incremental": false,
@@ -942,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "GixsqjDsL33sUWi+ZeqCww=="
+          "hash": "+VshHEMmQOol7QXpenaIww=="
         }
       },
       "is_incremental": false,
@@ -6033,6 +6033,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/DotNetAdapterInspector.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/DotNetAdapterInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/DotNetWinRTPresent.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/DotNetWinRTPresent.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Tools/Remoting/EnableMSBuildForUnity.png",
       "output": {
         "resource": {
@@ -6048,6 +6070,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Tools/Remoting/EnterIPAddress.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Tools/Remoting/MSB4UPackageManager.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Tools/Remoting/MSB4UPackageManager.png"
         }
       },
       "is_incremental": false,
@@ -6884,7 +6917,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "vJYbglB/ZcaLjcrNp6xLFQ=="
+          "hash": "xxksDqDIDpVJzMU7+h4AGg=="
         }
       },
       "is_incremental": false,
@@ -7088,7 +7121,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/HolographicRemoting.html",
-          "hash": "xM95o0nDBX6wx9LMHu80+g=="
+          "hash": "rWcaEfbgcHd48HoGNBBSwA=="
         }
       },
       "is_incremental": false,
@@ -7136,7 +7169,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "RMu/d3lSyHql9H/ey/W1AA=="
+          "hash": "CrCarkDoh183VGx/LWBPMw=="
         }
       },
       "is_incremental": false,
@@ -8455,7 +8488,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityProfileCloneWindow.html",
-          "hash": "mpvbFzoqm5Q+Joit2MNVDw=="
+          "hash": "Qoyf1b4UsOvtSBxG7sBVfQ=="
         }
       },
       "is_incremental": false,
@@ -19383,6 +19416,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.PackageManifestUpdaterTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.PackageManifestUpdaterTests.html",
+          "hash": "RfLmUUHnWmkmprCW3roI7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.ProjectPreferencesTest.yml",
       "output": {
         ".html": {
@@ -19399,7 +19444,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor.html",
-          "hash": "4EMf2jJ6jTbtJtsoRG5c9w=="
+          "hash": "tDAQQUg3TtaAXY9erb52LA=="
         }
       },
       "is_incremental": false,
@@ -22723,7 +22768,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.html",
-          "hash": "qfuaek57PPJE51tvDHnmEg=="
+          "hash": "upTBYfHWc3RLDs7/bByiQQ=="
         }
       },
       "is_incremental": false,
@@ -25843,7 +25888,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xonSQUbp6dfFKCFefa3zxg=="
+          "hash": "lT3D9y+O++3ASDv1WC5jig=="
         }
       },
       "is_incremental": false,
@@ -25911,7 +25956,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1552,
+          "total_file_count": 1553,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
