@@ -20,7 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.VirtualRealitySupported, true },
             { MRConfig.SinglePassInstancing, true },
             { MRConfig.SpatialAwarenessLayer, true },
+            // Issue #7239: Disable MSBuild for Unity on Unity 2019.3 and newer while the cause of the loop is investigated
+#if !UNITY_2019_3_OR_NEWER
             { MRConfig.EnableMSBuildForUnity, true },
+#endif // !UNITY_2019_3_OR_NEWER
             // UWP Capabilities
             { MRConfig.MicrophoneCapability, true },
             { MRConfig.InternetClientCapability, true },
@@ -107,6 +110,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             else
             {
                 RenderConfiguredConfirmation();
+
+                EditorGUILayout.Space();
+
+                showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Configurations", true);
+                if (showConfigurations)
+                {
+                    RenderConfigurations();
+                }
             }
         }
 
