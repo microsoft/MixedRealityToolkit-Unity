@@ -1,7 +1,7 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
-- [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.2.0 to 2.3.0](#updating-220-to-230)
+- [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
@@ -14,11 +14,59 @@
 
 ### API changes in 2.3.0
 
-#### ScriptingUtilities.cs
+**ControllerPoseSynchronizer**
 
-The ScriptingUtilities.cs file was moved from the MixedRealityToolkit\Utilities folder to MixedRealityToolkit\Utilities\Editor. As a result, the class has been moved to the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly.
+The private ControllerPoseSynchronizer.handedness field has been marked as obsolete. This should have minimal impact on applications as the field is not visible outside of its class.
 
-In addition, the `AppendScriptingDefinitions` method has a new signature.  It no longer takes the fileName argument.
+The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)). 
+
+**MSBuild for Unity**
+
+This version of MRTK uses a newer version of MSBuild for Unity than previous releases. During project load, if the older version is listed in the Unity Package Manger
+manifest, the configuration dialog will appear, with the Enable MSBuild for Unity option checked. Applying will perform an upgrade.
+
+**ScriptingUtilities**
+
+The ScriptingUtilities class has been marked as obsolete and has been replaced by ScriptUtilities, in the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly. The new class refines previous behavior and adds support for removing scripting definitions.
+
+While existing code will continue to function in version 2.3.0, it is recommended to update to the new class.
+
+**ShellHandRayPouinter**
+
+The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863)).
+
+Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.
+
+**Spatial observer StarupBehavior**
+
+Spatial observers built upon the `BaseSpatialObserver` class now honor the value of StartupBehavior when re-enabled ([#6919](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919)).
+
+No changes are required to take advantage of this fix.
+
+**UX control prefabs updated to use PressableButton**
+
+The following prefabs are now using the PressableButton component instead of TouchHandler for near interaction ([7070](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7070))
+
+- AnimationButton
+- Button
+- ButtonHoloLens1
+- ButtonHoloLens1Toggle
+- CheckBox
+- RadialSet
+- ToggleButton
+- ToggleSwitch
+- UnityUIButton
+- UnityUICheckboxButton
+- UnityUIRadialButton
+- UnityUIToggleButton
+
+Application code may require updating due to this change.
+
+**WindowsMixedRealityUtilities namespace**
+
+The namespace of WindowsMixedRealityUtilities changed from Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input to Microsoft.MixedReality.Toolkit.WindowsMixedReality ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6989)).
+
+Please update #using statements to resolve compile errors.
 
 ## Updating 2.1.0 to 2.2.0
 
@@ -26,11 +74,11 @@ In addition, the `AppendScriptingDefinitions` method has a new signature.  It no
 
 ### API changes in 2.2.0
 
-#### IMixedRealityBoundarySystem.Contains
+**IMixedRealityBoundarySystem.Contains**
 
 This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.
 
-#### MixedRealityServiceProfileAttribute
+**MixedRealityServiceProfileAttribute**
 
 To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.
 
