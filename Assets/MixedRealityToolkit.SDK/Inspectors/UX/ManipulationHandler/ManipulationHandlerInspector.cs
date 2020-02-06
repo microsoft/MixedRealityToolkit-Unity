@@ -5,6 +5,8 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -174,15 +176,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawDeprecated()
         {
-            System.Collections.Generic.List<System.Type> requiringTypes = new System.Collections.Generic.List<System.Type>();
-            if ((target as ManipulationHandler).gameObject.IsComponentRequired<ManipulationHandler>(requiringTypes))
+            List<Type> requiringTypes;
+
+            if ((target as ManipulationHandler).gameObject.IsComponentRequired<ManipulationHandler>(out requiringTypes))
             {
                 string requiringComponentNames = null;
+
                 for (int i = 0; i < requiringTypes.Count; i++)
                 {
                     requiringComponentNames += "- " + requiringTypes[i].FullName;
                     if (i < requiringTypes.Count - 1)
+                    {
                         requiringComponentNames += '\n';
+                    }
                 }
 
                 EditorGUILayout.HelpBox($"This component is deprecated. Please migrate object to up to date version. Remove the RequiredComponentAttribute from:\n{requiringComponentNames}", MessageType.Error);

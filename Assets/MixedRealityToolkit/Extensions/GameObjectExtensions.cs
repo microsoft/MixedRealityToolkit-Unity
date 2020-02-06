@@ -166,10 +166,10 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="gameObject">the GameObject requiring the component</param>
         /// <param name="requiringTypes">A list of types that do require the component in question</param>
         /// <returns></returns>
-        public static bool IsComponentRequired<T>(this GameObject gameObject, List<Type> requiringTypes) where T : Component
+        public static bool IsComponentRequired<T>(this GameObject gameObject, out List<Type> requiringTypes) where T : Component
         {
             var genericType = typeof(T);
-            bool requiringComponent = false;
+            requiringTypes = null;
 
             foreach (var monoBehaviour in gameObject.GetComponents<MonoBehaviour>())
             {
@@ -180,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 var monoBehaviourType = monoBehaviour.GetType();
                 var attributes = Attribute.GetCustomAttributes(monoBehaviourType);
+
                 foreach (var attribute in attributes)
                 {
                     var requireComponentAttribute = attribute as RequireComponent;
@@ -189,16 +190,18 @@ namespace Microsoft.MixedReality.Toolkit
                             requireComponentAttribute.m_Type1 == genericType ||
                             requireComponentAttribute.m_Type2 == genericType)
                         {
-                            if (requiringTypes != null)
-                                requiringTypes.Add(monoBehaviourType);
+                            if (requiringTypes == null)
+                            {
+                                requiringTypes = new List<Type>();
+                            }
 
-                            requiringComponent = true;
+                            requiringTypes.Add(monoBehaviourType);
                         }
                     }
                 }
             }
 
-            return requiringComponent;
+            return requiringTypes != null;
         }
     }
 }
