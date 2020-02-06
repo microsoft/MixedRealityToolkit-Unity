@@ -158,5 +158,47 @@ namespace Microsoft.MixedReality.Toolkit
         {
             UnityObjectExtensions.DestroyObject(gameObject, t);
         }
+
+        /// <summary>
+        /// Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T
+        /// </summary>
+        /// <typeparam name="T">The potentially required component</typeparam>
+        /// <param name="gameObject">the GameObject requiring the component</param>
+        /// <param name="requiringTypes">A list of types that do require the component in question</param>
+        /// <returns></returns>
+        public static bool IsComponentRequired<T>(this GameObject gameObject, List<Type> requiringTypes) where T : Component
+        {
+            var genericType = typeof(T);
+            bool requiringComponent = false;
+
+            foreach (var monoBehaviour in gameObject.GetComponents<MonoBehaviour>())
+            {
+                if (monoBehaviour == null)
+                {
+                    continue;
+                }
+
+                var monoBehaviourType = monoBehaviour.GetType();
+                var attributes = Attribute.GetCustomAttributes(monoBehaviourType);
+                foreach (var attribute in attributes)
+                {
+                    var requireComponentAttribute = attribute as RequireComponent;
+                    if (requireComponentAttribute != null)
+                    {
+                        if (requireComponentAttribute.m_Type0 == genericType ||
+                            requireComponentAttribute.m_Type1 == genericType ||
+                            requireComponentAttribute.m_Type2 == genericType)
+                        {
+                            if (requiringTypes != null)
+                                requiringTypes.Add(monoBehaviourType);
+
+                            requiringComponent = true;
+                        }
+                    }
+                }
+            }
+
+            return requiringComponent;
+        }
     }
 }
