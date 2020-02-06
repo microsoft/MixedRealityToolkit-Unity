@@ -84,15 +84,14 @@
 
 <h2 id="install-required-packages">Install required packages</h2>
 <ol>
-<li>Download and import the <strong>Microsoft.MixedReality.Toolkit.Providers.UnityAR</strong> package, from <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.2.0">GitHub</a> or <a href="../MRTKNuGetPackage.html">NuGet</a></li>
-</ol>
+<li><p>Download and import the <strong>Microsoft.MixedReality.Toolkit.Providers.UnityAR</strong> package, from <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.2.0">GitHub</a> or <a href="../MRTKNuGetPackage.html">NuGet</a></p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>After you import the the UnityAR package, you will see the following error:
 <em>Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation' (Assets/MixedRealityToolkit.Staging/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef)</em>
 &quot;. To resolve, install the correct version of ARFoundation listed below.</p>
 </div>
-<ol start="2">
+</li>
 <li><p>In the Unity Package Manager (UPM), install the following packages:</p>
 <p><strong>Unity 2018.4.x</strong></p>
 <table>
@@ -172,24 +171,21 @@
 <li><p>Make sure you have added the UnityAR Camera Settings Provider to your scene.</p>
 </li>
 <li><p>Switch platform to either Android or iOS in the Unity Build Settings</p>
-</li>
-</ol>
 <p>When you switch the platform you should see the MRTK Project Configurator Window with settings for your chosen platform.  Click Apply to enable platform specific settings.</p>
 <p>iOS Project Configurator Settings</p>
 <p><img src="../Images/CameraSystem/MRTKProjectConfigurator.png" alt="iOS Project Configurator"></p>
-<ol start="3">
+</li>
 <li><p>There are no additional steps after switching the platform for Android.</p>
 </li>
 <li><p>If the platform is iOS, Edit &gt; Project Settings &gt; Player &gt; Other Settings, under the Optimization header, <strong>uncheck</strong> Strip Engine Code</p>
-</li>
-</ol>
 <p><img src="../Images/CameraSystem/UncheckStripEngineCodeiOS.png" alt="iOS Settings"></p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Unchecking Strip Engine Code is the short term solution to an error in Xcode <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6646">#6646</a>.  We are working on a long term solution for MRTK 2.3.0.</p>
+<p>Unchecking Strip Engine Code is the short term solution to an error in Xcode <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6646">#6646</a>.  We are working on a long term solution.</p>
 </div>
-<ol start="5">
-<li>Build and run the scene</li>
+</li>
+<li><p>Build and run the scene</p>
+</li>
 </ol>
 <h2 id="see-also">See also</h2>
 <ul>
