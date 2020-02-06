@@ -106,12 +106,45 @@ A hand physics extension service has been added to allow for using physics inter
 
 ![Hand physics](https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif)
 
+**Non-native keyboard (Experimental)**
+
+A keyboard that can be used on platforms which do not provide native keyboard support.
+([#6492](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573))
+
+<img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
+
+**Hand coach (Experimental)**
+
+Hand animations that can give helpful hints for gestures users should perform.
+([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
+
+**Follow solver (Experimental)**
+A solver that matches HoloLens 2 shell behavior. ([#6981](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
+
 **Pinch Slider orientation**
 
 The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation ([#6858](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858))
 
-![Y axis slier](https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG)
-![X axis slider](https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG)
+<img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" width="150">
+<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG?s=25" width="150">
+
+**ObjectManipulator and BoundsControl (Experimental)**
+
+ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. They also include a few new behavior changes:
+
+ObjectManipulator correctly responds to physics.
+
+<img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
+
+Improved ability to configure constraints for object manipulation.
+
+<img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
+
+We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
 ### Known issues in 2.3.0
 
