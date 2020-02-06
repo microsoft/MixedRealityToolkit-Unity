@@ -12,6 +12,8 @@
 - [What's new](#whats-new-in-230)
 - [Known issues](#known-issues-in-230)
 
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
 - Microsoft HoloLens 2
 - Microsoft HoloLens (1st gen)
 - Windows Mixed Reality Immersive headsets
