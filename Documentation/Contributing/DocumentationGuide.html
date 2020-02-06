@@ -83,9 +83,8 @@
 
 <img src="../Images/MRTK_Logo_Rev.png">
 <h1 id="documentation-guidelines">Documentation guidelines</h1>
-<p>This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). Its purpose is to get you started quickly by giving an introduction about the technical aspects that you need to know, to point out common pitfalls and to describe the writing style that you should try to follow.</p>
+<p>This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). This provides an introduction to technical aspects of documentation writing and generation, to highlight common pitfalls, and to describe the recommended writing style.</p>
 <p>The page itself is supposed to serve as an example, therefore it uses the intended style and the most common markup features of the documentation.</p>
-<p>Herein you will find some general style advice as well as the standards for the following forms of the MRTK documentation:</p>
 <ul>
 <li><a href="#source-documentation">Source</a></li>
 <li><a href="#how-to-documentation">How-to</a></li>
@@ -159,15 +158,18 @@ TODO.</li>
 <p>Most pages should end with a chapter called <em>See also</em>. This chapter is simply a bullet pointed list of links to pages related to this topic. These links may also appear within the page text where appropriate, but this is not required. Similarly, the page text may contain links to pages that are not related to the main topic, these should not be included in the <em>See also</em> list. See <a href="#see-also">this page's ''See also'' chapter</a> as an example for the choice of links.</p>
 <h2 id="table-of-contents-toc">Table of Contents (TOC)</h2>
 <p>Toc files are used for generating the navigation bars in the MRTK github.io documentation.
-Whenever you're adding a new file to the documentation make sure that there's an entry for that file in one of the toc.yml files of the documentation folder. Only articles listed in the toc files will show up in the navigation of the developer docs.
-There can be a toc file for every subfolder in the documentation folder which can be linked into any existing toc file to add it as a subsection to the corresponding part of the navigation.</p>
+Whenever a new documentation file is added, make sure that there's an entry for that file in one
+of the toc.yml files of the documentation folder. Only articles listed in the toc files will show
+up in the navigation of the developer docs. There can be a toc file for every subfolder in the
+documentation folder which can be linked into any existing toc file to add it as a subsection
+to the corresponding part of the navigation.</p>
 <h2 id="style">Style</h2>
 <h3 id="writing-style">Writing style</h3>
 <p>General rule of thumb: Try to <strong>sound professional</strong>. That usually means to avoid a 'conversational tone'. Also try to avoid hyperbole and sensationalism.</p>
 <ol>
 <li>Don't try to be (overly) funny.</li>
 <li>Never write 'I'</li>
-<li>Avoid 'we'. This can usually be rephrased easily, sometimes you can use 'MRTK' instead. Example: &quot;we support this feature&quot; -&gt; &quot;MRTK supports this feature&quot; or &quot;the following features are supported ...&quot;.</li>
+<li>Avoid 'we'. This can usually be rephrased easily, using 'MRTK' instead. Example: &quot;we support this feature&quot; -&gt; &quot;MRTK supports this feature&quot; or &quot;the following features are supported ...&quot;.</li>
 <li>Similarly, try to avoid 'you'. Example: &quot;With this simple change your shader becomes configurable!&quot; -&gt; &quot;Shaders can be made configurable with little effort.&quot;</li>
 <li>Do not use 'sloppy phrases'.</li>
 <li>Avoid sounding overly excited, we do not need to sell anything.</li>
@@ -176,7 +178,7 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <h3 id="capitalization">Capitalization</h3>
 <ul>
 <li>Use <strong>Sentence case for headlines</strong>. Ie. capitalize the first letter and names, but nothing else.</li>
-<li>Use regular English for everything else. That means <strong>do not capitalize arbitrary words</strong>, even if they hold a special meaning in that context. Prefer <em>italic text</em>, if you really want to highlight certain words, <a href="#emphasis-and-highlighting">see below</a>.</li>
+<li>Use regular English for everything else. That means <strong>do not capitalize arbitrary words</strong>, even if they hold a special meaning in that context. Prefer <em>italic text</em> for highlighting certain words, <a href="#emphasis-and-highlighting">see below</a>.</li>
 <li>When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the <a href="../README_BoundingBox.html">bounding box</a> documentation.</li>
 <li>Do capitalize names, such as <em>Unity</em>.</li>
 <li>Do NOT capitalize &quot;editor&quot; when writing <em>Unity editor</em>.</li>
@@ -190,22 +192,22 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>When mentioning a menu entry that a user should click, the current convention is:
 <em>Project &gt; Files &gt; Create &gt; Leaf</em></p>
 <h3 id="links">Links</h3>
-<p>Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in your page, and think about how annoying it would be, if the same page opens 20 times.</p>
+<p>Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in the page, and think about how annoying it would be, if the same page opens 20 times.</p>
 <p>Prefer links embedded in a sentence:</p>
 <ul>
 <li>BAD: Guidelines are useful. See <a href="DocumentationGuide.html">this chapter</a> for details.</li>
 <li>GOOD: <a href="DocumentationGuide.html">Guidelines</a> are useful.</li>
 </ul>
 <p>Avoid external links, they can become outdated or contain copyrighted content.</p>
-<p>When you add a link, consider whether it should also be listed in the <a href="#see-also">See also</a> section. Similarly, check whether a link to your new page should be added to the linked-to page.</p>
+<p>When adding a link, consider whether it should also be listed in the <a href="#see-also">See also</a> section. Similarly, check whether a link to the new page should be added to the linked-to page.</p>
 <h3 id="images--screenshots">Images / screenshots</h3>
 <p><strong>Use screenshots sparingly.</strong> Maintaining images in documentation is a lot of work, small UI changes can make a lot of screenshots outdated. The following rules will reduce maintenance effort:</p>
 <ol>
 <li>Do not use screenshots for things that can be described in text. Especially, <strong>never screenshot a property grid</strong> for the sole purpose of showing property names and values.</li>
-<li>Do not include things in a screenshot that are irrelevant to what is shown. For instance, when a rendering effect is shown, make a screenshot of the viewport, but exclude any UI around it. When you have to show some UI, try to move windows around such that only that important part is in the image.</li>
-<li>When you do screenshot UI, only show the important parts. For example, when talking about buttons in a toolbar, you can make a small image that shows the important toolbar buttons, but exclude everything around it.</li>
+<li>Do not include things in a screenshot that are irrelevant to what is shown. For instance, when a rendering effect is shown, make a screenshot of the viewport, but exclude any UI around it. Showing some UI, try to move windows around such that only that important part is in the image.</li>
+<li>When including screenshot UI, only show the important parts. For example, when talking about buttons in a toolbar, make a small image that shows the important toolbar buttons, but exclude everything around it.</li>
 <li>Only use images that are easy to reproduce. That means do not paint markers or highlights into screenshots. First, there are no consistent rules how these should look, anyway. Second, reproducing such a screenshot is additional effort. Instead, describe the important parts in text. There are exceptions to this rule, but they are rare.</li>
-<li>Obviously, it is much more effort to recreate an animated GIF. If you make one, expect to be responsible to recreate it for the rest of your life, or expect people to throw it out, if they don't want to spend that time.</li>
+<li>Obviously, it is much more effort to recreate an animated GIF. Expect to be responsible to recreate it until the end of time, or expect people to throw it out, if they don't want to spend that time.</li>
 <li>Keep the number of images in an article low. Often a good method is to make one overall screenshot of some tool, that shows everything, and then describe the rest in text. This makes it easy to replace the screenshot when necessary.</li>
 </ol>
 <p>Some other aspects:</p>
@@ -217,12 +219,12 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <h3 id="list-of-component-properties">List of component properties</h3>
 <p>When documenting a list of properties, use bold text to highlight the property name, then line breaks and regular text to describe them. Do not use sub-chapters or bullet point lists.</p>
 <p>Also, don't forget to finish all sentences with a period.</p>
-<h2 id="when-you-are-finished-with-a-page">When you are finished with a page</h2>
+<h2 id="page-completion-checklist">Page completion checklist</h2>
 <ol>
-<li>Make sure you followed the guidelines in this document.</li>
-<li>Browse the document structure and see if your new document could be mentioned under the <a href="#see-also">See also</a> section of other pages.</li>
+<li>Ensure that this document's guidelines were followed.</li>
+<li>Browse the document structure and see if the new document could be mentioned under the <a href="#see-also">See also</a> section of other pages.</li>
 <li>If available, have someone with knowledge of the topic proof-read the page for technical correctness.</li>
-<li>Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.</li>
+<li>Have someone proof-read the page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.</li>
 </ol>
 <h2 id="source-documentation">Source documentation</h2>
 <p>API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following:</p>
@@ -305,7 +307,7 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>Some important features come at a performance cost. Often this code will very depending how they are configured.</p>
 <p>For example:</p>
 <pre><code class="lang-md">When using the spatial mapping component, the performance impact will increase with the level of detail requested.  
-It is recommended to use the least detail possible for your experience.
+It is recommended to use the least detail possible for the desired experience.
 </code></pre>
 <p>Performance notes are recommended for CPU and/or GPU heavy components and <strong>may</strong> be requested as part of a pull request review. Any applicable performance notes are to be included in API <strong>and</strong> overview documentation.</p>
 <h2 id="breaking-changes">Breaking changes</h2>
