@@ -14,7 +14,6 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
 
 Releases are centered around themes (ex: large feature areas) and are scheduled to occur approximately every 8 weeks.
 
-
 Release details, including backlog items, can be found on the [GitHub milestone pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/milestones). The complete set of open issues can also be found on [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
 ## Mixed Reality Toolkit (MRTK) roadmap
@@ -51,7 +50,7 @@ Quality and stability are the top priority for this and all Microsoft Mixed Real
 **User Experience**
 
 - Bug fixes
-- Hololens Shell parity
+- HoloLens Shell parity
 - Graduating experimental features
 - Tests to ensure features do not regress
 

@@ -124,7 +124,7 @@ The following issues are known when using the new XR platform and version **2.0.
 
 It is recommended to periodically check **Window** > **Package Manager** for newer versions of the Windows XR plugin.
 
-**Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platfom**
+**Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platform**
 
 This release of MRTK does not contain an implementation for Windows Mixed Reality gestures using the new XR platform. It will be added in a future version of MRTK.
 
@@ -178,8 +178,8 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Windows Mixed Reality Immersive headsets
 - OpenVR
 - (Experimental) Mobile AR
-    - Android
-    - iOS
+  - Android
+  - iOS
 
 The following software is required.
 
