@@ -20,7 +20,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | [UnityAR](CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
 | | WindowsVoiceInput | Support for speech and dictation on Microsoft Windows platforms. |
-| | XRSDK | Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3. |
+| | XRSDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3. |
 | MixedRealityToolkit.SDK | | |
 | | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
 | | Features | Functionality that builds upon the Foundation package. |
