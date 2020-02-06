@@ -116,7 +116,7 @@ A keyboard that can be used on platforms which do not provide native keyboard su
 **Hand coach (Experimental)**
 
 Hand animations that can give helpful hints for gestures users should perform.
-A ([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
 
 <img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
 
