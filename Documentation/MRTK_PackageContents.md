@@ -20,6 +20,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | [UnityAR](CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
 | | WindowsVoiceInput | Support for speech and dictation on Microsoft Windows platforms. |
+| | XRSDK | Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3. |
 | MixedRealityToolkit.SDK | | |
 | | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
 | | Features | Functionality that builds upon the Foundation package. |
@@ -40,7 +41,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 
 The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes additional services that extend the functionality of the Microsoft Mixed Reality Toolkit.
 
-> [!Note]
+> [!NOTE]
 > The extensions package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
@@ -55,7 +56,7 @@ The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes add
 The optional Microsoft.MixedRealityToolkit.Unity.Tools package includes helpful tools that enhance the mixed reality development experience using the Microsoft Mixed Reality Toolkit.
 These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the Unity Editor.
 
-> [!Note]
+> [!NOTE]
 > The tools package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
@@ -73,7 +74,7 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 
 The optional Microsoft.MixedRealityToolkit.Unity.Examples package includes demonstration projects that illustrate the features of the Microsoft Mixed Reality Toolkit.
 
-> [!Note]
+> [!NOTE]
 > The examples package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
