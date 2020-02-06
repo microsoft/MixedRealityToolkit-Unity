@@ -82,5 +82,3 @@ ship as part of an application.
 
 - [Architecture Overview](../Architecture/Overview.md)
 - [Systems, Extension Services and Data Providers](../Architecture/SystemsExtensionsProviders.md)
-
-
