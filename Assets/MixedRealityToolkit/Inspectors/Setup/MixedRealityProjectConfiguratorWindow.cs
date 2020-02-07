@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityProjectConfigurator.Configurations;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
