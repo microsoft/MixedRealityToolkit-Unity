@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The potentially required component</typeparam>
         /// <param name="gameObject">the GameObject requiring the component</param>
         /// <param name="requiringTypes">A list of types that do require the component in question</param>
-        /// <returns></returns>
+        /// <returns>true if <typeparamref name="T"/> appears in any RequireComponentAttribute, otherwise false </returns>
         public static bool IsComponentRequired<T>(this GameObject gameObject, out List<Type> requiringTypes) where T : Component
         {
             var genericType = typeof(T);
