@@ -11,12 +11,12 @@ namespace Microsoft.MixedReality.Toolkit
     public interface IMixedRealityEventSource : IEqualityComparer
     {
         /// <summary>
-        /// The Unique Source Id of this Event Source.
+        /// The unique source id of this event source.
         /// </summary>
         uint SourceId { get; }
 
         /// <summary>
-        /// The Name of this Event Source.
+        /// The name of this event source.
         /// </summary>
         string SourceName { get; }
     }

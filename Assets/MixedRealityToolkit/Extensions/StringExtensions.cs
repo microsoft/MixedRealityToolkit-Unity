@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.IO;
 using System.Text;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -77,5 +78,11 @@ namespace Microsoft.MixedReality.Toolkit
 
             return result;
         }
+
+        /// <summary>
+        /// Ensures directory separator chars in provided string are platform independent. Given path might use \ or / but not all platforms support both.
+        /// </summary>
+        public static string NormalizeSeparators(this string path)
+            => path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
     }
 }

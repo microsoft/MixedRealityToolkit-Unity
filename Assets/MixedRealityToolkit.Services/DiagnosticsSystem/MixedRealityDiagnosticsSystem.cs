@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
+
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
 {
@@ -264,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public int GetHashCode(object obj) => SourceName.GetHashCode();
 
-        private void RaiseDiagnosticsChanged()
+        internal void RaiseDiagnosticsChanged()
         {
             eventData.Initialize(this);
             HandleEvent(eventData, OnDiagnosticsChanged);

@@ -7,16 +7,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     public partial class SpatialAwarenessPlanarObject : BaseSpatialAwarenessObject
     {
-        // todo
-        public BoxCollider Collider { get; set;  }
+        /// <summary>
+        /// The BoxCollider associated with this plane's GameObject.
+        /// </summary>
+        public BoxCollider Collider { get; set; }
 
         /// <summary>
-        /// constructor
+        /// Constructor.
         /// </summary>
-        public SpatialAwarenessPlanarObject()
-        {
-            //empty for now
-        }
+        public SpatialAwarenessPlanarObject() : base() { }
 
         /// <summary>
         /// Creates a <see cref="SpatialAwarenessPlanarObject"/>.

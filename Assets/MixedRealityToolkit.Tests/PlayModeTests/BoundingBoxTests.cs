@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
+        private readonly Vector3 boundingBoxStartCenter = Vector3.forward * 1.5f;
+        private readonly Vector3 boundingBoxStartScale = Vector3.one * 0.5f;
+
         /// <summary>
         /// Instantiates a bounding box at 0, 0, -1.5f
         /// box is at scale .5, .5, .5
@@ -44,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private BoundingBox InstantiateSceneAndDefaultBbox()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.forward * 1.5f;
+            cube.transform.position = boundingBoxStartCenter;
             BoundingBox bbox = cube.AddComponent<BoundingBox>();
 
             MixedRealityPlayspace.PerformTransformation(
@@ -54,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(cube.transform.position);
             });
 
-            bbox.transform.localScale *= 0.5f;
+            bbox.transform.localScale = boundingBoxStartScale;
             bbox.Active = true;
 
             return bbox;
@@ -152,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float maxScale = 2f;
 
             var bbox = InstantiateSceneAndDefaultBbox();
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             yield return null;
@@ -295,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float maxScale = 2f;
 
             var bbox = InstantiateSceneAndDefaultBbox();
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             yield return null;
@@ -325,6 +328,61 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.gameObject.SetActive(true);
             yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
             Assert.AreEqual(afterTransformScale, bbox.transform.localScale);
+        }
+
+
+        /// <summary>
+        /// Tests setting a target in code that is a different gameobject than the gameobject the boundingbox component is attached to
+        /// </summary>
+        [UnityTest]
+        public IEnumerator SetTarget()
+        {
+            // create cube without control
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = boundingBoxStartCenter;
+
+            MixedRealityPlayspace.PerformTransformation(
+            p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(cube.transform.position);
+            });
+
+            cube.transform.localScale = boundingBoxStartScale;
+
+            // create another gameobject with boundscontrol attached 
+            var emptyGameObject = new GameObject("empty");
+            BoundingBox bbox = emptyGameObject.AddComponent<BoundingBox>();
+
+            // set target to cube
+            bbox.Target = cube;
+            bbox.Active = true;
+
+            // front right corner is corner 3
+            var frontRightCornerPos = cube.transform.Find("rigRoot/corner_3").position;
+
+            // grab corner and scale object
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            int numSteps = 30;
+            var delta = new Vector3(0.1f, 0.1f, 0f);
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return hand.MoveTo(frontRightCornerPos + delta, numSteps);
+
+            var endBounds = cube.GetComponent<BoxCollider>().bounds;
+            Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
+            Vector3 expectedSize = Vector3.one * .567f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+
+            Object.Destroy(emptyGameObject);
+            Object.Destroy(cube);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
         }
 
         /// <summary>

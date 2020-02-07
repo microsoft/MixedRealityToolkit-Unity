@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 return;
             }
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             controllerRenderList.Clear();
 
-            showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions");
+            showControllerDefinitions = EditorGUILayout.Foldout(showControllerDefinitions, "Controller Definitions", true);
             if (showControllerDefinitions)
             {
                 using (var outerVerticalScope = new GUILayout.VerticalScope())

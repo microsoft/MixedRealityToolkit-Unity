@@ -61,9 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             if (mouseDeviceManager == null)
             {
-                // Get the instance of the mouse device manager.
-                IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-                mouseDeviceManager = dataProviderAccess?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                mouseDeviceManager = CoreServices.GetInputSystemDataProvider<IMixedRealityMouseDeviceManager>();
             }
 
             // Bail early if our mouse isn't in our game window.
@@ -92,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                     {
                         // Spatial pointer raises Pose events
-                        MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                        controllerPose = MixedRealityPose.ZeroIdentity;
                         controllerPose.Rotation = Quaternion.Euler(mouseDelta);
                         Interactions[i].PoseData = controllerPose;
 

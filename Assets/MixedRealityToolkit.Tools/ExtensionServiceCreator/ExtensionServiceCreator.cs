@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -255,7 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region static
 
-        private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
+        private static readonly string DefaultGeneratedFolderName = "MixedRealityToolkit.Generated";
+        private static readonly string DefaultExtensionsFolderName = "Extensions";
         private static readonly string DefaultExtensionNamespace = "Microsoft.MixedReality.Toolkit.Extensions";
         private static readonly string PersistentStateKey = "MRTK_ExtensionServiceWizard_State_Before_Recompilation";
         private static readonly string ScriptExtension = ".cs";
@@ -273,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region paths
 
-        private string ExtensionsFolder => MixedRealityToolkitFiles.MapModulePath(MixedRealityToolkitModuleType.Extensions);
+        private string ExtensionsFolder => Path.Combine("Assets", DefaultGeneratedFolderName, DefaultExtensionsFolderName);
         private string ServiceTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt");
         private string InspectorTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt");
         private string InterfaceTemplatePath => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt");
@@ -413,7 +415,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (!AssetDatabase.IsValidFolder(ExtensionsFolder))
             {
-                AssetDatabase.CreateFolder("Assets", DefaultExtensionsFolderName);
+                var generatedFolder = Path.Combine("Assets", DefaultGeneratedFolderName);
+                if (!AssetDatabase.IsValidFolder(generatedFolder))
+                {
+                    AssetDatabase.CreateFolder("Assets", DefaultGeneratedFolderName);
+                }
+                
+                AssetDatabase.CreateFolder(generatedFolder, DefaultExtensionsFolderName);
                 AssetDatabase.Refresh();
             }
 

@@ -1,4 +1,4 @@
-# Input System
+# Input system
 
 The input system is one of the largest systems out of all features offered by the MRTK.
 So many things within the toolkit build on top of it (pointers, focus, prefabs). The code within the input
@@ -31,7 +31,7 @@ The input system has some of its own terminology that are worth defining:
     longer than arms-length from the user.
 
     Pointers are created by the device manager and then attached to an input source. To get all of the
-    pointers for a controller, do: ```controller.InputSource.Pointers```
+    pointers for a controller, do: `controller.InputSource.Pointers`
 
     Note that a controller can be associated with many different pointers at the same time. In order
     to ensure that this doesn’t devolve into chaos, there is a pointer mediator which controls which

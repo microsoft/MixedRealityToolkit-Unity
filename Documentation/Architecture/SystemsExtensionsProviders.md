@@ -1,4 +1,4 @@
-# Systems, Extension Services and Data Providers
+# Systems, extension services and data providers
 
 In the Mixed Reality Toolkit, many of the features are delivered in the form of services. Services are grouped into three
 primary categories: systems, extension services and data providers.
@@ -9,7 +9,7 @@ Systems are services that provide the core functionality of the Mixed Reality To
 [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface.
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
-- CameraSystem
+- [CameraSystem](../CameraSystem/CameraSystemOverview.md)
 - [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md)
 - [InputSystem](../Input/Overview.md)
 - [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md)
@@ -30,20 +30,24 @@ component's configuration profile.
 
 ![Configuring an extension service](../Images/Profiles/ConfiguredExtensionService.png)
 
-## Data Providers
+## Data providers
 
 Data providers are components that, per their name, provide data to a Mixed Reality Toolkit service. All data providers must specify that
 they implement the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) interface.
 
-> [!Note]
+> [!NOTE]
 > Not all services will require data providers. Of the MixedRealityToolkit's systems, the Input and Spatial Awareness systems are the
 only services to utilize data providers.
 
 To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile.
 
-Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) interface.
+Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) interface. To simplify access, data providers can also be retrieved via the `CoreServices` helper class.
 
-> [!Important]
+```c#
+var inputSimulationService = CoreServices.GetDataProvider<IInputSimulationService>(CoreServices.InputSystem);
+```
+
+> [!IMPORTANT]
 > Although `IMixedRealityDataProvider` inherits from `IMixedRealityService`, data providers are not
 registered with the `MixedRealityServiceRegistry`. To access data providers, application code must
 query the service instance for which they were registered (ex: input system).
@@ -56,31 +60,38 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.
 
-``` c#
-if (CoreServices.InputSystem != null)
+```c#
+IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+
+if (dataProviderAccess != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+    IInputSimulationService inputSimulation =
+        dataProviderAccess.GetDataProvider<IInputSimulationService>();
 
-    if (dataProviderAccess != null)
+    if (inputSimulation != null)
     {
-        IInputSimulationService inputSimulation =
-            dataProviderAccess.GetDataProvider<IInputSimulationService>();
-
-        if (inputSimulation != null)
-        {
-            inputSimulation.SmoothEyeTracking = !inputSimulation.SmoothEyeTracking;
-        }
+        inputSimulation.SmoothEyeTracking = !inputSimulation.SmoothEyeTracking;
     }
 }
 ```
 
-> [!Note]
+Accessing a data provider for the core input system can also be simplified via use of the `CoreServices` helper class.
+
+```c#
+var inputSimulationService = CoreServices.GetInputSystemDataProvider<IInputSimulationService>();
+if (inputSimulationService != null)
+{
+    // do something here
+}
+```
+
+> [!NOTE]
 > The input system returns only data providers that are supported for the platform on which the
 application is running.
 
 For information on writing a data provider for the MRTK input system, please see [creating an input system data provider](../Input/CreateDataProvider.md).
 
-### Spatial Awareness
+### Spatial awareness
 
 The MRTK spatial awareness system utilizes only data providers that implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver) interface.
 
@@ -88,32 +99,39 @@ The MRTK spatial awareness system utilizes only data providers that implement th
 
 The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 
-``` c#
-if (CoreServices.SpatialAwarenessSystem != null)
+```c#
+IMixedRealityDataProviderAccess dataProviderAccess =
+    CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+
+if (dataProviderAccess != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess =
-        CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+    IReadOnlyList<IMixedRealitySpatialAwarenessMeshObserver> observers =
+        dataProviderAccess.GetDataProviders<IMixedRealitySpatialAwarenessMeshObserver>();
 
-    if (dataProviderAccess != null)
+    foreach (IMixedRealitySpatialAwarenessMeshObserver observer in observers)
     {
-        IReadOnlyList<IMixedRealitySpatialAwarenessMeshObserver> observers =
-            dataProviderAccess.GetDataProviders<IMixedRealitySpatialAwarenessMeshObserver>();
-
-        foreach (IMixedRealitySpatialAwarenessMeshObserver observer in observers)
-        {
-            // Set the mesh to use the occlusion material
-            observer.DisplayOption = SpatialMeshDisplayOptions.Occlusion;
-        }
+        // Set the mesh to use the occlusion material
+        observer.DisplayOption = SpatialMeshDisplayOptions.Occlusion;
     }
 }
 ```
 
-> [!Note]
+Accessing a data provider for the core spatial awareness system can also be simplified via use of the `CoreServices` helper class.
+
+```c#
+var dataProvider = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySpatialAwarenessMeshObserver>();
+if (dataProvider != null)
+{
+    // do something here
+}
+```
+
+> [!NOTE]
 > The spatial awareness system returns only data providers that are supported for the platform on which the application is running.
 
 For information on writing a data provider for the MRTK spatial awareness system, please see [creating a spatial awareness system data provider](../SpatialAwareness/CreateDataProvider.md).
 
-## See Also
+## See also
 
 - [What makes a mixed reality feature](../MixedRealityServices.md)
 - [Extension services](../Extensions/ExtensionServices.md)

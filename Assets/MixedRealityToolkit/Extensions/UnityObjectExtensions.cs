@@ -36,8 +36,27 @@ namespace Microsoft.MixedReality.Toolkit
             }
             else
             {
+            #if UNITY_EDITOR
+                // Must use DestroyImmediate in edit mode but it is not allowed when called from 
+                // trigger/contact, animation event callbacks or OnValidate. Must use Destroy instead.
+                // Delay call to counter this issue in editor
+                UnityEditor.EditorApplication.delayCall += () =>
+                {
+                    Object.DestroyImmediate(obj);
+                };
+            #else
                 Object.DestroyImmediate(obj);
+            #endif
             }
+        }
+
+        /// <summary>
+        /// Tests if the Unity object is null. Checks both the managed object and the underly Unity-managed native object
+        /// </summary>
+        /// <returns>True if either the managed or native object is null, false otherwise</returns>
+        public static bool IsNull(Object obj)
+        {
+            return obj == null || obj.Equals(null);
         }
     }
 }

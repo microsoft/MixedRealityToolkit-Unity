@@ -2,25 +2,23 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine;
 using UnityEditor;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
+    /// <summary>
+    /// Class handles rendering inspector view of MixedRealityInputSystemProfile object
+    /// </summary>
     [CustomEditor(typeof(MixedRealityInputSystemProfile))]
-    public class MixedRealityInputSystemProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    public class MixedRealityInputSystemProfileInspector : BaseDataProviderServiceInspector
     {
+        private const string DataProviderErrorMsg = "The Mixed Reality Input System requires one or more data providers.";
         private static readonly GUIContent AddProviderContent = new GUIContent("+ Add Data Provider", "Add Data Provider");
         private static readonly GUIContent RemoveProviderContent = new GUIContent("-", "Remove Data Provider");
 
-        private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
-        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
-
         private static bool showDataProviders = false;
         private const string ShowInputSystem_DataProviders_PreferenceKey = "ShowInputSystem_DataProviders_PreferenceKey";
-        private SerializedProperty dataProviderConfigurations;
 
         private SerializedProperty focusProviderType;
         private SerializedProperty focusQueryBufferSize;
@@ -54,15 +52,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private const string ShowInputSystem_HandTracking_PreferenceKey = "ShowInputSystem_HandTracking_PreferenceKey";
         private SerializedProperty handTrackingProfile;
 
-        private static bool[] providerFoldouts;
         private const string ProfileTitle = "Input System Settings";
         private const string ProfileDescription = "The Input System Profile helps developers configure input for cross-platform applications.";
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();
 
-            dataProviderConfigurations = serializedObject.FindProperty("dataProviderConfigurations");
             focusProviderType = serializedObject.FindProperty("focusProviderType");
             focusQueryBufferSize = serializedObject.FindProperty("focusQueryBufferSize");
             raycastProviderType = serializedObject.FindProperty("raycastProviderType");
@@ -76,22 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
             handTrackingProfile = serializedObject.FindProperty("handTrackingProfile");
-
-            if (providerFoldouts == null || providerFoldouts.Length != dataProviderConfigurations.arraySize)
-            {
-                providerFoldouts = new bool[dataProviderConfigurations.arraySize];
-            }
         }
 
+        /// <inheritdoc/>
         public override void OnInspectorGUI()
         {
-            if (!RenderProfileHeader(ProfileTitle, string.Empty, target))
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
             {
                 return;
             }
 
             bool changed = false;
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
@@ -114,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
-                        RenderList(dataProviderConfigurations);
+                        changed |= RenderDataProviderList(AddProviderContent, RemoveProviderContent, DataProviderErrorMsg);
                     }
                 }, ShowInputSystem_DataProviders_PreferenceKey);
 
@@ -186,6 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
         }
 
+        /// <inheritdoc/>
         protected override bool IsProfileInActiveInstance()
         {
             var profile = target as BaseMixedRealityProfile;
@@ -194,127 +188,43 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile;
         }
 
-        private void RenderList(SerializedProperty list)
+        #region DataProvider Inspector Utilities
+
+        /// <inheritdoc/>
+        protected override SerializedProperty GetDataProviderConfigurationList()
         {
-            EditorGUILayout.Space();
-
-            bool changed = false;
-
-            using (new EditorGUILayout.VerticalScope())
-            {
-                if (GUILayout.Button(AddProviderContent, EditorStyles.miniButton))
-                {
-                    list.InsertArrayElementAtIndex(list.arraySize);
-                    SerializedProperty dataProvider = list.GetArrayElementAtIndex(list.arraySize - 1);
-
-                    SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
-                    providerName.stringValue = $"New data provider {list.arraySize - 1}";
-
-                    SerializedProperty configurationProfile = dataProvider.FindPropertyRelative("deviceManagerProfile");
-                    configurationProfile.objectReferenceValue = null;
-
-                    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
-                    runtimePlatform.intValue = -1;
-
-                    serializedObject.ApplyModifiedProperties();
-
-                    SystemType providerType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[list.arraySize - 1].ComponentType;
-                    providerType.Type = null;
-
-                    providerFoldouts = new bool[list.arraySize];
-
-                    return;
-                }
-
-                EditorGUILayout.Space();
-
-                if (list == null || list.arraySize == 0)
-                {
-                    EditorGUILayout.HelpBox("The Mixed Reality Input System requires one or more data providers.", MessageType.Warning);
-                    return;
-                }
-
-                for (int i = 0; i < list.arraySize; i++)
-                {
-                    SerializedProperty dataProvider = list.GetArrayElementAtIndex(i);
-                    SerializedProperty providerName = dataProvider.FindPropertyRelative("componentName");
-                    SerializedProperty providerType = dataProvider.FindPropertyRelative("componentType");
-                    SerializedProperty configurationProfile = dataProvider.FindPropertyRelative("deviceManagerProfile");
-                    SerializedProperty runtimePlatform = dataProvider.FindPropertyRelative("runtimePlatform");
-
-                    using (new EditorGUILayout.VerticalScope())
-                    {
-                        using (new EditorGUILayout.HorizontalScope())
-                        {
-                            providerFoldouts[i] = EditorGUILayout.Foldout(providerFoldouts[i], providerName.stringValue, true);
-
-                            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                            {
-                                list.DeleteArrayElementAtIndex(i);
-                                serializedObject.ApplyModifiedProperties();
-                                changed = true;
-                                break;
-                            }
-                        }
-
-                        if (providerFoldouts[i])
-                        {
-                            using (new EditorGUI.IndentLevelScope())
-                            {
-                                EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(providerType, ComponentTypeContent);
-                                if (EditorGUI.EndChangeCheck())
-                                {
-                                    serializedObject.ApplyModifiedProperties();
-                                    System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
-                                    ApplyDataProviderConfiguration(type, providerName, configurationProfile, runtimePlatform);
-                                    changed = true;
-                                    break;
-                                }
-
-                                EditorGUI.BeginChangeCheck();
-                                EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
-                                changed |= EditorGUI.EndChangeCheck();
-
-                                System.Type serviceType = (target as MixedRealityInputSystemProfile).DataProviderConfigurations[i].ComponentType;
-
-                                changed |= RenderProfile(configurationProfile, null, true, false, serviceType);
-                            }
-
-                            serializedObject.ApplyModifiedProperties();
-                        }
-                    }
-                }
-            }
-
-            if (changed && MixedRealityToolkit.IsInitialized)
-            {
-                EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-            }
+            return serializedObject.FindProperty("dataProviderConfigurations");
         }
 
-        private void ApplyDataProviderConfiguration(
-            System.Type type,
-            SerializedProperty providerName,
-            SerializedProperty configurationProfile,
-            SerializedProperty runtimePlatform)
+        /// <inheritdoc/>
+        protected override ServiceConfigurationProperties GetDataProviderConfigurationProperties(SerializedProperty providerEntry)
         {
-            if (type != null)
+            return new ServiceConfigurationProperties()
             {
-                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
-                if (providerAttribute != null)
-                {
-                    providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : type.Name;
-                    configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
-                }
-                else
-                {
-                    providerName.stringValue = type.Name;
-                }
-
-                serializedObject.ApplyModifiedProperties();
-            }
+                componentName = providerEntry.FindPropertyRelative("componentName"),
+                componentType = providerEntry.FindPropertyRelative("componentType"),
+                providerProfile = providerEntry.FindPropertyRelative("deviceManagerProfile"),
+                runtimePlatform = providerEntry.FindPropertyRelative("runtimePlatform"),
+            };
         }
+
+        /// <inheritdoc/>
+        protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
+        {
+            MixedRealityInputSystemProfile targetProfile = target as MixedRealityInputSystemProfile;
+            if (targetProfile != null)
+            {
+                var configurations = targetProfile.DataProviderConfigurations;
+                if (configurations != null && index >= 0 && index < configurations.Length)
+                {
+                    return configurations[index];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
     }
 }

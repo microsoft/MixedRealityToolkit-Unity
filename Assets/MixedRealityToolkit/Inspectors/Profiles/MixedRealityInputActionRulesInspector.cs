@@ -107,13 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             CheckMixedRealityInputActions();
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
                 selectedBaseActionId = RenderBaseInputAction(selectedBaseActionId, out currentBaseAction);
 
-                using (new GUIEnabledWrapper(currentBaseAction != MixedRealityInputAction.None, false))
+                using (new EditorGUI.DisabledGroupScope(currentBaseAction == MixedRealityInputAction.None))
                 {
                     RenderCriteriaField(currentBaseAction);
 
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                           currentBaseAction.AxisConstraint != AxisType.None &&
                           currentBaseAction.AxisConstraint != AxisType.Raw;
 
-                using (new GUIEnabledWrapper(addButtonEnable, false))
+                using (new EditorGUI.DisabledGroupScope(!addButtonEnable))
                 {
                     if (InspectorUIUtility.RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
                     {
@@ -434,7 +434,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private int RenderBaseInputAction(int baseActionId, out MixedRealityInputAction action, bool isLocked = false)
         {
-            using (new GUIEnabledWrapper(isInitialized, false))
+            using (new EditorGUI.DisabledGroupScope(!isInitialized))
             {
                 action = MixedRealityInputAction.None;
                 EditorGUILayout.BeginHorizontal();

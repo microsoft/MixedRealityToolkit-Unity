@@ -102,6 +102,41 @@ namespace Microsoft.MixedReality.Toolkit
             return false;
         }
 
+        /// <summary>
+        /// Gets first matching <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager"/> or extension thereof for CoreServices.InputSystem
+        /// </summary>
+        public static T GetInputSystemDataProvider<T>() where T : IMixedRealityInputDeviceManager
+        {
+            return GetDataProvider<T>(InputSystem);
+        }
+
+        /// <summary>
+        /// Gets first matching <see cref="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver"/> or extension thereof for CoreServices.SpatialAwarenessSystem
+        /// </summary>
+        public static T GetSpatialAwarenessSystemDataProvider<T>() where T : IMixedRealitySpatialAwarenessObserver
+        {
+            return GetDataProvider<T>(SpatialAwarenessSystem);
+        }
+
+        /// <summary>
+        /// Gets first matching data provider of provided type T registered to the provided mixed reality service.
+        /// </summary>
+        /// <typeparam name="T">Type of data provider to return. Must implement and/or extend from <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider" /></typeparam>
+        /// <param name="service">This function will attempt to get first available data provider registered to this service.</param>
+        /// <remarks>
+        /// Service parameter is expected to implement <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess" />. If not, then will return default(T)
+        /// </remarks>
+        public static T GetDataProvider<T>(IMixedRealityService service) where T : IMixedRealityDataProvider
+        {
+            var dataProviderAccess = service as IMixedRealityDataProviderAccess;
+            if (dataProviderAccess != null)
+            {
+                return dataProviderAccess.GetDataProvider<T>();
+            }
+
+            return default(T);
+        }
+
         // We do not want to keep a service around so use WeakReference
         private static readonly Dictionary<Type, WeakReference<IMixedRealityService>> serviceCache = new Dictionary<Type, WeakReference<IMixedRealityService>>();
 

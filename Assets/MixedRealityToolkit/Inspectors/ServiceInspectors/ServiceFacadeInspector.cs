@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                     for (int serviceIndex = 0; serviceIndex < serviceConfigs.Length; serviceIndex++)
                     {
                         MixedRealityServiceConfiguration serviceConfig = serviceConfigs[serviceIndex];
-                        if (serviceConfig.ComponentType.Type.IsAssignableFrom(serviceType) && serviceConfig.ConfigurationProfile != null)
+                        if (serviceConfig.ComponentType.Type.IsAssignableFrom(serviceType) && serviceConfig.Profile != null)
                         {
                             // We found the service that this type uses - draw the profile
                             SerializedObject serviceConfigObject = new SerializedObject(MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile);
