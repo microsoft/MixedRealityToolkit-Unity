@@ -12,6 +12,8 @@
 - [What's new](#whats-new-in-230)
 - [Known issues](#known-issues-in-230)
 
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
 - Microsoft HoloLens 2
 - Microsoft HoloLens (1st gen)
 - Windows Mixed Reality Immersive headsets
@@ -147,6 +149,26 @@ Improved ability to configure constraints for object manipulation.
 We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
 ### Known issues in 2.3.0
+
+**CS0579: Duplicate 'AssemblyVersion' attribute**
+
+After enabling MSBuild for Unity, if Player Settings > Other Settings > API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.
+
+This is caused by an issue in MSBuild for Unity ([#133](https://github.com/microsoft/MSBuildForUnity/issues/133)) where it is not properly removing dependency packages before restoring.
+
+To resolve these errors:
+
+- In the **Project** window, expand **Dependencies**
+- Open **Edit** > **Project Settings** > **Player**
+- Expand **Other Settings**
+- Examine the value of **Api Compatibility Level**
+
+    ![API Compatibility Level](Images/ReleaseNotes/ApiCompatibilityLevel.png)
+
+- If set to **.NET Standard 2.0**, delete the **Dependencies\net46** folder
+- If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
+
+    ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
 
 **Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
 
