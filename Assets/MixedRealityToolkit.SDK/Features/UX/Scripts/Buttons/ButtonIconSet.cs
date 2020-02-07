@@ -343,62 +343,69 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private static void EditorDrawTMPGlyph(Rect position, TMP_FontAsset fontAsset, TMP_Character character)
         {
-            float iconSizeMultiplier = 0.625f;
-
-            // Get a reference to the Glyph Table
-            int glyphIndex = (int)character.glyphIndex;
-            int elementIndex = fontAsset.glyphTable.FindIndex(item => item.index == glyphIndex);
-
-            // Return if we can't find the glyph
-            if (elementIndex == -1)
-                return;
-
-            Glyph glyph = character.glyph;
-
-            // Get reference to atlas texture.
-            int atlasIndex = glyph.atlasIndex;
-            Texture2D atlasTexture = fontAsset.atlasTextures.Length > atlasIndex ? fontAsset.atlasTextures[atlasIndex] : null;
-
-            if (atlasTexture == null)
-                return;
-
-            if (fontRenderMat == null)
-                fontRenderMat = new Material(Shader.Find("Mixed Reality Toolkit/TextMeshPro"));
-
-            Material mat = fontRenderMat;
-            mat.mainTexture = atlasTexture;
-            mat.SetColor("_Color", Color.white);
-
-            // Draw glyph
-            Rect glyphDrawPosition = new Rect(
-                position.x,
-                position.y,
-                position.width,
-                position.height);
-
-            int glyphOriginX = glyph.glyphRect.x;
-            int glyphOriginY = glyph.glyphRect.y;
-            int glyphWidth = glyph.glyphRect.width;
-            int glyphHeight = glyph.glyphRect.height;
-
-            float normalizedHeight = fontAsset.faceInfo.ascentLine - fontAsset.faceInfo.descentLine;
-            float scale = Mathf.Min(glyphDrawPosition.width, glyphDrawPosition.height) / normalizedHeight * iconSizeMultiplier;
-
-            // Compute the normalized texture coordinates
-            Rect texCoords = new Rect((float)glyphOriginX / atlasTexture.width, (float)glyphOriginY / atlasTexture.height, (float)glyphWidth / atlasTexture.width, (float)glyphHeight / atlasTexture.height);
-
-            if (Event.current.type == EventType.Repaint)
+            try
             {
-                glyphHeight = (int)Mathf.Min(maxButtonSize, glyphHeight * scale);
-                glyphWidth = (int)Mathf.Min(maxButtonSize, glyphWidth * scale);
+                float iconSizeMultiplier = 0.625f;
 
-                glyphDrawPosition.x += (glyphDrawPosition.width - glyphWidth) / 2;
-                glyphDrawPosition.y += (glyphDrawPosition.height - glyphHeight) / 2;
-                glyphDrawPosition.width = glyphWidth;
-                glyphDrawPosition.height = glyphHeight;
+                // Get a reference to the Glyph Table
+                int glyphIndex = (int)character.glyphIndex;
+                int elementIndex = fontAsset.glyphTable.FindIndex(item => item.index == glyphIndex);
 
-                // Could switch to using the default material of the font asset which would require passing scale to the shader.
-                Graphics.DrawTexture(glyphDrawPosition, atlasTexture, texCoords, 0, 0, 0, 0, new Color(1f, 1f, 1f), mat);
+                // Return if we can't find the glyph
+                if (elementIndex == -1)
+                    return;
+
+                Glyph glyph = character.glyph;
+
+                // Get reference to atlas texture.
+                int atlasIndex = glyph.atlasIndex;
+                Texture2D atlasTexture = fontAsset.atlasTextures.Length > atlasIndex ? fontAsset.atlasTextures[atlasIndex] : null;
+
+                if (atlasTexture == null)
+                    return;
+
+                if (fontRenderMat == null)
+                    fontRenderMat = new Material(Shader.Find("Mixed Reality Toolkit/TextMeshPro"));
+
+                Material mat = fontRenderMat;
+                mat.mainTexture = atlasTexture;
+                mat.SetColor("_Color", Color.white);
+
+                // Draw glyph
+                Rect glyphDrawPosition = new Rect(
+                    position.x,
+                    position.y,
+                    position.width,
+                    position.height);
+
+                int glyphOriginX = glyph.glyphRect.x;
+                int glyphOriginY = glyph.glyphRect.y;
+                int glyphWidth = glyph.glyphRect.width;
+                int glyphHeight = glyph.glyphRect.height;
+
+                float normalizedHeight = fontAsset.faceInfo.ascentLine - fontAsset.faceInfo.descentLine;
+                float scale = Mathf.Min(glyphDrawPosition.width, glyphDrawPosition.height) / normalizedHeight * iconSizeMultiplier;
+
+                // Compute the normalized texture coordinates
+                Rect texCoords = new Rect((float)glyphOriginX / atlasTexture.width, (float)glyphOriginY / atlasTexture.height, (float)glyphWidth / atlasTexture.width, (float)glyphHeight / atlasTexture.height);
+
+                if (Event.current.type == EventType.Repaint)
+                {
+                    glyphHeight = (int)Mathf.Min(maxButtonSize, glyphHeight * scale);
+                    glyphWidth = (int)Mathf.Min(maxButtonSize, glyphWidth * scale);
+
+                    glyphDrawPosition.x += (glyphDrawPosition.width - glyphWidth) / 2;
+                    glyphDrawPosition.y += (glyphDrawPosition.height - glyphHeight) / 2;
+                    glyphDrawPosition.width = glyphWidth;
+                    glyphDrawPosition.height = glyphHeight;
+
+                    // Could switch to using the default material of the font asset which would require passing scale to the shader.
+                    Graphics.DrawTexture(glyphDrawPosition, atlasTexture, texCoords, 0, 0, 0, 0, new Color(1f, 1f, 1f), mat);
+                }
+            }
+            catch (Exception)
+            {
+                EditorGUILayout.LabelField("Couldn't draw character icon. Character may not be available in the font asset.");
             }
         }
 
@@ -434,7 +441,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 bool showAvailableIcons = SessionState.GetBool(AvailableIconsFoldoutKey, true);
                 bool showSelectedIcons = SessionState.GetBool(SelectedIconsFoldoutKey, true);
 
+#if UNITY_2019_OR_LATER
                 showQuadIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showQuadIconFoldout, "Quad Icons");
+#else
+                showQuadIconFoldout = EditorGUILayout.Foldout(showQuadIconFoldout, "Quad Icons");
+#endif
                 if (showQuadIconFoldout)
                 {
                     using (new EditorGUI.IndentLevelScope(1))
@@ -443,9 +454,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         EditorGUILayout.PropertyField(quadIconsProp, true);
                     }
                 }
+#if UNITY_2019_OR_LATER
                 EditorGUILayout.EndFoldoutHeaderGroup();
+#endif
 
+#if UNITY_2019_OR_LATER
                 showSpriteIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showSpriteIconFoldout, "Sprite Icons");
+#else
+                showSpriteIconFoldout = EditorGUILayout.Foldout(showSpriteIconFoldout, "Sprite Icons");
+#endif
                 if (showSpriteIconFoldout)
                 {
                     using (new EditorGUI.IndentLevelScope(1))
@@ -454,11 +471,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         EditorGUILayout.PropertyField(spriteIconsProp, true);
                     }
                 }
+#if UNITY_2019_OR_LATER
                 EditorGUILayout.EndFoldoutHeaderGroup();
+#endif
 
+#if UNITY_2019_OR_LATER
                 showCharIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showCharIconFoldout, "Font Icons");
+#else
+                showCharIconFoldout = EditorGUILayout.Foldout(showCharIconFoldout, "Font Icons");
+#endif
 
+
+#if UNITY_2019_OR_LATER
                 EditorGUILayout.EndFoldoutHeaderGroup();
+#endif
 
                 if (showCharIconFoldout)
                 {
@@ -481,7 +507,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
 
+#if UNITY_2019_OR_LATER
                         showAvailableIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showAvailableIcons, "Available Icons");
+#else
+                        showAvailableIcons = EditorGUILayout.Foldout(showAvailableIcons, "Available Icons");
+#endif
 
                         if (showAvailableIcons)
                         {
@@ -561,9 +591,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             EditorGUILayout.Space(); 
                         }
+#if UNITY_2019_OR_LATER
                         EditorGUILayout.EndFoldoutHeaderGroup();
-
                         showSelectedIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showSelectedIcons, "Selected Icons");
+#else
+                        showSelectedIcons = EditorGUILayout.Foldout(showSelectedIcons, "Selected Icons");
+#endif
 
                         if (showSelectedIcons)
                         {
@@ -601,7 +634,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                         }
 
+#if UNITY_2019_OR_LATER
                         EditorGUILayout.EndFoldoutHeaderGroup();
+#endif
                     }
                 }
 
@@ -628,5 +663,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 #endif
-    }
-}
+                    }
+                }
