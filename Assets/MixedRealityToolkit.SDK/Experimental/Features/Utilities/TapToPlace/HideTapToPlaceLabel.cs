@@ -15,9 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         void Start()
         {
             tapToPlace = gameObject.GetComponent<TapToPlace>();
-            placeableObjectLabel = gameObject.transform.GetChild(0).gameObject;
-
-            ToggleTapToPlaceLabelVisibility();
+            if (tapToPlace != null)
+            {
+                placeableObjectLabel = gameObject.transform.GetChild(0).gameObject;
+                ToggleTapToPlaceLabelVisibility();
+            }
         }
 
         /// <summary>
