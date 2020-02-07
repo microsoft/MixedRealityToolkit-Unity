@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
-
+using UnityEngine.Experimental.UIElements;
 using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityProjectConfigurator.Configurations;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -20,7 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.VirtualRealitySupported, true },
             { MRConfig.SinglePassInstancing, true },
             { MRConfig.SpatialAwarenessLayer, true },
+            // Issue #7239: Disable MSBuild for Unity on Unity 2019.3 and newer while the cause of the loop is investigated
+#if !UNITY_2019_3_OR_NEWER
             { MRConfig.EnableMSBuildForUnity, true },
+#endif // !UNITY_2019_3_OR_NEWER
             // UWP Capabilities
             { MRConfig.MicrophoneCapability, true },
             { MRConfig.InternetClientCapability, true },
@@ -92,21 +95,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
+            string foldoutHeader;
+
             if (!MixedRealityProjectConfigurator.IsProjectConfigured())
             {
+                foldoutHeader = "Modify Configurations";
                 RenderChoiceDialog();
-
-                EditorGUILayout.Space();
-
-                showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Modify Configurations", true);
-                if (showConfigurations)
-                {
-                    RenderConfigurations();
-                }
             }
             else
             {
+                foldoutHeader = "Configurations";
                 RenderConfiguredConfirmation();
+            }
+
+            EditorGUILayout.Space();
+
+            showConfigurations = EditorGUILayout.Foldout(showConfigurations, foldoutHeader, true);
+            if (showConfigurations)
+            {
+                RenderConfigurations();
             }
         }
 

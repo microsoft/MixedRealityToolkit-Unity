@@ -170,6 +170,12 @@ To resolve these errors:
 
     ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
 
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
+
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)).
+
+As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
+
 **Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
 
 The following issues are known when using the new XR platform and version **2.0.4 (preview.3)** of the Windows XR Plugin:
