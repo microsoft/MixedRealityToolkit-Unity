@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Experimental.Inspectors")]
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
     /// <summary>

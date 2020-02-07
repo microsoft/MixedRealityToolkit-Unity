@@ -361,16 +361,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2124885876}
     m_Modifications:
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_Name
-      value: AdaptToSurfaceNormal
-      objectReference: {fileID: 0}
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1012395828249241974, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Mesh
@@ -402,6 +392,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Name
+      value: AdaptToSurfaceNormal
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -555,16 +555,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8524936517105583592}
     m_Modifications:
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_Name
-      value: HeadTracking
-      objectReference: {fileID: 0}
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1012395828249241974, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Mesh
@@ -596,6 +586,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Name
+      value: HeadTracking
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -750,7 +750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &547440359
 Transform:
   m_ObjectHideFlags: 0
@@ -1095,7 +1095,7 @@ GameObject:
   - component: {fileID: 1360759781}
   - component: {fileID: 1360759787}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Cube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1120,7 +1120,6 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  gameObjectToPlace: {fileID: 1360759780}
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
   magneticSurfaces:
@@ -1129,9 +1128,14 @@ MonoBehaviour:
   autoStart: 0
   surfaceNormalOffset: 0.1
   keepOrientationVertical: 1
-  spatialMeshVisible: 1
-  initialSpatialMeshDisplayOption: 0
+  debugEnabled: 1
   rotateAccordingToSurface: 1
+  OnPlacingStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlacingStopped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1360759782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,7 +1446,6 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  gameObjectToPlace: {fileID: 1410453730}
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
   magneticSurfaces:
@@ -1451,9 +1454,14 @@ MonoBehaviour:
   autoStart: 0
   surfaceNormalOffset: 0.1
   keepOrientationVertical: 0
-  spatialMeshVisible: 1
-  initialSpatialMeshDisplayOption: 0
+  debugEnabled: 1
   rotateAccordingToSurface: 0
+  OnPlacingStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlacingStopped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1410453736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1492,16 +1500,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1410453734}
     m_Modifications:
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_Name
-      value: ControllerRay
-      objectReference: {fileID: 0}
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1012395828249241974, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Mesh
@@ -1533,6 +1531,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Name
+      value: ControllerRay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1644,10 +1652,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 165627024}
     m_Modifications:
-    - target: {fileID: 1951033628531078, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_Name
-      value: SceneDescriptionPanel
-      objectReference: {fileID: 0}
     - target: {fileID: 1054075472835142, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1659,6 +1663,10 @@ PrefabInstance:
     - target: {fileID: 1845854001926388, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951033628531078, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_Name
+      value: SceneDescriptionPanel
       objectReference: {fileID: 0}
     - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1801,16 +1809,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1360759786}
     m_Modifications:
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_Name
-      value: KeepOrientationVertical
-      objectReference: {fileID: 0}
-    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1012395828249241974, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Mesh
@@ -1842,6 +1840,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Name
+      value: KeepOrientationVertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1961,7 +1969,7 @@ GameObject:
   - component: {fileID: 2124885871}
   - component: {fileID: 2124885877}
   m_Layer: 0
-  m_Name: Quad (1)
+  m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1986,7 +1994,6 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  gameObjectToPlace: {fileID: 2124885870}
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
   magneticSurfaces:
@@ -1995,9 +2002,14 @@ MonoBehaviour:
   autoStart: 0
   surfaceNormalOffset: 0
   keepOrientationVertical: 0
-  spatialMeshVisible: 1
-  initialSpatialMeshDisplayOption: 0
+  debugEnabled: 1
   rotateAccordingToSurface: 1
+  OnPlacingStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlacingStopped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2124885872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2144,7 +2156,6 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  gameObjectToPlace: {fileID: 8524936517105359304}
   defaultPlacementDistance: 1.5
   maxRaycastDistance: 20
   magneticSurfaces:
@@ -2153,9 +2164,14 @@ MonoBehaviour:
   autoStart: 0
   surfaceNormalOffset: 0.1
   keepOrientationVertical: 1
-  spatialMeshVisible: 1
-  initialSpatialMeshDisplayOption: 0
+  debugEnabled: 1
   rotateAccordingToSurface: 0
+  OnPlacingStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlacingStopped:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8524936517105359306
 MonoBehaviour:
   m_ObjectHideFlags: 0
