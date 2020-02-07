@@ -16,7 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        protected BaseBoundarySystem(MixedRealityBoundaryVisualizationProfile profile) : base(profile) { }
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
+        protected BaseBoundarySystem(
+            MixedRealityBoundaryVisualizationProfile profile,
+            ExperienceScale scale) : base(profile)
+        {
+            Scale = scale;
+        }
 
         #region IMixedRealityService Implementation
 
@@ -943,24 +949,5 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // We always use the same seed so that from run to run, the inscribed bounds are consistent.
             RectangularBounds = new InscribedRectangle(Bounds, Mathf.Abs("Mixed Reality Toolkit".GetHashCode()));
         }
-
-        #region Obsolete
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
-        [System.Obsolete("This constructor is obsolete. The IMixedRealityBoundarySystem no longer captures ExperienceScale. Use MixedRealityToolkit.AppScale instead.")]
-        protected BaseBoundarySystem(
-            MixedRealityBoundaryVisualizationProfile profile,
-            ExperienceScale scale) : base(profile)
-        {
-#pragma warning disable 618
-            Scale = scale;
-#pragma warning restore
-        }
-
-        #endregion
     }
 }
