@@ -252,6 +252,9 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <p><img src="Images/ReleaseNotes/DuplicateDependencies.png" alt="Duplicate dependencies"></p>
 </li>
 </ul>
+<p><strong>MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3</strong></p>
+<p>An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239">#7239</a>).</p>
+<p>As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity</a>.</p>
 <p><strong>Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality</strong></p>
 <p>The following issues are known when using the new XR platform and version <strong>2.0.4 (preview.3)</strong> of the Windows XR Plugin:</p>
 <ul>
