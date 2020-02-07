@@ -2,38 +2,39 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
+    /// <summary>
+    /// Custom inspector for the Tap to Place class
+    /// </summary>
     [CustomEditor(typeof(TapToPlace))]
     internal class TapToPlaceInspector : UnityEditor.Editor
     {
         protected TapToPlace instance;
-        protected SerializedProperty gameObjectToPlace;
         protected SerializedProperty autoStart;
         protected SerializedProperty rotateAccordingToSurface;
         protected SerializedProperty keepOrientationVertical;
-        protected SerializedProperty spatialMeshVisible;
         protected SerializedProperty defaultPlacementDistance;
         protected SerializedProperty maxRaycastDistance;
         protected SerializedProperty magneticSurfaces;
+        protected SerializedProperty debugEnabled;
+        protected SerializedProperty onPlacingStarted;
+        protected SerializedProperty onPlacingStopped;
 
         protected virtual void OnEnable()
         {
             instance = (TapToPlace)target;
-            gameObjectToPlace = serializedObject.FindProperty("gameObjectToPlace");
             rotateAccordingToSurface = serializedObject.FindProperty("rotateAccordingToSurface");
             defaultPlacementDistance = serializedObject.FindProperty("defaultPlacementDistance");
             magneticSurfaces = serializedObject.FindProperty("magneticSurfaces");
             maxRaycastDistance = serializedObject.FindProperty("maxRaycastDistance");
             keepOrientationVertical = serializedObject.FindProperty("keepOrientationVertical");
-            spatialMeshVisible = serializedObject.FindProperty("spatialMeshVisible");
             autoStart = serializedObject.FindProperty("autoStart");
+            debugEnabled = serializedObject.FindProperty("debugEnabled");
+            onPlacingStarted = serializedObject.FindProperty("OnPlacingStarted");
+            onPlacingStopped = serializedObject.FindProperty("OnPlacingStopped");
         }
 
         public override void OnInspectorGUI()
@@ -41,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             RenderCustomInspector();
         }
 
+        /// <summary>
+        /// Render the custom properties for the tap to place inspector
+        /// </summary>
         public virtual void RenderCustomInspector()
         {
             serializedObject.Update();
@@ -49,22 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
             using (new EditorGUI.DisabledScope(isPlayMode))
             {
-                EditorGUILayout.PropertyField(gameObjectToPlace);
                 EditorGUILayout.PropertyField(autoStart);
             }
 
-            // If the GameObjectToPlace is null set it to the gameobject
-            if (instance.GameObjectToPlace == null)
+            if (!instance.IsColliderPresent)
             {
-                instance.GameObjectToPlace = instance.gameObject;
+                EditorGUILayout.HelpBox("A collider needs to be attached to your game object, please attach a collider to use tap to place",MessageType.Error);
             }
 
-            if (!instance.ColliderPresent)
-            {
-                Debug.LogError("A collider needs to be attached to your game object, please attach a collider to use tap to place");
-            }
-
-            UpdateProperties();
+            RenderProperties();
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -72,14 +69,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         /// <summary>
         /// Allow editing of the following properties during edit and playmode
         /// </summary>
-        public virtual void UpdateProperties()
+        public virtual void RenderProperties()
         {
             EditorGUILayout.PropertyField(rotateAccordingToSurface);
             EditorGUILayout.PropertyField(keepOrientationVertical);
-            EditorGUILayout.PropertyField(spatialMeshVisible);
             EditorGUILayout.PropertyField(defaultPlacementDistance);
             EditorGUILayout.PropertyField(maxRaycastDistance);
             EditorGUILayout.PropertyField(magneticSurfaces,true);  
+            EditorGUILayout.PropertyField(onPlacingStarted);  
+            EditorGUILayout.PropertyField(onPlacingStopped);
+            EditorGUILayout.PropertyField(debugEnabled);
         }
     }
 }

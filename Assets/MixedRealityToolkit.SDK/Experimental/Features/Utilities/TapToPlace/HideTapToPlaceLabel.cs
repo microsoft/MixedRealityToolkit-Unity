@@ -1,36 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Experimental;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using Microsoft.MixedReality.Toolkit.Utilities;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
-public class HideTapToPlaceLabel : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
-    // Start is called before the first frame update
-
-    private TapToPlace tapToPlace;
-    void Start()
+    /// <summary>
+    /// Class to toggle the visibility of a label on a Tap to Place object in the TapToPlaceExample scene.
+    /// </summary>
+    public class HideTapToPlaceLabel : MonoBehaviour
     {
-        tapToPlace = gameObject.GetComponent<TapToPlace>();
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (tapToPlace.IsBeingPlaced)
+        private TapToPlace tapToPlace;
+        private GameObject placeableObjectLabel;
+        void Start()
         {
-            var label = gameObject.transform.GetChild(0).gameObject;
-            label.SetActive(false);
-        }
-        else
-        {
-            var label = gameObject.transform.GetChild(0).gameObject;
-            label.SetActive(true);
+            tapToPlace = gameObject.GetComponent<TapToPlace>();
+            placeableObjectLabel = gameObject.transform.GetChild(0).gameObject;
 
+            ToggleTapToPlaceLabelVisibility();
         }
-        
+
+        /// <summary>
+        /// Add listeners to Tap to Place events to show a label on a placeable object while it is not being placed.
+        /// </summary>
+        public void ToggleTapToPlaceLabelVisibility()
+        {
+            if (tapToPlace != null)
+            {
+                tapToPlace.OnPlacingStarted.AddListener(() =>
+                {
+                    placeableObjectLabel.SetActive(false);
+                });
+
+                tapToPlace.OnPlacingStopped.AddListener(() =>
+                {
+                    placeableObjectLabel.SetActive(true);
+                });
+            }
+        }
     }
 }
