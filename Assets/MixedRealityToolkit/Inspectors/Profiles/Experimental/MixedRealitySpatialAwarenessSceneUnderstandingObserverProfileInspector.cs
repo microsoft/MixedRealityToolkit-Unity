@@ -24,10 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty defaultMaterial;
         private SerializedProperty shouldLoadFromFile;
         private SerializedProperty serializedScene;
-        private SerializedProperty generateMeshes;
-        private SerializedProperty generatePlanes;
+        private SerializedProperty requestMeshData;
+        private SerializedProperty requestPlaneData;
         private SerializedProperty createGameObjects;
-        private SerializedProperty generateEnvironmentMesh;
         private SerializedProperty inferRegions;
         private SerializedProperty firstUpdateDelay;
         private SerializedProperty levelOfDetail;
@@ -58,10 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
             instantiationBatchRate = serializedObject.FindProperty("instantiationBatchRate");
             defaultMaterial = serializedObject.FindProperty("defaultMaterial");
-            generatePlanes = serializedObject.FindProperty("generatePlanes");
-            generateMeshes = serializedObject.FindProperty("generateMeshes");
+            requestPlaneData = serializedObject.FindProperty("requestPlaneData");
+            requestMeshData = serializedObject.FindProperty("requestMeshData");
             createGameObjects = serializedObject.FindProperty("createGameObjects");
-            generateEnvironmentMesh = serializedObject.FindProperty("generateEnvironmentMesh");
 
             physicsLayer = serializedObject.FindProperty("physicsLayer");
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
@@ -97,9 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(levelOfDetail);
                     EditorGUILayout.PropertyField(usePersistentObjects);
                     EditorGUILayout.PropertyField(inferRegions);
-                    EditorGUILayout.PropertyField(generatePlanes);
-                    EditorGUILayout.PropertyField(generateMeshes);
-                    EditorGUILayout.PropertyField(generateEnvironmentMesh);
+                    EditorGUILayout.PropertyField(requestPlaneData);
+                    EditorGUILayout.PropertyField(requestMeshData);
                     EditorGUILayout.PropertyField(getOcclusionMask);
                     EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }

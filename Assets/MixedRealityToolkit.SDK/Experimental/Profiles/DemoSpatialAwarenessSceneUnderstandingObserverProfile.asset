@@ -23,17 +23,16 @@ MonoBehaviour:
   surfaceTypes: 30
   instantiationBatchRate: 1
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
-  shouldLoadFromFile: 1
+  shouldLoadFromFile: 0
   serializedScene: {fileID: 4900000, guid: cbf0602262c70ec4fbc01971010e5aca, type: 3}
   createGameObjects: 1
-  generatePlanes: 1
-  generateMeshes: 0
-  generateEnvironmentMesh: 1
-  inferRegions: 0
+  requestPlaneData: 1
+  requestMeshData: 0
+  inferRegions: 1
   firstUpdateDelay: 1
   levelOfDetail: 1
-  usePersistentObjects: 0
+  usePersistentObjects: 1
   queryRadius: 5
-  getOcclusionMask: 0
+  getOcclusionMask: 1
   occlusionMaskResolution: {x: 256, y: 256}
-  orientScene: 0
+  orientScene: 1

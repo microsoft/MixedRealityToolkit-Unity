@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// When enabled, the service will provide surface meshes.
         /// </summary>
-        bool GenerateMeshes { get; set; }
+        bool RequestMeshData { get; set; }
 
         /// <summary>
         /// When enabled, the service will provide surface planes, represented as a quad.
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <remarks>
         /// Use <see cref="PlaneValidationMask"/> for the validation mask on the quad.
         /// </remarks>
-        bool GeneratePlanes { get; set; }
+        bool RequestPlaneData { get; set; }
 
         /// <summary>
         /// When enabled, the service will preserve previously observed surfaces when updating.

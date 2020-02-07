@@ -29,9 +29,15 @@ public class DemoSpatialAwarenessSceneObjectConsumer : MonoBehaviour, ISpatialAw
                 break;
         }
 
-        float sx = sceneObject.Quads[0].extents.x;
-        float sy = sceneObject.Quads[0].extents.y;
-
-        transform.localScale = new Vector3(sx, sy, .1f);
+        if (sceneObject.Quads.Count > 0)
+        {
+            float sx = sceneObject.Quads[0].extents.x;
+            float sy = sceneObject.Quads[0].extents.y;
+            transform.localScale = new Vector3(sx, sy, .1f);
+        }
+        else
+        {
+            Debug.LogWarning("No quad data found - did you request it from the observer?");
+        }
     }
 }

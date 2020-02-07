@@ -13,10 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public TextAsset SerializedScene;
 
-        IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
+        public string SerializedSceneName = "TestSaveSerializedScene.bytes";
 
-        Animator animator;
-        public bool triggered = false;
+        IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
         private bool generatePlanes;
         private bool generateMeshes;
@@ -41,11 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 Debug.LogError("Couldn't access Scene Understanding Observer!");
                 return;
             }
-
-            //Debug.Log($"observer.UpdateInterval = {observer.UpdateInterval}");
-
-            animator = GetComponent<Animator>();
-            animator.SetBool("Persistent", observer.UsePersistentObjects);
         }
 
         void OnDisable()
@@ -58,7 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             var sceneObject = eventData.SpatialObject;
             var go = Instantiate(SceneObjectPrefab);
             go.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
-            go.transform.SetParent(ParentGameObject);
+            if (ParentGameObject)
+            {
+                go.transform.SetParent(ParentGameObject);
+            }
             foreach (var x in go.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
             {
                 x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
@@ -75,9 +72,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             Debug.Log($"Updated {eventData.GuidId}");
         }
 
-        public void HandleIt()
+        public void UpdateScene()
         {
-            Debug.Log("Got it");
+            Debug.Log("UpdateScene");
+        }
+
+        public void ToggleAutoUpdate()
+        {
+            Debug.Log("ToggleAutoUpdate");
+        }
+
+        public void ToggleOcclusionMask()
+        {
+            Debug.Log("ToggleOcclusionMask");
         }
 
         public void LoadScene()
@@ -88,24 +95,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
+        public void SaveSave()
+        {
+            observer.SaveScene(SerializedSceneName);
+        }
+
         public void ToggleGeneratePlanes()
         {
-            observer.GeneratePlanes = generatePlanes;
+            observer.RequestPlaneData = generatePlanes;
             generatePlanes = !generatePlanes;
             observer.Update();
         }
 
         public void ToggleGenerateMeshes()
         {
-            observer.GenerateMeshes = generateMeshes;
+            observer.RequestMeshData = generateMeshes;
             generateMeshes = !generateMeshes;
-            observer.Update();
-        }
-
-        public void ToggleGenerateEnvironmentMesh()
-        {
-            observer.GenerateEnvironmentMesh = generateEnvironment;
-            generateEnvironment = !generateEnvironment;
             observer.Update();
         }
     }

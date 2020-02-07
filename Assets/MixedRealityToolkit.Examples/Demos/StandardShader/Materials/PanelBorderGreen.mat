@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PanelBorderGreen
-  m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _HOVER_COLOR_OVERRIDE
-    _HOVER_LIGHT _INNER_GLOW _ROUND_CORNERS
+  m_Shader: {fileID: 10703, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT _BORDER_LIGHT_USES_HOVER_COLOR _COLOR_MAP_ENABLE_
+    _HOVER_COLOR_OVERRIDE _HOVER_LIGHT _INNER_GLOW _PULSE_ENABLED__ON _ROUND_CORNERS
+    _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -26,6 +26,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Color_Map_:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -54,7 +58,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 7b551659cf4349242ba72d82b4f9cdc7, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -73,10 +77,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AlbedoAlphaMode: 0
     - _AlbedoAlphaSmoothness: 0
     - _AlbedoAssignedAtRuntime: 0
+    - _Auto_Pulse_: 0
     - _BlendOp: 0
     - _BlendedClippingWidth: 1
     - _BorderLight: 1
@@ -95,11 +104,17 @@ Material:
     - _ClippingPlaneBorder: 0
     - _ClippingPlaneBorderWidth: 0.025
     - _ColorWriteMask: 15
+    - _Color_Center_: 0.4
+    - _Color_Leading_Fuzz_: 1
+    - _Color_Map_Enable_: 1
+    - _Color_Trailing_Fuzz_: 1
     - _CullMode: 2
     - _CustomMode: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
+    - _Draw_End_Time_: 0.5
+    - _Draw_Fuzz_: 0.2
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.001
     - _EnableChannelMap: 0
@@ -117,6 +132,8 @@ Material:
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
     - _FadeMinValue: 0
+    - _Fill_Start_Time_: 0.5
+    - _Filter_Width_: 1.5
     - _FluentLightIntensity: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -127,20 +144,34 @@ Material:
     - _InnerGlow: 1
     - _InnerGlowPower: 4
     - _InstancedColor: 0
+    - _Intensity_: 3
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
+    - _Line_Width_: 0.5
+    - _Line_Width_Fade_: 0.25
+    - _Line_Width_Fade_Far_: 5
     - _Metallic: 0
     - _Mode: 5
     - _NearLightFade: 0
     - _NearPlaneFade: 0
+    - _Noise_Frequency_: 40.5
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Period_: 3.5
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
+    - _Pulse_: 0
+    - _Pulse_Enabled_: 1
+    - _Pulse_Lead_Fuzz_: 1.2
+    - _Pulse_Middle_: 0
+    - _Pulse_Outer_Fuzz_: 1
+    - _Pulse_Outer_Size_: 10
+    - _Pulse_Tail_Fuzz_: 2.4
+    - _Pulse_Vary_: 0
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 1.1
@@ -161,6 +192,8 @@ Material:
     - _StencilReference: 0
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
+    - _Vary_Color_: 0.75
+    - _Vary_UV_: 1
     - _VertexColors: 0
     - _VertexExtrusion: 0
     - _VertexExtrusionSmoothNormals: 0
@@ -179,11 +212,14 @@ Material:
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _Fill_Color_: {r: 0.004, g: 0.004, b: 0.004, a: 1}
     - _HoverColor: {r: 1, g: 0, b: 0, a: 1}
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 0, g: 0.5147059, b: 0.06744429, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    - _Line_Color_: {r: 0.639, g: 0.639, b: 0.639, a: 1}
     - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
+    - _Pulse_Origin_: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 1}

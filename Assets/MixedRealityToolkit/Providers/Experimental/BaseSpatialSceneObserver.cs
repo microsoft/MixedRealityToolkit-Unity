@@ -120,8 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public int InstantiationBatchRate { get; set; }
         public bool InferRegions { get; set; }
         public bool GenerateEnvironmentMesh { get; set; }
-        public bool GenerateMeshes { get; set; }
-        public bool GeneratePlanes { get; set; }
+        public bool RequestMeshData { get; set; }
+        public bool RequestPlaneData { get; set; }
         public bool UsePersistentObjects { get; set; }
         public float QueryRadius { get; set; }
         public bool GetOcclusionMask { get; set; }

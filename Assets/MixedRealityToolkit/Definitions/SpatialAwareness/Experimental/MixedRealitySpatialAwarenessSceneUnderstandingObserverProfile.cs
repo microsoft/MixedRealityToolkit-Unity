@@ -91,27 +91,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         [SerializeField]
         [Tooltip("Generate plane objects for surface types.")]
-        private bool generatePlanes = true;
+        private bool requestPlaneData = true;
         /// <summary>
         /// When updating planes, save data to file.
         /// </summary>
-        public bool GeneratePlanes => generatePlanes;
+        public bool RequestPlaneData => requestPlaneData;
 
         [SerializeField]
         [Tooltip("Generate mesh objects for surface types.")]
-        private bool generateMeshes = false;
+        private bool requestMeshData = false;
         /// <summary>
         /// Generate mesh objects from surfaces.
         /// </summary>
-        public bool GenerateMeshes => generateMeshes;
-
-        [SerializeField]
-        [Tooltip("Generate boundless SR mesh.")]
-        private bool generateEnvironmentMesh = false;
-        /// <summary>
-        /// Generate boundless SR mesh.
-        /// </summary>
-        public bool GenerateEnvironmentMesh => generateEnvironmentMesh;
+        public bool RequestMeshData => requestMeshData;
 
         [SerializeField]
         [Tooltip("When enabled, renders observed and inferred regions for scene objects. When disabled, renders only the observed regions for scene objects.")]

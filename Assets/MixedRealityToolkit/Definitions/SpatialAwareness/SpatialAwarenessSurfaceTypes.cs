@@ -49,7 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// A boundless world mesh.
         /// </summary>
-        World = 1 << 6
+        World = 1 << 6,
 
+        /// <summary>
+        /// Objects for which we have no observations
+        /// </summary>
+        CompletelyInferred = 1 << 7
     }
 }
