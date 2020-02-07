@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             }
         }
 
-        /// <inheritdoc/>        
+        /// <inheritdoc/>
         public ExperienceScale Scale { get; set; }
 
         /// <inheritdoc/>
