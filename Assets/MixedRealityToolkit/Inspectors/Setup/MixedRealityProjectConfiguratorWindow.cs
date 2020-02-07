@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
-
+using UnityEngine.Experimental.UIElements;
 using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityProjectConfigurator.Configurations;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -95,29 +95,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
+            string foldoutHeader;
+
             if (!MixedRealityProjectConfigurator.IsProjectConfigured())
             {
+                foldoutHeader = "Modify Configurations";
                 RenderChoiceDialog();
-
-                EditorGUILayout.Space();
-
-                showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Modify Configurations", true);
-                if (showConfigurations)
-                {
-                    RenderConfigurations();
-                }
             }
             else
             {
+                foldoutHeader = "Configurations";
                 RenderConfiguredConfirmation();
+            }
 
-                EditorGUILayout.Space();
+            EditorGUILayout.Space();
 
-                showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Configurations", true);
-                if (showConfigurations)
-                {
-                    RenderConfigurations();
-                }
+            showConfigurations = EditorGUILayout.Foldout(showConfigurations, foldoutHeader, true);
+            if (showConfigurations)
+            {
+                RenderConfigurations();
             }
         }
 

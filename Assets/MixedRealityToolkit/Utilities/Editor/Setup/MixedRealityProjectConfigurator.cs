@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 foreach (var setter in ConfigurationSetters)
                 {
-                    setter.Value.Invoke();
+                    Configure(setter.Key);
                 }
             }
             else
