@@ -184,10 +184,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
                 {
+#if !UNITY_2019_3_OR_NEWER
                     EditorGUILayout.LabelField("MSBuild for Unity Support", EditorStyles.boldLabel);
                     EditorGUILayout.HelpBox("Enable this for additional HoloLens 2 features, like hand joint remoting and depth LSR mode.", MessageType.Info);
                     RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
                     EditorGUILayout.Space();
+#endif // !UNITY_2019_3_OR_NEWER
+
 
                     EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
                     RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
@@ -195,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
-#endif
+#endif // UNITY_2019_3_OR_NEWER
                 }
                 else
                 {
@@ -204,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     trackToggles[MRConfig.SpatialPerceptionCapability] = false;
 #if UNITY_2019_3_OR_NEWER
                     trackToggles[MRConfig.EyeTrackingCapability] = false;
-#endif
+#endif // UNITY_2019_3_OR_NEWER
                 }
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetAndroid())
