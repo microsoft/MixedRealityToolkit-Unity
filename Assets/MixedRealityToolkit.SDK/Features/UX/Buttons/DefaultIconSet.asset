@@ -38,7 +38,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 44f8f68c87747f44084f7c32004a1332, type: 3}
   - {fileID: 21300000, guid: 33c59392a442e9149bf4110185668b0f, type: 3}
   - {fileID: 21300000, guid: d05e73e843a56614998232e00ce1c986, type: 3}
-  charIconFont: {fileID: 11400000, guid: 3e9f9360b61bbff44a23499dc36c1b9e, type: 2}
+  charIconFont: {fileID: 11400000, guid: c54c7b6714c22b343a7fa8939f597c01, type: 2}
   charIcons:
   - Name: AppBarAdjust
     Character: 60370
@@ -51,4 +51,4 @@ MonoBehaviour:
   - Name: AppBarShow
     Character: 59154
   - Name: AppBarHome
-    Character: 60175
+    Character: 59407
