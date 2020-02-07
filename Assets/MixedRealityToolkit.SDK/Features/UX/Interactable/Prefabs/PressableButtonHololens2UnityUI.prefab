@@ -277,13 +277,9 @@ MonoBehaviour:
   TouchBegin:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   TouchEnd:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonPressed:
     m_PersistentCalls:
       m_Calls:
@@ -299,8 +295,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   ButtonReleased:
     m_PersistentCalls:
       m_Calls:
@@ -327,8 +321,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   movingButtonIconText: {fileID: 7813901746064736085}
   compressableButtonVisuals: {fileID: 4117306204827652223}
   minCompressPercentage: 0.25
@@ -476,8 +468,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Button
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
@@ -578,10 +568,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+    - target: {fileID: 9130116940813133624, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Name
-      value: PressableButtonHololens2UnityUI
+      value: FrontPlate
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -688,6 +688,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonHololens2UnityUI
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426577712821803, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_RootOrder
@@ -698,16 +703,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 2.02
       objectReference: {fileID: 0}
-    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Name
-      value: FrontPlate
-      objectReference: {fileID: 0}
     - target: {fileID: 5234426577528310576, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_IsActive
@@ -717,11 +712,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BackPlate
-      objectReference: {fileID: 0}
-    - target: {fileID: 9130116940813133624, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5234426577528310582, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -748,6 +738,11 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: ec72a3a105768f746b556a8dfdae61a8, type: 2}
+    - target: {fileID: 5234426577712821802, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 576d8c5677ec60c459961421ebe64e99, type: 2}
     m_RemovedComponents:
     - {fileID: 5234426576715676738, guid: df89e360642c6fc46abbc1c2656856f6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: df89e360642c6fc46abbc1c2656856f6, type: 3}
