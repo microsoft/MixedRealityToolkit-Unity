@@ -106,9 +106,13 @@ Please see [Known issues](#known-issues-in-230) for details on known limitations
 
 After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.
 
+This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).
+
 **<project>.Dependencies.msb4u**
 
-MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed. When using source control, such as GitHub, these files can be safely added to exlude / ignore lists (ex: .gitignore).
+MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed.
+
+When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).
 
 
 **Hand physics extension service**
