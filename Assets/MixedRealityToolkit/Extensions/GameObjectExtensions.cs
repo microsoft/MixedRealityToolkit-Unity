@@ -158,5 +158,50 @@ namespace Microsoft.MixedReality.Toolkit
         {
             UnityObjectExtensions.DestroyObject(gameObject, t);
         }
+
+        /// <summary>
+        /// Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T
+        /// </summary>
+        /// <typeparam name="T">The potentially required component</typeparam>
+        /// <param name="gameObject">the GameObject requiring the component</param>
+        /// <param name="requiringTypes">A list of types that do require the component in question</param>
+        /// <returns>true if <typeparamref name="T"/> appears in any RequireComponentAttribute, otherwise false </returns>
+        public static bool IsComponentRequired<T>(this GameObject gameObject, out List<Type> requiringTypes) where T : Component
+        {
+            var genericType = typeof(T);
+            requiringTypes = null;
+
+            foreach (var monoBehaviour in gameObject.GetComponents<MonoBehaviour>())
+            {
+                if (monoBehaviour == null)
+                {
+                    continue;
+                }
+
+                var monoBehaviourType = monoBehaviour.GetType();
+                var attributes = Attribute.GetCustomAttributes(monoBehaviourType);
+
+                foreach (var attribute in attributes)
+                {
+                    var requireComponentAttribute = attribute as RequireComponent;
+                    if (requireComponentAttribute != null)
+                    {
+                        if (requireComponentAttribute.m_Type0 == genericType ||
+                            requireComponentAttribute.m_Type1 == genericType ||
+                            requireComponentAttribute.m_Type2 == genericType)
+                        {
+                            if (requiringTypes == null)
+                            {
+                                requiringTypes = new List<Type>();
+                            }
+
+                            requiringTypes.Add(monoBehaviourType);
+                        }
+                    }
+                }
+            }
+
+            return requiringTypes != null;
+        }
     }
 }
