@@ -91,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Flags user intention to re activate eye or head based gaze cursor
         /// </summary>
-        /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             if (eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))

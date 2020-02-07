@@ -36,8 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 !eyeGazeProvider.IsEyeTrackingAvailable)
             { return false; }
 
-            ray.origin = eyeGazeProvider.GazeOrigin;
-            ray.direction = eyeGazeProvider.GazeDirection;
+            if (eyeGazeProvider.UseEyeTracking)
+            {
+                ray.origin = eyeGazeProvider.GazeOrigin;
+                ray.direction = eyeGazeProvider.GazeDirection;
+            }
+            else
+            {
+                ray = eyeGazeProvider.LatestEyeGaze;
+            }
             return true;
         }
 

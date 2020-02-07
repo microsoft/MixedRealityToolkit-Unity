@@ -27,6 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool? IsEyeCalibrationValid { get; }
 
         /// <summary>
+        /// The most recent eye tracking ray
+        /// </summary>
+        Ray LatestEyeGaze { get; }
+
+        /// <summary>
         /// If true, eye-based tracking will be used when available.
         /// </summary>
         /// <remarks>

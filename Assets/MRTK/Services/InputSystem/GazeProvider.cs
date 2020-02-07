@@ -163,6 +163,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public DateTime Timestamp { get; private set; }
 
         private Ray latestEyeGaze = default(Ray);
+        /// <summary>
+        /// The most recent eye tracking ray
+        /// </summary>
+        public Ray LatestEyeGaze 
+        { 
+            get { return latestEyeGaze; } 
+            private set { latestEyeGaze = value; } 
+        }
+
         private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
         private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
@@ -228,8 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
-                    newGazeOrigin = gazeProvider.latestEyeGaze.origin;
-                    newGazeNormal = gazeProvider.latestEyeGaze.direction;
+                    newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
+                    newGazeNormal = gazeProvider.LatestEyeGaze.direction;
                 }
                 else
                 {
@@ -539,7 +548,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
-            latestEyeGaze = eyeRay;
+            LatestEyeGaze = eyeRay;
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;
         }
