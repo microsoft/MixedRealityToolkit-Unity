@@ -582,10 +582,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                                     if (!alreadyContainsIcon)
                                     {
-                                        List<CharIcon> charIconsSet = new List<CharIcon>(bis.charIcons);
-                                        charIconsSet.Add(new CharIcon { Character = unicode, Name = "Icon " + charIconsSet.Count.ToString() });
-                                        bis.charIcons = charIconsSet.ToArray();
-                                        EditorUtility.SetDirty(target);
+                                        charIconsProp.InsertArrayElementAtIndex(charIconsProp.arraySize);
+
+                                        SerializedProperty newIconProp = charIconsProp.GetArrayElementAtIndex(charIconsProp.arraySize - 1);
+                                        SerializedProperty charProp = newIconProp.FindPropertyRelative("Character");
+                                        SerializedProperty nameProp = newIconProp.FindPropertyRelative("Name");
+
+                                        charProp.intValue = (int)unicode;
+                                        nameProp.stringValue = "Icon " + charIconsProp.arraySize.ToString();
+
+                                        serializedObject.ApplyModifiedProperties();
                                     }
                                 }
                             }
@@ -602,13 +608,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             int removeIndex = -1;
 
-                            if (bis.charIcons.Length > 0)
+                            if (charIconsProp.arraySize > 0)
                             {
-                                EditorGUILayout.HelpBox("These icons will appear in the button config helper inspector. Click an icons to remove it from this list.", MessageType.Info);
+                                EditorGUILayout.HelpBox("These icons will appear in the button config helper inspector. Click an icon to remove it from this list.", MessageType.Info);
 
                                 using (new EditorGUILayout.VerticalScope())
                                 {
-                                    for (int i = 0; i < bis.charIcons.Length; i++)
+                                    for (int i = 0; i < charIconsProp.arraySize; i++)
                                     {
                                         SerializedProperty charIconNameprop = charIconsProp.GetArrayElementAtIndex(i).FindPropertyRelative("Name");
 
@@ -631,6 +637,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             else
                             {
                                 EditorGUILayout.HelpBox("No icons added yet. Click avaialable icons to add.", MessageType.Info);
+                            }
+
+                            if (removeIndex >= 0)
+                            {
+                                charIconsProp.DeleteArrayElementAtIndex(removeIndex);
                             }
                         }
 
