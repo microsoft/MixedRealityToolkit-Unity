@@ -102,6 +102,15 @@ MRTK has added initial support for [Unity 2019.3's new XR platform](https://blog
 
 Please see [Known issues](#known-issues-in-230) for details on known limitations.
 
+**Assets/Dependencies folder**
+
+After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.
+
+**<project>.Dependencies.msb4u**
+
+MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed. When using source control, such as GitHub, these files can be safely added to exlude / ignore lists (ex: .gitignore).
+
+
 **Hand physics extension service**
 
 A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands ([#6573](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573)).
