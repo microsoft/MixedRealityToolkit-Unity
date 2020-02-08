@@ -206,6 +206,12 @@ asset database and reconcile existing custom profiles.</li>
 <p><strong>Support for Unity 2019.3 new XR platform (Experimental)</strong></p>
 <p>MRTK has added initial support for <a href="https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/">Unity 2019.3's new XR platform</a>. When using the Windows XR plugin, it is recommended using version <strong>2.0.4 (preview.3)</strong> or newer.</p>
 <p>Please see <a href="#known-issues-in-230">Known issues</a> for details on known limitations.</p>
+<p><strong>Assets/Dependencies folder</strong></p>
+<p>After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.</p>
+<p>This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).</p>
+<p><strong><project>.Dependencies.msb4u</project></strong></p>
+<p>MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed.<p>
+<p>When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).</p>
 <p><strong>Hand physics extension service</strong></p>
 <p>A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573">#6573</a>).</p>
 <p><img src="https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif" alt="Hand physics"></p>
@@ -1098,7 +1104,7 @@ Visual Studio.</p>
 <p>Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
 may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the <strong>Scene Content</strong> object, in the Hierarchy, and set the Transform's Position Y value to <strong>1.5</strong> (1.5 meters, or the preferred headset height).</p>
 <p><img src="Images/ReleaseNotes/AdjustContentHeight.png" alt="Adjusting Scene Content Height"></p>
-</article>
+</project></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
