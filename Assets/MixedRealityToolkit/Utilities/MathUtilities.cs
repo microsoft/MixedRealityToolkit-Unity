@@ -532,7 +532,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 point,
             float fieldOfView,
             float minDist = 0.05f,
-            float maxDist = 100f)
+            float maxDist = 100f,
+            bool debug = false)
         {
             var dirToPoint = point - cone.position;
 
@@ -543,6 +544,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             var degrees = Mathf.Acos(pointDist / dirToPoint.magnitude) * Mathf.Rad2Deg;
+            if (debug)
+            {
+                Debug.Log($"degrees: {degrees} fov: {fieldOfView} pointDist: {pointDist}");
+            }
             return degrees < fieldOfView * 0.5f;
         }
 

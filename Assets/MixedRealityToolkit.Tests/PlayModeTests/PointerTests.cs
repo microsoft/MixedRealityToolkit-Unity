@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestPointerFieldOfViewLargeColliderHelper(IMixedRealityPointer myPointer, GameObject cube, TestHand testHand)
         {
-            cube.transform.localScale = new Vector3(1, 1, 0.05f);
+            cube.transform.localScale = new Vector3(3, 3, 0.05f);
             float[] yOffsets = new float[] { -1f, 0f, 1f };
             float[] xOffsets = new float[] { -1f, 0f, 1f };
             float[] zOffsets = new float[] { 1f, -1f };
@@ -144,11 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         var cameraPos = CameraCache.Main.transform.position;
                         var pos = new Vector3(cameraPos.x + xOffset, cameraPos.y + yOffset, cameraPos.z + zOffset);
                         cube.transform.position = pos;
-                        cube.transform.LookAt(CameraCache.Main.transform);
                         yield return testHand.MoveTo(cube.transform.position);
                         yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+                        yield return PlayModeTestUtilities.WaitForEnterKey();
+                        bool isInFov = CameraCache.Main.IsInFOVCached(cube.GetComponent<BoxCollider>());
                         Assert.IsTrue(zOffset == 1f ? myPointer.IsInteractionEnabled : !myPointer.IsInteractionEnabled,
-                            $"Pointer {myPointer.PointerName} in incorrect state. Cube size {cube.transform.localScale} location {cube.transform.position}.");
+                            $"Pointer {myPointer.PointerName} in incorrect state. IsInFOV {isInFov} Cube size {cube.transform.localScale} location {cube.transform.position}.");
                     }
                 }
             }
@@ -218,6 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsTrue(myPointer.IsInteractionEnabled, $"Pointer {myPointer.PointerName} should be enabled because it is near object inside of FOV. Cube size {cube.transform.localScale} location {cube.transform.position}.");
         }
+
         /// <summary>
         /// Tests that sphere pointer grabs object when hand is inside a giant grabbable
         /// </summary>
