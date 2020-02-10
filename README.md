@@ -15,7 +15,7 @@ MRTK-Unity is a Microsoft-driven project that provides a set of components and f
 
 # Getting started with MRTK
 
-| [![Getting Started and Documentation](Documentation/Images/MRTK_Icon_GettingStarted.png)](Documentation/GettingStartedWithTheMRTK.md)<br/>[Getting Started](Documentation/GettingStartedWithTheMRTK.md)| [![Getting Started](Documentation/Images/MRTK_Icon_ArchitectureOverview.png)](Documentation/Architecture/Overview.md)<br/>[MRTK Overview](Documentation/Architecture/Overview.md)| [![Feature Guides](Documentation/Images/MRTK_Icon_FeatureGuides.png)](Documentation/README_Button.md)<br/>[Feature Guides](Documentation/README_Button.md)| [![API Reference](Documentation/Images/MRTK_Icon_APIReference.png)](xref:Microsoft.MixedReality.Toolkit)<br/>[API Reference](xref:Microsoft.MixedReality.Toolkit.Boundary)|
+| [![Getting Started and Documentation](Documentation/Images/MRTK_Icon_GettingStarted.png)](Documentation/GettingStartedWithTheMRTK.md)<br/>[Getting Started](Documentation/GettingStartedWithTheMRTK.md)| [![Getting Started](Documentation/Images/MRTK_Icon_ArchitectureOverview.png)](Documentation/Architecture/Overview.md)<br/>[MRTK Overview](Documentation/Architecture/Overview.md)| [![Feature Guides](Documentation/Images/MRTK_Icon_FeatureGuides.png)](Documentation/README_Button.md)<br/>[Feature Guides](Documentation/README_Button.md)| [![API Reference](Documentation/Images/MRTK_Icon_APIReference.png)](xref:Microsoft.MixedReality.Toolkit)<br/>[API Reference](xref:Microsoft.MixedReality.Toolkit)|
 |:---|:---|:---|:---|
 
 # Build status
