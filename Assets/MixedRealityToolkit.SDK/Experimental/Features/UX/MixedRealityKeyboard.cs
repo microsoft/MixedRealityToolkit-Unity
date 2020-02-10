@@ -2,11 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
-using UnityEngine.Events;
-
-#if !UNITY_EDITOR && UNITY_WSA
-using Windows.UI.ViewManagement;
-#endif 
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {

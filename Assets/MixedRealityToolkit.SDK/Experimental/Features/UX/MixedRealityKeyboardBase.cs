@@ -290,17 +290,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
             }
         }
-#endif
 
-        private bool IsPreviewCaretAtEnd()
-        {
-            return CaretIndex == Text.Length;
-        }
+        private bool IsPreviewCaretAtEnd() => CaretIndex == Text.Length;
 
-        private void MovePreviewCaretToEnd()
-        {
-            CaretIndex = Text.Length;
-        }
+        private void MovePreviewCaretToEnd() => CaretIndex = Text.Length;
 
         private void OnKeyboardHiding()
         {
@@ -311,5 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private void OnKeyboardShowing() { }
+#endif
     }
 }
