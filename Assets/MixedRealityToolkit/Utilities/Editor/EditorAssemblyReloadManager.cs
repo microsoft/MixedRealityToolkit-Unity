@@ -27,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     EditorApplication.LockReloadAssemblies();
 
-                    if (!Application.isBatchMode)
+                    if ((EditorWindow.focusedWindow != null) &&
+                        !Application.isBatchMode)
                     {
                         EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading temporarily paused."));
                     }
@@ -37,7 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     EditorApplication.UnlockReloadAssemblies();
                     EditorApplication.delayCall += () => AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
 
-                    if (!Application.isBatchMode)
+                    if ((EditorWindow.focusedWindow != null) &&
+                        !Application.isBatchMode)
                     {
                         EditorWindow.focusedWindow.ShowNotification(new GUIContent("Assembly reloading resumed."));
                     }

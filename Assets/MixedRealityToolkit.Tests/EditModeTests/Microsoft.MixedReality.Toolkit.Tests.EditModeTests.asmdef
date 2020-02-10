@@ -12,7 +12,8 @@
         "Microsoft.MixedReality.Toolkit.Examples",
         "Microsoft.MixedReality.Toolkit.Tools",
         "Microsoft.MixedReality.Toolkit.Providers.OpenVR",
-        "Microsoft.MixedReality.Toolkit.Tests.Utilities"
+        "Microsoft.MixedReality.Toolkit.Tests.Utilities",
+        "Microsoft.MixedReality.Toolkit.Services.BoundarySystem"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

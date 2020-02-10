@@ -279,9 +279,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             Debug.Assert(File.Exists(nugetPath));
             Debug.Assert(Directory.Exists(storePath));
 
-            await new Process().StartProcessAsync(nugetPath, $"restore \"{storePath}/project.json\"");
+            string projectJSONPath = Path.Combine(storePath, "project.json");
+            string projectJSONLockPath = Path.Combine(storePath, "project.lock.json");
 
-            return File.Exists($"{storePath}\\project.lock.json");
+            await new Process().StartProcessAsync(nugetPath, $"restore \"{projectJSONPath}\"");
+
+            return File.Exists(projectJSONLockPath);
         }
     }
 }

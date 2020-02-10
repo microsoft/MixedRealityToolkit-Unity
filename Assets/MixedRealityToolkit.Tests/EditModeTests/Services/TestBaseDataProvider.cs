@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     /// <summary>
     /// Base class for test data providers

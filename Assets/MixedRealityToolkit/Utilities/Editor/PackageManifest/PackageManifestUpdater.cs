@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -17,14 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static string MSBuildRegistryName = "MS Build for Unity";
         private static string[] MSBuildRegistryScopes = new string[] { "com.microsoft" };
 
-        private static string MSBuildPackageName = "com.microsoft.msbuildforunity";
-        private static string MSBuildPackageVersion = "0.8.3";
+        internal const string MSBuildPackageName = "com.microsoft.msbuildforunity";
+        internal const string MSBuildPackageVersion = "0.9.1";
 
         /// <summary>
-        /// Ensures the required settings exist in the package manager to allow for
-        /// installing MSBuild for Unity.
+        /// Finds and returns the fully qualified path to the Unity Package Manager manifest
         /// </summary>
-        internal static void EnsureMSBuildForUnity()
+        /// <returns>The path to the manifest file, or null.</returns>
+        private static string GetPackageManifestFilePath()
         {
             // Locate the full path to the package manifest.
             DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
@@ -35,10 +36,94 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (!File.Exists(manifestPath))
             {
                 Debug.LogError($"Package manifest file ({manifestPath}) could not be found.");
-                return;
+                return null;
             }
 
+            return manifestPath;
+        }
+
+        /// <summary>
+        /// Reports whether or not the appropriate version of MSBuild for Unity is specified
+        /// in the Unity Package Manager manifest.
+        /// </summary>
+        /// <returns>
+        /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
+        /// </returns>
+        internal static bool IsMSBuildForUnityEnabled()
+        {
+            string manifestPath = GetPackageManifestFilePath();
+            if (string.IsNullOrWhiteSpace(manifestPath))
+            {
+                return false;
+            }
+
+            // Load the manifest file.
+            string manifestFileContents = File.ReadAllText(manifestPath);
+            if (string.IsNullOrWhiteSpace(manifestFileContents))
+            {
+                return false;
+            }
+
+            // Read the package manifest a line at a time.
+            bool msBuildFound = false;
+            bool isAppropriateVersion = false;
+            Version minVersion = Version.Parse(MSBuildPackageVersion);
+            using (FileStream manifestStream = new FileStream(manifestPath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(manifestStream))
+                {
+                    // Read the manifest file a line at a time.
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        if (line.Contains(MSBuildPackageName))
+                        {
+                            msBuildFound = true;
+
+                            // Next, check the version.
+                            string[] splitLine = line.Split(new char[] { ':' });
+                            if (splitLine.Length == 2)
+                            {
+                                // Ensure correct formatting of the version string, before we attempt to parse it.
+                                string versionString = splitLine[1].Trim(new char[] { ' ', '\"', ',' });
+                                bool replaceOnEquals = false;
+                                if (versionString.Contains("-"))
+                                {
+                                    // The string references a preview version. Truncate at the '-'.
+                                    versionString = versionString.Substring(0, versionString.IndexOf('-'));
+                                    
+                                    // We want to update preview versions to the final.
+                                    replaceOnEquals = true;
+                                }
+
+                                Version version;
+                                if (Version.TryParse(versionString, out version))
+                                {
+                                    isAppropriateVersion = replaceOnEquals ? (version > minVersion) : (version >= minVersion);
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return (msBuildFound && isAppropriateVersion);
+        }
+
+        /// <summary>
+        /// Ensures the required settings exist in the package manager to allow for using MSBuild for Unity.
+        /// </summary>
+        internal static void EnsureMSBuildForUnity()
+        {
             PackageManifest manifest = null;
+
+            string manifestPath = GetPackageManifestFilePath();
+            if (string.IsNullOrWhiteSpace(manifestPath))
+            {
+                return;
+            }
 
             // Read the package manifest into a list of strings (for easy finding of entries)
             // and then deserialize.
@@ -102,11 +187,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             int dependenciesStartIndex = -1;
             int scopedRegistriesStartIndex = -1;
             int scopedRegistriesEndIndex = -1;
+            int packageLine = -1;
 
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
             // This loop also identifies the dependecies collection line and the start / end of a
             // pre-existing scoped registries collections
-            bool needToAddPackage = true;
+            bool addPackage = true;
             for (int i = 0; i < manifestFileLines.Count; i++)
             {
                 if (manifestFileLines[i].Contains("\"scopedRegistries\":"))
@@ -123,55 +209,57 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
                 if (manifestFileLines[i].Contains(MSBuildPackageName))
                 {
-                    needToAddPackage = false;
+                    packageLine = i;
+                    addPackage = false;
                 }
             }
 
             // If no package was found add it to the dependencies collection.
-            if (needToAddPackage)
+            if (addPackage)
             {
                 // Add the package to the collection (pad the entry with four spaces)
                 manifestFileLines.Insert(dependenciesStartIndex + 1, $"    \"{MSBuildPackageName}\": \"{MSBuildPackageVersion}\",");
             }
-
-            if (needToAddRegistry || needToAddPackage)
+            else
             {
-                // If we added a scoped registry or package, rewrite the manifest file.
+                // Replace the line that currently exists
+                manifestFileLines[packageLine] = $"    \"{MSBuildPackageName}\": \"{MSBuildPackageVersion}\",";
+            }
 
-                // First, serialize the scoped registry collection.
-                string serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
+            // Update the manifest file.
+            // First, serialize the scoped registry collection.
+            string serializedRegistriesJson = JsonUtility.ToJson(manifest, true);
 
-                // Ensure that the file is truncated to ensure it is always valid after writing.
-                using (FileStream outFile = new FileStream(manifestPath, FileMode.Truncate, FileAccess.Write))
+            // Ensure that the file is truncated to ensure it is always valid after writing.
+            using (FileStream outFile = new FileStream(manifestPath, FileMode.Truncate, FileAccess.Write))
+            {
+                using (StreamWriter writer = new StreamWriter(outFile))
                 {
-                    using (StreamWriter writer = new StreamWriter(outFile))
+                    bool scopedRegistriesWritten = false;
+
+                    // Write each line of the manifest back to the file.
+                    for (int i = 0; i < manifestFileLines.Count; i++)
                     {
-                        bool scopedRegistriesWritten = false;
-
-                        // Write each line of the manifest back to the file.
-                        for (int i = 0; i < manifestFileLines.Count; i++)
+                        if ((i >= scopedRegistriesStartIndex) && (i <= scopedRegistriesEndIndex))
                         {
-                            if ((i >= scopedRegistriesStartIndex) && (i <= scopedRegistriesEndIndex))
-                            {
-                                // Skip these lines, they will be replaced.
-                                continue;
-                            }
-
-                            if (!scopedRegistriesWritten && (i > 0))
-                            {
-                                // Trim the leading '{' and '\n' from the serialized scoped registries
-                                serializedRegistriesJson = serializedRegistriesJson.Remove(0, 2);
-                                // Trim, the trailing '\n' and '}'
-                                serializedRegistriesJson = serializedRegistriesJson.Remove(serializedRegistriesJson.Length - 2);
-                                // Append a trailing ',' to close the scopedRegistries node
-                                serializedRegistriesJson = serializedRegistriesJson.Insert(serializedRegistriesJson.Length, ",");
-                                writer.WriteLine(serializedRegistriesJson);
-
-                                scopedRegistriesWritten = true;
-                            }
-
-                            writer.WriteLine(manifestFileLines[i]);
+                            // Skip these lines, they will be replaced.
+                            continue;
                         }
+
+                        if (!scopedRegistriesWritten && (i > 0))
+                        {
+                            // Trim the leading '{' and '\n' from the serialized scoped registries
+                            serializedRegistriesJson = serializedRegistriesJson.Remove(0, 2);
+                            // Trim, the trailing '\n' and '}'
+                            serializedRegistriesJson = serializedRegistriesJson.Remove(serializedRegistriesJson.Length - 2);
+                            // Append a trailing ',' to close the scopedRegistries node
+                            serializedRegistriesJson = serializedRegistriesJson.Insert(serializedRegistriesJson.Length, ",");
+                            writer.WriteLine(serializedRegistriesJson);
+
+                            scopedRegistriesWritten = true;
+                        }
+
+                        writer.WriteLine(manifestFileLines[i]);
                     }
                 }
             }

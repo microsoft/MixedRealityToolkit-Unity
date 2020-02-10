@@ -96,11 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization.Editor
                     }
                     else
                     {
-                        var path = Path.GetFullPath(Path.GetDirectoryName(context.assetPath));
-                        path = path.Replace("\\", "/").Replace(Application.dataPath, "Assets");
-                        path = $"{path}/{gltfMaterial.name}.mat";
-                        AssetDatabase.CreateAsset(gltfMaterial.Material, path);
-                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(path);
+                        var relativePath = Path.GetFullPath(Path.GetDirectoryName(context.assetPath)).Replace(Path.GetFullPath(Application.dataPath), "Assets");
+                        relativePath = Path.Combine(relativePath, $"{gltfMaterial.name}.mat");
+                        AssetDatabase.CreateAsset(gltfMaterial.Material, relativePath);
+                        gltfMaterial.Material = AssetDatabase.LoadAssetAtPath<Material>(relativePath);
                     }
                 }
             }

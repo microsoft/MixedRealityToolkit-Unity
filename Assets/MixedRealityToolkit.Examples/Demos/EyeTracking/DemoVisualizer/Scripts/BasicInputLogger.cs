@@ -33,14 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [SerializeField]
         protected string sessionDescr = "Session00";
 
-        public string LogDirectory
-        {
-            get
-            {
-                string name = "MRTK_ET_Demo\\" + UserName;
-                return "MRTK_ET_Demo\\" + UserName;
-            }
-        }
+        public string LogDirectory => Path.Combine("MRTK_ET_Demo", UserName);
 
         public abstract string GetHeader();
 
@@ -62,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 Debug.Log(">> BasicInputLogger.CreateNewLogFile:  " + logRootFolder.ToString());
                 if (logRootFolder != null)
                 {
-                    string fullPath = logRootFolder.Path + "\\" + LogDirectory;
+                    string fullPath = Path.Combine(logRootFolder.Path, LogDirectory);
                     Debug.LogFormat("Does directory already exist {0} --\nLogRootFolder: {2} \n {1}", Directory.Exists(fullPath), fullPath, logRootFolder.Path);
 
                         try
@@ -159,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 if (logRootFolder != null)
                 {
-                    string fullPath = logRootFolder.Path + "\\" + LogDirectory;
+                    string fullPath = Path.Combine(logRootFolder.Path, LogDirectory);
 
                     try
                         {

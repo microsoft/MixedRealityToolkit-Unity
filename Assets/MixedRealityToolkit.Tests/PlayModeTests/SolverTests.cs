@@ -69,37 +69,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestTargetTypes()
         {
             Vector3 rightHandPos = Vector3.right * 50.0f;
+            Vector3 leftHandPos = -rightHandPos;
             Vector3 customTransformPos = Vector3.up * 50.0f;
 
             var transformOverride = new GameObject("Override");
             transformOverride.transform.position = customTransformPos;
 
             var testObjects = InstantiateTestSolver<Orbital>();
-
-            // Set solver handler to track hands
-            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+                yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
+            }
+
+            // Test orbital around left hand line pointer
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.ControllerRay;
+                testObjects.handler.TrackedHandness = Handedness.Left;
+
+                yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
+            }
 
             // Test orbital around head
-            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+            }
 
             // Test orbital around custom override
-            testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.TransformOverride = transformOverride.transform;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
+                testObjects.handler.TransformOverride = transformOverride.transform;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
+            }
         }
 
         /// <summary>
@@ -122,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
 
             // Test orbital around left hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, leftHandPos, Handedness.Left);
+            yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
 
             // Test orbital with both hands visible
             yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
@@ -282,6 +294,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Make sure the solver is now near the other hand.
             Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
+        }
+
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the FollowHandUntilFacingCamera behavior works as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverPlacement()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            handConstraintSolver.FollowHandUntilFacingCamera = true;
+
+            // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
+            Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
+
+            var cameraTransform = CameraCache.Main.transform;
+
+            // Place hand 1 meter in front of user, 50 cm below eye level
+            var handTestPos = cameraTransform.position + cameraTransform.forward - (Vector3.up * 0.5f);
+            
+            var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
+
+            // Generate hand rotation with hand palm facing camera
+            var handRoation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
+
+            // Add a right hand.
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(handTestPos);
+            yield return rightHand.SetRotation(handRoation);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtMainCamera);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.LookAtCameraRotation);
+
+            // Rotate hand so palm is no longer within the FollowHandCameraFacingThresholdAngle
+            var newHandRot = handRoation * Quaternion.Euler(-(handConstraintSolver.FollowHandCameraFacingThresholdAngle + 1), 0f, 0f);
+            yield return rightHand.SetRotation(newHandRot);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtTrackedObject);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.TrackedObjectRotation);
+
+            yield return rightHand.Hide();
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
         }
 
         /// <summary>
@@ -598,19 +667,72 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
         }
 
+        /// <summary>
+        /// Test the Follow solver angular clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowStuckBehind()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // variables and lambdas to test direction remains within bounds
+            Vector3 toTarget() => targetTransform.position - CameraCache.Main.transform.position;
+
+            // Test without rotation
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
+
+            // Test y axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 180));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
+        }
+
         #endregion
 
         #region Test Helpers
 
-        private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
+        private IEnumerator TestHandSolver(SetupData testData, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
+            Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay 
+                || testData.handler.TrackedTargetType == TrackedObjectType.HandJoint, "TestHandSolver supports on ControllerRay and HandJoint tracked target types");
+
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
             yield return WaitForFrames(2);
 
-            Vector3 handOrbitalPos = target.transform.position;
+            Vector3 handOrbitalPos = testData.target.transform.position;
             Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
+
+            Transform expectedTransform = null;
+            if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
+            {
+                expectedTransform = PointerUtils.GetPointer<LinePointer>(hand)?.transform;
+            }
+            else
+            {
+                var handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
+                expectedTransform = handJointService.RequestJointTransform(testData.handler.TrackedHandJoint, hand);
+            }
+
+            Assert.AreEqual(testData.handler.CurrentTrackedHandedness, hand);
+            Assert.IsNotNull(expectedTransform);
+            
+            // SolverHandler creates a dummy GameObject to provide a transform for tracking so it can be managed (allocated/deleted)
+            // Look at the parent to compare transform equality for what we should be tracking against
+            Assert.AreEqual(testData.handler.TransformTarget.parent, expectedTransform);
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 

@@ -27,6 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Detect when we enter player mode so we can try checking for optimal configuration
             EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
 
+            // Subscribe to editor application update which will call us once the editor is initialized and running
+            EditorApplication.update += OnInit;
+        }
+
+        private static void OnInit()
+        {
+            // We only want to execute once to initialize, unsubscribe from update event
+            EditorApplication.update -= OnInit;
+
             ShowProjectConfigurationDialog();
         }
 
@@ -72,7 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         private static void LogConfigurationWarnings()
         {
-            if (!PlayerSettings.virtualRealitySupported)
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+            if (!XRSettingsUtilities.LegacyXREnabled)
             {
                 Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
             }

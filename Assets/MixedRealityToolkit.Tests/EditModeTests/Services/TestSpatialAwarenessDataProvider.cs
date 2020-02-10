@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     internal interface ITestSpatialAwarenessDataProvider : IMixedRealityDataProvider, ITestService, IMixedRealitySpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver
     {

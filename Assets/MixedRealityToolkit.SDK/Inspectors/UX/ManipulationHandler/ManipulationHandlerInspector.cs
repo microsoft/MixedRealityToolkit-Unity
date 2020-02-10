@@ -3,11 +3,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -168,6 +167,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             style.fontStyle = previousStyle;
 
             serializedObject.ApplyModifiedProperties();
+
+            // Draws warning message for deprecated object with button for migration option
+            DrawDeprecated();
+        }
+
+        private void DrawDeprecated()
+        {
+            EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", UnityEditor.MessageType.Warning);
+            if (GUILayout.Button("Migrate Object"))
+            {
+#if UNITY_EDITOR
+                MigrationTool migrationTool = new MigrationTool();
+
+                var component = (ManipulationHandler)target;
+
+                migrationTool.TryAddObjectForMigration((GameObject)component.gameObject);
+                migrationTool.MigrateSelection(typeof(ObjectManipulatorMigrationHandler), true);
+#endif
+            }
         }
     }
 }

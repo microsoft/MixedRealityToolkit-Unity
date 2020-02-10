@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     public class UserInputPlayback : MonoBehaviour
     {
         [SerializeField]
-        private string customFilename = "";
+        private string customFilename = string.Empty;
 
         public InputPointerVisualizer _EyeGazeVisualizer;
         public InputPointerVisualizer _HeadGazeVisualizer;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
 #if WINDOWS_UWP
         private StorageFolder uwpRootFolder = KnownFolders.MusicLibrary;
-        private readonly string uwpSubFolderName = "MRTK_ET_Demo\\tester";
+        private readonly string uwpSubFolderName = $"MRTK_ET_Demo{Path.DirectorySeparatorChar}tester";
         private readonly string uwpFileName = "mrtk_log_mostRecentET.csv";
         private StorageFolder uwpLogSessionFolder;
         private StorageFile uwpLogFile;

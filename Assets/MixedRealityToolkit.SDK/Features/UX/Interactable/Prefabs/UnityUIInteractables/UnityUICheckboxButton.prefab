@@ -218,6 +218,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: dae413b1fffbbf841ae1176deb55d3c0,
         type: 2}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.54764
+      objectReference: {fileID: 0}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.54764
+      objectReference: {fileID: 0}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.54764
+      objectReference: {fileID: 0}
     - target: {fileID: 6125606074263152001, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -233,6 +248,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 2.1
       objectReference: {fileID: 0}
+    - target: {fileID: 2800397327216220481, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 773360473827421914, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8386217965422895077, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_Sprite
@@ -246,6 +271,11 @@ PrefabInstance:
     - target: {fileID: 8386217965422895077, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994008513695797655, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2095207503967632265, guid: e35ccb692ee2a154fb472995266a2450,
@@ -263,35 +293,177 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.54764
-      objectReference: {fileID: 0}
-    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.54764
-      objectReference: {fileID: 0}
-    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.54764
-      objectReference: {fileID: 0}
-    - target: {fileID: 8994008513695797655, guid: e35ccb692ee2a154fb472995266a2450,
-        type: 3}
-      propertyPath: m_IsActive
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2800397327216220481, guid: e35ccb692ee2a154fb472995266a2450,
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 773360473827421914, guid: e35ccb692ee2a154fb472995266a2450,
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8024116164960921542}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8024116164960921542}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8024116164960921542}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8024116164960921542}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnHandPressTouched
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnHandPressCompleted
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnHandPressTriggered
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnHandPressCompleted
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHandPressTouched
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHandPressUntouched
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHandPressTriggered
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHandPressCompleted
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005363787759766542, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e35ccb692ee2a154fb472995266a2450, type: 3}
+--- !u!114 &8024116164960921542 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6800330662228792747, guid: e35ccb692ee2a154fb472995266a2450,
+    type: 3}
+  m_PrefabInstance: {fileID: 3532163058215367277}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 881d1ff8f009f5148b9f192e6ba31223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

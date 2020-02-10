@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e9fb424002a7044e91c26596ce40278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uri: \GltfModels\Avocado\glTF\Avocado.gltf
+  relativePath: GltfModels\Avocado\glTF\Avocado.gltf
   ScaleFactor: 3
   DebugText: {fileID: 1665641177}
 --- !u!1 &1176644373

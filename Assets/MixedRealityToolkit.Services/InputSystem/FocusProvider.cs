@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public IMixedRealityPointer PrimaryPointer
         {
-            get { return primaryPointer; }
+            get => primaryPointer;
             private set
             {
                 if (value != PrimaryPointer)
@@ -255,6 +255,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public void Set(RaycastResult result, Vector3 hitPointOnObject, Vector4 hitNormalOnObject, RayStep ray, int rayStepIndex, float rayDistance)
             {
                 raycastHit = default(MixedRealityRaycastHit);
+                raycastHit.point = hitPointOnObject;
+                raycastHit.normal = hitNormalOnObject;
+                raycastHit.distance = rayDistance;
+                raycastHit.transform = result.gameObject.transform;
+                raycastHit.raycastValid = true;
+
                 graphicsRaycastResult = result;
 
                 this.hitObject = result.gameObject;
@@ -552,12 +558,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // another raycast if it's not populated
             if (gazeHitResult == null)
             {
+                // get 3d hit
                 hitResult3d.Clear();
                 var raycastProvider = CoreServices.InputSystem.RaycastProvider;
                 LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
                 QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
                     hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
-                gazeHitResult = hitResult3d;
+
+                // get ui hit
+                hitResultUi.Clear();
+                RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+
+                // set gaze hit according to distance and priorization layer mask
+                gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
             }
 
             CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
@@ -957,11 +970,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
-                    {
-                        gazeHitResult = hitResult3d;
-                    }
-
                     int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
                     if (hitResult3dLayer == 0)
                     {
@@ -997,6 +1005,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Apply the hit result only now so changes in the current target are detected only once per frame.
                     pointerData.UpdateHit(hit);
 
+                    // set gaze hit result - make sure to include unity ui hits
+                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    {
+                        gazeHitResult = hit;
+                    }
+
                     // Set the pointer's result last
                     pointerData.Pointer.Result = pointerData;
                 }
@@ -1019,7 +1033,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
+        private PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
         {
             if (hit1.hitObject != null && hit2.hitObject != null)
             {
@@ -1027,12 +1041,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (prioritizedLayerMasks.Length > 1)
                 {
                     // Get the index in the prioritized layer masks
-                    int layerIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-                    int layerIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                    int layerMaskIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                    int layerMaskIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
-                    if (layerIndex1 != layerIndex2)
+                    if (layerMaskIndex1 != layerMaskIndex2)
                     {
-                        return (layerIndex1 < layerIndex2) ? hit1 : hit2;
+                        if (layerMaskIndex1 == -1)
+                        {
+                            return hit2;
+                        }
+                        else if (layerMaskIndex2 == -1)
+                        {
+                            return hit1;
+                        }
+                        else
+                        {
+                            return (layerMaskIndex1 < layerMaskIndex2) ? hit1 : hit2;
+                        }
                     }
                 }
 

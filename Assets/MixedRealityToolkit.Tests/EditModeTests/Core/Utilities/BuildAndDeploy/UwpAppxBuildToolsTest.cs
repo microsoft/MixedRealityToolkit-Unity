@@ -3,10 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Build.Editor;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
 {
     class UwpAppxBuildToolsTest
     {
@@ -208,6 +209,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
             UwpAppxBuildTools.AddCapability(rootElement, rootElement.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
             AssertSingleGazeInputCapability(rootElement);
         }
+
+        /// <summary>
+        /// Validates that AddCapabilities adds a capability.
+        /// </summary>
+        [Test]
+        public void TestAddCapabilities_Adds()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+        }
+
+        /// <summary>
+        /// Validates that AddCapabilities will only add a capability if
+        /// it doesn't already exist.
+        /// </summary>
+        [Test]
+        public void TestAddCapabilities_AddsOnce()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput", "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+        }
+
         #endregion
 
         #region AssemblyCSharp Tests
