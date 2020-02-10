@@ -161,13 +161,12 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <p>Useful Sphere Pointer properties:</p>
 <ul>
 <li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
-<li><em>Grab Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionGrabbable</code> to interact with a SpherePointer.</li>
-</ul>
+<li><em>Grab Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionGrabbable</code> to interact with a SpherePointer.
 <div class="NOTE">
 <h5>Note</h5>
 <p>The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.</p>
 </div>
-<ul>
+</li>
 <li><em>Ignore Colliders Not in FOV</em> - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
 This can prevent accidental grabs, and will allow hand rays to turn on when you may be near
 a grabbable but cannot see it. The <em>Visual FOV</em> is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV).</li>

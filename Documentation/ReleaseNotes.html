@@ -91,23 +91,18 @@
 </ul>
 <h2 id="version-230">Version 2.3.0</h2>
 <ul>
-<li><p><a href="#upgrading-projects-to-230">Upgrading projects</a></p>
-</li>
-<li><p><a href="#whats-new-in-230">What's new</a></p>
-</li>
-<li><p><a href="#known-issues-in-230">Known issues</a></p>
-</li>
-<li><p>Microsoft HoloLens 2</p>
-</li>
-<li><p>Microsoft HoloLens (1st gen)</p>
-</li>
-<li><p>Windows Mixed Reality Immersive headsets</p>
-</li>
-<li><p>OpenVR</p>
-</li>
-<li><p>(Experimental) Unity 2019.3 XR platform</p>
-</li>
-<li><p>(Experimental) Mobile AR</p>
+<li><a href="#upgrading-projects-to-230">Upgrading projects</a></li>
+<li><a href="#whats-new-in-230">What's new</a></li>
+<li><a href="#known-issues-in-230">Known issues</a></li>
+</ul>
+<p>This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.</p>
+<ul>
+<li>Microsoft HoloLens 2</li>
+<li>Microsoft HoloLens (1st gen)</li>
+<li>Windows Mixed Reality Immersive headsets</li>
+<li>OpenVR</li>
+<li>(Experimental) Unity 2019.3 XR platform</li>
+<li>(Experimental) Mobile AR
 <ul>
 <li>Android</li>
 <li>iOS</li>
@@ -211,14 +206,63 @@ asset database and reconcile existing custom profiles.</li>
 <p><strong>Support for Unity 2019.3 new XR platform (Experimental)</strong></p>
 <p>MRTK has added initial support for <a href="https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/">Unity 2019.3's new XR platform</a>. When using the Windows XR plugin, it is recommended using version <strong>2.0.4 (preview.3)</strong> or newer.</p>
 <p>Please see <a href="#known-issues-in-230">Known issues</a> for details on known limitations.</p>
+<p><strong>Assets/Dependencies folder</strong></p>
+<p>After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.</p>
+<p>This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).</p>
+<p>You can also add the .bin and .obj folders in MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter to your ignore list. These represent staging folders for individual csproj package resolution but are hidden from Unity's Asset view. The root Dependencies folder is the central location where the used copies are placed.</p>
+<p><strong><project>.Dependencies.msb4u</project></strong></p>
+<p>MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed.<p>
+<p>When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).</p>
+<p>After MRTK has enabled MSBuild for Unity, additional custom NuGet dependencies can be declared and resolved as well. This process is described in <a href="https://github.com/microsoft/MSBuildForUnity/blob/master/Documentation/CoreScenarios.md#scenario-1-adding-nuget-dependency-to-unity-project">MSBuild for Unity's documentation</a>.</p>
 <p><strong>Hand physics extension service</strong></p>
 <p>A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573">#6573</a>).</p>
 <p><img src="https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif" alt="Hand physics"></p>
+<p><strong>Non-native keyboard (Experimental)</strong></p>
+<p>A keyboard that can be used on platforms which do not provide native keyboard support.
+(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573">#6492</a>)</p>
+<img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
+<p><strong>Hand coach (Experimental)</strong></p>
+<p>Hand animations that can give helpful hints for gestures users should perform.
+(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493">#6493</a>)</p>
+<img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
+<p><strong>Follow solver (Experimental)</strong>
+A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493">#6981</a>)</p>
+<img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
 <p><strong>Pinch Slider orientation</strong></p>
 <p>The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858">#6858</a>)</p>
-<p><img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" alt="Y axis slier">
-<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG" alt="X axis slider"></p>
+<img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" width="150">
+<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG?s=25" width="150">
+<p><strong>ObjectManipulator and BoundsControl (Experimental)</strong></p>
+<p>ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. They also include a few new behavior changes:</p>
+<p>ObjectManipulator correctly responds to physics.</p>
+<img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
+<p>Improved ability to configure constraints for object manipulation.</p>
+<img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
+<p>We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924">#6294</a>)</p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
+<p><strong>CS0579: Duplicate 'AssemblyVersion' attribute</strong></p>
+<p>After enabling MSBuild for Unity, if Player Settings &gt; Other Settings &gt; API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.</p>
+<p>This is caused by an issue in MSBuild for Unity (<a href="https://github.com/microsoft/MSBuildForUnity/issues/133">#133</a>) where it is not properly removing dependency packages before restoring.</p>
+<p>To resolve these errors:</p>
+<ul>
+<li><p>In the <strong>Project</strong> window, expand <strong>Dependencies</strong></p>
+</li>
+<li><p>Open <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong></p>
+</li>
+<li><p>Expand <strong>Other Settings</strong></p>
+</li>
+<li><p>Examine the value of <strong>Api Compatibility Level</strong></p>
+<p><img src="Images/ReleaseNotes/ApiCompatibilityLevel.png" alt="API Compatibility Level"></p>
+</li>
+<li><p>If set to <strong>.NET Standard 2.0</strong>, delete the <strong>Dependencies\net46</strong> folder</p>
+</li>
+<li><p>If set to <strong>.NET 4.x</strong>, delete the <strong>Dependencies\netstandard20</strong> folder</p>
+<p><img src="Images/ReleaseNotes/DuplicateDependencies.png" alt="Duplicate dependencies"></p>
+</li>
+</ul>
+<p><strong>MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3</strong></p>
+<p>An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239">#7239</a>).</p>
+<p>As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity</a>.</p>
 <p><strong>Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality</strong></p>
 <p>The following issues are known when using the new XR platform and version <strong>2.0.4 (preview.3)</strong> of the Windows XR Plugin:</p>
 <ul>
@@ -226,7 +270,7 @@ asset database and reconcile existing custom profiles.</li>
 <li>Pointers are using the wrong coordinate system on HoloLens 2 and immersive devices</li>
 </ul>
 <p>It is recommended to periodically check <strong>Window</strong> &gt; <strong>Package Manager</strong> for newer versions of the Windows XR plugin.</p>
-<p><strong>Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platfom</strong></p>
+<p><strong>Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platform</strong></p>
 <p>This release of MRTK does not contain an implementation for Windows Mixed Reality gestures using the new XR platform. It will be added in a future version of MRTK.</p>
 <p><strong>Specifying the Depth Reprojection mode in the Windows Mixed Reality Camera Settings Provider is not supported on Unity 2019.3 and Windows XR plugin</strong></p>
 <p>This issue is expected to be fixed with upcoming releases of MRTK and the Windows XR plugin.</p>
@@ -1062,7 +1106,7 @@ Visual Studio.</p>
 <p>Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
 may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the <strong>Scene Content</strong> object, in the Hierarchy, and set the Transform's Position Y value to <strong>1.5</strong> (1.5 meters, or the preferred headset height).</p>
 <p><img src="Images/ReleaseNotes/AdjustContentHeight.png" alt="Adjusting Scene Content Height"></p>
-</article>
+</project></article>
           </div>
           
           <div class="hidden-sm col-md-2" role="complementary">
