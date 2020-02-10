@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// An abstract editor component to improve the editor experience with ClippingPrimitives.
     /// </summary>
     [CustomEditor(typeof(ClippingPrimitive))]
+    [CanEditMultipleObjects]
     public abstract class ClippingPrimitiveEditor : UnityEditor.Editor
     {
         /// <summary>
