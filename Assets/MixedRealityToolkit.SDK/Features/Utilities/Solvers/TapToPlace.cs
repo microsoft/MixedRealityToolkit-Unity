@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Inspectors")]
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     /// <summary>
     /// Tap to place is a far interaction component used to place objects on a surface.

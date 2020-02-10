@@ -2,8 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Class to toggle the visibility of a label on a Tap to Place object in the TapToPlaceExample scene.
