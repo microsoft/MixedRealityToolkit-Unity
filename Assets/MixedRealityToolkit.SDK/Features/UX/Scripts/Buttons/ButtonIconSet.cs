@@ -441,7 +441,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 bool showAvailableIcons = SessionState.GetBool(AvailableIconsFoldoutKey, true);
                 bool showSelectedIcons = SessionState.GetBool(SelectedIconsFoldoutKey, true);
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 showQuadIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showQuadIconFoldout, "Quad Icons");
 #else
                 showQuadIconFoldout = EditorGUILayout.Foldout(showQuadIconFoldout, "Quad Icons");
@@ -454,11 +454,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         EditorGUILayout.PropertyField(quadIconsProp, true);
                     }
                 }
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 showSpriteIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showSpriteIconFoldout, "Sprite Icons");
 #else
                 showSpriteIconFoldout = EditorGUILayout.Foldout(showSpriteIconFoldout, "Sprite Icons");
@@ -471,18 +471,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         EditorGUILayout.PropertyField(spriteIconsProp, true);
                     }
                 }
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 showCharIconFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(showCharIconFoldout, "Font Icons");
 #else
                 showCharIconFoldout = EditorGUILayout.Foldout(showCharIconFoldout, "Font Icons");
 #endif
 
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                 EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
 
@@ -507,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         TMP_FontAsset fontAsset = (TMP_FontAsset)charIconFontProp.objectReferenceValue;
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                         showAvailableIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showAvailableIcons, "Available Icons");
 #else
                         showAvailableIcons = EditorGUILayout.Foldout(showAvailableIcons, "Available Icons");
@@ -597,7 +597,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                             EditorGUILayout.Space(); 
                         }
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                         EditorGUILayout.EndFoldoutHeaderGroup();
                         showSelectedIcons = EditorGUILayout.BeginFoldoutHeaderGroup(showSelectedIcons, "Selected Icons");
 #else
@@ -645,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             }
                         }
 
-#if UNITY_2019_OR_LATER
+#if UNITY_2019_3_OR_NEWER
                         EditorGUILayout.EndFoldoutHeaderGroup();
 #endif
                     }
