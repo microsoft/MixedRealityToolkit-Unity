@@ -22,22 +22,15 @@ namespace Microsoft.MixedReality.Toolkit
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
-        private static List<Vector3> inFOVConeBoundsCornerPoints = new List<Vector3>();
+        private static List<Vector3> inFOVBoundsCornerPoints = new List<Vector3>();
 
         /// <summary>
         /// Returns true if a collider's bounds is within the camera FOV. 
         /// Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.
-        /// NOTE: This is a 'loose' FOV check -- it can return true in cases when the collider is actually not in the FOV
-        /// because it does an axis-aligned check. So, if the axis aligned bounds are in the bounds of the camera, it will return true.
         /// </summary>
         /// <param name="myCollider">The collider to test</param>
-        public static bool IsInFOVCached(this Camera cam,
-            Collider myCollider, bool debug=false)
+        public static bool IsInFOVCached(this Camera cam, Collider myCollider)
         {
-            if(debug)
-            {
-                Debug.Log("debugging");
-            }
             // if the collider's size is zero, it is not visible. Return false.
             if (myCollider.bounds.size == Vector3.zero || myCollider.transform.localScale == Vector3.zero)
             {
@@ -56,46 +49,49 @@ namespace Microsoft.MixedReality.Toolkit
                 return result;
             }
 
-            inFOVConeBoundsCornerPoints.Clear();
-            BoundsExtensions.GetColliderBoundsPoints(myCollider, inFOVConeBoundsCornerPoints, 0);
+            inFOVBoundsCornerPoints.Clear();
+            BoundsExtensions.GetColliderBoundsPoints(myCollider, inFOVBoundsCornerPoints, 0);
 
 
             float xMin = float.MaxValue, yMin = float.MaxValue, zMin = float.MaxValue;
             float xMax = float.MinValue, yMax = float.MinValue, zMax = float.MinValue;
-            for (int i = 0; i < inFOVConeBoundsCornerPoints.Count; i++)
+            for (int i = 0; i < inFOVBoundsCornerPoints.Count; i++)
             {
-                var corner = inFOVConeBoundsCornerPoints[i];
-                if (cam.IsInFOVCone(corner, 0))
+                var corner = inFOVBoundsCornerPoints[i];
+                Vector3 screenPoint = cam.WorldToViewportPoint(corner);
+
+                bool isInFOV = screenPoint.z >= 0 && screenPoint.z <= cam.farClipPlane
+                    && screenPoint.x >= 0 && screenPoint.x <= 1
+                    && screenPoint.y >= 0 && screenPoint.y <= 1;
+
+                if (isInFOV)
                 {
-                    if(debug)
-                    {
-                        Debug.Log("IsInFOVCone returned true");
-                    }
                     inFOVConeColliderCache.Add(cameraColliderPair, true);
                     return true;
                 }
 
-                var cornerScreen = cam.WorldToScreenPoint(corner);
-                xMin = Mathf.Min(xMin, cornerScreen.x);
-                yMin = Mathf.Min(yMin, cornerScreen.y);
-                zMin = Mathf.Min(zMin, cornerScreen.z);
-                xMax = Mathf.Max(xMax, cornerScreen.x);
-                yMax = Mathf.Max(yMax, cornerScreen.y);
-                zMax = Mathf.Max(zMax, cornerScreen.z);
+                // if the point is behind the camera, the x and y viewport positions are negated
+                var zViewport = screenPoint.z;
+                var xViewport = zViewport >= 0 ? screenPoint.x : -screenPoint.x;
+                var yViewport = zViewport >= 0 ? screenPoint.y : -screenPoint.y;
+                xMin = Mathf.Min(xMin, xViewport);
+                yMin = Mathf.Min(yMin, yViewport);
+                zMin = Mathf.Min(zMin, zViewport);
+                xMax = Mathf.Max(xMax, xViewport);
+                yMax = Mathf.Max(yMax, yViewport);
+                zMax = Mathf.Max(zMax, zViewport);
             }
 
-            // case 1
+            // Check that collider is visible even if all corners are not visible
+            // such as when having a large collider
             result =
-                zMax > 0 // in front of the camera
-                && zMin < cam.farClipPlane // not too far
-                && xMin < cam.pixelWidth // left edge is not too far over
-                && xMax > 0 // right edge is not too far over
-                && yMin < cam.pixelHeight // bottom edge is not too high
-                && yMax > 0; // top edge is not too high
-            if (debug)
-            {
-                Debug.Log($"{myCollider.gameObject.name} {xMin}, {xMax}, {yMin}, {yMax}, {zMin}, {zMax} {cam.nearClipPlane} {cam.farClipPlane} {cam.pixelWidth} {cam.pixelHeight} {result}");
-            }
+                zMax > 0 // Front of collider is in front of the camera.
+                && zMin < cam.farClipPlane // Back of collider is not too far away.
+                && xMin < 1 // Left edge is not too far to the right.
+                && xMax > 0 // Right edge is not too far to the left.
+                && yMin < 1 // Bottom edge is not too high.
+                && yMax > 0; // Top edge is not too low.
+
             inFOVConeColliderCache.Add(cameraColliderPair, result);
 
             return result;
