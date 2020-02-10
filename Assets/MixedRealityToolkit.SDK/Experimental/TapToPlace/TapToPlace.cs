@@ -17,12 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     public class TapToPlace : Solver, IMixedRealityPointerHandler
     {
         
-        /// <summary>
-        /// Check if a collider is present on the GameObjectToPlace
-        /// </summary>
-        protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
-
-
         [SerializeField]
         [Tooltip("The default distance (in meters) an object will be placed relative to the TrackedTargetType forward in the SolverHandler." +
             " The GameObjectToPlace will be placed at the default placement distance if a surface is not hit by the raycast.")]
@@ -70,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public bool IsBeingPlaced { get; protected set; }
 
-        [Experimental]
         [SerializeField]
         [Tooltip("If true, the gameObjectToPlace will start in the placing state.  The object will immediately start" +
         " following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  AutoStart" +
@@ -156,7 +149,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// </summary>
         public UnityEvent OnPlacingStopped = new UnityEvent();
 
-        const int IgnoreRaycastLayer = 2;
+        /// <summary>
+        /// Get the game object layer before the object is placed.  When an object is in the placing state, the layer
+        /// is changed to IgnoreRaycast and then back to the original layer.
+        /// </summary>
+        public int GameObjectLayer { get; protected set; }
+
+        protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
+
+        private const int IgnoreRaycastLayer = 2;
 
         // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint)
         protected RayStep currentRay;
@@ -166,9 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         protected RaycastHit currentHit;
 
         protected float timeSinceClick = 0;
-
-        public int GameObjectLayer { get; protected set; }
-
 
         #region MonoBehaviour Implementation
         protected override void Start()
@@ -206,6 +204,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         private void StartPlacement()
         {
+            // Store the initial game object layer
+            GameObjectLayer = gameObject.layer;
+
             // Temporarily change the game object layer to IgnoreRaycastLayer to enable a surface hit beyond the game object
             gameObject.layer = IgnoreRaycastLayer;
 
@@ -257,8 +258,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         protected virtual void SetPosition()
         {
-            // Change the position of the GameObjectToPlace if there was a hit, if not then place the object at the default distance
-            // relative to the TrackedTargetType position
+            // Change the position of the gameObject if there was a hit, if not then place the object at the default distance
+            // relative to the TrackedTargetType origin position
             
             if (didHitSurface)
             {
@@ -284,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             Vector3 direction = currentRay.Direction;
             Vector3 surfaceNormal = currentHit.normal;
-
+            
             if (KeepOrientationVertical)
             {
                 direction.y = 0;

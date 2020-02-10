@@ -18,14 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (tapToPlace != null)
             {
                 placeableObjectLabel = gameObject.transform.GetChild(0).gameObject;
-                ToggleTapToPlaceLabelVisibility();
+                AddTapToPlaceListeners();
             }
         }
 
         /// <summary>
         /// Add listeners to Tap to Place events to show a label on a placeable object while it is not being placed.
         /// </summary>
-        public void ToggleTapToPlaceLabelVisibility()
+        private void AddTapToPlaceListeners()
         {
             if (tapToPlace != null)
             {
