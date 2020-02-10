@@ -57,7 +57,7 @@ Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csp
 
 The solution to this is to ensure that the [.NET Core CLI tools are installed]
 (https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) and reboot the system
-for force all apps to get a refreshed system path.
+to force all apps to get a refreshed system path.
 
 If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
 
