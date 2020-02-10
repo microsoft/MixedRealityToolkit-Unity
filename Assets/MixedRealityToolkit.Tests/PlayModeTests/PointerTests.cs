@@ -146,7 +146,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                         cube.transform.position = pos;
                         yield return testHand.MoveTo(cube.transform.position);
                         yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
-                        yield return PlayModeTestUtilities.WaitForEnterKey();
                         bool isInFov = CameraCache.Main.IsInFOVCached(cube.GetComponent<BoxCollider>());
                         Assert.IsTrue(zOffset == 1f ? myPointer.IsInteractionEnabled : !myPointer.IsInteractionEnabled,
                             $"Pointer {myPointer.PointerName} in incorrect state. IsInFOV {isInFov} Cube size {cube.transform.localScale} location {cube.transform.position}.");
