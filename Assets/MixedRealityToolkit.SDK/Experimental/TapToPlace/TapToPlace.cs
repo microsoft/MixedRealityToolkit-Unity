@@ -160,13 +160,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private const int IgnoreRaycastLayer = 2;
 
         // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint)
-        protected RayStep currentRay;
+        protected RayStep CurrentRay;
 
-        protected bool didHitSurface;
+        protected bool DidHitSurface;
 
-        protected RaycastHit currentHit;
+        protected RaycastHit CurrentHit;
 
-        protected float timeSinceClick = 0;
+        protected float TimeSinceClick = 0;
 
         #region MonoBehaviour Implementation
         protected override void Start()
@@ -250,10 +250,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             Vector3 origin = transform.position;
             Vector3 endpoint = transform.position + transform.forward;
-            currentRay.UpdateRayStep(ref origin, ref endpoint);
+            CurrentRay.UpdateRayStep(ref origin, ref endpoint);
 
             // Check if the current ray hits a magnetic surface
-            didHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(currentRay, MaxRaycastDistance, MagneticSurfaces, false, out currentHit);  
+            DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);  
         }
 
         protected virtual void SetPosition()
@@ -261,17 +261,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             // Change the position of the gameObject if there was a hit, if not then place the object at the default distance
             // relative to the TrackedTargetType origin position
             
-            if (didHitSurface)
+            if (DidHitSurface)
             {
                 // Take the current hit point and add an offset relative to the surface to avoid half of the object in the surface
-                GoalPosition = currentHit.point;  
-                AddOffset(currentHit.normal * SurfaceNormalOffset);
+                GoalPosition = CurrentHit.point;  
+                AddOffset(CurrentHit.normal * SurfaceNormalOffset);
 
                 #if UNITY_EDITOR
                 if(DebugEnabled)
                 {
                     // Draw the normal of the raycast hit for debugging 
-                    Debug.DrawRay(currentHit.point, currentHit.normal * 0.5f, Color.yellow);
+                    Debug.DrawRay(CurrentHit.point, CurrentHit.normal * 0.5f, Color.yellow);
                 }
                 #endif
             }
@@ -283,8 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         protected virtual void SetRotation()
         {
-            Vector3 direction = currentRay.Direction;
-            Vector3 surfaceNormal = currentHit.normal;
+            Vector3 direction = CurrentRay.Direction;
+            Vector3 surfaceNormal = CurrentHit.normal;
             
             if (KeepOrientationVertical)
             {
@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             // If the object is on a surface then change the rotation according to the normal of the hit point
-            if (didHitSurface && rotateAccordingToSurface)
+            if (DidHitSurface && rotateAccordingToSurface)
             {
                 GoalRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
             }
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // When a click is called in the same second then it is a mistake and no action needs to be taken
-            if ((Time.time - timeSinceClick) < 1.0f)
+            if ((Time.time - TimeSinceClick) < 1.0f)
             {
                 return;
             }
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             // Get the time of this click action
-            timeSinceClick = Time.time;
+            TimeSinceClick = Time.time;
         }
 
         #endregion
