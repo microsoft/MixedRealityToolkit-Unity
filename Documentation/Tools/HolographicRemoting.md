@@ -25,7 +25,7 @@ configure the project using the following steps.
 
 ### Debugging HoloLens 2 remoting via Unity package import
 
-If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are three common points of potential issues. They're listed below in the order they should be checked.
+If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are a few common points of potential issues. They're listed below in the order they should be checked.
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
@@ -56,6 +56,20 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 1. In Unity, go to Window -> Package Manager and uninstall MSBuild for Unity
 1. Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity
+
+### Failure to find dotnet.exe
+
+MSBuild for Unity depends on dotnet.exe existing in the system path - dotnet.exe must both be
+installed and present in the PATH environment variable. If neither of those requirements are
+ true, this error may manifest in the Unity console:
+
+```
+Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
+```
+
+The solution to this is to ensure that the [.NET Core CLI tools are installed]
+(https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) and reboot the system
+for force all apps to get a refreshed system path.
 
 ## Connecting to the HoloLens
 
