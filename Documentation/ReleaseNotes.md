@@ -108,7 +108,7 @@ After MSBuild for Unity is enabled, a Dependencies folder will be created in the
 
 This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).
 
-You can also add the .bin and .obj folders in MixedRealityToolkit.Providers / Windows Mixed Reality / Shared / DotNetAdapter to your ignore list. These represent staging folders for individual csproj package resolution but are hidden from Unity's Asset view. The root Dependencies folder is the central location where the used copies are placed.
+You can also add the .bin and .obj folders in MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter to your ignore list. These represent staging folders for individual csproj package resolution but are hidden from Unity's Asset view. The root Dependencies folder is the central location where the used copies are placed.
 
 **<project>.Dependencies.msb4u**
 
