@@ -136,7 +136,7 @@ public void SetButtonToAdjust()
 }
 ```
 
-To use your Icon Set in a button, select a button, expand the Icons dropdown in the `ButtonConfigHelper` and assign the Icon Set to the **Icon Set** field.
+To use your Icon Set select a button, expand the Icons dropdown in the `ButtonConfigHelper` and assign it to the *Icon Set* field.
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Icon_Set_Assign.png)
 
