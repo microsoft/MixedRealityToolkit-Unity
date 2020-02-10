@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     /// </summary>
     public static class XRSDKSubsystemHelpers
     {
-        private static XRInputSubsystem inputSubsystem;
+        private static XRInputSubsystem inputSubsystem = null;
 
         /// <summary>
         /// The XR SDK input subsystem for the currently loaded XR plug-in.

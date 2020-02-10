@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     public class InteractionDefinitionTests
     {
