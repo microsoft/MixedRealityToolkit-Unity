@@ -108,8 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Initialize the test case with profile 1
             InitializeTest(profile1);
 
-            // If not cleaned up correctly, the default cursor can get cloned too many times.
-            // Switch between the profiles a few times and check the count.
+            // Switch between the profiles a few times.
             MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(CameraInputDiagsProfile);
             ChangeProfile(profile2);
             yield return null;
@@ -118,6 +117,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ChangeProfile(profile2);
             yield return null;
 
+            int uiRaycastCameraCount = 0;
+            // Confirm that we have one UIRaycastCamera.
+            Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+            foreach (Camera camera in cameras)
+            {
+                if ("UIRaycastCamera" == camera.name)
+                {
+                    uiRaycastCameraCount++;
+                }
+            }
+            Assert.AreEqual(1, uiRaycastCameraCount);
+
+            // Confirm that we have only one instance of the default cursor.
             int defaultCursorCount = 0;
             foreach (Transform child in MixedRealityPlayspace.Transform.GetComponentsInChildren<Transform>())
             {
