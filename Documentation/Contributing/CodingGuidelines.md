@@ -157,8 +157,8 @@ Furthermore, try to decorate the custom inspector class with a [`CanEditMultiple
                     label, 
                     currentHandedness,
                     (value) => { 
-                        // This function is execute by Unity to determine if a possible enum value
-                        // is valid for selection on this property in editor
+                        // This function is executed by Unity to determine if a possible enum value
+                        // is valid for selection in the editor view
                         // In this case, only Handedness.Left and Handedness.Right can be selected
                         return (Handedness)value == Handedness.Left 
                         || (Handedness)value == Handedness.Right; 
