@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator VerifyServiceCount()
         {
             MixedRealityToolkitConfigurationProfile profile1 = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-
             yield return null;
 
             // Initialize the test case with profile 1
@@ -51,28 +50,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Get count of registered services
             IReadOnlyList<IMixedRealityService> services = MixedRealityServiceRegistry.GetAllServices();
             int count1 = services.Count;
-            Debug.Log($"{profile1.name} loaded {count1} services.");
-            foreach (IMixedRealityService s in services)
-            {
-                Debug.Log(s.Name);
-            }
-
             yield return null;
 
             // Switch to profile 2
             MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(CameraInputDiagsProfile);
             ChangeProfile(profile2);
-
             yield return null;
 
             // Get count of registered services
             services = MixedRealityServiceRegistry.GetAllServices();
             int count2 = services.Count;
-            Debug.Log($"{profile2.name} loaded {count2} services.");
-            foreach (IMixedRealityService s in services)
-            {
-                Debug.Log(s.Name);
-            }
 
             // Compare the service counts
             Assert.IsTrue(count1 != count2);
@@ -82,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator VerifyServiceState()
         {
             MixedRealityToolkitConfigurationProfile profile1 = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
-
             yield return null;
 
             // Initialize the test case with profile 1
@@ -91,18 +77,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Cache the interesting settings read from the initial boundary system instance
             IMixedRealityBoundarySystem boundarySystem1 = null;
             MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem1);
-
             yield return null;
 
             MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(BoundaryOnlyProfile);
 
             // Switch to profile 2
             ChangeProfile(profile2);
-
-            for (int i = 0; i < 300; i++)
-            {
-                yield return null;
-            }
 
             // The custom boundary profile has been configured to match the default with the following fields being different
             // * Boundary height
@@ -112,16 +92,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             IMixedRealityBoundarySystem boundarySystem2 = null;
             MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem2);
 
-            Debug.Log($"Boundary height: 1) {boundarySystem1.BoundaryHeight} 2) {boundarySystem2.BoundaryHeight}");
-            Debug.Log($"Floor layer: 1) {boundarySystem1.FloorPhysicsLayer} 2) {boundarySystem2.FloorPhysicsLayer}");
-            Debug.Log($"Show tracked area: 1) {boundarySystem1.ShowTrackedArea} 2) {boundarySystem2.ShowTrackedArea}");
-            Debug.Log($"Show Ceiling: 1) {boundarySystem1.ShowBoundaryCeiling} 2) {boundarySystem2.ShowBoundaryCeiling}");
-
             // Check service settings to ensure it has properly reset
             Assert.IsTrue(boundarySystem1.BoundaryHeight != boundarySystem2.BoundaryHeight);
             Assert.IsTrue(boundarySystem1.FloorPhysicsLayer != boundarySystem2.FloorPhysicsLayer);
             Assert.IsTrue(boundarySystem1.ShowTrackedArea != boundarySystem2.ShowTrackedArea);
             Assert.IsTrue(boundarySystem1.ShowBoundaryCeiling != boundarySystem2.ShowBoundaryCeiling);
+        }
+
+        [UnityTest]
+        public IEnumerator VerifyPlayspaceChildren()
+        {
+            MixedRealityToolkitConfigurationProfile profile1 = TestUtilities.GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>();
+            yield return null;
+
+            // Initialize the test case with profile 1
+            InitializeTest(profile1);
+
+            // If not cleaned up correctly, the default cursor can get cloned too many times.
+            // Switch between the profiles a few times and check the count.
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(CameraInputDiagsProfile);
+            ChangeProfile(profile2);
+            yield return null;
+            ChangeProfile(profile1);
+            yield return null;
+            ChangeProfile(profile2);
+            yield return null;
+
+            int defaultCursorCount = 0;
+            foreach (Transform child in MixedRealityPlayspace.Transform.GetComponentsInChildren<Transform>())
+            {
+                if ("DefaultCursor(Clone)" == child.name)
+                {
+                    defaultCursorCount++;
+                }
+            }
+            Assert.AreEqual(1, defaultCursorCount);
         }
 
         private void InitializeTest(MixedRealityToolkitConfigurationProfile profile)
