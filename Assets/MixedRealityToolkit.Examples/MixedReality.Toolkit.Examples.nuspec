@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft,MixedReality</owners>
-    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.3.0/License.txt</licenseUrl>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/License.txt</licenseUrl>
     <projectUrl>https://aka.ms/MRTK</projectUrl>
     <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
