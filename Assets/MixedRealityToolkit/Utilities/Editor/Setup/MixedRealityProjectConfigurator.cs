@@ -183,9 +183,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="config">The setting configuration that needs to be checked</param>
         public static void Configure(Configurations config)
         {
-            if (ConfigurationSetters.ContainsKey(config))
+            // We use the config getter to check to see if a configuration is valid for the current build target.
+            if (ConfigurationGetters.ContainsKey(config))
             {
-                ConfigurationSetters[config].Invoke();
+                var configGetter = ConfigurationGetters[config];
+                if (configGetter.IsActiveBuildTargetValid() && ConfigurationSetters.ContainsKey(config))
+                {
+                    ConfigurationSetters[config].Invoke();
+                }
             }
         }
 
@@ -216,17 +221,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 foreach (var setter in ConfigurationSetters)
                 {
-                    setter.Value.Invoke();
+                    Configure(setter.Key);
                 }
             }
             else
             {
                 foreach (var key in filter)
                 {
-                    if (ConfigurationSetters.ContainsKey(key))
-                    {
-                        ConfigurationSetters[key].Invoke();
-                    }
+                    Configure(key);
                 }
             }
 
