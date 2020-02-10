@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor")]
+namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
     /// Inspector class that renders the MRTK toolbox for easy access to creating out-of-box UX prefabs in the current scene
@@ -24,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const float ToolboxItemHeight = 64f;
 
         [Serializable]
-        private class ToolboxItemCollection
+        internal class ToolboxItemCollection
         {
             [SerializeField]
             public ToolboxCategory[] Categories = null;
         }
 
         [Serializable]
-        private class ToolboxCategory
+        internal class ToolboxCategory
         {
             [SerializeField]
             public string CategoryName = string.Empty;
@@ -41,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         [Serializable]
-        private class ToolboxItem
+        internal class ToolboxItem
         {
             public string Name = string.Empty;
 
@@ -75,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string RelativeJSONDataPath = @"Inspectors\Data\DefaultToolboxItems.json";
         private string JSONDataPath => MixedRealityToolkitFiles.MapRelativeFilePath(RelativeJSONDataPath);
 
-        private ToolboxItemCollection toolBoxCollection;
-        private ToolboxCategory[] ToolboxPrefabs
+        internal ToolboxItemCollection toolBoxCollection;
+        internal ToolboxCategory[] ToolboxPrefabs
         {
             get
             {
@@ -108,11 +111,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private GUIStyle centeredStyle;
 
         [MenuItem("Mixed Reality Toolkit/Toolbox", false, 3)]
-        private static void ShowWindow()
+        internal static void ShowWindow()
         {
             var window = GetWindow<MixedRealityToolboxWindow>(typeof(SceneView));
             window.titleContent = new GUIContent(WindowTitle, EditorGUIUtility.IconContent("Grid.BoxTool").image);
             window.Show();
+        }
+
+        internal static void HideWindow()
+        {
+            var window = GetWindow<MixedRealityToolboxWindow>(typeof(SceneView));
+            window.Close();
         }
 
         private void OnEnable()

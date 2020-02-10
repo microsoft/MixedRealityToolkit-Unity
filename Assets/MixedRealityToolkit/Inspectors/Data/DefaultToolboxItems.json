@@ -60,14 +60,6 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "HoloLens2 Button Circular 64x64mm",
-          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2Circular_64x64.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2Circular_64x64mm.png",
-          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
-        },
-        {
           "Name": "Checkbox",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\CheckBox.prefab",
           "AssetModule": 5,

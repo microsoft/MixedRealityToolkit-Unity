@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.Inspectors"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
