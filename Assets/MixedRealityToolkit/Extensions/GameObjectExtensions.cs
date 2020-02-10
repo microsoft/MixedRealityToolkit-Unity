@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 var monoBehaviourType = monoBehaviour.GetType();
-                var attributes = Attribute.GetCustomAttributes(monoBehaviourType);
+                var attributes = monoBehaviourType.GetCustomAttributes<Attribute>(true);
 
                 foreach (var attribute in attributes)
                 {
