@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns true if a collider's bounds is within the camera FOV. 
         /// Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.
+        /// NOTE: This is a 'loose' FOV check -- it can return true in cases when the collider is actually not in the FOV
+        /// because it does an axis-aligned check when testing for large colliders. So, if the axis aligned bounds are in the bounds of the camera, it will return true.
         /// </summary>
         /// <param name="myCollider">The collider to test</param>
         public static bool IsInFOVCached(this Camera cam, Collider myCollider)
