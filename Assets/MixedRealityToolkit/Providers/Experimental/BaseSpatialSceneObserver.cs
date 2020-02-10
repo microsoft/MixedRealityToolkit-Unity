@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> sceneEventData = null;
 
-        protected Dictionary<System.Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<System.Guid, SpatialAwarenessSceneObject>();
+        protected Dictionary<System.Guid, SpatialAwarenessSceneObject> sceneObjects = new Dictionary<System.Guid, SpatialAwarenessSceneObject>(256);
 
         /// <inheritdoc />
         public IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects => throw new System.NotImplementedException();
@@ -112,6 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             throw new System.NotImplementedException();
         }
 
+        public abstract void UpdateOnDemand();
+
         #endregion SceneObject event broadcasting
 
         public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
@@ -119,14 +121,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public bool ShouldLoadFromFile { get; set; }
         public int InstantiationBatchRate { get; set; }
         public bool InferRegions { get; set; }
-        public bool GenerateEnvironmentMesh { get; set; }
         public bool RequestMeshData { get; set; }
         public bool RequestPlaneData { get; set; }
+        public bool RequestOcclusionMask { get; set; }
         public bool UsePersistentObjects { get; set; }
         public float QueryRadius { get; set; }
-        public bool GetOcclusionMask { get; set; }
         public Vector2Int OcclusionMaskResolution { get; set; }
         public bool CreateGameObjects { get; set; }
         public bool OrientScene { get; set; }
+        public bool AutoUpdate { get; set; }
     }
 }

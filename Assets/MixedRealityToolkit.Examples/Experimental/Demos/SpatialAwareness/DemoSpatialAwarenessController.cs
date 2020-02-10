@@ -2,6 +2,8 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
+using Boo.Lang;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
@@ -15,15 +17,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public string SerializedSceneName = "TestSaveSerializedScene.bytes";
 
+        public bool ListenToObserverEvents;
+
+        public GameObject autoUpdateToggle;
+        public GameObject quadsToggle;
+        public GameObject meshesToggle;
+        public GameObject maskToggle;
+
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
         private bool generatePlanes;
         private bool generateMeshes;
-        private bool generateEnvironment;
+
+        bool isInit = false;
+
+        void Update()
+        {
+            // Hack around toggle not working in Enable()
+            if (!isInit)
+            {
+                autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
+                quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
+                meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
+                maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
+                isInit = true;
+            }
+        }
 
         void OnEnable()
         {
-            CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
+            if (ListenToObserverEvents)
+            {
+                CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
+            }
 
             var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
 
@@ -40,6 +66,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 Debug.LogError("Couldn't access Scene Understanding Observer!");
                 return;
             }
+
+            // toggle IsToggled not working in Enable on mrkt 2.0... do in Update()
+            //autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
+            //quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
+            //meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
+            //maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
         }
 
         void OnDisable()
@@ -62,56 +94,53 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
-        public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
-        {
-            Debug.Log($"Removed {eventData.GuidId}");
-        }
-
-        public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
-        {
-            Debug.Log($"Updated {eventData.GuidId}");
-        }
-
         public void UpdateScene()
         {
             Debug.Log("UpdateScene");
+            observer.UpdateOnDemand();
         }
 
         public void ToggleAutoUpdate()
         {
             Debug.Log("ToggleAutoUpdate");
+            observer.AutoUpdate = true;
         }
 
         public void ToggleOcclusionMask()
         {
             Debug.Log("ToggleOcclusionMask");
-        }
-
-        public void LoadScene()
-        {
-            if (SerializedScene.bytes != null)
-            {
-                observer.LoadScene(SerializedScene.bytes);
-            }
+            observer.RequestOcclusionMask = !observer.RequestOcclusionMask;
+            observer.UpdateOnDemand();
         }
 
         public void SaveSave()
         {
+            Debug.Log("SaveSave");
             observer.SaveScene(SerializedSceneName);
         }
 
         public void ToggleGeneratePlanes()
         {
-            observer.RequestPlaneData = generatePlanes;
-            generatePlanes = !generatePlanes;
-            observer.Update();
+            Debug.Log("ToggleGeneratePlanes");
+            observer.RequestPlaneData = !observer.RequestPlaneData;
+            observer.UpdateOnDemand();
         }
 
         public void ToggleGenerateMeshes()
         {
-            observer.RequestMeshData = generateMeshes;
-            generateMeshes = !generateMeshes;
-            observer.Update();
+            Debug.Log("ToggleGenerateMeshes");
+            observer.RequestMeshData = !observer.RequestMeshData;
+            observer.UpdateOnDemand();
+        }
+
+        public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnObservationRemoved(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

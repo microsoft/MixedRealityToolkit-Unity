@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty levelOfDetail;
         private SerializedProperty usePersistentObjects;
         private SerializedProperty queryRadius;
-        private SerializedProperty getOcclusionMask;
+        private SerializedProperty requestOcclusionMask;
         private SerializedProperty occlusionMaskResolution;
         private SerializedProperty orientScene;
 
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
             inferRegions = serializedObject.FindProperty("inferRegions");
             queryRadius = serializedObject.FindProperty("queryRadius");
-            getOcclusionMask = serializedObject.FindProperty("getOcclusionMask");
+            requestOcclusionMask = serializedObject.FindProperty("requestOcclusionMask");
             occlusionMaskResolution = serializedObject.FindProperty("occlusionMaskResolution");
             orientScene = serializedObject.FindProperty("orientScene");
         }
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(inferRegions);
                     EditorGUILayout.PropertyField(requestPlaneData);
                     EditorGUILayout.PropertyField(requestMeshData);
-                    EditorGUILayout.PropertyField(getOcclusionMask);
+                    EditorGUILayout.PropertyField(requestOcclusionMask);
                     EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
                 EditorGUILayout.Space();

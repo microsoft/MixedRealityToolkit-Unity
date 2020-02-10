@@ -22,6 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         void SaveScene(string filename);
 
         /// <summary>
+        /// When the startup behavior is manual, call the function to perform an update
+        /// </summary>
+        void UpdateOnDemand();
+
+        /// <summary>
         /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.
         /// </summary>
         IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
@@ -42,11 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         bool InferRegions { get; set; }
 
         /// <summary>
-        /// When enabled, the service will provide a boundless, static water-tight mesh of the observed environment.
-        /// </summary>
-        bool GenerateEnvironmentMesh { get; set; }
-
-        /// <summary>
         /// When enabled, the service will provide surface meshes.
         /// </summary>
         bool RequestMeshData { get; set; }
@@ -60,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         bool RequestPlaneData { get; set; }
 
         /// <summary>
+        /// When enabled, the service will generate texture data for suitable for spatial queries
+        /// </summary>
+        bool RequestOcclusionMask { get; set; }
+
+        /// <summary>
         /// When enabled, the service will preserve previously observed surfaces when updating.
         /// </summary>
         bool UsePersistentObjects { get; set; }
@@ -68,5 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The distance infer surface understanding
         /// </summary>
         float QueryRadius { get; set; }
+
+        /// <summary>
+        /// When true, automatically fetch data from the service
+        /// </summary>
+        bool AutoUpdate { get; set; }
     }
 }

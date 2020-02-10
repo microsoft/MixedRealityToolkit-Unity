@@ -31,8 +31,8 @@ MonoBehaviour:
   inferRegions: 1
   firstUpdateDelay: 1
   levelOfDetail: 1
-  usePersistentObjects: 1
+  usePersistentObjects: 0
   queryRadius: 5
-  getOcclusionMask: 1
+  requestOcclusionMask: 1
   occlusionMaskResolution: {x: 256, y: 256}
   orientScene: 1

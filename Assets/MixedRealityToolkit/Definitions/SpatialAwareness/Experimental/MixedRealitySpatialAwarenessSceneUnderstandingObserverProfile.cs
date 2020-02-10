@@ -148,11 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 
         [SerializeField]
         [Tooltip("When instantiating quads, show the occlusion mask texture")]
-        private bool getOcclusionMask = true;
+        private bool requestOcclusionMask = true;
         /// <summary>
         /// When instantiating quads, show the occlusion mask texture
         /// </summary>
-        public bool GetOcclusionMask => getOcclusionMask;
+        public bool RequestOcclusionMask => requestOcclusionMask;
 
         [SerializeField]
         [Tooltip("Sets pixel resolution of occlusion mask")]
