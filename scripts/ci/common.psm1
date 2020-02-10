@@ -108,3 +108,19 @@ function IsMetaFile {
         [IO.Path]::GetExtension($Filename).ToLower() -eq ".meta"
     }
 }
+
+<#
+.SYNOPSIS
+    Returns true if the given file is a Unity asmdef file and
+    false otherwise. Uses the extension of the file, not the actual
+    content to determine this.
+#>
+function IsAsmDef {
+    [CmdletBinding()]
+    param(
+        [string]$Filename
+    )
+    process {
+        [IO.Path]::GetExtension($Filename).ToLower() -eq ".asmdef"
+    }
+}
