@@ -114,6 +114,7 @@ MSBuild for Unity creates two files in the project's Assets folder; NuGet.config
 
 When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).
 
+After MRTK has enabled MSBuild for Unity, additional custom NuGet dependencies can be declared and resolved as well. This process is described in [MSBuild for Unity's documentation](https://github.com/microsoft/MSBuildForUnity/blob/master/Documentation/CoreScenarios.md#scenario-1-adding-nuget-dependency-to-unity-project).
 
 **Hand physics extension service**
 
