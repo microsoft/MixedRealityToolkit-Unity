@@ -584,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
                 if (currentCeilingObject != null)
                 {
-                    currentFloorObject.layer = boundaryCeilingPhysicsLayer;
+                    currentCeilingObject.layer = boundaryCeilingPhysicsLayer;
                 }
             }
         }
