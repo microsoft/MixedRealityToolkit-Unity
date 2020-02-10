@@ -35,7 +35,7 @@ For the first point, the best way to check is to open Window -> Package Manager 
 
 #### DotNetWinRT NuGet package resolution
 
-For the second point, the best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in the Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
+For the second point, the best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to the Assets folder in the Project view and select `[ProjectName].Dependencies.msb4u.csproj`. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
 
 ![DotNetAdapter Inspector](../Images/Tools/Remoting/DotNetAdapterInspector.png)
 
