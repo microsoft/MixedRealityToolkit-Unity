@@ -38,8 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnShowKeyboard
         {
-            get { return onShowKeyboard; }
-            set { onShowKeyboard = value; }
+            get => onShowKeyboard;
+            set => onShowKeyboard = value;
         }
 
         [SerializeField, Tooltip("Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)")]
@@ -50,8 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnCommitText
         {
-            get { return onCommitText; }
-            set { onCommitText = value; }
+            get => onCommitText;
+            set => onCommitText = value;
         }
 
         [SerializeField, Tooltip("Event which triggers when the keyboard is hidden.")]
@@ -62,8 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnHideKeyboard
         {
-            get { return onHideKeyboard; }
-            set { onHideKeyboard = value; }
+            get => onHideKeyboard;
+            set => onHideKeyboard = value;
         }
 
         #endregion properties
@@ -127,10 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     case KeyboardState.Hiding:
                         {
-                            if (onHideKeyboard != null)
-                            {
-                                onHideKeyboard.Invoke();
-                            }
+                            onHideKeyboard?.Invoke();
                         }
                         break;
                 }
@@ -146,6 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
 #endregion MonoBehaviour Implementation
+
+        public abstract string Text { get; protected set; }
 
         /// <summary>
         /// Closes the keyboard for user interaction.
@@ -199,10 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 keyboard = TouchScreenKeyboard.Open(Text, TouchScreenKeyboardType.Default, false, this.multiLine, false, false);
             }
 
-            if (onShowKeyboard != null)
-            {
-                onShowKeyboard.Invoke();
-            }
+            onShowKeyboard?.Invoke();
 
             if (stateUpdate == null)
             {
@@ -287,10 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     if (UnityEngine.Input.GetKeyDown(KeyCode.Return))
                     {
-                        if (onCommitText != null)
-                        {
-                            onCommitText.Invoke();
-                        }
+                        onCommitText?.Invoke();
 
                         HideKeyboard();
                     }
@@ -318,7 +311,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private void OnKeyboardShowing() { }
-
-        public abstract string Text { get; protected set; }
     }
 }

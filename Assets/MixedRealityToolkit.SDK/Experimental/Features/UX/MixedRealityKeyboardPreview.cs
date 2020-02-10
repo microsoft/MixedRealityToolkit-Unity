@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public TextMeshPro PreviewText
         {
-            get { return previewText; }
+            get => previewText;
             set
             {
                 if (previewText != value)
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public Transform PreviewCaret
         {
-            get { return previewCaret; }
+            get => previewCaret;
             set
             {
                 if (previewCaret != value)
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public string Text
         {
-            get { return text; }
+            get => text;
             set
             {
                 if (value != text)
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public int CaretIndex
         {
-            get { return caretIndex; }
+            get => caretIndex;
             set
             {
                 if (value != caretIndex)
