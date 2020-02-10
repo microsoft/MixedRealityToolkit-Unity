@@ -1012,12 +1012,15 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            var services = MixedRealityServiceRegistry.GetAllServices();
-            int length = services.Count;
-            for (int i = 0; i < length; i++)
+            try
             {
-                execute(services[i]);
+                foreach (var service in MixedRealityServiceRegistry.GetAllServices())
+                {
+                    execute(service);
+                }
             }
+            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the active profile.
+            { }
 
             return true;
         }
@@ -1029,13 +1032,15 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            var services = MixedRealityServiceRegistry.GetAllServices();
-            int length = services.Count;
-
-            for (int i = length - 1; i >= 0; i--)
+            try
             {
-                execute(services[i]);
+                foreach (var service in MixedRealityServiceRegistry.GetAllServices().Reverse())
+                {
+                    execute(service);
+                }
             }
+            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the active profile.
+            { }
 
             return true;
         }

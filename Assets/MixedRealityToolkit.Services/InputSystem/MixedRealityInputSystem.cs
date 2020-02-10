@@ -442,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 try
                 {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                    // When shutting down a game, we can sometimes get old references to game objects that have been cleaned up.
                     // We'll ignore when this happens.
                     ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
 
