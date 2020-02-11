@@ -97,7 +97,7 @@ jobs:
     displayName: 'Validate release packages are signed'
     inputs:
       targetType: filePath
-      filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
+      filePath: '$(ToolsDir)\signCheck.ps1'
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
   
   - powershell: |
