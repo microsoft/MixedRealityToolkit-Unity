@@ -101,7 +101,7 @@ jobs:
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
   
   - powershell: |
-      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*"
+      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*" -Exclude "*.Utilities.*"
     displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"
 
   - task: PublishBuildArtifacts@1
