@@ -208,3 +208,5 @@ Then, follow these steps to set up support in Unity:
 1. Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.
 1. Ensure that Initialize on Startup is checked.
 1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.
+
+Complete instructions and information can be found in our [XR SDK getting started guide](GettingStartedWithMRTKAndXRSDK.md).
