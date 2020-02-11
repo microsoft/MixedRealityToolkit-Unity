@@ -29,19 +29,23 @@ If HoloLens 2 hand joints and eye tracking aren't working over remoting, there a
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
-For the first point, the best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
+The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
 
 #### DotNetWinRT NuGet package resolution
 
-For the second point, the best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to the Assets folder in the Project view and select `[ProjectName].Dependencies.msb4u.csproj`. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
+The best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to the Assets folder in the Project view and select `[ProjectName].Dependencies.msb4u.csproj`. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
 
 ![DotNetAdapter Inspector](../Images/Tools/Remoting/DotNetAdapterInspector.png)
 
+#### DotNetAdapter.csproj missing
+
+If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj`, to make sure it gets committed and cloned for all other collaborators or machines.
+
 #### `DOTNETWINRT_PRESENT` #define written into player settings
 
-For the third point, navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
+Navigate to the Unity Player Settings. From there, under the UWP tab, check under Other Settings for the Scripting Define Symbols. Make sure DOTNETWINRT_PRESENT is properly written in that list. If that's there, this step succeeded.
 
 ![DotNetWinRT Present](../Images/Tools/Remoting/DotNetWinRTPresent.png)
 
