@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: UnityUIBackground
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _DISABLE_ALBEDO_MAP _HOVER_LIGHT _IRIDESCENCE _PROXIMITY_LIGHT
+  m_ShaderKeywords: _ALPHABLEND_ON _DISABLE_ALBEDO_MAP _HOVER_LIGHT _PROXIMITY_LIGHT
     _PROXIMITY_LIGHT_COLOR_OVERRIDE _PROXIMITY_LIGHT_SUBTRACTIVE _PROXIMITY_LIGHT_TWO_SIDED
     _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
@@ -119,7 +119,7 @@ Material:
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
-    - _Iridescence: 1
+    - _Iridescence: 0
     - _IridescenceAngle: -0.78
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
@@ -163,7 +163,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.21239765, g: 0.26418787, b: 0.3490566, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
