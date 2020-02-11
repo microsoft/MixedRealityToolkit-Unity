@@ -4,9 +4,9 @@ XR SDK is Unity's [new XR pipeline in Unity 2019.3 and beyond](https://blogs.uni
 
 ## Prerequisites
 
-To get started with the Mixed Reality Toolkit, you will need to follow [the provided steps](GettingStartedWithTheMRTK.md) to add MRTK to your project.
+To get started with the Mixed Reality Toolkit, follow [the provided steps](GettingStartedWithTheMRTK.md) to add MRTK to a project.
 
-## Add XR SDK to your Unity project
+## Add XR SDK to a Unity project
 
 For MRTK 2.3, Windows Mixed Reality is supported on XR SDK.
 
@@ -35,7 +35,7 @@ Choose the "DefaultXRSDKConfigurationProfile" as the active profile or clone it 
 | Boundary | [`MixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem) | [`XRSDKBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem) |
 | Spatial awareness | [`WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) | [`XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver) |
 
-If you're using custom controller mapping profiles, you'll also want to open one of them and run the Mixed Reality Toolkit -> Utilities -> Update -> Controller Mapping Profiles menu item to ensure the new XR SDK controller types are defined.
+If using custom controller mapping profiles, open one of them and run the Mixed Reality Toolkit -> Utilities -> Update -> Controller Mapping Profiles menu item to ensure the new XR SDK controller types are defined.
 
 ## See also
 
