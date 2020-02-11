@@ -2,7 +2,7 @@
 
 ## Install required packages
 
-1. Download and import the **Microsoft.MixedReality.Toolkit.Foundation** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0) or [NuGet](../MRTKNuGetPackage.md)
+1. Download and import the **Microsoft.MixedReality.Toolkit.Unity.Foundation** package, from [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0) or [NuGet](../MRTKNuGetPackage.md)
 
 1. In the Unity Package Manager (UPM), install the following packages:
 
