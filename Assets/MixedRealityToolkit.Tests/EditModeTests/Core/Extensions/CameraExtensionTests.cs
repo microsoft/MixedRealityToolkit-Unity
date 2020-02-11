@@ -116,12 +116,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Extensions
         /// Test that the Camera extension method IsInFOVConeCached returns valid results for colliders whose bounds are renderable to the camera
         /// </summary>
         [Test]
-        public void TestIsInFOVConeCached()
+        public void TestIsInFOVCached()
         {
             for (int i = 0; i < TestColliders.Count; i++)
             {
                 var test = TestColliders[i];
-                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVCached(test.Collider), $"TestCollider[{i}] did not match");
             }
         }
 
@@ -130,13 +130,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Extensions
         /// facing different directions.
         /// </summary>
         [Test]
-        public void TestIsInFOVConeCachedSecondCamera()
+        public void TestIsInFOVCachedSecondCamera()
         {
             for (int i = 0; i < TestColliders.Count; i++)
             {
                 var test = TestColliders[i];
-                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVConeCached(test.Collider), $"TestCollider[{i}] did not match");
-                Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVConeCached(test.Collider), $"TestColliderSecondCamera[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera1, testCamera.IsInFOVCached(test.Collider), $"TestCollider[{i}] did not match");
+                Assert.AreEqual(test.ShouldBeInFOVCamera2, testCamera2.IsInFOVCached(test.Collider), $"TestColliderSecondCamera[{i}] did not match");
             }
         }
 

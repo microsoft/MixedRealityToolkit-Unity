@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (ignoreCollidersNotInFOV)
                         {
-                            if (!mainCam.IsInFOVConeCached(collider))
+                            if (!mainCam.IsInFOVCached(collider))
                             {
                                 // Additional check: is grabbable in the camera frustrum
                                 // We do this so that if grabbable is not visible it is not accidentally grabbed
