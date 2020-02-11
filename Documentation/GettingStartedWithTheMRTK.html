@@ -120,7 +120,6 @@ when building for OpenVR.</p>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</li>
 <li>(<strong><em>Optional</em></strong>) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</li>
-<li>(<strong><em>Optional</em></strong>, <strong><em>Experimental</em></strong>) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</li>
 </ul>
 </li>
 </ol>
@@ -133,13 +132,12 @@ when building for OpenVR.</p>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
 <li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
-<li>(<strong><em>Optional</em></strong>) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage</strong> following the same steps as the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.</li>
 </ol>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, see the <a href="CameraSystem/UnityArCameraSettings.html">UnityAR camera settings provider</a> article.</p>
+<p>Android and iOS development require additional package installations. For more information, see <a href="CrossPlatform/UsingARFoundation.html">How to configure MRTK for iOS and Android</a>.
+After importing the Foundation package, you may see a prompt similar to the following:</p>
 </div>
-<p>After importing the Foundation package, you may see a prompt similar to the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt="UnitySetupPrompt"></p>
 <p>MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:</p>
 <ul>

@@ -86,7 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_CameraFOVChecker" data-uid="Microsoft.MixedReality.Toolkit.CameraFOVChecker" class="text-break">Class CameraFOVChecker
   </h1>
-  <div class="markdown level0 summary"><p>Camera extension methods to test if colliders are within an FOV cone. Uses
+  <div class="markdown level0 summary"><p>Camera extension methods to test if colliders are within camera's FOV. Uses
 caching to improve performance and ensure values are only computed once per frame</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -129,15 +129,17 @@ caching to improve performance and ensure values are only computed once per fram
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_CameraFOVChecker_IsInFOVConeCached_" data-uid="Microsoft.MixedReality.Toolkit.CameraFOVChecker.IsInFOVConeCached*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_CameraFOVChecker_IsInFOVConeCached_Camera_Collider_" data-uid="Microsoft.MixedReality.Toolkit.CameraFOVChecker.IsInFOVConeCached(Camera,Collider)">IsInFOVConeCached(Camera, Collider)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_CameraFOVChecker_IsInFOVCached_" data-uid="Microsoft.MixedReality.Toolkit.CameraFOVChecker.IsInFOVCached*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_CameraFOVChecker_IsInFOVCached_Camera_Collider_" data-uid="Microsoft.MixedReality.Toolkit.CameraFOVChecker.IsInFOVCached(Camera,Collider)">IsInFOVCached(Camera, Collider)</h4>
   <div class="markdown level1 summary"><p>Returns true if a collider's bounds is within the camera FOV.
-Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.</p>
+Utilizes a cache to test if this collider has been seen before and returns current frame's calculated result.
+NOTE: This is a 'loose' FOV check -- it can return true in cases when the collider is actually not in the FOV
+because it does an axis-aligned check when testing for large colliders. So, if the axis aligned bounds are in the bounds of the camera, it will return true.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsInFOVConeCached(this Camera cam, Collider myCollider)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool IsInFOVCached(this Camera cam, Collider myCollider)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

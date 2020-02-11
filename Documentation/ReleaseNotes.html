@@ -194,7 +194,6 @@ asset database and reconcile existing custom profiles.</li>
 <li>Click the <strong>Update</strong> button for each installed package
 <ul>
 <li>Microsoft.MixedReality.Toolkit.Foundation</li>
-<li>Microsoft.MixedReality.Toolkit.Providers.UnityAR</li>
 <li>Microsoft.MixedReality.Toolkit.Tools</li>
 <li>Microsoft.MixedReality.Toolkit.Extensions</li>
 <li>Microsoft.MixedReality.Toolkit.Examples</li>
@@ -239,6 +238,8 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <p>Improved ability to configure constraints for object manipulation.</p>
 <img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
 <p>We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924">#6294</a>)</p>
+<p><strong>UnityAR package contents moved into Foundation</strong></p>
+<p>There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.</p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
 <p><strong>CS0579: Duplicate 'AssemblyVersion' attribute</strong></p>
 <p>After enabling MSBuild for Unity, if Player Settings &gt; Other Settings &gt; API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.</p>

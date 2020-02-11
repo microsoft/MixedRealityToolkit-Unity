@@ -84,13 +84,7 @@
 
 <h2 id="install-required-packages">Install required packages</h2>
 <ol>
-<li><p>Download and import the <strong>Microsoft.MixedReality.Toolkit.Providers.UnityAR</strong> package, from <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.2.0">GitHub</a> or <a href="../MRTKNuGetPackage.html">NuGet</a></p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>After you import the the UnityAR package, you will see the following error:
-<em>Assembly has reference to non-existent assembly 'Unity.XR.ARFoundation' (Assets/MixedRealityToolkit.Staging/UnityAR/Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef)</em>
-&quot;. To resolve, install the correct version of ARFoundation listed below.</p>
-</div>
+<li><p>Download and import the <strong>Microsoft.MixedReality.Toolkit.Unity.Foundation</strong> package, from <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0">GitHub</a> or <a href="../MRTKNuGetPackage.html">NuGet</a></p>
 </li>
 <li><p>In the Unity Package Manager (UPM), install the following packages:</p>
 <p><strong>Unity 2018.4.x</strong></p>
@@ -115,7 +109,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Unity 2019.x</strong></p>
+<p><strong>Unity 2019.3.x</strong></p>
 <table>
 <thead>
 <tr>
@@ -134,13 +128,6 @@
 </tr>
 </tbody>
 </table>
-</li>
-<li><p>If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the <strong>UnityEngine.SpatialTracking</strong> reference added.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>MRTK will automatically update the assembly definition based on the version of Unity in which the project has been loaded. This information is presented here for reference.</p>
-</div>
-<p><img src="../Images/CrossPlatform/UnityArAssemblyReferences.png" alt="Unity AR assembly definition"></p>
 </li>
 </ol>
 <h2 id="enabling-the-unity-ar-camera-settings-provider">Enabling the Unity AR camera settings provider</h2>
