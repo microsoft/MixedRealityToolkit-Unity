@@ -25,7 +25,7 @@ configure the project using the following steps.
 
 ### Debugging HoloLens 2 remoting via Unity package import
 
-If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are three common points of potential issues. They're listed below in the order they should be checked.
+If HoloLens 2 hand joints and eye tracking aren't working over remoting, there are a few common points of potential issues. They're listed below in the order they should be checked.
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
@@ -35,7 +35,7 @@ For the first point, the best way to check is to open Window -> Package Manager 
 
 #### DotNetWinRT NuGet package resolution
 
-For the second point, the best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in the Project view and select DotNetAdapter.csproj. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
+For the second point, the best way to check is to search the Assets folder for DotNetWinRT.dll. If this doesn't exist, navigate to the Assets folder in the Project view and select `[ProjectName].Dependencies.msb4u.csproj`. Assuming part 1 did succeed, there should be a custom inspector with Build, Rebuild, and Clean buttons. Try clicking Build or Rebuild, and then re-search for DotNetWinRT.dll. If that DLL now exists, this step succeeded.
 
 ![DotNetAdapter Inspector](../Images/Tools/Remoting/DotNetAdapterInspector.png)
 
@@ -45,7 +45,21 @@ For the third point, navigate to the Unity Player Settings. From there, under th
 
 ![DotNetWinRT Present](../Images/Tools/Remoting/DotNetWinRTPresent.png)
 
-After all three of those, hand joints over remoting should be working! If not, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
+#### Failure to find dotnet.exe
+
+MSBuild for Unity depends on dotnet.exe existing in the system path - dotnet.exe must both be
+installed and present in the PATH environment variable. If neither of those requirements are
+ true, this error may manifest in the Unity console:
+
+```
+Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
+```
+
+The solution to this is to ensure that the [.NET Core CLI tools are installed]
+(https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) and reboot the system
+to force all apps to get a refreshed system path.
+
+If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
 
 ### Removing HoloLens 2-specific remoting support
 

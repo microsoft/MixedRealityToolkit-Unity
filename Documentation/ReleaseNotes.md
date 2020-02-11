@@ -12,6 +12,8 @@
 - [What's new](#whats-new-in-230)
 - [Known issues](#known-issues-in-230)
 
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
 - Microsoft HoloLens 2
 - Microsoft HoloLens (1st gen)
 - Windows Mixed Reality Immersive headsets
@@ -100,20 +102,95 @@ MRTK has added initial support for [Unity 2019.3's new XR platform](https://blog
 
 Please see [Known issues](#known-issues-in-230) for details on known limitations.
 
+**Assets/Dependencies folder**
+
+After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.
+
+This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).
+
+You can also add the .bin and .obj folders in MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter to your ignore list. These represent staging folders for individual csproj package resolution but are hidden from Unity's Asset view. The root Dependencies folder is the central location where the used copies are placed.
+
+**<project>.Dependencies.msb4u**
+
+MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed.
+
+When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).
+
+After MRTK has enabled MSBuild for Unity, additional custom NuGet dependencies can be declared and resolved as well. This process is described in [MSBuild for Unity's documentation](https://github.com/microsoft/MSBuildForUnity/blob/master/Documentation/CoreScenarios.md#scenario-1-adding-nuget-dependency-to-unity-project).
+
 **Hand physics extension service**
 
 A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands ([#6573](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573)).
 
 ![Hand physics](https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif)
 
+**Non-native keyboard (Experimental)**
+
+A keyboard that can be used on platforms which do not provide native keyboard support.
+([#6492](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573))
+
+<img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
+
+**Hand coach (Experimental)**
+
+Hand animations that can give helpful hints for gestures users should perform.
+([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
+
+**Follow solver (Experimental)**
+A solver that matches HoloLens 2 shell behavior. ([#6981](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
+
 **Pinch Slider orientation**
 
 The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation ([#6858](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858))
 
-![Y axis slier](https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG)
-![X axis slider](https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG)
+<img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" width="150">
+<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG?s=25" width="150">
+
+**ObjectManipulator and BoundsControl (Experimental)**
+
+ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. They also include a few new behavior changes:
+
+ObjectManipulator correctly responds to physics.
+
+<img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
+
+Improved ability to configure constraints for object manipulation.
+
+<img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
+
+We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
 ### Known issues in 2.3.0
+
+**CS0579: Duplicate 'AssemblyVersion' attribute**
+
+After enabling MSBuild for Unity, if Player Settings > Other Settings > API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.
+
+This is caused by an issue in MSBuild for Unity ([#133](https://github.com/microsoft/MSBuildForUnity/issues/133)) where it is not properly removing dependency packages before restoring.
+
+To resolve these errors:
+
+- In the **Project** window, expand **Dependencies**
+- Open **Edit** > **Project Settings** > **Player**
+- Expand **Other Settings**
+- Examine the value of **Api Compatibility Level**
+
+    ![API Compatibility Level](Images/ReleaseNotes/ApiCompatibilityLevel.png)
+
+- If set to **.NET Standard 2.0**, delete the **Dependencies\net46** folder
+- If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
+
+    ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
+
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
+
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)).
+
+As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
 
 **Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
 
@@ -124,7 +201,7 @@ The following issues are known when using the new XR platform and version **2.0.
 
 It is recommended to periodically check **Window** > **Package Manager** for newer versions of the Windows XR plugin.
 
-**Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platfom**
+**Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platform**
 
 This release of MRTK does not contain an implementation for Windows Mixed Reality gestures using the new XR platform. It will be added in a future version of MRTK.
 
@@ -178,8 +255,8 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Windows Mixed Reality Immersive headsets
 - OpenVR
 - (Experimental) Mobile AR
-    - Android
-    - iOS
+  - Android
+  - iOS
 
 The following software is required.
 
