@@ -5,20 +5,21 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Camera extension methods to test if colliders are within an FOV cone. Uses
+    /// Camera extension methods to test if colliders are within camera's FOV. Uses
     /// caching to improve performance and ensure values are only computed once per frame
     /// </summary>
     public static class CameraFOVChecker
     {
         
         // Help to clear caches when new frame runs
-        static private int inFOVConeLastCalculatedFrame = -1;
+        static private int inFOVLastCalculatedFrame = -1;
         // Map from grabbable => is the grabbable in FOV for this frame. Cleared every frame
-        private static Dictionary<Tuple<Collider, Camera>, bool> inFOVConeColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
+        private static Dictionary<Tuple<Collider, Camera>, bool> inFOVColliderCache = new Dictionary<Tuple<Collider, Camera>, bool>();
         // List of corners shared across all sphere pointer query instances --
         // used to store list of corners for a bounds. Shared and static
         // to avoid allocating memory each frame
@@ -41,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit
 
             Tuple<Collider, Camera> cameraColliderPair = new Tuple<Collider, Camera>(myCollider, cam);
             bool result = false;
-            if (inFOVConeLastCalculatedFrame != Time.frameCount)
+            if (inFOVLastCalculatedFrame != Time.frameCount)
             {
-                inFOVConeColliderCache.Clear();
-                inFOVConeLastCalculatedFrame = Time.frameCount;
+                inFOVColliderCache.Clear();
+                inFOVLastCalculatedFrame = Time.frameCount;
             }
-            else if (inFOVConeColliderCache.TryGetValue(cameraColliderPair, out result))
+            else if (inFOVColliderCache.TryGetValue(cameraColliderPair, out result))
             {   
                 return result;
             }
@@ -68,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                 if (isInFOV)
                 {
-                    inFOVConeColliderCache.Add(cameraColliderPair, true);
+                    inFOVColliderCache.Add(cameraColliderPair, true);
                     return true;
                 }
 
@@ -94,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit
                 && yMin < 1 // Bottom edge is not too high.
                 && yMax > 0; // Top edge is not too low.
 
-            inFOVConeColliderCache.Add(cameraColliderPair, result);
+            inFOVColliderCache.Add(cameraColliderPair, result);
 
             return result;
         }
