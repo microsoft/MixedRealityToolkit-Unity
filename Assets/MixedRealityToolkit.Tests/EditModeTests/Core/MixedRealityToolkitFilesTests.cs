@@ -101,6 +101,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
             Assert.IsNotNull(resolvedPath);
         }
 
+        /// <summary>
+        /// Validates that FileUtilities.FindFilesInAssets can find this test script in the asset database.
+        /// </summary>
+        [Test]
+        public void TestFileUtilitiesFindFilesInAssets()
+        {
+            FileInfo[] files = FileUtilities.FindFilesInAssets("MixedRealityToolkitFilesTests.cs");
+            Assert.IsTrue(files.Length == 1);
+        }
+
         [TearDown]
         public void CleanupTests()
         {
