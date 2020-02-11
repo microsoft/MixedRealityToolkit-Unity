@@ -22,6 +22,8 @@ For MRTK 2.3, Windows Mixed Reality is supported on XR SDK.
 1. Ensure that Initialize on Startup is checked.
 1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.
 
+![Plugin management](Images/XRSDK/PluginManagement.png)
+
 ### Required in MRTK
 
 Choose the "DefaultXRSDKConfigurationProfile" as the active profile or clone it to make customizations. This profile is set up with MRTK's XR SDK systems and providers, where needed. If you want to migrate an existing profile to XR SDK, the following services and data providers should be updated:
@@ -32,3 +34,8 @@ Choose the "DefaultXRSDKConfigurationProfile" as the active profile or clone it 
 | Input | [`WindowsMixedReality.Input.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager) | [`XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager) |
 | Boundary | [`MixedRealityBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem) | [`XRSDKBoundarySystem`](xref:Microsoft.MixedReality.Toolkit.XRSDK.XRSDKBoundarySystem) |
 | Spatial awareness | [`WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) | [`XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealitySpatialMeshObserver) |
+
+## See also
+
+* [Getting started with AR development in Unity](https://docs.unity3d.com/Manual/AROverview.html)
+* [Getting started with VR development in Unity](https://docs.unity3d.com/Manual/VROverview.html)
