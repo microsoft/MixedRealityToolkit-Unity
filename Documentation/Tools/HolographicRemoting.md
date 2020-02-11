@@ -41,7 +41,7 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 #### DotNetAdapter.csproj missing
 
-If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj`, to make sure it gets committed and cloned for all other collaborators or machines.
+If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
 #### `DOTNETWINRT_PRESENT` #define written into player settings
 
@@ -55,13 +55,11 @@ MSBuild for Unity depends on dotnet.exe existing in the system path - dotnet.exe
 installed and present in the PATH environment variable. If neither of those requirements are
  true, this error may manifest in the Unity console:
 
-```
+```cmd
 Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
 ```
 
-The solution to this is to ensure that the [.NET Core CLI tools are installed]
-(https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x) and reboot the system
-to force all apps to get a refreshed system path.
+The solution to this is to ensure that the [.NET Core CLI tools are installed](https://docs.microsoft.com/dotnet/core/tools/?tabs=netcore2x) and reboot the system to force all apps to get a refreshed system path.
 
 If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
 
