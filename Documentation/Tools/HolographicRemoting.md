@@ -53,9 +53,10 @@ If you're running into conflicts or other issues due to the presence of the DotN
 
 You can also temporarily remove the adapter to workaround your issue via the following steps:
 
-1. In Unity, go to Window -> Package Manager and uninstall MSBuild for Unity
-1. Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around
-1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity
+1. In Unity, go to Window -> Package Manager and uninstall MSBuild for Unity.
+1. Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around.
+1. (Optional) Navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
+1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
 ## Connecting to the HoloLens
 
