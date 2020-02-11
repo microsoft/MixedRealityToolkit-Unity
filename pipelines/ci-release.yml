@@ -8,6 +8,15 @@ variables:
   Unity2019Version: Unity2019.2.0f1
   MRTKVersion: 2.4.0  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
+  ToolsRepoName: mixedrealitytoolkit.build
+  ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)
+
+resources:
+  repositories:
+  - repository: build-tools
+    type: git
+    name: Analog/$(ToolsRepoName)
+    ref: mrtk
 
 jobs:
 - job: CIReleaseValidation
@@ -31,6 +40,8 @@ jobs:
   pool:
     name: Package ES Lab E
   steps:
+  - checkout: self
+  - checkout: build-tools
   - task: DownloadBuildArtifacts@0
     inputs:
       buildType: 'current'
@@ -39,12 +50,7 @@ jobs:
       downloadPath: '$(Build.SourcesDirectory)'
 
   - powershell: |
-      $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
-      git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
-    displayName: "Clone release scripts"
-
-  - powershell: |
-      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
+      $(ToolsDir)/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
     displayName: "Generate signing configs"
 
   # required for code signing
@@ -91,7 +97,7 @@ jobs:
     displayName: 'Validate release packages are signed'
     inputs:
       targetType: filePath
-      filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
+      filePath: '$(ToolsDir)\signCheck.ps1'
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
   
   - powershell: |
