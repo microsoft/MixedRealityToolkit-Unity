@@ -17,32 +17,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Locates the files that match the specified name within the Assets folder structure.
         /// </summary>
         /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
-        /// <param name="searchFullFileSystem">If true, searches the full application data path. If false, only searches Unity's known asset database.</param>
         /// <returns>Array of FileInfo objects representing the located file(s).</returns>
-        public static FileInfo[] FindFilesInAssets(string fileName, bool searchFullFileSystem = false)
+        public static FileInfo[] FindFilesInAssets(string fileName)
         {
-            if (searchFullFileSystem)
+            // FindAssets doesn't take a file extension
+            string[] assetGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(fileName));
+
+            List<FileInfo> fileInfos = new List<FileInfo>();
+            for (int i = 0; i < assetGuids.Length; i++)
             {
-                DirectoryInfo root = new DirectoryInfo(Application.dataPath);
-                return FindFiles(fileName, root);
-            }
-            else
-            {
-                // FindAssets doesn't take a file extension
-                string[] assetGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(fileName));
-                List<FileInfo> fileInfos = new List<FileInfo>();
-                for (int i = 0; i < assetGuids.Length; i++)
+                string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
+                // Since this is an asset search without extension, some filenames may contain parts of other filenames.
+                // Therefore, double check that the path actually contains the filename with extension.
+                if (assetPath.Contains(fileName))
                 {
-                    string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
-                    // Since this is an asset search without extension, some filenames may contain parts of other filenames.
-                    // Therefore, double check that the path actually contains the filename with extension.
-                    if (assetPath.Contains(fileName))
-                    {
-                        fileInfos.Add(new FileInfo(assetPath));
-                    }
+                    fileInfos.Add(new FileInfo(assetPath));
                 }
-                return fileInfos.ToArray();
             }
+
+            return fileInfos.ToArray();
         }
 
         /// <summary>
