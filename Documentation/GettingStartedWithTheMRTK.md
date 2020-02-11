@@ -41,7 +41,6 @@ To get started with the Mixed Reality Toolkit, you will need:
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
-    * (**_Optional_**, **_Experimental_**) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage
 
 For information on package contents, see [MRTK Package Contents](MRTK_PackageContents.md).
 
@@ -54,11 +53,9 @@ The Mixed Reality Toolkit is also available for download on NuGet.org; for detai
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.
-1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage** following the same steps as the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.
 
 > [!Note]
-> Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, see the [UnityAR camera settings provider](CameraSystem/UnityArCameraSettings.md) article.
-
+> Android and iOS development require additional package installations. For more information, see [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md).
 After importing the Foundation package, you may see a prompt similar to the following:
 
 ![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)

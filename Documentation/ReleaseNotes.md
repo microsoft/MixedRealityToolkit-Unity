@@ -88,7 +88,6 @@ If your project was created using the [Mixed Reality Toolkit NuGet packages](MRT
 1. Select the **Installed** tab
 1. Click the **Update** button for each installed package
     - Microsoft.MixedReality.Toolkit.Foundation
-    - Microsoft.MixedReality.Toolkit.Providers.UnityAR
     - Microsoft.MixedReality.Toolkit.Tools
     - Microsoft.MixedReality.Toolkit.Extensions
     - Microsoft.MixedReality.Toolkit.Examples
@@ -163,6 +162,11 @@ Improved ability to configure constraints for object manipulation.
 <img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
 
 We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
+
+**UnityAR package contents moved into Foundation**
+
+There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.
+
 
 ### Known issues in 2.3.0
 
