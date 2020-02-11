@@ -11,12 +11,9 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -30,8 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
-            // todo - cleanup scene
-
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
@@ -75,8 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeTest(profile1);
 
             // Cache the interesting settings read from the initial boundary system instance
-            IMixedRealityBoundarySystem boundarySystem1 = null;
-            MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem1);
+            IMixedRealityBoundarySystem boundarySystem1 = CoreServices.BoundarySystem;
             yield return null;
 
             MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(BoundaryOnlyProfile);
@@ -89,8 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // * Floor plane physics layer
             // * Show tracked area
             // * Show boundary ceiling
-            IMixedRealityBoundarySystem boundarySystem2 = null;
-            MixedRealityServiceRegistry.TryGetService<IMixedRealityBoundarySystem>(out boundarySystem2);
+            IMixedRealityBoundarySystem boundarySystem2 = CoreServices.BoundarySystem;
 
             // Check service settings to ensure it has properly reset
             Assert.IsTrue(boundarySystem1.BoundaryHeight != boundarySystem2.BoundaryHeight);
