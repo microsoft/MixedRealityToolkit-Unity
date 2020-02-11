@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit
                 inFOVConeLastCalculatedFrame = Time.frameCount;
             }
             else if (inFOVConeColliderCache.TryGetValue(cameraColliderPair, out result))
-            {   
+            {
                 return result;
             }
 
