@@ -129,13 +129,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_FileUtilities_FindFilesInAssets_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.FileUtilities.FindFilesInAssets*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_FileUtilities_FindFilesInAssets_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.FileUtilities.FindFilesInAssets(System.String)">FindFilesInAssets(String)</h4>
-  <div class="markdown level1 summary"><p>Locates the files that match the specified name within the Assets folder (application data path) structure.</p>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_FileUtilities_FindFilesInAssets_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.FileUtilities.FindFilesInAssets(System.String,System.Boolean)">FindFilesInAssets(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Locates the files that match the specified name within the Assets folder structure.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static FileInfo[] FindFilesInAssets(string fileName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static FileInfo[] FindFilesInAssets(string fileName, bool searchFullFileSystem = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -151,6 +151,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">fileName</span></td>
         <td><p>The name of the file to locate (ex: &quot;TestFile.asmdef&quot;)</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">searchFullFileSystem</span></td>
+        <td><p>If true, searches the full application data path. If false, only searches Unity's known asset database.</p>
 </td>
       </tr>
     </tbody>

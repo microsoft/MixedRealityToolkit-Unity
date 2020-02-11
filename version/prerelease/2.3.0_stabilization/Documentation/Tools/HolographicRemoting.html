@@ -123,9 +123,10 @@ configure the project using the following steps.</p>
 <p>If you're running into conflicts or other issues due to the presence of the DotNetWinRT adapter, please <a href="../GettingStartedWithTheMRTK.html#getting-help">reach out on one of our help resources</a>.</p>
 <p>You can also temporarily remove the adapter to workaround your issue via the following steps:</p>
 <ol>
-<li>In Unity, go to Window -&gt; Package Manager and uninstall MSBuild for Unity</li>
-<li>Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around</li>
-<li>If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity</li>
+<li>In Unity, go to Window -&gt; Package Manager and uninstall MSBuild for Unity.</li>
+<li>Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around.</li>
+<li>(Optional) Navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the <code>.bin</code> and <code>.obj</code> folders. This removes the local cache of NuGet restored packages for DotNetWinRT.</li>
+<li>If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.</li>
 </ol>
 <h2 id="connecting-to-the-hololens">Connecting to the HoloLens</h2>
 <p>Once the project has been configured, a connection can be established to the HoloLens.</p>
