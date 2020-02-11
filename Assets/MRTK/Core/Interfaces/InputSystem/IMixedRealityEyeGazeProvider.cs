@@ -12,12 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityEyeGazeProvider : IMixedRealityGazeProvider
     {
         /// <summary>
-        /// Whether eye gaze is valid. It may be invalid due to timeout or lack of tracking hardware or permissions.
+        /// Whether eye tracking data is currently been used for gaze rather then head pose.
         /// </summary>
         bool IsEyeGazeValid { get; }
 
         /// <summary>
-        /// Whether eye tracking data is available.
+        /// Whether eye tracking data is available. It may be unavailable due to timeout or lack of tracking hardware or permissions.
         /// </summary>
         bool IsEyeTrackingAvailable { get; }
 

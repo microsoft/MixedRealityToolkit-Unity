@@ -72,6 +72,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests gaze cursor visibility when near interaction pointer is active and near grabbable.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestGazeCursorWhenHandsNearGrabbable()
+        {
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create grabbable cube
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionGrabbable>();
+            cube.transform.position = new Vector3(0, 0, 4.72f);
+            yield return null;
+
+            // No hands, default cursor should be visible
+            Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Head gaze cursor should be visible");
+
+            // Hand up near grabbable
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward * 4.05f);
+            yield return null;
+
+            var handInput = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Right Hand")).First();
+            IMixedRealityNearPointer grabPointer = (IMixedRealityNearPointer)handInput.Pointers.Where(x => x.PointerName.Contains("Grab")).First();
+            yield return null;
+
+            // Grab pointer is near grabbable
+            Assert.IsTrue(grabPointer.IsNearObject, "Grab pointer should be near a grabbable");
+          
+            // Head cursor invisible when grab pointer is near grabbable
+            Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should not be visible");
+
+            // Enabling eye tracking data
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            inputSimulationService.SimulateEyePosition = true;
+            yield return null;
+
+            // Eye based gaze cursor should still be invisible
+            Assert.IsFalse(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible, "Eye gaze cursor should be visible");
+
+            UnityEngine.Object.Destroy(cube);
+        }
+
+        /// <summary>
         /// Ensure that the gaze provider hit result is not null when looking at an object,
         /// even when the hand is up.
         /// </summary>

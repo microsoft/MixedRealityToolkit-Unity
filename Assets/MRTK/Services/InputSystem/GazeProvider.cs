@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public Ray LatestEyeGaze 
         { 
-            get { return latestEyeGaze; } 
+            get => latestEyeGaze;
             private set { latestEyeGaze = value; } 
         }
 
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newGazeOrigin = Vector3.zero;
                 Vector3 newGazeNormal = Vector3.zero;
 
-                if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
+                if (gazeProvider.IsEyeGazeValid)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
                     newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
