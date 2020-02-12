@@ -24,15 +24,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Reset();
 
-            try
+            foreach (IMixedRealityDataProvider provider in dataProviders)
             {
-                foreach (var provider in dataProviders)
+                try
                 {
                     provider.Reset();
                 }
+                catch(Exception e)
+                {
+                    Debug.LogError($"{provider.Name}'s Reset method threw {e.GetType()}");
+                }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the profile.
-            { }
         }
 
         /// <inheritdoc />
@@ -40,15 +42,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Enable();
 
-            try
+            foreach (IMixedRealityDataProvider provider in dataProviders)
             {
-                foreach (var provider in dataProviders)
+                try
                 {
                     provider.Enable();
                 }
+                catch (Exception e)
+                {
+                    Debug.LogError($"{provider.Name}'s Enable method threw {e.GetType()}");
+                }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the profile.
-            { }
         }
 
         /// <inheritdoc />
@@ -56,15 +60,17 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Disable();
 
-            try
+            foreach (IMixedRealityDataProvider provider in dataProviders)
             {
-                foreach (var provider in dataProviders)
+                try
                 {
                     provider.Disable();
                 }
+                catch (Exception e)
+                {
+                    Debug.LogError($"{provider.Name}'s Disable method threw {e.GetType()}");
+                }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the profile.
-            { }
         }
 
         /// <inheritdoc />
@@ -74,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             try
             {
-                foreach (var provider in dataProviders)
+                foreach (IMixedRealityDataProvider provider in dataProviders)
                 {
                     provider.Update();
                 }
@@ -90,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             try
             {
-                foreach (var provider in dataProviders)
+                foreach (IMixedRealityDataProvider provider in dataProviders)
                 {
                     provider.LateUpdate();
                 }
@@ -101,6 +107,18 @@ namespace Microsoft.MixedReality.Toolkit
 
         public override void Destroy()
         {
+            foreach (IMixedRealityDataProvider provider in dataProviders)
+            {
+                try
+                {
+                    provider.Destroy();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"{provider.Name}'s Destroy method threw {e.GetType()}");
+                }
+            }
+
             base.Destroy();
         }
 
