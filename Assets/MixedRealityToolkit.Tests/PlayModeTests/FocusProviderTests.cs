@@ -18,6 +18,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -331,6 +332,65 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
             // Verify that CurrentPointer is not still referencing the destroyed GameObject
             Assert.IsTrue(ReferenceEquals(handRayPointer.Result.CurrentPointerTarget, null));
+        }
+
+        /// <summary>
+        /// Test focus provider returns results based on custom prioritized layer mask array
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPrioritizedLayerMask()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward, true);
+
+            var shellHandRayPointer = hand.GetPointer<ShellHandRayPointer>();
+
+            string spatialAwarenessLayerName = LayerMask.LayerToName(BaseSpatialObserver.DefaultSpatialAwarenessLayer);
+            shellHandRayPointer.PrioritizedLayerMasksOverride = new LayerMask[] { LayerMask.GetMask(spatialAwarenessLayerName), LayerMask.GetMask("Default") };
+
+            var pointerDirection = shellHandRayPointer.Rotation * Vector3.forward;
+
+            var noPriorityCube = CreateTestCube(shellHandRayPointer.Position + pointerDirection * 2.0f);
+            noPriorityCube.name = "NoPriorityCube";
+            noPriorityCube.layer = 18; // assign to random layer
+
+            var lowPriorityCube = CreateTestCube(shellHandRayPointer.Position + pointerDirection * 3.0f); // uses default layer
+            lowPriorityCube.name = "LowPriorityCube";
+
+            var highPriorityCube = CreateTestCube(shellHandRayPointer.Position + pointerDirection * 4.0f);
+            highPriorityCube.layer = BaseSpatialObserver.DefaultSpatialAwarenessLayer;
+            highPriorityCube.name = "HighPriorityCube";
+
+            //
+            // Test High Priority cube, although farthest, is selected as raycast target
+            //
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(highPriorityCube, shellHandRayPointer.Result?.CurrentPointerTarget, $"{highPriorityCube.name} should be raycast target by shell hand ray pointer");
+
+            //
+            // With HighPriorityCube disabled, test Low Priority cube, although farther, is selected as raycast target
+            //
+            highPriorityCube.SetActive(false);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.AreEqual(lowPriorityCube, shellHandRayPointer.Result?.CurrentPointerTarget, $"{lowPriorityCube.name} should be raycast target by shell hand ray pointer");
+
+            //
+            // Test noPriorityCube still not selected in raycast
+            //
+            lowPriorityCube.SetActive(false);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsNull(shellHandRayPointer.Result?.CurrentPointerTarget, $"{noPriorityCube.name} should NOT be raycast target by shell hand ray pointer");
+        }
+
+        private static GameObject CreateTestCube(Vector3 position, float scale = 0.2f)
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.transform.position = position;
+            cube.transform.localScale = Vector3.one * scale;
+            return cube;
         }
     }
 }

@@ -97,3 +97,7 @@ doc/
 Assets/MixedRealityToolkit.Providers/WindowsMixedReality/DotNetAdapter/Plugins*
 MSBuildForUnity.Common.props
 .obj
+/*.msb4u.csproj.meta
+*.msb4u.csproj.meta
+/*.msb4u.sln.meta
+*.msb4u.sln.meta

@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public IMixedRealityPointer PrimaryPointer
         {
-            get { return primaryPointer; }
+            get => primaryPointer;
             private set
             {
                 if (value != PrimaryPointer)
@@ -1033,7 +1033,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
+        private PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
         {
             if (hit1.hitObject != null && hit2.hitObject != null)
             {
@@ -1041,12 +1041,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (prioritizedLayerMasks.Length > 1)
                 {
                     // Get the index in the prioritized layer masks
-                    int layerIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-                    int layerIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                    int layerMaskIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                    int layerMaskIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
 
-                    if (layerIndex1 != layerIndex2)
+                    if (layerMaskIndex1 != layerMaskIndex2)
                     {
-                        return (layerIndex1 < layerIndex2) ? hit1 : hit2;
+                        if (layerMaskIndex1 == -1)
+                        {
+                            return hit2;
+                        }
+                        else if (layerMaskIndex2 == -1)
+                        {
+                            return hit1;
+                        }
+                        else
+                        {
+                            return (layerMaskIndex1 < layerMaskIndex2) ? hit1 : hit2;
+                        }
                     }
                 }
 
