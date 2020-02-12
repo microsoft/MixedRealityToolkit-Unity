@@ -206,7 +206,7 @@ To resolve these errors:
 
 **NU1101: Unable to find package MSBuildForUnity**
 
-When using NuGet for Unity, applying MRTK configuration settings may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.
+When using NuGet for Unity, applying MRTK configuration settings after switching the platform to UWP may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.
 
 To resolve this error:
 
