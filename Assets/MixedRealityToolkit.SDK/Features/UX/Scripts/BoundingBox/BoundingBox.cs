@@ -1847,16 +1847,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
                     boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
                 {
-                    if (AddColliderBoundsToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer) { continue; }
-                    if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
+                    if (AddColliderBoundsToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer ||
+                        boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
                 }
 
                 // Encapsulate the renderer bounds if criteria match
 
                 if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
                 {
-                    if (AddRendererBoundsToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider) { continue; }
-                    if (boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
+                    if (AddRendererBoundsToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider ||
+                        boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
                 }
 
                 // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
