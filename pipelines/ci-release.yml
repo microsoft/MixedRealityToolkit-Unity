@@ -37,6 +37,7 @@ jobs:
 
 - job: ReleaseSigning
   dependsOn: CIReleaseValidation
+  timeoutInMinutes: 90
   pool:
     name: Package ES Lab E
   steps:
