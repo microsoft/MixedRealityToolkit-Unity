@@ -1789,8 +1789,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Bounds GetTargetBounds()
         {
-            KeyValuePair<Transform, Collider> colliderByTransform;
-            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
             totalBoundsCorners.Clear();
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
@@ -1816,54 +1814,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 Debug.Assert(childTransform != rigRoot);
 
-                if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
-                {
-                    Collider collider = childTransform.GetComponent<Collider>();
-                    if (collider != null)
-                    {
-                        colliderByTransform = new KeyValuePair<Transform, Collider>(childTransform, collider);
-                    }
-                    else
-                    {
-                        colliderByTransform = new KeyValuePair<Transform, Collider>();
-                    }
-                }
-
-                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
-                {
-                    MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
-                    if (meshFilter != null && meshFilter.sharedMesh != null)
-                    {
-                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
-                    }
-                    else
-                    {
-                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
-                    }
-                }
-
-                // Encapsulate the collider bounds if criteria match
-
-                if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
-                    boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
-                {
-                    if (AddColliderBoundsToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer ||
-                        boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
-                }
-
-                // Encapsulate the renderer bounds if criteria match
-
-                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
-                {
-                    if (AddRendererBoundsToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider ||
-                        boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
-                }
-
-                // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
-                AddColliderBoundsToTarget(colliderByTransform);
+                ExtractBounds(childTransform);
             }
 
-            if (totalBoundsCorners.Count == 0) { return new Bounds(); }
+            if (totalBoundsCorners.Count == 0 && Target == gameObject)
+            {
+                BoundsCalculationMethod currentCalculationMethod = boundsCalculationMethod;
+                boundsCalculationMethod = BoundsCalculationMethod.ColliderOnly;
+                ExtractBounds(Target.transform);
+                boundsCalculationMethod = currentCalculationMethod;
+            }
 
             Transform targetTransform = Target.transform;
 
@@ -1875,6 +1835,58 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             return finalBounds;
+        }
+
+        private void ExtractBounds(Transform childTransform)
+        {
+            KeyValuePair<Transform, Collider> colliderByTransform;
+            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
+            {
+                Collider collider = childTransform.GetComponent<Collider>();
+                if (collider != null)
+                {
+                    colliderByTransform = new KeyValuePair<Transform, Collider>(childTransform, collider);
+                }
+                else
+                {
+                    colliderByTransform = new KeyValuePair<Transform, Collider>();
+                }
+            }
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
+            {
+                MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
+                if (meshFilter != null && meshFilter.sharedMesh != null)
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
+                }
+                else
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
+                }
+            }
+
+            // Encapsulate the collider bounds if criteria match
+
+            if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
+                boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
+            {
+                if (AddColliderBoundsToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer ||
+                    boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { return; }
+            }
+
+            // Encapsulate the renderer bounds if criteria match
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
+            {
+                if (AddRendererBoundsToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider ||
+                    boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { return; }
+            }
+
+            // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
+            AddColliderBoundsToTarget(colliderByTransform);
         }
 
         private bool AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
@@ -1890,10 +1902,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            if (colliderByTransform.Key != null)
-            {
-                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
-            }
+            if (colliderByTransform.Key == null) { return false; }
+            
+            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
 
             return colliderByTransform.Key != null;
         }
