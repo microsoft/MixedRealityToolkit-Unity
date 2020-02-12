@@ -1814,7 +1814,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 Debug.Assert(childTransform != rigRoot);
 
-                ExtractBounds(childTransform);
+                ExtractBounds(childTransform, boundsCalculationMethod);
             }
 
             Transform targetTransform = Target.transform;
@@ -1822,10 +1822,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // In case we found nothing and this is the Target, we add it's inevitable collider's bounds
             if (totalBoundsCorners.Count == 0 && Target == gameObject)
             {
-                BoundsCalculationMethod currentCalculationMethod = boundsCalculationMethod;
-                boundsCalculationMethod = BoundsCalculationMethod.ColliderOnly;
-                ExtractBounds(targetTransform);
-                boundsCalculationMethod = currentCalculationMethod;
+                ExtractBounds(targetTransform, BoundsCalculationMethod.ColliderOnly);
             }
 
             Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
@@ -1838,7 +1835,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return finalBounds;
         }
 
-        private void ExtractBounds(Transform childTransform)
+        private void ExtractBounds(Transform childTransform, BoundsCalculationMethod boundsCalculationMethod)
         {
             KeyValuePair<Transform, Collider> colliderByTransform;
             KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
