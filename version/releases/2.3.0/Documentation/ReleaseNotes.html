@@ -241,6 +241,17 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <p><strong>UnityAR package contents moved into Foundation</strong></p>
 <p>There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.</p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
+<p><strong>Unity 2019.3 infinite loop when switching build target</strong></p>
+<p>There is a known issue (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7299">#7299</a>) with switching build targets after entering and exiting play mode in Unity 2019.3.</p>
+<p>If this issue is encountered, please:</p>
+<ul>
+<li>Terminate the process</li>
+<li>Restart Unity and load the project</li>
+<li>Do not enter / edit play mode</li>
+<li>Change the build target</li>
+</ul>
+<p><strong>NuGet packages are not supported with Unity 2019</strong></p>
+<p>The current MRTK packages distributed via NuGet.org are precompiled with Unity 2018.4 and are not intended for use with Unity 2019. A future release of MRTK will provide Unity 2019 supported NuGet packages.</p>
 <p><strong>CS0579: Duplicate 'AssemblyVersion' attribute</strong></p>
 <p>After enabling MSBuild for Unity, if Player Settings &gt; Other Settings &gt; API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.</p>
 <p>This is caused by an issue in MSBuild for Unity (<a href="https://github.com/microsoft/MSBuildForUnity/issues/133">#133</a>) where it is not properly removing dependency packages before restoring.</p>
@@ -260,6 +271,19 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <li><p>If set to <strong>.NET 4.x</strong>, delete the <strong>Dependencies\netstandard20</strong> folder</p>
 <p><img src="Images/ReleaseNotes/DuplicateDependencies.png" alt="Duplicate dependencies"></p>
 </li>
+</ul>
+<p><strong>NU1101: Unable to find package MSBuildForUnity</strong></p>
+<p>When using NuGet for Unity, applying MRTK configuration settings after switching the platform to UWP may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.</p>
+<p>To resolve this error:</p>
+<ul>
+<li>Open <strong>Editor</strong> &gt; <strong>Preferences</strong></li>
+<li>Navigate to <strong>NuGet for Unity</strong></li>
+<li>Click <strong>Add New Source</strong></li>
+<li>Replace <strong>New Source</strong> with <strong>MSBuild for Unity</strong></li>
+<li>Replace <strong>source_path</strong> with <strong><a href="https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json">https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json</a></strong></li>
+<li>Click <strong>Save</strong>, at the bottom of the window</li>
+<li>In the Project window expand <strong>Assets</strong> and select <strong><projectname>.Dependencies.msb4u</projectname></strong></li>
+<li>In the Inspector window, click <strong>Rebuild</strong></li>
 </ul>
 <p><strong>MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3</strong></p>
 <p>An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239">#7239</a>).</p>
