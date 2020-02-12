@@ -1797,7 +1797,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
-            if (Target != null && Target != gameObject)
+            if (Target != gameObject)
             {
                 childTransforms.Add(Target.transform);
             }
@@ -1817,15 +1817,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ExtractBounds(childTransform);
             }
 
+            Transform targetTransform = Target.transform;
+
+            // In case we found nothing and this is the Target, we add it's inevitable collider's bounds
             if (totalBoundsCorners.Count == 0 && Target == gameObject)
             {
                 BoundsCalculationMethod currentCalculationMethod = boundsCalculationMethod;
                 boundsCalculationMethod = BoundsCalculationMethod.ColliderOnly;
-                ExtractBounds(Target.transform);
+                ExtractBounds(targetTransform);
                 boundsCalculationMethod = currentCalculationMethod;
             }
-
-            Transform targetTransform = Target.transform;
 
             Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
 
