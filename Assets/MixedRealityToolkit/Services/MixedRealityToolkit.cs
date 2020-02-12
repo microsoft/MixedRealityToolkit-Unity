@@ -1448,6 +1448,7 @@ namespace Microsoft.MixedReality.Toolkit
             // and shouldn't be run during that time.
             if (EditorApplication.isPlayingOrWillChangePlaymode ||
                 EditorApplication.isCompiling ||
+                EditorApplication.isUpdating ||
                 BuildPipeline.isBuildingPlayer)
             {
                 return;
