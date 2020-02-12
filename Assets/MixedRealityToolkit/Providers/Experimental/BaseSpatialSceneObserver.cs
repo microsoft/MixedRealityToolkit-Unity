@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -89,6 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>>(eventData);
                 handler.OnObservationRemoved(spatialEventData);
             };
+
+        public virtual bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane)
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <summary>
         /// Sends SceneObject Removed event via <see cref="IMixedRealitySpatialAwarenessObservationHandler{T}"/>

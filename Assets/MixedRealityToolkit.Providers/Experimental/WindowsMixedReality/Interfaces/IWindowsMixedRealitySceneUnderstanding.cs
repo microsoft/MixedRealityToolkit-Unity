@@ -8,9 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
     public interface IWindowsMixedRealitySceneUnderstanding
     {
-        /// <returns></returns>
         bool TryGetOcclusionMask(System.Guid quadId, ushort textureWidth, ushort textureHeight, out byte[] mask);
 
-        bool TryFindCentermostPlacement(SpatialAwarenessSceneObject.Quad onQuad, Vector2 forSize, out Vector2 bestLocationOnPlane);
+        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
     }
 }

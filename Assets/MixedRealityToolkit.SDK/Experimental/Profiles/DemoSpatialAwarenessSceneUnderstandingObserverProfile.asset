@@ -33,6 +33,6 @@ MonoBehaviour:
   levelOfDetail: 1
   usePersistentObjects: 0
   queryRadius: 5
-  requestOcclusionMask: 1
+  requestOcclusionMask: 0
   occlusionMaskResolution: {x: 256, y: 256}
   orientScene: 1

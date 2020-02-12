@@ -33,7 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         "Windows Mixed Reality Scene Understanding Observer",
         "Experimental/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver : BaseSpatialSceneObserver, IMixedRealityOnDemandObserver, IWindowsMixedRealitySceneUnderstanding
+    public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver : 
+        BaseSpatialSceneObserver,
+        IMixedRealityOnDemandObserver,
+        IWindowsMixedRealitySceneUnderstanding
     {
         /// <summary>
         /// Constructor.
@@ -250,33 +253,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private System.Timers.Timer firstUpdateTimer = null;
         private System.Timers.Timer updateTimer = null;
-        private Dictionary<Guid, SceneMesh> cachedSceneMeshes = new Dictionary<Guid, SceneMesh>(128);
-        private Dictionary<Guid, SpatialAwarenessSceneObject.Quad> cachedSceneQuads = new Dictionary<Guid, SpatialAwarenessSceneObject.Quad>(128);
+        //private Dictionary<Guid, SceneMesh> cachedSceneMeshes = new Dictionary<Guid, SceneMesh>(256);
+        private Dictionary<Guid, SceneQuad> cachedSceneQuads = new Dictionary<Guid, SceneQuad>(256);
         private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private TextAsset serializedScene = null;
         private byte[] sceneBytes;
         private Mesh normalizedQuadMesh = new Mesh();
         private string surfaceTypeName;
-        CancellationTokenSource killTokenSource = new System.Threading.CancellationTokenSource();
-
-#if WINDOWS_UWP
-        /// <summary>
-        /// Folder location for saving serialized scene data
-        /// </summary>
-        private StorageFolder folderLocation;
-
-        /// <summary>
-        /// File for saving serialized scene data
-        /// </summary>
-        private IStorageFile SUfile;
-#endif // WINDOWS_UWP
+        private CancellationTokenSource killTokenSource = new System.Threading.CancellationTokenSource();
 
         #endregion Private Fields
 
         #region Public Methods
         public bool TryGetOcclusionMask(Guid quadId, ushort textureWidth, ushort textureHeight, out byte[] mask)
         {
-            SpatialAwarenessSceneObject.Quad quad;
+            SceneQuad quad;
 
             if (!cachedSceneQuads.TryGetValue(quadId, out quad))
             {
@@ -284,7 +275,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return false;
             }
 
-            mask = quad.occlusionMask;
+            var result = new byte[textureWidth * textureHeight];
+
+            quad.GetSurfaceMask(textureWidth, textureHeight, result);
+
+            mask = result;
 
             return true;
         }
@@ -296,23 +291,24 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public bool TryFindCentermostPlacement(SpatialAwarenessSceneObject.Quad quad, UnityEngine.Vector2 objExtents, out UnityEngine.Vector2 placementPosOnPlane)
+        public override bool TryFindCentermostPlacement(Guid quadGuid, UnityEngine.Vector2 objExtents, out UnityEngine.Vector3 placementPosOnPlane)
         {
-            placementPosOnPlane = UnityEngine.Vector2.zero;
+            SceneQuad quad;
 
-            SpatialAwarenessSceneObject.Quad associatedQuad;
-
-            if (!cachedSceneQuads.TryGetValue(quad.guid, out associatedQuad))
+            if (!cachedSceneQuads.TryGetValue(quadGuid, out quad))
             {
+                placementPosOnPlane = Vector2.zero;
                 return false;
             }
 
             System.Numerics.Vector2 ext = new System.Numerics.Vector2(objExtents.x, objExtents.y);
             System.Numerics.Vector2 pos = new System.Numerics.Vector2();
 
-            //associatedQuad.FindCentermostPlacement(ext, out pos);
+            quad.FindCentermostPlacement(ext, out pos);
 
-            placementPosOnPlane.Set(pos.X, pos.Y);
+            placementPosOnPlane = new Vector3(pos.X, pos.Y);
+
+            //placementPosOnPlane *= SwapRuntimeAndUnityCoordinateSystem(sharedSceneTransform);
 
             return true;
         }
@@ -367,13 +363,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                             {
                                 previousScene = scene;
                             }
-                            originSpatialGraphNodeId = scene.OriginSpatialGraphNodeId;
+                            sceneOriginId = scene.OriginSpatialGraphNodeId;
                         }
                         await new WaitForUpdate();
 
                         sceneTransform = await GetSceneTransformAsync();
 
                         Debug.Log($"sceneTransform = {sceneTransform}");
+
+                        if (!UsePersistentObjects)
+                        {
+                            // these are cached when we do conversion
+                            cachedSceneQuads.Clear();
+                        }
 
                         await new WaitForBackgroundThread();
                         {
@@ -429,8 +431,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return result;
             }
 
-            //#if WINDOWS_UWP            
-            SpatialCoordinateSystem origin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(originSpatialGraphNodeId);
+            SpatialCoordinateSystem origin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
             var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
             SpatialCoordinateSystem unitySpatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(nativePtr);
             System.Numerics.Matrix4x4? sceneToUnityTransform = origin.TryGetTransformTo(unitySpatialCoordinateSystem);
@@ -444,7 +445,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 Debug.LogWarning("Getting coordinate system failed!");
             }
-            //#endif
 
             return result;
         }
@@ -608,9 +608,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     quads.Add(quad);
 
+                    // Store a cache so we can retrieve best position on plane later.
+
                     if (!cachedSceneQuads.ContainsKey(quadIdKey))
                     {
-                        cachedSceneQuads.Add(quadIdKey, quad);
+                        cachedSceneQuads.Add(quadIdKey, sceneQuad);
                     }
                 }
             }
@@ -625,11 +627,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     var meshData = MeshData(sceneMesh);
                     meshes.Add(meshData);
 
-                    var key = sceneMesh.Id;
-                    if (!cachedSceneMeshes.ContainsKey(key))
-                    {
-                        cachedSceneMeshes.Add(key, sceneMesh);
-                    }
+                    //var key = sceneMesh.Id;
+                    //if (!cachedSceneMeshes.ContainsKey(key))
+                    //{
+                    //    cachedSceneMeshes.Add(key, sceneMesh);
+                    //}
                 }
             }
 
@@ -679,7 +681,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void UpdateTimerEventHandler(object sender, ElapsedEventArgs args)
         {
-            observerState = ObserverState.GetScene;
+            if (AutoUpdate)
+            {
+                observerState = ObserverState.GetScene;
+            }
             return;
         }
 
@@ -739,7 +744,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private CancellationToken killToken;
         private bool shouldAutoStart;
         private bool isRemoting;
-        private Guid originSpatialGraphNodeId;
+        private Guid sceneOriginId;
 
         private System.Numerics.Matrix4x4 sharedSceneTransform;
 
@@ -924,6 +929,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         public override void SaveScene(string filename)
         {
+#if WINDOWS_UWP
+            SaveToFile();
+#else // WINDOWS_UWP
+            Debug.LogWarning("SaveScene() only supported at runtime! Ignoring request.");
+#endif // WINDOWS_UWP
+        }
+
+#if WINDOWS_UWP
+        /// <summary>
+        /// Saves the <see cref="SceneUnderstanding.SceneProcessor"/>'s data stream as a file for later use
+        /// </summary>
+        /// <param name="sceneBuffer">the <see cref="byte[]"/></param>
+        private async void SaveToFile()
+        {
             SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
             {
                 EnableSceneObjectQuads = RequestPlaneData,
@@ -934,39 +953,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             };
 
             var serializedScene = SceneObserver.ComputeSerializedAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
-
             var bytes = new byte[serializedScene.Size];
             serializedScene.GetData(bytes);
-
-            SaveToFile(bytes);
-        }
-
-#if WINDOWS_UWP
-        /// <summary>
-        /// Asynchronously saves the <see cref="SceneUnderstanding.SceneProcessor"/>'s data stream as a file for later use
-        /// </summary>
-        /// <param name="sceneBuffer">the <see cref="byte[]"/></param>
-        private async void WriteSUFileAsync(IStorageFile file, byte[] dataBuffer)
-        {
-            await FileIO.WriteBytesAsync(file, dataBuffer);
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_hhmmss");
+            var filename = $"SceneUnderStanding_{timestamp}.bytes";
+            StorageFolder folderLocation = ApplicationData.Current.LocalFolder;
+            Debug.Log($"filename = {filename}, folderLocation = {folderLocation.ToString()}");
+            IStorageFile storageFile = await folderLocation.CreateFileAsync(filename);
+            await FileIO.WriteBytesAsync(storageFile, bytes);
         }
 #endif // WINDOWS_UWP
-
-        /// <summary>
-        /// Saves the <see cref="SceneUnderstanding.SceneProcessor"/>'s data stream as a file for later use
-        /// </summary>
-        /// <param name="sceneBuffer">the <see cref="byte[]"/></param>
-        private void SaveToFile(byte[] sceneBuffer)
-        {
-#if WINDOWS_UWP
-            DateTime currDateTime = DateTime.Now;
-            string currDateTimeString = $"{currDateTime.Date.Year}-{currDateTime.Date.Month}-{currDateTime.Date.Day}_{currDateTime.TimeOfDay.Hours}-{currDateTime.TimeOfDay.Minutes}-{currDateTime.TimeOfDay.Seconds}";
-
-            folderLocation = ApplicationData.Current.LocalFolder;
-            SUfile = folderLocation.CreateFileAsync("SU_" + currDateTimeString).GetAwaiter().GetResult();
-            WriteSUFileAsync(SUfile, sceneBuffer);
-#endif // WINDOWS_UWP
-        }
 
         /// <summary>
         /// Converts a MRTK/platform agnostic <see cref="SpatialAwarenessMeshLevelOfDetail"/> to a <see cref="Microsoft.MixedReality.SceneUnderstanding"/> <see cref="SceneMeshLevelOfDetail"/>.
@@ -1183,6 +1179,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-        #endregion Private Methods
+#endregion Private Methods
     }
 }

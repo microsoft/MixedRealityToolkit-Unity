@@ -4,6 +4,8 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.UI;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
@@ -13,43 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public Transform ParentGameObject;
 
-        public TextAsset SerializedScene;
+        public GameObject StuffToPlace;
 
-        public string SerializedSceneName = "TestSaveSerializedScene.bytes";
+        public string SavedSceneNamePrefix = "DemoSceneUnderstanding";
 
-        public bool ListenToObserverEvents;
+        public bool InstanciatePrefabs;
 
         public GameObject autoUpdateToggle;
         public GameObject quadsToggle;
         public GameObject meshesToggle;
         public GameObject maskToggle;
+        public GameObject platformToggle;
+        public GameObject wallToggle;
+        public GameObject floorToggle;
+        public GameObject ceilingToggle;
+
+        List<SpatialAwarenessSceneObject> platforms = new List<SpatialAwarenessSceneObject>(16);
 
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
-        private bool generatePlanes;
-        private bool generateMeshes;
-
         bool isInit = false;
-
-        void Update()
-        {
-            // Hack around toggle not working in Enable()
-            if (!isInit)
-            {
-                autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
-                quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
-                meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
-                maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
-                isInit = true;
-            }
-        }
 
         void OnEnable()
         {
-            if (ListenToObserverEvents)
-            {
-                CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
-            }
+            CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
 
             var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
 
@@ -67,11 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 return;
             }
 
-            // toggle IsToggled not working in Enable on mrkt 2.0... do in Update()
-            //autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
-            //quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
-            //meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
-            //maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
+            // setting IsToggled not working in Enable() on mrkt 2.0... do in Update()
+            // XXX ugly hack
+            // InitToggleButtonState();
+
+            platforms.Clear();
         }
 
         void OnDisable()
@@ -79,18 +68,93 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             CoreServices.SpatialAwarenessSystem?.UnregisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
         }
 
+        void Update()
+        {
+            // Hack around toggle not working in Enable()
+            if (!isInit)
+            {
+                InitToggleButtonState();
+                isInit = true;
+            }
+        }
+
+        private void InitToggleButtonState()
+        {
+            autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
+            quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
+            meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
+            maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
+            platformToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Platform);
+            wallToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
+            floorToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
+            ceilingToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
+        }
+
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {
             var sceneObject = eventData.SpatialObject;
-            var go = Instantiate(SceneObjectPrefab);
-            go.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
-            if (ParentGameObject)
+
+            if (sceneObject.SurfaceType == SpatialAwarenessSurfaceTypes.Platform)
             {
-                go.transform.SetParent(ParentGameObject);
+                platforms.Add(sceneObject);
             }
-            foreach (var x in go.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
+
+            if (InstanciatePrefabs)
             {
-                x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
+                var prefab = Instantiate(SceneObjectPrefab);
+                prefab.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
+
+                if (ParentGameObject)
+                {
+                    prefab.transform.SetParent(ParentGameObject);
+                }
+
+                // A prefab can implement the ISpatialAwarenessSceneObjectConsumer contract
+                // this will let the prefab author decide how it wants to "react" to the sceneObject
+                // In the demo scene the prefab logic will scale the prefab to fit quad extents
+
+                foreach (var x in prefab.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
+                {
+                    x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
+                }
+            }
+        }
+
+        public async void PutStuffOnNearestPlatform()
+        {
+            var platformCount = platforms.Count;
+
+            if (platformCount < 1)
+            {
+                await Task.Yield();
+                return;
+            }
+
+            // Find the Guid of our nearest neighbor
+
+            float closestDistance = float.MaxValue;
+            Guid closestGuid;
+
+            for (int i = 0; i < platformCount; ++i)
+            {
+                var distance = Vector3.Distance(Camera.main.transform.position, platforms[i].Position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = Math.Min(distance, closestDistance);
+                    closestGuid = platforms[i].Quads[0].guid;
+                }
+            }
+
+            // Place our stuff
+
+            Vector3 placement;
+            Vector2 queryArea = Vector2.one;
+
+            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement))
+            {
+                var stuff = Instantiate(StuffToPlace);
+                stuff.transform.position = placement;
             }
         }
 
@@ -100,10 +164,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.UpdateOnDemand();
         }
 
+        public void SaveSave()
+        {
+            Debug.Log("SaveSave");
+            observer.SaveScene(SavedSceneNamePrefix);
+        }
+
         public void ToggleAutoUpdate()
         {
             Debug.Log("ToggleAutoUpdate");
-            observer.AutoUpdate = true;
+            observer.AutoUpdate = !observer.AutoUpdate;
         }
 
         public void ToggleOcclusionMask()
@@ -111,12 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             Debug.Log("ToggleOcclusionMask");
             observer.RequestOcclusionMask = !observer.RequestOcclusionMask;
             observer.UpdateOnDemand();
-        }
-
-        public void SaveSave()
-        {
-            Debug.Log("SaveSave");
-            observer.SaveScene(SerializedSceneName);
         }
 
         public void ToggleGeneratePlanes()
@@ -132,6 +196,68 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.RequestMeshData = !observer.RequestMeshData;
             observer.UpdateOnDemand();
         }
+
+        public void ToggleFloors()
+        {
+            Debug.Log("ToggleFloors");
+            var surfaceType = SpatialAwarenessSurfaceTypes.Floor;
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
+            }
+            observer.UpdateOnDemand();
+        }
+
+        public void ToggleWalls()
+        {
+            Debug.Log("ToggleWalls");
+            var surfaceType = SpatialAwarenessSurfaceTypes.Wall;
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
+            }
+            observer.UpdateOnDemand();
+        }
+
+        public void ToggleCeilings()
+        {
+            Debug.Log("ToggleCeilings");
+            var surfaceType = SpatialAwarenessSurfaceTypes.Ceiling;
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
+            }
+            observer.UpdateOnDemand();
+        }
+
+        public void TogglePlatforms()
+        {
+            Debug.Log("TogglePlatforms");
+            var surfaceType = SpatialAwarenessSurfaceTypes.Platform;
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
+            }
+            observer.UpdateOnDemand();
+        }
+
+        // we do we inherit this baggage?
 
         public void OnObservationUpdated(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
         {

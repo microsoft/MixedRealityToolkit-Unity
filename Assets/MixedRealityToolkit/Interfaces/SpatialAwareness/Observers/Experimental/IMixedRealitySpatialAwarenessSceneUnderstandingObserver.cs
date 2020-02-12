@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
@@ -25,6 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When the startup behavior is manual, call the function to perform an update
         /// </summary>
         void UpdateOnDemand();
+
+        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
 
         /// <summary>
         /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.
