@@ -1007,25 +1007,21 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            if (!HasProfileAndIsInitialized)
-            {
-                return false;
-            }
-
-            try
-            {
-                foreach (var service in MixedRealityServiceRegistry.GetAllServices())
-                {
-                    execute(service);
-                }
-            }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the active profile.
-            { }
-
-            return true;
+            return ExecuteOnServiceCollection(
+                execute,
+                MixedRealityServiceRegistry.GetAllServices());
         }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
+        {
+            return ExecuteOnServiceCollection(
+                execute,
+                MixedRealityServiceRegistry.GetAllServices().Reverse());
+        }
+
+        private bool ExecuteOnServiceCollection(
+            Action<IMixedRealityService> execute,
+            IEnumerable<IMixedRealityService> services)
         {
             if (!HasProfileAndIsInitialized)
             {
@@ -1034,13 +1030,13 @@ namespace Microsoft.MixedReality.Toolkit
 
             try
             {
-                foreach (var service in MixedRealityServiceRegistry.GetAllServices().Reverse())
+                foreach (IMixedRealityService service in services)
                 {
                     execute(service);
                 }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the active profile.
-            { }
+            catch (InvalidOperationException)
+            { /* The service collection changed */ }
 
             return true;
         }
