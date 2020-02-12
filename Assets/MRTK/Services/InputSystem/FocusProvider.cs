@@ -1111,7 +1111,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     NumNearPointersActive,
                     NumFarPointersActive,
                     numFarPointersWithoutCursorActive,
-                    CoreServices.InputSystem.EyeGazeProvider.IsEyeGazeValid);
+                    CoreServices.InputSystem.EyeGazeProvider.IsGazeInputEyeBased);
 
                 // The gaze cursor's visibility is controlled by IsInteractionEnabled
                 gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;

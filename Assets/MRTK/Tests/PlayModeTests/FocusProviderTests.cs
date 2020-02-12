@@ -94,9 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward * 4.05f);
             yield return null;
 
-            var handInput = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Right Hand")).First();
-            IMixedRealityNearPointer grabPointer = (IMixedRealityNearPointer)handInput.Pointers.Where(x => x.PointerName.Contains("Grab")).First();
-            yield return null;
+            var grabPointer = PointerUtils.GetPointer<SpherePointer>(Handedness.Right);
 
             // Grab pointer is near grabbable
             Assert.IsTrue(grabPointer.IsNearObject, "Grab pointer should be near a grabbable");

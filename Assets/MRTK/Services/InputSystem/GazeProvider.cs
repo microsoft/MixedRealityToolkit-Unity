@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 lastHeadPosition = Vector3.zero;
 
         /// <inheritdoc />
-        public bool IsEyeGazeValid => IsEyeTrackingAvailable && UseEyeTracking;
+        public bool IsGazeInputEyeBased => IsEyeTrackingAvailable && UseEyeTracking;
 
         /// <inheritdoc />
         public DateTime Timestamp { get; private set; }
@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newGazeOrigin = Vector3.zero;
                 Vector3 newGazeNormal = Vector3.zero;
 
-                if (gazeProvider.IsEyeGazeValid)
+                if (gazeProvider.IsGazeInputEyeBased)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
                     newGazeOrigin = gazeProvider.LatestEyeGaze.origin;

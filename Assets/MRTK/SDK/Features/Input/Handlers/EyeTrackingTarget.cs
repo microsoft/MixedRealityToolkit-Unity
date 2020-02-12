@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Try to manually poll the eye tracking data
             if (eyeGazeProvider != null 
                 && eyeGazeProvider.UseEyeTracking 
-                && eyeGazeProvider.IsEyeGazeValid)
+                && eyeGazeProvider.IsGazeInputEyeBased)
             {
                 UpdateHitTarget();
 
