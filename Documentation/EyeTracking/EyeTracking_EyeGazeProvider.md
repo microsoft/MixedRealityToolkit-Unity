@@ -15,7 +15,7 @@ Indicates whether the user's eye tracking calibration is valid or not.
 It returns 'null', if the value has not yet received data from the eye tracking system.
 It may be invalid, because the user skipped the eye tracking calibration.
 
-- **IsEyeGazeValid**:
+- **IsGazeInputEyeBased**:
 Indicates whether the current eye tracking data is currently been used for gaze.
 
 - **IsEyeTrackingAvailable**:
