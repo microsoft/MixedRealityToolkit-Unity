@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit, you will need:
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, Unity 2019](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -30,6 +30,7 @@ To get started with the Mixed Reality Toolkit, you will need:
 ### Optional
 
 * [Getting started tutorials](#getting-started-tutorials)
+* [XR SDK getting started guide (Unity 2019.3 or later)](GettingStartedWithMRTKAndXRSDK.md).
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
