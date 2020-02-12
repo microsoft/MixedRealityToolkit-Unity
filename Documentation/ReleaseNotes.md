@@ -167,8 +167,22 @@ We are hoping to eventually deprecate ManipulationHandler and BoundingBox in fav
 
 There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.
 
-
 ### Known issues in 2.3.0
+
+**Unity 2019.3 infinite loop when switching build target**
+
+There is a known issue ([#7299](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7299)) with switching build targets after entering and exiting play mode in Unity 2019.3.
+
+If this issue is encountered, please:
+
+- Terminate the process
+- Restart Unity and load the project
+- Do not enter / edit play mode
+- Change the build target
+
+**NuGet packages are not supported with Unity 2019**
+
+The current MRTK packages distributed via NuGet.org are precompiled with Unity 2018.4 and are not intended for use with Unity 2019. A future release of MRTK will provide Unity 2019 supported NuGet packages.
 
 **CS0579: Duplicate 'AssemblyVersion' attribute**
 
@@ -189,6 +203,21 @@ To resolve these errors:
 - If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
 
     ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
+
+**NU1101: Unable to find package MSBuildForUnity**
+
+When using NuGet for Unity, applying MRTK configuration settings after switching the platform to UWP may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.
+
+To resolve this error:
+
+- Open **Editor** > **Preferences**
+- Navigate to **NuGet for Unity**
+- Click **Add New Source**
+- Replace **New Source** with **MSBuild for Unity**
+- Replace **source_path** with **https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json**
+- Click **Save**, at the bottom of the window
+- In the Project window expand **Assets** and select **<projectname>.Dependencies.msb4u**
+- In the Inspector window, click **Rebuild**
 
 **MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
 
