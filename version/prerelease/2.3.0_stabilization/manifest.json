@@ -938,11 +938,23 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/GettingStartedWithMRTKAndXRSDK.html",
+          "hash": "xg03EfO/DlsDP6Mf+JnQOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/GettingStartedWithTheMRTK.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "1Vz3cBLjkjtxBYOOo7bZ1Q=="
+          "hash": "2Zjo3bsJG35dR1jF2WpDrg=="
         }
       },
       "is_incremental": false,
@@ -6110,6 +6122,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/XRSDK/PluginManagement.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/XRSDK/PluginManagement.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/favicon.ico",
       "output": {
         "resource": {
@@ -6527,7 +6550,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "e7AzslX9WZzy7bsmUYcxtw=="
+          "hash": "Ziec0vxGnpAMdtQLK3Uffg=="
         }
       },
       "is_incremental": false,
@@ -7127,7 +7150,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "15NHxGsDJ5W1B5eCLjbYpQ=="
+          "hash": "G1gtyPUwjPBe/LZV7x9bNQ=="
         }
       },
       "is_incremental": false,
@@ -25602,11 +25625,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDataProvider.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDataProvider.html",
-          "hash": "2/NVCuwGOCvkNb+VHaxGDg=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager.html",
+          "hash": "bkYSBLjW5XZH/xl2vu7sYw=="
         }
       },
       "is_incremental": false,
@@ -25678,7 +25701,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.html",
-          "hash": "Rr9ssBRqNvjvQIAF+8mQGg=="
+          "hash": "khCnfd+BI4biwyyNleQwpg=="
         }
       },
       "is_incremental": false,
@@ -25738,7 +25761,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "GAKWVwwkg5GU4iOYBW0Dbw=="
+          "hash": "HFVYEV18fGWj+gtyN3MJoA=="
         }
       },
       "is_incremental": false,
@@ -25800,7 +25823,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 145,
+          "total_file_count": 146,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
