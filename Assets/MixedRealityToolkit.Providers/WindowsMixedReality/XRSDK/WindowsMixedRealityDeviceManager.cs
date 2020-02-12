@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal,
         "XRSDK Windows Mixed Reality Device Manager")]
-    public class WindowsMixedRealityDataProvider : XRSDKDeviceManager
+    public class WindowsMixedRealityDeviceManager : XRSDKDeviceManager
     {
         /// <summary>
         /// Constructor.
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public WindowsMixedRealityDataProvider(
+        public WindowsMixedRealityDeviceManager(
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
