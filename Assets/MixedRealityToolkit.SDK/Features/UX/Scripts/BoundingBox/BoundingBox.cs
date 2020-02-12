@@ -1799,7 +1799,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
-            childTransforms.Add(Target.transform);
+            if (Target != null && Target != gameObject)
+            {
+                childTransforms.Add(Target.transform);
+            }
 
             foreach (Transform childTransform in Target.transform)
             {
@@ -1844,7 +1847,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
                     boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
                 {
-                    AddColliderBoundsToTarget(colliderByTransform);
+                    if (AddColliderBoundsToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer) { continue; }
                     if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
                 }
 
@@ -1852,7 +1855,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
                 {
-                    AddRendererBoundsToTarget(rendererBoundsByTransform);
+                    if (AddRendererBoundsToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider) { continue; }
                     if (boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
                 }
 
@@ -1874,21 +1877,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return finalBounds;
         }
 
-        private void AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
+        private bool AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
-            if (rendererBoundsByTarget.Key == null) { return; }
+            if (rendererBoundsByTarget.Key == null) { return false; }
 
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
+
+            return true;
         }
 
-        private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
+        private bool AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
             if (colliderByTransform.Key != null)
             {
                 BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
             }
+
+            return colliderByTransform.Key != null;
         }
 
         private void SetMaterials()
