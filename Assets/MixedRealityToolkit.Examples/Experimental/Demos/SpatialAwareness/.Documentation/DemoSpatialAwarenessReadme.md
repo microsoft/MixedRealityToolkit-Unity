@@ -33,6 +33,7 @@ DemoSpatialAwareness.unity
 ## General layout
 
 Select the 'MixedRealityTookit' game object and check the inspector.
+
 ![scene understanding location in heirarchy](MRTKHierarchy.png)
 ![mrkt location in inspector](MRTKLocation.png)
 
