@@ -30,7 +30,7 @@ For the latest status of the release, please visit the [milestone page]( https:/
 
 Status: In development
 
-Timeline: TBDl 2020
+Timeline: TBD 2020
 
 Themes:
 
