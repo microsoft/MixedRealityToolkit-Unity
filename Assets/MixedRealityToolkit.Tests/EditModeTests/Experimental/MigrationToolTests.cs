@@ -38,11 +38,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private List<MigrationTypes> migrationList = new List<MigrationTypes>();
 
+
+        // internal test version of bounds control migration handler that overrides the
+        // output directory of the generated config files so we can clean them up properly 
+        // after each test run.
+        internal class TestBoundsControlMigrationHandler : BoundsControlMigrationHandler
+        {
+            const string migrationTestFolder = "MigrationTests";
+            const string assetPath = "Assets";
+            protected override string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
+            {
+                string configPath = assetPath + "/" + migrationTestFolder;
+                if (AssetDatabase.IsValidFolder(configPath))
+                {
+                    return configPath;
+                }
+                else
+                {
+                    string guid = AssetDatabase.CreateFolder(assetPath, migrationTestFolder);
+                    return AssetDatabase.GUIDToAssetPath(guid);
+                }
+            }
+
+            static public void AddMigratedFilesToCleanup(HashSet<string> filesToDelete)
+            {
+                string configDir = assetPath + "/" + migrationTestFolder;
+                if (AssetDatabase.IsValidFolder(configDir))
+                {
+                    filesToDelete.Add(configDir);
+                }
+            }
+        }
+
         [SetUp]
         public void Setup()
         {
             migrationList.Add(new MigrationTypes(typeof(ManipulationHandler), typeof(ObjectManipulator), typeof(ObjectManipulatorMigrationHandler)));
-            migrationList.Add(new MigrationTypes(typeof(BoundingBox), typeof(BoundsControl), typeof(BoundsControlMigrationHandler)));
+            migrationList.Add(new MigrationTypes(typeof(BoundingBox), typeof(BoundsControl), typeof(TestBoundsControlMigrationHandler)));
         }
 
         /// <summary>
@@ -51,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
+            TestBoundsControlMigrationHandler.AddMigratedFilesToCleanup(assetsForDeletion);
             foreach (var assetPath in assetsForDeletion)
             {
                 if (AssetDatabase.LoadMainAssetAtPath(assetPath))

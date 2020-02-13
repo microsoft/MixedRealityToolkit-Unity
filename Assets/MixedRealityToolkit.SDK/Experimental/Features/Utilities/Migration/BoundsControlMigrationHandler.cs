@@ -80,14 +80,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         }
 
-        private string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
+        virtual protected string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
         {
-            // todo: this needs a better logic but will work for converting the scene now
             var scene = boundingBox.gameObject.scene;
             if (scene != null)
             {
-                string scenePath = scene.path;
+                string scenePath = scene.path;             
                 string sceneDir = System.IO.Path.GetDirectoryName(scenePath);
+                // if empty we're creating the folder in the asset root.
+                // This should only happen if we're trying to migrate a dynamically created
+                // gameobject - which is usually only in test scenarios
+                if (sceneDir == "")
+                {
+                    sceneDir = "Assets";
+                }
 
                 const string configDir = "BoundsControlConfigs";
                 string configPath = System.IO.Path.Combine(sceneDir, configDir);
