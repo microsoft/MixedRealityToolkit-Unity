@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         void UpdateOnDemand();
 
-        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
+        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane, out Quaternion rotation);
 
         /// <summary>
         /// The set of <see cref="SpatialAwarenessSceneObject"/>s being managed by the observer, keyed by a unique id.

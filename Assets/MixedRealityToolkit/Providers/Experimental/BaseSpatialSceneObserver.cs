@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                 handler.OnObservationRemoved(spatialEventData);
             };
 
-        public virtual bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane)
+        public virtual bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane, out Quaternion rotation)
         {
             throw new System.NotImplementedException();
         }

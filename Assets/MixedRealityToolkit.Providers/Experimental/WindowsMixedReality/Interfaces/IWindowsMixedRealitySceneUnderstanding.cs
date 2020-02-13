@@ -10,6 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     {
         bool TryGetOcclusionMask(System.Guid quadId, ushort textureWidth, ushort textureHeight, out byte[] mask);
 
-        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
+        bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane, out Quaternion rotation);
     }
 }

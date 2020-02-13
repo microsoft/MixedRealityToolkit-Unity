@@ -36,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         bool isInit = false;
 
+        bool tryFindDebug = true;
+
         void OnEnable()
         {
             CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
@@ -68,13 +70,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             CoreServices.SpatialAwarenessSystem?.UnregisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
         }
 
-        void Update()
+        async void Update()
         {
             // Hack around toggle not working in Enable()
             if (!isInit)
             {
                 InitToggleButtonState();
                 isInit = true;
+            }
+
+            if (tryFindDebug)
+            {
+                tryFindDebug = false;
+                await Task.Delay(TimeSpan.FromSeconds(4));
+                PutStuffOnNearestPlatform();
             }
         }
 
@@ -151,12 +160,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             // Place our stuff
 
             Vector3 placement;
-            Vector2 queryArea = Vector2.one;
+            Vector2 queryArea = Vector2.one * .01f;
+            Quaternion rotation;
 
-            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement))
+            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement, out rotation))
             {
                 var stuff = Instantiate(StuffToPlace);
                 stuff.transform.position = placement;
+                stuff.transform.rotation = rotation;
                 Debug.Log($"Found transform @ {placement.ToString("F4")}");
             }
         }

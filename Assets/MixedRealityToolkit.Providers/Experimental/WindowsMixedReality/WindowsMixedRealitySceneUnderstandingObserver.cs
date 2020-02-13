@@ -84,6 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             killToken = killTokenSource.Token;
 
             var x = RunObserver(killToken).ConfigureAwait(true);
+
+            var ensureCreated = observedObjectParent.transform;
         }
 
         private void StartUpdateTimers()
@@ -253,8 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private System.Timers.Timer firstUpdateTimer = null;
         private System.Timers.Timer updateTimer = null;
-        //private Dictionary<Guid, SceneMesh> cachedSceneMeshes = new Dictionary<Guid, SceneMesh>(256);
-        private Dictionary<Guid, SceneQuad> cachedSceneQuads = new Dictionary<Guid, SceneQuad>(256);
+        private Dictionary<Guid, Tuple<SceneQuad, SceneObject>> cachedSceneQuads = new Dictionary<Guid, Tuple<SceneQuad, SceneObject>>(256);
         private ConcurrentQueue<SpatialAwarenessSceneObject> instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
         private TextAsset serializedScene = null;
         private byte[] sceneBytes;
@@ -267,19 +268,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         #region Public Methods
         public bool TryGetOcclusionMask(Guid quadId, ushort textureWidth, ushort textureHeight, out byte[] mask)
         {
-            SceneQuad quad;
+            Tuple<SceneQuad, SceneObject> result;
 
-            if (!cachedSceneQuads.TryGetValue(quadId, out quad))
+            if (!cachedSceneQuads.TryGetValue(quadId, out result))
             {
                 mask = null;
                 return false;
             }
 
-            var result = new byte[textureWidth * textureHeight];
+            SceneQuad quad = result.Item1;
+            SceneObject sceneObject = result.Item2;
 
-            quad.GetSurfaceMask(textureWidth, textureHeight, result);
+            var maskResult = new byte[textureWidth * textureHeight];
 
-            mask = result;
+            quad.GetSurfaceMask(textureWidth, textureHeight, maskResult);
+
+            mask = maskResult;
 
             return true;
         }
@@ -291,15 +295,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public override bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnPlane)
+        public override bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnPlane, out Quaternion rotation)
         {
-            SceneQuad quad;
+            Tuple<SceneQuad, SceneObject> result;
 
-            if (!cachedSceneQuads.TryGetValue(quadGuid, out quad))
+            if (!cachedSceneQuads.TryGetValue(quadGuid, out result))
             {
                 placementPosOnPlane = Vector2.zero;
+                rotation = Quaternion.identity;
                 return false;
             }
+
+            SceneQuad quad = result.Item1;
+            SceneObject sceneObject = result.Item2;
 
             System.Numerics.Vector2 ext = new System.Numerics.Vector2(objExtents.x, objExtents.y);
             System.Numerics.Vector2 placementPosition = new System.Numerics.Vector2();
@@ -312,21 +320,38 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             //   |_Quad
             //       |_Placement
             // We're returning everything to the user in world space,
-            // to avoid having to manage parenting
-
-            placementPosition = (placementPosition / quad.Extents) - new System.Numerics.Vector2(0.5f, 0.5f);
+            // to avoid having to manage parenting or scenes
 
             Debug.Log($"placementPosition = {placementPosition}");
 
-            System.Numerics.Matrix4x4 local = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(placementPosition.X, placementPosition.Y, 0));
+            Debug.Log($"placementPosition = {placementPosition}");
 
-            Debug.Log($"local = {local}");
+            var a = sceneObject.GetLocationAsMatrix().Translation;
 
-            var world = local * currentSceneTransform;
-            var worldPos = world.ToUnity().GetColumn(3);
-            placementPosOnPlane = worldPos;
+            rotation = sceneObject.Orientation.ToUnityQuaternion();
 
-            Debug.Log($"worldPos = {worldPos}");
+            var b = new System.Numerics.Vector3(placementPosition, 0);
+            var c = new Vector3(b.X, b.Y, b.Z);
+
+            var d = sceneObject.GetLocationAsMatrix().ToUnity();
+            var e = d.MultiplyPoint(c);
+
+            Debug.Log($"a = {a}, b = {b}, d = {d}, e = {e}"); ;
+
+            //placementPosition = (placementPosition / quad.Extents) - new System.Numerics.Vector2(0.5f, 0.5f);
+
+            //Debug.Log($"placementPosition = {placementPosition}");
+
+            //System.Numerics.Matrix4x4 placementXform = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(placementPosition.X, placementPosition.Y, 0));
+
+
+            //var world = placementXform * sceneObject.GetLocationAsMatrix() * currentSceneTransform;
+            //var world = placementXform;// * currentSceneTransform;
+            //var worldPos = world.ToUnity().GetColumn(3);
+            //worldPos = sceneObjTU;
+            placementPosOnPlane = e;
+
+            //Debug.Log($"placementPosOnPlane = {placementPosOnPlane}");
 
             return true;
         }
@@ -421,8 +446,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         }
                         await new WaitForUpdate();
 
-                        currentSceneTransform = await GetSceneTransformAsync();
-                        //Debug.Log($"currentSceneTransform = {currentSceneTransform}");
+                        currentSceneTransform = await GetSceneToWorldTransform();
+
+                        var unitySceneTransform = currentSceneTransform.ToUnity();
+
+                        Vector3 pos = unitySceneTransform.GetColumn(3);
+                        Quaternion rot = unitySceneTransform.rotation;
+
+                        ObservedObjectParent.transform.SetPositionAndRotation(pos, rot);
+                        
+                        Debug.Log($"currentSceneTransform = {currentSceneTransform}");
 
                         //var worldDebugCenter = debugMatrix.ToUnity().MultiplyPoint(debugCenter3.ToUnityVector3());
                         //var worldDebugCenter = debugMatrix.Translation + debugCenter3;
@@ -498,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-        private async Task<System.Numerics.Matrix4x4> GetSceneTransformAsync()
+        private async Task<System.Numerics.Matrix4x4> GetSceneToWorldTransform()
         {
             //Debug.Log($"GetSceneTransformAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             await Task.Yield();
@@ -514,15 +547,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
             SpatialCoordinateSystem worldOrigin = SpatialCoordinateSystem.FromNativePtr(nativePtr);
-            //System.Numerics.Matrix4x4? sceneToUnityTransform = sceneOrigin.TryGetTransformTo(unitySpatialCoordinateSystem);
-            //SpatialCoordinateSystem worldOrigin;
+
             var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
 
             if (sceneToWorld.HasValue)
             {
                 Debug.Log($"sceneToWorld = {sceneToWorld.Value.ToString()}");
-                //result = SwapRuntimeAndUnityCoordinateSystem(sceneToUnityTransform.Value);
-                result = sceneToWorld.Value;
+                result = sceneToWorld.Value; // numerics
             }
             else
             {
@@ -651,7 +682,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (!cachedSceneQuads.ContainsKey(quadIdKey))
                     {
-                        cachedSceneQuads.Add(quadIdKey, sceneQuad);
+                        cachedSceneQuads.Add(quadIdKey, new Tuple<SceneQuad, SceneObject>(sceneQuad, sceneObject));
                     }
                 }
             }
@@ -670,15 +701,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             // Apply scene transform to scene objects so they are stored in world space
 
-            var localTransform = sceneObject.GetLocationAsMatrix(); // local space
+            var sceneObjectTransform = sceneObject.GetLocationAsMatrix(); // local space
 
-            System.Numerics.Matrix4x4 worldTranform = localTransform * currentSceneTransform;
+            Debug.Log($"sceneObjectTransform = {sceneObjectTransform}");
+
+            System.Numerics.Matrix4x4 worldTranform = sceneObjectTransform;// * currentSceneTransform;
 
             System.Numerics.Vector3 worldTranslation;
             System.Numerics.Quaternion worldRotation;
             System.Numerics.Vector3 localScale;
 
-            System.Numerics.Matrix4x4.Decompose(RightToLeftHanded(worldTranform), out localScale, out worldRotation, out worldTranslation);
+            System.Numerics.Matrix4x4.Decompose(worldTranform, out localScale, out worldRotation, out worldTranslation);
+
+            Debug.Log($"worldTranslation = {worldTranslation}");
 
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
@@ -838,10 +873,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 layer = PhysicsLayer
             };
 
-            saso.GameObject.transform.position = saso.Position;
-            saso.GameObject.transform.rotation = saso.Rotation;
-
             saso.GameObject.transform.SetParent(ObservedObjectParent.transform);
+
+            saso.GameObject.transform.localPosition = saso.Position;
+            saso.GameObject.transform.localRotation = saso.Rotation;
+
 
             // Maybe make GameObjects for Quads and Meshes
 
@@ -861,12 +897,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     var quad = saso.Quads[i];
 
-                    var go = new GameObject($"Quad {quad.guid}");
+                    var quadGo = new GameObject($"Quad {quad.guid}");
 
-                    var meshFilter = go.AddComponent<MeshFilter>();
+                    var meshFilter = quadGo.AddComponent<MeshFilter>();
                     meshFilter.mesh = normalizedQuadMesh;
 
-                    var meshRenderer = go.AddComponent<MeshRenderer>();
+                    var meshRenderer = quadGo.AddComponent<MeshRenderer>();
 
                     if (DefaultMaterial)
                     {
@@ -882,13 +918,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         }
                     }
 
-                    var scale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
-                    go.transform.localScale = scale;
-                    //go.transform.position = saso.Position;
-                    //go.transform.rotation = saso.Rotation;
-                    go.AddComponent<BoxCollider>();
+                    quadGo.transform.SetParent(saso.GameObject.transform);
 
-                    go.transform.SetParent(saso.GameObject.transform, false);
+                    var scale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
+                    quadGo.transform.localScale = scale;
+                    quadGo.transform.localPosition = new Vector3((quad.extents.x / 2), (quad.extents.y / 2), 0);
+                    quadGo.transform.localRotation = Quaternion.identity;
+                    quadGo.AddComponent<BoxCollider>();
                 }
             }
 
