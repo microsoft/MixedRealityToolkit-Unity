@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
 {
     public class MigrationToolTests
     {
