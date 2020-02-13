@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This pointer's position is given by hand position (grip pose),
     /// and the input focus is given by head gaze.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/SDK/GGVPointer")]
     public class GGVPointer : InputSystemGlobalHandlerListener,
         IMixedRealityPointer,
         IMixedRealityInputHandler,
@@ -87,14 +88,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public IMixedRealityInputSource InputSourceParent { get; private set; }
 
+        /// <inheritdoc />
         public IMixedRealityCursor BaseCursor { get; set; }
 
+        /// <inheritdoc />
         public ICursorModifier CursorModifier { get; set; }
 
+        /// <inheritdoc />
         public bool IsInteractionEnabled => IsActive;
-
+        
+        /// <inheritdoc />
         public bool IsActive { get; set; }
 
         /// <inheritdoc />
@@ -115,16 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
 
+        /// <inheritdoc />
         public float SphereCastRadius
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-                throw new System.NotImplementedException();
-            }
+            get => throw new System.NotImplementedException();
+            set => throw new System.NotImplementedException();
         }
 
         private static bool Equals(IMixedRealityPointer left, IMixedRealityPointer right)
@@ -171,6 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void OnPostSceneQuery()
         {
             if (isSelectPressed && IsInteractionEnabled)
@@ -179,6 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public void OnPreSceneQuery()
         {
             Vector3 newGazeOrigin = gazeProvider.GazePointer.Rays[0].Origin;
@@ -186,7 +189,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
+        /// <inheritdoc />
         public void OnPreCurrentPointerTargetChange() { }
+
+        /// <inheritdoc />
+        public void Reset()
+        {
+            Controller = null;
+            BaseCursor = null;
+            IsActive = false;
+            IsFocusLocked = false;
+        }
 
         /// <inheritdoc />
         public virtual Vector3 Position => sourcePosition;

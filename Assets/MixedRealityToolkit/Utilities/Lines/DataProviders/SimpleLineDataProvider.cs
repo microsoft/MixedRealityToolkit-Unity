@@ -8,13 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// <summary>
     /// A simple line with two points.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/SimpleLineDataProvider")]
     public class SimpleLineDataProvider : BaseMixedRealityLineDataProvider
     {
+        [Tooltip("The starting point of this line.")]
         [SerializeField]
         private MixedRealityPose startPoint = MixedRealityPose.ZeroIdentity;
 
         /// <summary>
-        /// The Starting point of this line.
+        /// The starting point of this line which is always located at the GameObject's transform position
         /// </summary>
         /// <remarks>Always located at this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s <see href="https://docs.unity3d.com/ScriptReference/Transform-position.html">Transform.position</see></remarks>
         public MixedRealityPose StartPoint => startPoint;
@@ -28,8 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public MixedRealityPose EndPoint
         {
-            get { return endPoint; }
-            set { endPoint = value; }
+            get => endPoint;
+            set => endPoint = value;
         }
 
         #region Line Data Provider Implementation
@@ -43,9 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             switch (pointIndex)
             {
                 case 0:
-                    return startPoint.Position;
+                    return StartPoint.Position;
                 case 1:
-                    return endPoint.Position;
+                    return EndPoint.Position;
                 default:
                     Debug.LogError("Invalid point index");
                     return Vector3.zero;
@@ -72,13 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return Vector3.Lerp(startPoint.Position, endPoint.Position, normalizedDistance);
+            return Vector3.Lerp(StartPoint.Position, EndPoint.Position, normalizedDistance);
         }
 
         /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
-            return Vector3.Distance(startPoint.Position, endPoint.Position);
+            return Vector3.Distance(StartPoint.Position, EndPoint.Position);
         }
 
         /// <inheritdoc />

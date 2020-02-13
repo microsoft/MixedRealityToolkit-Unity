@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// property), but can be toggled via the enabled/disable voice commands keywords.
     /// 
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Services/MixedRealityToolkitVisualProfiler")]
     public class MixedRealityToolkitVisualProfiler : MonoBehaviour
     {
         private static readonly int maxStringLength = 32;

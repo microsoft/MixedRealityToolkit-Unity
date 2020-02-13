@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A row of indicator buttons to control input simulation features.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("Scripts/MRTK/SDK/InputSimulationIndicators")]
     public class InputSimulationIndicators : MonoBehaviour
     {
         /// <summary>

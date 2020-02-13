@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Cursor used to aide in near finger interactions.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/FingerCursor")]
     public class FingerCursor : BaseCursor
     {
         [Header("Ring Motion")]

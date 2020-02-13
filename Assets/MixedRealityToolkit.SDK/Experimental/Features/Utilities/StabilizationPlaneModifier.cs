@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// Using StabilizationPlaneModifier will override DepthLSR. This is automatically enabled via the depth buffer sharing in Unity build settings
     /// StabilizationPlaneModifier is recommended for HoloLens 1, can be used for HoloLens 2, and does a no op for WMR
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/StabilizationPlaneModifier")]
     public class StabilizationPlaneModifier : MonoBehaviour
     {
         [System.Serializable]
@@ -266,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Configures the stabilization plane to update its position based on an object in the scene.        
+        /// Configures the stabilization plane to update its position based on an object in the scene.
         /// </summary>
         private void ConfigureTransformOverridePlane(float deltaTime)
         {
@@ -310,8 +311,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             planePosition = gazeOrigin + (gazeToPlane * currentPlaneDistance);
 
 #if UNITY_WSA
+            // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+            // with legacy requirements.
+#pragma warning disable 0618
             // Place the plane at the desired depth in front of the user and billboard it to the gaze origin.
             HolographicSettings.SetFocusPointForFrame(planePosition, OverridePlane.Normal, velocity);
+#pragma warning restore 0618
 #endif
 
             return gazeToPlane;
@@ -349,7 +354,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeDirection;
 #elif UNITY_WSA
+#pragma warning disable 0618
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeDirection, Vector3.zero);
+#pragma warning restore 0618
 #endif
         }
 
@@ -372,7 +379,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             debugPlane.Center = planePosition;
             debugPlane.Normal = -gazeNormal;
 #elif UNITY_WSA
+#pragma warning disable 0618
             HolographicSettings.SetFocusPointForFrame(planePosition, -gazeNormal, Vector3.zero);
+#pragma warning restore 0618
 #endif
         }
 

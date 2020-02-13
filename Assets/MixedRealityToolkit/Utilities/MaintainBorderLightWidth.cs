@@ -11,22 +11,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// "MixedRealityToolkit/Standard" shader "_BorderLight" feature.
     /// </summary>
     [RequireComponent(typeof(Renderer))]
+    [AddComponentMenu("Scripts/MRTK/Core/MaintainBorderLightWidth")]
     public class MaintainBorderLightWidth : MonoBehaviour
     {
         private Renderer targetRenderer = null;
         private MaterialPropertyBlock properties = null;
-        private int borderWidthID = 0;
+        private static int borderWidthID = Shader.PropertyToID("_BorderWidth");
         private float initialBorderWidth = 1.0f;
         private Vector3 initialScale = Vector3.one;
+        private Vector3 prevScale;
 
         private void Start()
         {
             // Cache the initial border width state.
             targetRenderer = GetComponent<Renderer>();
             properties = new MaterialPropertyBlock();
-            borderWidthID = Shader.PropertyToID("_BorderWidth");
+
             initialBorderWidth = targetRenderer.sharedMaterial.GetFloat(borderWidthID);
             initialScale = transform.lossyScale;
+            prevScale = initialScale;
 
             for (int i = 0; i < 3; ++i)
             {
@@ -39,8 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void LateUpdate()
         {
-            if (targetRenderer != null)
+            if (prevScale != transform.lossyScale && targetRenderer != null)
             {
+                prevScale = transform.lossyScale;
+
                 // Find the axis with the smallest scale.
                 var minAxis = 0;
                 var minScale = float.MaxValue;

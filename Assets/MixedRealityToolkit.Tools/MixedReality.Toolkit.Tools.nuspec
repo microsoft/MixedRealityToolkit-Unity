@@ -5,7 +5,7 @@
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft,MixedReality</owners>
-    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.2.0/License.txt</licenseUrl>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.3.0/License.txt</licenseUrl>
     <projectUrl>https://aka.ms/MRTK</projectUrl>
     <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -27,7 +27,7 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tools.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tools.*" target="Plugins\" />
-    <!-- commenting source packaging for the 2.2.0 release -->
+    <!-- The following line is commented out because of a path length issue -->
     <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" /> -->
   </files>
 </package>

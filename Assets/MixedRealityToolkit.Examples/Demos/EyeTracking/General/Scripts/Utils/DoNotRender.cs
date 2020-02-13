@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// Simple class that automatically hides a target on startup. This is, for example, useful for trigger zones and visual guides that are useful 
     /// to show in the Editor, but not in the final application.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/DoNotRender")]
     public class DoNotRender : MonoBehaviour
     {
         private void Start()

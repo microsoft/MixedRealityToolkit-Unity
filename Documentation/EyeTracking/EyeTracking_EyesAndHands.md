@@ -1,4 +1,4 @@
-# Eyes + Hand Interaction
+# Eyes + hand interaction
 
 ## How to support _look + hand motions_ (eye gaze & hand gestures)
 

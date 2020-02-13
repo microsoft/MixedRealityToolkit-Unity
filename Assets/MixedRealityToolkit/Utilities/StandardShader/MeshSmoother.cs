@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#mesh-outlines")]
+    [AddComponentMenu("Scripts/MRTK/Core/MeshSmoother")]
     public class MeshSmoother : MonoBehaviour
     {
         private const int smoothNormalUVChannel = 2;

@@ -1,0 +1,21 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared",
+        "Microsoft.MixedReality.Toolkit.Providers.XRSDK"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_2019_3_OR_NEWER"
+    ]
+}

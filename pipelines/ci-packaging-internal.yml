@@ -1,9 +1,9 @@
 # CI build producing developer packages.
 
 variables:
-  Unity2018Version: Unity2018.3.7f1
+  Unity2018Version: Unity2018.4.12f1
   Unity2019Version: Unity2019.2.0f1
-  MRTKVersion: 2.2.0
+  MRTKVersion: 2.3.0
 
 jobs:
 - job: CIDeveloperValidation
@@ -11,7 +11,7 @@ jobs:
   pool:
     name: Analog On-Prem
     demands:
-    - Unity2018.3.7f1
+    - Unity2018.4.12f1
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:

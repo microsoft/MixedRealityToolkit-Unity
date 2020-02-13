@@ -16,14 +16,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 screenDelta = Vector3.zero;
         public Vector3 viewportDelta = Vector3.zero;
         public Vector3 worldDelta = Vector3.zero;
+
+        /// <summary>
+        /// Resets all vector contents to zero vector values
+        /// </summary>
+        public void Reset()
+        {
+            screenDelta = Vector3.zero;
+            viewportDelta = Vector3.zero;
+            worldDelta = Vector3.zero;
+        }
     }
 
+    /// <summary>
+    /// Service that provides simulated mixed reality input information based on mouse and keyboard input in editor
+    /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        true)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class InputSimulationService :
         BaseInputSimulationService,
@@ -61,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false; }
             set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleLeft = value; } }
         }
+
         /// <inheritdoc />
         public bool IsAlwaysVisibleHandRight
         {
@@ -104,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handDataProvider.ResetHand(Handedness.Left);
             }
         }
+
         /// <inheritdoc />
         public void ResetHandRight()
         {
@@ -127,6 +143,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Indicators to show input simulation state in the viewport.
         /// </summary>
         private GameObject indicators;
+
+        /// <summary>
+        /// Tracks mouse movement delta information in different coordinate system spaces between updates
+        /// </summary>
+        private MouseDelta mouseDelta = new MouseDelta();
+
+        private Vector3 lastMousePosition;
+        private bool wasFocused;
+        private bool wasCursorLocked;
 
         #region BaseInputDeviceManager Implementation
 
@@ -184,6 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             ArticulatedHandPose.LoadGesturePoses();
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
@@ -192,12 +219,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Destroy()
         {
+            base.Destroy();
+
             ArticulatedHandPose.ResetGesturePoses();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
+
             var profile = InputSimulationProfile;
 
             if (indicators == null && profile.IndicatorsPrefab)
@@ -211,6 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             if (indicators)
             {
                 GameObject.Destroy(indicators);
@@ -223,6 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             var profile = InputSimulationProfile;
 
             switch (HandSimulationMode)
@@ -252,7 +287,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DisableCameraControl();
             }
 
-            MouseDelta mouseDelta = UpdateMouseDelta();
+            UpdateMouseDelta();
+
             if (UserInputEnabled)
             {
                 if (handDataProvider != null)
@@ -269,16 +305,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (profile.SimulateEyePosition)
             {
                 // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
-                InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
 
                 // Update the simulated eye gaze with the current camera position and forward vector
-                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
+                Service?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
         }
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            base.LateUpdate();
+
             var profile = InputSimulationProfile;
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
@@ -363,32 +401,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private Vector3 lastMousePosition;
-        private bool wasFocused;
-        private bool wasCursorLocked;
-
         private void ResetMouseDelta()
         {
             lastMousePosition = UnityEngine.Input.mousePosition;
+
+            mouseDelta.Reset();
         }
 
-        private MouseDelta UpdateMouseDelta()
+        private void UpdateMouseDelta()
         {
             var profile = InputSimulationProfile;
 
             bool isFocused = Application.isFocused;
-            bool gainedFocus = (!wasFocused && isFocused);
+            bool gainedFocus = !wasFocused && isFocused;
             wasFocused = isFocused;
 
             bool isCursorLocked = UnityEngine.Cursor.lockState != CursorLockMode.None;
-            bool cursorLockChanged = (wasCursorLocked != isCursorLocked);
+            bool cursorLockChanged = wasCursorLocked != isCursorLocked;
             wasCursorLocked = isCursorLocked;
 
             // Reset in cases where mouse position is jumping
             if (gainedFocus || cursorLockChanged)
             {
                 ResetMouseDelta();
-                return new MouseDelta();
             }
             else
             {
@@ -414,53 +449,56 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Interpret scroll values as world space delta
                 worldDelta.z *= profile.HandDepthMultiplier;
 
+                Vector2 worldDepthDelta = new Vector2(worldDelta.z, 0);
+
                 // Convert world space scroll delta into screen space pixels
-                screenDelta.z = WorldToScreen(new Vector2(worldDelta.z, 0)).x;
+                screenDelta.z = WorldToScreen(worldDepthDelta).x;
 
                 // Convert screen space x/y delta into world space
-                Vector2 worldDelta2D = ScreenToWorld(new Vector2(screenDelta.x, screenDelta.y));
+                Vector2 worldDelta2D = ScreenToWorld(screenDelta);
                 worldDelta.x = worldDelta2D.x;
                 worldDelta.y = worldDelta2D.y;
 
                 // Viewport delta x and y can be computed from screen x/y.
                 // Note that the conversion functions do not change Z, it is expected to always be in world space units.
                 Vector3 viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta);
+                
                 // Compute viewport-scale z delta
-                viewportDelta.z = WorldToViewport(new Vector2(worldDelta.z, 0)).x;
+                viewportDelta.z = WorldToViewport(worldDepthDelta).x;
 
                 lastMousePosition = UnityEngine.Input.mousePosition;
 
-                return new MouseDelta()
-                {
-                    screenDelta = screenDelta,
-                    worldDelta = worldDelta,
-                    viewportDelta = viewportDelta,
-                };
+                mouseDelta.screenDelta = screenDelta;
+                mouseDelta.worldDelta = worldDelta;
+                mouseDelta.viewportDelta = viewportDelta;
             }
         }
 
         // Default world-space distance for converting screen/viewport scroll offsets into world space depth offset.
         // The pixel-to-world-unit ratio changes with depth, so have to chose a fixed distance for conversion.
-        private const float mouseWorldDepth = 0.5f;
         // Center of the viewport is at (0.5, 0.5)
+        private const float mouseWorldDepth = 0.5f;
 
-        private Vector2 ScreenToWorld(Vector2 screenDelta)
+        private Vector2 ScreenToWorld(Vector3 screenDelta)
         {
             Vector3 deltaViewport3D = new Vector3(
                 screenDelta.x / (0.5f * CameraCache.Main.pixelWidth),
                 screenDelta.y / (0.5f * CameraCache.Main.pixelHeight),
                 1) * mouseWorldDepth;
+
             var invProjMat = Matrix4x4.Inverse(CameraCache.Main.projectionMatrix);
             Vector3 deltaWorld3D = invProjMat * deltaViewport3D;
+
             return new Vector2(deltaWorld3D.x, deltaWorld3D.y);
         }
 
         private Vector2 WorldToScreen(Vector2 deltaWorld)
         {
             Vector3 deltaWorld3D = new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth);
-            var projMat = CameraCache.Main.projectionMatrix;
-            Vector4 proj = projMat * deltaWorld3D;
+
+            Vector4 proj = CameraCache.Main.projectionMatrix * deltaWorld3D;
             Vector3 deltaViewport3D = -proj / proj.w;
+
             return new Vector2(
                 deltaViewport3D.x * CameraCache.Main.pixelWidth,
                 deltaViewport3D.y * CameraCache.Main.pixelHeight);
@@ -469,9 +507,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector2 WorldToViewport(Vector2 deltaWorld)
         {
             Vector3 deltaWorld3D = new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth);
-            var projMat = CameraCache.Main.projectionMatrix;
-            Vector4 proj = projMat * deltaWorld3D;
+
+            Vector4 proj = CameraCache.Main.projectionMatrix * deltaWorld3D;
             Vector3 deltaViewport3D = -proj / proj.w;
+
             return new Vector2(deltaViewport3D.x, deltaViewport3D.y);
         }
     }

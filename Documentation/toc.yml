@@ -11,6 +11,10 @@
     href: HTKToMRTKPortingGuide.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
+  - name: NuGet Packages
+    href: MRTKNuGetPackage.md
+  - name: Getting started with MRTK and XR SDK
+    href: GettingStartedWithMRTKAndXRSDK.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
@@ -71,6 +75,8 @@
       href: Tools/ExtensionServiceCreationWizard.md
     - name: Scene Transition Service Overview
       href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+    - name: Hand Physics Service Overview
+      href: Extensions/HandPhysicsService/HandPhysicsServiceOverview.md
   - name: Input System
     items:
     - name: Input Overview
@@ -208,10 +214,22 @@
       href: README_Tooltip.md
     - name: Solvers
       href: README_Solver.md
+  - name: Example Scenes
+    items:
+    - name: Examples Hub
+      href: README_ExampleHub.md
     - name: Hand Interaction Example
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: Experimental
+    items:
+    - name: Scrolling Object Collection
+      href: ../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md
+    - name: Hand Coach UX
+      href: ../Assets/MixedRealityToolkit.SDK/Experimental/HandCoach/README_HandCoach.md
+    - name: Pulse Shader
+      href: ../Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md
 - name: Contributing
   items:
   - name: Contributing Overview

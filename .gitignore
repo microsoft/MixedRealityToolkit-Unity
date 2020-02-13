@@ -59,14 +59,13 @@ obj/
 # Project Specific List #
 # ===================== #
 artifacts/
-Assets/ThirdParty/
-Assets/ThirdParty.meta
-Assets/TextMesh Pro.meta
-Assets/TextMesh Pro/
+Assets/ThirdParty*
+Assets/TextMesh Pro*
 --Version/
 Assets/StreamingAssets/GltfModels/
 Assets/StreamingAssets/GltfModels.meta
 Assets/StreamingAssets.meta
+Assets/MixedRealityToolkit.Generated*
 
 /mrtk_log_mostRecentET.csv
 
@@ -95,6 +94,10 @@ doc/
 # ========================= #
 # MSBuildForUnity generated #
 # ========================= #
-Assets/MixedRealityToolkit.Providers/WindowsMixedReality/DotNetAdapter/Plugins*
 MSBuildForUnity.Common.props
-.obj
+/*.msb4u.csproj.meta
+*.msb4u.csproj.meta
+/*.msb4u.sln.meta
+*.msb4u.sln.meta
+Dependencies*
+Nuget.config*

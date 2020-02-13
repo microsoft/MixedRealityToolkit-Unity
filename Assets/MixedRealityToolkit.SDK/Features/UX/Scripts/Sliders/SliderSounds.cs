@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component that plays sounds to communicate the state of a pinch slider
     /// </summary>
     [RequireComponent(typeof(PinchSlider))]
+    [AddComponentMenu("Scripts/MRTK/SDK/SliderSounds")]
     public class SliderSounds : MonoBehaviour
     {
         [Header("Audio Clips")]

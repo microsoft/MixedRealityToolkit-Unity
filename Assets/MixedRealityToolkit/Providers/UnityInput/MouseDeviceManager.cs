@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Unity Mouse Device Manager",
         "Profiles/DefaultMixedRealityMouseInputProfile.asset",
-        "MixedRealityToolkit.SDK")]  
+        "MixedRealityToolkit.SDK",
+        requiresProfile: true)]  
     public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityMouseDeviceManager
     {
         /// <summary>
@@ -62,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float CursorSpeed
         {
             get => cursorSpeed;
-
             set
             {
                 if (value != cursorSpeed)
@@ -78,7 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public float WheelSpeed
         {
             get => wheelSpeed;
-
             set
             {
                 if (value != wheelSpeed)
@@ -93,22 +92,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         public MouseController Controller { get; private set; }
 
-        private void ReadProfile()
-        {
-            MixedRealityMouseInputProfile profile = ConfigurationProfile as MixedRealityMouseInputProfile;
-
-            CursorSpeed = profile.CursorSpeed;
-            WheelSpeed = profile.WheelSpeed;
-        }
-
+        /// <inheritdoc />
         public override void Initialize()
         {
+            base.Initialize();
+
             ReadProfile();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            base.Enable();
+
             if (!UInput.mousePresent)
             {
                 Disable();
@@ -138,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     "Unexpected mouse handedness declared in MixedRealityControllerAttribute");
             }
 
-            if (InputSystem != null)
+            if (Service != null)
             {
                 var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
-                mouseInputSource = InputSystem.RequestNewGenericInputSource("Mouse Input", pointers);
+                mouseInputSource = Service.RequestNewGenericInputSource("Mouse Input", pointers);
             }
 
             Controller = new MouseController(TrackingState.NotApplicable, handedness, mouseInputSource);
@@ -155,12 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
 
             Controller.SetupConfiguration(typeof(MouseController));
-            InputSystem?.RaiseSourceDetected(Controller.InputSource, Controller);
+            Service?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             if (UInput.mousePresent && Controller == null) { Enable(); }
 
             Controller?.Update();
@@ -169,11 +167,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             if (Controller != null)
             {
-                InputSystem?.RaiseSourceLost(Controller.InputSource, Controller);
+                Service?.RaiseSourceLost(Controller.InputSource, Controller);
+                
+                RecyclePointers(Controller.InputSource);
+
                 Controller = null;
             }
+        }
+
+        private void ReadProfile()
+        {
+            MixedRealityMouseInputProfile profile = ConfigurationProfile as MixedRealityMouseInputProfile;
+
+            CursorSpeed = profile.CursorSpeed;
+            WheelSpeed = profile.WheelSpeed;
         }
     }
 }

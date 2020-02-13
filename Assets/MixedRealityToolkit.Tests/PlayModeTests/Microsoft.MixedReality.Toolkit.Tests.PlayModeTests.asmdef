@@ -9,9 +9,11 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
-        "Microsoft.MixedReality.Toolkit.Tests",
         "Unity.TextMeshPro",
-        "Microsoft.MixedReality.Toolkit.Async"
+        "Microsoft.MixedReality.Toolkit.Async",
+        "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
+        "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
+        "Microsoft.MixedReality.Toolkit.Tests.Utilities"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

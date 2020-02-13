@@ -515,5 +515,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
         }
 
+        /// <summary>
+        /// Returns true if a point lies inside the cone described with given parameters, false otherwise.
+        /// The cone is inscribed to a radius equal to the vertical height of the provided FOV.
+        /// The test also ensures the distance from the point to the cone lies within the given range.
+        /// </summary>
+        /// <param name="cone">The transform that defines the orientation and position of the cone</param>
+        /// <param name="point">The point to test if it lies within the cone FOV</param>
+        /// <param name="fieldOfView">Field of view for the cone which calculates its radius</param>
+        /// <param name="minDist">Point must be at least this far away (along direction forward) from the cone </param>
+        /// <param name="maxDist">Point must be at most this far away (along direction forward) from the cone. </param>
+        /// <remarks>
+        /// Field of view parameter is in degrees and distances are in meters.
+        /// </remarks>
+        public static bool IsInFOVCone(Transform cone, 
+            Vector3 point,
+            float fieldOfView,
+            float minDist = 0.05f,
+            float maxDist = 100f)
+        {
+            var dirToPoint = point - cone.position;
+
+            var pointDist = Vector3.Dot(cone.forward, dirToPoint);
+            if (pointDist < minDist || pointDist > maxDist)
+            {
+                return false;
+            }
+
+            var degrees = Mathf.Acos(pointDist / dirToPoint.magnitude) * Mathf.Rad2Deg;
+            return degrees < fieldOfView * 0.5f;
+        }
+
     }
 }

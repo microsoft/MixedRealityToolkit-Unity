@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 cumulativeDelta = Vector3.zero;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
-        private Vector3 navigationDelta => new Vector3(
+        private Vector3 NavigationDelta => new Vector3(
             Mathf.Clamp(cumulativeDelta.x, -1.0f, 1.0f) * currentRailsUsed.x,
             Mathf.Clamp(cumulativeDelta.y, -1.0f, 1.0f) * currentRailsUsed.y,
             Mathf.Clamp(cumulativeDelta.z, -1.0f, 1.0f) * currentRailsUsed.z);
@@ -59,7 +59,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             initializedFromProfile = true;
 
-            var gestureProfile = CoreServices.InputSystem?.InputSystemProfile?.GesturesProfile;
+            MixedRealityGesturesProfile gestureProfile = null;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile != null)
+            {
+                gestureProfile = inputSystemProfile.GesturesProfile;
+            }
             if (gestureProfile != null)
             {
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
@@ -104,8 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select, MixedRealityInputAction.None),
-            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
+            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
 
         /// <inheritdoc />
@@ -288,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (navigationInProgress)
             {
                 UpdateNavigationRails();
-                CoreServices.InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
+                CoreServices.InputSystem?.RaiseGestureUpdated(this, navigationAction, NavigationDelta);
             }
         }
 
@@ -296,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (navigationInProgress)
             {
-                CoreServices.InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
+                CoreServices.InputSystem?.RaiseGestureCompleted(this, navigationAction, NavigationDelta);
                 navigationInProgress = false;
                 return true;
             }

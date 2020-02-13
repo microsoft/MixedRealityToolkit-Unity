@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// Demo class to show different ways of using the boundary system and visualizing the data.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/BoundaryVisualizationDemo")]
     public class BoundaryVisualizationDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
         private GameObject markerParent;

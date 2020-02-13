@@ -2,7 +2,7 @@
 
 ![Pointer](../../Documentation/Images/Pointers/MRTK_Pointer_Main.png)
 
-This article discusses how to configure and respond to Pointer input in practice, compared to [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
+This article explains how to configure and respond to Pointer input in practice, compared to [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
 
 Pointers are instanced automatically at runtime when a new controller is detected. More than one pointer can be attached to a controller. For example, with the default pointer profile, Windows Mixed Reality controllers get both a line and a parabolic pointer for normal selection and teleportation respectively.
 
@@ -12,7 +12,7 @@ Pointers are configured as part of the Input System in MRTK via a [`MixedReality
 
 - *Pointing Extent* - Defines the max distance for which a Pointer can interact with a GameObject.
 
-- *Pointing Raycast Layer Masks* - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
+- *Pointing Raycast Layer Masks* - This is a prioritized array of LayerMasks to determine which possible GameObjects any given Pointer can interact with and the order of interaction to attempt. This may be useful to ensure Pointers interact with UI elements first before other scene objects.
 ![Pointer Profile Example](../Images/Input/Pointers/PointerProfile.PNG)
 
 ### Pointer options configuration
@@ -24,7 +24,7 @@ The default MRTK Pointer Profile configuration includes the following pointer cl
 Each Pointer entry is defined by the following set of data:
 
 - *Controller Type* - The set of controllers that a pointer is valid for.
-    * For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
+  - For example, the *PokePointer* is responsible for "poking" objects with a finger, and is, by default marked as only supporting the articulated hand controller type. Pointers are only instantiated when a controller becomes available and in particular the *Controller Type* defines what controllers this pointer prefab can be created with.
 
 - *Handedness* - allows for a pointer to only being instantiated for a specific hand (left/right)
 
@@ -41,7 +41,7 @@ the articulated hand controller is associated with the *PokePointer*, *GrabPoint
 
 ### Default pointer classes
 
-The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers* contains one of these pointer components attached.
+The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers* contains one of the pointer components attached.
 
 ![MRTK Default Pointers](../Images/Input/Pointers/MRTK_Pointers.png)
 
@@ -49,11 +49,15 @@ The following classes are the out-of-box MRTK pointers available and defined in 
 
 ##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer)
 
- *LinePointer*, a base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
+ *LinePointer*, a base pointer class, draws a line from the source of the input (i.e. the controller) in the pointer direction and supports a single ray cast in this direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
 
 For motion controllers like in Oculus, Vive, and Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Line.png" width="400">
+
+##### [`CurvePointer`](xref:Microsoft.MixedReality.Toolkit.Input.CurvePointer)
+
+*CurvePointer* extends the *LinePointer* class by allowing for multi-step ray casts along a curve. This base pointer class is useful for curved instances such as teleportation pointers where the line consistently bends into a parabola.
 
 ##### [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer)
 
@@ -71,8 +75,7 @@ The *TouchPointer* is responsible for working with Unity Touch input (i.e. touch
 
 The *MousePointer* powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
-<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
-<br/>
+![Mouse pointer](../../Documentation/Images/Pointers/MRTK_MousePointer.png)
 
 > [!NOTE]
 > Mouse support is not available by default in MRTK but can be enabled by adding a new *Input Data Provider* of type [`MouseDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager) to the MRTK input profile and assigning the [`MixedRealityMouseInputProfile`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityMouseInputProfile) to the data provider.
@@ -87,7 +90,7 @@ The *[PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)* is us
 
 Useful Poke Pointer properties:
 
-- *TouchableDistance*: Maximum distance a which a touchable surface can be interacted with
+- *TouchableDistance*: Maximum distance in which a touchable surface can be interacted with
 - *Visuals*: Game object used to render finger tip visual (the ring on finger, by default).
 - *Line*: Optional line to draw from fingertip to the active input surface.
 - *Poke Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionTouchable` component in order to interact with a poke pointer.
@@ -96,17 +99,21 @@ Useful Poke Pointer properties:
 
 ##### [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)
 
-The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
+The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction, which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
+
+<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
 
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
 - *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
+    > [!NOTE]
+    > The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
+- *Ignore Colliders Not in FOV* - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+This can prevent accidental grabs, and will allow hand rays to turn on when you may be near
+a grabbable but cannot see it. The *Visual FOV* is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV).
 
-> [!NOTE]
-> The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
-
-<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+<img src="../../Documentation/Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
 
 #### Teleport pointers
 
@@ -115,7 +122,7 @@ Useful Sphere Pointer properties:
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
 
-## Pointer support for Mixed Reality Platforms
+## Pointer support for mixed reality platforms
 
 The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
 it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer.
@@ -132,7 +139,7 @@ it's possible to add different pointer types to these platforms. For example, yo
 
 ### Pointer event interfaces
 
-MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
+MonoBehaviours that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
 
 | Event | Description | Handler |
 | --- | --- | --- |
@@ -146,7 +153,7 @@ Touch Started / Updated / Completed | Raised by touch-aware pointers like [`Poke
 
 #### Pointer input events in action
 
-Pointer input events are recognized and handled by the MRTK input system in a similar way as [regular input events](InputEvents.md#input-events-in-action). The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
+Pointer input events are recognized and handled by the MRTK input system in a similar way as [regular input events](InputEvents.md#input-events-in-action). The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event, as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
 
 1. The MRTK input system recognizes an input event has occurred
 1. The MRTK input system fires the relevant interface function for the input event to all registered global input handlers
@@ -161,7 +168,7 @@ Pointer input events are recognized and handled by the MRTK input system in a si
 
 Below is an example script that changes the color of the attached renderer when a pointer takes or leaves focus or when a pointer selects the object.
 
-```csharp
+```c#
 public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
 {
     private Color color_IdleState = Color.cyan;
@@ -197,11 +204,11 @@ public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityP
 }
 ```
 
-### Query Pointers
+### Query pointers
 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
 
-```csharp
+```c#
 var pointers = new HashSet<IMixedRealityPointer>();
 
 // Find all valid pointers
@@ -217,11 +224,11 @@ foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
 }
 ```
 
-#### Primary Pointer
+#### Primary pointer
 
-Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.
+Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or another input source.
 
-```csharp
+```c#
 private void OnEnable()
 {
     var focusProvider = CoreServices.InputSystem?.FocusProvider;
@@ -247,11 +254,11 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 
 <img src="../../Documentation/Images/Pointers/PrimaryPointerExample.png" style="max-width:100%;">
 
-### Pointer Result
+### Pointer result
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
-```csharp
+```c#
 private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
 {
     var result = eventData.Pointer.Result;
@@ -265,10 +272,11 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
-### Disable Pointers
+### Disable pointers
+
 To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
-```csharp
+```c#
 // Disable the hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -293,11 +301,11 @@ See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and
 
 ## Pointer interactions via editor
 
-For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler), MRTK provides further convenience in the form of the [`PointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PointerHandler) component which allows pointer events to be handled directly via Unity Events.
+For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler), MRTK provides further convenience in the form of the [`PointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PointerHandler) component, which allows pointer events to be handled directly via Unity Events.
 
 <img src="../../Documentation/Images/Pointers/PointerHandler.png" style="max-width:100%;">
 
-## Pointer Extent
+## Pointer extent
 
 Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
 By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
@@ -312,7 +320,7 @@ fields:
 *Default Pointer Extent* - This controls the length of the pointer ray/line that will
 render when the pointer is not interacting with anything.
 
-## See Also
+## See also
 
 - [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
 - [Input Events](InputEvents.md)

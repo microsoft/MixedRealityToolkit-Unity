@@ -26,7 +26,7 @@ MRTK supports a diverse set of users – people who prefer to configure componen
 
 All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.
 
-### Play-In-Editor is your first and primary target platform
+### Play-in-editor is your first and primary target platform
 
 Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.
 
@@ -44,7 +44,7 @@ MRTK is a community project, modified by a diverse range of contributors. These 
 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
-## Coding Conventions
+## C# Coding conventions
 
 ### Script license information headers
 
@@ -55,21 +55,21 @@ All Microsoft employees contributing new files should add the following standard
 // Licensed under the MIT License.
 ```
 
-### Function / Method summary headers
+### Function / method summary headers
 
-All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
+All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to its purpose and use, exactly as shown below:
 
 ```c#
+/// <summary>
+/// The Controller definition defines the Controller as defined by the SDK / Unity.
+/// </summary>
+public struct Controller
+{
     /// <summary>
-    /// The Controller definition defines the Controller as defined by the SDK / Unity.
+    /// The ID assigned to the Controller
     /// </summary>
-    public struct Controller
-    {
-        /// <summary>
-        /// The ID assigned to the Controller
-        /// </summary>
-        public string ID;
-    }
+    public string ID;
+}
 ```
 
 This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.
@@ -95,7 +95,31 @@ For namespaces with a large amount of types, it is acceptable to create a limite
 
 Omitting the namespace for an interface, class or data type will cause your change to be blocked.
 
-### Spaces vs Tabs
+### Adding new MonoBehaviour scripts
+
+When adding new MonoBehaviour scripts with a pull request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+
+In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
+
+```c#
+[AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
+public class MyNewComponent : MonoBehaviour
+```
+
+### Adding new ScriptableObjects
+
+When adding new ScriptableObject scripts, ensure the [`CreateAssetMenu`](https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
+
+In the example below, the *Subfolder* should be filled with the MRTK subfolder, if applicable. If placing an item in *MixedRealityToolkit.Providers* folder, then the package will be *Providers*. If placing an item in the *MixedRealityToolkit* folder, set this to "Profiles".
+
+In the example below, the *MyNewService | MyNewProvider* should be filled with the your new class' name, if applicable. If placing an item in the *MixedRealityToolkit* folder, leave this string out.
+
+```c#
+[CreateAssetMenu(fileName = "MyNewProfile", menuName = "Mixed Reality Toolkit/{Subfolder}/{MyNewService | MyNewProvider}/MyNewProfile")]
+public class MyNewProfile : ScriptableObject
+```
+
+### Spaces vs tabs
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
@@ -124,7 +148,7 @@ private Foo()
 }
 ```
 
-### Naming Conventions
+### Naming conventions
 
 Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
@@ -137,13 +161,13 @@ private string MyProperty; // <- Starts with an uppercase case letter
 
 #### Do
 
- ```c#
+```c#
 public string MyProperty;
 protected string MyProperty;
 private string myProperty;
- ```
+```
 
-### Access Modifiers
+### Access modifiers
 
 Always declare an access modifier for all fields, properties and methods.
 
@@ -160,7 +184,7 @@ Always declare an access modifier for all fields, properties and methods.
 protected int myVariable = 0;
 
 // property should have protected setter
-public int MyVariable { get { return myVariable; } }
+public int MyVariable => myVariable;
 
 // No public / private access modifiers
 void Foo() { }
@@ -169,15 +193,15 @@ void Bar() { }
 
 #### Do
 
- ```c#
+```c#
 public int MyVariable { get; protected set; } = 0;
 
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
- ```
+```
 
-### Use Braces
+### Use braces
 
 Always use braces after each statement block, and place them on the next line.
 
@@ -235,7 +259,7 @@ public class MyClass
 
 #### Do
 
- ```c#
+```c#
  // Private references for use inside the class only
 public class MyClass
 {
@@ -243,14 +267,14 @@ public class MyClass
     private enum MyEnumType() { }
     private class MyNestedClass() { }
 }
- ```
+```
 
 #### Do
 
- MyStruct.cs
+MyStruct.cs
 
- ```c#
- // Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
+```c#
+// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
 {
     public string Var1;
@@ -276,9 +300,9 @@ public class MyClass
     private MyStruct myStructReference;
     private MyEnumType myEnumReference;
 }
- ```
+```
 
-### Initialize Enums
+### Initialize enums
 
 To ensure all enums are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)
 
@@ -295,16 +319,16 @@ public enum Value
 
 #### Do
 
- ```c#
+```c#
 public enum ValueType
 {
     Value1 = 0,
     Value2,
     Value3
 }
- ```
+```
 
-### Order Enums for appropriate extension
+### Order enums for appropriate extension
 
 It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.
 
@@ -323,37 +347,37 @@ public enum SDKType
 
 #### Do
 
- ```c#
+```c#
+/// <summary>
+/// The SDKType lists the VR SDKs that are supported by the MRTK
+/// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+/// </summary>
+public enum SDKType
+{
     /// <summary>
-    /// The SDKType lists the VR SDKs that are supported by the MRTK
-    /// Initially, this lists proposed SDKs, not all may be implemented at this time (please see ReleaseNotes for more details)
+    /// No specified type or Standalone / non-VR type
     /// </summary>
-    public enum SDKType
-    {
-        /// <summary>
-        /// No specified type or Standalone / non-VR type
-        /// </summary>
-        None = 0,
-        /// <summary>
-        /// Undefined SDK.
-        /// </summary>
-        Other,
-        /// <summary>
-        /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
-        /// </summary>
-        WindowsMR,
-        /// <summary>
-        /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
-        /// </summary>
-        OpenVR,
-        /// <summary>
-        /// The OpenXR platform. SDK to be determined once released.
-        /// </summary>
-        OpenXR
-    }
+    None = 0,
+    /// <summary>
+    /// Undefined SDK.
+    /// </summary>
+    Other,
+    /// <summary>
+    /// The Windows 10 Mixed reality SDK provided by the Universal Windows Platform (UWP), for Immersive MR headsets and HoloLens.
+    /// </summary>
+    WindowsMR,
+    /// <summary>
+    /// The OpenVR platform provided by Unity (does not support the downloadable SteamVR SDK).
+    /// </summary>
+    OpenVR,
+    /// <summary>
+    /// The OpenXR platform. SDK to be determined once released.
+    /// </summary>
+    OpenXR
+}
 ```
 
-### Review Enum use for Bitfields
+### Review enum use for bitfields
 
 If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left & Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly
 
@@ -372,8 +396,8 @@ public enum Handedness
 
 ### Do
 
- ```c#
- [flags]
+```c#
+[Flags]
 public enum Handedness
 {
     None = 0 << 0,
@@ -381,9 +405,9 @@ public enum Handedness
     Right = 1 << 1,
     Both = Left | Right
 }
- ```
+```
 
-## Best Practices, including Unity recommendations
+## Best practices, including Unity recommendations
 
 Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.
 
@@ -396,47 +420,56 @@ Always use private fields and public properties if access to the field is needed
 
 #### Don't
 
- ```c#
- private float myValue1;
- private float myValue2;
+```c#
+private float myValue1;
+private float myValue2;
 
- public float MyValue1
- {
-     get{ return myValue1; }
-     set{ myValue1 = value }
- }
+public float MyValue1
+{
+    get{ return myValue1; }
+    set{ myValue1 = value }
+}
 
- public float MyValue2
- {
-     get{ return myValue2; }
-     set{ myValue2 = value }
- }
+public float MyValue2
+{
+    get{ return myValue2; }
+    set{ myValue2 = value }
+}
 ```
 
 #### Do
 
- ```c#
- // Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
- [SerializeField]
- [ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
- private float myValue; // <- Notice we co-located the backing field above our corresponding property.
+```c#
+// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
+[SerializeField]
+[ToolTip("If using a tooltip, the text should match the public property's summary documentation, if appropriate.")]
+private float myValue; // <- Notice we co-located the backing field above our corresponding property.
 
- /// <summary>
- /// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
- /// </summary>
- public float MyValue
- {
-     get{ return myValue; }
-     set{ myValue = value }
- }
- ```
+/// <summary>
+/// If using a tooltip, the text should match the public property's summary documentation, if appropriate.
+/// </summary>
+public float MyValue
+{
+    get => myValue;
+    set => myValue = value;
+}
 
-#### Do
+/// <summary>
+/// Getter/Setters not wrapping a value directly should contain documentation comments just as public functions would
+/// </summary>
+public float AbsMyValue
+{
+    get
+    {
+        if (MyValue < 0)
+        {
+            return -MyValue;
+        }
 
- ```c#
-int length = items.length; // cache reference to list/array length
-for(int i=0; i < length; i++)
- ```
+        return MyValue
+    }
+}
+```
 
 ### Cache values and serialize them in the scene/prefab whenever possible
 
@@ -470,7 +503,7 @@ private void Update()
 {
     myRenderer.Foo(Bar);
 }
- ```
+```
 
 ### Cache references to materials, do not call the ".material" each time
 
@@ -491,8 +524,8 @@ public class MyClass
 
 #### Do
 
- ```c#
- // Private references for use inside the class only
+```c#
+// Private references for use inside the class only
 public class MyClass
 {
     private Material cachedMaterial;
@@ -512,16 +545,15 @@ public class MyClass
         Destroy(cachedMaterial);
     }
 }
- ```
+```
 
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
 
 ### Use [platform dependent compilation](https://docs.unity3d.com/Manual/PlatformDependentCompilation.html) to ensure the Toolkit won't break the build on another platform
 
-* Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
-
-* Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
+- Use `WINDOWS_UWP` in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to `UNITY_WSA && !UNITY_EDITOR` and should be used in favor of.
+- Use `UNITY_WSA` to use UWP-specific Unity APIs, such as the `UnityEngine.XR.WSA` namespace. This will run in the Editor when the platform is set to UWP, as well as in built UWP apps.
 
 This chart can help you decide which `#if` to use, depending on your use cases and the build settings you expect.
 
@@ -540,6 +572,10 @@ DateTime.UtcNow is faster than DateTime.Now. In previous performance investigati
 
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitimate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
 
+## PowerShell coding conventions
+
+A subset of the MRTK codebase uses PowerShell for pipeline infrastructure and various scripts and utilities. New PowerShell code should follow the [PoshCode style](https://poshcode.gitbooks.io/powershell-practice-and-style/).
+
 ## See also
 
- [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+ [C# coding conventions from MSDN](https://docs.microsoft.com/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)

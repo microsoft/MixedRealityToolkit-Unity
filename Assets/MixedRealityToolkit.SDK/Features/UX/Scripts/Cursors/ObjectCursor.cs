@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The object cursor can switch between different game objects based on its state.
     /// It simply links the game object to set to active with its associated cursor state.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ObjectCursor")]
     public class ObjectCursor : BaseCursor
     {
         [Serializable]

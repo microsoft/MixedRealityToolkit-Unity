@@ -1,15 +1,16 @@
-# Microsoft Mixed Reality Toolkit Release Notes
+# Microsoft Mixed Reality Toolkit release notes
 
+- [Version 2.3.0](#version-220)
 - [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
 
-## Version 2.2.0
+## Version 2.3.0
 
-- [Upgrading projects](#upgrading-projects-to-220)
-- [What's new](#whats-new-in-220)
-- [Known issues](#known-issues-in-220)
+- [Upgrading projects](#upgrading-projects-to-230)
+- [What's new](#whats-new-in-230)
+- [Known issues](#known-issues-in-230)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
@@ -17,32 +18,36 @@ This release of the Microsoft Mixed Reality Toolkit supports the following devic
 - Microsoft HoloLens (1st gen)
 - Windows Mixed Reality Immersive headsets
 - OpenVR
+- (Experimental) Unity 2019.3 XR platform
 - (Experimental) Mobile AR
-    - Android
-    - iOS
+  - Android
+  - iOS
 
 The following software is required.
 
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
-- [Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
-- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS or 2019 (2019.3 recommended)
 
-NuGet requirements
+**NuGet requirements**
 
-If importing the Mixed Reality Toolkit NuGet packages, the following software is recommended.
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
 
 - [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
 
-### Upgrading projects to 2.2.0
+### Upgrading projects to 2.3.0
 
-The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.1.0 to 2.2.0**](Updating.md#updating-210-to-220) article.
+The 2.3.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.2.0 to 2.3.0**](Updating.md#updating-220-to-230) article.
+
+> [!NOTE]
+> At this time, it is not supported to switch between using .unitypackage files and NuGet.
 
 **Updating using .unitypackage files**
 
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -51,9 +56,12 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Staging
+    > [!NOTE]
+    > The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -66,14 +74,14 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
 
 **Updating from NuGet**
 
-If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
+If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
 
 1. Select **NuGet > Manage NuGet Packages**
 1. Select the **Online** tab and click **Refresh**
@@ -83,7 +91,269 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
     - Microsoft.MixedReality.Toolkit.Tools
     - Microsoft.MixedReality.Toolkit.Extensions
     - Microsoft.MixedReality.Toolkit.Examples
+1. Close and re-open the project in Unity
+
+### What's new in 2.3.0
+
+**Support for Unity 2019.3 new XR platform (Experimental)**
+
+MRTK has added initial support for [Unity 2019.3's new XR platform](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/). When using the Windows XR plugin, it is recommended using version **2.0.4 (preview.3)** or newer.
+
+Please see [Known issues](#known-issues-in-230) for details on known limitations.
+
+**Assets/Dependencies folder**
+
+After MSBuild for Unity is enabled, a Dependencies folder will be created in the project. This folder contains the plugins (ex: DotNetWinRT) that are imported, by MRTK.
+
+This folder is created by MSBuild for Unity and will be recreated when packages are restored. When using source control, such as GitHub, it can be safely added to exclude / ignore lists (ex: .gitignore).
+
+You can also add the .bin and .obj folders in MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter to your ignore list. These represent staging folders for individual csproj package resolution but are hidden from Unity's Asset view. The root Dependencies folder is the central location where the used copies are placed.
+
+**<project>.Dependencies.msb4u**
+
+MSBuild for Unity creates two files in the project's Assets folder; NuGet.config and <project>.Dependencies.msb4u.csproj. These files are used by MSBuild for Unity and will be recreated as needed.
+
+When using source control, such as GitHub, these files can be safely added to exclude / ignore lists (ex: .gitignore).
+
+After MRTK has enabled MSBuild for Unity, additional custom NuGet dependencies can be declared and resolved as well. This process is described in [MSBuild for Unity's documentation](https://github.com/microsoft/MSBuildForUnity/blob/master/Documentation/CoreScenarios.md#scenario-1-adding-nuget-dependency-to-unity-project).
+
+**Hand physics extension service**
+
+A hand physics extension service has been added to allow for using physics interactions with the HoloLens 2 articulated hands ([#6573](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573)).
+
+![Hand physics](https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif)
+
+**Non-native keyboard (Experimental)**
+
+A keyboard that can be used on platforms which do not provide native keyboard support.
+([#6492](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573))
+
+<img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
+
+**Hand coach (Experimental)**
+
+Hand animations that can give helpful hints for gestures users should perform.
+([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
+
+**Follow solver (Experimental)**
+A solver that matches HoloLens 2 shell behavior. ([#6981](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+
+<img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
+
+**Pinch Slider orientation**
+
+The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation ([#6858](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858))
+
+<img src="https://user-images.githubusercontent.com/42405657/71687606-37a31380-2d96-11ea-84b5-ffe2368f8b57.JPG" width="150">
+<img src="https://user-images.githubusercontent.com/42405657/71687640-4984b680-2d96-11ea-9f59-7732a91edd1b.JPG?s=25" width="150">
+
+**ObjectManipulator and BoundsControl (Experimental)**
+
+ObjectManipulator and BoundsControl are refactored versions of ManipulationHandler and BoundingBox, respectively. They are designed to be simpler to configure, use and maintain. They also include a few new behavior changes:
+
+ObjectManipulator correctly responds to physics.
+
+<img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
+
+Improved ability to configure constraints for object manipulation.
+
+<img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
+
+We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
+
+**UnityAR package contents moved into Foundation**
+
+There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.
+
+### Known issues in 2.3.0
+
+**Unity 2019.3 infinite loop when switching build target**
+
+There is a known issue ([#7299](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7299)) with switching build targets after entering and exiting play mode in Unity 2019.3.
+
+If this issue is encountered, please:
+
+- Terminate the process
+- Restart Unity and load the project
+- Do not enter / edit play mode
+- Change the build target
+
+**NuGet packages are not supported with Unity 2019**
+
+The current MRTK packages distributed via NuGet.org are precompiled with Unity 2018.4 and are not intended for use with Unity 2019. A future release of MRTK will provide Unity 2019 supported NuGet packages.
+
+**CS0579: Duplicate 'AssemblyVersion' attribute**
+
+After enabling MSBuild for Unity, if Player Settings > Other Settings > API Compatibility Level is changed, Unity may report a large number of errors in project script files. Notably, there will be one or more CS0579 errors stating that there is a duplicate AssemblyVersion attribute.
+
+This is caused by an issue in MSBuild for Unity ([#133](https://github.com/microsoft/MSBuildForUnity/issues/133)) where it is not properly removing dependency packages before restoring.
+
+To resolve these errors:
+
+- In the **Project** window, expand **Dependencies**
+- Open **Edit** > **Project Settings** > **Player**
+- Expand **Other Settings**
+- Examine the value of **Api Compatibility Level**
+
+    ![API Compatibility Level](Images/ReleaseNotes/ApiCompatibilityLevel.png)
+
+- If set to **.NET Standard 2.0**, delete the **Dependencies\net46** folder
+- If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
+
+    ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
+
+**NU1101: Unable to find package MSBuildForUnity**
+
+When using NuGet for Unity, applying MRTK configuration settings after switching the platform to UWP may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.
+
+To resolve this error:
+
+- Open **Editor** > **Preferences**
+- Navigate to **NuGet for Unity**
+- Click **Add New Source**
+- Replace **New Source** with **MSBuild for Unity**
+- Replace **source_path** with **https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json**
+- Click **Save**, at the bottom of the window
+- In the Project window expand **Assets** and select **<projectname>.Dependencies.msb4u**
+- In the Inspector window, click **Rebuild**
+
+**MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
+
+An issue exists where enabling MSBuild for Unity in 2019.3 may result in an infinite loop restoring packages ([#7239](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7239)).
+
+As a workaround, the Microsoft.Windows.DotNetWinRT package can be imported using [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest).
+
+**Issues with the Unity 2019.3 new XR platform on Windows Mixed Reality**
+
+The following issues are known when using the new XR platform and version **2.0.4 (preview.3)** of the Windows XR Plugin:
+
+- AirTap does not work on HoloLens (HoloLens 2 and 1st generation)
+- Pointers are using the wrong coordinate system on HoloLens 2 and immersive devices
+
+It is recommended to periodically check **Window** > **Package Manager** for newer versions of the Windows XR plugin.
+
+**Windows Mixed Reality gesture support on Unity 2019.3 when using the new XR platform**
+
+This release of MRTK does not contain an implementation for Windows Mixed Reality gestures using the new XR platform. It will be added in a future version of MRTK.
+
+**Specifying the Depth Reprojection mode in the Windows Mixed Reality Camera Settings Provider is not supported on Unity 2019.3 and Windows XR plugin**
+
+This issue is expected to be fixed with upcoming releases of MRTK and the Windows XR plugin.
+
+**Mixed Reality Capture setting**
+
+This feature is currently not working correctly on Unity 2019.3.0f6. This issue impacts both the legacy and the new XR platform.
+
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2018: .NET Backend and AR Foundation**
+
+There is an issue in Unity 2018 where, building a Universal Windows Platform project using the .NET scripting backend, the Unity AR Foundation package will fail.
+
+To work around this issue, please perform one of the following steps:
+
+- Switch the scripting backend to IL2CPP
+- In the Build Settings window, uncheck **Unity C# Projects"
+
+## Version 2.2.0
+
+- [How to upgrade projects](#how-to-upgrade-projects-to-220)
+- [What's new](#whats-new-in-220)
+- [Known issues](#known-issues-in-220)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+- (Experimental) Mobile AR
+  - Android
+  - iOS
+
+The following software is required.
+
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS, 2019.1 or 2019.2
+
+**NuGet requirements**
+
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
+
+- [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
+
+### How to upgrade projects to 2.2.0
+
+The 2.2.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.1.0 to 2.2.0**](Updating.md#updating-210-to-220) article.
+
+**Updating using .unitypackage files**
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting these folders.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
+1. Delete the **Library** folder
 1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+**Updating from NuGet**
+
+If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Close and re-open the project in Unity
 
 ### What's new in 2.2.0
 
@@ -130,7 +400,7 @@ and
 ![GridObjectCollection alignment](https://user-images.githubusercontent.com/168492/69363541-83b25280-0c45-11ea-91af-b2b6d9e5b6da.gif)
 
 **Fixing LayoutDirection in GridObjectCollection**
-In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before. 
+In MRTK 2.1 and below [`GridObjectCollection`](README_ObjectCollection.md) would always lay out its content first vertically, then horizontally, regardless of whether its layout was `RowsThenColumns` or `ColumnsThenRows`. In MRTK 2.2, if the layout is `ColumnsThenRows` then the content will lay out first horizontally (by columns), then vertically (by rows). If a collections layout is `RowsThenColumns` it will lay out first vertically, then horizontally as before.
 
 Below: `RowsThenColumns` layout, with Rows = 3.
 
@@ -150,7 +420,7 @@ InteractableToggleCollection now properly updates the toggle states within group
 
 **Mixed Reality Capture setting (Experimental)**
 
-The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/en-us/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
+The Windows Mixed Reality camera settings provider provides an experimental setting to [better align holograms in mixed reality capture (MRC) recordings](https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#render-from-the-pv-camera-opt-in).
 
 ![MRC alignment](https://user-images.githubusercontent.com/13281406/69677386-ae424800-1057-11ea-8721-70615513294d.png)
 
@@ -165,7 +435,7 @@ The provider is distributed via the Microsoft.MixedReality.Providers.UnityAR pac
 
 **MSBuild for Unity**
 
-MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)). 
+MRTK now supports MSBuild for Unity to enable automatic acquisition of NuGet dependencies (for example, [Microsoft.Windows.MixedReality.DotNetWinRT](https://www.nuget.org/packages/Microsoft.Windows.MixedReality.DotNetWinRT/)).
 
 This is an optional install that can be performed with the **Mixed Reality Toolkit** > **Utilities** > **Configure Unity Project** menu item and at project load time.
 
@@ -198,7 +468,7 @@ Hand mesh
 
 **Scrolling Object Collection (Experimental)**
 
-An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 intitial (out of box) experience.
+An experimental scrolling object collection UX control has been added to MRTK. This control was originally built for the HoloLens 2 initial (out of box) experience.
 
 ![Scrolling object collection](https://user-images.githubusercontent.com/13754172/65283862-f3dd1480-daec-11e9-8868-671106c6732b.gif)
 
@@ -282,7 +552,7 @@ This error most commonly occurs when a hand comes into view. There is no functio
 
 If the Providers.UnityAR package is installed, the following error indicates that Unity's AR Foundation package has not been installed. Please review the [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md) article for requirements and instructions.
 
-If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedReaityToolkit.Staging folder from the project.
+If the project is not intended to be run on Android or iOS devices, it is safe to delete the MixedRealityToolkit.Staging folder from the project.
 
 **Mixed Reality Capture settings (Experimental)**
 
@@ -307,7 +577,7 @@ If the project is not intended to be run on Android or iOS devices, it is safe t
 
 ## Version 2.1.0
 
-- [Upgrading projects](#upgrading-projects-to-210)
+- [How to upgrade projects](#how-to-upgrade-projects-to-210)
 - [What's new](#whats-new-in-210)
 - [Known issues](#known-issues-in-210)
 
@@ -324,13 +594,13 @@ The following software is required.
 - Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
 - Unity 2018.4, 2019.1 or 2019.2
 
-NuGet requirements
+**NuGet requirements**
 
-If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended..
 
 - [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
 
-### Upgrading projects to 2.1.0
+### How to upgrade projects to 2.1.0
 
 **Updating using .unitypackage files**
 
@@ -340,7 +610,7 @@ Breaking change details, including mitigation guidance, can be found in the [**U
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -351,7 +621,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -364,7 +634,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
@@ -397,7 +667,7 @@ The step to re-open the project in Unity resolves the issue.
 
 **NuGet package distribution**
 
-MRTK 2.1.0 now ships packages on nuget.org. The following steps can be used to import the desired packages.
+MRTK 2.1.0 now ships packages on NuGet.org. The following steps can be used to import the desired packages.
 
 1. Install [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
 1. Select **NuGet > Manage NuGet Packages**
@@ -447,7 +717,7 @@ See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/55
 
 We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
 
-```csharp
+```c#
 // Turn off all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
@@ -469,7 +739,7 @@ We had feedback that it's difficult to find out where the hand is pointing, or w
 
 Please see [change 5944](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944) for details.
 
-```csharp
+```c#
 // Get the head ray
 var headRay = InputRayUtils.GetHeadGazeRay();
 
@@ -489,7 +759,7 @@ It's now possible to instantiate and configure interactable from code. See [chan
 
 It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -518,17 +788,17 @@ The input simulation system has been upgraded, which changes a few settings in t
 
 1. All KeyCode and mouse button bindings in the profile have been replaced with a generic KeyBinding struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
 
-- FastControlKey
-- ToggleLeftHandKey
-- ToggleRightHandKey
-- LeftHandManipulationKey
-- RightHandManipulationKey
+    - FastControlKey
+    - ToggleLeftHandKey
+    - ToggleRightHandKey
+    - LeftHandManipulationKey
+    - RightHandManipulationKey
 
-2. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
+1. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
 
-3. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
+1. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
 
-4. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
+1. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
 
 A new axis "UpDown" has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.
 
@@ -537,13 +807,14 @@ For more information on these changes, please see the [input simulation service]
 Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
 
 ### Replace ColliderNearInteractionTouchable with BaseNearInteractionTouchable
+
 The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages of `ColliderNearInteractionTouchable` with `BaseNearInteractionTouchable`.
 
 ### Interactable: deprecated methods
 
 Interactable has been upgraded to be configurable from code. The following methods in `Interactable` are now marked Obsolete:
 
-```csharp
+```c#
 public void ResetBaseStates()
 public int GetDimensionIndex()
 public void SetDimensionIndex(int index)
@@ -615,16 +886,16 @@ may place objects below the user when run on VR/Immersive device's (headset's Y 
 
 ## Version 2.0.1
 
-- [Upgrading projects](#upgrading-projects-to-201)
+- [How to upgrade projects](#how-to-upgrade-projects-to-201)
 - [What's new](#whats-new-in-201)
 
 This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.
 
-### Upgrading projects to 2.0.1
+### How to upgrade projects to 2.0.1
 
 For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
 
-- [Upgrading projects](#upgrading-projects-to-200)
+- [How to upgrade projects](#how-to-upgrade-projects-to-200)
 
 Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
 
@@ -645,7 +916,7 @@ Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time,
 
 ## Version 2.0.0
 
-- [Upgrading projects](#upgrading-projects-to-200)
+- [How to upgrade projects](#how-to-upgrade-projects-to-200)
 - [What's new](#whats-new-in-200)
 - [Known issues](#known-issues-in-200)
 
@@ -662,7 +933,7 @@ The following software is required.
 - Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
 - Unity 2018.4, 2019.1 or 2019.2
 
-### Upgrading projects to 2.0.0
+### How to upgrade projects to 2.0.0
 
 Since the RC2 release, there have been several changes that may impact application projects,
 including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating RC2 to 2.0.0**](Updating.md#updating-rc2-to-200) article.
@@ -670,7 +941,7 @@ including some files moving to new folder locations. Breaking change details, in
 For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -681,7 +952,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
     > [!IMPORTANT]
-    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
 1. Import the new unity packages
@@ -694,7 +965,7 @@ For the smoothest upgrade path, please use the following steps.
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!IMPORTANT]

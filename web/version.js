@@ -1,9 +1,8 @@
-	
 function createDropdown()
 {
 	// configurable values:
-	var defaultTitle = "mrtk_development"; 	// title in the dropdown for the root version of the docs
-	var versionArray = ["releases/2.0.0", "releases/2.1.0"];	// list of all versions in the version folder
+	var defaultTitle = "mrtk_development"; // title in the dropdown for the root version of the docs
+	var versionArray = ["releases/2.0.0", "releases/2.1.0", "releases/2.2.0", "prerelease/2.3.0_stabilization"]; // list of all versions in the version folder
 	
 	//--------------------------------------
 
@@ -16,7 +15,7 @@ function createDropdown()
 	innerDiv.className = "version-dropdown-content";
 	versionDropDiv.appendChild(btn);
 	versionDropDiv.appendChild(innerDiv);
-	
+
 	// get web root path
 	var script = document.getElementById('dropdownScript');
 	var scriptPath = script.src;
@@ -27,21 +26,19 @@ function createDropdown()
 		rootDir = scriptPath.substring(0, versionIndex);
 	}
 	else
-	{	
+	{
 		rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
 	}
-	
+
 	// create default
 	createEntry(innerDiv, defaultTitle, rootDir+"README.html");
 	
 	// create version entries
-	for (i = 0; i<versionArray.length; i++) 
-	{ 
+	for (i = 0; i<versionArray.length; i++)
+	{
 		createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html");
 	}
 }
-
-
 
 function createEntry(attachTo, name, url)
 {

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedReality.Toolkit.Providers.UnityAR</id>
+    <version>$version$</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft,MixedReality</owners>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/releases/2.3.0/License.txt</licenseUrl>
+    <projectUrl>https://aka.ms/MRTK</projectUrl>
+    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Mixed Reality Toolkit provider adding support for mobile (phones and tablets) AR devices. NOTE: This package requires Unity's Package Manager AR Foundation as well as AR Core and/or AR Kit packages.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
+    <dependencies>
+      <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
+    </dependencies>
+    <contentFiles>
+      <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Providers.UnityAR.targets" />
+
+    <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
+    <!-- <file src="..\..\..\..\Assets\MixedRealityToolkit.Providers\UnityAR\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers\UnityAR" /> -->
+  </files>
+</package>

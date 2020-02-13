@@ -8,8 +8,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
     /// <summary>
-    /// Use this component to add a Dwell modality (https://docs.microsoft.com/en-us/windows/mixed-reality/gaze-and-dwell) to the UI target.
+    /// Use this component to add a Dwell modality (https://docs.microsoft.com/windows/mixed-reality/gaze-and-dwell) to the UI target.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/DwellHandler")]
     public class DwellHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
         /// <summary>

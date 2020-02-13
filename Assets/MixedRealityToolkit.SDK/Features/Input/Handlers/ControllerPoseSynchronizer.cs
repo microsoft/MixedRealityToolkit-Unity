@@ -9,19 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ControllerPoseSynchronizer")]
     public class ControllerPoseSynchronizer : InputSystemGlobalHandlerListener, IMixedRealityControllerPoseSynchronizer
     {
         #region IMixedRealityControllerPoseSynchronizer Implementation
 
-        [SerializeField]
-        [Tooltip("The handedness this controller should synchronize with.")]
-        private Handedness handedness = Handedness.Left;
-
         /// <inheritdoc />
         public Handedness Handedness
         {
-            get { return handedness; }
-            set { handedness = value; }
+            get => Controller == null ? Handedness.None : Controller.ControllerHandedness;
         }
 
         [SerializeField]
@@ -31,8 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool DestroyOnSourceLost
         {
-            get { return destroyOnSourceLost; }
-            set { destroyOnSourceLost = value; }
+            get => destroyOnSourceLost;
+            set => destroyOnSourceLost = value;
         }
 
         /// <summary>
@@ -50,17 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual IMixedRealityController Controller
         {
-            get { return controller; }
-            set
-            {
-                controller = value;
-
-                if (controller != null && gameObject != null)
-                {
-                    handedness = value.ControllerHandedness;
-                    gameObject.name = $"{handedness}_{gameObject.name}";
-                }
-            }
+            get => controller;
+            set => controller = value;
         }
 
         [SerializeField]
@@ -70,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool UseSourcePoseData
         {
-            get { return useSourcePoseData; }
-            set { useSourcePoseData = value; }
+            get => useSourcePoseData;
+            set => useSourcePoseData = value;
         }
 
         [SerializeField]
@@ -81,8 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public MixedRealityInputAction PoseAction
         {
-            get { return poseAction; }
-            set { poseAction = value; }
+            get => poseAction;
+            set => poseAction = value;
         }
 
         #endregion IMixedRealityControllerPoseSynchronizer Implementation
@@ -116,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 TrackingState = TrackingState.NotTracked;
 
-                if (destroyOnSourceLost)
+                if (DestroyOnSourceLost)
                 {
                     GameObjectExtensions.DestroyGameObject(gameObject);
                 }
@@ -213,5 +200,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion  IMixedRealityInputHandler Implementation
+
+        #region Obsolete
+
+        #pragma warning disable 0414
+        [SerializeField]
+        [HideInInspector]
+        [System.Obsolete("Use the Handedness property instead to get current handedness which is set by Controller attached")]
+        [Tooltip("Use the Handedness property instead to get current handedness which is set by Controller attached")]
+        private Handedness handedness = Handedness.Left;
+        #pragma warning restore 0414
+
+        #endregion
+
     }
 }

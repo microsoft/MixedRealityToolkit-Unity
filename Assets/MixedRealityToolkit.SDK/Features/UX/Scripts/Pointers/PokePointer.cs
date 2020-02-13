@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -19,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///
     /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
     /// </remarks>
+    [AddComponentMenu("Scripts/MRTK/SDK/PokePointer")]
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         /// <summary>
@@ -49,6 +51,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum number of colliders that can be detected in a scene query.
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
+
+        [SerializeField]
+        [Tooltip("Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV. " +
+            "This can prevent accidental touches, and will allow hand rays to turn on when you may be near a " +
+            "touchable but cannot see it. Visual FOV is defined by cone centered about display center, " +
+            "radius equal to half display height.")]
+        private bool ignoreCollidersNotInFOV = true;
+       
+        /// <summary>
+        /// Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+        /// This can prevent accidental touches, and will allow hand rays to turn on when you may be near 
+        /// a touchable but cannot see it. Visual FOV is defined by cone centered about display center, 
+        /// radius equal to half display height.
+        /// </summary>
+        public bool IgnoreCollidersNotInFOV
+        {
+            get => ignoreCollidersNotInFOV;
+            set => ignoreCollidersNotInFOV = value;
+        }
 
         [SerializeField]
         [Tooltip("The LayerMasks, in prioritized order, that are used to determine the touchable objects.")]
@@ -112,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsNearObject
         {
-            get { return (closestProximityTouchable != null); }
+            get => closestProximityTouchable != null;
         }
 
         /// <inheritdoc />
@@ -182,11 +203,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the input system settings.");
             }
 
+            Camera mainCam = CameraCache.Main;
             for (int i = 0; i < numColliders; ++i)
             {
-                var touchable = queryBuffer[i].GetComponent<BaseNearInteractionTouchable>();
+                var collider = queryBuffer[i];
+                var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
                 if (touchable)
                 {
+                    if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
+                    {
+                        continue;
+                    }
                     float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
                     if (distance < closestDistance)
                     {
@@ -202,12 +229,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
             {
                 NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
-                float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
-                if (distance <= touchableDistance && distance < closestDistance)
+                if (touchable.gameObject.IsInLayerMask(layerMask))
                 {
-                    closest = touchable;
-                    closestDistance = distance;
-                    closestNormal = normal;
+                    float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                    if (distance <= touchableDistance && distance < closestDistance)
+                    {
+                        closest = touchable;
+                        closestDistance = distance;
+                        closestNormal = normal;
+                    }
                 }
             }
 
@@ -340,6 +370,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
                     CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                }
+                else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                {
+                    CoreServices.InputSystem?.RaisePointerDragged(this, pointerAction, Handedness, InputSourceParent);
                 }
             }
         }

@@ -92,11 +92,6 @@ $packages = @{
     "Tools" = @(
         "Assets\MixedRealityToolkit.Tools"
     );
-    # NOTE: This is a temporary package to facilitate experimental Unity AR support while we
-    # invest in better packaging solution
-    "Providers.UnityAR" = @(
-        "Assets\MixedRealityToolkit.Staging"
-    );
 }
 
 function GetPackageVersion() {
@@ -108,6 +103,24 @@ function GetPackageVersion() {
         Foreach-Object { if ( $_ -match "^(\d+\.\d+\.\d+)$" ) { [version]$matches[1] } } | 
         Sort-Object -Descending |
         Select-Object -First 1
+}
+
+function CleanPackageManifest() {
+    <#
+    .SYNOPSIS
+        Ensures that the package manifest does not contain packages that trigger adding dependencies on
+        optional features by default.
+    #>
+
+    $fileName = $RepoDirectory + "\Packages\manifest.json"
+    (Get-Content $fileName) | ForEach-Object {
+        if ($_ -notmatch ("arfoundation|arsubsystems|xr.management|legacyinputhelpers")) {
+            $line = $_
+        }
+        else {
+            $line = ""
+        }
+    $line } | Set-Content $fileName  
 }
 
 # Beginning of the .unitypackage script main section
@@ -139,7 +152,7 @@ if (-not $UnityDirectory) {
 
 $unityEditor = Get-ChildItem $UnityDirectory -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 if (-not $unityEditor) {
-    throw "Unable to find the unity editor executable in $UnityDirectory"
+    throw "Unable to find the Unity editor executable in $UnityDirectory"
 }
 Write-Verbose $unityEditor;
 
@@ -161,6 +174,9 @@ if (-not $LogDirectory) {
 $OutputDirectory = Resolve-Path $OutputDirectory
 $LogDirectory = Resolve-Path $LogDirectory
 $RepoDirectory = Resolve-Path $RepoDirectory
+
+Write-Verbose "Cleaning package manifest (removing AR and XR references)"
+CleanPackageManifest
 
 foreach ($entry in $packages.GetEnumerator()) {
     $packageName = $entry.Name;

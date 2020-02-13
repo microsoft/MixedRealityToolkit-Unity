@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/BoundingBoxExampleTest")]
     public class BoundingBoxExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
         public TextMeshPro statusText;

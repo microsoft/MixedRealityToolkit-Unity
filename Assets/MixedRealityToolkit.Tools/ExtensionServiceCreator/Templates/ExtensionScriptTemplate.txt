@@ -1,4 +1,3 @@
-using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit;
 
@@ -9,7 +8,7 @@ namespace #NAMESPACE#
 	{
 		private #PROFILE_NAME# #PROFILE_FIELD_NAME#;
 
-		public #SERVICE_NAME#(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
+		public #SERVICE_NAME#(string name,  uint priority,  BaseMixedRealityProfile profile) : base(name, priority, profile) 
 		{
 			#PROFILE_FIELD_NAME# = (#PROFILE_NAME#)profile;
 		}

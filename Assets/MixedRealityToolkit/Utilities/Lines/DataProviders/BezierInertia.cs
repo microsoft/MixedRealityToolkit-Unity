@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 { 
     [ExecuteAlways]
+    [AddComponentMenu("Scripts/MRTK/Core/BezierInertia")]
     public class BezierInertia : MonoBehaviour
     {
         [SerializeField]
@@ -30,14 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Vector3 p2Position;
         private Vector3 p2Offset;
 
-        void Start()
+        private void Start()
         {
             bezier = gameObject.EnsureComponent<BezierDataProvider>();
             p1Position = bezier.GetPoint(1);
             p2Position = bezier.GetPoint(2);
         }
 
-        void Update()
+        private void Update()
         {
             Vector3 p1BasePoint = bezier.GetPoint(1);
             Vector3 p2BasePoint = bezier.GetPoint(2);

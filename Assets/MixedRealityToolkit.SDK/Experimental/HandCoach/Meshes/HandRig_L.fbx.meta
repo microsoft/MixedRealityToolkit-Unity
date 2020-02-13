@@ -1,0 +1,146 @@
+fileFormatVersion: 2
+guid: 1dd838197b9c97f4bae6291d65446d89
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: MainL_JNT
+    100004: MeshL
+    100006: MiddelL_JNT2
+    100008: MiddleL_JNT
+    100010: MiddleL_JNT1
+    100012: MiddleL_JNT3
+    100014: PinkyL_JNT
+    100016: PinkyL_JNT1
+    100018: PinkyL_JNT2
+    100020: PinkyL_JNT3
+    100022: PointL_JNT
+    100024: PointL_JNT1
+    100026: PointL_JNT2
+    100028: PointL_JNT3
+    100030: RingL_JNT
+    100032: RingL_JNT1
+    100034: RingL_JNT2
+    100036: RingL_JNT3
+    100038: ThumbL_JNT1
+    100040: ThumbL_JNT2
+    100042: ThumbL_JNT3
+    100044: WristL_JNT
+    400000: //RootNode
+    400002: MainL_JNT
+    400004: MeshL
+    400006: MiddelL_JNT2
+    400008: MiddleL_JNT
+    400010: MiddleL_JNT1
+    400012: MiddleL_JNT3
+    400014: PinkyL_JNT
+    400016: PinkyL_JNT1
+    400018: PinkyL_JNT2
+    400020: PinkyL_JNT3
+    400022: PointL_JNT
+    400024: PointL_JNT1
+    400026: PointL_JNT2
+    400028: PointL_JNT3
+    400030: RingL_JNT
+    400032: RingL_JNT1
+    400034: RingL_JNT2
+    400036: RingL_JNT3
+    400038: ThumbL_JNT1
+    400040: ThumbL_JNT2
+    400042: ThumbL_JNT3
+    400044: WristL_JNT
+    2100000: lambert2
+    4300000: MeshL
+    9500000: //RootNode
+    13700000: MeshL
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: ac6cdef968e49e84f9c34a9978afcdcd, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

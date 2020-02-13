@@ -1,4 +1,4 @@
-# Writing and Running Tests in MRTK
+# Writing and running tests in MRTK
 
 To ensure MRTK is reliable, MRTK has a set of tests to ensure that changes to the code does not regress existing behavior. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when making changes.
 
@@ -23,7 +23,7 @@ The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunne
 
 ### Command line
 
-Tests can also be run by a [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
+Tests can also be run by a [powershell](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
 
@@ -43,7 +43,7 @@ It's also possible to run the playmode tests multiple times via the `run_repeat_
 .\run_repeat_tests.ps1 -Times 5
 ```
 
-### Pull Request Validation
+### Pull request validation
 
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
 
@@ -64,9 +64,9 @@ For a single test that needs to be executed multiple times:
 public IEnumerator MyTest() {...}
 ```
 
-Run the following from a command line ([PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
+Run the following from a command line ([PowerShell](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
 
-```ps
+```powershell
 cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest
@@ -74,7 +74,7 @@ python .\generate_repeat_tests.py -n 5 -t MyTest
 
 Copy and paste the output into your test file. The following script is for running multiple tests in sequence:
 
-```ps
+```powershell
 cd scripts\tests
 # Repeat the test 5 times. Default is 100
 python .\generate_repeat_tests.py -n 5 -t MyTest MySecondTest
@@ -112,11 +112,11 @@ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.
 
 To create a new play mode test:
 
-- Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
-- Right click, Create > Testing > C# Test Script
-- Replace the default template with the skeleton below
+* Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
+* Right click, Create > Testing > C# Test Script
+* Replace the default template with the skeleton below
 
-``` csharp
+```c#
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // The assembly that this file is part of is still built for the player,
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 Edit mode tests are executed in Unity's edit mode and can be added under the **MixedRealityToolkit.Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:
 
-``` csharp
+```c#
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:
 
-```csharp
+```c#
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 Consider naming the test
 
-```csharp
+```c#
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
@@ -285,7 +285,7 @@ There are two Utility classes that help with setting up MRTK and testing interac
 
 TestUtilities provide the following methods to set up your MRTK scene and GameObjects:
 
-``` csharp
+```c#
 /// creates the mrtk GameObject and sets the default profile if passed param is true
 TestUtilities.InitializeMixedRealityToolkit()
 

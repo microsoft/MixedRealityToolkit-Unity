@@ -405,17 +405,40 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             RecursiveFolderCleanup(outputDirectory);
             CopyPluginContents(Application.dataPath.Replace("Assets", "NuGet/Plugins"));
 
-            // Special case the Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll for UNITY_WSA Editor
-            string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WSA/Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
+            PostProcessPatchWsaDll("Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality");
+            PostProcessPatchWsaDll("Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared");
+
+            // Update metas after copying in the special cased libraries
+            UpdateMetaFiles(assemblyInformation);
+
+            PostProcessPatchDllConstraint("Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality");
+            PostProcessPatchDllConstraint("Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared");
+        }
+
+        /// <summary>
+        /// Patches the specified DLL to call into UWP APIs in the editor.
+        /// </summary>
+        /// <param name="dllName">The name, without file type, of the DLL to be patched.</param>
+        private static void PostProcessPatchWsaDll(string dllName)
+        {
+            // Special case the DLL for UNITY_WSA Editor
+            string dllPath = Utilities.GetFullPathFromAssetsRelative($"Assets/../MSBuild/Publish/InEditor/WSA/{dllName}.dll");
             string pdbPath = Path.ChangeExtension(dllPath, ".pdb");
             string editorOutputDirectory = Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer");
 
-            string dllOutputPath = Path.Combine(editorOutputDirectory, "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.dll");
+            string dllOutputPath = Path.Combine(editorOutputDirectory, $"{dllName}.dll");
             File.Copy(dllPath, dllOutputPath, true);
-            File.Copy(pdbPath, Path.Combine(editorOutputDirectory, "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.pdb"), true);
+            File.Copy(pdbPath, Path.Combine(editorOutputDirectory, $"{dllName}.pdb"), true);
+        }
 
-            // Update metas after copying in the special cased library
-            UpdateMetaFiles(assemblyInformation);
+        /// <summary>
+        /// Patches the specified DLL only run in the editor when set to the UNITY_WSA backend.
+        /// </summary>
+        /// <param name="dllName">The name, without file type, of the DLL to be patched.</param>
+        private static void PostProcessPatchDllConstraint(string dllName)
+        {
+            string editorOutputDirectory = Application.dataPath.Replace("Assets", "NuGet/Plugins/EditorPlayer");
+            string dllOutputPath = Path.Combine(editorOutputDirectory, $"{dllName}.dll");
 
             // Patch the special cased library to have a define_constraint:
             string dllMetaPath = $"{dllOutputPath}.meta";
@@ -424,7 +447,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             string searchString = "defineConstraints: []";
             if (!contents.Contains(searchString))
             {
-                throw new InvalidOperationException("Failed to find the defineConstraints: [] when patching WSA dll.");
+                throw new InvalidOperationException("Failed to find the defineConstraints: [] when patching WSA DLL.");
             }
             File.WriteAllText(dllMetaPath, contents.Replace(searchString, "defineConstraints:\r\n  - UNITY_WSA"));
         }

@@ -9,24 +9,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Creates an elliptical line shape.
     /// </summary>
     /// <remarks>This line loops.</remarks>
+    [AddComponentMenu("Scripts/MRTK/Core/EllipseLineDataProvider")]
     public class EllipseLineDataProvider : BaseMixedRealityLineDataProvider
     {
         [SerializeField]
-        [Range(0, 2048)]
+        [Tooltip("Resolution is the number of points used to define positions for points on the line. Equivalent to PointCount. Clamped at 2048 max")]
+        [Range(0, MaxResolution)]
         private int resolution = 36;
 
+        /// <summary>
+        /// Resolution is the number of points used to define positions for points on the line. Equivalent to PointCount. Clamped at 2048 max
+        /// </summary>
         public int Resolution
         {
-            get { return resolution; }
-            set { resolution = Mathf.Clamp(value, 0, 2048); }
+            get => resolution;
+            set => resolution = Mathf.Clamp(value, 0, MaxResolution);
         }
 
+        [Tooltip("Radius of ellipsis defined by Vector2 where x is half-width and y is half-height")]
         [SerializeField]
         private Vector2 radius = Vector2.one;
 
+        /// <summary>
+        /// Radius of ellipsis defined by Vector2 where x is half-width and y is half-height
+        /// </summary>
         public Vector2 Radius
         {
-            get { return radius; }
+            get => radius;
             set
             {
                 if (value.x < 0)
@@ -43,22 +52,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        private const int MaxResolution = 2048;
+
+
         #region BaseMixedRealityLineDataProvider Implementation
 
         /// <inheritdoc />
-        public override int PointCount => resolution;
+        public override int PointCount => Resolution;
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
-            return LineUtility.GetEllipsePoint(radius, normalizedDistance * 2f * Mathf.PI);
+            return LineUtility.GetEllipsePoint(Radius, normalizedDistance * 2f * Mathf.PI);
         }
 
         /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
-            float angle = ((float)pointIndex / resolution) * 2f * Mathf.PI;
-            return LineUtility.GetEllipsePoint(radius, angle);
+            float angle = ((float)pointIndex / Resolution) * 2f * Mathf.PI;
+            return LineUtility.GetEllipsePoint(Radius, angle);
         }
 
         /// <inheritdoc />

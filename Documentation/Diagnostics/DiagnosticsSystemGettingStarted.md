@@ -1,10 +1,10 @@
-# Diagnostic System
+# Diagnostic system
 
 The Mixed Reality Toolkit Diagnostic System provides diagnostic tools that run within the application to enable analysis of application issues.
 
 The first release of the Diagnostic System contains the [Visual Profiler](UsingVisualProfiler.md) to allow for analyzing performance issues while using the application.
 
-## Getting Started
+## Getting started
 
 > [!IMPORTANT]
 > It is **_highly_** recommended that the Diagnostic System be enabled throughout the entire product development cycle and disabled as the last change prior to building and releasing the final version.
@@ -14,7 +14,7 @@ There are two key steps to start using the Diagnostic System.
 1. [Enable](#enable-diagnostics) the Diagnostic System
 2. [Configure](#configure-diagnostic-options) diagnostic options
 
-### Enable Diagnostics
+### Enable diagnostics
 
 The diagnostics system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component).
 
@@ -35,7 +35,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 > [!NOTE]
 > Users of the default profile, [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset), will have the diagnostics system pre-configured to use the [`MixedRealityDiagnosticsSystem`](xref:Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem) object.
 
-### Configure Diagnostic Options
+### Configure diagnostic options
 
 The diagnostics system uses a configuration profile to specify which components are to be displayed and to configure their settings. Please see [Configuring the Diagnostics System](ConfiguringDiagnostics.md) for more information pertaining to the available component settings.
 
@@ -46,7 +46,7 @@ The diagnostics system uses a configuration profile to specify which components 
 >
 > Performance diagnostics, such as the [Visual Profiler](UsingVisualProfiler.md), may not accurately reflect actual application performance when run from within the editor.
 
-## See Also
+## See also
 
 - [Diagnostics API documentation](xref:Microsoft.MixedReality.Toolkit.Diagnostics)
 - [Configuring the Diagnostics System](ConfiguringDiagnostics.md)

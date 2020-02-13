@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Basic hold event receiver
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InteractableOnHoldReceiver")]
     public class InteractableOnHoldReceiver : ReceiverBase
     {
         /// <summary>

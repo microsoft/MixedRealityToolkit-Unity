@@ -56,11 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             // Ensure that touch up and source lost events are at least one frame apart.
             for (int i = 0; i < touchesToRemove.Count; i++)
             {
                 IMixedRealityController controller = touchesToRemove[i];
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+                Service?.RaiseSourceLost(controller.InputSource, controller);
             }
             touchesToRemove.Clear();
 
@@ -92,15 +94,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             foreach (var controller in ActiveTouches)
             {
-                if (controller.Value == null || InputSystem == null) { continue; }
+                if (controller.Value == null || Service == null) { continue; }
 
-                foreach (var inputSource in InputSystem.DetectedInputSources)
+                foreach (var inputSource in Service.DetectedInputSources)
                 {
                     if (inputSource.SourceId == controller.Value.InputSource.SourceId)
                     {
-                        InputSystem.RaiseSourceLost(controller.Value.InputSource, controller.Value);
+                        Service.RaiseSourceLost(controller.Value.InputSource, controller.Value);
                     }
                 }
             }
@@ -116,10 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 IMixedRealityInputSource inputSource = null;
 
-                if (InputSystem != null)
+                if (Service != null)
                 {
                     var pointers = RequestPointers(SupportedControllerType.TouchScreen, Handedness.Any);
-                    inputSource = InputSystem.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
+                    inputSource = Service.RequestNewGenericInputSource($"Touch {touch.fingerId}", pointers);
                 }
 
                 controller = new UnityTouchController(TrackingState.NotApplicable, Handedness.Any, inputSource);
@@ -139,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
-            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+            Service?.RaiseSourceDetected(controller.InputSource, controller);
 
             controller.TouchData = touch;
             controller.StartTouch();
@@ -168,6 +172,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 return;
             }
+
+            RecyclePointers(controller.InputSource);
 
             controller.TouchData = touch;
             controller.EndTouch();

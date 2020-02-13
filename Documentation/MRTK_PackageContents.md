@@ -1,11 +1,10 @@
-# Mixed Reality Toolkit Packages
+# Mixed Reality Toolkit packages
 
 The Microsoft Mixed Reality Toolkit is provided as a collection of packages. The contents of these packages is described in the following sections.
 
 - [Foundation](#foundation)
 - [Extensions](#extensions)
 - [Tools](#tools)
-- [Providers.UnityAR](#providersunityar)
 - [Examples](#examples)
 
 ## Foundation
@@ -18,8 +17,10 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | MixedRealityToolkit.Providers | | |
 | | [ObjectMeshObserver](SpatialAwareness/SpatialObjectMeshObserver.md) | Spatial awareness observer using a 3D model as the data. |
 | | OpenVR | Support for OpenVR devices. |
+| | [UnityAR](CameraSystem/UnityArCameraSettings.md) | (Experimental) Camera settings provider enabling MRTK use with mobile AR devices. |
 | | WindowsMixedReality | Support for Windows Mixed Reality devices, including Microsoft HoloLens and immersive headsets. |
-| | WindowsVoiceInput | Support for speech and dicatation on Microsoft Windows platforms. |
+| | WindowsVoiceInput | Support for speech and dictation on Microsoft Windows platforms. |
+| | XRSDK | (Experimental) Support for [Unity's new XR framework](https://blogs.unity3d.com/2020/01/24/unity-xr-platform-updates/) in Unity 2019.3. |
 | MixedRealityToolkit.SDK | | |
 | | Experimental | Experimental features, including shaders, user interface controls and individual system managers. |
 | | Features | Functionality that builds upon the Foundation package. |
@@ -40,22 +41,22 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 
 The optional Microsoft.MixedRealityToolkit.Unity.Extensions package includes additional services that extend the functionality of the Microsoft Mixed Reality Toolkit.
 
-> [!Note]
+> [!NOTE]
 > The extensions package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
 | --- | --- | --- |
 | MixedRealityToolkit.Extensions | |
+| | HandPhysicsService | Service that adds physics support to articulated hands. |
 | | LostTrackingService | Service that simplifies handing of tracking loss on Microsoft HoloLens devices. |
 | | [SceneTransitionService](Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) | Service that simplifies adding smooth scene transitions. |
-
 
 ## Tools
 
 The optional Microsoft.MixedRealityToolkit.Unity.Tools package includes helpful tools that enhance the mixed reality development experience using the Microsoft Mixed Reality Toolkit.
 These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the Unity Editor.
 
-> [!Note]
+> [!NOTE]
 > The tools package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
@@ -69,21 +70,11 @@ These tools are located in the **Mixed Reality Toolkit > Utilities** menu in the
 | | ScreenshotUtility | Enables capturing application images in the Unity editor. |
 | | TextureCombinerWindow | Utility to combine graphics textures. |
 
-## Providers.UnityAR
-
-> [!Note]
-> The UnityAR package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
-
-| Folder | Component | Description |
-| --- | --- | --- |
-| MixedRealityToolkit.Staging | | |
-| | [UnityAR](CameraSystem/UnityArCameraSettings.md) | Camera settings provider enabling MRTK use with mobile AR devices. |
-
 ## Examples
 
 The optional Microsoft.MixedRealityToolkit.Unity.Examples package includes demonstration projects that illustrate the features of the Microsoft Mixed Reality Toolkit.
 
-> [!Note]
+> [!NOTE]
 > The examples package requires Microsoft.MixedRealityToolkit.Unity.Foundation.
 
 | Folder | Component | Description |
@@ -94,6 +85,7 @@ The optional Microsoft.MixedRealityToolkit.Unity.Examples package includes demon
 | | Inspectors | Unity Editor inspectors used by demo scenes. |
 | | StandardAssets | Common assets shared by multiple demo scenes. |
 
-## See Also
+## See also
 
-[Getting Started with the MRTK](GettingStartedWithTheMRTK.md)
+- [Getting Started with the MRTK](GettingStartedWithTheMRTK.md)
+- [NuGet Packaging](MRTKNuGetPackage.md)

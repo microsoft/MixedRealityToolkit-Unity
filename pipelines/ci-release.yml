@@ -4,10 +4,19 @@
 name: $(Date:yyyyMMdd)v$(Rev:r)
 
 variables:
-  Unity2018Version: Unity2018.3.7f1
+  Unity2018Version: Unity2018.4.12f1
   Unity2019Version: Unity2019.2.0f1
-  MRTKVersion: 2.2.0  # Major.Minor.Patch
+  MRTKVersion: 2.3.0  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
+  ToolsRepoName: mixedrealitytoolkit.build
+  ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)
+
+resources:
+  repositories:
+  - repository: build-tools
+    type: git
+    name: Analog/$(ToolsRepoName)
+    ref: mrtk
 
 jobs:
 - job: CIReleaseValidation
@@ -15,7 +24,7 @@ jobs:
   pool:
     name: Analog On-Prem
     demands:
-    - Unity2018.3.7f1  # variable expansion not allowed here
+    - Unity2018.4.12f1  # variable expansion not allowed here
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
@@ -28,9 +37,12 @@ jobs:
 
 - job: ReleaseSigning
   dependsOn: CIReleaseValidation
+  timeoutInMinutes: 90
   pool:
     name: Package ES Lab E
   steps:
+  - checkout: self
+  - checkout: build-tools
   - task: DownloadBuildArtifacts@0
     inputs:
       buildType: 'current'
@@ -39,12 +51,7 @@ jobs:
       downloadPath: '$(Build.SourcesDirectory)'
 
   - powershell: |
-      $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
-      git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
-    displayName: "Clone release scripts"
-
-  - powershell: |
-      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
+      $(ToolsDir)/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
     displayName: "Generate signing configs"
 
   # required for code signing
@@ -91,11 +98,11 @@ jobs:
     displayName: 'Validate release packages are signed'
     inputs:
       targetType: filePath
-      filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
+      filePath: '$(ToolsDir)\signCheck.ps1'
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
   
   - powershell: |
-      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*"
+      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*" -Exclude "*.Utilities.*"
     displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"
 
   - task: PublishBuildArtifacts@1

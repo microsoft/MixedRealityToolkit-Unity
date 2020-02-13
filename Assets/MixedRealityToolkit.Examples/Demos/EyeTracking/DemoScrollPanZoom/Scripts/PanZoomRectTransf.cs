@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
@@ -9,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/PanZoomRectTransf")]
     public class PanZoomRectTransf : PanZoomBaseRectTransf
     {
         [Tooltip("RectTransform from, for example, your TextMeshPro game object.")]

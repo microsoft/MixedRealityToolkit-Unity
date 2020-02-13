@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     /// <summary>
     /// Checks whether the user is calibrated and prompts a notification to encourage the user to calibrate.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/EyeCalibrationChecker")]
     public class EyeCalibrationChecker : MonoBehaviour
     {
         [Tooltip("For testing purposes, you can manually assign whether the user is eye calibrated or not.")]

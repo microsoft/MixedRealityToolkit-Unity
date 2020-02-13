@@ -53,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public static readonly Texture2D LogoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_White.png"), typeof(Texture2D));
 
+        private const string CloneProfileHelpLabel = "Currently viewing a MRTK default profile. It is recommended to clone defaults and modify a custom profile.";
+        private const string CloneProfileHelpLockedLabel = "Clone this default profile to edit properties below";
+
         /// <summary>
         /// Check and make sure we have a Mixed Reality Toolkit and an active profile.
         /// </summary>
@@ -502,7 +505,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             var subProfile = profileObject as BaseMixedRealityProfile;
             if (subProfile != null && !subProfile.IsCustomProfile)
             {
-                EditorGUILayout.HelpBox("Clone this default profile to edit properties below", MessageType.Warning);
+                string msg = MixedRealityProjectPreferences.LockProfiles ? CloneProfileHelpLockedLabel : CloneProfileHelpLabel;
+                EditorGUILayout.HelpBox(msg, MessageType.Warning);
             }
 
             if (renderProfileInBox)
@@ -559,7 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (property.objectReferenceValue != null)
                 {
                     // The view asset button should always be enabled.
-                    using (new GUIEnabledWrapper(true, true))
+                    using (new GUIEnabledWrapper())
                     { 
                         if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
                         {
