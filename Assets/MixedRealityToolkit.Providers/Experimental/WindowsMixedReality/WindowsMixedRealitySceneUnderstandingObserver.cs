@@ -20,6 +20,7 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Windows.Perception.Spatial.Preview;
 using Microsoft.Windows.Perception.Spatial;
+using System.Xml.Schema;
 
 #if WINDOWS_UWP
 using Windows.Storage;
@@ -64,8 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         public override void Initialize()
         {
-            //Debug.Log("Initialize");
-            Debug.Log($"Initialize() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"Initialize() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             base.Initialize();
             MeshExtensions.CreateMeshFromQuad(normalizedQuadMesh, 1, 1);
         }
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (CreateGameObjects)
                     {
-                        Instantiate(saso);
+                        InstantiateSceneObject(saso);
                     }
                 }
             }
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Destroy()
         {
-            Debug.Log("Destroy()");
+            //Debug.Log("Destroy()");
             killTokenSource.Cancel();
             CleanupObserver();
         }
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public override bool TryFindCentermostPlacement(Guid quadGuid, UnityEngine.Vector2 objExtents, out UnityEngine.Vector3 placementPosOnPlane)
+        public override bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnPlane)
         {
             SceneQuad quad;
 
@@ -302,13 +302,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
 
             System.Numerics.Vector2 ext = new System.Numerics.Vector2(objExtents.x, objExtents.y);
-            System.Numerics.Vector2 pos = new System.Numerics.Vector2();
+            System.Numerics.Vector2 placementPosition = new System.Numerics.Vector2();
 
-            quad.FindCentermostPlacement(ext, out pos);
+            quad.FindCentermostPlacement(ext, out placementPosition);
 
-            placementPosOnPlane = new Vector3(pos.X, pos.Y);
+            // The best position is expressed realative to it's quad
+            // Expresed as a hierarchy:
+            // Scene
+            //   |_Quad
+            //       |_Placement
+            // We're returning everything to the user in world space,
+            // to avoid having to manage parenting
 
-            //placementPosOnPlane *= SwapRuntimeAndUnityCoordinateSystem(sharedSceneTransform);
+            placementPosition = (placementPosition / quad.Extents) - new System.Numerics.Vector2(0.5f, 0.5f);
+
+            Debug.Log($"placementPosition = {placementPosition}");
+
+            System.Numerics.Matrix4x4 local = System.Numerics.Matrix4x4.CreateTranslation(new System.Numerics.Vector3(placementPosition.X, placementPosition.Y, 0));
+
+            Debug.Log($"local = {local}");
+
+            var world = local * currentSceneTransform;
+            var worldPos = world.ToUnity().GetColumn(3);
+            placementPosOnPlane = worldPos;
+
+            Debug.Log($"worldPos = {worldPos}");
 
             return true;
         }
@@ -317,17 +335,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         #region Private
 
-        private List<SceneObject> filteredResult = new List<SceneObject>(256);
-        private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
-
         private async Task RunObserver(CancellationToken cancellationToken)
         {
-            Debug.Log($"RunObserver() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"RunObserver() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
             Scene scene = null;
             Scene previousScene = null;
             var sasos = new List<SpatialAwarenessSceneObject>(256);
-            var sceneTransform = System.Numerics.Matrix4x4.Identity;
+
+            Guid debugQuadGuid;
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -336,10 +352,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     case ObserverState.Idle:
                         //Debug.Log(ObserverState.Idle.ToString());
                         await new WaitForUpdate();
+
+                        // XXX Debug
+                        //Vector2 objExtents = default;
+                        //Vector3 pos;
+                        //TryFindCentermostPlacement(debugQuadGuid, objExtents, out pos);
+                        //Debug.Log($"Idle pos = {pos.ToString("F3")}");
+                        // Debug XXX
+
                         continue;
 
                     case ObserverState.WaitForAccess:
-                        Debug.Log(ObserverState.WaitForAccess.ToString());
+                        //Debug.Log(ObserverState.WaitForAccess.ToString());
 
                         await new WaitForUpdate();
                         await SceneObserver.RequestAccessAsync();
@@ -354,22 +378,56 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         continue;
 
                     case ObserverState.GetScene:
-                        Debug.Log(ObserverState.GetScene.ToString());
+                        //Debug.Log(ObserverState.GetScene.ToString());
+
+                        var debugCenter = System.Numerics.Vector2.Zero; /// XXX debug
+                        var debugCenter3 = System.Numerics.Vector3.Zero;
+                        var debugMatrix = System.Numerics.Matrix4x4.Identity;
 
                         await new WaitForBackgroundThread();
                         {
                             scene = await GetSceneAsync(previousScene);
-                            if (UsePersistentObjects)
-                            {
-                                previousScene = scene;
-                            }
+                            
+                            previousScene = scene;
+                            
                             sceneOriginId = scene.OriginSpatialGraphNodeId;
+
+                            // XXXX DEBUG
+                            foreach (var debugSceneObj in scene.SceneObjects)
+                            {
+                                if (debugSceneObj.Kind == SceneObjectKind.Platform)
+                                {
+                                    System.Numerics.Vector2 extents = new System.Numerics.Vector2(.1f, .1f);
+
+                                    var debugQuad = debugSceneObj.Quads[0];
+
+                                    debugQuad.FindCentermostPlacement(extents, out debugCenter);
+                                    debugCenter.X = (debugCenter.X / debugQuad.Extents.X) - 0.5f;
+                                    debugCenter.Y = (debugCenter.Y / debugQuad.Extents.Y) - 0.5f;
+
+                                    debugQuadGuid = debugQuad.Id;
+                                    //Debug.Log($"{debugQuad.Id}");
+                                    //Debug.Log($"debugCenter = {debugCenter}");
+
+                                    //debugCenter3 = new System.Numerics.Vector3(debugCenter.X, debugCenter.Y, 0.0f);
+                                    //debugMatrix = debugSceneObj.GetLocationAsMatrix();
+                                    //Debug.Log($"debugSceneObj.Position =  {debugSceneObj.Position}");
+
+                                    break;
+                                }
+                            }
+                            // DEBUG
+
                         }
                         await new WaitForUpdate();
 
-                        sceneTransform = await GetSceneTransformAsync();
+                        currentSceneTransform = await GetSceneTransformAsync();
+                        //Debug.Log($"currentSceneTransform = {currentSceneTransform}");
 
-                        Debug.Log($"sceneTransform = {sceneTransform}");
+                        //var worldDebugCenter = debugMatrix.ToUnity().MultiplyPoint(debugCenter3.ToUnityVector3());
+                        //var worldDebugCenter = debugMatrix.Translation + debugCenter3;
+                        //Debug.Log($"worldDebugCenter = {worldDebugCenter}");
+
 
                         if (!UsePersistentObjects)
                         {
@@ -379,7 +437,28 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                         await new WaitForBackgroundThread();
                         {
-                            sasos = await ConvertSceneObjectsAsync(scene, sceneTransform);
+                            sasos = await ConvertSceneObjectsAsync(scene);
+
+                            // If not on HoloLens....
+                            // Orient data so floor with largest area is aligned to XZ plane
+                            // this algorithm relies on floors exisiting so it may fail
+                            // it can be disabled.
+
+                            //if (OrientScene)
+                            //{
+                            //    //if (isRemoting)
+                            //    //{
+                            //        Debug.Log("Orienting scene");
+                            //        Quaternion toUp = ToUpFromBiggestFloor(scene.SceneObjects);
+                            //        var rotation = Matrix4x4.TRS(UnityEngine.Vector3.zero, toUp, UnityEngine.Vector3.one).ToSystemNumerics();
+
+                            //        var count = sasos.Count;
+                            //        for (int i = 0; i < count; ++i)
+                            //        {
+                            //        sasos[i].Rotation *= rotation;
+                            //        }
+                            //    //}
+                            //}
                         }
                         await new WaitForUpdate();
 
@@ -421,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private async Task<System.Numerics.Matrix4x4> GetSceneTransformAsync()
         {
-            Debug.Log($"GetSceneTransformAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"GetSceneTransformAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             await Task.Yield();
 
             var result = System.Numerics.Matrix4x4.Identity;
@@ -431,15 +510,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return result;
             }
 
-            SpatialCoordinateSystem origin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
-            var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
-            SpatialCoordinateSystem unitySpatialCoordinateSystem = SpatialCoordinateSystem.FromNativePtr(nativePtr);
-            System.Numerics.Matrix4x4? sceneToUnityTransform = origin.TryGetTransformTo(unitySpatialCoordinateSystem);
+            SpatialCoordinateSystem sceneOrigin = SpatialGraphInteropPreview.CreateCoordinateSystemForNode(sceneOriginId);
 
-            if (sceneToUnityTransform.HasValue)
+            var nativePtr = UnityEngine.XR.WSA.WorldManager.GetNativeISpatialCoordinateSystemPtr();
+            SpatialCoordinateSystem worldOrigin = SpatialCoordinateSystem.FromNativePtr(nativePtr);
+            //System.Numerics.Matrix4x4? sceneToUnityTransform = sceneOrigin.TryGetTransformTo(unitySpatialCoordinateSystem);
+            //SpatialCoordinateSystem worldOrigin;
+            var sceneToWorld = sceneOrigin.TryGetTransformTo(worldOrigin);
+
+            if (sceneToWorld.HasValue)
             {
-                Debug.Log("sceneToUnityTransform.HasValue");
-                result = SwapRuntimeAndUnityCoordinateSystem(sceneToUnityTransform.Value);
+                Debug.Log($"sceneToWorld = {sceneToWorld.Value.ToString()}");
+                //result = SwapRuntimeAndUnityCoordinateSystem(sceneToUnityTransform.Value);
+                result = sceneToWorld.Value;
             }
             else
             {
@@ -449,53 +532,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return result;
         }
 
-        private async Task<List<SpatialAwarenessSceneObject>> ConvertSceneObjectsAsync(Scene scene, System.Numerics.Matrix4x4 sceneTransform)
-        {
-            Debug.Log($"ConvertSceneObjectsAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
-            var result = new List<SpatialAwarenessSceneObject>(256);
-
-            var rotatedScene = sceneTransform;
-
-            // Convert from Scene objects to Spatial Awareness objects
-            Debug.Log($"Got {scene.SceneObjects.Count} objects");
-
-            // If not on HoloLens....
-            // Orient data so floor with largest area is aligned to XZ plane
-            // this algorithm is not full-proof and may be optionally disabled
-
-            if (OrientScene)
-            {
-                if (isRemoting)
-                {
-                    Debug.Log("Orienting scene");
-                    UnityEngine.Quaternion toUp = ToUpFromBiggestFloor(scene.SceneObjects);
-                    var rotation = UnityEngine.Matrix4x4.TRS(UnityEngine.Vector3.zero, toUp, UnityEngine.Vector3.one).ToSystemNumerics();
-                    rotatedScene = rotation * sceneTransform;
-                }
-            }
-
-            // Add scene objects we're interested in to the stack of GameObjects to instantiate
-            filteredResult.Clear();
-            convertedObjects.Clear();
-
-            if (scene.SceneObjects.Count == 0)
-            {
-                return convertedObjects;
-            }
-
-            filteredResult = FilterSelectedSurfaceTypes(scene.SceneObjects);
-
-            convertedObjects = ConvertSceneObjects(filteredResult, rotatedScene);
-
-            await Task.Yield();
-
-            return convertedObjects;
-        }
-
         private async Task<Scene> GetSceneAsync(Scene previousScene)
         {
-            Debug.Log($"GetSceneAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"GetSceneAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
             Scene scene = null;
 
@@ -505,10 +544,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     Debug.LogError("sceneBytes is null!");
                 }
-                else
-                {
-                    Debug.Log($"Found bytes with length {sceneBytes.Length}");
-                }
+                //else
+                //{
+                //    Debug.Log($"Found bytes with length {sceneBytes.Length}");
+                //}
 
                 // Move onto a background thread for the expensive scene loading stuff
 
@@ -533,7 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     EnableSceneObjectMeshes = RequestMeshData,
                     EnableOnlyObservedSceneObjects = InferRegions,
                     EnableWorldMesh = SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World),
-                    RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(LevelOfDetail)
+                    RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
 
                 Task<Scene> task;
@@ -574,7 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return scene;
         }
 
-        private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject, System.Numerics.Matrix4x4 sceneTransform)
+        private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
             //Debug.Log($"ConvertSceneObject() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
@@ -626,26 +665,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     sceneMesh = sceneObject.Meshes[i];
                     var meshData = MeshData(sceneMesh);
                     meshes.Add(meshData);
-
-                    //var key = sceneMesh.Id;
-                    //if (!cachedSceneMeshes.ContainsKey(key))
-                    //{
-                    //    cachedSceneMeshes.Add(key, sceneMesh);
-                    //}
                 }
             }
 
-            // Apply scene transform to scene objects
+            // Apply scene transform to scene objects so they are stored in world space
 
             var localTransform = sceneObject.GetLocationAsMatrix(); // local space
 
-            System.Numerics.Matrix4x4 worldTranform = localTransform * sceneTransform;
+            System.Numerics.Matrix4x4 worldTranform = localTransform * currentSceneTransform;
 
             System.Numerics.Vector3 worldTranslation;
             System.Numerics.Quaternion worldRotation;
             System.Numerics.Vector3 localScale;
 
-            System.Numerics.Matrix4x4.Decompose(worldTranform, out localScale, out worldRotation, out worldTranslation);
+            System.Numerics.Matrix4x4.Decompose(RightToLeftHanded(worldTranform), out localScale, out worldRotation, out worldTranslation);
 
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
@@ -658,25 +691,38 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return result;
         }
 
-        private List<SpatialAwarenessSceneObject> convertedResult = new List<SpatialAwarenessSceneObject>(256);
+        private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
 
-        private List<SpatialAwarenessSceneObject> ConvertSceneObjects(IReadOnlyList<SceneObject> sceneObjects, System.Numerics.Matrix4x4 sceneTransform)
+        private async Task<List<SpatialAwarenessSceneObject>> ConvertSceneObjectsAsync(Scene scene)
         {
-            Debug.Log($"ConvertSceneObjects() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"ConvertSceneObjectsAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
-            Assert.IsTrue(sceneObjects.Count > 0);
+            var result = new List<SpatialAwarenessSceneObject>(256);
 
-            convertedResult.Clear();
+            // Convert from Scene objects to Spatial Awareness objects
+            Debug.Log($"Got {scene.SceneObjects.Count} objects");
 
-            int sceneObjectCount = sceneObjects.Count;
+            // Add scene objects we're interested in to the stack of GameObjects to instantiate
+            convertedObjects.Clear();
+
+            if (scene.SceneObjects.Count == 0)
+            {
+                return convertedObjects;
+            }
+
+            var filteredSceneObjects = FilterSelectedSurfaceTypes(scene.SceneObjects);
+
+            int sceneObjectCount = filteredSceneObjects.Count;
 
             for (int i = 0; i < sceneObjectCount; ++i)
             {
-                var saso = ConvertSceneObject(sceneObjects[i], sceneTransform);
-                convertedResult.Add(saso);
+                var saso = ConvertSceneObject(filteredSceneObjects[i]);
+                convertedObjects.Add(saso);
             }
 
-            return convertedResult;
+            await Task.Yield();
+
+            return convertedObjects;
         }
 
         private void UpdateTimerEventHandler(object sender, ElapsedEventArgs args)
@@ -717,7 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             ShouldLoadFromFile = profile.ShouldLoadFromFile;
             SerializedScene = profile.SerializedScene;
             InferRegions = profile.InferRegions;
-            LevelOfDetail = profile.LevelOfDetail;
+            WorldMeshLevelOfDetail = profile.WorldMeshLevelOfDetail;
             InstantiationBatchRate = profile.InstantiationBatchRate;
             ObservationExtents = profile.ObservationExtents;
             QueryRadius = profile.QueryRadius;
@@ -731,7 +777,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             Dispose(true);
         }
 
-        private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
         private enum ObserverState
         {
             Idle = 0,
@@ -746,7 +791,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private bool isRemoting;
         private Guid sceneOriginId;
 
-        private System.Numerics.Matrix4x4 sharedSceneTransform;
+        private System.Numerics.Matrix4x4 currentSceneTransform;
+
+        private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
 
         private List<SceneObject> FilterSelectedSurfaceTypes(IReadOnlyList<SceneObject> newObjects)
         {
@@ -780,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-        private void Instantiate(SpatialAwarenessSceneObject saso)
+        private void InstantiateSceneObject(SpatialAwarenessSceneObject saso)
         {
             // Until this point the SASO has been a data representation
 
@@ -812,9 +859,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                 for (int i = 0; i < quadCount; ++i)
                 {
-                    var go = new GameObject("Quad");
-
                     var quad = saso.Quads[i];
+
+                    var go = new GameObject($"Quad {quad.guid}");
 
                     var meshFilter = go.AddComponent<MeshFilter>();
                     meshFilter.mesh = normalizedQuadMesh;
@@ -837,7 +884,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     var scale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
                     go.transform.localScale = scale;
-
+                    //go.transform.position = saso.Position;
+                    //go.transform.rotation = saso.Rotation;
                     go.AddComponent<BoxCollider>();
 
                     go.transform.SetParent(saso.GameObject.transform, false);
@@ -850,10 +898,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                 for (int i = 0; i < meshCount; ++i)
                 {
-                    var go = new GameObject("Mesh");
+                    var meshAlias = saso.Meshes[i];
+
+                    var go = new GameObject($"Mesh {meshAlias.guid}");
 
                     var mf = go.AddComponent<MeshFilter>();
-                    mf.mesh = UnityMeshFromMeshData(saso.Meshes[i]);
+                    mf.mesh = UnityMeshFromMeshData(meshAlias);
 
                     var mr = go.AddComponent<MeshRenderer>();
 
@@ -914,7 +964,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void CleanupDebugGameObjects()
         {
-            Debug.Log($"CleanupDebugGameObjects() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"CleanupDebugGameObjects() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
             if (observedObjectParent != null)
             {
@@ -986,6 +1036,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 case SpatialAwarenessMeshLevelOfDetail.Fine:
                     return SceneMeshLevelOfDetail.Fine;
 
+                case SpatialAwarenessMeshLevelOfDetail.Unlimited:
+                    return SceneMeshLevelOfDetail.Unlimited;
+
                 default:
                     return SceneMeshLevelOfDetail.Medium;
             }
@@ -993,10 +1046,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         /// <summary>
         /// Helper to convert from Right hand to Left hand coordinates using <see cref="System.Numerics.Matrix4x4"/>.
+        /// https://docs.microsoft.com/en-us/windows/mixed-reality/unity-xrdevice-advanced#converting-between-coordinate-systems
         /// </summary>
         /// <param name="matrix">The Right handed <see cref="System.Numerics.Matrix4x4"/>.</param>
         /// <returns>The <see cref="System.Numerics.Matrix4x4"/> in left hand form.</returns>
-        public static System.Numerics.Matrix4x4 SwapRuntimeAndUnityCoordinateSystem(System.Numerics.Matrix4x4 matrix)
+        public static System.Numerics.Matrix4x4 RightToLeftHanded(System.Numerics.Matrix4x4 matrix)
         {
             matrix.M13 = -matrix.M13;
             matrix.M23 = -matrix.M23;
@@ -1080,13 +1134,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 System.Numerics.Vector3 point2 = new System.Numerics.Vector3(halfWidthMeters, -halfHeightMeters, 0);
                 System.Numerics.Vector3 point3 = new System.Numerics.Vector3(-halfWidthMeters, halfHeightMeters, 0);
 
-                System.Numerics.Matrix4x4 objectTransform = floorSceneObject.GetLocationAsMatrix();
+                System.Numerics.Matrix4x4 objectToSceneOrigin = floorSceneObject.GetLocationAsMatrix();
 
-                objectTransform = SwapRuntimeAndUnityCoordinateSystem(objectTransform);
+                objectToSceneOrigin = RightToLeftHanded(objectToSceneOrigin);
 
-                System.Numerics.Vector3 tPoint1 = System.Numerics.Vector3.Transform(point1, objectTransform);
-                System.Numerics.Vector3 tPoint2 = System.Numerics.Vector3.Transform(point2, objectTransform);
-                System.Numerics.Vector3 tPoint3 = System.Numerics.Vector3.Transform(point3, objectTransform);
+                System.Numerics.Vector3 tPoint1 = System.Numerics.Vector3.Transform(point1, objectToSceneOrigin);
+                System.Numerics.Vector3 tPoint2 = System.Numerics.Vector3.Transform(point2, objectToSceneOrigin);
+                System.Numerics.Vector3 tPoint3 = System.Numerics.Vector3.Transform(point3, objectToSceneOrigin);
 
                 System.Numerics.Vector3 p21 = tPoint2 - tPoint1;
                 System.Numerics.Vector3 p31 = tPoint3 - tPoint1;

@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public bool RequestMeshData => requestMeshData;
 
         [SerializeField]
-        [Tooltip("When enabled, renders observed and inferred regions for scene objects. When disabled, renders only the observed regions for scene objects.")]
+        [Tooltip("Fills in the gaps for unobserved data.")]
         private bool inferRegions = true;
         /// <summary>
         /// When enabled, renders observed and inferred regions for scene objects.
@@ -123,12 +123,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public float FirstUpdateDelay => firstUpdateDelay;
 
         [SerializeField]
-        [Tooltip("The amount of delay before the scene us updated the first time")]
-        private SpatialAwarenessMeshLevelOfDetail levelOfDetail = SpatialAwarenessMeshLevelOfDetail.Medium;
+        [Tooltip("Controls the amount of polygons returned for the mesh")]
+        private SpatialAwarenessMeshLevelOfDetail worldMeshLevelOfDetail = SpatialAwarenessMeshLevelOfDetail.Medium;
         /// <summary>
         /// The amount of detail applied to the <see cref="BoundlessSRMesh"/> and/or <see cref="GeneratePlanarMeshes"/>.
         /// </summary>
-        public SpatialAwarenessMeshLevelOfDetail LevelOfDetail => levelOfDetail;
+        public SpatialAwarenessMeshLevelOfDetail WorldMeshLevelOfDetail => worldMeshLevelOfDetail;
 
         [SerializeField]
         [Tooltip("Keep previously observed objects when updating the scene")]
@@ -169,6 +169,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// When NOT on HoloLens, attempt to align scene to largest found floor's normal
         /// </summary>
         public bool OrientScene => orientScene;
-
     }
 }

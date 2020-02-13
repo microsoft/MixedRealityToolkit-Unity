@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects => throw new System.NotImplementedException();
 
         /// <inheritdoc />
-        public SpatialAwarenessMeshLevelOfDetail LevelOfDetail{ get; set; }
+        public SpatialAwarenessMeshLevelOfDetail WorldMeshLevelOfDetail{ get; set; }
 
         #region SceneObject event broadcasting
 

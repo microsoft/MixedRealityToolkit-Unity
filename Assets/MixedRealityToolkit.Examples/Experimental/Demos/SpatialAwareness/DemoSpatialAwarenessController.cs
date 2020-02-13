@@ -146,6 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 }
             }
 
+            Debug.Log($"closestGuid = {closestGuid}, closestDistance = {closestDistance}");
+
             // Place our stuff
 
             Vector3 placement;
@@ -155,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 var stuff = Instantiate(StuffToPlace);
                 stuff.transform.position = placement;
+                Debug.Log($"Found transform @ {placement.ToString("F4")}");
             }
         }
 

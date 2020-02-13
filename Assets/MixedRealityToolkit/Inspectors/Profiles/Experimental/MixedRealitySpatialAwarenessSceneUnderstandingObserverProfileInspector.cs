@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty createGameObjects;
         private SerializedProperty inferRegions;
         private SerializedProperty firstUpdateDelay;
-        private SerializedProperty levelOfDetail;
+        private SerializedProperty worldMeshLevelOfDetail;
         private SerializedProperty usePersistentObjects;
         private SerializedProperty queryRadius;
         private SerializedProperty requestOcclusionMask;
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             shouldLoadFromFile = serializedObject.FindProperty("shouldLoadFromFile");
             serializedScene = serializedObject.FindProperty("serializedScene");
 
-            levelOfDetail = serializedObject.FindProperty("levelOfDetail");
+            worldMeshLevelOfDetail = serializedObject.FindProperty("worldMeshLevelOfDetail");
             usePersistentObjects = serializedObject.FindProperty("usePersistentObjects");
 
             instantiationBatchRate = serializedObject.FindProperty("instantiationBatchRate");
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 {
                     EditorGUILayout.PropertyField(surfaceTypes);
                     EditorGUILayout.PropertyField(queryRadius);
-                    EditorGUILayout.PropertyField(levelOfDetail);
+                    EditorGUILayout.PropertyField(worldMeshLevelOfDetail);
                     EditorGUILayout.PropertyField(usePersistentObjects);
                     EditorGUILayout.PropertyField(inferRegions);
                     EditorGUILayout.PropertyField(requestPlaneData);

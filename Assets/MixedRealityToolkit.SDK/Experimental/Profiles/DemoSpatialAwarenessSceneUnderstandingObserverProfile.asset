@@ -35,4 +35,4 @@ MonoBehaviour:
   queryRadius: 5
   requestOcclusionMask: 0
   occlusionMaskResolution: {x: 256, y: 256}
-  orientScene: 1
+  orientScene: 0
