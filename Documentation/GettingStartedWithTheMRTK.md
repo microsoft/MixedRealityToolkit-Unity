@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit, you will need:
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, Unity 2019](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -30,6 +30,7 @@ To get started with the Mixed Reality Toolkit, you will need:
 ### Optional
 
 * [Getting started tutorials](#getting-started-tutorials)
+* [XR SDK getting started guide (Unity 2019.3 or later)](GettingStartedWithMRTKAndXRSDK.md).
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
@@ -196,15 +197,4 @@ There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit
 
 ## Getting started with Unity's XR SDK
 
-If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the "DefaultXRSDKConfigurationProfile" as your active profile. This profile is set up with MRTK's XR SDK systems and providers, where needed.
-Then, follow these steps to set up support in Unity:
-
-1. Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following are all installed:
-   1. XR Management
-   1. Windows XR Plugin
-   1. XR Legacy Input Helpers
-1. Go to Edit > Project Settings.
-1. Click on the XR Plugin Management tab in the Project Settings window.
-1. Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.
-1. Ensure that Initialize on Startup is checked.
-1. (**_Optional_**) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.
+Complete instructions and information can be found in our [XR SDK getting started guide](GettingStartedWithMRTKAndXRSDK.md).

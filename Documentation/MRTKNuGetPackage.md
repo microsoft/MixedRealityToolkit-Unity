@@ -3,7 +3,7 @@
 Mixed Reality Toolkit (MRTK) is now available as a NuGet package on NuGet.org. There are some differences when it comes to consuming NuGet version of MRTK as opposed to a .unitypackage, read [NuGet Package Considerations](#nuget-package-considerations) below. If any issues are encountered, file an issue using this [template](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/new?assignees=&labels=Bug,Package%20Management%20-%20NuGet&template=bug-report.md&title=).
 
 > [!NOTE]
-> Migration of existing projects to consume MRTK as a NuGet package is not yet supported, use MRTK via NuGet only for new projects.
+> Migration of existing projects to consume MRTK as a NuGet package is not yet supported. Use MRTK via NuGet only for new projects.
 
 ## Installing the NuGet package
 
