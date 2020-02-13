@@ -174,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static Material fontRenderMat;
 
         private const string noIconFontMessage = "No icon font selected. Icon fonts will be unavailable.";
-        private const string downloadIconFontMessage = "You can download the Hololens icon font by clicking the button below.";
-        private const string hololensIconFontUrl = "https://aka.ms/hololensiconfont";
-        private const string mdl2IconFontName = "HoloSymMDL2";
+        private const string downloadIconFontMessage = "For instructions on how to install the HoloLens icon font, click the button below.";
+        private const string hololensIconFontUrl = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html";
+        private const string mdl2IconFontName = "holomdl2";
         private const string textMeshProMenuItem = "Window/TextMeshPro/Font Asset Creator";
 
         public void EditorResetCharIconLookups()
@@ -496,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         if (!CheckIfHololensIconFontExists())
                         {
                             EditorGUILayout.HelpBox(downloadIconFontMessage, MessageType.Info);
-                            if (GUILayout.Button("Download Icon Font"))
+                            if (GUILayout.Button("View Button Documentation"))
                             {
                                 EditorApplication.ExecuteMenuItem(textMeshProMenuItem);
                                 Application.OpenURL(hololensIconFontUrl);
