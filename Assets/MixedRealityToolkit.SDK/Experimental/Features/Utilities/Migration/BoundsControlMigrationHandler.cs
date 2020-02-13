@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return FlattenModeType.DoNotFlatten;
         }
 
-        WireframeType MigrateWireframeShape(BoundingBox.WireframeType wireframeType)
+        private WireframeType MigrateWireframeShape(BoundingBox.WireframeType wireframeType)
         {
             switch (wireframeType)
             {
