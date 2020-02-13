@@ -78,14 +78,26 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Update();
 
+            // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+            // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+            // of data providers may change mid-Update, causing an InvalidOperationException to be thrown during enumeration.
+            // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+            // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             try
             {
                 foreach (IMixedRealityDataProvider provider in dataProviders)
                 {
-                    provider.Update();
+                    try
+                    {
+                        provider.Update();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"{provider.Name}'s Update method threw {e.GetType()}");
+                    }
                 }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the profile.
+            catch (InvalidOperationException)
             { }
         }
 
@@ -94,14 +106,26 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.LateUpdate();
 
+            // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+            // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+            // of data providers may change mid-LateUpdate, causing an InvalidOperationException to be thrown during enumeration.
+            // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+            // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             try
             {
                 foreach (IMixedRealityDataProvider provider in dataProviders)
                 {
-                    provider.LateUpdate();
+                    try
+                    {
+                        provider.LateUpdate();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"{provider.Name}'s LateUpdate method threw {e.GetType()}");
+                    }
                 }
             }
-            catch (InvalidOperationException) // The collection has changed, most likely due to the application changing the profile.
+            catch (InvalidOperationException)
             { }
         }
 
