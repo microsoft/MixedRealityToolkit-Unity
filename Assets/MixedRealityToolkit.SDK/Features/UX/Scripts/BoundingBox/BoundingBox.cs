@@ -1759,8 +1759,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                Bounds bounds = GetTargetBounds();
                 TargetBounds = Target.AddComponent<BoxCollider>();
+                Bounds bounds = GetTargetBounds();
 
                 TargetBounds.center = bounds.center;
                 TargetBounds.size = bounds.size;
