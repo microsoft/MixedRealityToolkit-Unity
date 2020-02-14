@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (simulationService == null)
                 {
-                    simulationService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    simulationService = CoreServices.GetInputSystemDataProvider<IInputSimulationService>();
                 }
 
                 return simulationService;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (recordingService == null)
                 {
-                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
+                    recordingService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputRecordingService>();
                 }
 
                 return recordingService;
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (playbackService == null)
                 {
-                    playbackService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
+                    playbackService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputPlaybackService>();
                 }
 
                 return playbackService;
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RecordingService.UseBufferTimeLimit = newUseTimeLimit;
                 }
 
-                using (new GUIEnabledWrapper(RecordingService.UseBufferTimeLimit))
+                using (new EditorGUI.DisabledGroupScope(!RecordingService.UseBufferTimeLimit))
                 {
                     float newTimeLimit = EditorGUILayout.FloatField(RecordingService.RecordingBufferTimeLimit);
                     if (newTimeLimit != RecordingService.RecordingBufferTimeLimit)
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            using (new GUIEnabledWrapper(PlaybackService != null))
+            using (new EditorGUI.DisabledGroupScope(PlaybackService == null))
             {
                 bool wasPlaying = PlaybackService.IsPlaying;
 

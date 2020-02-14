@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     internal interface ITestSpatialAwarenessDataProvider : IMixedRealityDataProvider, ITestService, IMixedRealitySpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
@@ -25,11 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     public class TestSpatialAwarenessDataProvider : TestBaseDataProvider, ITestSpatialAwarenessDataProvider
     {
         public TestSpatialAwarenessDataProvider(
-            IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, spatialAwarenessSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(spatialAwarenessSystem, name, priority, profile) { }
 
         public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public int DefaultPhysicsLayer => throw new System.NotImplementedException();

@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     // Simple example script that subscribes to primary pointer changes and applies a cursor highlight to the current one.
+    [AddComponentMenu("Scripts/MRTK/Examples/PrimaryPointerHandlerExample")]
     public class PrimaryPointerHandlerExample : MonoBehaviour
     {
         public GameObject CursorHighlight;

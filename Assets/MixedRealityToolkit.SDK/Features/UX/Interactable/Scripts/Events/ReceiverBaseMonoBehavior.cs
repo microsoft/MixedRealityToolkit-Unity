@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// 
     /// InteractableReceiver or InteractableReceiverList can be used with ReceiverBase - built-in receivers
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/ReceiverBaseMonoBehavior")]
     public class ReceiverBaseMonoBehavior : MonoBehaviour, IInteractableHandler
     {
         /// <summary>

@@ -33,8 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Side ClippingSide
         {
-            get { return clippingSide; }
-            set { clippingSide = value; }
+            get => clippingSide;
+            set => clippingSide = value;
         }
 
         [SerializeField]
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </remarks>
         public bool UseOnPreRender
         {
-            get { return useOnPreRender; }
+            get => useOnPreRender;
             set
             {
                 if (cameraMethods == null)
@@ -123,7 +123,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (renderers != null)
             {
-                while (renderers.Count != 0)
+                // Remove from end of list to avoid re-allocation of array
+                for (int i = renderers.Count - 1; i >= 0; i--)
                 {
                     RemoveRenderer(renderers[0]);
                 }
@@ -193,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void OnCameraPreRender(CameraEventRouter router)
         {
+            // Only subscribed to via UseOnPreRender property setter
             UpdateRenderers();
         }
 

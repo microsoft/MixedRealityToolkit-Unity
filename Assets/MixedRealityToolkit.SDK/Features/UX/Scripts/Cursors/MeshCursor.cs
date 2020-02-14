@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Object that represents a cursor in 3D space controlled by gaze.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/MeshCursor")]
     public class MeshCursor : BaseCursor
     {
         [Serializable]

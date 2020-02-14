@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// Component which can be used to render an outline around a hierarchy of mesh renderers using
     /// the <see cref="Microsoft.MixedReality.Toolkit.Utilities.MeshOutline"/> component.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Core/MeshOutlineHierarchy")]
     public class MeshOutlineHierarchy : BaseMeshOutline
     {
         private MeshOutline[] meshOutlines = null;

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Utility class to make input recording service accessible through game objects.
     /// Hook up buttons to the public functions to start and stop recording input.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/InputRecordingControls")]
     public class InputRecordingControls : MonoBehaviour
     {
         private InputRecordingService recordingService = null;
@@ -21,8 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (recordingService == null)
                 {
-                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
+                    recordingService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputRecordingService>() as InputRecordingService;
                 }
+
                 return recordingService;
             }
         }

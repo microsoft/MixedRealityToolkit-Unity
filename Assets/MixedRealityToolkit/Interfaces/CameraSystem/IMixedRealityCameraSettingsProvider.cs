@@ -14,9 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         bool IsOpaque { get; }
 
         /// <summary>
-        /// Applies the display settings (background color, clipping plane distances, etc) based on the
-        /// appropriate <see cref="DisplayType"/>.
+        /// Applies provider specific configuration settings.
         /// </summary>
-        void ApplyDisplaySettings();
+        void ApplyConfiguration();
     }
 }

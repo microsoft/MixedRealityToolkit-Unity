@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     [System.Serializable]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
+    [AddComponentMenu("Scripts/MRTK/SDK/Interactable")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
@@ -44,14 +45,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [FormerlySerializedAs("States")]
         [SerializeField]
+        [Tooltip("ScriptableObject to reference for basic state logic to follow when interacting and transitioning between states. Should generally be \"DefaultInteractableStates\" object")]
         private States states;
 
         /// <summary>
-        /// A collection of states and basic state logic
+        /// ScriptableObject to reference for basic state logic to follow when interacting and transitioning between states. Should generally be "DefaultInteractableStates" object
         /// </summary>
         public States States
         {
-            get { return states; }
+            get => states;
             set
             {
                 states = value;
@@ -60,12 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// The state logic for comparing state
+        /// The state logic class for storing and comparing states which determines the current value.
         /// </summary>
         public InteractableStates StateManager { get; protected set; }
 
         /// <summary>
-        /// Which action is this interactable listening for
+        /// The Interactable will only respond to input down events fired with the corresponding assigned Input Action.
+        /// Available input actions are populated via the Input Actions Profile under the MRTK Input System Profile assigned in the current scene
         /// </summary>
         public MixedRealityInputAction InputAction { get; set; }
 
@@ -74,17 +77,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         [HideInInspector]
         [SerializeField]
-        private int InputActionId = -1;
+        [Tooltip("The Interactable will only respond to input down events fired with the corresponding assigned Input Action." +
+        "Available input actions are populated via the Input Actions Profile under the MRTK Input System Profile assigned in the current scene.")]
+        private int InputActionId = 0;
 
         [FormerlySerializedAs("IsGlobal")]
         [SerializeField]
+        [Tooltip("If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks." +
+        "If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.")]
         protected bool isGlobal = false;
         /// <summary>
-        /// Is the interactable listening to global events (input only)
+        /// If true, this Interactable will listen globally for any IMixedRealityInputHandler input events. These include general input up/down and clicks.
+        /// If false, this Interactable will only respond to general input click events if the pointer target is this GameObject's, or one of it's children's, collider.
         /// </summary>
         public bool IsGlobal
         {
-            get { return isGlobal; }
+            get => isGlobal;
             set
             {
                 if (isGlobal != value)
@@ -115,9 +123,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int NumOfDimensions
         {
-            get { return Dimensions; }
+            get
+            {
+                EnsureInitialized();
+                return Dimensions;
+            }
             set
             {
+                EnsureInitialized();
+
                 if (Dimensions != value)
                 {
                     // Value cannot be negative or zero
@@ -150,9 +164,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int CurrentDimension
         {
-            get { return dimensionIndex; }
+            get
+            {
+                EnsureInitialized();
+                return dimensionIndex;
+            }
             set
             {
+                EnsureInitialized();
+
                 if (dimensionIndex != value)
                 {
                     // If valid value and not our current value, then update
@@ -188,13 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// SelectionModes.Toggle => Dimensions == 2
         /// SelectionModes.MultiDimension => Dimensions > 2
         /// </remarks>
-        public SelectionModes ButtonMode
-        {
-            get
-            {
-                return ConvertToSelectionMode(NumOfDimensions);
-            }
-        }
+        public SelectionModes ButtonMode => ConvertToSelectionMode(NumOfDimensions);
 
         /// <summary>
         /// The Dimension value to set on start
@@ -216,12 +230,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool CanDeselect = true;
 
         /// <summary>
-        /// A voice command to fire a click event
+        /// This string keyword is the voice command that will fire a click on this Interactable.
         /// </summary>
+        [Tooltip("This string keyword is the voice command that will fire a click on this Interactable.")]
         public string VoiceCommand = "";
 
         [FormerlySerializedAs("RequiresFocus")]
         [SerializeField]
+        [Tooltip("If true, then the voice command will only respond to voice commands while this Interactable has focus.")]
         public bool voiceRequiresFocus = true;
         /// <summary>
         /// Does the voice command require this to have focus?
@@ -229,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool VoiceRequiresFocus
         {
-            get { return voiceRequiresFocus; }
+            get => voiceRequiresFocus;
             set
             {
                 if (voiceRequiresFocus != value)
@@ -255,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public List<InteractableProfileItem> Profiles
         {
-            get { return profiles; }
+            get => profiles;
             set
             {
                 profiles = value;
@@ -275,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public List<InteractableEvent> InteractableEvents
         {
-            get { return Events; }
+            get => Events;
             set
             {
                 Events = value;
@@ -312,6 +328,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Field just used for serialization to save if the Interactable should start enabled or disabled
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
+        [Tooltip("Defines whether the Interactable is enabled or not internally." +
+        "This is different than the enabled property at the GameObject/Component level." +
+        "When false, Interactable will continue to run in Unity but not respond to Input." +
+        "\n\nProperty is useful for disabling UX, such as greying out a button, until a user completes some pre-mandatory step such as fill out their name, etc")]
         private bool enabledOnStart = true;
 
         /// <summary>
@@ -325,9 +345,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public virtual bool IsEnabled
         {
             // Note the inverse setting since targeting "Disable" state but property is concerning "Enabled"
-            get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
+            get
+            {
+                return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0);
+            }
             set
             {
+                EnsureInitialized();
+
                 if (IsEnabled != value)
                 {
                     // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
@@ -346,9 +371,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasFocus
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0; }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0;
             set
             {
+                EnsureInitialized();
+
                 if (HasFocus != value)
                 {
                     if (!value && HasPress)
@@ -370,8 +397,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasPress
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Pressed) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Pressed, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Pressed) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Pressed, value);
         }
 
         /// <summary>
@@ -380,8 +407,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsTargeted
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Targeted) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Targeted, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Targeted) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Targeted, value);
         }
 
         /// <summary>
@@ -390,8 +417,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsInteractive
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Interactive) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Interactive, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Interactive) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Interactive, value);
         }
 
         /// <summary>
@@ -400,8 +427,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasObservationTargeted
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, value);
         }
 
         /// <summary>
@@ -410,8 +437,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasObservation
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Observation) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Observation, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Observation) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Observation, value);
         }
 
         /// <summary>
@@ -419,8 +446,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool IsVisited
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Visited) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Visited, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Visited) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Visited, value);
         }
 
         /// <summary>
@@ -431,12 +458,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </remarks>
         public virtual bool IsToggled
         {
-            get
-            {
-                return GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
-            }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
             set
             {
+                EnsureInitialized();
+
                 if (IsToggled != value)
                 {
                     // We can only change Toggle state if we are in Toggle mode
@@ -459,28 +485,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasGesture
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Gesture) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Gesture, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Gesture) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Gesture, value);
         }
 
         /// <summary>
         /// State that corresponds to Gesture reaching max threshold or limits
-        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasGestureMax
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.GestureMax) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.GestureMax, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.GestureMax) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.GestureMax, value);
         }
 
         /// <summary>
         /// State that corresponds to Interactable is touching another object 
-        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasCollision
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Collision) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Collision, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Collision) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Collision, value);
         }
 
         /// <summary>
@@ -488,8 +512,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasVoiceCommand
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.VoiceCommand, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.VoiceCommand, value);
         }
 
         /// <summary>
@@ -497,8 +521,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasPhysicalTouch
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, value);
         }
 
         /// <summary>
@@ -507,8 +531,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasCustom
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Custom) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Custom, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Custom) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Custom, value);
         }
 
         /// <summary>
@@ -516,8 +540,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool HasGrab
         {
-            get { return GetStateValue(InteractableStates.InteractableStateEnum.Grab) > 0; }
-            set { SetState(InteractableStates.InteractableStateEnum.Grab, value); }
+            get => GetStateValue(InteractableStates.InteractableStateEnum.Grab) > 0;
+            set => SetState(InteractableStates.InteractableStateEnum.Grab, value);
         }
 
         #endregion
@@ -539,7 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        
+
         /// <summary>
         /// Amount of time to "simulate" press states for interactions that do not utilize input up/down such as voice command
         /// This allows for visual feedbacks and other typical UX responsiveness and behavior to occur
@@ -567,22 +591,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
+        // Track that the GameObject has been activated (i.e Awake() or Initialize() has been called)
+        private bool isInitialized = false;
+
         #region MonoBehaviour Implementation
 
         protected virtual void Awake()
         {
-            if (States == null)
-            {
-                States = GetDefaultInteractableStates();
-            }
-
-            IsEnabled = enabledOnStart;
-
-            InputAction = ResolveInputAction(InputActionId);
-
-            CurrentDimension = startDimensionIndex;
-
-            RefreshSetup();
+            EnsureInitialized();
         }
 
         protected virtual void OnEnable()
@@ -640,6 +656,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (rollOffTimer >= rollOffTime)
                 {
                     HasPress = false;
+                    HasGesture = false;
                 }
             }
 
@@ -683,10 +700,49 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Interactable Initiation
 
         /// <summary>
+        /// Ensure this Interactable component has initialized. Must be called on Unity main thread. 
+        /// Returns true if has already been initialized, false otherwise. If has not been initialized, then will call Initialize()
+        /// </summary>
+        private bool EnsureInitialized()
+        {
+            if (!isInitialized)
+            {
+                isInitialized = true;
+
+                Initialize();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        protected virtual void Initialize()
+        {
+            if (States == null)
+            {
+                States = GetDefaultInteractableStates();
+            }
+
+            InputAction = ResolveInputAction(InputActionId);
+
+            CurrentDimension = startDimensionIndex;
+
+            RefreshSetup();
+
+            IsEnabled = enabledOnStart;
+        }
+
+        /// <summary>
         /// Force re-initialization of Interactable from events, themes and state references
         /// </summary>
+        /// <remarks>
+        /// This recreates the state machine inside Interactable and thus wipes any pre-existing state values held
+        /// </remarks>
         public void RefreshSetup()
         {
+            EnsureInitialized();
+
             SetupEvents();
             SetupThemes();
             SetupStates();
@@ -712,8 +768,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                InteractableEvents[i].Receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
-                InteractableEvents[i].Receiver.Host = this;
+                var receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
+                if (receiver != null)
+                {
+                    InteractableEvents[i].Receiver = receiver;
+                    InteractableEvents[i].Receiver.Host = this;
+                }
+                else
+                {
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
+                }
             }
         }
 
@@ -779,6 +843,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int GetStateValue(InteractableStates.InteractableStateEnum state)
         {
+            EnsureInitialized();
+
             if (StateManager != null)
             {
                 return StateManager.GetStateValue((int)state);
@@ -792,6 +858,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void SetState(InteractableStates.InteractableStateEnum state, bool value)
         {
+            EnsureInitialized();
+
             if (StateManager != null)
             {
                 StateManager.SetStateValue(state, value ? 1 : 0);
@@ -813,6 +881,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetInputTrackingStates()
         {
+            EnsureInitialized();
+
             HasFocus = false;
             HasPress = false;
             HasPhysicalTouch = false;
@@ -835,6 +905,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ResetAllStates()
         {
+            EnsureInitialized();
+
             focusingPointers.Clear();
             pressingInputSources.Clear();
 
@@ -964,6 +1036,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return (T)InteractableEvents[i].Receiver;
                 }
             }
+
             return null;
         }
 
@@ -1054,8 +1127,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
             MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
-            index = Mathf.Clamp(index, 0, actions.Length - 1);
-            return actions[index];
+            if (actions?.Length > 0)
+            {
+                index = Mathf.Clamp(index, 0, actions.Length - 1);
+                return actions[index];
+            }
+
+            return default;
         }
 
         /// <summary>
@@ -1063,38 +1141,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual bool ShouldListenToUpDownEvent(InputEventData data)
         {
-            if (!(HasFocus || IsGlobal))
+            if ((HasFocus || IsGlobal) && data.MixedRealityInputAction == InputAction)
             {
-                return false;
-            }
-
-            if (data.MixedRealityInputAction != InputAction)
-            {
-                return false;
-            }
-
-            // Special case: Make sure that we are not being focused only by a PokePointer, since PokePointer
-            // dispatches touch events and should not be dispatching button presses like select, grip, menu, etc.
-            int focusingPointerCount = 0;
-            int focusingPokePointerCount = 0;
-            for (int i = 0; i < focusingPointers.Count; i++)
-            {
-                if (focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
+                // Special case: Make sure that we are not being focused only by a PokePointer, since PokePointer
+                // dispatches touch events and should not be dispatching button presses like select, grip, menu, etc.
+                int focusingPointerCount = 0;
+                int focusingPokePointerCount = 0;
+                for (int i = 0; i < focusingPointers.Count; i++)
                 {
-                    focusingPointerCount++;
-                    if (focusingPointers[i] is PokePointer)
+                    if (focusingPointers[i].InputSourceParent.SourceId == data.SourceId)
                     {
-                        focusingPokePointerCount++;
+                        focusingPointerCount++;
+                        if (focusingPointers[i] is PokePointer)
+                        {
+                            focusingPokePointerCount++;
+                        }
                     }
                 }
+
+                bool onlyFocusedByPokePointer = focusingPointerCount > 0 && focusingPointerCount == focusingPokePointerCount;
+                return !onlyFocusedByPokePointer;
             }
 
-            if (focusingPointerCount > 0 && focusingPointerCount == focusingPokePointerCount)
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -1132,6 +1201,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void TriggerOnClick()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             IncreaseDimension();
 
             SendOnClick(null);
@@ -1274,27 +1348,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool ShouldListenToMoveEvent<T>(InputEventData<T> eventData)
         {
-            if (!(HasFocus || IsGlobal))
+            if ((HasFocus || IsGlobal) && HasPress)
             {
-                return false;
-            }
-
-            if (!HasPress)
-            {
-                return false;
-            }
-
-            // Ensure that this move event is from a pointer that is pressing the interactable
-            int matchingPointerCount = 0;
-            foreach (var pressingInputSource in pressingInputSources)
-            {
-                if (pressingInputSource == eventData.InputSource)
+                // Ensure that this move event is from a pointer that is pressing the interactable
+                int matchingPointerCount = 0;
+                foreach (var pressingInputSource in pressingInputSources)
                 {
-                    matchingPointerCount++;
+                    if (pressingInputSource == eventData.InputSource)
+                    {
+                        matchingPointerCount++;
+                    }
                 }
+
+                return matchingPointerCount > 0;
             }
 
-            return matchingPointerCount > 0;
+            return false;
         }
 
         /// <summary>
@@ -1332,7 +1401,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (!CanInteract())
+            if (!IsEnabled)
             {
                 return;
             }
@@ -1365,20 +1434,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc/>
         public void OnFocusEnter(FocusEventData eventData)
         {
-            if (CanInteract())
+            if (!IsEnabled)
             {
-                Debug.Assert(focusingPointers.Count > 0,
-                    "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
-                    "that is handling IMixedRealityFocusChangedHandler");
-
-                HasFocus = true;
+                return;
             }
+
+            Debug.Assert(focusingPointers.Count > 0,
+                "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
+                "that is handling IMixedRealityFocusChangedHandler");
+
+            HasFocus = true;
         }
 
         /// <inheritdoc/>
         public void OnFocusExit(FocusEventData eventData)
         {
-            if (!CanInteract() && !HasFocus)
+            if (!IsEnabled || !HasFocus)
             {
                 return;
             }
@@ -1402,7 +1473,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus) && IsEnabled)
+            if (!IsEnabled)
+            {
+                return;
+            }
+
+            if (eventData.Command.Keyword == VoiceCommand && (!VoiceRequiresFocus || HasFocus))
             {
                 StartGlobalVisual(true);
                 HasVoiceCommand = true;
@@ -1440,6 +1516,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             HasPress = true;
             HasPhysicalTouch = true;
             eventData.Use();
@@ -1447,6 +1528,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             HasPress = false;
             HasPhysicalTouch = false;
             eventData.Use();

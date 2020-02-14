@@ -173,6 +173,114 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
         }
 
+        /// <summary>
+        /// Tests that pinch slider visuals can be null
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestNullVisuals()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            // Remove references to visuals
+            slider.TrackVisuals = null;
+            slider.TickMarks = null;
+            slider.ThumbVisuals = null;
+
+            // Test that the slider still works
+            Debug.Assert(slider.SliderValue == 0.5, "Slider should have value 0.5 at start");
+            yield return DirectPinchAndMoveSlider(slider, 1.0f);
+            Debug.Assert(slider.SliderValue == 1.0, "Slider should have value 1.0 after being manipulated at start");
+
+            // clean up
+            GameObject.Destroy(pinchSliderObject);
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that pinch slider visuals have the correct orientation after slider axis change
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestVisualsOrientation()
+        {
+            GameObject pinchSliderObject;
+            PinchSlider slider;
+
+            // This should not throw exception
+            InstantiateDefaultSliderPrefab(Vector3.forward, Vector3.zero, out pinchSliderObject, out slider);
+
+            var tickMarks = slider.TickMarks;
+            var trackVisuals = slider.TrackVisuals;
+            var thumbVisuals = slider.ThumbVisuals;
+
+            slider.CurrentSliderAxis = SliderAxis.XAxis;
+
+            yield return null;
+
+            if (trackVisuals)
+            {
+                Debug.Assert(trackVisuals.transform.localRotation == Quaternion.identity, "TrackVisuals should have local rotation equal to Quaternion.identity");
+            }
+
+            if (tickMarks)
+            {
+                Debug.Assert(tickMarks.transform.localRotation == Quaternion.identity, "TickMarks should have local rotation equal to Quaternion.identity");
+                Debug.Assert(tickMarks.GetComponent<GridObjectCollection>().Layout == LayoutOrder.Horizontal, "TickMarks GridObjectCollection Layout should be Horizontal");
+            }
+
+            if (thumbVisuals)
+            {
+                Debug.Assert(thumbVisuals.transform.localRotation == Quaternion.identity, "ThumbVisuals should have local rotation equal to Quaternion.identity");
+            }
+
+            slider.CurrentSliderAxis = SliderAxis.YAxis;
+
+            yield return null;
+
+            if (trackVisuals)
+            {
+                Debug.Assert(trackVisuals.transform.localRotation == Quaternion.Euler(0.0f, 0.0f, 90.0f), "TrackVisuals should have local rotation equal to Quaternion.Euler(0.0f, 0.0f, 90.0f)");
+            }
+
+            if (tickMarks)
+            {
+                Debug.Assert(tickMarks.transform.localRotation == Quaternion.identity, "TickMarks should have local rotation equal to Quaternion.identity");
+                Debug.Assert(tickMarks.GetComponent<GridObjectCollection>().Layout == LayoutOrder.Vertical, "TickMarks GridObjectCollection Layout should be Vertical");
+            }
+
+            if (thumbVisuals)
+            {
+                Debug.Assert(thumbVisuals.transform.localRotation == Quaternion.Euler(0.0f, 0.0f, 90.0f), "ThumbVisuals should have local rotation equal to Quaternion.Euler(0.0f, 0.0f, 90.0f)");
+            }
+
+            slider.CurrentSliderAxis = SliderAxis.ZAxis;
+
+            yield return null;
+
+            if (trackVisuals)
+            {
+                Debug.Assert(trackVisuals.transform.localRotation == Quaternion.Euler(0.0f, 90.0f, 0.0f), "TrackVisuals should have local rotation equal to Quaternion.Euler(0.0f, 90.0f, 0.0f)");
+            }
+
+            if (tickMarks)
+            {
+                Debug.Assert(tickMarks.transform.localRotation == Quaternion.Euler(0.0f, 90.0f, 0.0f), "TickMarks should have local rotation equal to Quaternion.Euler(0.0f, 90.0f, 0.0f)");
+                Debug.Assert(tickMarks.GetComponent<GridObjectCollection>().Layout == LayoutOrder.Horizontal, "TickMarks GridObjectCollection Layout should be Horizontal");
+            }
+
+            if (thumbVisuals)
+            {
+                Debug.Assert(thumbVisuals.transform.localRotation == Quaternion.Euler(0.0f, 90.0f, 0.0f), "ThumbVisuals should have local rotation equal to Quaternion.Euler(0.0f, 90.0f, 0.0f)");
+            }
+
+            // clean up
+            GameObject.Destroy(pinchSliderObject);
+            yield return null;
+        }
+
         #endregion Tests
 
         #region Private methods

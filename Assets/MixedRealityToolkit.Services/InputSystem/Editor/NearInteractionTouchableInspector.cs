@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     [CustomEditor(typeof(BaseNearInteractionTouchable), true)]
-    public class NearInteractionTouchableInspectorBase : Editor
+    public class NearInteractionTouchableInspectorBase : UnityEditor.Editor
     {
         private readonly Color handleColor = Color.white;
         private readonly Color fillColor = new Color(0, 0, 0, 0);

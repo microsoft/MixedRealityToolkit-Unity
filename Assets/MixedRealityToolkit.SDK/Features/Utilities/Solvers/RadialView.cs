@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// RadialViewPoser solver locks a tag-along type object within a view cone
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/RadialView")]
     public class RadialView : Solver
     {
         [SerializeField]
@@ -22,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public RadialViewReferenceDirection ReferenceDirection
         {
-            get { return referenceDirection; }
-            set { referenceDirection = value; }
+            get => referenceDirection;
+            set => referenceDirection = value;
         }
 
         [SerializeField]
@@ -35,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MinDistance
         {
-            get { return minDistance; }
-            set { minDistance = value; }
+            get => minDistance;
+            set => minDistance = value;
         }
 
         [SerializeField]
@@ -48,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MaxDistance
         {
-            get { return maxDistance; }
-            set { maxDistance = value; }
+            get => maxDistance;
+            set => maxDistance = value;
         }
 
         [SerializeField]
@@ -61,8 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MinViewDegrees
         {
-            get { return minViewDegrees; }
-            set { minViewDegrees = value; }
+            get => minViewDegrees;
+            set => minViewDegrees = value;
         }
 
         [SerializeField]
@@ -74,8 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float MaxViewDegrees
         {
-            get { return maxViewDegrees; }
-            set { maxViewDegrees = value; }
+            get => maxViewDegrees;
+            set => maxViewDegrees = value;
         }
 
         [SerializeField]
@@ -87,8 +88,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float AspectV
         {
-            get { return aspectV; }
-            set { aspectV = value; }
+            get => aspectV;
+            set => aspectV = value;
         }
 
         [SerializeField]
@@ -100,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool IgnoreAngleClamp
         {
-            get { return ignoreAngleClamp; }
-            set { ignoreAngleClamp = value; }
+            get => ignoreAngleClamp;
+            set => ignoreAngleClamp = value;
         }
 
         [SerializeField]
@@ -113,8 +114,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool IgnoreDistanceClamp
         {
-            get { return ignoreDistanceClamp; }
-            set { ignoreDistanceClamp = value; }
+            get => ignoreDistanceClamp;
+            set => ignoreDistanceClamp = value;
         }
 
         [SerializeField]
@@ -126,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool UseFixedVerticalPosition
         {
-            get { return useFixedVerticalPosition; }
-            set { useFixedVerticalPosition = value; }
+            get => useFixedVerticalPosition;
+            set => useFixedVerticalPosition = value;
         }
 
         [SerializeField]
@@ -139,8 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float FixedVerticalPosition
         {
-            get { return fixedVerticalPosition; }
-            set { fixedVerticalPosition = value; }
+            get => fixedVerticalPosition;
+            set => fixedVerticalPosition = value;
         }
 
         [SerializeField]
@@ -152,8 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public bool OrientToReferenceDirection
         {
-            get { return orientToReferenceDirection; }
-            set { orientToReferenceDirection = value; }
+            get => orientToReferenceDirection;
+            set => orientToReferenceDirection = value;
         }
 
         /// <summary>

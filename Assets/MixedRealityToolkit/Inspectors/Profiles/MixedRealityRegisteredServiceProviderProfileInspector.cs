@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
@@ -117,6 +117,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                         }
 
+                        SystemType serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
+
                         if (configFoldouts[i] || RenderAsSubProfile)
                         {
                             using (new EditorGUI.IndentLevelScope())
@@ -146,12 +148,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 changed |= EditorGUI.EndChangeCheck();
 
-                                Type serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
-
                                 changed |= RenderProfile(configurationProfile, null, true, true, serviceType);
                             }
 
                             serializedObject.ApplyModifiedProperties();
+                        }
+
+                        if (IsProfileRequired(serviceType) && 
+                            (configurationProfile.objectReferenceValue == null))
+                        {
+                            EditorGUILayout.HelpBox($"{componentName} requires a Profile", MessageType.Warning);
                         }
                     }
                     EditorGUILayout.Space();

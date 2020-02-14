@@ -31,30 +31,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.LabelField("Observers", EditorStyles.boldLabel);
             int observerIndex = 0;
-            foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviderAccess.GetDataProviders())
+
+            var dataProviders = dataProviderAccess?.GetDataProviders();
+            if (dataProviders != null)
             {
-                GUI.color = observer.IsRunning ? enabledColor : disabledColor;
+                foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviders)
+                {
+                    GUI.color = observer.IsRunning ? enabledColor : disabledColor;
 
-                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        GUI.color = GetObserverColor(observerIndex);
+                        GUILayout.Button(observer.Name);
+                        GUI.color = observer.IsRunning ? enabledColor : disabledColor;
 
-                GUI.color = GetObserverColor(observerIndex);
-                GUILayout.Button(observer.Name);
-                GUI.color = observer.IsRunning ? enabledColor : disabledColor;
+                        EditorGUILayout.Toggle("Running", observer.IsRunning);
+                        EditorGUILayout.LabelField("Source", observer.SourceName);
+                        EditorGUILayout.Toggle("Is Stationary", observer.IsStationaryObserver);
+                        EditorGUILayout.FloatField("Update Interval", observer.UpdateInterval);
 
-                EditorGUILayout.Toggle("Running", observer.IsRunning);
-                EditorGUILayout.LabelField("Source", observer.SourceName);
-                EditorGUILayout.Toggle("Is Stationary", observer.IsStationaryObserver);
-                EditorGUILayout.FloatField("Update Interval", observer.UpdateInterval);
-
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Volume Properties", EditorStyles.boldLabel);
-                EditorGUILayout.EnumPopup("Volume Type", observer.ObserverVolumeType);
-                EditorGUILayout.Vector3Field("Origin", observer.ObserverOrigin);
-                EditorGUILayout.Vector3Field("Rotation", observer.ObserverRotation.eulerAngles);
-                EditorGUILayout.Vector3Field("Extents", observer.ObservationExtents);
-
-                EditorGUILayout.EndVertical();
-                observerIndex++;
+                        EditorGUILayout.Space();
+                        EditorGUILayout.LabelField("Volume Properties", EditorStyles.boldLabel);
+                        EditorGUILayout.EnumPopup("Volume Type", observer.ObserverVolumeType);
+                        EditorGUILayout.Vector3Field("Origin", observer.ObserverOrigin);
+                        EditorGUILayout.Vector3Field("Rotation", observer.ObserverRotation.eulerAngles);
+                        EditorGUILayout.Vector3Field("Extents", observer.ObservationExtents);
+                    }
+                    observerIndex++;
+                }
             }
 
             GUI.color = enabledColor;
@@ -92,40 +96,45 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             IMixedRealitySpatialAwarenessSystem spatial = (IMixedRealitySpatialAwarenessSystem)target;
             IMixedRealityDataProviderAccess dataProviderAccess = (IMixedRealityDataProviderAccess)spatial;
 
-            int observerIndex = 0;
-            foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviderAccess.GetDataProviders())
+            var dataProviders = dataProviderAccess?.GetDataProviders();
+            if (dataProviders != null)
             {
-                Gizmos.color = GetObserverColor(observerIndex);
+                int observerIndex = 0;
 
-                if (ShowObserverBoundary)
+                foreach (IMixedRealitySpatialAwarenessObserver observer in dataProviders)
                 {
-                    switch (observer.ObserverVolumeType)
+                    Gizmos.color = GetObserverColor(observerIndex);
+
+                    if (ShowObserverBoundary)
                     {
-                        case VolumeType.None:
-                            break;
+                        switch (observer.ObserverVolumeType)
+                        {
+                            case VolumeType.None:
+                                break;
 
-                        case VolumeType.AxisAlignedCube:
-                            Gizmos.DrawWireCube(observer.ObserverOrigin, observer.ObservationExtents);
-                            break;
+                            case VolumeType.AxisAlignedCube:
+                                Gizmos.DrawWireCube(observer.ObserverOrigin, observer.ObservationExtents);
+                                break;
 
-                        case VolumeType.Sphere:
-                            Gizmos.DrawWireSphere(observer.ObserverOrigin, observer.ObservationExtents.x);
-                            break;
+                            case VolumeType.Sphere:
+                                Gizmos.DrawWireSphere(observer.ObserverOrigin, observer.ObservationExtents.x);
+                                break;
 
-                        case VolumeType.UserAlignedCube:
-                            Gizmos.DrawWireCube(observer.ObserverOrigin, observer.ObservationExtents);
-                            break;
+                            case VolumeType.UserAlignedCube:
+                                Gizmos.DrawWireCube(observer.ObserverOrigin, observer.ObservationExtents);
+                                break;
+                        }
                     }
+
+                    Gizmos.matrix = Matrix4x4.identity;
+
+                    if (ShowObserverOrigin)
+                    {
+                        Gizmos.DrawSphere(observer.ObserverOrigin, 0.1f);
+                    }
+
+                    observerIndex++;
                 }
-
-                Gizmos.matrix = Matrix4x4.identity;
-
-                if (ShowObserverOrigin)
-                {
-                    Gizmos.DrawSphere(observer.ObserverOrigin, 0.1f);
-                }
-
-                observerIndex++;
             }
         }
 

@@ -1,15 +1,17 @@
 ﻿
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Test script that forcefully stops manipulation on the manipulatedObject when it collides with the collisionTrigger
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ChangeManipulation")]
     public class ChangeManipulation : MonoBehaviour
     {
-        public ManipulationHandler manipulatedObject;
+        public GameObject manipulatedObject;
         public Collider collisionTrigger;
 
         private Collider manipulatedObjCollider;
@@ -31,14 +33,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             if (manipulatedObject != null && collisionTrigger != null && manipulatedObjCollider != null)
             {
-                if (collisionTrigger.bounds.Intersects(manipulatedObjCollider.bounds))
+                if (!collisionTrigger.bounds.Intersects(manipulatedObjCollider.bounds))
                 {
-                    manipulatedObject.ForceEndManipulation();
+                    return;
+                }
+
+                var manipulationHandler = manipulatedObject.GetComponent<ManipulationHandler>();
+                var objectManipulator = manipulatedObject.GetComponent<ObjectManipulator>();
+                if (manipulationHandler != null || objectManipulator != null)
+                {
+                    if (manipulationHandler != null)
+                    {
+                        manipulationHandler.ForceEndManipulation();
+                    }
+                    else
+                    {
+                        objectManipulator.ForceEndManipulation();
+                    }
 
                     // move the object slightly away from the collision point so we can manipulate it again after this
                     Vector3 direction = collisionTrigger.bounds.center - manipulatedObjCollider.bounds.center;
                     manipulatedObject.transform.Translate(direction.normalized * 0.01f);
-
                 }
             }
         }

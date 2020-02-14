@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// <summary>
     /// This class demonstrates clearing spatial observations.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/ClearSpatialObservations")]
     public class ClearSpatialObservations : MonoBehaviour
     {
         /// <summary>

@@ -4,13 +4,13 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityBoundary = UnityEngine.Experimental.XR.Boundary;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Demo class to show different ways of using the boundary system and visualizing the data.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/BoundaryVisualizationDemo")]
     public class BoundaryVisualizationDemo : MonoBehaviour, IMixedRealityBoundaryHandler
     {
         private GameObject markerParent;
@@ -144,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                     Material material = null;
                     // Check inscribed rectangle first
-                    if (CoreServices.BoundarySystem.Contains(position, UnityBoundary.Type.PlayArea))
+                    if (CoreServices.BoundarySystem.Contains(position, BoundaryType.PlayArea))
                     {
                         material = playAreaMaterial;
                     }
                     // Then check geometry
-                    else if (CoreServices.BoundarySystem.Contains(position, UnityBoundary.Type.TrackedArea))
+                    else if (CoreServices.BoundarySystem.Contains(position, BoundaryType.TrackedArea))
                     {
                         material = trackedAreaMaterial;
                     }

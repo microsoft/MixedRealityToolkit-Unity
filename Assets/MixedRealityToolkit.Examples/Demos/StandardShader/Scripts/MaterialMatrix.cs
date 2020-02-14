@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader
     /// <summary>
     /// Builds a matrix of spheres demonstrating a spectrum of two material properties.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/MaterialMatrix")]
     public class MaterialMatrix : MonoBehaviour
     {
         [SerializeField]

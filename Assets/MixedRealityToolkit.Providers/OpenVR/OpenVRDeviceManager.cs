@@ -5,12 +5,13 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
     /// <summary>
-    /// Manages Open VR Devices using unity's input system.
+    /// Manages Open VR devices using Unity's input system.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
@@ -26,12 +27,29 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public OpenVRDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null, 
             uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public OpenVRDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -131,13 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
             if (controller != null)
             {
-                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
-                {
-                    if (pointer != null)
-                    {
-                        pointer.Controller = null;
-                    }
-                }
+                RecyclePointers(controller.InputSource);
 
                 if (controller.Visualizer != null &&
                     controller.Visualizer.GameObjectProxy != null)

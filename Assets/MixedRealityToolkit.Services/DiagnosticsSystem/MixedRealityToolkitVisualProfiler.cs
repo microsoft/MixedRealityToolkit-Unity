@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// property), but can be toggled via the enabled/disable voice commands keywords.
     /// 
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Services/MixedRealityToolkitVisualProfiler")]
     public class MixedRealityToolkitVisualProfiler : MonoBehaviour
     {
         private static readonly int maxStringLength = 32;
@@ -31,11 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private static readonly int frameRange = 30;
         private static readonly Vector2 defaultWindowRotation = new Vector2(10.0f, 20.0f);
         private static readonly Vector3 defaultWindowScale = new Vector3(0.2f, 0.04f, 1.0f);
-        private static readonly Vector3[] backgroundScales = { new Vector3(1.0f, 1.0f, 1.0f), new Vector3(1.0f, 0.5f, 1.0f), new Vector3(1.0f, 0.25f, 1.0f) };
+        private static readonly Vector3[] backgroundScales = { new Vector3(1.05f, 1.2f, 1.2f), new Vector3(1.0f, 0.5f, 1.0f), new Vector3(1.0f, 0.25f, 1.0f) };
         private static readonly Vector3[] backgroundOffsets = { new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.25f, 0.0f), new Vector3(0.0f, 0.375f, 0.0f) };
         private static readonly string usedMemoryString = "Used: ";
         private static readonly string peakMemoryString = "Peak: ";
         private static readonly string limitMemoryString = "Limit: ";
+        private static readonly string voiceCommandString = "Say \"Toggle Profiler\" to show/hide";
+        private static readonly string visualProfilerTitleString = "MRTK Visual Profiler";
 
         public Transform WindowParent { get; set; } = null;
 
@@ -127,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         }
 
         [SerializeField, Tooltip("A list of colors to display for different percentage of target frame rates.")]
-        private FrameRateColor[] frameRateColors = new FrameRateColor[] 
+        private FrameRateColor[] frameRateColors = new FrameRateColor[]
         {
             // Green
             new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
@@ -154,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private TextMesh usedMemoryText;
         private TextMesh peakMemoryText;
         private TextMesh limitMemoryText;
+        private TextMesh voiceCommandText;
+        private TextMesh mrtkText;
         private Transform usedAnchor;
         private Transform peakAnchor;
         private Quaternion windowHorizontalRotation;
@@ -271,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update window transformation.
-            Transform cameraTransform = Camera.main ? Camera.main.transform : null;
+            Transform cameraTransform = CameraCache.Main ? CameraCache.Main.transform : null;
 
             if (isVisible && cameraTransform != null)
             {
@@ -345,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 else
                 {
                     // If a instanced material is not available, fall back to non-instanced rendering.
-                    for (int i  = 0; i < frameInfoMatrices.Length; ++i)
+                    for (int i = 0; i < frameInfoMatrices.Length; ++i)
                     {
                         frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
                         Graphics.DrawMesh(quadMesh, parentLocalToWorldMatrix * frameInfoMatrices[i], defaultMaterial, 0, null, 0, frameInfoPropertyBlock, false, false, false);
@@ -402,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
         {
-            float windowDistance = Mathf.Max(16.0f / Camera.main.fieldOfView, Camera.main.nearClipPlane + 0.25f);
+            float windowDistance = Mathf.Max(16.0f / CameraCache.Main.fieldOfView, CameraCache.Main.nearClipPlane + 0.25f);
             Vector3 position = cameraTransform.position + (cameraTransform.forward * windowDistance);
             Vector3 horizontalOffset = cameraTransform.right * windowOffset.x;
             Vector3 verticalOffset = cameraTransform.up * windowOffset.y;
@@ -542,6 +548,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 usedMemoryText = CreateText("UsedMemoryText", new Vector3(-0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, memoryUsedColor, usedMemoryString);
                 peakMemoryText = CreateText("PeakMemoryText", new Vector3(0.0f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperCenter, textMaterial, memoryPeakColor, peakMemoryString);
                 limitMemoryText = CreateText("LimitMemoryText", new Vector3(0.495f, 0.0f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, limitMemoryString);
+                voiceCommandText = CreateText("VoiceCommandText", new Vector3(-0.525f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperLeft, textMaterial, Color.white, voiceCommandString);
+                mrtkText = CreateText("MRTKText", new Vector3(0.52f, -0.7f, 0.0f), memoryStats, TextAnchor.UpperRight, textMaterial, Color.white, visualProfilerTitleString);
+                voiceCommandText.fontSize = 32;
+                mrtkText.fontSize = 32;
 
                 GameObject limitBar = CreateQuad("LimitBar", memoryStats);
                 InitializeRenderer(limitBar, defaultMaterial, colorID, memoryLimitColor);

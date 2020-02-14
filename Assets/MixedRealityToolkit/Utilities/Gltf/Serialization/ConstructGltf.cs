@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 !string.IsNullOrEmpty(bufferView.Buffer.uri))
             {
                 var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
-                bufferView.Buffer.BufferData = File.ReadAllBytes($"{parentDirectory}\\{bufferView.Buffer.uri}");
+                bufferView.Buffer.BufferData = File.ReadAllBytes(Path.Combine(parentDirectory, bufferView.Buffer.uri));
             }
         }
 
@@ -124,12 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 if (!string.IsNullOrEmpty(gltfObject.Uri) && !string.IsNullOrEmpty(gltfImage.uri))
                 {
                     var parentDirectory = Directory.GetParent(gltfObject.Uri).FullName;
-                    var path = $"{parentDirectory}\\{gltfImage.uri}";
+                    var path = Path.Combine(parentDirectory, gltfImage.uri);
 
 #if UNITY_EDITOR
                     if (gltfObject.UseBackgroundThread) await Update;
-                    var projectPath = path.Replace("\\", "/");
-                    projectPath = projectPath.Replace(Application.dataPath, "Assets");
+                    var projectPath = Path.GetFullPath(path).Replace(Path.GetFullPath(Application.dataPath), "Assets");
                     texture = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(projectPath);
 
                     if (gltfObject.UseBackgroundThread) await BackgroundThread;

@@ -5,9 +5,32 @@ parameters:
   buildUWPDotNet: true
   buildUWPX86: true
   runTests: true
+  # If true, validation scripts will be run on code and docs changes. By default
+  # validation will run on every single line of code and docs. It's possible to
+  # scope this to only changed files within a given pull request by using
+  # the scopedValidation parameter below.
   validateCode: true
+  # If true, validation scripts will only be run on the set of changed files
+  # associated with a given pull request. Note that this is only valid to use
+  # for pull request validation, since this functionality requires a pull request
+  # ID in order to determine the two commits to diff. Only relevant if validateCode
+  # is true.
+  scopedValidation: false
 
 steps:
+# Generate the list of changed files in this pull request.
+- ${{ if and(eq(parameters.validateCode, true), eq(parameters.scopedValidation, true)) }}:
+  - template: tasks/githubchanges.yml
+    parameters:
+      changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+
+# Validate that the code doesn't contain common issues
+- ${{ if eq(parameters.validateCode, true) }}:
+  - template: tasks/validatecode.yml
+    parameters:
+      scopedValidation: ${{ parameters.scopedValidation }}
+      changesFile: '$(Build.ArtifactStagingDirectory)\build\changedfiles.txt'
+
 # Build Standalone x86.
 # This must happen before tests run, because if the build fails and tests attempt
 # to get run, Unity will hang showing a dialog (even when in batch mode).
@@ -22,10 +45,6 @@ steps:
 # notifications earlier in the CI process.
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
-
-# Validate that the code doesn't contain common issues
-- ${{ if eq(parameters.validateCode, true) }}:
-  - template: tasks/validatecode.yml
 
 # Build UWP x86
 - ${{ if eq(parameters.buildUWPX86, true) }}:

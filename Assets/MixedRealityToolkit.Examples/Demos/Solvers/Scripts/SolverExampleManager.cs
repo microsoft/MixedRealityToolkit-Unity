@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/SolverExampleManager")]
     public class SolverExampleManager : MonoBehaviour
     {
         [SerializeField]
@@ -18,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private TrackedObjectType trackedType = TrackedObjectType.Head;
         public TrackedObjectType TrackedType
         {
-            get { return trackedType; }
+            get => trackedType;
             set
             {
                 if (trackedType != value)
@@ -28,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
             }
         }
+
+        private readonly Vector3 HandJointRotationFix = new Vector3(90f, 0f, 0f);
 
         private void Awake()
         {
@@ -95,6 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             if (handler != null)
             {
                 handler.TrackedTargetType = TrackedType;
+
+#if WINDOWS_UWP || UNITY_EDITOR
+                // If using input simulation in editor or on Windows Mixed Reality platform, forward vector points through the fingers, not the palm.
+                // Apply additional rotation to correct this so that forward will be through the palm and outward
+                handler.AdditionalRotation = (TrackedType == TrackedObjectType.HandJoint) ? HandJointRotationFix : Vector3.zero;
+#endif
+
                 handler.TrackedHandness = Handedness.Both;
                 if (CustomTrackedObject != null)
                 {

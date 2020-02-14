@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// A game object with the "EyeTrackingTarget" script attached reacts to being looked at independent of other available inputs.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/EyeTrackingTarget")]
     public class EyeTrackingTarget : InputSystemGlobalHandlerListener, IMixedRealityPointerHandler, IMixedRealitySpeechHandler
     {
         [Tooltip("Select action that are specific to when the target is looked at.")]

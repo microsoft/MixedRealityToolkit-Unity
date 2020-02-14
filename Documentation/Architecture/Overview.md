@@ -29,7 +29,7 @@ mixed reality experiences.
 
 The MRTK is both a collection of tools for getting mixed reality (MR) experiences off
 the ground quickly, and also an application framework with opinions on its own runtime,
-how it should be extended, and how it should be configured. 
+how it should be extended, and how it should be configured.
 
 At a high level, the MRTK can be broken down in the following ways:
 

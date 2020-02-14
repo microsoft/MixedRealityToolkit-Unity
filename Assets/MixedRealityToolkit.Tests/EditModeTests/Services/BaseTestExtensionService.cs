@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     /// <summary>
     /// A base class for test extension services.
@@ -10,10 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     internal abstract class BaseTestExtensionService : BaseExtensionService
     {
         public BaseTestExtensionService(
-            IMixedRealityServiceRegistrar registrar,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(name, priority, profile) { }
 
         public bool IsEnabled { get; private set; }
 

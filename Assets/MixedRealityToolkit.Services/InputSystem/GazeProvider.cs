@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// This class provides Gaze as an Input Source so users can interact with objects using their head.
     /// </summary>
     [DisallowMultipleComponent]
+    [AddComponentMenu("Scripts/MRTK/Services/GazeProvider")]
     public class GazeProvider :
         InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
@@ -197,8 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public override float PointerExtent
             {
-                get { return pointerExtent; }
-                set { pointerExtent = value; }
+                get => pointerExtent;
+                set => pointerExtent = value;
             }
 
             // Is the pointer currently down
@@ -267,6 +268,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <inheritdoc />
             public override Quaternion Rotation => gazeTransform.rotation;
+            
+            /// <inheritdoc />
+            public override void Reset()
+            {
+                Controller = null;
+            }
 
             #endregion IMixedRealityPointer Implementation
 

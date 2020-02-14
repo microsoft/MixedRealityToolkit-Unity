@@ -33,9 +33,32 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="camera">The camera to check the point against</param>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
-            return MathUtilities.IsInFOV(position, camera.transform, 
-                camera.fieldOfView, camera.GetHorizontalFieldOfViewDegrees(),
-                camera.nearClipPlane, camera.farClipPlane);
+            Vector3 screenPoint = camera.WorldToViewportPoint(position);
+
+            return screenPoint.z >= camera.nearClipPlane && screenPoint.z <= camera.farClipPlane
+                && screenPoint.x >= 0 && screenPoint.x <= 1
+                && screenPoint.y >= 0 && screenPoint.y <= 1;
+        }
+
+
+        /// <summary>
+        /// Returns true if a point is in the a cone inscribed into the Camera's frustum, false otherwise
+        /// The cone is inscribed to a radius equal to the vertical height of the camera's FOV.
+        /// By default, the cone's tip is "chopped off" by an amount defined by the camera's
+        /// far and near clip planes.
+        /// </summary>
+        /// <param name="point">Point to test</param>
+        /// <param name="coneAngleBufferDegrees">Degrees to expand the cone radius by.</param>
+        public static bool IsInFOVCone(this Camera camera,
+            Vector3 point,
+            float coneAngleBufferDegrees = 0)
+        {
+            return MathUtilities.IsInFOVCone(camera.transform,
+                point,
+                camera.fieldOfView + coneAngleBufferDegrees,
+                camera.nearClipPlane,
+                camera.farClipPlane
+                );
         }
 
         /// <summary>

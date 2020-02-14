@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [AddComponentMenu("Scripts/MRTK/Examples/DrawOnTexture")]
     public class DrawOnTexture : MonoBehaviour
     {
         public Texture2D HeatmapLookUpTable;

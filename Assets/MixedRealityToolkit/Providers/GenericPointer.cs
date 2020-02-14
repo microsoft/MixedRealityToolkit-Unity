@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
+        protected GenericPointer(string pointerName, IMixedRealityInputSource inputSourceParent)
         {
             PointerId = (CoreServices.InputSystem?.FocusProvider != null) ? CoreServices.InputSystem.FocusProvider.GenerateNewPointerId() : 0;
             PointerName = pointerName;
@@ -130,6 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <inheritdoc />
         public abstract void OnPreCurrentPointerTargetChange();
+
+        /// <inheritdoc />
+        public abstract void Reset();
 
         #region IEquality Implementation
 

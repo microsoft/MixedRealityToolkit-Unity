@@ -6,35 +6,39 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
-
 using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityProjectConfigurator.Configurations;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public class MixedRealityProjectConfiguratorWindow : EditorWindow
     {
-        private Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
+        private readonly Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
         {
-            {MRConfig.ForceTextSerialization, true },
-            {MRConfig.VisibleMetaFiles, true },
-            {MRConfig.VirtualRealitySupported, true },
-            {MRConfig.SinglePassInstancing, true },
-            {MRConfig.SpatialAwarenessLayer, true },
+            { MRConfig.ForceTextSerialization, true },
+            { MRConfig.VisibleMetaFiles, true },
+            { MRConfig.VirtualRealitySupported, true },
+            { MRConfig.SinglePassInstancing, true },
+            { MRConfig.SpatialAwarenessLayer, true },
+            // Issue #7239: Disable MSBuild for Unity on Unity 2019.3 and newer while the cause of the loop is investigated
+#if !UNITY_2019_3_OR_NEWER
+            { MRConfig.EnableMSBuildForUnity, true },
+#endif // !UNITY_2019_3_OR_NEWER
             // UWP Capabilities
-            {MRConfig.MicrophoneCapability, true },
-            {MRConfig.InternetClientCapability, true },
-            {MRConfig.SpatialPerceptionCapability, true },
+            { MRConfig.MicrophoneCapability, true },
+            { MRConfig.InternetClientCapability, true },
+            { MRConfig.SpatialPerceptionCapability, true },
 #if UNITY_2019_3_OR_NEWER
-            {MRConfig.EyeTrackingCapability, true },
-#endif
+            { MRConfig.EyeTrackingCapability, true },
+#endif // UNITY_2019_3_OR_NEWER
+
             // Android Settings
-            {MRConfig.AndroidMultiThreadedRendering, true },
-            {MRConfig.AndroidMinSdkVersion, true },
+            { MRConfig.AndroidMultiThreadedRendering, true },
+            { MRConfig.AndroidMinSdkVersion, true },
 
             // iOS Settings
-            {MRConfig.IOSMinOSVersion, true },
-            {MRConfig.IOSArchitecture, true },
-            {MRConfig.IOSCameraUsageDescription, true },
+            { MRConfig.IOSMinOSVersion, true },
+            { MRConfig.IOSArchitecture, true },
+            { MRConfig.IOSCameraUsageDescription, true },
         };
 
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
@@ -42,10 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const float Default_Window_Width = 400.0f;
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
-        private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this popup notification until next session");
+        private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
-        private bool showConfigurations = false;
+        private bool showConfigurations = true;
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
@@ -53,14 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 499)]
         public static void ShowWindow()
         {
-            // There should be only one configurator window open as a "popup". If already open, then just force focus on our instance
+            // There should be only one configurator window open as a "pop-up". If already open, then just force focus on our instance
             if (IsOpen)
             {
                 Instance.Focus();
             }
             else
             {
-                var window = ScriptableObject.CreateInstance<MixedRealityProjectConfiguratorWindow>();
+                var window = CreateInstance<MixedRealityProjectConfiguratorWindow>();
                 window.titleContent = new GUIContent("MRTK Project Configurator", EditorGUIUtility.IconContent("_Popup").image);
                 window.position = new Rect(Screen.width / 2.0f, Screen.height / 2.0f, Default_Window_Height, Default_Window_Width);
                 window.ShowUtility();
@@ -69,10 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public static MixedRealityProjectConfiguratorWindow Instance { get; private set; }
 
-        public static bool IsOpen
-        {
-            get { return Instance != null; }
-        }
+        public static bool IsOpen => Instance != null;
 
         private void OnEnable()
         {
@@ -83,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void CompilationPipeline_assemblyCompilationStarted(string obj)
         {
-            // There should be only one popup window which is generally tracked by IsOpen
+            // There should be only one pop-up window which is generally tracked by IsOpen
             // However, when recompiling, Unity will call OnDestroy for this window but not actually destroy the editor window
             // This ensure we have a clean close on recompiles when this EditorWindow was open beforehand
             Close();
@@ -93,15 +94,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
-            RenderChoiceDialog();
+            string foldoutHeader;
+
+            if (!MixedRealityProjectConfigurator.IsProjectConfigured())
+            {
+                foldoutHeader = "Modify Configurations";
+                RenderChoiceDialog();
+            }
+            else
+            {
+                foldoutHeader = "Configurations";
+                RenderConfiguredConfirmation();
+            }
 
             EditorGUILayout.Space();
 
-            showConfigurations = EditorGUILayout.Foldout(showConfigurations, "Modify Configurations", true);
+            showConfigurations = EditorGUILayout.Foldout(showConfigurations, foldoutHeader, true);
             if (showConfigurations)
             {
                 RenderConfigurations();
             }
+        }
+
+        private void RenderConfiguredConfirmation()
+        {
+            const string dialogTitle = "Project Configuration Complete";
+            const string dialogContent = "This Unity project is properly configured for the Mixed Reality Toolkit.";
+            EditorGUILayout.LabelField(dialogTitle, EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(dialogContent);
         }
 
         private void RenderChoiceDialog()
@@ -127,63 +147,83 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (GUILayout.Button(IgnoreButtonContent))
                 {
-                    MixedRealityPreferences.IgnoreSettingsPrompt = true;
+                    MixedRealityProjectPreferences.IgnoreSettingsPrompt = true;
                     Close();
                 }
             }
         }
+
+        private Vector2 scrollPosition = Vector2.zero;
 
         private void RenderConfigurations()
         {
             EditorGUILayout.LabelField("Enabled options will be applied to the project. Disabled items are already properly configured.");
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
-            RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
-            RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
-            if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
+            using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition))
             {
-                RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
-            }
-            RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
-            RenderToggle(MRConfig.SpatialAwarenessLayer, "Set Default Spatial Awareness Layer");
-
-            EditorGUILayout.Space();
-
-            if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
-            {
-                EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
-
-                RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
-                RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
-                RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
+                scrollPosition = scrollView.scrollPosition;
+                EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
+                RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
+                RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
+                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
+                {
 #if UNITY_2019_3_OR_NEWER
-                RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
-#endif
-            }
-            else
-            {
-                trackToggles[MRConfig.MicrophoneCapability] = false;
-                trackToggles[MRConfig.InternetClientCapability] = false;
-                trackToggles[MRConfig.SpatialPerceptionCapability] = false;
+                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
+#else
+                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+#endif // UNITY_2019_3_OR_NEWER
+                }
 #if UNITY_2019_3_OR_NEWER
-                trackToggles[MRConfig.EyeTrackingCapability] = false;
-#endif
-            }
+                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
+#else
+                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
+#endif // UNITY_2019_3_OR_NEWER
+                RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+                EditorGUILayout.Space();
 
-            if (MixedRealityOptimizeUtils.IsBuildTargetAndroid())
-            {
-                EditorGUILayout.LabelField("Android Settings", EditorStyles.boldLabel);
-                RenderToggle(MRConfig.AndroidMultiThreadedRendering, "Disable Multi-Threaded Rendering");
-                RenderToggle(MRConfig.AndroidMinSdkVersion, "Set Minimum API Level");
-            }
+                if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
+                {
+#if !UNITY_2019_3_OR_NEWER
+                    EditorGUILayout.LabelField("MSBuild for Unity Support", EditorStyles.boldLabel);
+                    EditorGUILayout.HelpBox("Enable this for additional HoloLens 2 features, like hand joint remoting and depth LSR mode.", MessageType.Info);
+                    RenderToggle(MRConfig.EnableMSBuildForUnity, "Enable MSBuild for Unity");
+                    EditorGUILayout.Space();
+#endif // !UNITY_2019_3_OR_NEWER
 
-            if (MixedRealityOptimizeUtils.IsBuildTargetIOS())
-            {
-                EditorGUILayout.LabelField("iOS Settings", EditorStyles.boldLabel);
-                RenderToggle(MRConfig.IOSMinOSVersion, "Set Required OS Version");
-                RenderToggle(MRConfig.IOSArchitecture, "Set Required Architecture");
-                RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptionfs");
+
+                    EditorGUILayout.LabelField("UWP Capabilities", EditorStyles.boldLabel);
+                    RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
+                    RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
+                    RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
+#if UNITY_2019_3_OR_NEWER
+                    RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
+#endif // UNITY_2019_3_OR_NEWER
+                }
+                else
+                {
+                    trackToggles[MRConfig.MicrophoneCapability] = false;
+                    trackToggles[MRConfig.InternetClientCapability] = false;
+                    trackToggles[MRConfig.SpatialPerceptionCapability] = false;
+#if UNITY_2019_3_OR_NEWER
+                    trackToggles[MRConfig.EyeTrackingCapability] = false;
+#endif // UNITY_2019_3_OR_NEWER
+                }
+
+                if (MixedRealityOptimizeUtils.IsBuildTargetAndroid())
+                {
+                    EditorGUILayout.LabelField("Android Settings", EditorStyles.boldLabel);
+                    RenderToggle(MRConfig.AndroidMultiThreadedRendering, "Disable Multi-Threaded Rendering");
+                    RenderToggle(MRConfig.AndroidMinSdkVersion, "Set Minimum API Level");
+                }
+
+                if (MixedRealityOptimizeUtils.IsBuildTargetIOS())
+                {
+                    EditorGUILayout.LabelField("iOS Settings", EditorStyles.boldLabel);
+                    RenderToggle(MRConfig.IOSMinOSVersion, "Set Required OS Version");
+                    RenderToggle(MRConfig.IOSArchitecture, "Set Required Architecture");
+                    RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptions");
+                }
             }
         }
 

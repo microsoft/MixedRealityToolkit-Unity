@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly string uwpMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
         private static readonly string uwpTargetPlatformVersion = EditorUserBuildSettings.wsaUWPSDK;
 
-        [MenuItem("MSBuild/Generate C# SDK Projects")]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Generate C# SDK Projects")]
         public static void GenerateSDKProjects()
         {
             try
@@ -150,7 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 ProcessReferences(buildTarget, references, out HashSet<string> platformAssemblySearchPaths, out HashSet<string> platformAssemblyReferencePaths, priorToCheck);
 
                 string targetUWPPlatform = uwpTargetPlatformVersion;
-                if (string.IsNullOrWhiteSpace(targetUWPPlatform))
+                // If the version string is not a valid one, default to the highest available SDK version on the machine.
+                if (string.IsNullOrWhiteSpace(targetUWPPlatform) || !Version.TryParse(targetUWPPlatform, out _))
                 {
                     targetUWPPlatform = Utilities.GetUWPSDKs().Max().ToString(4);
                 }

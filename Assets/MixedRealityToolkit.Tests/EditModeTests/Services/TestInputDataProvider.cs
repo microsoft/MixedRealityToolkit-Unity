@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     /// <summary>
     /// Dummy test IMixedRealityInputDeviceManager implementation only used for testing
@@ -16,11 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider
     {
         public TestInputDataProvider(
-            IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         public IMixedRealityController[] GetActiveControllers()
         {

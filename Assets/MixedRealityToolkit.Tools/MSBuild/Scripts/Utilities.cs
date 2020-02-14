@@ -218,9 +218,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             thisAbsolute = Path.GetFullPath(thisAbsolute);
             thatAbsolute = Path.GetFullPath(thatAbsolute);
 
-            if (!thisAbsolute.EndsWith("\\"))
+            if (!thisAbsolute.EndsWith(Path.DirectorySeparatorChar.ToString()))
             {
-                thisAbsolute = thisAbsolute + "\\";
+                thisAbsolute = thisAbsolute + Path.DirectorySeparatorChar;
             }
 
             return GetNormalizedPath(new Uri(thisAbsolute).MakeRelativeUri(new Uri(thatAbsolute)).OriginalString);

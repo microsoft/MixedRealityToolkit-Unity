@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.CameraSystem
+namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     [CustomEditor(typeof(UnityARCameraSettingsProfile))]
     public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
@@ -31,9 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
+            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
-            using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
+            using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 

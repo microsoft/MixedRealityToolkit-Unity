@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 if (handleTip != null)
                 {
-                    tipScaleHander = handleTip.GetComponent<TransformScaleHandler>();
+                    tipScaleConstraint = handleTip.GetComponent<MinMaxScaleConstraint>();
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Private Members
 
-        private TransformScaleHandler tipScaleHander = null;
+        private MinMaxScaleConstraint tipScaleConstraint = null;
         private IMixedRealityPointer manipulatePointer = null;
         private IMixedRealityPointer focusedPointer = null;
         private Vector3 velocity = Vector3.zero;
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (handleTip != null)
             {
-                tipScaleHander = handleTip.GetComponent<TransformScaleHandler>();
+                tipScaleConstraint = handleTip.GetComponent<MinMaxScaleConstraint>();
             }
         }
 
@@ -311,10 +311,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             handleTip.position = targetPosition;
 
             // Update the tip scale.
-            if (tipScaleHander != null)
+            if (tipScaleConstraint != null)
             {
                 var isManipulated = manipulatePointer != null;
-                var tagetScale = isManipulated ? Vector3.one * tipScaleHander.ScaleMinimum : Vector3.one * tipScaleHander.ScaleMaximum;
+                var tagetScale = isManipulated ? Vector3.one * tipScaleConstraint.ScaleMinimum : Vector3.one * tipScaleConstraint.ScaleMaximum;
                 handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, t);
             }
         }

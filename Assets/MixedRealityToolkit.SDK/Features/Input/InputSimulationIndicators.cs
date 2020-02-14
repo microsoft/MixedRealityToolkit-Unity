@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A row of indicator buttons to control input simulation features.
     /// </summary>
     [Serializable]
+    [AddComponentMenu("Scripts/MRTK/SDK/InputSimulationIndicators")]
     public class InputSimulationIndicators : MonoBehaviour
     {
         /// <summary>
@@ -57,8 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (inputSimService == null)
                 {
-                    inputSimService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    inputSimService = CoreServices.GetInputSystemDataProvider<IInputSimulationService>();
                 }
+
                 return inputSimService;
             }
         }

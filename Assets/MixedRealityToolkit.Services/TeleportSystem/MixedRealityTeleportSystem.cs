@@ -9,19 +9,25 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     /// <summary>
-    /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>
+    /// The Mixed Reality Toolkit's implementation of the <see cref="Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem"/>.
     /// </summary>
     public class MixedRealityTeleportSystem : BaseCoreSystem, IMixedRealityTeleportSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityTeleportSystem(
             IMixedRealityServiceRegistrar registrar) : base(registrar, null) // Teleport system does not use a profile
         {
-            if (registrar == null)
-            {
-                Debug.LogError("The MixedRealityTeleportSystem object requires a valid IMixedRealityServiceRegistrar instance.");
-            }
-            IsInputSystemEnabled = (registrar.GetService<IMixedRealityInputSystem>(showLogs: false) != null);
-        } 
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public MixedRealityTeleportSystem() : base(null) { } // Teleport system does not use a profile
 
         private TeleportEventData teleportEventData;
 
@@ -32,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         private Vector3 targetRotation = Vector3.zero;
 
         /// <summary>
-        /// only used to clean up event system when shutting down if this system created one.
+        /// Used to clean up event system when shutting down, if this system created one.
         /// </summary>
         private GameObject eventSystemReference = null;
 
@@ -64,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     }
                     else
                     {
-                        Debug.Log("The Input System didn't properly add an event system to your scene. Please make sure the Input System's priority is set higher than the teleport system.");
+                        Debug.Log("The input system didn't properly add an event system to your scene. Please make sure the input system's priority is set higher than the teleport system.");
                     }
                 }
                 else if (eventSystems.Length > 1)
@@ -84,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (eventSystemReference != null)
             {
-                if (Application.isEditor)
+                if (!Application.isPlaying)
                 {
                     Object.DestroyImmediate(eventSystemReference);
                 }
@@ -112,35 +118,30 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         }
 
         /// <summary>
-        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
+        /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to teleport events.
         /// </summary>
-        public override void Register(GameObject listener)
-        {
-            base.Register(listener);
-        }
+        public override void Register(GameObject listener) => base.Register(listener);
 
         /// <summary>
-        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to Teleport events.
+        /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to teleport events.
         /// </summary>
-        public override void Unregister(GameObject listener)
-        {
-            base.Unregister(listener);
-        }
+        public override void Unregister(GameObject listener) => base.Unregister(listener);
 
         #endregion IEventSystemManager Implementation
 
         #region IMixedRealityTeleportSystem Implementation
+
         /// <summary>
-        /// Is there an input system registered.
+        /// Is an input system registered?
         /// </summary>
-        private bool IsInputSystemEnabled = false;
+        private bool IsInputSystemEnabled => CoreServices.InputSystem != null;
 
         private float teleportDuration = 0.25f;
 
         /// <inheritdoc />
         public float TeleportDuration
         {
-            get { return teleportDuration; }
+            get => teleportDuration;
             set
             {
                 if (isProcessingTeleportRequest)

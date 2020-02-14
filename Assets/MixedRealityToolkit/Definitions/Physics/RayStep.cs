@@ -9,32 +9,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     [Serializable]
     public struct RayStep
     {
+        // Re-use static space to avoid additional allocation
         private static Vector3 dist;
         private static Vector3 dir;
         private static Vector3 pos;
 
         public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
-            Origin = origin;
-            Terminus = terminus;
-
-            dist.x = Terminus.x - Origin.x;
-            dist.y = Terminus.y - Origin.y;
-            dist.z = Terminus.z - Origin.z;
-            Length = Mathf.Sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
-
-            if (Length > 0)
-            {
-                dir.x = dist.x / Length;
-                dir.y = dist.y / Length;
-                dir.z = dist.z / Length;
-            }
-            else
-            {
-                dir = dist;
-            }
-
-            Direction = dir;
+            UpdateRayStep(ref origin, ref terminus);
 
             epsilon = 0.01f;
         }
@@ -42,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         public Vector3 Origin { get; private set; }
         public Vector3 Terminus { get; private set; }
         public Vector3 Direction { get; private set; }
+        
         public float Length { get; private set; }
 
         private readonly float epsilon;
@@ -49,7 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         public Vector3 GetPoint(float distance)
         {
             if (Length <= distance || Length == 0f)
+            {
                 return Origin;
+            }
 
             pos.x = Origin.x + Direction.x * distance;
             pos.y = Origin.y + Direction.y * distance;
@@ -72,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             dist.x = Terminus.x - Origin.x;
             dist.y = Terminus.y - Origin.y;
             dist.z = Terminus.z - Origin.z;
+
             Length = Mathf.Sqrt((dist.x * dist.x) + (dist.y * dist.y) + (dist.z * dist.z));
 
             if (Length > 0)

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// From the point of reference of the SolverHandler Tracked Target, this indicator will orient towards the DirectionalTarget supplied.
     /// If the Directional Target is deemed within view of our frame of reference, then all renderers under this Solver will be disabled. They will be enabled otherwise
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/SDK/DirectionalIndicator")]
     public class DirectionalIndicator : Solver
     {
         /// <summary>
