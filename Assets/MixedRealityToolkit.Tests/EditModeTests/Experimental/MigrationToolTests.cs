@@ -38,7 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
 
         private List<MigrationTypes> migrationList = new List<MigrationTypes>();
 
-
         // internal test version of bounds control migration handler that overrides the
         // output directory of the generated config files so we can clean them up properly 
         // after each test run.
