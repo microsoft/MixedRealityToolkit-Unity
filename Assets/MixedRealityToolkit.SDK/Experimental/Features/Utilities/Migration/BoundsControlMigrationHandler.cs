@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <inheritdoc />
         public void Migrate(GameObject gameObject)
         {
+#if UNITY_EDITOR
             var boundingBox = gameObject.GetComponent<BoundingBox>();
             var boundsControl = gameObject.AddComponent<BoundsControl>();
 
@@ -77,9 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             // look in the scene for app bars and upgrade them too to point to the new component
             MigrateAppBar(boundingBox, boundsControl);
-
+#endif
         }
 
+#if UNITY_EDITOR
         virtual protected string GetBoundsControlConfigDirectory(BoundingBox boundingBox)
         {
             var scene = boundingBox.gameObject.scene;
@@ -297,5 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
             }
         }
+#endif
+
     }
 }
