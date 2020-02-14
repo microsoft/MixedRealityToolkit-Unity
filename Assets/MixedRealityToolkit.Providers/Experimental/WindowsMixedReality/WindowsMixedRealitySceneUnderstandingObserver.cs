@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                         await new WaitForBackgroundThread();
                         {
-                            scene = await GetSceneAsync(previousScene);
+                            scene = GetSceneAsync(previousScene);
                             
                             previousScene = scene;
                             
@@ -496,7 +496,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return result;
         }
 
-        private async Task<Scene> GetSceneAsync(Scene previousScene)
+        private Scene GetSceneAsync(Scene previousScene)
         {
             Debug.Log($"GetSceneAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
@@ -539,7 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
 
-                Task<Scene> task;
+                //Task<Scene> task;
 
                 if (UsePersistentObjects)
                 {
@@ -547,29 +547,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (previousScene != null)
                     {
-                        task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene);
+                        scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius, previousScene).GetAwaiter().GetResult();
                     }
                     else
                     {
                         Debug.Log("SceneObserver.ComputeAsync");
 
                         // first time through, we have no history
-                        task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
+                        scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
                     }
                 }
                 else
                 {
-                    task = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius);
+                    scene = SceneObserver.ComputeAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
                 }
-
-                Debug.Log("Assigning scene result");
-
-                await task;
-
-                Debug.Log($"task status = {task.Status}");
-
-                scene = task.Result;
-
             }
 
             Debug.Log($"Found {scene.SceneObjects.Count} scene objects");
