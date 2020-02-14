@@ -79,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The public property of the Active Profile, ensuring events are raised on the change of the configuration
         /// </summary>
+        /// <remarks>
+        /// When setting the ActiveProfile, all currently running services will be destroyed and those specified in
+        /// the new profile will be instantiated and initialized. This may result in a noticable application hesitation
+        /// during this process.
+        /// </remarks>
         public MixedRealityToolkitConfigurationProfile ActiveProfile
         {
             get
