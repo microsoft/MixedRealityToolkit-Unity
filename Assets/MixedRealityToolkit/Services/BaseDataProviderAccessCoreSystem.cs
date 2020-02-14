@@ -129,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit
             { }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             foreach (IMixedRealityDataProvider provider in dataProviders)

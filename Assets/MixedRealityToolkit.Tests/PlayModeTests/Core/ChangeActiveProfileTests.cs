@@ -30,9 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
-        private const string CameraInputDiagsProfile = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Core/TestProfiles/CameraInputDiags.asset";
+        private const string DefaultHoloLens2Profile = "Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset";
         private const string BoundaryOnlyProfile = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Core/TestProfiles/BoundaryOnly.asset";
 
+        /// <summary>
+        /// Test to verify that switching profiles results in appropriate service counts.
+        /// </summary>
         [UnityTest]
         public IEnumerator VerifyServiceCount()
         {
@@ -48,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch to profile 2
-            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(CameraInputDiagsProfile);
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2Profile);
             ChangeProfile(profile2);
             yield return null;
 
@@ -56,10 +59,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             services = MixedRealityServiceRegistry.GetAllServices();
             int count2 = services.Count;
 
-            // Compare the service counts
+            // We specifically selected the test profiles to ensure that they load a different number of services.
             Assert.IsTrue(count1 != count2);
         }
 
+        /// <summary>
+        /// Test to verify that switching profiles results the expected service state.
+        /// </summary>
         [UnityTest]
         public IEnumerator VerifyServiceState()
         {
@@ -92,6 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(boundarySystem1.ShowBoundaryCeiling != boundarySystem2.ShowBoundaryCeiling);
         }
 
+        /// <summary>
+        /// Test to verify that switching profiles results in the expected playspace children.
+        /// </summary>
         [UnityTest]
         public IEnumerator VerifyPlayspaceChildren()
         {
@@ -102,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeTest(profile1);
 
             // Switch between the profiles a few times.
-            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(CameraInputDiagsProfile);
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2Profile);
             ChangeProfile(profile2);
             yield return null;
             ChangeProfile(profile1);
