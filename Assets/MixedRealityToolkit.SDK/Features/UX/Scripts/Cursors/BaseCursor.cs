@@ -466,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // (This may not be strictly accurate for extremely wobbly pointers, but it should produce usable results)
                     float distanceToTarget = Vector3.Distance(Pointer.Rays[0].Origin, focusDetails.Point);
                     lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, distanceToTarget);
-                    targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
+                    targetPosition = focusDetails.Point + (focusDetails.Normal * surfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
 
