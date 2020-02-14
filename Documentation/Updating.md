@@ -36,7 +36,7 @@ The ScriptingUtilities class has been marked as obsolete and has been replaced b
 
 While existing code will continue to function in version 2.3.0, it is recommended to update to the new class.
 
-**ShellHandRayPouinter**
+**ShellHandRayPointer**
 
 The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863)).
 
