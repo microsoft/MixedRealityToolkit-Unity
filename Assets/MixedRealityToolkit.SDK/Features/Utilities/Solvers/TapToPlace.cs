@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
@@ -16,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     /// </summary>
     public class TapToPlace : Solver, IMixedRealityPointerHandler
     {
-        
         [SerializeField]
         [Tooltip("The default distance (in meters) an object will be placed relative to the TrackedTargetType forward in the SolverHandler." +
             " The GameObjectToPlace will be placed at the default placement distance if a surface is not hit by the raycast.")]
@@ -59,21 +59,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         }
 
         /// <summary>
-        /// Is the gameObjectToPlace currently in the placing state? This state is activated when the GameObjectToPlace
-        /// is selected.
+        /// If true, the game object to place is selected.
         /// </summary>
         public bool IsBeingPlaced { get; protected set; }
 
         [SerializeField]
-        [Tooltip("If true, the gameObjectToPlace will start in the placing state.  The object will immediately start" +
-        " following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  AutoStart" +
-         " is only called once in Start();")]
+        [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
+        " following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object." +
+        " This value must be modified before Start() is invoked in order to have any effect")]
         private bool autoStart = false;
 
         /// <summary>
-        /// If true, the gameObjectToPlace will start in the placing state.  The object will immediately start
-        /// following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  AutoStart
-        /// is only called once in Start();
+        /// If true, the game object to place will start out selected.  The object will immediately start
+        /// following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  
+        /// This value must be modified before Start() is invoked in order to have any effect.
         /// </summary>
         public bool AutoStart
         {
@@ -82,11 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         }
 
         [SerializeField]
-        [Tooltip("The distance between the center of the gameobject to place and a surface along the surface normal, if the raycast hits a surface")]
+        [Tooltip("The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface")]
         private float surfaceNormalOffset = 0.0f;
 
         /// <summary>
-        /// The distance between the center of the gameobject to place and a surface along the surface normal, if the raycast hits a surface.
+        /// The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface.
         /// </summary>
         public float SurfaceNormalOffset
         {
@@ -95,11 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         }
 
         [SerializeField]
-        [Tooltip("If true, the GameObjectToPlace will remain upright and in line with Vector3.up")]
+        [Tooltip("If true, the game object to place will remain upright and in line with Vector3.up")]
         private bool keepOrientationVertical = false;
 
         /// <summary>
-        /// If true, the GameObjectToPlace will remain upright and in line with Vector3.up
+        /// If true, the game object to place will remain upright and in line with Vector3.up
         /// </summary>
         public bool KeepOrientationVertical
         {
@@ -122,14 +121,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         [SerializeField]
         [Tooltip("If false, the game object to place will not change its rotation according to the surface hit.  The object will" +
-            " remain facing the camera while it is in the placing state.  If true, the object will rotate according to the surface normal" +
+            " remain facing the camera while IsBeingPlaced is true.  If true, the object will rotate according to the surface normal" +
             " if there is a hit.")]
         private bool rotateAccordingToSurface = false;
 
         /// <summary>
-        /// If false, the game object to place will not change its rotation according to the surface hit.  The object will 
-        /// remain facing the camera while it is in the placing state.  If true, the object will rotate according to the surface normal
-        /// if there is a hit."
+        /// If false, the game object to place will not change its rotation according to the surface hit.  The object will
+        /// remain facing the camera while IsBeingPlaced is true.  If true, the object will rotate according to the surface normal
+        /// if there is a hit.
         /// </summary>
         public bool RotateAccordingToSurface
         {
@@ -137,27 +136,37 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             set => rotateAccordingToSurface = value;
         }
 
-        [Tooltip("This event is triggered once at the start of the placing state.")]
-        /// <summary>
-        /// This event is triggered once at the start of the placing state.
-        /// </summary>
-        public UnityEvent OnPlacingStarted = new UnityEvent();
-
-        [Tooltip("This event is triggered once when the placing state has ended.")]
-        /// <summary>
-        /// This event is triggered once when the placing state has ended.
-        /// </summary>
-        public UnityEvent OnPlacingStopped = new UnityEvent();
+        [SerializeField, FormerlySerializedAs("OnPlacingStarted")]
+        [Tooltip("This event is triggered once when the game object to place is selected.")]
+        private UnityEvent onPlacingStarted = new UnityEvent();
 
         /// <summary>
-        /// Get the game object layer before the object is placed.  When an object is in the placing state, the layer
-        /// is changed to IgnoreRaycast and then back to the original layer.
+        /// This event is triggered once when the game object to place is selected.
         /// </summary>
-        public int GameObjectLayer { get; protected set; }
+        public UnityEvent OnPlacingStarted
+        {
+            get => onPlacingStarted;
+            set => onPlacingStarted = value;
+        }
+
+        [SerializeField, FormerlySerializedAs("OnPlacingStopped")]
+        [Tooltip("This event is triggered once when the game object to place is unselected, placed.")]
+        private UnityEvent onPlacingStopped = new UnityEvent();
+
+        /// <summary>
+        /// This event is triggered once when the game object to place is unselected, placed.
+        /// </summary>
+        public UnityEvent OnPlacingStopped
+        {
+            get => onPlacingStopped;
+            set => onPlacingStopped = value;
+        }
+
+        protected internal int GameObjectLayer { get; protected set; }
 
         protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
 
-        private const int IgnoreRaycastLayer = 2;
+        private int ignoreRaycastLayer;
 
         // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint)
         protected RayStep CurrentRay;
@@ -166,7 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         protected RaycastHit CurrentHit;
 
-        protected float TimeSinceClick = 0;
+        protected float LastTimeClicked = 0;
+
+        protected float doubleClickTimeout = 0.5f;
 
         #region MonoBehaviour Implementation
         protected override void Start()
@@ -174,20 +185,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             // Solver base class
             base.Start();
 
-            if (!IsColliderPresent)
-            {
-                Debug.LogError("The GameObjectToPlace does not have a collider attached, please attach a collider");
-            }
-
+            Debug.Assert(IsColliderPresent, "The game object " + gameObject.name + " does not have a collider attached, please attach a collider to use Tap to Place");
+            
             SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
 
-            // Store the initial game object layer
-            GameObjectLayer = gameObject.layer;
+            ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
 
             if (AutoStart)
             {
-                StartPlacement();
-                OnPlacingStarted?.Invoke();
+                StartPlacement();  
             }
             else
             {
@@ -202,22 +208,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         #endregion
 
-        private void StartPlacement()
+        /// <summary>
+        /// Start the placement of a game object without the need of the OnPointerClicked event. The game object will begin to follow the 
+        /// TrackedTargetType (Head by default) at a default distance. StopPlacement() must be called after StartPlacement() to stop the 
+        /// game object from following the TrackedTargetType.
+        /// </summary>
+        public void StartPlacement()
         {
             // Store the initial game object layer
             GameObjectLayer = gameObject.layer;
 
             // Temporarily change the game object layer to IgnoreRaycastLayer to enable a surface hit beyond the game object
-            gameObject.layer = IgnoreRaycastLayer;
+            gameObject.layer = ignoreRaycastLayer;
 
             SolverHandler.UpdateSolvers = true;
 
             IsBeingPlaced = true;
 
+            OnPlacingStarted?.Invoke();
+
+            // A global pointer handler is needed to enable object placement without the need for focus.
+            // The object's layer is changed to IgnoreRaycast in this method, which means the game object cannot receive focus.
+            // Without a global handler, the game object would not receive pointer events.
             CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
         }
 
-        private void StopPlacement()
+        /// <summary>
+        /// Stop the placement of a game object without the need of the OnPointerClicked event. 
+        /// </summary>
+        public void StopPlacement()
         {
             // Change the game object layer back to the game object's layer on start
             gameObject.layer = GameObjectLayer;
@@ -226,7 +245,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             IsBeingPlaced = false;
 
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            OnPlacingStopped?.Invoke();
+
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this); 
         }
 
         /// <inheritdoc/>
@@ -256,24 +277,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);  
         }
 
+        /// <summary>
+        /// Change the position of the game object if there was a hit, if not then place the object at the default distance
+        /// relative to the TrackedTargetType origin position
+        /// </summary>
         protected virtual void SetPosition()
         {
-            // Change the position of the gameObject if there was a hit, if not then place the object at the default distance
-            // relative to the TrackedTargetType origin position
-            
             if (DidHitSurface)
             {
                 // Take the current hit point and add an offset relative to the surface to avoid half of the object in the surface
                 GoalPosition = CurrentHit.point;  
                 AddOffset(CurrentHit.normal * SurfaceNormalOffset);
 
-                #if UNITY_EDITOR
-                if(DebugEnabled)
+#if UNITY_EDITOR
+                if (DebugEnabled)
                 {
                     // Draw the normal of the raycast hit for debugging 
                     Debug.DrawRay(CurrentHit.point, CurrentHit.normal * 0.5f, Color.yellow);
                 }
-                #endif
+#endif // UNITY_EDITOR
             }
             else
             {
@@ -299,7 +321,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             }
             else 
             {
-                // If (DidHit and !rotateAccordingToSurface) or if there is no raycast hit, 
                 GoalRotation = Quaternion.LookRotation(direction, Vector3.up);
             }
         }
@@ -318,8 +339,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         /// <inheritdoc/>
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
-            // When a click is called in the same second then it is a mistake and no action needs to be taken
-            if ((Time.time - TimeSinceClick) < 1.0f)
+            // Checking the amount of time passed between OnPointerClicked calls is handling the case when OnPointerClicked is called
+            // twice after one click.  If OnPointerClicked is called twice after one click, the object will be selected and then immediatley
+            // unselected. If OnPointerClicked calls are within 0.5 secs of each other, then return to prevent an immediate object state switch.
+            if ((Time.time - LastTimeClicked) < doubleClickTimeout)
             {
                 return;
             }
@@ -327,16 +350,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             if (!IsBeingPlaced)
             {
                 StartPlacement();
-                OnPlacingStarted?.Invoke();
             }
             else
             {
                 StopPlacement();
-                OnPlacingStopped?.Invoke();
             }
 
             // Get the time of this click action
-            TimeSinceClick = Time.time;
+            LastTimeClicked = Time.time;
         }
 
         #endregion

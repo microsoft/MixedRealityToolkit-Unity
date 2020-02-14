@@ -12,13 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     public class HideTapToPlaceLabel : MonoBehaviour
     {
         private TapToPlace tapToPlace;
-        private GameObject placeableObjectLabel;
+        public GameObject placeableObjectLabel;
         void Start()
         {
             tapToPlace = gameObject.GetComponent<TapToPlace>();
-            if (tapToPlace != null)
+            if (tapToPlace != null && placeableObjectLabel != null)
             {
-                placeableObjectLabel = gameObject.transform.GetChild(0).gameObject;
                 AddTapToPlaceListeners();
             }
         }

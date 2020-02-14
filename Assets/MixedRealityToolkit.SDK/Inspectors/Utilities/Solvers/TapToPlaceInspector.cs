@@ -32,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             keepOrientationVertical = serializedObject.FindProperty("keepOrientationVertical");
             autoStart = serializedObject.FindProperty("autoStart");
             debugEnabled = serializedObject.FindProperty("debugEnabled");
-            onPlacingStarted = serializedObject.FindProperty("OnPlacingStarted");
-            onPlacingStopped = serializedObject.FindProperty("OnPlacingStopped");
+            onPlacingStarted = serializedObject.FindProperty("onPlacingStarted");
+            onPlacingStopped = serializedObject.FindProperty("onPlacingStopped");
         }
 
         public override void OnInspectorGUI()
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(keepOrientationVertical);
             EditorGUILayout.PropertyField(defaultPlacementDistance);
             EditorGUILayout.PropertyField(maxRaycastDistance);
-            EditorGUILayout.PropertyField(magneticSurfaces,true);  
+            EditorGUILayout.PropertyField(magneticSurfaces, true);  
             EditorGUILayout.PropertyField(onPlacingStarted);  
             EditorGUILayout.PropertyField(onPlacingStopped);
             EditorGUILayout.PropertyField(debugEnabled);
