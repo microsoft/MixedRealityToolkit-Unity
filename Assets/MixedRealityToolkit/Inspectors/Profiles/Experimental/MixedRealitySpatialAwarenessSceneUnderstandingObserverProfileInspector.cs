@@ -44,10 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             base.OnEnable();
 
             startupBehavior = serializedObject.FindProperty("startupBehavior");
+            firstUpdateDelay = serializedObject.FindProperty("firstUpdateDelay");
             autoUpdate = serializedObject.FindProperty("autoUpdate");
             updateInterval = serializedObject.FindProperty("updateInterval");
-
-            firstUpdateDelay = serializedObject.FindProperty("firstUpdateDelay");
 
             shouldLoadFromFile = serializedObject.FindProperty("shouldLoadFromFile");
             serializedScene = serializedObject.FindProperty("serializedScene");
@@ -82,9 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 EditorGUILayout.LabelField("Life cycle", EditorStyles.boldLabel);
                 {
                     EditorGUILayout.PropertyField(startupBehavior);
+                    EditorGUILayout.PropertyField(firstUpdateDelay);
                     EditorGUILayout.PropertyField(autoUpdate);
                     EditorGUILayout.PropertyField(updateInterval);
-                    EditorGUILayout.PropertyField(firstUpdateDelay);
                 }
                 EditorGUILayout.Space();
 
@@ -98,7 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(requestPlaneData);
                     EditorGUILayout.PropertyField(requestMeshData);
                     EditorGUILayout.PropertyField(requestOcclusionMask);
-                    EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
                 EditorGUILayout.Space();
 
@@ -111,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(instantiationBatchRate);
                     EditorGUILayout.PropertyField(physicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
+                    EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
 
                 serializedObject.ApplyModifiedProperties();

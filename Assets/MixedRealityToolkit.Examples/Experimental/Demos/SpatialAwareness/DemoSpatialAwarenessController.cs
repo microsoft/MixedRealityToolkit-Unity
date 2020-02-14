@@ -2,10 +2,10 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
-using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         private void InitToggleButtonState()
         {
-            autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.StartupBehavior == Toolkit.Utilities.AutoStartBehavior.AutoStart;
+            autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.AutoUpdate;
             quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
             meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
             maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
