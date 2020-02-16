@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 headForward;
 
         #region Public Methods
+
         /// <inheritdoc />
         public void Update(Vector3 handPosition, Vector3 palmNormal, Transform headTransform, Handedness sourceHandedness)
         {
@@ -78,8 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             stabilizedRay.AddSample(new Ray(measuredRayPosition, measuredDirection));
         }
-        #endregion
 
+        #endregion
 
         private Vector3 ComputeRayPivotPosition(Vector3 handPosition, Transform headTransform, Handedness sourceHandedness)
         {

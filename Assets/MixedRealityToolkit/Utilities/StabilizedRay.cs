@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
@@ -73,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         /// <param name="hLife">Half life</param>
         /// <param name="delta">Distance delta</param>
-        /// <returns></returns>
+        /// <returns>The dynamic exponential coefficient.</returns>
         public static float DynamicExpCoefficient(float hLife, float delta)
         {
             if (hLife == 0)
@@ -90,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="from">Previous stabilized Vector3.</param>
         /// <param name="to">New Vector3 sample.</param>
         /// <param name="hLife">Half life used for stabilization.</param>
-        /// <returns>Stabilized Vector 3,</returns>
+        /// <returns>Stabilized Vector 3.</returns>
         public static Vector3 DynamicExpDecay(Vector3 from, Vector3 to, float hLife)
         {
             return Vector3.Lerp(from, to, DynamicExpCoefficient(hLife, Vector3.Distance(to, from)));
