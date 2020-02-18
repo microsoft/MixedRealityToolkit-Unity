@@ -312,7 +312,7 @@
       ]
     },
     {
-      "CategoryName": "Unity UI",
+      "CategoryName": "Unity UI (Requires Canvas)",
       "Items": [
         {
           "Name": "Button",
