@@ -1,7 +1,7 @@
 # MRTK stale configuration
 # In order to ensure that the issues on Github remain somewhat fresh
-# and update to date (i.e. aren't tracking releases from over a year)
-# ago which have seen significant churn, we're using Stale Bot
+# and up to date (i.e. aren't tracking releases from over a year
+# ago which have seen significant churn), we're using Stale Bot
 # (https://github.com/apps/stale) to mark issues as stale and then close
 # ones that haven't seen updates in a long time.
 daysUntilStale: 150
