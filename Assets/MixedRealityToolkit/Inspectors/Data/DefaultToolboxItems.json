@@ -282,7 +282,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_LoadingBar_Icon.png",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Bar.png",
           "DocURL": ""
         },
         {
@@ -290,7 +290,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/Loader/IndeterminateLoader.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_IndeterminateLoader_Icon.gif",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Orbs.png",
           "DocURL": ""
         },
         {
@@ -298,7 +298,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Loading_RotatingOrbs_Icon.gif",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Ring.png",
           "DocURL": ""
         },
         {
@@ -306,7 +306,7 @@
           "RelativeAssetPath": "Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab",
           "AssetModule": 5,
           "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Loading_RotatingObject_Icon.gif",
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Object.png",
           "DocURL": ""
         }
       ]
