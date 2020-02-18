@@ -89,7 +89,7 @@
 <ul>
 <li><p><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
 </li>
-<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x, 2019.1.x or 2019.2.x</a></p>
+<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x, Unity 2019</a></p>
 <p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018</p>
 </li>
 <li><p><a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
@@ -108,6 +108,7 @@ when building for OpenVR.</p>
 <h3 id="optional">Optional</h3>
 <ul>
 <li><a href="#getting-started-tutorials">Getting started tutorials</a></li>
+<li><a href="GettingStartedWithMRTKAndXRSDK.html">XR SDK getting started guide (Unity 2019.3 or later)</a>.</li>
 <li><a href="#learn-about-the-core-building-blocks-of-mrtk">Learn about the core building blocks of MRTK</a></li>
 <li><a href="#run-the-handinteractionexamples-scene-in-the-unity-editor">Run the HandInteractionExamples scene in the Unity Editor</a></li>
 </ul>
@@ -254,22 +255,7 @@ Profiles configure the behavior of MRTK core components and are described in mor
 <h2 id="upgrading-from-the-holotoolkit-htkmrtk-v1">Upgrading from the HoloToolkit (HTK/MRTK v1)</h2>
 <p>There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the <a href="HTKToMRTKPortingGuide.html">HoloToolkit to Mixed Reality Toolkit Porting Guide</a></p>
 <h2 id="getting-started-with-unitys-xr-sdk">Getting started with Unity's XR SDK</h2>
-<p>If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the &quot;DefaultXRSDKConfigurationProfile&quot; as your active profile. This profile is set up with MRTK's XR SDK systems and providers, where needed.
-Then, follow these steps to set up support in Unity:</p>
-<ol>
-<li>Go into Unity's Package Manager and install the Windows XR Plugin package, which adds support for Windows Mixed Reality on XR SDK. This will pull down a few dependency packages as well. Ensure the following are all installed:
-<ol>
-<li>XR Management</li>
-<li>Windows XR Plugin</li>
-<li>XR Legacy Input Helpers</li>
-</ol>
-</li>
-<li>Go to Edit &gt; Project Settings.</li>
-<li>Click on the XR Plugin Management tab in the Project Settings window.</li>
-<li>Go to the Universal Windows Platform settings, then click the + to add a Windows MR Loader.</li>
-<li>Ensure that Initialize on Startup is checked.</li>
-<li>(<strong><em>Optional</em></strong>) Click on the Windows Mixed Reality tab under XR Plugin Management and create a custom settings profile to change the defaults.</li>
-</ol>
+<p>Complete instructions and information can be found in our <a href="GettingStartedWithMRTKAndXRSDK.html">XR SDK getting started guide</a>.</p>
 </article>
           </div>
           
