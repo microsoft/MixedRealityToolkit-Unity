@@ -94,6 +94,9 @@ jobs:
     parameters:
       ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKNuGetSignConfig.xml"
 
+  - task: NuGetToolInstaller@1
+    displayName: 'Ensure NuGet.exe is installed and in PATH'
+
   - task: PowerShell@2
     displayName: 'Validate release packages are signed'
     inputs:
