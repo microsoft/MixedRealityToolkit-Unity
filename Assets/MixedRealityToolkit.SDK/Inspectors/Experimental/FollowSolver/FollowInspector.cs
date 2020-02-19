@@ -9,6 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
     [CustomEditor(typeof(Follow))]
+    [CanEditMultipleObjects]
     public class FollowEditor : SolverInspector
     {
         // Orientation

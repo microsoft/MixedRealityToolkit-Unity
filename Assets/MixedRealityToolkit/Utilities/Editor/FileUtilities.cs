@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -13,14 +14,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public static class FileUtilities
     {
         /// <summary>
-        /// Locates the files that match the specified name within the Assets folder (application data path) structure.
+        /// Locates the files that match the specified name within the Assets folder structure.
         /// </summary>
         /// <param name="fileName">The name of the file to locate (ex: "TestFile.asmdef")</param>
         /// <returns>Array of FileInfo objects representing the located file(s).</returns>
         public static FileInfo[] FindFilesInAssets(string fileName)
         {
-            DirectoryInfo root = new DirectoryInfo(Application.dataPath);
-            return FindFiles(fileName, root);
+            // FindAssets doesn't take a file extension
+            string[] assetGuids = AssetDatabase.FindAssets(Path.GetFileNameWithoutExtension(fileName));
+
+            List<FileInfo> fileInfos = new List<FileInfo>();
+            for (int i = 0; i < assetGuids.Length; i++)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(assetGuids[i]);
+                // Since this is an asset search without extension, some filenames may contain parts of other filenames.
+                // Therefore, double check that the path actually contains the filename with extension.
+                if (assetPath.Contains(fileName))
+                {
+                    fileInfos.Add(new FileInfo(assetPath));
+                }
+            }
+
+            return fileInfos.ToArray();
         }
 
         /// <summary>

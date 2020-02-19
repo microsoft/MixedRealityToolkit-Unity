@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Experimental
 
         /// <summary>
-        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// Tests that the DirectionalIndicator can be instatiated through code.
         /// </summary>
         [UnityTest]
         public IEnumerator TestDirectionalIndicator()
@@ -482,6 +482,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             directionTarget.transform.position = 5.0f * Vector3.forward;
 
             yield return WaitForFrames(2);
+            Assert.IsFalse(indicatorMesh.enabled);
+
+            // Get back to a position where the directional indicator should be visible
+            directionTarget.transform.position = -10.0f * Vector3.right;
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            // Destroy the object and then validate that the mesh is no longer visible
+            Object.Destroy(directionTarget);
+            yield return null;
             Assert.IsFalse(indicatorMesh.enabled);
         }
 
