@@ -4,7 +4,7 @@
 
 The *ObjectManipulator* is the new component for manipulation behaviour, previously found in *ManipulationHandler*. The object manipulator makes a number of improvements and simplifications. This component is a replacement for the manipulation handler, which will be deprecated.
 
-The *ObjectManipulator* script makes an object movable, scalable, and rotatable using one or two hands. You can configure the object manipulator to control how the object will respond to various inputs. The script should work with most forms of interaction, such as HoloLens 2 articulated hand, HoloLens 2 hand rays, HoloLens 1 gaze and gestures and immersive headset motion controller input.
+The *ObjectManipulator* script makes an object movable, scalable, and rotatable using one or two hands. The object manipulator can be configured to control how the object will respond to various inputs. The script should work with most forms of interaction, such as HoloLens 2 articulated hand, HoloLens 2 hand rays, HoloLens 1 gaze and gestures and immersive headset motion controller input.
 
 ## How to use the object manipulator
 
@@ -12,9 +12,9 @@ To use the object manipulator, first add the [`ObjectManipulator.cs`](https://gi
 
 Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
 
-You can enable physics behaviour for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
+Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
 
-You can also constrain manipulation by adding [manipulation constraint components](#transform-constraints) to the object. These are special components that work with manipulation that change the manipulation behaviour in some way. 
+As well as this, manipulation can be constrained by adding [manipulation constraint components](#transform-constraints) to the object. These are special components that work with manipulation and change the manipulation behaviour in some way. 
 
 ![Manipulation Handler](../Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Howto.png)
 
@@ -30,7 +30,7 @@ The object transform that will be manipulated. Defaults to the object of the com
 
 #### Manipulation type
 
-Specifies whether the object can be manipulated using one hand or two hands. Because this property is a flag, you can select both options.
+Specifies whether the object can be manipulated using one hand or two hands. Because this property is a flag, both options can be selected.
 
 * *One handed*: Enables one handed manipulation if selected.
 * *Two handed*: Enables two handed manipulation if selected.
@@ -46,7 +46,7 @@ Specifies whether manipulation can be done using far interaction with pointers.
 Specifies how the object will behave when it is being grabbed with one hand near. These options only work for articulated hands.
 
 * *Rotate about object center*: Object rotates using rotation of the hand, but about the object center point. The object will appear to move less as it rotates, but there may be a feeling of disconnection between the hand and the object. More useful for far interaction.
-* *Rotate about grab point*: Rotate object with the hand about the grab point between your thumb and index finger. It should feel as if the object is being held by hand.
+* *Rotate about grab point*: Rotate object with the hand about the grab point between the thumb and index finger. It should feel as if the object is being held by the hand.
 
 #### One hand rotation mode far
 Specifies how the object will behave when it is being grabbed with one hand at distance. These options only work for articulated hands.
@@ -58,7 +58,7 @@ Specifies how the object will behave when it is being grabbed with one hand at d
 
 #### Two handed manipulation type
 
-Specifies how two hand manipulation can transform an object. Because this property is a flag, you can select any number of options.
+Specifies how two hand manipulation can transform an object. Because this property is a flag, any number of options can be selected.
 
 * *Move*: Moving is allowed if selected.
 * *Scale*: Scaling is allowed if selected.
@@ -70,17 +70,17 @@ Specifies how two hand manipulation can transform an object. Because this proper
 
 #### Add constraint
 
-This button allows you to add a constraint component directly from the object manipulator inspector. All constraints in your project should be visible here. See [transform constraints](#transform-constraints) for more info.
+This button allows a constraint component to be added directly from the object manipulator inspector. All constraints in a project should be visible here. See [transform constraints](#transform-constraints) for more info.
 
 #### Go to component
 
-All constraints found on the object wil be listed here with a *Go to component* button. This button will cause the inspector to scroll to the constraint component you selected so that you can configure it. 
+All constraints found on the object wil be listed here with a *Go to component* button. This button will cause the inspector to scroll to the selected constraint component so that it can be configured. 
 
 ### Physics
 
 #### Release behavior
 
-Specify which physical properties a manipulated object should keep upon release. Requires a rigidbody component to be on that object. Because this property is a flag, you can select any number of options.
+Specify which physical properties a manipulated object should keep upon release. Requires a rigidbody component to be on that object. Because this property is a flag, both options can be selected.
 
 * *Keep Velocity*: When the object is released, if this option is selected it will keep its linear velocity.
 * *Keep Angular Velocity*: When the object is released, if this option is selected it will keep its angular velocity.
@@ -110,9 +110,9 @@ Manipulation handler provides the following events:
 
 ## Transform constraints
 
-Constraints can be used to limit manipulation in some way. For example, you may wish to allow rotation, but you want to keep the object upright. In this case you can attach a `RotationAxisConstraint` and limit rotation to y-axis rotation. MRTK provides a number of constraints, all of which are described below.
+Constraints can be used to limit manipulation in some way. For example, some applications may require rotation, but also require that the object remain upright. In this case, a `RotationAxisConstraint` can be added to the object and used to limit rotation to y-axis rotation. MRTK provides a number of constraints, all of which are described below.
 
-It is also possible to create your own constraints and use them to create unique manipulation behaviour that you may need for your application. To do this, create a script that inherits from [`TransformConstraint`](../Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/Constraints/TransformConstraint.cs) and implement the abstract `ConstraintType` property and the abstract `ApplyConstraint` method. Upon adding your new constraint to the object, it should constrain manipulation in the way you defined. Your new constraint should also show in the object manipulator [constraint fields](#constraints).
+It is also possible to define new constraints and use them to create unique manipulation behaviour that may be needed for some applications. To do this, create a script that inherits from [`TransformConstraint`](../Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/Constraints/TransformConstraint.cs) and implement the abstract `ConstraintType` property and the abstract `ApplyConstraint` method. Upon adding a new constraint to the object, it should constrain manipulation in the way that was defined. This new constraint should also show in the object manipulator [constraint fields](#constraints).
 
 All of the constraints provided by MRTK share the following properties:
 
@@ -122,14 +122,14 @@ Transform of the manipulated object being constrained. This should be the same a
 
 #### Hand Type
 
-Specifies whether the constraint is used for one handed, two handed or both kinds of manipulation. Because this property is a flag, you can select both options.
+Specifies whether the constraint is used for one handed, two handed or both kinds of manipulation. Because this property is a flag, both options can be selected.
 
 * *One handed*: Constraint will be used during one handed manipulation if selected.
 * *Two handed*: Constraint will be used during two handed manipulation if selected.
 
 #### Proximity Type
 
-Specifies whether the constraint is used for near, far or both kinds of manipulation. Because this property is a flag, you can select both options.
+Specifies whether the constraint is used for near, far or both kinds of manipulation. Because this property is a flag, both options can be selected.
 
 * *Near*: Constraint will be used during near manipulation if selected.
 * *Far*: Constraint will be used during far manipulation if selected.
@@ -164,7 +164,7 @@ This constraint fixes the relative rotation between the user and the manipulated
 
 <img src="../Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToWorld.gif" width="400">
 
-This constraint fixes the global rotation of the manipulated object while it is being manipulated. This can be useful if we want don't want to impart any rotation while manipulating. The `FixedRotationToWorldConstraint` does not have any unique properties:
+This constraint fixes the global rotation of the manipulated object while it is being manipulated. This can be useful in applications where no rotation should be imparted by manipulation. The `FixedRotationToWorldConstraint` does not have any unique properties:
 
 ### MaintainApparentSizeConstraint
 
@@ -180,7 +180,7 @@ This constraint can be used to fix along which axes a manipulated object can be 
 
 #### Constraint on movement
 
-Specifies which axes we wish to prevent movement on. Because this property is a flag, you can select any number of options.
+Specifies which axes to prevent movement on. Because this property is a flag, any number of options can be selected.
 
 * *X Axis*: Movement along the x-axis is constrained if selected.
 * *Y Axis*: Movement along the y-axis is constrained if selected.
@@ -198,7 +198,7 @@ This constraint can be used to fix about which axes a manipulated object can be 
 
 #### Constraint on movement
 
-Specifies which axes we wish to prevent rotation about. Because this property is a flag, you can select any number of options.
+Specifies which axes to prevent rotation about. Because this property is a flag, any number of options can be selected.
 
 * *Y Axis*: Rotation about the y-axis is constrained if selected.
 * *Z Axis*: Rotation about the z-axis is constrained if selected.
@@ -212,7 +212,7 @@ Will constrain relative the manipulated object's local transform axes if true.
 
 <img src="../Documentation/Images/ObjectManipulator/MRTK_Constraint_MinMaxScale.gif" width="400">
 
-This constraint allows you to set minimum and maximum values for the scale of the manipulated object. This is useful for preventing users from scaling an object too small or too large. The properties for `MinMaxScaleConstraint` are as follows:
+This constraint allows minimum and maximum values to be set for the scale of the manipulated object. This is useful for preventing users from scaling an object too small or too large. The properties for `MinMaxScaleConstraint` are as follows:
 
 #### Scale minimum
 
@@ -228,12 +228,12 @@ If true, the values above will be interpreted as relative to the objects initial
 
 ## Physics and collisions
 
-You can enable physics behaviour by adding a rigidbody component to the same object as an object manipulator. Not only does this enable configuration of [release behaviour](#release-behavior) above, it also enables collisions. Without a rigidbody component, collisions don't behave correctly during manipulation:
+Physics behaviour can be enabled by adding a rigidbody component to the same object as an object manipulator. Not only does this enable configuration of [release behaviour](#release-behavior) above, it also enables collisions. Without a rigidbody component, collisions don't behave correctly during manipulation:
 
 * Collisions between a manipulated object and a static collider (i.e. an object with a collider but no rigidbody) do not work, the manipulated object passes straight through the static collider unaffected.
 * Collisions between a manipulated object and a rigidbody (i.e an object with both a collider and a rigidbody) cause the rigidbody to have a collision response, but the response is jumpy and unnatural. There is also no collision response on the manipulated object.
 
-When you add a rigidbody, you can expect collisions to work correctly.
+When a rigidbody is added, collisions should work correctly.
 
 ### Without rigidbody
 <img src="../Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_NoRigidbody.gif" width="500">
