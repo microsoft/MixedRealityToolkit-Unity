@@ -108,6 +108,14 @@ Manipulation handler provides the following events:
 * *OnHoverStarted*: Fires when a hand / controller hovers the manipulatable, near or far.
 * *OnHoverEnded*: Fires when a hand / controller un-hovers the manipulatable, near or far.
 
+The event fire order for manipulation is:
+
+*OnHoverStarted* -> *OnManipulationStarted* -> *OnManipulationEnded* -> *OnHoverEnded*
+
+If there is no manipulation, you will still get hover events with the following fire order:
+
+*OnHoverStarted* -> *OnHoverEnded*
+
 ## Transform constraints
 
 Constraints can be used to limit manipulation in some way. For example, some applications may require rotation, but also require that the object remain upright. In this case, a `RotationAxisConstraint` can be added to the object and used to limit rotation to y-axis rotation. MRTK provides a number of constraints, all of which are described below.
@@ -164,7 +172,7 @@ This constraint fixes the relative rotation between the user and the manipulated
 
 <img src="../Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToWorld.gif" width="400">
 
-This constraint fixes the global rotation of the manipulated object while it is being manipulated. This can be useful in applications where no rotation should be imparted by manipulation. The `FixedRotationToWorldConstraint` does not have any unique properties:
+This constraint fixes the global rotation of the manipulated object while it is being manipulated. This can be useful in cases where no rotation should be imparted by manipulation. The `FixedRotationToWorldConstraint` does not have any unique properties:
 
 ### MaintainApparentSizeConstraint
 
