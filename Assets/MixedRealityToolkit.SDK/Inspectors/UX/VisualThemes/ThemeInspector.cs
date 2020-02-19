@@ -284,10 +284,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     var propertyList = GetShaderPropertyList(shader.objectReferenceValue as Shader, GetShaderPropertyFilter((ThemePropertyTypes)type.enumValueIndex));
                     int selectedIndex = propertyList.IndexOf(shaderPropertyname.stringValue);
 
-                    int newIndex = EditorGUILayout.Popup(statePropertyName.stringValue + " Property", selectedIndex, propertyList.ToArray());
-                    if (newIndex != selectedIndex)
+                    Rect pos = EditorGUILayout.GetControlRect();
+                    using (new EditorGUI.PropertyScope(pos, new GUIContent(statePropertyName.stringValue + " Property"), shaderPropertyname))
                     {
-                        shaderPropertyname.stringValue = propertyList[newIndex];
+                        int newIndex = EditorGUILayout.Popup(statePropertyName.stringValue + " Property", selectedIndex, propertyList.ToArray());
+                        if (newIndex != selectedIndex)
+                        {
+                            shaderPropertyname.stringValue = propertyList[newIndex];
+                        }
                     }
                 }
             }
