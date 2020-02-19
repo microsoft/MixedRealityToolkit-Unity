@@ -9,7 +9,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.SDK.Inspectors")]
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     /// <summary>
@@ -17,6 +16,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
     /// </summary>
     public class TapToPlace : Solver, IMixedRealityPointerHandler
     {
+        [Space(10)]
+        [SerializeField]
+        [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
+" following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object." +
+" This value must be modified before Start() is invoked in order to have any effect")]
+        private bool autoStart = false;
+
+        /// <summary>
+        /// If true, the game object to place will start out selected.  The object will immediately start
+        /// following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  
+        /// This value must be modified before Start() is invoked in order to have any effect.
+        /// </summary>
+        public bool AutoStart
+        {
+            get => autoStart;
+            set => autoStart = value;
+        }
+
         [SerializeField]
         [Tooltip("The default distance (in meters) an object will be placed relative to the TrackedTargetType forward in the SolverHandler." +
             " The GameObjectToPlace will be placed at the default placement distance if a surface is not hit by the raycast.")]
@@ -45,40 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             set => maxRaycastDistance = value;
         }
 
-        [SerializeField]
-        [Tooltip("Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component.")]
-        private LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };
-
-        /// <summary>
-        /// Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component.
-        /// </summary>
-        public LayerMask[] MagneticSurfaces
-        {
-            get => magneticSurfaces;
-            set => magneticSurfaces = value;
-        }
-
         /// <summary>
         /// If true, the game object to place is selected.
         /// </summary>
         public bool IsBeingPlaced { get; protected set; }
-
-        [SerializeField]
-        [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
-        " following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object." +
-        " This value must be modified before Start() is invoked in order to have any effect")]
-        private bool autoStart = false;
-
-        /// <summary>
-        /// If true, the game object to place will start out selected.  The object will immediately start
-        /// following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object.  
-        /// This value must be modified before Start() is invoked in order to have any effect.
-        /// </summary>
-        public bool AutoStart
-        {
-            get => autoStart;
-            set => autoStart = value;
-        }
 
         [SerializeField]
         [Tooltip("The distance between the center of the game object to place and a surface along the surface normal, if the raycast hits a surface")]
@@ -107,19 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         }
 
         [SerializeField]
-        [Tooltip("If true and in the Unity Editor, the normal of the raycast hit will be drawn in yellow.")]
-        private bool debugEnabled = true;
-
-        /// <summary>
-        /// If true and in the Unity Editor, the normal of the raycast hit will be drawn in yellow.
-        /// </summary>
-        public bool DebugEnabled
-        {
-            get => debugEnabled;
-            set => debugEnabled = value;
-        }
-
-        [SerializeField]
         [Tooltip("If false, the game object to place will not change its rotation according to the surface hit.  The object will" +
             " remain facing the camera while IsBeingPlaced is true.  If true, the object will rotate according to the surface normal" +
             " if there is a hit.")]
@@ -134,6 +108,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         {
             get => rotateAccordingToSurface;
             set => rotateAccordingToSurface = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component.")]
+        private LayerMask[] magneticSurfaces = { UnityEngine.Physics.DefaultRaycastLayers };
+
+        /// <summary>
+        /// Array of LayerMask to execute from highest to lowest priority. First layermask to provide a raycast hit will be used by component.
+        /// </summary>
+        public LayerMask[] MagneticSurfaces
+        {
+            get => magneticSurfaces;
+            set => magneticSurfaces = value;
+        }
+
+        [SerializeField]
+        [Tooltip("If true and in the Unity Editor, the normal of the raycast hit will be drawn in yellow.")]
+        private bool debugEnabled = true;
+
+        /// <summary>
+        /// If true and in the Unity Editor, the normal of the raycast hit will be drawn in yellow.
+        /// </summary>
+        public bool DebugEnabled
+        {
+            get => debugEnabled;
+            set => debugEnabled = value;
         }
 
         [SerializeField, FormerlySerializedAs("OnPlacingStarted")]
@@ -215,22 +215,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         /// </summary>
         public void StartPlacement()
         {
-            // Store the initial game object layer
-            GameObjectLayer = gameObject.layer;
+            // Added for code configurability to avoid multiple calls to StartPlacement in a row
+            if (!IsBeingPlaced)
+            {
+                // Store the initial game object layer
+                GameObjectLayer = gameObject.layer;
 
-            // Temporarily change the game object layer to IgnoreRaycastLayer to enable a surface hit beyond the game object
-            gameObject.layer = ignoreRaycastLayer;
+                // Temporarily change the game object layer to IgnoreRaycastLayer to enable a surface hit beyond the game object
+                gameObject.layer = ignoreRaycastLayer;
 
-            SolverHandler.UpdateSolvers = true;
+                SolverHandler.UpdateSolvers = true;
 
-            IsBeingPlaced = true;
+                IsBeingPlaced = true;
 
-            OnPlacingStarted?.Invoke();
+                OnPlacingStarted?.Invoke();
 
-            // A global pointer handler is needed to enable object placement without the need for focus.
-            // The object's layer is changed to IgnoreRaycast in this method, which means the game object cannot receive focus.
-            // Without a global handler, the game object would not receive pointer events.
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+                // A global pointer handler is needed to enable object placement without the need for focus.
+                // The object's layer is changed to IgnoreRaycast in this method, which means the game object cannot receive focus.
+                // Without a global handler, the game object would not receive pointer events.
+                CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+            }
         }
 
         /// <summary>
@@ -238,16 +242,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         /// </summary>
         public void StopPlacement()
         {
-            // Change the game object layer back to the game object's layer on start
-            gameObject.layer = GameObjectLayer;
+            // Added for code configurability to avoid multiple calls to StopPlacement in a row
+            if (IsBeingPlaced)
+            {
+                // Change the game object layer back to the game object's layer on start
+                gameObject.layer = GameObjectLayer;
 
-            SolverHandler.UpdateSolvers = false;
+                SolverHandler.UpdateSolvers = false;
 
-            IsBeingPlaced = false;
+                IsBeingPlaced = false;
 
-            OnPlacingStopped?.Invoke();
+                OnPlacingStopped?.Invoke();
 
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this); 
+                CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            }
         }
 
         /// <inheritdoc/>
@@ -340,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // Checking the amount of time passed between OnPointerClicked calls is handling the case when OnPointerClicked is called
-            // twice after one click.  If OnPointerClicked is called twice after one click, the object will be selected and then immediatley
+            // twice after one click.  If OnPointerClicked is called twice after one click, the object will be selected and then immediately
             // unselected. If OnPointerClicked calls are within 0.5 secs of each other, then return to prevent an immediate object state switch.
             if ((Time.time - LastTimeClicked) < doubleClickTimeout)
             {
