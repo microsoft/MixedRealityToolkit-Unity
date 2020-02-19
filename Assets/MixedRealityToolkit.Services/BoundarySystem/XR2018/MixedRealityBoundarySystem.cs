@@ -61,7 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             return boundaryGeometry;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Updates the <see href="https://docs.unity3d.com/ScriptReference/XR.TrackingSpaceType.html">TrackingSpaceType</see> on the XR device.
+        /// </summary>
         protected override void SetTrackingSpace()
         {
             if (Application.isPlaying)
