@@ -2,7 +2,7 @@
 
 ![Object manipulator](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
 
-The *ObjectManipulator* is the new component for manipulation behaviour, previously found in *ManipulationHandler*. The object manipulator makes a number of improvements and simplifications, and future manipulation features and bug fixes will be made for this component, whereas the manipulation handler will be deprecated.
+The *ObjectManipulator* is the new component for manipulation behaviour, previously found in *ManipulationHandler*. The object manipulator makes a number of improvements and simplifications. This component is a replacement for the manipulation handler, which will be deprecated.
 
 The *ObjectManipulator* script makes an object movable, scalable, and rotatable using one or two hands. You can configure the object manipulator to control how the object will respond to various inputs. The script should work with most forms of interaction, such as HoloLens 2 articulated hand, HoloLens 2 hand rays, HoloLens 1 gaze and gestures and immersive headset motion controller input.
 
