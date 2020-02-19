@@ -188,7 +188,7 @@ This constraint can be used to fix along which axes a manipulated object can be 
 
 #### Constraint on movement
 
-Specifies which axes to prevent movement on. Because this property is a flag, any number of options can be selected.
+Specifies which axes to prevent movement on. By default these axes will be global rather than local, but this can be changed below. Because this property is a flag, any number of options can be selected.
 
 * *X Axis*: Movement along the x-axis is constrained if selected.
 * *Y Axis*: Movement along the y-axis is constrained if selected.
@@ -196,7 +196,7 @@ Specifies which axes to prevent movement on. Because this property is a flag, an
 
 #### Use local space for constraint
 
-Will constrain relative the manipulated object's local transform axes if true.
+Will constrain relative the manipulated object's local transform axes if true. False by default.
 
 ### RotationAxisConstraint
 
@@ -206,7 +206,7 @@ This constraint can be used to fix about which axes a manipulated object can be 
 
 #### Constraint on rotation
 
-Specifies which axes to prevent rotation about. Because this property is a flag, any number of options can be selected.
+Specifies which axes to prevent rotation about. By default these axes will be global rather than local, but this can be changed below. Because this property is a flag, any number of options can be selected.
 
 * *Y Axis*: Rotation about the y-axis is constrained if selected.
 * *Z Axis*: Rotation about the z-axis is constrained if selected.
@@ -214,7 +214,7 @@ Specifies which axes to prevent rotation about. Because this property is a flag,
 
 #### Use local space for constraint
 
-Will constrain relative the manipulated object's local transform axes if true.
+Will constrain relative the manipulated object's local transform axes if true. False by default.
 
 ### MinMaxScaleConstraint
 
