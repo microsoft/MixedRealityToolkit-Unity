@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 #if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
-using System.IO;
 using System;
-using System.Runtime.CompilerServices;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// A set of utilities to configure script compilation. 
+    /// A set of utilities to configure script compilation.
     /// </summary>
     [Obsolete("The ScriptingUtilities class is obsolete and will be removed from a future version of MRTK. Please use the ScriptUtilities class.")]
     public static class ScriptingUtilities
@@ -22,15 +22,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="fileName">The name of an optional file locate before appending.</param>
         /// <returns>
-        /// <param name="targetGroup">The build target group for which the sybmols are to be defined.</param>
+        /// <param name="targetGroup">The build target group for which the symbols are to be defined.</param>
         /// <param name="symbols">Array of symbols to define.</param>
         /// <remarks>
         /// To always append the symbols, pass null (or the empty string) for the fileName parameter.
         /// </remarks>
         [Obsolete("ScriptingUtilties.AppendScriptingDefinitions is obsolete and will be removed from a future version of MRTK. Please use FileUtilities.FindFilesInAssets and ScriptUtilties.AppendScriptingDefinitions.")]
         public static void AppendScriptingDefinitions(
-            string fileName, 
-            BuildTargetGroup targetGroup, 
+            string fileName,
+            BuildTargetGroup targetGroup,
             string[] symbols)
         {
             // Note: Typically, obsolete methods are re-implemented using the replacement versions.

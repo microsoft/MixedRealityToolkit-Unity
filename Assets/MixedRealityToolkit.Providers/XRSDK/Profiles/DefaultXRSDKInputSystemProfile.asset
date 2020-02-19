@@ -15,7 +15,7 @@ MonoBehaviour:
   isCustomProfile: 0
   dataProviderConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDataProvider,
+      reference: Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality.WindowsMixedRealityDeviceManager,
         Microsoft.MixedReality.Toolkit.Providers.XRSDK.WindowsMixedReality
     componentName: XRSDK Windows Mixed Reality Device Manager
     priority: 0

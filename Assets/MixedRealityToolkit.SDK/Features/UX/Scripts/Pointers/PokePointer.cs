@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
                 if (touchable)
                 {
-                    if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVConeCached(collider))
+                    if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
                     {
                         continue;
                     }

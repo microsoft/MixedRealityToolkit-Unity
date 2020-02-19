@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -162,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T
         /// </summary>
+        /// <remarks>Only functions when called within a UNITY_EDITOR context. Outside of UNITY_EDITOR, always returns false</remarks>
         /// <typeparam name="T">The potentially required component</typeparam>
         /// <param name="gameObject">the GameObject requiring the component</param>
         /// <param name="requiringTypes">A list of types that do require the component in question</param>
@@ -171,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit
             var genericType = typeof(T);
             requiringTypes = null;
 
+#if UNITY_EDITOR
             foreach (var monoBehaviour in gameObject.GetComponents<MonoBehaviour>())
             {
                 if (monoBehaviour == null)
@@ -200,6 +201,7 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 }
             }
+#endif // UNITY_EDITOR
 
             return requiringTypes != null;
         }
