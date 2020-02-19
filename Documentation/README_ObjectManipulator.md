@@ -204,7 +204,7 @@ Will constrain relative the manipulated object's local transform axes if true.
 
 This constraint can be used to fix about which axes a manipulated object can be rotated. This can be useful for keeping a manipulated object upright, but still allowing y-axis rotations, for example. The properties for `RotationAxisConstraint` are as follows:
 
-#### Constraint on movement
+#### Constraint on rotation
 
 Specifies which axes to prevent rotation about. Because this property is a flag, any number of options can be selected.
 
