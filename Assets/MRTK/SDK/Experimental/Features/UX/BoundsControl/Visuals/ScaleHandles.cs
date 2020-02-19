@@ -27,37 +27,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.handlesChanged.RemoveListener(HandlesChanged);
         }
 
-        private void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
-        {
-            switch (changedType)
-            {
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
-                    UpdateBaseMaterial();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
-                    UpdateGrabbedMaterial();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
-                    RecreateVisuals();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
-                    UpdateColliderBounds();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
-                    //TODO
-                    break;
-            }
-        }
+        //private void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
+        //{
+        //    switch (changedType)
+        //    {
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
+        //            UpdateBaseMaterial();
+        //            break;
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
+        //            UpdateGrabbedMaterial();
+        //            break;
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
+        //            RecreateVisuals();
+        //            break;
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
+        //            UpdateColliderBounds();
+        //            break;
+        //        case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
+        //            //TODO
+        //            break;
+        //    }
+        //}
 
-        private void UpdateColliderBounds()
-        {
-            foreach (var handle in handles)
-            {
-                var cornerbounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                UpdateColliderBounds(handle, cornerbounds);
-            }
-        }
+        //private void UpdateColliderBounds()
+        //{
+        //    foreach (var handle in handles)
+        //    {
+        //        var cornerbounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
+        //        UpdateColliderBounds(handle, cornerbounds.size);
+        //    }
+        //}
 
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        private void RecreateVisuals()
+        protected override void RecreateVisuals()
         {
             for (int i = 0; i < handles.Count; ++i)
             {
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (obsoleteChild)
                     {
                         obsoleteChild.parent = null;
-                        Object.Destroy(obsoleteChild);
+                        Object.Destroy(obsoleteChild.gameObject);
                     }
                     else
                     {
@@ -134,16 +134,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Bounds cornerBounds = CreateVisual(visualsScaleParent.gameObject, true);
 
                     // update handle collider bounds
-                    UpdateColliderBounds(handles[i], cornerBounds);
+                    UpdateColliderBounds(handles[i], cornerBounds.size);
                 }
             }
         }
 
-        private void UpdateColliderBounds(Transform handle, Bounds cornerBounds)
+        protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
-            var invScale = config.HandleSize / cornerBounds.size.x;
+            var invScale = config.HandleSize / visualSize.x;
             BoxCollider collider = handle.gameObject.GetComponent<BoxCollider>();
-            Vector3 colliderSize = cornerBounds.size * invScale;
+            Vector3 colliderSize = visualSize * invScale;
             collider.size = colliderSize;
             collider.size += BaseConfig.ColliderPadding;
         }

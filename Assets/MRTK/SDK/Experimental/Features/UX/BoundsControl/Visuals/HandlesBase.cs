@@ -14,10 +14,50 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     public abstract class HandlesBase : IProximityEffectObjectProvider
     {
+
+        internal HandlesBase()
+        {
+
+        }
         protected abstract HandlesBaseConfiguration BaseConfig
         {
             get;
         }
+
+        internal void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
+        {
+            switch (changedType)
+            {
+                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
+                    UpdateBaseMaterial();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
+                    UpdateGrabbedMaterial();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
+                    RecreateVisuals();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
+                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
+                    UpdateColliderBounds();
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
+                    //TODO
+                    break;
+            }
+        }
+
+        protected void UpdateColliderBounds()
+        {
+            foreach (var handle in handles)
+            {
+                var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
+                UpdateColliderBounds(handle, handleBounds.size);
+            }
+        }
+
+        protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
+        protected abstract void RecreateVisuals();
 
         internal void ResetHandleVisibility(bool isVisible)
         {

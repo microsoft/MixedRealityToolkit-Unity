@@ -29,6 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        internal static float GetMaxComponent(Vector3 vec)
+        {
+            return Mathf.Max(Mathf.Max(vec.x, vec.y), vec.z);
+        }
+
         internal static Bounds GetMaxBounds(GameObject g)
         {
             var b = new Bounds();
@@ -80,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 SphereCollider sphere = afford.AddComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
-                sphere.radius += Mathf.Max(Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
+                sphere.radius += GetMaxComponent(colliderPadding);
             }
 
             // In order for the affordance to be grabbed using near interaction we need

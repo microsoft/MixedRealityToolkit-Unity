@@ -30,40 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.colliderTypeChanged.RemoveListener(UpdateColliderType);
         }
 
-        private void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
-        {
-            switch (changedType)
-            {
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
-                    UpdateBaseMaterial();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
-                    UpdateGrabbedMaterial();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
-                    RecreateVisuals();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
-                case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
-                    UpdateColliderBounds();
-                    break;
-                case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
-                    //TODO
-                    break;
-            }
-        }
-
-       
-        void UpdateColliderBounds()
-        {
-            foreach (var handle in handles)
-            {
-                var handleBounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-                UpdateColliderBounds(handle, handleBounds.size);
-            }
-        }
-
-        void UpdateColliderType()
+        private void UpdateColliderType()
         {
             foreach (var handle in handles)
             {
@@ -97,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     SphereCollider sphere = handle.gameObject.AddComponent<SphereCollider>();
                     sphere.center = colliderCenterScaled;
                     sphere.radius = colliderSizeScaled.x * 0.5f;
-                    sphere.radius += GetMaxComponent(config.ColliderPadding);
+                    sphere.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
                 }
             }
         }
@@ -206,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 midpoint.transform.parent = parent;
 
                 Bounds midpointBounds = CreateVisual(i, midpoint);
-                float maxDim = GetMaxComponent(midpointBounds.size);
+                float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
                 float invScale = config.HandleSize / maxDim;
                 VisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
                     config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, drawManipulationTether);
@@ -216,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        private void RecreateVisuals()
+        protected override void RecreateVisuals()
         {
             for (int i = 0; i < handles.Count; ++i)
             {
@@ -226,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     // get old child and remove it
                     obsoleteChild.parent = null;
-                    Object.Destroy(obsoleteChild);
+                    Object.Destroy(obsoleteChild.gameObject);
                 }
                 else
                 {
@@ -241,12 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        private float GetMaxComponent(Vector3 vec)
-        {
-            return Mathf.Max(Mathf.Max(vec.x, vec.y), vec.z);
-        }
-
-        private void UpdateColliderBounds(Transform handle, Vector3 visualSize)
+        protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
             var invScale = config.HandleSize / visualSize.x;
             Vector3 colliderSizeScaled = visualSize * invScale;
@@ -260,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 SphereCollider collider = handle.gameObject.GetComponent<SphereCollider>();
                 collider.radius = colliderSizeScaled.x * 0.5f;
-                collider.radius += GetMaxComponent(config.ColliderPadding);
+                collider.radius += VisualUtils.GetMaxComponent(config.ColliderPadding);
             }
         }
 
@@ -292,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             Bounds midpointBounds = VisualUtils.GetMaxBounds(midpointVisual);
-            float maxDim = GetMaxComponent(midpointBounds.size);
+            float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
             float invScale = config.HandleSize / maxDim;
 
             midpointVisual.name = "visuals";

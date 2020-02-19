@@ -51,7 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (targetObject != value)
                 {
                     targetObject = value;
-                    CreateRig();
+                    isChildOfTarget = transform.IsChildOf(targetObject.transform);
+                    SetBoundsControlCollider();
+                    UpdateBounds();
+                    UpdateVisuals();
                 }
             }
         }
@@ -76,7 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     {
                         prevBoundsOverride = new Bounds();
                     }
-                    CreateRig();
+                    SetBoundsControlCollider();
+                    UpdateBounds();
+                    UpdateVisuals();
                 }
             }
         }
@@ -96,7 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (boundsCalculationMethod != value)
                 {
                     boundsCalculationMethod = value;
-                    CreateRig();
+                    SetBoundsControlCollider();
+                    UpdateBounds();
+                    UpdateVisuals();
                 }
             }
         }
@@ -208,7 +215,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (Vector3.Distance(boxPadding, value) > float.Epsilon)
                 {
                     boxPadding = value;
-                    CreateRig();
+                    SetBoundsControlCollider();
+                    UpdateBounds();
+                    UpdateVisuals();
                 }
             }
         }
@@ -546,22 +555,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             boxDisplay = new BoxDisplay(boxDisplayConfiguration);
             links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
-
-            // subscribe to visual changes
-           // scaleHandlesConfiguration.configurationChanged.AddListener(CreateRig);
-           // scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
-           // rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
-            //boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
-            //linksConfiguration.configurationChanged.AddListener(CreateRig);          
-        }
-
-        private void OnDestroy()
-        {
-            //scaleHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
-            //scaleHandlesConfiguration.visibilityChanged.RemoveListener(ResetVisuals);
-            //rotationHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
-           // boxDisplayConfiguration.configurationChanged.RemoveListener(CreateRig);
-            //linksConfiguration.configurationChanged.RemoveListener(CreateRig);
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject
@@ -669,6 +662,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             else
             {
+                // first remove old collider if there is any so we don't accumulate any 
+                // box padding on consecutive calls of this method
+                if (TargetBounds != null)
+                {
+                    Destroy(TargetBounds);
+                }
                 Bounds bounds = GetTargetBounds();
                 TargetBounds = Target.AddComponent<BoxCollider>();
 
@@ -821,9 +820,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             if (Target != null)
             {
                 isChildOfTarget = transform.IsChildOf(Target.transform);
-
-                RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
             }
+            RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
         }
        
 

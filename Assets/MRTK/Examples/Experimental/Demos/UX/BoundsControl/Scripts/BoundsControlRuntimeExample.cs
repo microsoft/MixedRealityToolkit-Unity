@@ -116,14 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 SetStatus("ShowWireframe true");
                 boundsControl.LinksConfiguration.ShowWireFrame = true;
                 yield return WaitForSpeechCommand();
-               
-                SetStatus("Wireframe radius 0.1");
-                boundsControl.LinksConfiguration.WireframeEdgeRadius = 0.1f;
-                yield return WaitForSpeechCommand();
-
-                SetStatus("Wireframe shape cylinder");
-                boundsControl.LinksConfiguration.WireframeShape = WireframeType.Cylindrical;
-                yield return WaitForSpeechCommand();
 
                 SetStatus("BoxPadding 0.2f");
                 boundsControl.BoxPadding = new Vector3(0.2f, 0.2f, 0.2f);
@@ -164,15 +156,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
                 SetStatus("Scale X and update rig");
                 cube.transform.localScale = new Vector3(2, 1, 1);
-                boundsControl.CreateRig();
+                //boundsControl.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
                 boundsControl.RotationHandles.ShowRotationHandleForY = true;
-                boundsControl.CreateRig();
+                //boundsControl.CreateRig();
                 yield return WaitForSpeechCommand();
 
+                SetStatus("Wireframe radius 0.1");
+                boundsControl.LinksConfiguration.WireframeEdgeRadius = 0.1f;
+                yield return WaitForSpeechCommand();
+
+                SetStatus("Wireframe shape cylinder");
+                boundsControl.LinksConfiguration.WireframeShape = WireframeType.Cylindrical;
+                yield return WaitForSpeechCommand();
 
                 Destroy(cube);
             }

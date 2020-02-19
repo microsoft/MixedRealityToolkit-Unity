@@ -100,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #endregion Serialized Properties
 
-        //[System.Serializable]
         internal enum WireframeChangedEventType
         {
             VISIBILITY,
@@ -108,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             SHAPE,
             MATERIAL
         }
-        //[System.Serializable]
         internal class WireFrameEvent : UnityEvent<WireframeChangedEventType> { }
         internal WireFrameEvent wireFrameChanged = new WireFrameEvent();
 
