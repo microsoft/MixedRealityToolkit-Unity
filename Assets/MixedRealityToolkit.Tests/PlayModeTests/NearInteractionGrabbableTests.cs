@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// and at least one of them is valid
         /// </summary>
         [UnityTest]
-        public IEnumerator TestMultipleColiders()
+        public IEnumerator TestMultipleColliders()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
