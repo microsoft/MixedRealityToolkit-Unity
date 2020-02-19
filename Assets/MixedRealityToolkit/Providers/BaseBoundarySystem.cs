@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
             BoundaryHeight = profile.BoundaryHeight;
 
+            SetTrackingSpace();
             CalculateBoundaryBounds();
 
             ShowFloor = profile.ShowFloor;
