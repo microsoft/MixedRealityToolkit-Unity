@@ -29,12 +29,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
                 }
             }
+            highlightedHandle = null;
         }
 
         internal abstract bool IsVisible(Transform handle);
         
 
         internal protected List<Transform> handles = new List<Transform>();
+        private Transform highlightedHandle = null;
+
+        
 
         public IReadOnlyList<Transform> Handles
         {
@@ -55,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     else
                     {
                         VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
+                        highlightedHandle = handleToHighlight;
                     }
                 }
             }
@@ -99,6 +104,43 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected abstract Transform GetVisual(Transform handle);
 
+        protected void UpdateBaseMaterial()
+        {
+            if (handles != null)
+            {
+                for (int i = 0; i < handles.Count; ++i)
+                {
+                    if (handles[i] != highlightedHandle)
+                    {
+                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    }
+                }
+            }
+        }
+
+        protected void UpdateGrabbedMaterial()
+        {
+            SetHighlighted(highlightedHandle);
+        }
+
+        //protected void UpdateColliderPadding(HandlePrefabCollider colliderType, Vector3 size)
+        //{
+        //    foreach (var handle in handles)
+        //    {
+        //        if (colliderType == HandlePrefabCollider.Box)
+        //        {
+        //            BoxCollider collider = handle.gameObject.GetComponent<BoxCollider>();
+        //            collider.size = size;
+        //            collider.size += BaseConfig.ColliderPadding;
+        //        }
+        //        else
+        //        {
+        //            SphereCollider sphere = handle.gameObject.GetComponent<SphereCollider>();
+        //            sphere.radius = size.x;
+        //            sphere.radius += Mathf.Max(Mathf.Max(BaseConfig.ColliderPadding.x, BaseConfig.ColliderPadding.y), BaseConfig.ColliderPadding.z);
+        //        }
+        //    }
+        //}
 
         #region IProximityScaleObjectProvider 
         public abstract bool IsActive();

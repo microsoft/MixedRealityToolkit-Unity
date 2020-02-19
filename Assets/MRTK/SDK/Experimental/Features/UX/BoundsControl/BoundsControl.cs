@@ -548,20 +548,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
 
             // subscribe to visual changes
-            scaleHandlesConfiguration.configurationChanged.AddListener(CreateRig);
-            scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
-            rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
-            boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
-            linksConfiguration.configurationChanged.AddListener(CreateRig);          
+           // scaleHandlesConfiguration.configurationChanged.AddListener(CreateRig);
+           // scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
+           // rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
+            //boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
+            //linksConfiguration.configurationChanged.AddListener(CreateRig);          
         }
 
         private void OnDestroy()
         {
-            scaleHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
-            scaleHandlesConfiguration.visibilityChanged.RemoveListener(ResetVisuals);
-            rotationHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
-            boxDisplayConfiguration.configurationChanged.RemoveListener(CreateRig);
-            linksConfiguration.configurationChanged.RemoveListener(CreateRig);
+            //scaleHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
+            //scaleHandlesConfiguration.visibilityChanged.RemoveListener(ResetVisuals);
+            //rotationHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
+           // boxDisplayConfiguration.configurationChanged.RemoveListener(CreateRig);
+            //linksConfiguration.configurationChanged.RemoveListener(CreateRig);
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject

@@ -17,10 +17,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private BoxDisplayConfiguration config;
 
+        private Vector3 cachedExtents;
+        private FlattenModeType flattenMode;
+
         internal BoxDisplay(BoxDisplayConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlBoxDisplay without valid configuration");
             config = configuration;
+            config.flattenAxisScaleChanged.AddListener(UpdateDisplayWithCache);
+            config.materialChanged.AddListener(UpdateBoxDisplayMaterial);
+        }
+
+        ~BoxDisplay()
+        {
+            config.flattenAxisScaleChanged.RemoveListener(UpdateDisplayWithCache);
+            config.materialChanged.RemoveListener(UpdateBoxDisplayMaterial);
         }
 
         internal void AddBoxDisplay(Transform parent, Vector3 currentBoundsExtents, FlattenModeType flattenAxis)
@@ -28,10 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             if (config.BoxMaterial != null)
             {
                 // This has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
-                boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube); 
+                boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
-
+                flattenMode = flattenAxis;
+                cachedExtents = currentBoundsExtents;
                 VisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
@@ -83,5 +95,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 boxDisplay.transform.parent = parent;
             }
         }
+
+        internal void UpdateDisplayWithCache()
+        {
+            UpdateDisplay(cachedExtents, flattenMode);
+        }   
+
+        internal void UpdateBoxDisplayMaterial()
+        {
+            if (boxDisplay)
+            {
+                ResetVisibility(boxDisplay.activeSelf);
+            }
+            else 
+            { 
+            // todo add box display
+            }
+        }
+
     }
 }

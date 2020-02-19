@@ -30,11 +30,48 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private List<Link> links = new List<Link>();
 
         private LinksConfiguration config;
+        private Vector3 cachedExtents;
 
         internal Links(LinksConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlLinks without valid configuration");
             config = configuration;
+            config.wireFrameChanged.AddListener(UpdateWireframe);
+        }
+
+        ~Links()
+        {
+            config.wireFrameChanged.RemoveListener(UpdateWireframe);
+        }
+
+        private void UpdateWireframe(LinksConfiguration.WireframeChangedEventType changedType)
+        {
+            switch (changedType)
+            {
+                case LinksConfiguration.WireframeChangedEventType.VISIBILITY:
+                    if (links != null)
+                    {
+                        // todo
+                        // show links but links haven't been created yet -> create links
+                        if (config.ShowWireFrame && links.Count == 0)
+                        { 
+                        }
+                        else
+                        {
+                            ResetVisibility(config.ShowWireFrame);
+                        }
+                    }
+                    break;
+                case LinksConfiguration.WireframeChangedEventType.RADIUS:
+                    UpdateLinkScales(cachedExtents);
+                    break;
+                case LinksConfiguration.WireframeChangedEventType.SHAPE:
+                    UpdateLinkPrimitive();
+                    break;
+                case LinksConfiguration.WireframeChangedEventType.MATERIAL:
+                    UpdateMaterial();
+                    break;
+            }
         }
 
         internal void Clear()
@@ -46,6 +83,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     Object.Destroy(link.transform.gameObject);
                 }
                 links.Clear();
+            }
+        }
+
+        internal void UpdateMaterial() // update call for wireframematerial update
+        {
+            if (links != null && config.WireframeMaterial != null)
+            {
+                for (int i = 0; i < links.Count; ++i)
+                {
+                    Renderer linkRenderer = links[i].transform.gameObject.GetComponent<Renderer>();
+                    if (linkRenderer != null)
+                    {
+                        linkRenderer.material = config.WireframeMaterial;
+                    }
+                }
             }
         }
 
@@ -119,6 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         links[i].transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
                     }
                 }
+                cachedExtents = currentBoundsExtents;
             }
         }
 
@@ -137,6 +190,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        private void UpdateLinkPrimitive()
+        {
+            GameObject sharedMeshPrimitive;
+            if (config.WireframeShape == WireframeType.Cubic)
+            {
+                sharedMeshPrimitive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            }
+            else
+            {
+                sharedMeshPrimitive = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            }
+            var sharedMeshFilter = sharedMeshPrimitive.GetComponent<MeshFilter>();
+            if (sharedMeshFilter)
+            {
+                foreach (var link in links)
+                {
+                    GameObject linkObj = link.transform.gameObject;
+                    // replace shared mesh - note that we don't have a collider to replace in case of wireframe
+                    linkObj.GetComponent<MeshFilter>().sharedMesh = sharedMeshFilter.sharedMesh;
+                }
+            }
+
+            Object.DestroyImmediate(sharedMeshPrimitive);
+            UpdateLinkScales(cachedExtents);
+        }
+
         internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
@@ -149,12 +228,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (config.WireframeShape == WireframeType.Cubic)
                     {
                         link = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        GameObject.Destroy(link.GetComponent<BoxCollider>());
+                        Object.Destroy(link.GetComponent<BoxCollider>());
                     }
                     else
                     {
                         link = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                        GameObject.Destroy(link.GetComponent<CapsuleCollider>());
+                        Object.Destroy(link.GetComponent<CapsuleCollider>());
                     }
                     link.name = "link_" + i.ToString();
 

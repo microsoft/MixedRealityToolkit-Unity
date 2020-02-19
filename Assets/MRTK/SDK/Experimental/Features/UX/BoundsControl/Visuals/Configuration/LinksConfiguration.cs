@@ -31,14 +31,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     wireframeMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    //configurationChanged.Invoke();
+                    // update materials
+                    wireFrameChanged.Invoke(WireframeChangedEventType.MATERIAL);
                 }
             }
         }
 
         [SerializeField]
         [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.001f;
+        private float wireframeEdgeRadius = 0.001f; 
 
         /// <summary>
         /// Radius for wireframe edges
@@ -51,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeEdgeRadius != value)
                 {
                     wireframeEdgeRadius = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.RADIUS);
                 }
             }
         }
@@ -71,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (wireframeShape != value)
                 {
                     wireframeShape = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.SHAPE);
                 }
             }
         }
@@ -91,14 +93,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (showWireframe != value)
                 {
                     showWireframe = value;
-                    configurationChanged.Invoke();
+                    wireFrameChanged.Invoke(WireframeChangedEventType.VISIBILITY);
                 }
             }
         }
 
         #endregion Serialized Properties
 
-        internal protected UnityEvent configurationChanged = new UnityEvent();
+        //[System.Serializable]
+        internal enum WireframeChangedEventType
+        {
+            VISIBILITY,
+            RADIUS,
+            SHAPE,
+            MATERIAL
+        }
+        //[System.Serializable]
+        internal class WireFrameEvent : UnityEvent<WireframeChangedEventType> { }
+        internal WireFrameEvent wireFrameChanged = new WireFrameEvent();
 
         public void Awake()
         {

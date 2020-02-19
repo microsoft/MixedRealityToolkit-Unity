@@ -65,10 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Add all common components to a corner or rotate affordance
         /// </summary>
-        internal static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, 
+        internal static void AddComponentsToAffordance(GameObject afford, Bounds bounds, HandlePrefabCollider colliderType, 
             CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding, Transform parent, bool drawTetherWhenManipulating)
         {
-            if (colliderType == RotationHandlePrefabCollider.Box)
+            if (colliderType == HandlePrefabCollider.Box)
             {
                 BoxCollider collider = afford.AddComponent<BoxCollider>();
                 collider.size = bounds.size;

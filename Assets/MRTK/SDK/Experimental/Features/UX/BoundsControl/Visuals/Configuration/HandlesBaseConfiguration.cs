@@ -27,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.MATERIAL);
+                   // configurationChanged.Invoke();
                 }
             }
         }
@@ -48,7 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleGrabbedMaterial = value;
                     TrySetDefaultMaterial();
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.MATERIAL_GRABBED);
+                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -68,7 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handlePrefab != value)
                 {
                     handlePrefab = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.PREFAB);
+                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -88,7 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (handleSize != value)
                 {
                     handleSize = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.COLLIDER_SIZE);
+                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -108,13 +112,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (colliderPadding != value)
                 {
                     colliderPadding = value;
-                    configurationChanged.Invoke();
+                    handlesChanged.Invoke(HandlesChangedEventType.COLLIDER_PADDING);
                 }
             }
         }
 
-        internal protected UnityEvent configurationChanged = new UnityEvent();
-        internal protected UnityEvent visibilityChanged = new UnityEvent();
+        //internal protected UnityEvent configurationChanged = new UnityEvent();
+        //internal protected UnityEvent visibilityChanged = new UnityEvent();
+
+        internal enum HandlesChangedEventType
+        {
+            MATERIAL,
+            MATERIAL_GRABBED,
+            PREFAB,
+            COLLIDER_SIZE,
+            COLLIDER_PADDING,
+            VISIBILITY
+        }
+        internal class HandlesChangedEvent : UnityEvent<HandlesChangedEventType> { }
+        internal HandlesChangedEvent handlesChanged = new HandlesChangedEvent();
 
         private void Awake()
         {

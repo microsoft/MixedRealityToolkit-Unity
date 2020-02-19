@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             assetsToDestroy.Add(path);
             AssetDatabase.CreateAsset(rotationHandles, path);
 
-            rotationHandles.RotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
+            rotationHandles.RotationHandlePrefabColliderType = HandlePrefabCollider.Box;
             rotationHandles.ShowRotationHandleForX = false;
             rotationHandles.ShowRotationHandleForY = true;
             rotationHandles.ShowRotationHandleForZ = true;
