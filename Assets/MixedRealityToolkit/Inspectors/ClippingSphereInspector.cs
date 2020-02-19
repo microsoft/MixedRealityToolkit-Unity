@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// A custom editor for the ClippingSphere to allow for specification of the framing bounds.
     /// </summary>
     [CustomEditor(typeof(ClippingSphere))]
+    [CanEditMultipleObjects]
     public class ClippingSphereEditor : ClippingPrimitiveEditor
     {
         /// <inheritdoc/>

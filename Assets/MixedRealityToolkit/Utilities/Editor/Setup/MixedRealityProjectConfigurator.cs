@@ -102,7 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return XRSettingsUtilities.LegacyXREnabled; }) },
             { Configurations.SinglePassInstancing, new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
+#if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return PackageManifestUpdater.IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
+#endif // !UNITY_2019_3_OR_NEWER
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.SpatialPerception); }, BuildTarget.WSAPlayer) },
@@ -138,7 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.VirtualRealitySupported,  () => { XRSettingsUtilities.LegacyXREnabled = true; } },
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
+#if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
+#endif // !UNITY_2019_3_OR_NEWER
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEditor.PackageManager;
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     // Parse the float component
                     string prereleaseString = versionComponents[1].Trim(trimChars);
-                    if (float.TryParse(prereleaseString, out prerelease))
+                    if (float.TryParse(prereleaseString, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out prerelease))
                     {
                         return true;
                     }
