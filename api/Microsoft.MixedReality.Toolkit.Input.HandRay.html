@@ -93,6 +93,10 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">HandRay</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IHandRay.html">IHandRay</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -121,7 +125,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_HandRay_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class HandRay</code></pre>
+    <pre><code class="lang-csharp hljs">public class HandRay : IHandRay</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -129,7 +133,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_HandRay_Ray_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.Ray*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_HandRay_Ray" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.Ray">Ray</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Ray used by input system for Far Pointers.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -154,7 +159,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_HandRay_ShouldShowRay_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.ShouldShowRay*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_HandRay_ShouldShowRay" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.ShouldShowRay">ShouldShowRay</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Check whether hand palm is angled in a way that hand rays should be used.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -181,7 +187,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_HandRay_Update_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.Update*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_HandRay_Update_Vector3_Vector3_Transform_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.HandRay.Update(Vector3,Vector3,Transform,Handedness)">Update(Vector3, Vector3, Transform, Handedness)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Update data used by hand implementation, to compute next HandRay.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -200,25 +207,33 @@
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">handPosition</span></td>
-        <td></td>
+        <td><p>Position of hand</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">palmNormal</span></td>
-        <td></td>
+        <td><p>Palm normal</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Transform</span></td>
         <td><span class="parametername">headTransform</span></td>
-        <td></td>
+        <td><p>Transform of CameraCache.main</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Handedness</span></td>
         <td><span class="parametername">sourceHandedness</span></td>
-        <td></td>
+        <td><p>Handedness of related hand</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IHandRay.html">IHandRay</a>
+  </div>
 </article>
           </div>
           

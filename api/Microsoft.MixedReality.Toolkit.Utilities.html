@@ -262,6 +262,17 @@ Extends C# Dictionary class to support typical API access methods</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.SplineDataProvider.html">SplineDataProvider</a></h4>
       <section><p>Creates a spline based on control points.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.StabilizedRay.html">StabilizedRay</a></h4>
+      <section><p>A ray whose position and direction are stabilized in a way similar to how gaze stabilization
+works in HoloLens.</p>
+<p>The ray uses Anatolie Gavrulic's &quot;DynamicExpDecay&quot; filter to stabilize the ray
+this filter adjusts its smoothing factor based on the velocity of the filtered object</p>
+<p>The formula is
+Y_smooted += ∆𝑌_𝑟
+where
+〖∆𝑌_𝑟=∆𝑌∗〖0.5〗^(∆𝑌/〖Halflife〗)</p>
+<p>In code, LERP(signal, oldValue, POW(0.5, ABS(signal – oldValue) / hl)</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.StandardShaderUtility.html">StandardShaderUtility</a></h4>
       <section><p>Mixed Reality standard shader utility class with commonly used constants, types and convenience methods.</p>
 </section>
