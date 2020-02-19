@@ -145,6 +145,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Initializes the MixedRealityToolkit object.
+        /// </summary>
+        /// <param name="configuration">The configuration profile to use during initialization.</param>
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             InitializeCamera();
@@ -173,6 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
         }
 
+        /// <summary>
+        /// Initializes the MixedRealityToolkit object.
+        /// </summary>
+        /// <param name="useDefaultProfile">If set to true, initializes using the default configuration profile. If false, creates and uses an empty profile.</param>
         public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
         {
             var configuration = useDefaultProfile
@@ -183,6 +191,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(configuration);
         }
 
+        /// <summary>
+        /// Deactivates the MixedRealityToolkit object and destroys the playspace.
+        /// </summary>
         public static void ShutdownMixedRealityToolkit()
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
@@ -194,6 +205,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
+        /// <summary>
+        /// Gets the default profile of the specified type.
+        /// </summary>
+        /// <typeparam name="T">Thhe type of profile to return (ex: MixedRealityToolkitConfigurationProfile)</typeparam>
+        /// <returns>
+        /// When running in the editor, returns the default profile. If running in play mode, a new instance of the specified profile type is returned.
+        /// </returns>
         public static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
         {
 #if UNITY_EDITOR
