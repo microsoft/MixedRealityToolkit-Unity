@@ -152,7 +152,7 @@ function CheckCustomProfile {
         [int]$LineNumber
     )
     process {
-        if ($FileName -notmatch "Examples" -and $FileContent[$LineNumber] -match "isCustomProfile: 1") {
+        if ($FileName -notmatch "Examples" -and $FileName -notmatch "Tests" -and $FileContent[$LineNumber] -match "isCustomProfile: 1") {
             Write-Host "An instance of 'isCustomProfile: 1' was found in $FileName at line $LineNumber"
             Write-Host "Please update this to 'isCustomProfile: 0' instead."
             $true
