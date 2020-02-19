@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
             success = PackageManifestUpdater.TryGetVersionComponents("0.9.1-20200131.12", out version, out prerelease);
             Assert.IsTrue(success);
             Assert.AreEqual(version, new Version(0, 9, 1));
-            Assert.AreEqual(prerelease, float.Parse("20200131.12"));
+            Assert.AreEqual(prerelease, 20200131.12f);
         }
 
         /// <summary>
