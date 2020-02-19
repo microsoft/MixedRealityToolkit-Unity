@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseHand : BaseController, IMixedRealityHand
     {
         // Hand ray
-        protected HandRay HandRay { get; } = new HandRay();
+        protected virtual IHandRay HandRay { get; } = new HandRay();
 
         public override bool IsInPointingPose => HandRay.ShouldShowRay;
 

@@ -8,7 +8,7 @@ MRTK Examples Hub is a Unity scene that makes it easy to experience multiple sce
 
 ## Prerequisite
 
-MRTK Examples Hub uses [Scene Transition Service](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html) and related scripts. If you are using MRTK through Unity packages, please import **Microsoft.MixedReality.Toolkit.Unity.Extensions.x.x.x.unitypackage** which is part of the [release packages](https://github.com/microsoft/MixedRealityToolkit-Unity/releases). If you are using MRTK through the repository clone, you should already have **MixedRealityToolkit.Extensions** folder in your project.
+MRTK Examples Hub uses [Scene Transition Service](Extensions/SceneTransitionService/SceneTransitionServiceOverview.md) and related scripts. If you are using MRTK through Unity packages, please import **Microsoft.MixedReality.Toolkit.Unity.Extensions.x.x.x.unitypackage** which is part of the [release packages](https://github.com/microsoft/MixedRealityToolkit-Unity/releases). If you are using MRTK through the repository clone, you should already have **MixedRealityToolkit.Extensions** folder in your project.
 
 ## MRTKExamplesHub scene and the scene system
 

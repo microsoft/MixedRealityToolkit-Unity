@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// - If AR Foundation has been installed via the Unity Package Manager, add the appropriate assembly references
         ///   - Unity 2018: Unity.XR.ARFoundation
         ///   - Unity 2019 and newer: Unity.XR.ARFoundation, UnityEngine.SpatialTracking
-        /// - If AR Foundation has been uninstalled, remove the assembly references. 
+        /// - If AR Foundation has been uninstalled, remove the assembly references.
         /// - Save the Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef file
         /// This will result in Unity reloading the assembly with the appropriate dependencies.
         /// </remarks>

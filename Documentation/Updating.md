@@ -1,5 +1,6 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
+- [2.3.0 to 2.4.0](#updating-220-to-230)
 - [2.2.0 to 2.3.0](#updating-220-to-230)
 - [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
@@ -7,6 +8,10 @@
 
 > [!NOTE]
 > Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
+
+## Updating 2.3.0 to 2.4.0
+
+*Coming soon*
 
 ## Updating 2.2.0 to 2.3.0
 
@@ -31,7 +36,7 @@ The ScriptingUtilities class has been marked as obsolete and has been replaced b
 
 While existing code will continue to function in version 2.3.0, it is recommended to update to the new class.
 
-**ShellHandRayPouinter**
+**ShellHandRayPointer**
 
 The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863)).
 

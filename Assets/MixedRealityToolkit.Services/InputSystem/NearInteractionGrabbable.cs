@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -31,16 +30,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Emit exception on initialization, when we know grab interaction is used 
             // on this object to make an error clearly visible.
 
-            var collider = gameObject.GetComponent<Collider>();
-
-            if((collider as BoxCollider) == null && 
-                (collider as CapsuleCollider) == null &&
-                (collider as SphereCollider) == null &&
-                ((collider as MeshCollider) == null || (collider as MeshCollider).convex == false))
+            // Note that there can be multiple colliders on an object - as long as one
+            // of them are of the valid type, this object will work with NearInteractionGrabbable
+            Collider[] colliders = gameObject.GetComponents<Collider>();
+            bool containsValidCollider = false;
+            for (int i = 0; i < colliders.Length && !containsValidCollider; i++)
             {
-                Debug.LogException(new InvalidOperationException("NearInteractionGrabbable requires a " +
+                Collider collider = colliders[i];
+                containsValidCollider =
+                    (collider is BoxCollider) ||
+                    (collider is CapsuleCollider) ||
+                    (collider is SphereCollider) ||
+                    (collider is MeshCollider && (collider as MeshCollider).convex);
+            }
+
+            if (!containsValidCollider)
+            {
+                Debug.LogError("NearInteractionGrabbable requires a " +
                     "BoxCollider, SphereCollider, CapsuleCollider or a convex MeshCollider on an object. " +
-                    "Otherwise grab interaction will not work correctly."));
+                    "Otherwise grab interaction will not work correctly.");
             }
         }
     }
