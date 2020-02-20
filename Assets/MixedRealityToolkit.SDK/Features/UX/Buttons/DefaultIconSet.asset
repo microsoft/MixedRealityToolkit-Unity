@@ -32,10 +32,10 @@ MonoBehaviour:
   - {fileID: 21300004, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300006, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300008, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300010, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300012, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300014, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300016, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
-  - {fileID: 21300010, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300018, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   - {fileID: 21300020, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   charIconFont: {fileID: 0}

@@ -7,7 +7,7 @@ TextureImporter:
     21300004: AppBarHide
     21300006: AppBarShow
     21300008: ButtonFollowMe
-    21300010: ButtonJandJoint
+    21300010: ButtonHandJoint
     21300012: ButtonHandMesh
     21300014: ButtonHandRay
     21300016: ButtonHome
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ButtonJandJoint
+      name: ButtonHandJoint
       rect:
         serializedVersion: 2
         x: 512
@@ -335,7 +335,7 @@ TextureImporter:
         width: 512
         height: 512
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

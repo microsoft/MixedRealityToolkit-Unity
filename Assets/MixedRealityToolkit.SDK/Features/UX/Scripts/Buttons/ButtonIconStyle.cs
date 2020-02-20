@@ -9,9 +9,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public enum ButtonIconStyle
     {
-        Quad,   // Renders using a material on a quad. Icon texture is set using a MaterialPropertyBlock.
-        Sprite, // Renders using a sprite renderer. Icon texture is set by changing the sprite.
-        Char,   // Renders using TextMeshPro. Icon texture is set by changing the character.
-        None,   // Hides the icons.
+        /// <summary>
+        /// Renders using a material on a quad. Icon texture is set using a MaterialPropertyBlock.
+        /// </summary>
+        Quad,
+        /// <summary>
+        /// Renders using a sprite renderer. Icon texture is set by changing the sprite.
+        /// </summary>
+        Sprite,
+        /// <summary>
+        /// Renders using TextMeshPro. Icon texture is set by changing the character.
+        /// </summary>
+        Char,
+        /// <summary>
+        /// Hides the icons.
+        /// </summary>
+        None,
     }
 }

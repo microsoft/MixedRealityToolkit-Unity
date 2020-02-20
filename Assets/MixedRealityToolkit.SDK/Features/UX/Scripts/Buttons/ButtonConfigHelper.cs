@@ -107,7 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-
+        /// <summary>
+        /// The button's icon set. Note that setting this will not automatically assign an icon from the new set.
+        /// </summary>
         public ButtonIconSet IconSet
         {
             get => iconSet;

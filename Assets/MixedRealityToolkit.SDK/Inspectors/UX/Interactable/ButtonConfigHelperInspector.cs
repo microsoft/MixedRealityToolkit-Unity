@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using UnityEngine;
 using UnityEditor;
 using Microsoft.MixedReality.Toolkit.UI;
 
@@ -11,9 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         const string BasicEventsFoldoutKey = "MRTK.ButtonConfigHelper.BasicEvents";
         const string IconFoldoutKey = "MRTK.ButtonConfigHelper.Icon";
         const string ShowComponentsKey = "MRTK.ButtonConfigHelper.ShowComponents";
-
-        const float iconPreviewWidth = 60f;
-        const float iconPreviewHeight = 60f;
 
         private SerializedProperty mainLabelTextProp;
         private SerializedProperty seeItSayItLabelProp;
