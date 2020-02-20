@@ -56,6 +56,11 @@ function CheckDocLinks {
     }
 }
 
+# A case-sensitve cache of all checked image paths, so that we can
+# avoid hitting disk when checking for repeated images. Uses System.Collections.Hashtable
+# directly because the default Dictionary in powershell is case-insensitive
+$ResolvedImagePaths = New-Object System.Collections.Hashtable
+
 <#
 .SYNOPSIS
     Given a full path to a markdown file and a relative image path, checks to see if the
@@ -179,12 +184,6 @@ function CheckBrokenImages {
         $hasBrokenImage;
     }
 }
-
-# A case-sensitve cache of all checked image paths, so that we can
-# avoid hitting disk when checking for repeated images. Uses System.Collections.Hashtable
-# directly because the default Dictionary in powershell is case-insensitive
-$ResolvedImagePaths = New-Object System.Collections.Hashtable
-
 
 function CheckDocument {
     [CmdletBinding()]
