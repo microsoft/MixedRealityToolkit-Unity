@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     {
         protected override HandlesBaseConfiguration BaseConfig => config;
         private ScaleHandlesConfiguration config;
+        private bool areHandlesFlattened = false;
         internal ScaleHandles(ScaleHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlScaleHandles without valid configuration");
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
 
                     // create new visual
-                    Bounds cornerBounds = CreateVisual(visualsScaleParent.gameObject, true);
+                    Bounds cornerBounds = CreateVisual(visualsScaleParent.gameObject, areHandlesFlattened);
 
                     // update handle collider bounds
                     UpdateColliderBounds(handles[i], cornerBounds.size);
@@ -158,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             // figure out which prefab to instantiate
             GameObject cornerVisual = null;
+            areHandlesFlattened = isFlattened;
             GameObject prefabType = isFlattened ? config.HandleSlatePrefab : config.HandlePrefab;
             if (prefabType == null)
             {
@@ -192,6 +194,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             VisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);
 
             return cornerbounds;
+        }
+
+        internal void UpdateFlattenMode(bool isFlattened)
+        {
+            areHandlesFlattened = isFlattened;
+            RecreateVisuals();
         }
 
         #region BoundsControlHandlerBase

@@ -173,7 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     flattenAxis = value;
                     Flatten(flattenAxis);
-                    CreateRig();
+                    //CreateRig();
+                    UpdateFlattenAxis();
+                    UpdateBounds();
+                    UpdateVisuals();
                 }
             }
         }
@@ -1199,6 +1202,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             rotationHandles.FlattenHandles(ref flattenedHandles);
         }
 
+        private void UpdateFlattenAxis()
+        {
+            //CreateRig();
+            if (!IsInitialized)
+            {
+                return;
+            }
+            ResetVisuals();
+            links.ResetVisibility(active);
+            links.Flatten(ref flattenedHandles);
+            bool isVisible = (active == true && wireframeOnly == false);
+            rotationHandles.ResetHandleVisibility(isVisible);
+            rotationHandles.FlattenHandles(ref flattenedHandles);
+            scaleHandles.UpdateFlattenMode(flattenAxis != FlattenModeType.DoNotFlatten);
+            boxDisplay.UpdateFlattenAxis(flattenAxis);
+        }
         private void CreateVisuals()
         {
             // add corners

@@ -156,13 +156,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
                 SetStatus("Scale X and update rig");
                 cube.transform.localScale = new Vector3(2, 1, 1);
-                //boundsControl.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
                 boundsControl.RotationHandles.ShowRotationHandleForY = true;
-                //boundsControl.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe radius 0.1");
