@@ -178,7 +178,7 @@ The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Han
 
 Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) property for additional documentation. A few properties are defined in more detail below.
 
-![Hand constraint palm up](Images/Solver/MRTK_Solver_HandConstraintPalmUp.md)
+<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
 
 * **Safe Zone**: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with [`IMixedRealityHand`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.
 
