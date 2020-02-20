@@ -58,11 +58,11 @@ For transparent materials using the [MRTK Standard shader](README_MRTKStandardSh
 
 Before
 
-![Depth Buffer Before Fix MRTK Standard Shader](Images/Performance/DepthBufferFixNow_Before.png)
+![Depth Buffer Before Fix MRTK Standard Shader](Images/Performance/DepthBufferFixNow_Before.PNG)
 
 After
 
-![Depth Buffer Fixed MRTK Standard Shader](Images/Performance/DepthBufferFixNow_After.png)
+![Depth Buffer Fixed MRTK Standard Shader](Images/Performance/DepthBufferFixNow_After.PNG)
 
 ##### Text Mesh Pro
 
