@@ -114,6 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             UpdateDisplay(cachedExtents, flattenAxis);
         }
 
+        internal void UpdateFlattenAxis(FlattenModeType flattenAxis)
+        {
+            flattenMode = flattenAxis;
+            UpdateDisplay(cachedExtents, flattenAxis);
+        }
+
         internal void UpdateBoxDisplayMaterial()
         {
             Reset(isVisible);
