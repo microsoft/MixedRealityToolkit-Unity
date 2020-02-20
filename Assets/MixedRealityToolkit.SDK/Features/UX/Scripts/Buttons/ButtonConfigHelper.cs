@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Searches the icon set for a character matching newIconCharName.
-        /// If no icon set is available, or if no texture with that name is found, no action is take.
+        /// If no icon set is available, or if no texture with that name is found, no action is taken.
         /// </summary>
         /// <param name="newIconCharName">Name of the new icon character as defined in the IconSet.</param>
         public void SetCharIconByName(string newIconCharName)
