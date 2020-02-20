@@ -1,4 +1,7 @@
-﻿using TMPro;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using TMPro;
 using UnityEngine;
 using System.Text;
 using System.Collections.Generic;
@@ -6,11 +9,13 @@ using UnityEngine.TextCore;
 using System;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Sprites;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// An asset for storing textures, sprites and character icons for use with MRTK buttons. Used by ButtonConfigHelper script.
+    /// </summary>
     [CreateAssetMenu(fileName = "IconSet", menuName = "Mixed Reality Toolkit/IconSet")]
     public class ButtonIconSet : ScriptableObject
     {
@@ -22,12 +27,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             public uint Character;
         }
 
+        /// <summary>
+        /// A set of quad icons for use by ButtonConfigHelper.
+        /// </summary>
         public Texture2D[] QuadIcons => quadIcons;
 
+        /// <summary>
+        /// A set of sprite icons for use by ButtonConfigHelper.
+        /// </summary>
         public Sprite[] SpriteIcons => spriteIcons;
 
+        /// <summary>
+        /// A set of CharIcons for use by ButtonConfigHelper.
+        /// </summary>
         public CharIcon[] CharIcons => charIcons;
 
+        /// <summary>
+        /// The font used to render CharIcons.
+        /// </summary>
         public TMP_FontAsset CharIconFont => charIconFont;
 
         [SerializeField]
@@ -53,18 +70,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<string, Sprite> spriteIconLookup = new Dictionary<string, Sprite>();
         private bool lookupsInitialized = false;
 
+        /// <summary>
+        /// Searches for a char icon by name.
+        /// </summary>
+        /// <returns>True if char icon was found.</returns>
         public bool TryGetCharIcon(string iconName, out uint charIcon)
         {
             InitializeLookups();
             return charIconLookup.TryGetValue(iconName, out charIcon);
         }
 
+        /// <summary>
+        /// Searches for a quad texture by name.
+        /// </summary>
+        /// <returns>True if quad icon was found.</returns>
         public bool TryGetQuadIcon(string iconName, out Texture2D quadIcon)
         {
             InitializeLookups();
             return quadIconLookup.TryGetValue(iconName, out quadIcon);
         }
 
+        /// <summary>
+        /// Searches for a sprite for sprite icon by name.
+        /// </summary>
+        /// <returns>True if sprite icon was found.</returns>
         public bool TryGetSpriteIcon(string iconName, out Sprite spriteIcon)
         {
             InitializeLookups();
