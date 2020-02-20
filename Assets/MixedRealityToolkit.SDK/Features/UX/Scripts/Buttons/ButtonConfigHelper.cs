@@ -362,27 +362,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (iconStyle)
             {
                 case ButtonIconStyle.Char:
-                    iconCharLabel?.gameObject.SetActive(true);
-                    iconSpriteRenderer?.gameObject.SetActive(false);
-                    iconQuadRenderer?.gameObject.SetActive(false);
+                    if (iconCharLabel != null) { iconCharLabel.gameObject.SetActive(true); }
+                    if (iconSpriteRenderer != null) { iconSpriteRenderer.gameObject.SetActive(false); }
+                    if (iconQuadRenderer != null) { iconQuadRenderer.gameObject.SetActive(false); }
                     break;
 
                 case ButtonIconStyle.Sprite:
-                    iconCharLabel?.gameObject.SetActive(false);
-                    iconSpriteRenderer?.gameObject.SetActive(true);
-                    iconQuadRenderer?.gameObject.SetActive(false);
+                    if (iconCharLabel != null) { iconCharLabel.gameObject.SetActive(false); }
+                    if (iconSpriteRenderer != null) { iconSpriteRenderer.gameObject.SetActive(true); }
+                    if (iconQuadRenderer != null) { iconQuadRenderer.gameObject.SetActive(false); }
                     break;
 
                 case ButtonIconStyle.Quad:
-                    iconCharLabel?.gameObject.SetActive(false);
-                    iconSpriteRenderer?.gameObject.SetActive(false);
-                    iconQuadRenderer?.gameObject.SetActive(true);
+                    if (iconCharLabel != null) { iconCharLabel.gameObject.SetActive(false); }
+                    if (iconSpriteRenderer != null) { iconSpriteRenderer.gameObject.SetActive(false); }
+                    if (iconQuadRenderer != null) { iconQuadRenderer.gameObject.SetActive(true); }
                     break;
 
                 case ButtonIconStyle.None:
-                    iconCharLabel?.gameObject.SetActive(false);
-                    iconSpriteRenderer?.gameObject.SetActive(false);
-                    iconQuadRenderer?.gameObject.SetActive(false);
+                    if (iconCharLabel != null) { iconCharLabel.gameObject.SetActive(false); }
+                    if (iconSpriteRenderer != null) { iconSpriteRenderer.gameObject.SetActive(false); }
+                    if (iconQuadRenderer != null) { iconQuadRenderer.gameObject.SetActive(false); }
                     break;
             }
         }
