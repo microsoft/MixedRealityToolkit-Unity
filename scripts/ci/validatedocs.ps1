@@ -167,7 +167,6 @@ function CheckBrokenImages {
             $images += $match.Groups[1]
         }
         $imgTagMatches = ($FileContent[$LineNumber] | Select-String -Pattern '\"(?!http)([^\"]+\.(?:png|gif|jpg))\"' -AllMatches).Matches
-
         foreach ($match in $imgTagMatches) {
             $images += $match.Groups[1]
         }
