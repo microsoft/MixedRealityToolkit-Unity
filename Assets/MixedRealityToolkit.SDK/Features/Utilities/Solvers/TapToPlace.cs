@@ -19,8 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         [Space(10)]
         [SerializeField]
         [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
-" following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object." +
-" This value must be modified before Start() is invoked in order to have any effect")]
+                " following the TrackedTargetType (Head or Controller Ray) and then a tap is required to place the object." +
+                " This value must be modified before Start() is invoked in order to have any effect")]
         private bool autoStart = false;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         [SerializeField]
         [Tooltip("The default distance (in meters) an object will be placed relative to the TrackedTargetType forward in the SolverHandler." +
-            " The GameObjectToPlace will be placed at the default placement distance if a surface is not hit by the raycast.")]
+                " The GameObjectToPlace will be placed at the default placement distance if a surface is not hit by the raycast.")]
         private float defaultPlacementDistance = 1.5f;
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         [SerializeField]
         [Tooltip("If false, the game object to place will not change its rotation according to the surface hit.  The object will" +
-            " remain facing the camera while IsBeingPlaced is true.  If true, the object will rotate according to the surface normal" +
-            " if there is a hit.")]
+                " remain facing the camera while IsBeingPlaced is true.  If true, the object will rotate according to the surface normal" +
+                " if there is a hit.")]
         private bool rotateAccordingToSurface = false;
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             set => debugEnabled = value;
         }
 
-        [SerializeField, FormerlySerializedAs("OnPlacingStarted")]
+        [SerializeField]
         [Tooltip("This event is triggered once when the game object to place is selected.")]
         private UnityEvent onPlacingStarted = new UnityEvent();
 
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             set => onPlacingStarted = value;
         }
 
-        [SerializeField, FormerlySerializedAs("OnPlacingStopped")]
+        [SerializeField]
         [Tooltip("This event is triggered once when the game object to place is unselected, placed.")]
         private UnityEvent onPlacingStopped = new UnityEvent();
 
@@ -185,8 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             // Solver base class
             base.Start();
 
-            Debug.Assert(IsColliderPresent, "The game object " + gameObject.name + " does not have a collider attached, please attach a collider to use Tap to Place");
-            
+            Debug.Assert(IsColliderPresent, $"The game object {gameObject.name} does not have a collider attached, please attach a collider to use Tap to Place");
+
             SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
 
             ignoreRaycastLayer = LayerMask.NameToLayer("Ignore Raycast");
