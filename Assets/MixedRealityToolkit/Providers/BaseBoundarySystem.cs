@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             ExperienceScale scale) : base(profile)
         {
             Scale = scale;
-            ReadProfile();
         }
 
         /// <summary>
@@ -64,6 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <inheritdoc/>
         public override void Initialize()
         {
+            ReadProfile();
+
             if (!Application.isPlaying || !XRDevice.isPresent) { return; }
 
             boundaryEventData = new BoundaryEventData(EventSystem.current);

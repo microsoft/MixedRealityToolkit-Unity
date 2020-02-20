@@ -83,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to profile 2
             ChangeProfile(profile2);
+            yield return null;
 
             // The custom boundary profile has been configured to match the default with the following fields being different
             // * Boundary height
@@ -90,6 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // * Show tracked area
             // * Show boundary ceiling
             IMixedRealityBoundarySystem boundarySystem2 = CoreServices.BoundarySystem;
+            yield return null;
 
             // Check service settings to ensure it has properly reset
             Assert.IsTrue(boundarySystem1.BoundaryHeight != boundarySystem2.BoundaryHeight);
