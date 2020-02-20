@@ -162,27 +162,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             set => onPlacingStopped = value;
         }
 
+        /// <summary>
+        /// The current game object layer before it is temporarily switched to IgnoreRaycast while placing the game object.
+        /// </summary>
         protected internal int GameObjectLayer { get; protected set; }
 
         protected internal bool IsColliderPresent => gameObject != null ? gameObject.GetComponent<Collider>() != null : false;
 
         private int ignoreRaycastLayer;
 
-        // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint)
+        // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint).
+        // The following properties are updated each frame while the game object is selected to determine
+        // object placement if there is a hit on a surface.
         protected RayStep CurrentRay;
 
         protected bool DidHitSurface;
 
         protected RaycastHit CurrentHit;
 
+        // Used to record the time (seconds) between OnPointerClicked calls to avoid two calls in a row.
         protected float LastTimeClicked = 0;
 
-        protected float doubleClickTimeout = 0.5f;
+        protected float DoubleClickTimeout = 0.5f;
 
         #region MonoBehaviour Implementation
         protected override void Start()
         {
-            // Solver base class
             base.Start();
 
             Debug.Assert(IsColliderPresent, $"The game object {gameObject.name} does not have a collider attached, please attach a collider to use Tap to Place");
@@ -211,7 +216,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         /// <summary>
         /// Start the placement of a game object without the need of the OnPointerClicked event. The game object will begin to follow the 
         /// TrackedTargetType (Head by default) at a default distance. StopPlacement() must be called after StartPlacement() to stop the 
-        /// game object from following the TrackedTargetType.
+        /// game object from following the TrackedTargetType.  The game object layer is changed to IgnoreRaycast temporarily and then
+        /// restored to its original layer in StopPlacement().
         /// </summary>
         public void StartPlacement()
         {
@@ -350,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             // Checking the amount of time passed between OnPointerClicked calls is handling the case when OnPointerClicked is called
             // twice after one click.  If OnPointerClicked is called twice after one click, the object will be selected and then immediately
             // unselected. If OnPointerClicked calls are within 0.5 secs of each other, then return to prevent an immediate object state switch.
-            if ((Time.time - LastTimeClicked) < doubleClickTimeout)
+            if ((Time.time - LastTimeClicked) < DoubleClickTimeout)
             {
                 return;
             }
