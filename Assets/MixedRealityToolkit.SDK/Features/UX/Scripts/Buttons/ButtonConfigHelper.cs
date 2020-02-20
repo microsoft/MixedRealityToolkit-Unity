@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Searches the icon set for a texture matching newIconSpriteName.
-        /// If no icon set is available, or if no texture with that name is found, no action is take.
+        /// If no icon set is available, or if no texture with that name is found, no action is taken.
         /// </summary>
         /// <param name="newIconTextureName">Name of the new icon texture asset.</param>
         public void SetSpriteIconByName(string newIconSpriteName)
