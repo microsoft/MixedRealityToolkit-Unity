@@ -5044,6 +5044,138 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FaceUser.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FaceUser.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedDistance.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedDistance.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToUser.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToUser.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToWorld.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_FixedRotationToWorld.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MaintainApparentSize.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MaintainApparentSize.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MinMaxScale.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MinMaxScale.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MoveAxis.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_MoveAxis.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_RotationAxis.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_Constraint_RotationAxis.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Howto.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Howto.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_ObjectManipulator_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_NoRigidbody.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_NoRigidbody.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_Rigidbody.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectManipulator/MRTK_PhysicsManipulation_Rigidbody.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/OpenXR-HLA.jpg",
       "output": {
         "resource": {
@@ -6879,6 +7011,18 @@
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
           "hash": "1PK5MXLT76RBTUNothmasA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/README_ObjectManipulator.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_ObjectManipulator.html",
+          "hash": "tW+5vODFLF7I2CNI13WmzQ=="
         }
       },
       "is_incremental": false,
@@ -26040,16 +26184,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 148,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1557,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 147,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
