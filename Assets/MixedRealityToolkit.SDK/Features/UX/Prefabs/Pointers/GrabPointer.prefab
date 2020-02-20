@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 1
-  destroyOnSourceLost: 1
+  destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 3
@@ -406,6 +406,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: e74b90b0fec1bef4fa500cebdb12d821, type: 2}
   roundedEdges: 0
   roundedCaps: 0
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 4601683360483888622}
   tileMaterialByWorldLength: 1
   tileMaterialScale: 48

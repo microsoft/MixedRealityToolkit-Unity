@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Core
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
 {
     // Tests for the MixedRealityToolkitFiles utility class
     public class MixedRealityToolkitFilesTests
@@ -99,6 +99,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             string resolvedPath = MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath("Inspectors\\Data\\EditorWindowOptions.json");
             Assert.IsNotNull(resolvedPath);
+        }
+
+        /// <summary>
+        /// Validates that FileUtilities.FindFilesInAssets can find this test script in the asset database.
+        /// </summary>
+        [Test]
+        public void TestFileUtilitiesFindFilesInAssets()
+        {
+            FileInfo[] files = FileUtilities.FindFilesInAssets("MixedRealityToolkitFilesTests.cs");
+            Assert.IsTrue(files.Length == 1);
         }
 
         [TearDown]

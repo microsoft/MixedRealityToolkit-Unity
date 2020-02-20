@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected BaseMixedRealityLineDataProvider lineDataSource;
 
         /// <summary>
-        /// The line data this component will render
+        /// The data provider component that provides the positioning source information for the LineRenderer.
         /// </summary>
         public BaseMixedRealityLineDataProvider LineDataSource
         {
@@ -63,8 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Gradient LineColor
         {
-            get { return lineColor; }
-            set { lineColor = value; }
+            get => lineColor;
+            set => lineColor = value;
         }
 
         [SerializeField]
@@ -72,8 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public AnimationCurve LineWidth
         {
-            get { return lineWidth; }
-            set { lineWidth = value; }
+            get => lineWidth;
+            set => lineWidth = value;
         }
 
         [Range(0.01f, 10f)]
@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public float WidthMultiplier
         {
-            get { return widthMultiplier; }
-            set { widthMultiplier = Mathf.Clamp(value, 0f, 10f); }
+            get => widthMultiplier;
+            set => widthMultiplier = Mathf.Clamp(value, 0f, 10f);
         }
 
         [Header("Offsets")]
@@ -98,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float ColorOffset
         {
-            get { return colorOffset; }
-            set { colorOffset = Mathf.Clamp(value, 0f, 10f); }
+            get => colorOffset;
+            set => colorOffset = Mathf.Clamp(value, 0f, 10f);
         }
 
         [Range(0f, 10f)]
@@ -112,8 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public float WidthOffset
         {
-            get { return widthOffset; }
-            set { widthOffset = Mathf.Clamp(value, 0f, 10f); }
+            get => widthOffset;
+            set => widthOffset = Mathf.Clamp(value, 0f, 10f);
         }
 
         [Header("Point Placement")]
@@ -127,8 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public StepMode StepMode
         {
-            get { return stepMode; }
-            set { stepMode = value; }
+            get => stepMode;
+            set => stepMode = value;
         }
 
         [Range(2, 2048)]
@@ -145,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public PointDistributionMode PointDistributionMode
         {
-            get { return pointDistributionMode; }
-            set { pointDistributionMode = value; }
+            get => pointDistributionMode;
+            set => pointDistributionMode = value;
         }
 
         [SerializeField]
@@ -162,8 +162,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public int LineStepCount
         {
-            get { return lineStepCount; }
-            set { lineStepCount = Mathf.Clamp(value, 2, 2048); }
+            get => lineStepCount;
+            set => lineStepCount = Mathf.Clamp(value, 2, 2048);
         }
 
         /// <summary>
@@ -171,12 +171,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected virtual Color GetColor(float normalizedLength)
         {
-            if (lineColor == null)
+            if (LineColor == null)
             {
-                lineColor = new Gradient();
+                LineColor = new Gradient();
             }
 
-            return lineColor.Evaluate(Mathf.Repeat(normalizedLength + colorOffset, 1f));
+            return LineColor.Evaluate(Mathf.Repeat(normalizedLength + colorOffset, 1f));
         }
 
         /// <summary>
@@ -184,14 +184,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected virtual float GetWidth(float normalizedLength)
         {
-            if (lineWidth == null)
+            if (LineWidth == null)
             {
-                lineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
+                LineWidth = AnimationCurve.Linear(0f, 1f, 1f, 1f);
             }
 
-            return lineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
+            return LineWidth.Evaluate(Mathf.Repeat(normalizedLength + widthOffset, 1f)) * widthMultiplier;
         }
 
+        /// <summary>
+        /// Gets the normalized distance along the line path (range 0 to 1) going the given number of steps provided
+        /// </summary>
+        /// <param name="stepNum">Number of steps to take "walking" along the curve </param>
         protected virtual float GetNormalizedPointAlongLine(int stepNum)
         {
             float normalizedDistance = 0;
@@ -225,9 +229,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             UpdateLine();
         }
 
+        /// <summary>
+        /// Executes every Unity LateUpdate(). Any property updates or frame updates should occur here to update the line data source.
+        /// </summary>
         protected abstract void UpdateLine();
 
-#if UNITY_EDITOR
+        #region Gizmos
+
+        #if UNITY_EDITOR
+
         protected virtual void OnDrawGizmos()
         {
             if (UnityEditor.Selection.activeGameObject == gameObject || Application.isPlaying) { return; }
@@ -321,6 +331,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 Gizmos.DrawLine(lastPos, firstPos);
             }
         }
-#endif
+
+        #endif
+        #endregion
     }
 }

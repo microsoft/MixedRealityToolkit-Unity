@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// The number of RaySteps to generate from <see cref="RayLineData"/>.
-        /// Corresponds to <see cref="Toolkit.Input.LinePointer.LineCastResolution"/> and is used to set that value on the <see cref="TestPointer"/>.
+        /// Corresponds to <see cref="Toolkit.Input.CurvePointer.LineCastResolution"/> and is used to set that value on the <see cref="TestPointer"/>.
         /// </summary>
         public int LineCastResolution = 10;
 

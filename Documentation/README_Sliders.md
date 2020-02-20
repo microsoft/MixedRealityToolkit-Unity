@@ -53,13 +53,15 @@ If you cannot use the handles, you can instead specify the start and end points 
 
 **Tick Marks** The gameobject that contains the desired tick marks that goes along the slider.
 
+**Thumb Visuals** The gameobject that contains the desired thumb visual that goes along the slider.
+
 **Slider Axis** The axis the slider moves along.
 
 **Slider Start Distance** Where the slider track starts, as distance from center along slider axis, in local space units.
 
 **Slider End Distance** Where the slider track ends, as distance from center along slider axis, in local space units.
 
-When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated. 
+When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated.
 Specifically, their local position is reset and their local rotation is set to match the Slider Axis orientation.
 Their scale isn't modified.
 If Tick Marks have a Grid Object Collection component then the Layout and CellWidth or CellHeight is updated accordingly to match the Slider Axis.

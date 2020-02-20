@@ -1,4 +1,6 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Configuration for <see cref="Links"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create a link of a bounds control
     /// </summary>
-    [CreateAssetMenu(fileName = "LinksConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Links Configuration")]
+    [CreateAssetMenu(fileName = "LinksConfiguration", menuName = "Mixed Reality Toolkit/Experimental/Bounds Control/Links Configuration")]
     public class LinksConfiguration : ScriptableObject
     {
         #region Serialized Properties

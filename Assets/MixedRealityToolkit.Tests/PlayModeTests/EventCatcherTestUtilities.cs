@@ -60,11 +60,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     }
 
     /// <summary>
+    /// Utility for counting pointer events.
+    /// </summary>
+    internal class PointerEventCatcher : FocusedObjectEventCatcher<PointerEventCatcher>, IMixedRealityPointerHandler
+    {
+        public readonly UnityEvent OnPointerDownEvent = new UnityEvent();
+        public readonly UnityEvent OnPointerUpEvent = new UnityEvent();
+        public readonly UnityEvent OnPointerDraggedEvent = new UnityEvent();
+        public readonly UnityEvent OnPointerClickedEvent = new UnityEvent();
+
+        public int DragEventCount = 0;
+
+        /// <inheritdoc />
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            OnPointerClickedEvent.Invoke();
+        }
+
+        /// <inheritdoc />
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            ++EventsStarted;
+            OnPointerDownEvent.Invoke();
+        }
+
+        /// <inheritdoc />
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            ++DragEventCount;
+            OnPointerDraggedEvent.Invoke();
+        }
+
+        /// <inheritdoc />
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            ++EventsCompleted;
+            OnPointerUpEvent.Invoke();
+        }
+
+
+    }
+
+    /// <summary>
     /// Utility for counting touch events.
     /// </summary>
-    /// <remarks>
-    /// Touching an object does not imply getting focus, so use a global event handler to be independent from focus.
-    /// </remarks>
     public class TouchEventCatcher : FocusedObjectEventCatcher<TouchEventCatcher>, IMixedRealityTouchHandler
     {
         public readonly UnityEvent OnTouchStartedEvent = new UnityEvent();

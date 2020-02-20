@@ -52,3 +52,4 @@ MonoBehaviour:
   registeredServiceProvidersProfile: {fileID: 11400000, guid: efbaf6ea540c69f4fb75415a5d145a53,
     type: 2}
   useServiceInspectors: 1
+  renderDepthBuffer: 0

@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void CheckMinimumEditorVersion()
         {
-#if !UNITY_2018_3_OR_NEWER
+#if !UNITY_2018_4_OR_NEWER && !UNITY_2019_1_OR_NEWER
             DisplayIncorrectEditorVersionDialog();
 #endif
         }
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!EditorUtility.DisplayDialog(
                 "Mixed Reality Toolkit",
-                "The Mixed Reality Toolkit requires Unity 2018.3 or newer.\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
+                "The Mixed Reality Toolkit requires Unity 2018.4 or newer.\n\nUsing an older version of Unity may result in compile errors or incorrect behavior.",
                 "Continue", "Close Editor"))
             {
                 EditorApplication.Exit(0);
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorAssemblyReloadManager.LockReloadAssemblies = false;
             }
 
-            DirectoryInfo packageCache = GetPackageCache();
+            DirectoryInfo packageCache = FileUtilities.GetPackageCache();
 
             if (packageCache.Exists)
             {
@@ -212,20 +212,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
 #endif // !UNITY_2019_OR_NEWER
-        }
-
-        /// <summary>
-        /// Gets the package cache folder of this project.
-        /// </summary>
-        /// <returns>
-        /// A <see href="https://docs.microsoft.com/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> object that describes the package cache folder.
-        /// </returns>
-        private static DirectoryInfo GetPackageCache()
-        {
-            string packageCacheFolderName = @"Library\PackageCache";
-
-            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
-            return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
         }
 
         /// <summary>

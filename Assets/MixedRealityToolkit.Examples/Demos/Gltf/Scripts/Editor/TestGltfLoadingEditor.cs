@@ -14,17 +14,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
     [CustomEditor(typeof(TestGltfLoading))]
     public class TestGltfLoadingEditor : UnityEditor.Editor
     {
+        private string GLTFModelsPath = $"Demos{Path.DirectorySeparatorChar}Gltf{Path.DirectorySeparatorChar}Models";
+
         public override void OnInspectorGUI()
         {
             var testGltfLoading = this.target as TestGltfLoading;
 
             base.OnInspectorGUI();
 
-            var path = $"{Application.streamingAssetsPath}{testGltfLoading.Uri}";
-            path = path.Replace("/", "\\");
-
+            var path = testGltfLoading.AbsolutePath;
             bool needsCopy = !File.Exists(path) && Application.isEditor;
-            
             if (needsCopy)
             {
                 EditorGUILayout.HelpBox("glTF path was not discovered in the streaming assets folder. Please copy over files to test example scene", MessageType.Warning);
@@ -32,8 +31,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
 
             if (GUILayout.Button("Copy GLTF Directory to Streaming Assets"))
             {
-                string modelPath = MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType.Examples, "Demos\\Gltf\\Models");
-                DirectoryCopy(modelPath, $"{Application.streamingAssetsPath}\\GltfModels");
+                string modelPath = MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType.Examples, GLTFModelsPath);
+                DirectoryCopy(modelPath, Path.Combine(Application.streamingAssetsPath, "GltfModels"));
 #if UNITY_EDITOR
                 UnityEditor.AssetDatabase.Refresh(UnityEditor.ImportAssetOptions.ForceUpdate);
 #endif

@@ -201,11 +201,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             OpenSteadyGrabPoint,
         }
 
+        [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]
         private static readonly Dictionary<GestureId, ArticulatedHandPose> handPoses = new Dictionary<GestureId, ArticulatedHandPose>();
 
         /// <summary>
         /// Get pose data for a supported gesture.
         /// </summary>
+        [Obsolete("Use SimulatedArticulatedHandPoses.GetGesturePose() or other custom class")]
         public static ArticulatedHandPose GetGesturePose(GestureId gesture)
         {
             if (handPoses.TryGetValue(gesture, out ArticulatedHandPose pose))
@@ -215,10 +217,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return null;
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         /// <summary>
         /// Load pose data from files.
         /// </summary>
+        [Obsolete("Use SimulatedArticulatedHandPoses or other custom class")]
         public static void LoadGesturePoses()
         {
             string[] gestureNames = Enum.GetNames(typeof(GestureId));
@@ -231,6 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]
         private static ArticulatedHandPose LoadGesturePose(GestureId gesture, string filePath)
         {
             if (!string.IsNullOrEmpty(filePath))
@@ -243,11 +247,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return null;
         }
 
+        [Obsolete("Use SimulatedArticulatedHandPoses class or other custom class")]
         public static void ResetGesturePoses()
         {
             handPoses.Clear();
         }
-        #endif
+#endif
 
         /// Utility class to serialize hand pose as a dictionary with full joint names
         [Serializable]

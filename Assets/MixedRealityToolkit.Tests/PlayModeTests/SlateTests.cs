@@ -56,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
-            TestHand h = new TestHand(Handedness.Right); ;
-            yield return h.MoveTo(panObject.transform.position);
-            yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            TestHand handRight = new TestHand(Handedness.Right); ;
+            yield return handRight.MoveTo(panObject.transform.position);
+            yield return handRight.Move(new Vector3(0, -0.05f, 0), 10);
 
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
-            yield return h.Hide();
+            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -75,23 +75,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
-            TestHand h = new TestHand(Handedness.Right);
+            TestHand handRight = new TestHand(Handedness.Right);
             Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.25f, 0.5f));
-            yield return h.Show(CameraCache.Main.ScreenToWorldPoint(screenPoint));
+            yield return handRight.Show(CameraCache.Main.ScreenToWorldPoint(screenPoint));
 
             Assert.True(PointerUtils.TryGetHandRayEndPoint(Handedness.Right, out Vector3 hitPointStart));
 
-            yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return handRight.Move(new Vector3(0, -0.05f, 0), 10);
+
             Assert.True(PointerUtils.TryGetHandRayEndPoint(Handedness.Right, out Vector3 hitPointEnd));
-            yield return h.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             TestUtilities.AssertNotAboutEqual(hitPointStart, hitPointEnd, "ray should not stick on slate scrolling");
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
 
-
-
-            yield return h.Hide();
+            yield return handRight.Hide();
         }
 
         /// <summary>
@@ -102,22 +102,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InstantiateFromPrefab(Vector3.forward);
 
-            TestHand h = new TestHand(Handedness.Right);
-            yield return h.Show(Vector3.zero);
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.Show(Vector3.zero);
+            yield return handRight.MoveTo(panZoom.transform.position, 10);
 
-            yield return h.MoveTo(panZoom.transform.position, 10);
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(Vector3.zero);
 
-            TestHand h2 = new TestHand(Handedness.Left);
-            yield return h2.Show(Vector3.zero);
-            yield return h2.MoveTo(panZoom.transform.position + Vector3.right * -0.01f, 10);
+            yield return handLeft.MoveTo(panZoom.transform.position + Vector3.right * -0.01f, 10);
+            yield return handRight.Move(new Vector3(0.01f, 0f, 0f));
+            yield return handLeft.Move(new Vector3(-0.01f, 0f, 0f));
 
-            yield return h.Move(new Vector3(0.01f, 0f, 0f));
-            yield return h2.Move(new Vector3(-0.01f, 0f, 0f));
             Assert.AreEqual(0.4, panZoom.CurrentScale, 0.1, "slate did not zoom in using two finger touch");
 
-            yield return h.Hide();
+            yield return handRight.Hide();
+            yield return handLeft.Hide();
         }
 
+        /// <summary>
+        /// Test ggv zooming instantiated from prefab
+        /// </summary>
+        [UnityTest]
+        public IEnumerator Prefab_GGVZoom()
+        {
+            InstantiateFromPrefab(Vector3.forward);
+
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.Show(new Vector3(0.0f, 0.0f, 0.6f));
+
+            TestHand handLeft = new TestHand(Handedness.Left);
+            yield return handLeft.Show(new Vector3(-0.1f, 0.0f, 0.6f));
+
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return handLeft.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            yield return handRight.Move(new Vector3(0.005f, 0.0f, 0.0f), 10);
+            yield return handLeft.Move(new Vector3(-0.005f, 0.0f, 0.0f), 10);
+
+            Assert.AreEqual(0.5, panZoom.CurrentScale, 0.1, "slate did not zoom in using two ggv hands");
+
+            yield return handRight.Hide();
+            yield return handLeft.Hide();
+        }
         /// <summary>
         /// Test ggv scroll instantiated from prefab
         /// </summary>
@@ -125,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator Prefab_GGVScroll()
         {
             InstantiateFromPrefab(Vector3.forward);
-            yield return RunGGVScrollTest(0.2f);
+            yield return RunGGVScrollTest(0.25f);
         }
 
         /// <summary>
@@ -150,14 +178,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector2 totalPanDelta = Vector2.zero;
             panZoom.PanUpdated.AddListener((hpd) => totalPanDelta += hpd.PanDelta);
 
-            TestHand h = new TestHand(Handedness.Right);
-            yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return h.Show(Vector3.zero);
-            yield return h.Move(new Vector3(0.0f, -0.1f, 0f));
+            TestHand handRight = new TestHand(Handedness.Right);
+            yield return handRight.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return handRight.Show(Vector3.zero);
 
-            Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.05, "pan delta is not correct");
+            // Move requires a slower action (i.e. higher numSteps) in order to
+            // achieve a reliable pan.
+            yield return handRight.Move(new Vector3(0.0f, -0.1f, 0f), 30);
 
-            yield return h.Hide();
+            Assert.AreEqual(expectedScroll, totalPanDelta.y, 0.1, "pan delta is not correct");
+
+            yield return handRight.Hide();
         }
 
         private void InstantiateFromCode(Vector3 pos)

@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
 
                 if ((edge.PointA.y > maxY) || (edge.PointB.y > maxY))
                 {
-                    maxY = Mathf.Min(edge.PointA.y, edge.PointB.y);
+                    maxY = Mathf.Max(edge.PointA.y, edge.PointB.y);
                 }
 
             }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -51,13 +52,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 Transform g = go.transform;
                 while (g.parent != null)
                 {
-                    goName = g.parent.name + "\\" + goName;
+                    goName = Path.Combine(g.parent.name, goName);
                     g = g.transform.parent;
                 }
                 valid = true;
                 return goName;
             }
-            return "";
+            return string.Empty;
         }
 
         /// <summary>

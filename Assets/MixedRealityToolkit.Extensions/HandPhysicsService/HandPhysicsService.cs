@@ -11,7 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
     /// <summary>
     /// A simple service that creates KinematicRigidbodies on fingertips for physics interactions.
     /// </summary>
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsUniversal,
+        "Hand Physics Service",
+        "HandPhysicsService/Profiles/DefaultHandPhysicsServiceProfile.asset",
+        "MixedRealityToolkit.Extensions",
+        true)]
     public class HandPhysicsService : BaseExtensionService, IHandPhysicsService, IMixedRealityExtensionService
     {
         private HandPhysicsServiceProfile handPhysicsServiceProfile;
@@ -27,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             handPhysicsServiceProfile = (HandPhysicsServiceProfile)profile;
         }
 
-        private IMixedRealityHandJointService HandJointService => handJointService ??
-            (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>();
+        private IMixedRealityHandJointService HandJointService 
+            => handJointService ?? CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
 
         /// <inheritdoc />
         public GameObject HandPhysicsServiceRoot { get; private set; }

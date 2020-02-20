@@ -19,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static bool showDataProviders = false;
         private const string ShowInputSystem_DataProviders_PreferenceKey = "ShowInputSystem_DataProviders_PreferenceKey";
-        private SerializedProperty dataProviderConfigurations;
 
         private SerializedProperty focusProviderType;
         private SerializedProperty focusQueryBufferSize;
@@ -212,10 +211,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         /// <inheritdoc/>
         protected override IMixedRealityServiceConfiguration GetDataProviderConfiguration(int index)
         {
-            var configurations = (target as MixedRealityInputSystemProfile)?.DataProviderConfigurations;
-            if (configurations != null && index >= 0 && index < configurations.Length)
+            MixedRealityInputSystemProfile targetProfile = target as MixedRealityInputSystemProfile;
+            if (targetProfile != null)
             {
-                return configurations[index];
+                var configurations = targetProfile.DataProviderConfigurations;
+                if (configurations != null && index >= 0 && index < configurations.Length)
+                {
+                    return configurations[index];
+                }
             }
 
             return null;

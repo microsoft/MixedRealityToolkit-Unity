@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (simulationService == null)
                 {
-                    simulationService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    simulationService = CoreServices.GetInputSystemDataProvider<IInputSimulationService>();
                 }
 
                 return simulationService;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (recordingService == null)
                 {
-                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
+                    recordingService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputRecordingService>();
                 }
 
                 return recordingService;
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (playbackService == null)
                 {
-                    playbackService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
+                    playbackService = CoreServices.GetInputSystemDataProvider<IMixedRealityInputPlaybackService>();
                 }
 
                 return playbackService;

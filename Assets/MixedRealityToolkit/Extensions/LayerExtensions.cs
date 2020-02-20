@@ -23,15 +23,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// <returns>LayerMaskList index, or -1 for not found</returns>
         public static int FindLayerListIndex(this int layer, LayerMask[] layerMasks)
         {
-            var i = 0;
             for (int j = 0; j < layerMasks.Length; j++)
             {
-                if (layer.IsInLayerMask(layerMasks[i]))
+                if (layer.IsInLayerMask(layerMasks[j]))
                 {
-                    return i;
+                    return j;
                 }
-
-                i++;
             }
 
             return -1;

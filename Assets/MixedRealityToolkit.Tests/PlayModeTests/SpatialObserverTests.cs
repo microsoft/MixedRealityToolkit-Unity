@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class SpatialObserverTests
     {
-        private const string TestSpatialAwarenessSysteProfilePath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
-        private const string TestSpatialAwarenessSysteProfilePath_ManualStart = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile_ManualStart.asset";
+        private const string TestSpatialAwarenessSystemProfilePath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
+        private const string TestSpatialAwarenessSystemProfilePath_ManualStart = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile_ManualStart.asset";
 
         /// <summary>
         /// Test default case of Auto-Start SpatialObjectMeshObserver observer type and SpatialAwarenessSystem in editor
@@ -35,22 +35,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestAutoStartObserver()
         {
-            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSysteProfilePath);
+            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSystemProfilePath);
             TestUtilities.InitializeMixedRealityToolkit(mrtkProfile);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-            var spatialAwarenesssDataProvider = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-            var spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
+            var spatialObserver = CoreServices.GetSpatialAwarenessSystemDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
             Assert.IsTrue(spatialObserver.IsRunning);
             Assert.IsNotEmpty(spatialObserver.Meshes);
 
             CoreServices.SpatialAwarenessSystem.Disable();
-            spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
+            spatialObserver = CoreServices.GetSpatialAwarenessSystemDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNull(spatialObserver);
 
             CoreServices.SpatialAwarenessSystem.Enable();
-            spatialObserver = spatialAwarenesssDataProvider.GetDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
+            spatialObserver = CoreServices.GetSpatialAwarenessSystemDataProvider<SpatialObjectMeshObserver.SpatialObjectMeshObserver>();
             Assert.IsNotNull(spatialObserver, "No SpatialObjectMeshObserver data provider created or found");
             Assert.IsTrue(spatialObserver.IsRunning);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
@@ -64,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestManualStartObserver()
         {
-            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSysteProfilePath_ManualStart);
+            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSystemProfilePath_ManualStart);
             TestUtilities.InitializeMixedRealityToolkit(mrtkProfile);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
@@ -106,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestDisableSpatialAwarenessSystem()
         {
-            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSysteProfilePath);
+            var mrtkProfile = CreateMRTKTestProfile(TestSpatialAwarenessSystemProfilePath);
 
             mrtkProfile.IsSpatialAwarenessSystemEnabled = false;
 

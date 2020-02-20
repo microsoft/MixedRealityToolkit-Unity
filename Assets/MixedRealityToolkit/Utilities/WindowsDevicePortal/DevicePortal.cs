@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Shuts down the target device.
         /// </summary>
-        /// <returns>True, if the device is shitting down.</returns>
+        /// <returns>True, if the device is shutting down.</returns>
         public static async Task<bool> ShutdownAsync(DeviceInfo targetDevice)
         {
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
