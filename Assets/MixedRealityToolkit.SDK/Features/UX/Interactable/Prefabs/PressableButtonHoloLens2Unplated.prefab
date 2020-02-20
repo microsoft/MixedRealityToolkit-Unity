@@ -508,7 +508,7 @@ MonoBehaviour:
   iconCharFont: {fileID: 0}
   iconChar: 0
   iconSpriteRenderer: {fileID: 7050879399563888436}
-  iconSprite: {fileID: 21300000, guid: 1b1720c0c256b334bb61bd0d3fba9f6d, type: 3}
+  iconSprite: {fileID: 21300000, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
   iconQuadRenderer: {fileID: 1911902820}
   iconQuadTextureNameID: _MainTex
   iconQuadTexture: {fileID: 2800000, guid: bb1b4a9241fba2042a81428e917afd5d, type: 3}

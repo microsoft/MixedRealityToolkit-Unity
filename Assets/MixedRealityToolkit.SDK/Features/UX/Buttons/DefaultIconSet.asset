@@ -26,19 +26,19 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 5ced9c7e98be2e941a88b5d0a16b2a3b, type: 3}
   - {fileID: 2800000, guid: 7de780622ddab5e49b73d5d7a806faf9, type: 3}
   spriteIcons:
-  - {fileID: 21300000, guid: 1b1720c0c256b334bb61bd0d3fba9f6d, type: 3}
-  - {fileID: 21300000, guid: 63041db17f168fd48bd41708fe8650df, type: 3}
-  - {fileID: 21300000, guid: ad7b2f64cf177af4d88979c2ae346e46, type: 3}
-  - {fileID: 21300000, guid: 3c88cc6f4dfa4d74c9aebc1324f1a6a8, type: 3}
-  - {fileID: 21300000, guid: 74d751d3e9d84864fa5443ca58f089f5, type: 3}
-  - {fileID: 21300000, guid: b97d2e987ebe2714dbf84800d7315f8f, type: 3}
-  - {fileID: 21300000, guid: de5cb0b6c49f4cf4c839fe5ae1a96424, type: 3}
-  - {fileID: 21300000, guid: dab6433f8d0f59d409c2956c36837f19, type: 3}
-  - {fileID: 21300000, guid: 6d580d61c06af0d4ebd96c572b5640ec, type: 3}
-  - {fileID: 21300000, guid: 44f8f68c87747f44084f7c32004a1332, type: 3}
-  - {fileID: 21300000, guid: 33c59392a442e9149bf4110185668b0f, type: 3}
-  - {fileID: 21300000, guid: d05e73e843a56614998232e00ce1c986, type: 3}
-  charIconFont: {fileID: 11400000, guid: c54c7b6714c22b343a7fa8939f597c01, type: 2}
+  - {fileID: 21300000, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300002, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300022, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300004, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300006, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300008, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300012, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300014, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300016, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300010, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300018, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  - {fileID: 21300020, guid: 20f25674b9512834f88938d45ed495d7, type: 3}
+  charIconFont: {fileID: 0}
   charIcons:
   - Name: AppBarAdjust
     Character: 60370
