@@ -1238,6 +1238,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Config_Helper.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Config_Helper.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Button/MRTK_Button_Cube.png",
       "output": {
         "resource": {
@@ -1363,6 +1374,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate4.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_Icon_Set_Assign.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_Icon_Set_Assign.png"
         }
       },
       "is_incremental": false,
@@ -1550,6 +1572,39 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_Button_ToggleSwitch.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Font_Asset_Creation_3.png"
         }
       },
       "is_incremental": false,
@@ -6890,7 +6945,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "j/toYKfk4lni+vIEKKd5XA=="
+          "hash": "5osGnkEkdvK34j05voiYUA=="
         }
       },
       "is_incremental": false,
@@ -15357,6 +15412,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Inspectors.ButtonConfigHelperInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Inspectors.ButtonConfigHelperInspector.html",
+          "hash": "xjwh3Ns6vf24CLcDWn2ZWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Inspectors.MixedRealityEyeTrackingProfileInspector.yml",
       "output": {
         ".html": {
@@ -15385,7 +15452,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Inspectors.html",
-          "hash": "hdMYXQTU9Jhorst39Ir8QA=="
+          "hash": "YwjY7NkBQr0vHm9zNqNFAQ=="
         }
       },
       "is_incremental": false,
@@ -19549,7 +19616,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html",
-          "hash": "aFtt9RtpJwWU5Eqidbgjtg=="
+          "hash": "40HF61n1siffNtlpMm7WoA=="
         }
       },
       "is_incremental": false,
@@ -19562,6 +19629,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html",
           "hash": "6yxxTsk96WEg2YOUS9aVRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ButtonConfigHelperTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ButtonConfigHelperTests.html",
+          "hash": "1dKSE0AapmjIIjNGK4JzHw=="
         }
       },
       "is_incremental": false,
@@ -20377,7 +20456,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "WK7BI9d3KeoYgRmzvKoC7g=="
+          "hash": "2Ni+Dx9VEphc1vu/3DCp5g=="
         }
       },
       "is_incremental": false,
@@ -20702,6 +20781,54 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonCollider.html",
           "hash": "eh6I2uCIogtYxEwcxeReOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonConfigHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonConfigHelper.html",
+          "hash": "uyN4IWmi1U0h6Wzw9XJn4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonIconSet.CharIcon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonIconSet.CharIcon.html",
+          "hash": "3zYZCkMRU5E6blf2uHJcJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonIconSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonIconSet.html",
+          "hash": "ERx1wRnLM4my0CxV6lRQBQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.ButtonIconStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ButtonIconStyle.html",
+          "hash": "wE6GFSlgw+gXoD0ynMqPgA=="
         }
       },
       "is_incremental": false,
@@ -22237,7 +22364,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "1MH9CXdxKPostpQruRg7ag=="
+          "hash": "Yy8QrkhI2qKG3+w5uGN6OA=="
         }
       },
       "is_incremental": false,
@@ -26149,7 +26276,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "6Y0gYXYts4GtXxDYsGPxQg=="
+          "hash": "XMUpRrGKhOtZYEKejnMA+w=="
         }
       },
       "is_incremental": false,
@@ -26201,10 +26328,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1559,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -26213,16 +26341,15 @@
           "total_file_count": 148,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1565,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
