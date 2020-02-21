@@ -179,8 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
-
             }
+
+            objectsChangedEvent.Invoke(this);
         }
 
         protected override void RecreateVisuals()
@@ -206,6 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 // update handle collider bounds
                 UpdateColliderBounds(handles[i], visualBounds.size);
             }
+
+            objectsChangedEvent.Invoke(this);
         }
 
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)

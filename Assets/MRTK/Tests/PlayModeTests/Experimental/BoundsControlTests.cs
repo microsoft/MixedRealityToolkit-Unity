@@ -542,7 +542,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             proximityConfig.CloseGrowRate = 1.0f;
             proximityConfig.MediumGrowRate = 1.0f;
             proximityConfig.FarGrowRate = 1.0f;
-            boundsControl.CreateRig();
             yield return null; // wait so rig gameobjects get recreated
             yield return TestCurrentProximityConfiguration(boundsControl, hand, "Defaults");
 
@@ -557,7 +556,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             proximityConfig.ObjectMediumProximity = 0.2f;
             proximityConfig.ObjectCloseProximity = 0.1f;
 
-            boundsControl.CreateRig();
             yield return null; // wait so rig gameobjects get recreated
             yield return TestCurrentProximityConfiguration(boundsControl, hand, "Custom runtime config max");
         }
