@@ -150,7 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 }
             }
 
-            Controller.SetupConfiguration(typeof(MouseController));
             Service?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
