@@ -10197,6 +10197,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.HideTapToPlaceLabel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.HideTapToPlaceLabel.html",
+          "hash": "mDvtiD0cYa8Cl03Kymfdyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExample.yml",
       "output": {
         ".html": {
@@ -10453,7 +10465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "V/3HTFIkGNbr3ISTwpD83g=="
+          "hash": "w1ylhYKF+IcSLWoj835SQQ=="
         }
       },
       "is_incremental": false,
@@ -23241,11 +23253,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.TapToPlace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.TapToPlace.html",
+          "hash": "gVir395NeLmACpD2f9nVrw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers.html",
-          "hash": "Yg2yAEhOwIeNlwg/1uVHDg=="
+          "hash": "wSZAAFmi+3QYwsoj04KDPw=="
         }
       },
       "is_incremental": false,
@@ -26125,7 +26149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "OyDvYzYIPVh15m+ZlE/6fg=="
+          "hash": "6Y0gYXYts4GtXxDYsGPxQg=="
         }
       },
       "is_incremental": false,
@@ -26177,16 +26201,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1559,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 148,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1557,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
