@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowProfiler => isVisible
 #if WINDOWS_UWP
-            && appCapture != null && !appCapture.IsCapturingVideo
+            && (appCapture == null || !appCapture.IsCapturingVideo)
 #endif // WINDOWS_UWP
             ;
 
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowFrameInfo => frameInfoVisible
 #if WINDOWS_UWP
-            && appCapture != null && !appCapture.IsCapturingVideo
+            && (appCapture == null || !appCapture.IsCapturingVideo)
 #endif // WINDOWS_UWP
             ;
 
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowMemoryStats => memoryStatsVisible
 #if WINDOWS_UWP
-            && appCapture != null && !appCapture.IsCapturingVideo
+            && (appCapture == null || !appCapture.IsCapturingVideo)
 #endif // WINDOWS_UWP
             ;
 
