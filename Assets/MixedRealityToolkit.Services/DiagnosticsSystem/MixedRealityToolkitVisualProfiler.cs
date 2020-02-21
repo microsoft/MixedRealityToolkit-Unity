@@ -4,11 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 #if WINDOWS_UWP
 using Windows.Media.Capture;
 using Windows.System;
+#else
+using UnityEngine.Profiling;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
