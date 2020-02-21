@@ -163,7 +163,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Assign the default interactions based on controller handedness, if necessary. 
         /// </summary>
-        public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
+        public virtual void SetupDefaultInteractions(Handedness controllerHandedness)
+        {
+            switch (controllerHandedness)
+            {
+                case Handedness.Left:
+                    AssignControllerMappings(DefaultLeftHandedInteractions);
+                    break;
+                case Handedness.Right:
+                    AssignControllerMappings(DefaultRightHandedInteractions);
+                    break;
+                default:
+                    AssignControllerMappings(DefaultInteractions);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
