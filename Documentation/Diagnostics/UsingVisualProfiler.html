@@ -110,6 +110,10 @@
 <li>Microsoft HoloLens: 60</li>
 <li>Windows Mixed Reality Ultra: 90</li>
 </ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Due to <a href="https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#what-to-expect-when-mrc-is-enabled-on-hololens">frame rate throttling on HoloLens when default MRC is active</a>, the visual profiler hides itself while videos and photos are captured. This setting can be overridden in the diagnostics system profile.</p>
+</div>
 <h3 id="frame-time">Frame time</h3>
 <p>To the right of the frame rate is the frame time, in milliseconds, spent on the CPU. To achieve the target frame rates mentioned previously, an application can spend the following amount of time per frame:</p>
 <ul>

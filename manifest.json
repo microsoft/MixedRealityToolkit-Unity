@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/UsingVisualProfiler.html",
-          "hash": "+3tF+8SSfDAoxe7Oit81bg=="
+          "hash": "3gdGonQJEL8GE5R4G8YsCA=="
         }
       },
       "is_incremental": false,
@@ -8288,7 +8288,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html",
-          "hash": "fpnU8u15mG64uM3zBgbP1w=="
+          "hash": "bMOkgLYapwk8j58m5PQpQA=="
         }
       },
       "is_incremental": false,
@@ -8300,7 +8300,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.html",
-          "hash": "JDPcwTnJ6qfohyIww5GUdQ=="
+          "hash": "DxOtTQGxpYA0m0RBDJnVxw=="
         }
       },
       "is_incremental": false,
@@ -8312,7 +8312,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityToolkitVisualProfiler.html",
-          "hash": "507IXa1Af0G2MW2x88V2ow=="
+          "hash": "gXeuSpPUFDWrQwVQ7WmJbg=="
         }
       },
       "is_incremental": false,
