@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private bool ShouldShowProfiler => isVisible
 #if WINDOWS_UWP
-            && (appCapture == null || !appCapture.IsCapturingVideo)
+            && (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC)
 #endif // WINDOWS_UWP
             ;
 
@@ -123,6 +123,20 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             get { return windowFollowSpeed; }
             set { windowFollowSpeed = Mathf.Abs(value); }
+        }
+
+        [SerializeField]
+        [Tooltip("If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.")]
+        private bool showProfilerDuringMRC = false;
+
+        /// <summary>
+        /// If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.
+        /// </summary>
+        /// <remarks>This is not usually recommended, as MRC can have an effect on an app's frame rate.</remarks>
+        public bool ShowProfilerDuringMRC
+        {
+            get { return showProfilerDuringMRC; }
+            set { showProfilerDuringMRC = value; }
         }
 
         [Header("UI Settings")]
