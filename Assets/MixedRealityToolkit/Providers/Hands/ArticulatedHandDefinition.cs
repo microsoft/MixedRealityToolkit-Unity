@@ -1,17 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class BaseArticulatedHandDefinition
+    public class ArticulatedHandDefinition
     {
-        public BaseArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness)
+        public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness)
         {
             inputSource = source;
             this.handedness = handedness;

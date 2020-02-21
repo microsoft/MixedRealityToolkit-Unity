@@ -13,7 +13,7 @@ using Windows.UI.Input.Spatial;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
-    public class WindowsMixedRealityArticulatedHandDefinition : BaseArticulatedHandDefinition
+    public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
     {
         public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
 
