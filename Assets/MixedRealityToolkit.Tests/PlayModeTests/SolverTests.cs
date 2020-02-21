@@ -559,7 +559,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test code configurability for tap to place. Events for tap to place by default are triggered by 
         /// OnPointerClicked.  Code configurability for tap to place is calling Start/Stop Placement instead of 
-        /// clicking to select an object.
+        /// clicking to select an object.  This test uses AutoStart to start placing the object and StopPlacement.
         /// </summary>
         [UnityTest]
         public IEnumerator TestTapToPlaceCodeConfigurability()
@@ -570,14 +570,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
             tapToPlaceObj.target.transform.position = Vector3.forward;
             TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+            
+            // Start Placing the object immediately
+            tapToPlace.AutoStart = true;
 
             Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
 
-            // Start the placement via code instead of click from the hand
-            tapToPlace.StartPlacement();
-
+            // Make sure the object is being placed after setting AutoStart
             Assert.True(tapToPlace.IsBeingPlaced);
 
             // Move the playspace to simulate head movement
