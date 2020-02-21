@@ -944,8 +944,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Solver solver = AddSolverComponent<T>(cube);
 
-            Debug.Log("Bounds Size on Start: " + cube.GetComponent<Collider>().bounds.size);
-
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
 
