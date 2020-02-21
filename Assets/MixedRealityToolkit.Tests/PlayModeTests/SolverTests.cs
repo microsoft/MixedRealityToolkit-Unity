@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Make sure the target obj has followed the head
-            Assert.AreEqual(Camera.main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
 
             // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
             // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
@@ -498,7 +498,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Make sure the target obj is NOT following the head
-            Assert.AreNotEqual(Camera.main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches camera position.x, when it should not");
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches camera position.x, when it should not");
         }
 
         /// <summary>
@@ -590,7 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Make sure the target obj is following the head
-            Assert.AreEqual(Camera.main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
 
             // Stop the placement via code instead of click from the hand
             tapToPlace.StopPlacement();
@@ -600,14 +600,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the playspace to simulate head movement again
             MixedRealityPlayspace.PerformTransformation(p =>
             {
-                p.position = Vector3.left * 1.5f;
+                p.position = Vector3.right;
             });
 
             yield return new WaitForFixedUpdate();
             yield return null;
 
             // Make sure the target obj is NOT following the head
-            Assert.AreNotEqual(Camera.main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches the camera position.x, when it should not");
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches the camera position.x, when it should not");
         }
 
         /// <summary>
@@ -628,8 +628,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             colliderObj2.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
             colliderObj2.transform.position = new Vector3(-0.3f, 0, 1.5f);
 
-            yield return PlayModeTestUtilities.WaitForEnterKey();
-
             // Create a cube with Tap to Place attached
             var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
             tapToPlaceObj.target.transform.position = Vector3.forward * 2;
@@ -642,8 +640,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handStartPosition);
-
-            yield return PlayModeTestUtilities.WaitForEnterKey();
 
             // Start the placement via code instead of click from the hand
             tapToPlace.StartPlacement();
@@ -660,8 +656,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
             Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
-
-            yield return PlayModeTestUtilities.WaitForEnterKey();
 
             // Stop the placement via code instead of click from the hand
             tapToPlace.StopPlacement();
