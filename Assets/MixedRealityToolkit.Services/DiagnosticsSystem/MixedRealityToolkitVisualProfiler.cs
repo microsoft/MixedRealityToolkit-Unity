@@ -55,11 +55,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             set { isVisible = value; }
         }
 
-        private bool ShouldShowProfiler => isVisible
+        private bool ShouldShowProfiler =>
 #if WINDOWS_UWP
-            && (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC)
+            (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC) &&
 #endif // WINDOWS_UWP
-            ;
+            isVisible;
 
         [SerializeField, Tooltip("Should the frame info (colored bars) be displayed.")]
         private bool frameInfoVisible = true;
