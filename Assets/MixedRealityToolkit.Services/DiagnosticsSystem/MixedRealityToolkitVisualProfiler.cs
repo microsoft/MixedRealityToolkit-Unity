@@ -69,12 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             set { frameInfoVisible = value; }
         }
 
-        private bool ShouldShowFrameInfo => frameInfoVisible
-#if WINDOWS_UWP
-            && (appCapture == null || !appCapture.IsCapturingVideo)
-#endif // WINDOWS_UWP
-            ;
-
         [SerializeField, Tooltip("Should memory stats (used, peak, and limit) be displayed.")]
         private bool memoryStatsVisible = true;
 
@@ -83,12 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             get { return memoryStatsVisible; }
             set { memoryStatsVisible = value; }
         }
-
-        private bool ShouldShowMemoryStats => memoryStatsVisible
-#if WINDOWS_UWP
-            && (appCapture == null || !appCapture.IsCapturingVideo)
-#endif // WINDOWS_UWP
-            ;
 
         [SerializeField, Tooltip("The amount of time, in seconds, to collect frames for frame rate calculation.")]
         private float frameSampleRate = 0.1f;
@@ -348,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
 
                 // Update frame colors.
-                if (ShouldShowFrameInfo)
+                if (frameInfoVisible)
                 {
                     for (int i = frameRange - 1; i > 0; --i)
                     {
@@ -366,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Draw frame info.
-            if (ShouldShowProfiler && ShouldShowFrameInfo)
+            if (ShouldShowProfiler && frameInfoVisible)
             {
                 Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
@@ -387,7 +375,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update memory statistics.
-            if (ShouldShowProfiler && ShouldShowMemoryStats)
+            if (ShouldShowProfiler && memoryStatsVisible)
             {
                 ulong limit = AppMemoryUsageLimit;
 
@@ -430,7 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
             // Update visibility state.
             window.gameObject.SetActive(ShouldShowProfiler);
-            memoryStats.gameObject.SetActive(ShouldShowMemoryStats);
+            memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
         private Vector3 CalculateWindowPosition(Transform cameraTransform)
@@ -503,12 +491,12 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private void CalculateBackgroundSize()
         {
-            if (ShouldShowMemoryStats)
+            if (memoryStatsVisible)
             {
                 background.localPosition = backgroundOffsets[0];
                 background.localScale = backgroundScales[0];
             }
-            else if (ShouldShowFrameInfo)
+            else if (frameInfoVisible)
             {
                 background.localPosition = backgroundOffsets[1];
                 background.localScale = backgroundScales[1];
@@ -604,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             window.gameObject.SetActive(ShouldShowProfiler);
-            memoryStats.gameObject.SetActive(ShouldShowMemoryStats);
+            memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
         private void BuildFrameRateStrings()
