@@ -503,7 +503,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private void CalculateBackgroundSize()
         {
-            if (ShouldShowFrameInfo && ShouldShowMemoryStats || ShouldShowMemoryStats)
+            if (ShouldShowMemoryStats)
             {
                 background.localPosition = backgroundOffsets[0];
                 background.localScale = backgroundScales[0];
