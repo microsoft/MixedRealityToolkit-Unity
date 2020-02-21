@@ -542,7 +542,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 769440710}
-  - component: {fileID: 769440712}
   - component: {fileID: 769440711}
   m_Layer: 0
   m_Name: PressableButtonsSharedPlate
@@ -581,43 +580,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogPrefab: {fileID: 8451469530216736246, guid: 478732197b53dee4694480aac1a7c98c,
     type: 3}
---- !u!114 &769440712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 769440709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nodeList:
-  - Name: ButtonHoloLens1
-    Offset: {x: 0, y: 0}
-    Radius: 0
-    Transform: {fileID: 300764583}
-    Colliders: []
-  - Name: ButtonHoloLens1 (1)
-    Offset: {x: 0, y: 0}
-    Radius: 0
-    Transform: {fileID: 2046429241}
-    Colliders: []
-  ignoreInactiveTransforms: 1
-  sortType: 0
-  surfaceType: 1
-  orientType: 0
-  layout: 2
-  anchor: 4
-  radius: 2
-  radialRange: 180
-  distance: 0
-  rows: 3
-  columns: 1
-  cellWidth: 0.2
-  cellHeight: 0.5
-  assetVersion: 1
 --- !u!1 &1819155264
 GameObject:
   m_ObjectHideFlags: 0
