@@ -84,14 +84,12 @@
 
 <p><img src="Images/MRTK_Logo_Rev.png" alt="MRTK logo"></p>
 <p>The Mixed Reality Toolkit centralizes as much of the configuration required to manage the toolkit as possible (except for true runtime &quot;things&quot;).</p>
-<blockquote>
-<p><strong>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit</strong></p>
-</blockquote>
+<p>This guide is a simple walkthrough for each of the configuration profile screens currently available for the toolkit.</p>
 <h2 id="the-main-mixed-reality-toolkit-configuration-profile">The main Mixed Reality Toolkit configuration profile</h2>
 <p>The main configuration profile, which is attached to the <em>MixedRealityToolkit</em> GameObject in your Scene, provides the main entry point for the Toolkit in your project.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>The Mixed Reality Toolkit &quot;locks&quot; the default configuration screens to ensure you always have a common start point for your project and it is encouraged to start defining your own settings as your project evolves. The MRTK configuration is not editable during playmode.</p>
+<p>The Mixed Reality Toolkit &quot;locks&quot; the default configuration screens to ensure you always have a common start point for your project and it is encouraged to start defining your own settings as your project evolves. The MRTK configuration is not editable during play-mode.</p>
 </div>
 <p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png" alt="MRTK configuration profile"></p>
 <p>All the &quot;default&quot; profiles for the Mixed Reality Toolkit can be found in the SDK project in the folder Assets\MixedRealityToolkit.SDK\Profiles</p>
@@ -105,29 +103,42 @@
 <p>This houses the current active runtime configuration for the project.</p>
 <p>From here you can navigate to all the configuration profiles for the MRTK, including:</p>
 <ul>
-<li><a href="#experience">Experience settings</a></li>
-<li><a href="#camera">Camera settings</a></li>
+<li><a href="#mixed-reality-toolkit-profile-configuration-guide">Mixed Reality Toolkit profile configuration guide</a>
+<ul>
+<li><a href="#the-main-mixed-reality-toolkit-configuration-profile">The main Mixed Reality Toolkit configuration profile</a></li>
+<li><a href="#experience-settings">Experience settings</a></li>
+<li><a href="#camera-settings">Camera settings</a></li>
 <li><a href="#input-system-settings">Input system settings</a></li>
-<li><a href="#boundary">Boundary settings</a></li>
-<li><a href="#teleportation">Teleporting settings</a></li>
-<li><a href="#spatialawareness">Spatial awareness settings</a></li>
-<li><a href="#diagnostic">Diagnostics settings</a></li>
-<li><a href="#scenesystem">Scene system settings</a></li>
-<li><a href="#services">Additional services settings</a></li>
-<li><a href="#inputactions">Input actions settings</a></li>
-<li><a href="#inputactionrules">Input actions rules</a></li>
-<li><a href="#pointer">Pointer configuration</a></li>
-<li><a href="#gestures">Gestures configuration</a></li>
-<li><a href="#speech">Speech commands</a></li>
-<li><a href="#mapping">Controller mapping configuration</a></li>
-<li><a href="#visualization">Controller visualization settings</a></li>
-<li><a href="#editor-utilities">Editor Utilities</a></li>
+<li><a href="#boundary-visualization-settings">Boundary visualization settings</a></li>
+<li><a href="#teleportation-system-selection">Teleportation system selection</a></li>
+<li><a href="#spatial-awareness-settings">Spatial awareness settings</a></li>
+<li><a href="#diagnostics-settings">Diagnostics settings</a></li>
+<li><a href="#scene-system-settings">Scene system settings</a></li>
+<li><a href="#additional-services-settings">Additional services settings</a></li>
+<li><a href="#input-actions-settings">Input actions settings</a></li>
+<li><a href="#input-actions-rules">Input actions rules</a></li>
+<li><a href="#pointer-configuration">Pointer configuration</a></li>
+<li><a href="#gestures-configuration">Gestures configuration</a></li>
+<li><a href="#speech-commands">Speech commands</a></li>
+<li><a href="#controller-mapping-configuration">Controller mapping configuration</a></li>
+<li><a href="#controller-visualization-settings">Controller visualization settings</a></li>
+<li><a href="#editor-utilities">Editor utilities</a>
+<ul>
+<li><a href="#service-inspectors">Service inspectors</a></li>
+<li><a href="#depth-buffer-renderer">Depth buffer renderer</a></li>
+</ul>
+</li>
+<li><a href="#changing-profiles-at-runtime">Changing profiles at runtime</a></li>
+<li><a href="#swapping-profiles-prior-to-mrtk-initialization">Swapping profiles prior to MRTK initialization</a></li>
+<li><a href="#see-also">See also</a></li>
+</ul>
+</li>
 </ul>
 <p>These configuration profiles are detailed below in their relevant sections:</p>
 <hr>
 <p><a name="experience"></a></p>
 <h2 id="experience-settings">Experience settings</h2>
-<p>Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation of the Mixed Reality environment for your project.</p>
+<p>Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation of the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/coordinate-systems-in-unity">Mixed Reality environment scale</a> for your project.</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 <hr>
 <p><a name="camera"></a></p>
