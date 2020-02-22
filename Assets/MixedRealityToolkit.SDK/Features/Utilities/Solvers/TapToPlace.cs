@@ -3,13 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
+using UnityPhysics = UnityEngine.Physics;
 
-namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Tap to place is a far interaction component used to place objects on a surface.
@@ -171,9 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
         private int ignoreRaycastLayer;
 
-        // The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint).
-        // The following properties are updated each frame while the game object is selected to determine
-        // object placement if there is a hit on a surface.
+        /// <summary>
+        /// The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint).
+        /// The following properties are updated each frame while the game object is selected to determine
+        /// object placement if there is a hit on a surface.
+        /// </summary>
         protected RayStep CurrentRay;
 
         protected bool DidHitSurface;
@@ -191,6 +191,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             base.Start();
 
             Debug.Assert(IsColliderPresent, $"The game object {gameObject.name} does not have a collider attached, please attach a collider to use Tap to Place");
+
+            // When a game object is created via script, the bounds of the collider remain at the default size 
+            // of (1, 1, 1) which always returns a 0.5 SurfaceNormalOffset.  Adding SyncTransforms updates the
+            // size of the collider to match the game object before we calculate the SurfaceNormalOffset.
+            UnityPhysics.SyncTransforms();
 
             SurfaceNormalOffset = gameObject.GetComponent<Collider>().bounds.extents.z;
 
