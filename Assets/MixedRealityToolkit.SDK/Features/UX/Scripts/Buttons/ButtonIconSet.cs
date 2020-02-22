@@ -150,11 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     charIconLookup.Add(charIcon.Name, charIcon.Character);
                 }
             }
-            catch (NullReferenceException)
-            {
-                Debug.LogWarning("There's a null element in your icon set. Icon lookup by name will be disabled until this is resolved.");
-            }
-            catch (UnassignedReferenceException)
+            catch (System.Exception)
             {
                 Debug.LogWarning("There's a null element in your icon set. Icon lookup by name will be disabled until this is resolved.");
             }
