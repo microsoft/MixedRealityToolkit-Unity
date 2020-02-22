@@ -222,5 +222,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             return Mathf.RoundToInt((e - s) * t) + s;
         }
+
+        protected ThemeProperty GetThemeProperty(int index)
+        {
+            if (index >= 0)
+            {
+                if (Properties != null && Properties.Count > index)
+                {
+                    return Properties[index];
+                }
+
+                // If Theme's data does not have desired property, return defaults.
+                // If index is not in range, throw exception to fail fast. 
+                return GetDefaultThemeDefinition().CustomProperties[index];
+            }
+
+            return null;
+        }
     }
 }
