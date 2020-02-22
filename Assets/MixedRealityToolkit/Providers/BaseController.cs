@@ -137,12 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                // If no controller mappings found, warn the user.  Does not stop the project from running.
+                // If no controller mappings found, warn the user. Does not stop the project from running.
                 if (Interactions == null || Interactions.Length < 1)
                 {
                     SetupDefaultInteractions(ControllerHandedness);
 
-                    // We still don't have controller mappings, so this may be a custom controller. 
+                    // We still don't have controller mappings, so this may be a custom controller.
                     if (Interactions == null || Interactions.Length < 1)
                     {
                         Debug.LogWarning($"No Controller interaction mappings found for {controllerType}.");
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness, if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary.
         /// </summary>
         public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 
