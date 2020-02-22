@@ -19,7 +19,6 @@ steps:
   inputs:
     command: custom
     arguments: 'install docfx.console'
-    versionEnvVar: '2.48.0'
 
 # Run DocFX to generate the user manual and API reference
 - powershell: |
