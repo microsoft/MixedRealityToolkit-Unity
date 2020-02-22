@@ -161,11 +161,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness, if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary.
         /// </summary>
-        public virtual void SetupDefaultInteractions(Handedness controllerHandedness)
+        [Obsolete("The handedness parameter is no longer used. This method now reads from the controller's handedness.")]
+        public virtual void SetupDefaultInteractions(Handedness controllerHandedness) => SetupDefaultInteractions();
+
+        /// <summary>
+        /// Assign the default interactions based on this controller's handedness, if necessary.
+        /// </summary>
+        public virtual void SetupDefaultInteractions()
         {
-            switch (controllerHandedness)
+            switch (ControllerHandedness)
             {
                 case Handedness.Left:
                     AssignControllerMappings(DefaultLeftHandedInteractions);
