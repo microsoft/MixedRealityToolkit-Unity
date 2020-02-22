@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected ArticulatedHandDefinition handDefinition;
 
         /// <summary>
-        /// The Windows Mixed Reality Controller default interactions.
+        /// The simulated articulated hand's default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;

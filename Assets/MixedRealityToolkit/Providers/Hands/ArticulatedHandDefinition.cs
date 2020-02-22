@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Defines the interactions and data that an articulated hand can provide.
+    /// </summary>
     public class ArticulatedHandDefinition
     {
         public ArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness)
@@ -68,12 +71,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Updates the current hand joints with new data.
+        /// </summary>
+        /// <param name="jointPoses">The new joint poses.</param>
         public void UpdateHandJoints(Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
             unityJointPoses = jointPoses;
             CoreServices.InputSystem?.RaiseHandJointsUpdated(inputSource, handedness, unityJointPoses);
         }
 
+        /// <summary>
+        /// Updates the MixedRealityInteractionMapping with the latest index pose and fires a corresponding pose event.
+        /// </summary>
+        /// <param name="interactionMapping">The index finger's interaction mapping.</param>
         public void UpdateCurrentIndexPose(MixedRealityInteractionMapping interactionMapping)
         {
             if (unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out currentIndexPose))

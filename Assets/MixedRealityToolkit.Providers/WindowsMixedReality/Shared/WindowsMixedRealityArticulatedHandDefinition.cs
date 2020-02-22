@@ -13,6 +13,9 @@ using Windows.UI.Input.Spatial;
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
+    /// <summary>
+    /// Defines the additional data, like hand mesh, that an articulated hand on HoloLens 2 can provide.
+    /// </summary>
     public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition
     {
         public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
@@ -64,6 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
+        /// <summary>
+        /// Updates the current hand mesh based on the passed in state of the hand.
+        /// </summary>
+        /// <param name="sourceState">The current hand state.</param>
         public void UpdateHandMesh(SpatialInteractionSourceState sourceState)
         {
             MixedRealityHandTrackingProfile handTrackingProfile = null;
