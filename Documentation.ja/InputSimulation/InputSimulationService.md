@@ -7,7 +7,7 @@
 * HoloLens 2 の多関節ハンド トラッキング
 * HoloLens 2 のアイ トラッキング
 
-ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。それにより、デバイスにデプロイする前に Unity Editor 上でインタラクションをテストすることができます。
+ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。このアプローチにより、デバイスにデプロイする前に Unity Editor 上でインタラクションをテストすることができます。
 
 > [!WARNING]
 > これは、Unity の XR Holographic Emulation > Emulation Mode = "Simulate in Editor" では動作しません。Unity Editor 内でのシミュレーションは、MRTK の入力シミュレーションの制御を奪い取ります。MRTK の入力シミュレーション サービスを使用するには、XR Holographic Emulation を、Emulation Mode = *"None"* にセットする必要があります。
@@ -25,9 +25,12 @@ MRTK では、入力シミュレーションはデフォルトで有効化され
 
 _Mixed Reality Toolkit > Utilities > Input Simulation_ メニューから、入力シミュレーション ツール ウィンドウを有効化します。このウィンドウは、プレイモードの間、入力シミュレーションの状態へのアクセスを提供します。
 
-## ビューポートボタン
+## ビューポート ボタン
 
 基本的なハンドの配置をコントロールするエディタ内ボタンのプレファブは、入力シミュレーションサービスの __Indicators Prefab__ 配下の入力シミュレーション プロファイルで指定することができます。これは、オプションのユーティリティで、同じ機能には [入力シミュレーション ツール ウィンドウ](#入力シミュレーション-ツール-ウィンドウ) からアクセスすることができます。
+
+> [!NOTE]
+> ビューポート インジケーターは、現在 Unity UI インタラクションと時々干渉しうるため、デフォルトで無効になっています。イシュー [#6106](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6106) をご覧ください。有効にするには、InputSimulationIndicators プレハブを __Indicators Prefab__ に追加してください。
 
 ハンドアイコンは、シミュレーションされたハンドの状態を表します。
 
@@ -76,7 +79,7 @@ __Move Horizontal__/__Move Vertical__ 軸を使用してカメラを移動させ
 
 * _Gestures_: Air Tap や基本的なジェスチャを持ったシンプルなハンドをシミュレートします
 
-  [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures) をエミュレートします。
+  [HoloLens interaction model](https://docs.microsoft.com/windows/mixed-reality/gestures) をエミュレートします。
 
    フォーカスは視線ポインターを使ってコントロールします。_Air Tap_ ジェスチャでボタンと対話します
 
@@ -97,7 +100,7 @@ __Left/Right Hand Control Key__ （デフォルト: *左 Shift* が左ハンド�
 
 * __Hand Depth Multiplier__ は、マウス スクロール ホイールの深さの動きの感度を制御します。数値を大きくすると、ハンドのズームが速くなります。
 * __Default Hand Distance__ は、カメラからのハンドの初期距離です。 __Reset__ ボタンのハンドをクリックすると、ハンドもこの距離に配置されます。
-* __Hand Jitter Amount__ は、ランダムな動きをハンドに追加します。これを使用して、デバイス上の不正確なハンドの追跡をシミュレートし、ノイズの多い入力でインタラクションが適切に機能することを確認できます。
+* __Hand Jitter Amount__ は、ランダムな動きをハンドに追加します。この機能を使用して、デバイス上の不正確なハンドの追跡をシミュレートし、ノイズの多い入力でインタラクションが適切に機能することを確認できます。
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 

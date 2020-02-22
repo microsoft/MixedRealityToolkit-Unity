@@ -1,4 +1,4 @@
-# Input Providers
+# Input providers
 
 Input providers are registered in the **Registered Service Providers Profile**, found in the Mixed Reality Toolkit component:
 

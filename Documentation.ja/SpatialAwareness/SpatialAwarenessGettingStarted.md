@@ -64,16 +64,27 @@ Mixed Reality Toolkit のサービスには、プラットフォーム固有の�
 空間認識システムを目的のオブザーバーで構成すると、プロジェクトをビルドしてターゲット プラットフォームにデプロイできます。
 
 > [!IMPORTANT]
-> Windows Mixed Reality プラットフォーム（例：HoloLens）を対象とする場合、デバイスで Spatial Awareness システムを使用するには、[Spatial Perception capability](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-mapping-in-unity) が有効になっていることを確認することが重要です。
+> Windows Mixed Reality プラットフォーム（例：HoloLens）を対象とする場合、デバイスで Spatial Awareness システムを使用するには、[Spatial Perception capability](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping-in-unity) が有効になっていることを確認することが重要です。
 
 > [!WARNING]
 > Microsoft HoloLens を含む一部のプラットフォームでは、Unity 内からリモート実行をサポートしています。この機能により、ビルドとデプロイの手順を必要とせずに、迅速な開発とテストが可能になります。ターゲット ハードウェアとプラットフォームで実行される、ビルドおよびデプロイされたバージョンのアプリケーションを使用して、最終的な受け入れテストを行うようにしてください。
 
+## 次のステップ
+
+上記手順に従い Spatial Awareness システムを有効にしたら、より詳細に設定やコントロールをすることができます。
+
+インスペクターでのオブザーバーの設定に関する情報:
+
+- [Configuring Observers for on device usage](ConfiguringSpatialAwarenessMeshObserver.md)
+- [Configuring Observers for in-editor usage](SpatialObjectMeshObserver.md)
+
+コードでのオブザーバーのコントロールと拡張に関する情報:
+
+- [Configuring Observers via Code](UsageGuide.md)
+- [Creating a custom Observer](CreateDataProvider.md)
+
 ## 関連項目
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
-- [Configuring Observer for Device](ConfiguringSpatialAwarenessMeshObserver.md)
-- [Configuring Observer for Editor](SpatialObjectMeshObserver.md)
-- [Creating a custom Observer](CreateDataProvider.md)
-- [Spatial Mapping Overview WMR](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-mapping)
-- [Spatial Mapping in Unity WMR](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-mapping-in-unity)
+- [Spatial Mapping Overview WMR](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping)
+- [Spatial Mapping in Unity WMR](https://docs.microsoft.com/windows/mixed-reality/spatial-mapping-in-unity)

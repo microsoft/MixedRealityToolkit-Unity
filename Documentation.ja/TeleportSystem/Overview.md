@@ -11,7 +11,7 @@
 
 ランタイム (runtime) で実行することもできます。
 
-```csharp
+```c#
 void DisableTeleportSystem()
 {
     CoreServices.TeleportSystem.Disable();
@@ -35,7 +35,7 @@ void EnableTeleportSystem()
 
 次のコードは、テレポーテーションのイベントをリッスンする MonoBehaviour を作成する方法を示しています。このコードはテレポート システムが有効になっていることを前提とします。
 
-```csharp
+```c#
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using UnityEngine;

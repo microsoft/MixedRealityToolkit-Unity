@@ -1,4 +1,4 @@
-# Breaking Changes
+# Breaking changes
 
 Consumers of the MRTK depend on having a stable release-to-release API surface, so that they can take updates to the MRTK without having large breaking changes each time.
 
@@ -72,7 +72,7 @@ One thing we've already done is introduce the concept of an "experimental" featu
 
 ### Other examples of things that could help in the future
 
-- Usage of the [internal keyword](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/internal).
+- Usage of the [internal keyword](https://docs.microsoft.com/dotnet/csharp/language-reference/keywords/internal).
   This would allow for us to have shared code within our own assemblies (for reducing code duplication) without making things public to external consumers.
 - Creation of an "internal" namespace (i.e. Microsoft.MixedReality.Toolkit.Internal.Utilities),
   where we publicly document that anything contained within that internal namespace is subject to change at anytime and could be removed, etc. This is similar to how C++ header libraries will make use of ::internal namespaces to hide their implementation details.

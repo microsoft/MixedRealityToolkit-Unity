@@ -1,20 +1,20 @@
-﻿# Manipulation handler #
+﻿# Manipulation handler
 
 ![Manipulation handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
 
 *ManipulationHandler* スクリプトを使用することで、オブジェクトを片手か両手を使って、移動、スケール調整、および回転を可能にすることができます。特定の種類の移動のみを許可することにより、操作を制限できます。このスクリプトは、HoloLens 2 多関節ハンド入力、手の Ray 、HoloLens (第 1 世代) ジェスチャ入力、没入型ヘッドセット モーション コントローラー入力など、さまざまな種類の入力で動作します。
 
-## Manipulation handler の使用方法 ##
+## Manipulation handler の使用方法
 
 [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) コンポーネントをゲームオブジェクトに追加します。
 
-また、オブジェクトに衝突可能 (Collidable) なバウンドを合わせて追加してください。オブジェクトが近くにある多関節ハンドに反応するには、[NearInteractionGrabbable.cs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) スクリプトも追加します。
+また、オブジェクトのつかめる範囲に合わせてコライダーを追加してください。オブジェクトが近くにある多関節ハンドに反応するには、[NearInteractionGrabbable.cs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) スクリプトも追加します。
 
 オブジェクトのスケールの最小値または最大値を設定する場合は、[TransformScaleHandler](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) スクリプトも追加してください。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
-## \[Inspector\](インスペクター)のプロパティ ##
+## \[Inspector\](インスペクター)のプロパティ
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
@@ -88,7 +88,7 @@ Constraint (制約) をワールド座標の軸で適用するか、ローカル
 **Smoothing Amount One Hand**
 移動、スケール、回転に適用するスムージングの量。0 は、スムージングがないことを意味します。最大値は、値に変更がないことを意味します。
 
-## Events ##
+## Events
 Manipulation handler は、次のイベントを提供します:
 
 * *OnManipulationStarted*: 操作が開始されたときに起動します。

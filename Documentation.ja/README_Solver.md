@@ -46,8 +46,7 @@ Solvers(ソルバー) は、事前に定義されたアルゴリズムにした�
 > [!NOTE]
 > *ControllerRay* と *HandJoint* タイプの両方について、`TrackedHandedness` プロパティが `Both` の場合、ソルバー ハンドラーは左のコントローラー/ハンドのトランスフォームを提供しようとし、左が利用できなければ右の値を提供しようとします。
 
-![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
-<br/>
+![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)  
 *TrackedTargetType に関連するさまざまなプロパティの例*
 
 ## Solver (ソルバー) を連鎖させる方法
@@ -63,7 +62,7 @@ Solvers(ソルバー) は、事前に定義されたアルゴリズムにした�
 
 以下のコードは、`InFront` という新しいソルバー コンポーネントの例です。これは、アタッチされたオブジェクトを `SolverHandler.TransformTarget` の前 2m の位置に配置します。もし、`SolverHandler.TrackedTargetType` が [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) に設定された場合、`SolverHandler.TransformTarget` はカメラのトランスフォームとなり、このソルバーはすべてのフレームでアタッチされたゲームオブジェクトユーザーのゲイズの前 2m の位置に配置します。
 
-```csharp
+```c#
 /// <summary>
 /// InFront ソルバーは追跡されるトランスフォーム ターゲットの前 2 m の位置にオブジェクトを配置します
 /// </summary>
@@ -92,8 +91,7 @@ If *Smoothing* is enabled, then the Solver will gradually update the transform o
 
 If *MaintainScale* is enabled, then the Solver will utilize the GameObject's default local scale.
 
-![Core Solver Properties](../Documentation/Images/Solver/GeneralSolverProperties.png)
-<br/>
+![Core Solver Properties](../Documentation/Images/Solver/GeneralSolverProperties.png)  
 *Common properties inherited by all Solver components*
 
 ### Orbital
@@ -102,8 +100,7 @@ The [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) c
 
 Developers can modify this fixed offset to keep menus or other scene components at eye-level or at waist level etc. around a user. This is done by modifying the *Local Offset* and *World Offset* properties. The *Orientation Type* property determines the rotation applied to the object if it should maintain it's original rotation or always face the camera or face whatever transform is driving it's position etc.
 
-![Orbital Example](../Documentation/Images/Solver/OrbitalExample.png)
-<br/>
+![Orbital Example](../Documentation/Images/Solver/OrbitalExample.png)  
 *Orbital example*
 
 ### RadialView
@@ -116,8 +113,7 @@ The *Min & Max Distance* properties determines how far the GameObject should be 
 
 Generally, the [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) is used in conjunction with *Tracked Target Type* set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) so that the component follows the user's gaze. However, this component can function to be kept in *"view"* of any *Tracked Target Type*.
 
-![RadialView Example](../Documentation/Images/Solver/RadialViewExample.png)
-<br/>
+![RadialView Example](../Documentation/Images/Solver/RadialViewExample.png)  
 *RadialView example*
 
 ### InBetween
@@ -128,8 +124,7 @@ At runtime, the [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solv
 
 The `PartwayOffset` defines where along the line between two transforms the object shall be placed with 0.5 as halfway, 1.0 at the first transform, and 0.0 at the second transform.
 
-![InBetween Example](../Documentation/Images/Solver/InBetweenExample.png)
-<br/>
+![InBetween Example](../Documentation/Images/Solver/InBetweenExample.png)  
 *Example of using InBetween solver to keep object between two transforms*
 
 ### SurfaceMagnetism
@@ -200,8 +195,7 @@ If the directional target is viewable by the user, or whatever frame of referenc
 * *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
 * *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.
 
-![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExample.png)
-<br/>
+![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExample.png)  
 *Directional Indicator properties*
 
 ![Directional Indicator example scene](../Documentation/Images/Solver/DirectionalIndicatorExampleScene.gif)

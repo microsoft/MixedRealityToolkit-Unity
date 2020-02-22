@@ -4,7 +4,7 @@
 
 - HoloLens のような Windows Mixed Reality デバイス。これは、ピンチ動作 (「エア タップ」) とタップ & ホールド ジェスチャを扱います。
 
-  HoloLens のジェスチャに関するより多くの情報は、[Windows Mixed Reality Gestures ドキュメント](https://docs.microsoft.com/ja-jp/windows/mixed-reality/gestures) をご覧ください。
+  HoloLens のジェスチャに関するより多くの情報は、[Windows Mixed Reality Gestures ドキュメント](https://docs.microsoft.com/windows/mixed-reality/gestures) をご覧ください。
 
   [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager) は、HoloLens デバイスからの Unity のジェスチャ イベントを利用するために、[Unity XR.WSA.Input.GestureRecognizer](https://docs.unity3d.com/ScriptReference/XR.WSA.Input.GestureRecognizer.html) をラップしています。
 

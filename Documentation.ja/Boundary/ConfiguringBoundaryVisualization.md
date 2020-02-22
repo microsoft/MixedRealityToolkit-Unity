@@ -1,16 +1,16 @@
-# Configuring the Boundary Visualization
+# Configuring the boundary visualization
 
 The *Boundary Visualization Profile* provides options for configuring the visual aesthetics and other related parameters for the Boundary system. Boundary visualizations are attached to the Mixed Reality Playspace object in the scene and teleport with the user.
 
-## General Settings
+## General settings
 
 ![Boundary Visualization General Settings](../../Documentation/Images/Boundary/BoundaryVisualizationGeneralSettings.png)
 
-**Boundary Height**
+### Boundary height
 
 The boundary height indicates the distance above the floor plane at which the boundary ceiling should be rendered. The default value is 3 meters.
 
-## Floor Settings
+## Floor settings
 
 ![Boundary Visualization Floor Settings](../../Documentation/Images/Boundary/BoundaryVisualizationFloorSettings.png)
 
@@ -30,7 +30,7 @@ Indicates the size, in meters, of the floor plane to be created. The default sca
 
 The layer on which the floor plane should be set. The default value is the *Default* layer.
 
-## Play Area Settings
+## Play area settings
 
 ![Boundary Visualization Play Area Settings](../../Documentation/Images/Boundary/BoundaryVisualizationPlayAreaSettings.png)
 
@@ -46,7 +46,7 @@ Indicates the material that should be used when creating the play area object.
 
 The layer on which the play area should be set. The default value is the *Ignore Raycast* layer.
 
-## Tracked Area Settings
+## Tracked area settings
 
 ![Boundary Visualization Tracked Area Settings](../../Documentation/Images/Boundary/BoundaryVisualizationTrackedAreaSettings.png)
 
@@ -62,7 +62,7 @@ Indicates the material that should be used when creating the tracked area outlin
 
 The layer on which the tracked area should be sets. The default value is the *Ignore Raycast* layer.
 
-## Boundary Wall Settings
+## Boundary wall settings
 
 ![Boundary Visualization Boundary Wall Settings](../../Documentation/Images/Boundary/BoundaryVisualizationWallSettings.png)
 
@@ -81,7 +81,7 @@ The layer on which the boundary walls should be set. The default value is the *I
 > [!NOTE]
 > Setting the boundary wall component to a physics layer other than *Ignore Raycast* may prevent users from interacting with objects within the scene.
 
-## Boundary Ceiling Settings
+## Boundary ceiling settings
 
 ![Boundary Visualization Boundary Ceiling Settings](../../Documentation/Images/Boundary/BoundaryVisualizationCeilingSettings.png)
 
@@ -100,7 +100,7 @@ The layer on which the boundary walls should be set. The default value is the *I
 > [!NOTE]
 > Setting the boundary ceiling component to a physics layer other than *Ignore Raycast* may prevent users from interacting with objects within the scene.
 
-## See Also
+## See also
 
 - [Boundary API documentation](xref:Microsoft.MixedReality.Toolkit.Boundary)
 - [Boundary System](BoundarySystemGettingStarted.md)

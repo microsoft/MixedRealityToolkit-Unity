@@ -58,7 +58,7 @@ The available options are described in the following table.
 
 The default value for tracking type is **Update And Before Render**, to enable the lowest tracking latency.
 
-## See Also
+## See also
 
 - [Camera System Overview](CameraSystemOverview.md)
 - [Creating a Camera Settings Provider](CreateSettingsProvider.md)

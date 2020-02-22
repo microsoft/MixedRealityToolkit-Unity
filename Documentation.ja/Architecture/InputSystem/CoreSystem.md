@@ -1,4 +1,4 @@
-# Core System
+# Core system
 
 At the heart of the input system is the [MixedRealityInputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs),
 which is a service that is responsible for initializing and operating all of the input related
@@ -64,7 +64,7 @@ the event dispatch process stops.
 3. Event is sent to the focused object.
 4. Event is sent to fallback listeners.
 
-## Device Managers / Data Providers
+## Device managers and data providers
 
 These entities are responsible for interfacing with lower-level APIs (such as Windows Mixed Reality APIs,
 or OpenVR APIs) and translating data from those systems into ones that fit the MRTK's higher

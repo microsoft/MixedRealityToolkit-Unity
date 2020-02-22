@@ -1,4 +1,4 @@
-# Configuring Mesh Observers for Editor
+# Configuring mesh observers for the editor
 
 A convenient way to provide environment mesh data in the Unity editor is to use the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) class. The *Spatial Object Mesh Observer* is an editor-only data provider for the [Spatial Awareness system](SpatialAwarenessGettingStarted.md) that enables importing 3D model data to represent a spatial mesh. One common use of the *Spatial Object Mesh Observer* is to import data scanned via a Microsoft HoloLens to test how an
 experience adapts to different environments from within Unity.
@@ -11,7 +11,7 @@ This guide will walk through setting up a *Spatial Object Mesh Observer*. There 
 1. Set the Environment Mesh Data object
 1. [Configure rest of the Mesh Observer profile properties](ConfiguringSpatialAwarenessMeshObserver.md)
 
-### Set up a *Spatial Object Mesh Observer* profile
+### Set up a *spatial object mesh observer* profile
 
 1. Select the desired *Mixed Reality Toolkit* configuration profile or select the *Mixed Reality Toolkit* object in scene
 1. Open or expand the *Spatial Awareness System* tab
@@ -28,7 +28,7 @@ This guide will walk through setting up a *Spatial Object Mesh Observer*. There 
 
     ![Select the Mesh Object](../../Documentation/Images/SpatialAwareness/ObjectObserverProfile.png)
 
-### Spatial Object Mesh Observer profile notes
+### Spatial object mesh observer profile notes
 
 Since the *Spatial Object Mesh Observer* loads data from a 3D model, it does not honor some of the standard mesh
 observer settings which are outlined below.
@@ -56,7 +56,7 @@ This section outlines additional information to create and gather *Spatial Mesh 
 
 ### Windows Device Portal
 
-The [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) can be used to download the spatial mesh, as a .obj file, from a Microsoft HoloLens device.
+The [Windows Device Portal](https://docs.microsoft.com/windows/mixed-reality/using-the-windows-device-portal) can be used to download the spatial mesh, as a .obj file, from a Microsoft HoloLens device.
 
 1. Scan by simply walking and viewing the desired environment with a HoloLens
 1. Connect to the HoloLens using the Windows Device Portal
@@ -76,4 +76,4 @@ The [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reali
 - [Spatial Awareness Getting started](SpatialAwarenessGettingStarted.md)
 - [Configuring Mesh Observers on Device](ConfiguringSpatialAwarenessMeshObserver.md)
 - [Configuring Mesh Observers via code](UsageGuide.md)
-- [Using the Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal)
+- [Using the Windows Device Portal](https://docs.microsoft.com/windows/mixed-reality/using-the-windows-device-portal)

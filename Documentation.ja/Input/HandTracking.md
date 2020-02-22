@@ -52,7 +52,7 @@ _Hand Tracking profile_ は _Input System profile_ 配下にあります。こ�
 
 [`TryGetJoint`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint*) 関数は、リクエストされたジョイントが何らかの理由で利用できない場合に `false` を返します。この場合、結果のポーズは [`MixedRealityPose.ZeroIdentity`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ZeroIdentity) となります。
 
-```csharp
+```c#
 public void OnSourceDetected(SourceStateEventData eventData)
 {
   var hand = eventData.Controller as IMixedRealityHand;
@@ -70,7 +70,7 @@ public void OnSourceDetected(SourceStateEventData eventData)
 
 ジョイント オブジェクトは [コントローラー ビジュアライザー](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.Visualizer) からリクエストすることができます。
 
-```csharp
+```c#
 public void OnSourceDetected(SourceStateEventData eventData)
 {
   var handVisualizer = eventData.Controller.Visualizer as IMixedRealityHandVisualizer;
@@ -92,24 +92,32 @@ public void OnSourceDetected(SourceStateEventData eventData)
 
 [`HandJointUtils`](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils) は最初にアクティブなハンド デバイスを問い合わせる静的クラスです。
 
-```csharp
-  if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
-  {
+```c#
+if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
+{
     // ...
-  }
+}
 ```
 
 ####  Hand Joint Service (ハンド ジョイント サービス) からの Joint Transform (ジョイント トランスフォーム)
 
 [`IMixedRealityHandJointService`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) は、トラッキングしているジョイントの [GameObject](https://docs.unity3d.com/ScriptReference/GameObject.html) の永続的なセットを保持します。
 
-```csharp
-  var handJointService = MixedRealityToolkit.Instance.GetService<IMixedRealityHandJointService>();
-  if (handJointService != null)
-  {
+```c#
+IMixedRealityHandJointService handJointService = null;
+if (CoreServices.InputSystem != null)
+{
+    var dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+    if (dataProviderAccess != null)
+    {
+        handJointService = dataProviderAccess.GetDataProvider<IMixedRealityHandJointService>();
+    }
+}
+
+if (handJointService != null)
+{
     Transform jointTransform = handJointService.RequestJointTransform(TrackedHandJoint.IndexTip, Handedness.Right);
     // ...
-  }
 }
 ```
 
@@ -121,21 +129,21 @@ public void OnSourceDetected(SourceStateEventData eventData)
 
 [`IMixedRealityHandJointHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) はジョイントの位置の更新を扱います。
 
-```csharp
+```c#
 public class MyHandJointEventHandler : IMixedRealityHandJointHandler
 {
-  public Handedness myHandedness;
+    public Handedness myHandedness;
 
-  void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
-  {
-    if (eventData.Handedness == myHandedness)
+    void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
     {
-      if (eventData.InputData.TryGetValue(TrackedHandJoint.IndexTip, out MixedRealityPose pose))
-      {
-        // ...
-      }
+        if (eventData.Handedness == myHandedness)
+        {
+            if (eventData.InputData.TryGetValue(TrackedHandJoint.IndexTip, out MixedRealityPose pose))
+            {
+                // ...
+            }
+        }
     }
-  }
 }
 ```
 
@@ -145,28 +153,28 @@ public class MyHandJointEventHandler : IMixedRealityHandJointHandler
 
 ハンド メッシュはデフォルトでは有効でないことにご注意ください。
 
-```csharp
+```c#
 public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
 {
-  public Handedness myHandedness;
-  public Mesh myMesh;
+    public Handedness myHandedness;
+    public Mesh myMesh;
 
-  public void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
-  {
-    if (eventData.Handedness == myHandedness)
+    public void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData)
     {
-      myMesh.vertices = eventData.InputData.vertices;
-      myMesh.normals = eventData.InputData.normals;
-      myMesh.triangles = eventData.InputData.triangles;
+        if (eventData.Handedness == myHandedness)
+        {
+            myMesh.vertices = eventData.InputData.vertices;
+            myMesh.normals = eventData.InputData.normals;
+            myMesh.triangles = eventData.InputData.triangles;
 
-      if (eventData.InputData.uvs != null && eventData.InputData.uvs.Length > 0)
-      {
-          myMesh.uv = eventData.InputData.uvs;
-      }
+            if (eventData.InputData.uvs != null && eventData.InputData.uvs.Length > 0)
+            {
+                myMesh.uv = eventData.InputData.uvs;
+            }
 
-      // ...
+            // ...
+        }
     }
-  }
 }
 ```
 

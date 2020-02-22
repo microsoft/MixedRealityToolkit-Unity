@@ -146,7 +146,7 @@ Event Receiver (イベント レシーバー) 定義の新しいタイプを追�
 #### `ReceiverBase` の拡張例
 `MixedRealityToolkit.Examples` 配下の [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) クラスは、*Interactable* に関するステータス情報を表示し、カスタム イベント レシーバの作成例となります。
 
-``` csharp
+```c#
 public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 {
     HideUnityEvents = true; // レシーバーの Unity イベントを非表示にします。コードのみであると意味します。
@@ -155,7 +155,7 @@ public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 
 次のメソッドは、カスタム イベント レシーバーの作成時にオーバーライドまたは実装する場合に便利です。 [`ReceiverBase.OnUpdate()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) は、ステートのパターン/遷移の検出に使用できる抽象メソッドです。さらに、[`ReceiverBase.OnVoiceCommand()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) および [`ReceiverBase.OnClick()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) メソッドは、*Interactable* が選択されている場合にカスタム イベント ロジックを作成するのに便利です。
 
-``` csharp
+```c#
 public override void OnUpdate(InteractableStates state, Interactable source)
 {
     if (state.CurrentState() != lastState)
@@ -186,7 +186,7 @@ public virtual void OnClick(InteractableStates state,
 
 *ReceiverBase* スクリプトは、 [`InspectorField`](xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField) 属性を使用して Inspector (インスペクター) にカスタム プロパティを公開します。次に、Vector3 のツールチップとラベル情報を持つカスタム プロパティの例を示します。このプロパティは、*Interactable* GameObject が選択され、関連付けられた *Event Receiver* タイプが追加されている場合に、インスペクターで設定可能として表示されます。
 
-```csharp
+```c#
 [InspectorField(Label = "<Property label>",Tooltip = "<Insert tooltip info>",Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 ```
@@ -195,7 +195,7 @@ public Vector3 EffectOffset = Vector3.zero;
 
 ### シンプルなボタンを作成する
 
-入力イベントを受信するように構成された GameObject に *Interactable* コンポーネントを追加するだけで、簡単なボタンを作成することができます。入力を受け取るために自身または子要素にコライダーを持っていることがあります。Unity UI ベースの GameObject で *Interactable* を使用する場合は、Canvas GameObject の下に配置する必要があります。
+入力イベントを受信するように構成された GameObject に *Interactable* コンポーネントを追加することで、簡単なボタンを作成することができます。入力を受け取るために自身または子要素にコライダーを持っていることがあります。Unity UI ベースの GameObject で *Interactable* を使用する場合は、Canvas GameObject の下に配置する必要があります。
 
 ボタンをさらに一歩進めて、新しいプロファイルを作成し、GameObject 自体を割り当て、新しいテーマを作成します。さらに、*OnClick* イベントを使用して、何かを実行します。
 
@@ -216,7 +216,7 @@ public Vector3 EffectOffset = Vector3.zero;
 
 開発者は、[`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) および [`IsToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) インタフェースを使用して、コードを介して *Interactable* のトグル状態を取得/設定できます。
 
-```csharp
+```c#
 // SelectionMode = Toggle (すなわち Dimensions == 2) を使用する場合
 
 // Interactable を選択して、トグルをオンにする
@@ -254,7 +254,7 @@ Dimensions が数値の場合、最大9つのテーマを追加して、それ�
 
 開発者は、[`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) を評価して、どのディメンションが現在アクティブかを判断できます。
 
-```csharp
+```c#
 // SelectionMode = Multi-dimension (すなわち Dimensions >= 3) を使用する場合 
 
 // 現在の DimensionIndex にアクセスする
@@ -271,7 +271,7 @@ myInteractable.IncreaseDimension();
 
 *Interactable* は、実行時に任意の GameObject に簡単に追加できます。以下に [ビジュアル テーマ](visualthemes.md) を使用してプロファイルを割り当てる例を示します。
 
-```csharp
+```c#
 var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 var interactable = interactableObject.AddComponent<Interactable>();
 
@@ -307,7 +307,7 @@ interactable.TriggerOnClick()
 
 次の例のようなコードを使用して、ベースとなる [`Interactable.OnClick`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.OnClick) イベントにアクションを追加できます。
 
-```csharp
+```c#
 public static void AddOnClick(Interactable interactable)
 {
     interactable.OnClick.AddListener(() => Debug.Log("Interactable clicked"));
@@ -318,7 +318,7 @@ public static void AddOnClick(Interactable interactable)
 
 以下のサンプル コードは、フォーカスの開始/終了をリッスンする [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver) を追加する方法、さらにイベント インスタンスが発火したときに実行するアクション コードを定義する方法を示しています。
 
-```csharp
+```c#
 public static void AddFocusEvents(Interactable interactable)
 {
     var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
@@ -330,7 +330,7 @@ public static void AddFocusEvents(Interactable interactable)
 
 以下のサンプル コードは、トグル可能な *Interactables* の選択/選択解除のステート遷移をリッスンする [InteractableOnToggleReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver) を追加する方法、さらにイベント インスタンスが発火したときに実行するアクション コードを定義する方法を示しています。
 
-```csharp
+```c#
 public static void AddToggleEvents(Interactable interactable)
 {
     var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();

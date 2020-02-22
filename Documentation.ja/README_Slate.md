@@ -1,10 +1,10 @@
-# Slate (スレート) #
+# Slate (スレート)
 
 ![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)
 
 スレート プレハブは、2D コンテンツを表示するための薄いウィンドウ スタイルのコントロールを提供しています (例えば、プレーンテキストやメディアを含む記事)。これは、掴める (grabbable) タイトル バーだけでなく、*Follow Me* と *Close* 機能を提供しています。コンテンツ ウィンドウは、多関節ハンドの入力を介してスクロールすることができます。
 
-## スレート コントロールの使い方 ##
+## スレート コントロールの使い方
 スレート コントロールは、次の要素で構成されています:
 
 * **TitleBar**: スレートの上にあるタイトル バー全体。
@@ -15,14 +15,14 @@
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Structure.png" width="650">
 
-## Bounding Box (バウンディング ボックス) ##
+## Bounding Box (バウンディング ボックス)
 スレート コントロールには、スケーリングと回転用のバウンディング ボックス スクリプトが含まれています。バウンディング ボックスの詳細については、[バウンディング ボックス](README_BoundingBox.md) ページを参照してください。
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Box.png" width="650">
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Scale.png" width="650">
 
-## ボタン ##
+## ボタン
 標準スレートには、デフォルトでタイトル バーの右上に 2 つのボタンがあります。
 
 * **Follow Me**: スレート オブジェクトがユーザーを追いかけるようにするための orbital solver コンポーネントをトグルする。
@@ -30,7 +30,7 @@
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Buttons.png" width="650">
 
-## スクリプト ##
+## スクリプト
 一般的に、`NearInteractionTouchable.cs` スクリプトは `IMixedRealityTouchHandler` からのタッチ イベントを受け取りたいすべてのオブジェクトにアタッチする必要があります。
 
 <img src="../Documentation/Images/Slate/MRTK_Slate_Scripts.png">

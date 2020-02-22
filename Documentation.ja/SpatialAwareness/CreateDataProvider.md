@@ -1,4 +1,4 @@
-# Creating a Spatial Awareness system data provider
+# Creating a spatial awareness system data provider
 
 The Spatial Awareness system is an extensible system for providing applications with data about real world environments. To add support for a new hardware platform or a new form of Spatial Awareness data, a custom data provider may be required.
 
@@ -16,7 +16,7 @@ Data providers can be distributed in one of two ways:
 
 The approval process for submissions of new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal. Proposals can be submitted by creating a new [*Feature Request* type issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues).
 
-### Third Party add-on
+### Third party add-on
 
 **Namespace**
 
@@ -65,10 +65,10 @@ The Mixed Reality Toolkit foundation provides the following spatial objects that
 ### Specify interface and/or base class inheritance
 
 All Spatial Awareness data providers must implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
-interface, which specifies the minimium functionality required by the Spatial Awareness system. The MRTK foundation includes the [`BaseSpatialObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
+interface, which specifies the minimum functionality required by the Spatial Awareness system. The MRTK foundation includes the [`BaseSpatialObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
 class which provides a default implementation of this required functionality.
 
-``` c#
+```c#
 public class SpatialObjectMeshObserver :
     BaseSpatialObserver,
     IMixedRealitySpatialAwarenessMeshObserver,
@@ -84,7 +84,7 @@ public class SpatialObjectMeshObserver :
 A key step in creating a Spatial Awareness data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
 attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the Spatial Awareness profile as well as Name, folder path, and more.
 
-``` c#
+```c#
 [MixedRealityDataProvider(
     typeof(IMixedRealitySpatialAwarenessSystem),
     SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
@@ -129,7 +129,7 @@ To allow applications to respond to changes in the device's understanding of the
 
  The following code from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) examples demonstrates raising and event when mesh data is added.
 
-```csharp
+```c#
 // The data to be sent when mesh observation events occur.
 // This member variable is initialized as part of the Initialize() method.
 private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
@@ -186,7 +186,7 @@ Profile contents should mirror the accessible properties of the data provider (e
 
 Base classes are encouraged if a new data provider extends an existing provider. For example, the [`SpatialObjectMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile) extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile) to enable customers to provide a 3D model to be used as the environment data.
 
-```csharp
+```c#
 [CreateAssetMenu(
     menuName = "Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile",
     fileName = "SpatialObjectMeshObserverProfile",
@@ -212,7 +212,7 @@ Profile inspectors are the user interface for configuring and viewing profile co
 
 The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
-```csharp
+```c#
 [CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
 public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }

@@ -1,10 +1,10 @@
 ﻿# Mixed Reality Toolkit プロファイル設定ガイド
 
-![](../Documentation/Images/MRTK_Logo_Rev.png)
+![MRTK logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
 Mixed Reality Toolkit は、ツールキットを管理するために必要な設定を可能な限り集中化しています (ランタイムの「モノ」は除く)。
 
-**このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
+> **このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
 
 ## Mixed Reality Toolkit の主な設定プロファイル (Congifuration Profile)
 
@@ -13,7 +13,7 @@ Mixed Reality Toolkit は、ツールキットを管理するために必要な�
 > [!NOTE]
 > Mixed Reality Toolkit は、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定を定義することをお勧めします。MRTK の設定はプレイモード中は編集できません。
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
+![MRTK configuration profile](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
 Mixed Reality Toolkit のすべての「デフォルト」プロファイルは、Assets\MixedRealityToolkit.SDK\Profiles フォルダ内の SDK プロジェクトにあります。
 
@@ -71,7 +71,6 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
-
 ---
 <a name="inputsystem"></a>
 
@@ -96,7 +95,6 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 * [Controller mapping configuration（コントローラー マッピングの設定）](#mapping)
 * [Controller visualization settings（コントローラーの可視化の設定）](#visualization)
 
-
 ---
 <a name="boundary"></a>
 
@@ -105,7 +103,6 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 境界 (Boundary) システムは、元となるプラットフォームの境界/ガーディアン システムから取得した境界を解釈します。境界ビジュアライザー (Boundary visualizer) 設定を使用すると、シーン内で記録された境界をユーザーの位置に対して自動的に表示できます。境界線は、ユーザーがシーン内でテレポートする場所に基づいて反応/更新も行われます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="teleportation"></a>
@@ -146,7 +143,6 @@ Mixed Reality Toolkit の空間認識設定を使用すると、どのように�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 
-
 ---
 <a name="scenesystem"></a>
 
@@ -167,7 +163,6 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 登録済みのサービスは、MonoBehaviour または不格好なシングルトン パターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセスの両方で、シーン オーバーヘッドのない純粋な C# コンポーネントを使用できます。例えば、スポーン システム、ランタイム ゲーム ロジックなど、実質的には全てのもので利用できます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
-
 
 ---
 <a name="inputactions"></a>
@@ -209,7 +204,7 @@ Input action rules を使用すると、1 つの入力アクションに対し�
 
 Input Action Rules は、使用可能な入力軸のすべてに対して設定できます。ただし、1つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。2 軸アクションを別の 2 軸アクションにマップできますが、デジタルアクションまたは None アクションにはマップできません。
 
-![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
+![Input action rules profile](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 ---
 <a name="pointer"></a>
@@ -221,7 +216,6 @@ Input Action Rules は、使用可能な入力軸のすべてに対して設定�
 ポインターは、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブなシーン内で可視化することもできますし、MRTK IMixedRealityPointer インターフェイスを実装している場合は独自のコンポーネントを使用して可視化することもできます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
-
 
 * Pointing Extent: ゲイズを含むすべてのポインターのグローバルなポインティング範囲を決定します。
 * Pointing Raycast Layer Masks: ポインターがどのレイヤーに対してレイキャストを行うかを決定します。
@@ -297,8 +291,7 @@ MRTK は、以下のコントローラー / システムのデフォルト設定
 
 これは、「Global」(特定のハンド用コントローラーのすべてのインスタンス) または個々のコントローラー タイプ/ハンドに対して個別に設定が可能です。
 
-> [!IMPORTANT]
-> Unity が gLTF モデル（多くの SDK で提供されているでデフォルトの形式）をロード、レンダリングする機能を提供していないため、MRTK は現在ネイティブ SDK のコントローラー モデルをサポートしていません。これは、利用可能になった際に、拡張する予定です。
+MRTK はまた、 Windows Mixed Reality と OpenVR に関してネイティブ SDK のコントローラー モデルをサポートしています。これらはシーン内で GameObjects としてロードされ、プラットフォームのコントローラー トラッキングを使って配置されます。
 
 シーン内のコントローラーの表示を物理コントローラーの位置からオフセットする必要がある場合は、コントローラー モデルのプレハブに対してオフセットを設定するだけです (例えば、コントローラー プレハブの transform position をオフセット位置に設定します)。
 
@@ -326,7 +319,7 @@ Configuration Profile の *Editor Settings* の *Use Service Inspectors* をチ�
 
 シーンが必要なデータすべてをデプス バッファーに描画していることを確かめるため、開発者は Configuration Profile の *Editor Settings* 以下の *Render Depth Buffer* 機能をトグルしてください。これは、現在のデプス バッファーを使い、[`DepthBufferRenderer`](xref:Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer) というポストプロセッシング エフェクトを適用することでメイン カメラのシーン ビューに色をつけて描画します。
 
-![Render Depth Buffer Utility](Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
+![Render Depth Buffer Utility](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
 <sup>シーン内の青い円柱は ZWrite off のマテリアルを持っているため、デプス データは書き込まれません</sup>
 
 ## 関連項目

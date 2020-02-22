@@ -1,4 +1,4 @@
-# ハンド インタラクションのサンプル シーン #
+# ハンド インタラクションのサンプル シーン
 
 ![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
@@ -13,31 +13,31 @@ TextMesh Pro のインポート後に大きなテキストが表示される場�
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
-## 押しボタン (Pressable button) ##
+## 押しボタン (Pressable button)
 
 詳細は、[ボタン (button)](README_Button.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## バウンディング ボックス (Bounding box) ##
+## バウンディング ボックス (Bounding box)
 
 詳細は、 [バウンディング ボックス (bounding box)](README_BoundingBox.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
-## マニピュレーション ハンドラー (Manipulation handler) ##
+## マニピュレーション ハンドラー (Manipulation handler)
 
 詳細は、 [マニピュレーション ハンドラー (manipulation handler)](README_ManipulationHandler.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
-## スレート (Slate) ##
+## スレート (Slate)
 
 詳細は、 [スレート (slate)](README_Slate.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png)
 
-## システム キーボード (System keyboard) ##
+## システム キーボード (System keyboard)
 
 詳細は、 [システム キーボード (system keyboard)](README_SystemKeyboard.md) のページを参照してください。
 

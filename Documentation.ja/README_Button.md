@@ -190,7 +190,7 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 ## カスタム ボタンのサンプル ##
 
-[HandInteractionExample のシーン](README_HandInteractionExamples.md) で、ピアノと丸ボタンの例を見てみましょう。どちらも `PressableButton` を使用しています。
+[HandInteractionExample のシーン](README_HandInteractionExamples.md) で、ピアノと丸ボタンの例を見てください。どちらも `PressableButton` を使用しています。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom1.png" width="450">
 

@@ -15,7 +15,7 @@ MRTK は、次の Unity パッケージを介してリリースしています�
 
 Mixed Reality Toolkit Foundation は、アプリケーションが Mixed Reality プラットフォーム間で共通の機能を活用できるようにするコードのセットです。
 
-<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
+<img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;">  
 <sup>MRTK Foundation パッケージ</sup>
 
 MRTK Foundation は以下から構成されています。

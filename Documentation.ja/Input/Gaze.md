@@ -1,6 +1,6 @@
 # Gaze (ゲイズ)
 
-[Gaze](https://docs.microsoft.com/ja-jp/windows/mixed-reality/gaze) は、ユーザーがどこを見ているかに基づいて世界とインタラクションする入力方式です。ゲイズには、異なる2つの種類があります。
+[Gaze](https://docs.microsoft.com/windows/mixed-reality/gaze) は、ユーザーがどこを見ているかに基づいて世界とインタラクションする入力方式です。ゲイズには、異なる2つの種類があります。
 
 ## ヘッド ゲイズ
 
@@ -31,7 +31,7 @@ GazeProvider の再実装は簡単ではないので、通常は標準の GazePr
 
 このサンプルは、ユーザーのゲイズのターゲットとなっている現在のゲームオブジェクトを取得する方法を示します。
 
-```csharp
+```c#
 void LogCurrentGazeTarget()
 {
     if (CoreServices.InputSystem.GazeProvider.GazeTarget)
@@ -46,7 +46,7 @@ void LogCurrentGazeTarget()
 
 このサンプルは、ユーザのゲイズの方向と原点 (ゲイズの方向がどの点から出ているか) を表す Vector3 を取得する方法を示します。
 
-```csharp
+```c#
 void LogGazeDirectionOrigin()
 {
     Debug.Log("Gaze is looking in direction: "

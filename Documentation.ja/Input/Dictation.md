@@ -10,7 +10,7 @@
 
 ディクテーション システムの利用には、[PlayerSettings の Capabilities セクション](https://docs.unity3d.com/Manual/class-PlayerSettingsWSA.html#Capabilities)にて、
 「Internet Client」と「Microphone」の機能が必要です。
-Unity での音声入力の詳細は、[Windows Mixed Reality Documentation](https://docs.microsoft.com/en-us/windows/mixed-reality/voice-input-in-unity#dictation) 
+Unity での音声入力の詳細は、[Windows Mixed Reality Documentation](https://docs.microsoft.com/windows/mixed-reality/voice-input-in-unity#dictation) 
 をご覧ください。
 
 ## 設定

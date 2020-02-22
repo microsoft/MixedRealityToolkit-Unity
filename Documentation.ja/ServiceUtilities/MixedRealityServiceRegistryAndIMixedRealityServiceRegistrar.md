@@ -18,7 +18,7 @@ MixedRealityServiceRegistry は静的な C# クラスとして実装されてお
 
 以下のスニペットは、IMixedRealityInputSystem のインスタンスを取得するデモです。
 
-```
+```c#
 IMixedRealityInputSystem inputSystem = null;
 
 if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem))

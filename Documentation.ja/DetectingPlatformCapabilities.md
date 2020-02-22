@@ -25,7 +25,7 @@ Mixed Reality Toolkit は [`MixedRealityCapability`](xref:Microsoft.MixedReality
 
 以下のサンプルコードは、多関節ハンドをサポートしたデータ プロバイダーをインプット システムがロードしたかどうかをチェックしています。
 
-``` C#
+``` c#
 bool supportsArticulatedHands = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
@@ -47,7 +47,7 @@ if (capabilityCheck != null)
 
 以下の例は、空間メッシュをサポートしたデータ プロバイダーを空間認識システムがロードしたかどうかをチェックしています。
 
-``` C#
+``` c#
 bool supportsSpatialMesh = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = CoreServices.SpatialAwarenessSystem as IMixedRealityCapabilityCheck;
