@@ -86,42 +86,19 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition" class="text-break">Class WindowsMixedRealityArticulatedHandDefinition
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Defines the additional data, like hand mesh, that an articulated hand on HoloLens 2 can provide.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">WindowsMixedRealityArticulatedHandDefinition</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.WindowsMixedReality.html">Microsoft.MixedReality.Toolkit.WindowsMixedReality</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class WindowsMixedRealityArticulatedHandDefinition</code></pre>
+    <pre><code class="lang-csharp hljs">public class WindowsMixedRealityArticulatedHandDefinition : ArticulatedHandDefinition</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -153,119 +130,6 @@
       <tr>
         <td><span class="xref">Handedness</span></td>
         <td><span class="parametername">handedness</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_DefaultInteractions_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.DefaultInteractions*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_DefaultInteractions" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.DefaultInteractions">DefaultInteractions</h4>
-  <div class="markdown level1 summary"><p>The Windows Mixed Reality articulated hands default interactions.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityInteractionMapping[] DefaultInteractions { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MixedRealityInteractionMapping</span>[]</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_DefaultInteractions_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A single interaction mapping works for both left and right articulated hands.</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_IsInPointingPose_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.IsInPointingPose*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_IsInPointingPose" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.IsInPointingPose">IsInPointingPose</h4>
-  <div class="markdown level1 summary"><p>Calculates whether the current pose allows for pointing/distant interactions.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsInPointingPose { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_UpdateCurrentIndexPose_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.UpdateCurrentIndexPose*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_UpdateCurrentIndexPose_MixedRealityInteractionMapping_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.UpdateCurrentIndexPose(MixedRealityInteractionMapping)">UpdateCurrentIndexPose(MixedRealityInteractionMapping)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateCurrentIndexPose(MixedRealityInteractionMapping interactionMapping)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MixedRealityInteractionMapping</span></td>
-        <td><span class="parametername">interactionMapping</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_UpdateHandJoints_" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.UpdateHandJoints*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_WindowsMixedReality_WindowsMixedRealityArticulatedHandDefinition_UpdateHandJoints_Dictionary_TrackedHandJoint_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityArticulatedHandDefinition.UpdateHandJoints(Dictionary{TrackedHandJoint,MixedRealityPose})">UpdateHandJoints(Dictionary&lt;TrackedHandJoint, MixedRealityPose&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void UpdateHandJoints(Dictionary&lt;TrackedHandJoint, MixedRealityPose&gt; jointPoses)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Dictionary</span>&lt;<span class="xref">TrackedHandJoint</span>, <span class="xref">MixedRealityPose</span>&gt;</td>
-        <td><span class="parametername">jointPoses</span></td>
         <td></td>
       </tr>
     </tbody>
