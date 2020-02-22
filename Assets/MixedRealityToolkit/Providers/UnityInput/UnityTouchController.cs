@@ -57,9 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         private MixedRealityPose lastPose = MixedRealityPose.ZeroIdentity;
 
         /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        public override void SetupDefaultInteractions()
         {
-            AssignControllerMappings(DefaultInteractions);
+            base.SetupDefaultInteractions();
+
             if (CoreServices.InputSystem?.InputSystemProfile.GesturesProfile != null)
             {
                 var gestures = CoreServices.InputSystem.InputSystemProfile.GesturesProfile.Gestures;

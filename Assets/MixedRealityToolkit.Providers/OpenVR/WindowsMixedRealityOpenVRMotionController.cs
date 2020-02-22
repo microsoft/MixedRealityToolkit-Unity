@@ -63,9 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <summary>
         /// Setup the default interactions, then update the spatial pointer rotation with the preconfigured offset angle.
         /// </summary>
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
+        public override void SetupDefaultInteractions()
         {
-            base.SetupDefaultInteractions(controllerHandedness);
+            base.SetupDefaultInteractions();
 
             Assert.AreEqual(Interactions[0].Description, "Spatial Pointer", "The first interaction mapping is no longer the Spatial Pointer. Please update.");
 

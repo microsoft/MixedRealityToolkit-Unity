@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // If no controller mappings found, warn the user.  Does not stop the project from running.
                 if (Interactions == null || Interactions.Length < 1)
                 {
-                    SetupDefaultInteractions(ControllerHandedness);
+                    SetupDefaultInteractions();
 
                     // We still don't have controller mappings, so this may be a custom controller. 
                     if (Interactions == null || Interactions.Length < 1)
