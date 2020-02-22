@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => faceTrackedObjectWhileClamped = value;
         }
 
+        [Experimental]
         [SerializeField]
         [Tooltip("Face a user defined transform rather than using the solver orientation type.")]
         private bool faceUserDefinedTargetTransform = false;
@@ -250,17 +251,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => verticalMaxDistance = value;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public enum AngularClampType
+        {
+            ViewDegrees = 0,
+            AngleStepping = 1, // Lock the rotation to a specified number of steps around the tracked object.
+            RendererBounds = 2,
+            ColliderBounds = 3,
+        }
+
         [SerializeField]
-        [Tooltip("Lock the rotation to a specified number of steps around the tracked object.")]
-        private bool useAngleStepping = false;
+        [Tooltip("TODO")]
+        private AngularClampType angularClampMode = AngularClampType.ViewDegrees;
 
         /// <summary>
-        /// Lock the rotation to a specified number of steps around the tracked object.
+        /// TODO
         /// </summary>
-        public bool UseAngleStepping
+        public AngularClampType AngularClampMode
         {
-            get => useAngleStepping;
-            set => useAngleStepping = value;
+            get => angularClampMode;
+            set => angularClampMode = value;
         }
 
         [Range(2, 24)]
@@ -275,6 +287,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get => tetherAngleSteps;
             set => tetherAngleSteps = Mathf.Clamp(value, 2, 24);
+        }
+
+        [SerializeField]
+        [Tooltip("TODO")]
+        private float boundsMargin = 1.0f;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public float BoundsMargin
+        {
+            get => boundsMargin;
+            set => boundsMargin = value;
         }
 
         public void Recenter()
@@ -371,6 +396,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return 90 - (Mathf.Acos(Vector3.Dot(vec, normal)) * Mathf.Rad2Deg);
         }
 
+        private float AngleBetweenOnXYPlane(Vector3 from, Vector3 to)
+        {
+            float angle = Mathf.Atan2(to.y, to.x) - Mathf.Atan2(from.y, from.x);
+            return SimplifyAngle(angle) * Mathf.Rad2Deg;
+        }
+
+        float AngleBetweenOnXZPlane(Vector3 from, Vector3 to)
+        {
+            float angle = Mathf.Atan2(to.z, to.x) - Mathf.Atan2(from.z, from.x);
+            return SimplifyAngle(angle) * Mathf.Rad2Deg;
+        }
+
+        private float AngleBetweenOnAxis(Vector3 from, Vector3 to, Vector3 axis)
+        {
+            Quaternion axisQuat = Quaternion.Inverse(Quaternion.LookRotation(axis));
+            Vector3 v1 = axisQuat * from;
+            Vector3 v2 = axisQuat * to;
+            return AngleBetweenOnXYPlane(v1, v2);
+        }
+
         private float SimplifyAngle(float angle)
         {
             while (angle > Mathf.PI)
@@ -409,9 +454,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             Vector3 currentRefForward = refRotation * Vector3.forward;
             Vector3 refRight = refRotation * Vector3.right;
-            Vector3 refUp = refRotation * Vector3.up;
 
             bool angularClamped = false;
+
+            // Calculate the bounds to use with angular clamping. 
+            Bounds bounds;
+            GetBounds(gameObject, angularClampMode, out bounds);
+
+            Vector3 extents = bounds.extents * boundsMargin;
 
             // X-axis leashing
             // Leashing around the reference's X axis only makes sense if the reference isn't gravity aligned.
@@ -422,47 +472,108 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                float angle = -AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
-                float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
+                switch (angularClampMode)
+                {
+                    case AngularClampType.ViewDegrees:
+                    case AngularClampType.AngleStepping:
+                        {
+                            float angle = -AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
+                            float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
 
-                if (angle < -minMaxAngle)
-                {
-                    rotation = Quaternion.AngleAxis(-minMaxAngle - angle, refRight) * rotation;
-                    angularClamped = true;
-                }
-                else if (angle > minMaxAngle)
-                {
-                    rotation = Quaternion.AngleAxis(minMaxAngle - angle, refRight) * rotation;
-                    angularClamped = true;
+                            if (angle < -minMaxAngle)
+                            {
+                                rotation = Quaternion.AngleAxis(-minMaxAngle - angle, refRight) * rotation;
+                                angularClamped = true;
+                            }
+                            else if (angle > minMaxAngle)
+                            {
+                                rotation = Quaternion.AngleAxis(minMaxAngle - angle, refRight) * rotation;
+                                angularClamped = true;
+                            }
+                        }
+                        break;
+
+                    case AngularClampType.RendererBounds:
+                    case AngularClampType.ColliderBounds:
+                        {
+                           Vector3 min = refRotation * new Vector3(0.0f, -extents.y, currentDistance);
+                           Vector3 max = refRotation * new Vector3(0.0f, extents.y, currentDistance);
+
+                            float minAngle = AngleBetweenOnAxis(toTarget, min, refRight);
+                            float maxAngle = AngleBetweenOnAxis(toTarget, max, refRight);
+
+                            if (minAngle < 0)
+                            {
+                                rotation = Quaternion.AngleAxis(minAngle, refRight) * rotation;
+                                angularClamped = true;
+                            }
+                            else if (maxAngle > 0)
+                            {
+                                rotation = Quaternion.AngleAxis(maxAngle, refRight) * rotation;
+                                angularClamped = true;
+                            }
+                        }
+                        break;
                 }
             }
 
             // Y-axis leashing
-            if (UseAngleStepping)
+            switch (angularClampMode)
             {
-                float stepAngle = 360f / tetherAngleSteps;
-                int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
+                case AngularClampType.ViewDegrees:
+                    {
+                        // This is negated because Unity is left-handed
+                        float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
+                        float minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
 
-                float newAngle = stepAngle * numberOfSteps;
+                        if (angle < -minMaxAngle)
+                        {
+                            rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
+                            angularClamped = true;
+                        }
+                        else if (angle > minMaxAngle)
+                        {
+                            rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
+                            angularClamped = true;
+                        }
+                    }
+                    break;
 
-                rotation = Quaternion.Euler(rotation.eulerAngles.x, newAngle, rotation.eulerAngles.z);
-            }
-            else
-            {
-                // This is negated because Unity is left-handed
-                float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
-                float minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
+                case AngularClampType.AngleStepping:
+                    {
+                        float stepAngle = 360f / tetherAngleSteps;
+                        int numberOfSteps = Mathf.RoundToInt(SolverHandler.TransformTarget.transform.eulerAngles.y / stepAngle);
 
-                if (angle < -minMaxAngle)
-                {
-                    rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
-                    angularClamped = true;
-                }
-                else if (angle > minMaxAngle)
-                {
-                    rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
-                    angularClamped = true;
-                }
+                        float newAngle = stepAngle * numberOfSteps;
+
+                        rotation = Quaternion.Euler(rotation.eulerAngles.x, newAngle, rotation.eulerAngles.z);
+                    }
+                    break;
+
+                case AngularClampType.RendererBounds:
+                case AngularClampType.ColliderBounds:
+                    {
+                        var extentsXZ = new Vector3(extents.x, 0.0f, extents.z);
+                        var extentsXZMagnitude = extentsXZ.magnitude;
+                        Vector3 min = refRotation * new Vector3(-extentsXZMagnitude, 0.0f, currentDistance);
+                        Vector3 max = refRotation * new Vector3(extentsXZMagnitude, 0.0f, currentDistance);
+
+                        // These are negated because Unity is left-handed
+                        float minAngle = -AngleBetweenOnXZPlane(toTarget, min);
+                        float maxAngle = -AngleBetweenOnXZPlane(toTarget, max);
+
+                        if (minAngle > 0)
+                        {
+                            rotation = Quaternion.AngleAxis(minAngle, Vector3.up) * rotation;
+                            angularClamped = true;
+                        }
+                        else if (maxAngle < 0)
+                        {
+                            rotation = Quaternion.AngleAxis(maxAngle, Vector3.up) * rotation;
+                            angularClamped = true;
+                        }
+                    }
+                    break;
             }
 
             refForward = rotation * Vector3.forward;
@@ -647,6 +758,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             float sqrMagnitude = (x - y).sqrMagnitude;
 
             return sqrMagnitude > eps;
+        }
+
+        private static bool GetBounds(GameObject target, AngularClampType angularClampType, out Bounds bounds)
+        {
+            switch (angularClampType)
+            {
+                case AngularClampType.RendererBounds:
+                    {
+                        return BoundsExtensions.GetRenderBounds(target, out bounds, 0);
+                    }
+
+                case AngularClampType.ColliderBounds:
+                    {
+                        return BoundsExtensions.GetColliderBounds(target, out bounds, 0);
+                    }
+            }
+
+            bounds = new Bounds();
+            return false;
         }
     }
 }

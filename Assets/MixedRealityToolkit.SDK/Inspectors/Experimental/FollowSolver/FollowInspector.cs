@@ -30,14 +30,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
         // Direction
         private SerializedProperty ignoreAngleClamp;
-        private SerializedProperty maxViewHorizontalDegrees;
-        private SerializedProperty maxViewVerticalDegrees;
         private SerializedProperty ignoreReferencePitchAndRoll;
         private SerializedProperty pitchOffset;
-
-        // Angle Stepping
-        private SerializedProperty useAngleStepping;
+        private SerializedProperty angularClampMode;
         private SerializedProperty tetherAngleSteps;
+        private SerializedProperty maxViewHorizontalDegrees;
+        private SerializedProperty maxViewVerticalDegrees;
+        private SerializedProperty boundsMargin;
 
         // Smoothing
         private SerializedProperty moveToDefaultDistanceLerpTime;
@@ -45,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private bool orientationFoldout = true;
         private bool distanceFoldout = true;
         private bool directionFoldout = true;
-        private bool angleSteppingFoldout = true;
         private bool smoothingFoldout = true;
 
         private Follow solverInBetween;
@@ -69,13 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             verticalMaxDistance = serializedObject.FindProperty("verticalMaxDistance");
 
             ignoreAngleClamp = serializedObject.FindProperty("ignoreAngleClamp");
-            maxViewHorizontalDegrees = serializedObject.FindProperty("maxViewHorizontalDegrees");
-            maxViewVerticalDegrees = serializedObject.FindProperty("maxViewVerticalDegrees");
             ignoreReferencePitchAndRoll = serializedObject.FindProperty("ignoreReferencePitchAndRoll");
             pitchOffset = serializedObject.FindProperty("pitchOffset");
-
-            useAngleStepping = serializedObject.FindProperty("useAngleStepping");
+            angularClampMode = serializedObject.FindProperty("angularClampMode");
             tetherAngleSteps = serializedObject.FindProperty("tetherAngleSteps");
+            maxViewHorizontalDegrees = serializedObject.FindProperty("maxViewHorizontalDegrees");
+            maxViewVerticalDegrees = serializedObject.FindProperty("maxViewVerticalDegrees");
+            boundsMargin = serializedObject.FindProperty("boundsMargin");
 
             moveToDefaultDistanceLerpTime = serializedObject.FindProperty("moveToDefaultDistanceLerpTime");
 
@@ -143,33 +141,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                 EditorGUILayout.PropertyField(ignoreAngleClamp);
                 if (!ignoreAngleClamp.boolValue)
                 {
-                    EditorGUILayout.PropertyField(maxViewHorizontalDegrees);
-                    EditorGUILayout.PropertyField(maxViewVerticalDegrees);
                     EditorGUILayout.PropertyField(ignoreReferencePitchAndRoll);
                     if (ignoreReferencePitchAndRoll.boolValue)
                     {
                         EditorGUILayout.PropertyField(pitchOffset);
                     }
+
+                    EditorGUILayout.PropertyField(angularClampMode);
+
+                    switch ((Follow.AngularClampType)angularClampMode.enumValueIndex)
+                    {
+                        case Follow.AngularClampType.AngleStepping:
+                            {
+                                EditorGUILayout.PropertyField(tetherAngleSteps);
+                            }
+                            break;
+                        case Follow.AngularClampType.ViewDegrees:
+                            {
+                                EditorGUILayout.PropertyField(maxViewHorizontalDegrees);
+                                EditorGUILayout.PropertyField(maxViewVerticalDegrees);
+                            }
+                            break;
+
+                        case Follow.AngularClampType.RendererBounds:
+                        case Follow.AngularClampType.ColliderBounds:
+                            {
+                                EditorGUILayout.PropertyField(boundsMargin);
+                            }
+                            break;
+                    }
                 }
                 else
                 {                    
                     EditorGUILayout.HelpBox("Disable \"Ignore Angle Clamp\" to show options", MessageType.Info);
-                }
-            }
-
-            EditorGUILayout.Space();
-            angleSteppingFoldout = EditorGUILayout.Foldout(angleSteppingFoldout, "Angle Stepping", true);
-
-            if (angleSteppingFoldout)
-            {
-                EditorGUILayout.PropertyField(useAngleStepping);
-                if (useAngleStepping.boolValue)
-                {
-                    EditorGUILayout.PropertyField(tetherAngleSteps);
-                }
-                else
-                {
-                    EditorGUILayout.HelpBox("Enable \"Use Angle Stepping\" to show options", MessageType.Info);
                 }
             }
 

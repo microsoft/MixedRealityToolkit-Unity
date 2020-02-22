@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using TMPro;
 using UnityEngine;
@@ -63,6 +64,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
+        [SerializeField, Tooltip("The initial pitch when spawned.")]
+        private float initialPitchOffsetDegrees = 5.0f;
+
+        /// <summary>
+        /// The initial pitch when spawned.
+        /// </summary>
+        public float InitialPitchOffsetDegrees
+        {
+            get { return initialPitchOffsetDegrees; }
+            set
+            {
+                initialPitchOffsetDegrees = value;
+            }
+        }
+
         private string text = string.Empty;
 
         /// <summary>
@@ -117,6 +133,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (solverHandler != null)
             {
                 solverHandler.UpdateSolvers = !solverHandler.UpdateSolvers;
+
+                if (solverHandler.UpdateSolvers)
+                {
+                    ApplyShellSolverParameters();
+                }
             }
         }
 
@@ -130,6 +151,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 initialCaretLocation = previewCaret.position;
             }
+
+            ApplyShellSolverParameters();
         }
 
         #endregion MonoBehaviour Implementation
@@ -162,6 +185,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     var position = PreviewText.transform.TransformPoint(localPosition);
                     previewCaret.transform.position = position;
+                }
+            }
+        }
+
+        private void ApplyShellSolverParameters()
+        {
+            var solver = GetComponent<Follow>();
+
+            if (solver != null)
+            {
+                // Position the keyboard in a comfortable place with a fixed pitch relative to the forward direction.
+                var solverHandler = solver.GetComponent<SolverHandler>();
+
+                if (solverHandler != null)
+                {
+                    var forward = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.forward : Vector3.forward;
+                    var forwardXZ = forward;
+                    forwardXZ.y = 0.0f;
+
+                    var pitchOffsetDegrees = Mathf.Acos(forwardXZ.magnitude / forward.magnitude) * Mathf.Rad2Deg;
+
+                    if (forward.y < 0.0f)
+                    {
+                        // If the y component of the forward is negative that means the tracked transform is looking/
+                        // pointing down. We want to negate our pitch offset to move the keyboard down in response.
+                        pitchOffsetDegrees *= -1.0f;
+                    }
+
+                    // Initial carry pitch.
+                    pitchOffsetDegrees += initialPitchOffsetDegrees;
+
+                    solver.PitchOffset = pitchOffsetDegrees;
                 }
             }
         }
