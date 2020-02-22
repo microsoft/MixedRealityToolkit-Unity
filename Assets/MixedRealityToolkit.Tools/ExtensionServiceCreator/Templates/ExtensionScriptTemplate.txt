@@ -7,6 +7,7 @@ namespace #NAMESPACE#
 	public class #SERVICE_NAME# : BaseExtensionService, #INTERFACE_NAME#, IMixedRealityExtensionService
 	{
 #SERVICE_CONSTRUCTOR#
+
 		public override void Initialize()
 		{
 			base.Initialize();
