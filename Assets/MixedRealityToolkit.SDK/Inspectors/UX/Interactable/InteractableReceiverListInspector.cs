@@ -9,6 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [CustomEditor(typeof(InteractableReceiverList))]
     public class InteractableReceiverListInspector : UnityEditor.Editor
     {
+        private static readonly GUIContent InteractableLabel = new GUIContent("Interactable","The Interactable that will be monitored");
+        private static readonly GUIContent SearchScopeLabel = new GUIContent("Search Scope", "Where to look for an Interactable if one is not assigned");
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -50,14 +53,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty interactable = serializedObject.FindProperty("Interactable");
             SerializedProperty searchScope = serializedObject.FindProperty("InteractableSearchScope");
 
-            EditorGUILayout.PropertyField(interactable, new GUIContent("Interactable","The Interactable that will be monitored"));
+            EditorGUILayout.PropertyField(interactable, InteractableLabel);
 
-            ReceiverBaseMonoBehavior.SearchScopes scope = (ReceiverBaseMonoBehavior.SearchScopes)searchScope.intValue;
-            scope = (ReceiverBaseMonoBehavior.SearchScopes)EditorGUILayout.EnumPopup(new GUIContent("Search Scope", "Where to look for an Interactable if one is not assigned"), scope);
-
-            if ((int)scope != searchScope.intValue)
+            Rect pos = EditorGUILayout.GetControlRect();
+            using (new EditorGUI.PropertyScope(pos, SearchScopeLabel, searchScope))
             {
-                searchScope.intValue = (int)scope;
+                ReceiverBaseMonoBehavior.SearchScopes scope = (ReceiverBaseMonoBehavior.SearchScopes)searchScope.intValue;
+                scope = (ReceiverBaseMonoBehavior.SearchScopes)EditorGUILayout.EnumPopup(SearchScopeLabel, scope);
+
+                if ((int)scope != searchScope.intValue)
+                {
+                    searchScope.intValue = (int)scope;
+                }
             }
         }
 
