@@ -54,18 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty searchScope = serializedObject.FindProperty("InteractableSearchScope");
 
             EditorGUILayout.PropertyField(interactable, InteractableLabel);
-
-            Rect pos = EditorGUILayout.GetControlRect();
-            using (new EditorGUI.PropertyScope(pos, SearchScopeLabel, searchScope))
-            {
-                ReceiverBaseMonoBehavior.SearchScopes scope = (ReceiverBaseMonoBehavior.SearchScopes)searchScope.intValue;
-                scope = (ReceiverBaseMonoBehavior.SearchScopes)EditorGUILayout.EnumPopup(SearchScopeLabel, scope);
-
-                if ((int)scope != searchScope.intValue)
-                {
-                    searchScope.intValue = (int)scope;
-                }
-            }
+            EditorGUILayout.PropertyField(searchScope, SearchScopeLabel);
         }
 
         protected virtual void AddEvent(int index)
