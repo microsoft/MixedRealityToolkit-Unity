@@ -20,4 +20,4 @@ jobs:
       packagingEnabled: true
       packagePublishing: false
   - template: templates/end.yml
-  - template: template/compliance.yml
+  - template: templates/compliance.yml
