@@ -42,7 +42,12 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### What's new in 2.4.0
 
-*Coming soon*
+**Support for changing MixedRealityToolkit.ActiveProfile at run time**
+
+This release addresses issues related to changing the `MixedRealityToolkit.ActiveProfile` property at run time ([#4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289), [#6041](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6041)).
+
+>[!NOTE]
+> Changing `MixedRealityToolkit.ActiveProfile` causes all running services to be destroyed and new instances of those specified in the incoming profile to be instantiated.
 
 ### Known issues in 2.4.0
 
