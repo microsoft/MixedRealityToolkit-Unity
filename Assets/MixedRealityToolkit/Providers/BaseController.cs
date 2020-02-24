@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                // If no controller mappings found, warn the user. Does not stop the project from running.
+                // If no controller mappings found, try to use default interactions.
                 if (Interactions == null || Interactions.Length < 1)
                 {
                     SetupDefaultInteractions();
@@ -77,15 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // We still don't have controller mappings, so this may be a custom controller.
                     if (Interactions == null || Interactions.Length < 1)
                     {
-                        Debug.LogWarning($"No Controller interaction mappings found for {controllerType}.");
+                        Debug.LogWarning($"No controller interaction mappings found for {controllerType}.");
                         return;
                     }
                 }
 
+                // If no profile was found, warn the user. Does not stop the project from running.
                 if (!profileFound)
                 {
-                    Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
-                    return;
+                    Debug.LogWarning($"No controller profile found for type {controllerType}; please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 }
             }
 
