@@ -26,22 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsPositionApproximate = false;
             IsRotationAvailable = false;
 
-            if (IsControllerMappingEnabled() && InputSource != null)
+            Type controllerType = GetType();
+
+            if (IsControllerMappingEnabled() && Interactions == null)
             {
-                Type controllerType = GetType();
-
-                if (GetControllerVisualizationProfile() != null &&
-                    GetControllerVisualizationProfile().RenderMotionControllers &&
-                    Application.isPlaying)
-                {
-                    TryRenderControllerModel(controllerType, InputSource.SourceType);
-                }
-
                 // We can only enable controller profiles if mappings exist.
                 var controllerMappings = GetControllerMappings();
 
                 // Have to test that a controller type has been registered in the profiles,
-                // else its Unity Input manager mappings will not have been set up by the inspector.
+                // else its Unity input manager mappings will not have been set up by the inspector.
                 bool profileFound = false;
                 if (controllerMappings != null)
                 {
@@ -88,6 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Debug.LogWarning($"No controller profile found for type {controllerType}; please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
                 }
+            }
+
+            if (GetControllerVisualizationProfile() != null &&
+                GetControllerVisualizationProfile().RenderMotionControllers &&
+                InputSource != null)
+            {
+                TryRenderControllerModel(controllerType, InputSource.SourceType);
             }
 
             Enabled = true;
