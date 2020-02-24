@@ -1033,11 +1033,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-            // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-            // of data providers may change mid-enumeration, causing an InvalidOperationException to be thrown.
-            // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-            // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             try
             {
                 foreach (IMixedRealityService service in services)
@@ -1046,7 +1041,13 @@ namespace Microsoft.MixedReality.Toolkit
                 }
             }
             catch (InvalidOperationException)
-            { }
+            {
+                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+                // of data providers may change mid-enumeration, causing an InvalidOperationException to be thrown.
+                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
+            }
 
             return true;
         }

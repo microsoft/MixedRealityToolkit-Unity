@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 catch(Exception e)
                 {
-                    Debug.LogError($"{provider.Name}'s Reset method threw {e.GetType()}");
+                    Debug.LogError($"{provider.Name}'s Reset method threw {e.GetType()}. Continuing to the next service.");
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{provider.Name}'s Enable method threw {e.GetType()}");
+                    Debug.LogError($"{provider.Name}'s Enable method threw {e.GetType()}. Continuing to the next service.");
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{provider.Name}'s Disable method threw {e.GetType()}");
+                    Debug.LogError($"{provider.Name}'s Disable method threw {e.GetType()}. Continuing to the next service.");
                 }
             }
         }
@@ -78,11 +78,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Update();
 
-            // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-            // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-            // of data providers may change mid-Update, causing an InvalidOperationException to be thrown during enumeration.
-            // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-            // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             try
             {
                 foreach (IMixedRealityDataProvider provider in dataProviders)
@@ -93,12 +88,18 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError($"{provider.Name}'s Update method threw {e.GetType()}");
+                        Debug.LogError($"{provider.Name}'s Update method threw {e.GetType()}. Continuing to the next service.");
                     }
                 }
             }
             catch (InvalidOperationException)
-            { }
+            {
+                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+                // of data providers may change mid-Update, causing an InvalidOperationException to be thrown during enumeration.
+                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
+            }
         }
 
         /// <inheritdoc />
@@ -106,11 +107,6 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.LateUpdate();
 
-            // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-            // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-            // of data providers may change mid-LateUpdate, causing an InvalidOperationException to be thrown during enumeration.
-            // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-            // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             try
             {
                 foreach (IMixedRealityDataProvider provider in dataProviders)
@@ -121,12 +117,18 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                     catch (Exception e)
                     {
-                        Debug.LogError($"{provider.Name}'s LateUpdate method threw {e.GetType()}");
+                        Debug.LogError($"{provider.Name}'s LateUpdate method threw {e.GetType()}. Continuing to the next service.");
                     }
                 }
             }
             catch (InvalidOperationException)
-            { }
+            {
+                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+                // of data providers may change mid-LateUpdate, causing an InvalidOperationException to be thrown during enumeration.
+                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
+            }
         }
 
         /// <inheritdoc />
@@ -140,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"{provider.Name}'s Destroy method threw {e.GetType()}");
+                    Debug.LogError($"{provider.Name}'s Destroy method threw {e.GetType()}. Continuing to the next service.");
                 }
             }
 
