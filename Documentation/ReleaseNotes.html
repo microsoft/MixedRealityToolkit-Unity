@@ -122,7 +122,8 @@
 <li><a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity 2.0.0 or newer</a></li>
 </ul>
 <h3 id="upgrading-projects-to-240">Upgrading projects to 2.4.0</h3>
-<p><em>Coming soon</em></p>
+<h4 id="custom-controller-classes">Custom controller classes</h4>
+<p>Custom controller classes previously had to define <code>SetupDefaultInteractions(Handedness)</code>. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (<code>AssignControllerMappings(DefaultInteractions);</code>), so the full call has been refactored down into <code>BaseController</code> and made an optional override instead of required.</p>
 <h3 id="whats-new-in-240">What's new in 2.4.0</h3>
 <p><em>Coming soon</em></p>
 <h3 id="known-issues-in-240">Known issues in 2.4.0</h3>

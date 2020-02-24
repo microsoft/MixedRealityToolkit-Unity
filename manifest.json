@@ -7161,7 +7161,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ReleaseNotes.html",
-          "hash": "6UOnLe1Q/1BBVv+H1OaraQ=="
+          "hash": "ZrVkUcHmP2ascu/5x18bMg=="
         }
       },
       "is_incremental": false,
@@ -12476,7 +12476,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseController.html",
-          "hash": "y9g1wRnscHO8E0xC2zldiQ=="
+          "hash": "e5bktZ38ScUdLOAJdFxDXQ=="
         }
       },
       "is_incremental": false,
@@ -12548,7 +12548,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseHand.html",
-          "hash": "hxMhdtnGH93N71XMqiplgw=="
+          "hash": "UClmKS/4ADb8jppB8jE2pw=="
         }
       },
       "is_incremental": false,
@@ -14984,7 +14984,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.html",
-          "hash": "pon2fISRGxM/lUtOx4ZB7A=="
+          "hash": "0CXo/DazIuinptoEfkQ/lA=="
         }
       },
       "is_incremental": false,
@@ -15008,7 +15008,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html",
-          "hash": "nQ7Shl1r9F407D35Fn51fQ=="
+          "hash": "Ko4XAjsEcMLvI//9V97B0w=="
         }
       },
       "is_incremental": false,
@@ -15020,7 +15020,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHand.html",
-          "hash": "6n9c380pdJZvshgyKPOjPg=="
+          "hash": "vBMOhZxky3l10wMVbFbxNw=="
         }
       },
       "is_incremental": false,
@@ -15260,7 +15260,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html",
-          "hash": "ufhBhg94OV0EXo5RNggAvg=="
+          "hash": "jZvRFktCC5T4Eq4tMT5QIw=="
         }
       },
       "is_incremental": false,
@@ -15272,7 +15272,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html",
-          "hash": "JUbYNX8vtGl3tBAO/e/eGw=="
+          "hash": "gmjWPj68Tztrenz9l7BQ7A=="
         }
       },
       "is_incremental": false,
@@ -15308,7 +15308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html",
-          "hash": "3C6kDecKX7/ooZvgQBp/uQ=="
+          "hash": "RnLJmNYjrpL3w2W2+bG+GQ=="
         }
       },
       "is_incremental": false,
@@ -15332,7 +15332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController.html",
-          "hash": "saeYnmURTQlotzt9tCjr4Q=="
+          "hash": "zvu+82cn89539TR1ejtnBg=="
         }
       },
       "is_incremental": false,
@@ -18248,7 +18248,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController.html",
-          "hash": "KTKFY6Ky6Cy9ouSJJnn5ag=="
+          "hash": "cYCwlfKYhzUHYMf2/0rbiw=="
         }
       },
       "is_incremental": false,
@@ -18260,7 +18260,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusRemoteController.html",
-          "hash": "pYRDZklgNIk3hDZtfAMA/w=="
+          "hash": "qKtva3XWD1fI8kq9kS/JXQ=="
         }
       },
       "is_incremental": false,
@@ -18272,7 +18272,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusTouchController.html",
-          "hash": "BcEvPqe6N58cHdCyqUgtew=="
+          "hash": "umX6fuvD2YkDXErnnEhMzA=="
         }
       },
       "is_incremental": false,
@@ -18308,7 +18308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveKnucklesController.html",
-          "hash": "VIk4tLdBVObnizCShmULiw=="
+          "hash": "YH8CMHfAS21Hf/rm3CuZ6A=="
         }
       },
       "is_incremental": false,
@@ -18320,7 +18320,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController.html",
-          "hash": "R8P8y+cvb/F65l3TuHKNSg=="
+          "hash": "OiE68QsXlkMj0y5VjQdt6Q=="
         }
       },
       "is_incremental": false,
@@ -18332,7 +18332,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.WindowsMixedRealityOpenVRMotionController.html",
-          "hash": "HGHET0CcVJcsEtbIoB2pFQ=="
+          "hash": "vIlmLLdkIcTlDlQ/deVyUw=="
         }
       },
       "is_incremental": false,
@@ -25868,7 +25868,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.BaseWindowsMixedRealitySource.html",
-          "hash": "ox620cTGJCOzvmFQOu+IgA=="
+          "hash": "ZYcc2eE5kPr1RlI7re9YzA=="
         }
       },
       "is_incremental": false,
@@ -25880,7 +25880,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.html",
-          "hash": "2Yj1tKvtMshbaEnnQQ47ug=="
+          "hash": "6Mzrp9k1INrQK3Jw+ktjEA=="
         }
       },
       "is_incremental": false,
@@ -25892,7 +25892,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html",
-          "hash": "wAGwZwJwYdLgZyV5Nb5hpw=="
+          "hash": "2cCpTqmd24xkASRBwNCNkQ=="
         }
       },
       "is_incremental": false,
@@ -25928,7 +25928,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html",
-          "hash": "gKqbg9g2aYqh1oEoTUPYGQ=="
+          "hash": "G6uRKTYE8C+SaIvK37QxoA=="
         }
       },
       "is_incremental": false,
@@ -26340,9 +26340,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -26359,9 +26359,9 @@
           "total_file_count": 1566,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
