@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Gets the default profile of the specified type.
         /// </summary>
-        /// <typeparam name="T">Thhe type of profile to return (ex: MixedRealityToolkitConfigurationProfile)</typeparam>
+        /// <typeparam name="T">The type of profile to return (ex: MixedRealityToolkitConfigurationProfile)</typeparam>
         /// <returns>
         /// When running in the editor, returns the default profile. If running in play mode, a new instance of the specified profile type is returned.
         /// </returns>
