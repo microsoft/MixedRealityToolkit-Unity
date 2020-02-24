@@ -26,12 +26,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsPositionApproximate = false;
             IsRotationAvailable = false;
 
-            if (IsControllerMappingEnabled())
+            if (IsControllerMappingEnabled() && InputSource != null)
             {
                 Type controllerType = GetType();
 
                 if (GetControllerVisualizationProfile() != null &&
-                    GetControllerVisualizationProfile().RenderMotionControllers)
+                    GetControllerVisualizationProfile().RenderMotionControllers &&
+                    Application.isPlaying)
                 {
                     TryRenderControllerModel(controllerType, InputSource.SourceType);
                 }
