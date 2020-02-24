@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Sets up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         /// <param name="controllerType">The type this controller represents.</param>
-        [Obsolete("This method is no longer used. Configuration now happens in the constructor.")]
+        [Obsolete("This method is no longer used. Configuration now happens in the constructor. You can check this controller's Enabled property for configuration state.")]
         public bool SetupConfiguration(Type controllerType)
         {
             // If the constructor succeeded in finding interactions, Enabled will be true.
