@@ -14,7 +14,7 @@ steps:
     workspaceId: '${{ parameters.SOMWorkspaceID }}'
     uploadErrorLevel: 'Error'
 
-- task: ea576cd4-c61f-48f8-97e7-a3cb07b90a6f@2
+- task: CredScan@2
   inputs:
     toolMajorVersion: 'V2'
     # suppressionsFile: '$(Build.SourcesDirectory)\pipelines\config\CredScanSuppressions.json'
@@ -40,7 +40,7 @@ steps:
   inputs:
       userProvideBuildInfo: 'auto'
 
-- task: PublishSecurityAnalysisLogs@3
+- task: PublishSecurityAnalysisLogs@2
   inputs:
     ArtifactName: 'CodeAnalysisLogs'
     ArtifactType: 'Container'
