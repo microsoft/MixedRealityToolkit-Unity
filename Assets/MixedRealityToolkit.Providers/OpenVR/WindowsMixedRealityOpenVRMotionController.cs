@@ -23,8 +23,10 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public WindowsMixedRealityOpenVRMotionController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            PointerOffsetAngle = -30f;
         }
+
+        /// <inheritdoc />
+        public override float PointerOffsetAngle { get; protected set; } = -30f;
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
@@ -59,19 +61,5 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             new MixedRealityInteractionMapping(10, "Thumbstick Position", AxisType.DualAxis, DeviceInputType.ThumbStick, ControllerMappingLibrary.AXIS_4, ControllerMappingLibrary.AXIS_5, false, true),
             new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ButtonPress,  KeyCode.JoystickButton19),
         };
-
-        /// <summary>
-        /// Setup the default interactions, then update the spatial pointer rotation with the preconfigured offset angle.
-        /// </summary>
-        public override void SetupDefaultInteractions()
-        {
-            base.SetupDefaultInteractions();
-
-            Assert.AreEqual(Interactions[0].Description, "Spatial Pointer", "The first interaction mapping is no longer the Spatial Pointer. Please update.");
-
-            MixedRealityPose startingRotation = MixedRealityPose.ZeroIdentity;
-            startingRotation.Rotation *= Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
-            Interactions[0].PoseData = startingRotation;
-        }
     }
 }
