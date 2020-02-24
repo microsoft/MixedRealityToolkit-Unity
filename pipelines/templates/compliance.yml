@@ -1,0 +1,64 @@
+parameters:
+  SOMWorkspaceID: '9aee72fc-a4e1-4f86-8343-8bcb69b03955'
+
+steps:
+- task: PoliCheck@1
+  inputs:
+    inputType: 'Basic'
+    targetType: 'F'
+    targetArgument: '$(Build.SourcesDirectory)'
+    result: 'PoliCheck.xml'
+    optionsUEPATH: '$(Build.SourcesDirectory)\pipelines\config\PolicheckUserExclusion.xml'
+    SOMEnabled: true
+    uploadToSOM: true
+    workspaceId: '${{ parameters.SOMWorkspaceID }}'
+    uploadErrorLevel: 'Error'
+
+- task: ea576cd4-c61f-48f8-97e7-a3cb07b90a6f@2
+  inputs:
+    toolMajorVersion: 'V2'
+    # suppressionsFile: '$(Build.SourcesDirectory)\pipelines\config\CredScanSuppressions.json'
+
+- task: BinSkim@3
+  inputs:
+    InputType: 'Basic'
+    Function: 'analyze'
+    AnalyzeTarget: '$(Build.SourcesDirectory)\**\*.dll;$(Build.SourcesDirectory)\**\*.exe'
+    AnalyzeSymPath: '$(Build.SourcesDirectory)'
+    AnalyzeRecurse: false
+    toolVersion: '1.4.5'
+
+- task: APIScan@1
+  inputs:
+    softwareFolder: '$(Build.SourcesDirectory)'
+    softwareName: 'Azure Remote Rendering'
+    softwareVersionNum: '1.0'
+    softwareBuildNum: '$(Build.BuildId)'
+    symbolsFolder: '$(Build.SourcesDirectory)'
+
+- task: RoslynAnalyzers@2
+  inputs:
+      userProvideBuildInfo: 'auto'
+
+- task: PublishSecurityAnalysisLogs@3
+  inputs:
+    ArtifactName: 'CodeAnalysisLogs'
+    ArtifactType: 'Container'
+
+- task: PostAnalysis@1
+  inputs:
+    AllTools: false
+    APIScan: true
+    BinSkim: true
+    CodesignValidation: false
+    CredScan: true
+    FortifySCA: false
+    FxCop: false
+    ModernCop: false
+    PoliCheck: true
+    PoliCheckBreakOn: 'Severity4Above'
+    RoslynAnalyzers: true
+    SDLNativeRules: false
+    Semmle: false
+    TSLint: false
+    ToolLogsNotFoundAction: 'Standard'
