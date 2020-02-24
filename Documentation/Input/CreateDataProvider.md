@@ -232,7 +232,7 @@ the file will be located in the ContosoInput\Editor folder. This assembly defini
 
 Once created, the data provider can be registered with the input system and be used in the application.
 
-![Registered input system data providers](../Images/Input/RegisteredServiceProviders.png)
+![Registered input system data providers](../Images/Input/RegisteredServiceProviders.PNG)
 
 ## Packaging and distribution
 
