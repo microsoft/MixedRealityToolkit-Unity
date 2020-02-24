@@ -193,7 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public void ToggleOcclusionMask()
         {
             Debug.Log("ToggleOcclusionMask");
-            observer.RequestOcclusionMask = !observer.RequestOcclusionMask;
+            var observerMask = observer.RequestOcclusionMask;
+            observer.RequestOcclusionMask = !observerMask;
             observer.UpdateOnDemand();
         }
 

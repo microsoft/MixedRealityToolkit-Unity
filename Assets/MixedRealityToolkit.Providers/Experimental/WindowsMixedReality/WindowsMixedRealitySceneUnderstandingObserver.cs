@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         "Windows Mixed Reality Scene Understanding Observer",
         "Experimental/Profiles/DefaultSceneUnderstandingObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
-    public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver : 
+    public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver :
         BaseSpatialSceneObserver,
         IMixedRealityOnDemandObserver,
         IWindowsMixedRealitySceneUnderstanding
@@ -362,7 +362,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         Debug.Log(ObserverState.WaitForAccess.ToString());
 
                         await new WaitForUpdate();
-                        await SceneObserver.RequestAccessAsync();
+                        var task = await SceneObserver.RequestAccessAsync();
+
                         if (shouldAutoStart)
                         {
                             observerState = ObserverState.GetScene;
@@ -371,6 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         {
                             observerState = ObserverState.Idle;
                         }
+
                         continue;
 
                     case ObserverState.GetScene:
@@ -379,25 +381,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         await new WaitForBackgroundThread();
                         {
                             scene = GetSceneAsync(previousScene);
-                            
+
                             previousScene = scene;
-                            
+
                             sceneOriginId = scene.OriginSpatialGraphNodeId;
                         }
                         await new WaitForUpdate();
 
                         sceneToWorldXformSystem = await GetSceneToWorldTransform();
+                        Debug.Log($"sceneToWorldXformSystem = {sceneToWorldXformSystem}");
 
-                        // Transform scene root
+                        // Transform scene root... XXX why and when???
                         var currentSceneToWorldUnity = sceneToWorldXformSystem.ToUnity();
                         Vector3 pos = currentSceneToWorldUnity.GetColumn(3);
                         Quaternion rot = currentSceneToWorldUnity.rotation;
-                        ObservedObjectParent.transform.SetPositionAndRotation(pos, rot);
-                        Debug.Log($"currentSceneToWorldUnity = {currentSceneToWorldUnity}");
+
+                        //ObservedObjectParent.transform.SetPositionAndRotation(pos, rot);
 
                         if (!UsePersistentObjects)
                         {
-                            // these are cached when we do conversion
+                            // these are cached when we do ConvertSceneObject()
                             cachedSceneQuads.Clear();
                         }
 
@@ -485,7 +488,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             if (sceneToWorld.HasValue)
             {
-                Debug.Log($"sceneToWorld = {sceneToWorld.Value.ToString()}");
                 result = sceneToWorld.Value; // numerics
             }
             else
@@ -754,6 +756,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private System.Numerics.Matrix4x4 sceneToWorldXformSystem;
 
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
+        private Texture defaultTexture;
 
         private List<SceneObject> FilterSelectedSurfaceTypes(IReadOnlyList<SceneObject> newObjects)
         {
@@ -831,6 +834,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     if (DefaultMaterial)
                     {
                         meshRenderer.sharedMaterial = DefaultMaterial;
+                        if (defaultTexture == null)
+                        {
+                            defaultTexture = DefaultMaterial.mainTexture;
+                        }
                     }
 
                     if (RequestOcclusionMask)
@@ -840,6 +847,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                             var occlusionTexture = OcclulsionTexture(quad.occlusionMask);
                             meshRenderer.material.mainTexture = occlusionTexture;
                         }
+                    }
+                    else
+                    {
+                        meshRenderer.material.mainTexture = defaultTexture;
                     }
 
                     quadGo.transform.SetParent(saso.GameObject.transform);
@@ -1201,6 +1212,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
-#endregion Private Methods
+        #endregion Private Methods
     }
 }

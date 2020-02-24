@@ -20,7 +20,7 @@ MonoBehaviour:
   updateInterval: 5
   autoUpdate: 0
   physicsLayer: 31
-  surfaceTypes: 62
+  surfaceTypes: 26
   instantiationBatchRate: 1
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
   shouldLoadFromFile: 0
@@ -28,11 +28,11 @@ MonoBehaviour:
   createGameObjects: 1
   requestPlaneData: 1
   requestMeshData: 0
-  inferRegions: 0
+  inferRegions: 1
   firstUpdateDelay: 5
-  worldMeshLevelOfDetail: 0
+  worldMeshLevelOfDetail: 1
   usePersistentObjects: 0
-  queryRadius: 5
-  requestOcclusionMask: 1
+  queryRadius: 10
+  requestOcclusionMask: 0
   occlusionMaskResolution: {x: 256, y: 256}
-  orientScene: 0
+  orientScene: 1
