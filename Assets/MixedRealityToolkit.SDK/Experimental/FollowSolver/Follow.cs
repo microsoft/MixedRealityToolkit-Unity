@@ -14,20 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// </summary> 
     [AddComponentMenu("Scripts/MRTK/Experimental/Solver/Follow")]
     public class Follow : Solver
-    {
-        [SerializeField]
-        [Tooltip("Position lerp multiplier")]
-        private float moveToDefaultDistanceLerpTime = 0.1f;
-
-        /// <summary>
-        /// Position lerp multiplier.
-        /// </summary>
-        public float MoveToDefaultDistanceLerpTime
-        {
-            get => moveToDefaultDistanceLerpTime;
-            set => moveToDefaultDistanceLerpTime = value;
-        }
-        
+    {        
         [SerializeField]
         [Tooltip("The desired orientation of this object")]
         private SolverOrientationType orientationType = SolverOrientationType.FaceTrackedObject;
@@ -360,15 +347,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             Vector3 goalPosition = currentPosition;
             if (!ignoreDistanceClamp)
             {
-                wasClamped |= DistanceClamp(currentPosition, refPosition, goalDirection, wasClamped, ref goalPosition);
+                wasClamped |= DistanceClamp(currentPosition, refPosition, goalDirection, ref goalPosition);
             }
 
             // Figure out goal rotation of the element based on orientation setting
             Quaternion goalRotation = Quaternion.identity;
             ComputeOrientation(goalPosition, wasClamped, ref goalRotation);
 
-            GoalPosition = goalPosition;
-            GoalRotation = goalRotation;
+            // Avoid drift by not updating the goal when not clamped
+            if (wasClamped)
+            {
+                GoalPosition = goalPosition;
+                GoalRotation = goalRotation;
+            }
+
             PreviousGoalRotation = goalRotation;
 
             PreviousReferencePosition = refPosition;
@@ -598,7 +590,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// IgnoreReferencePitchAndRoll is true and we have a PitchOffset, we only apply these calculations
         /// for xz.
         /// </summary>
-        private bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, bool interpolateToDefaultDistance, ref Vector3 clampedPosition)
+        private bool DistanceClamp(Vector3 currentPosition, Vector3 refPosition, Vector3 refForward, ref Vector3 clampedPosition)
         {
             float clampedDistance;
             float currentDistance = Vector3.Distance(currentPosition, refPosition);
@@ -627,16 +619,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 desiredDistanceXZ = Mathf.Clamp(desiredDistanceXZ, minDistanceXZ, maxDistanceXZ);
 
-                if (interpolateToDefaultDistance)
-                {
-                    Vector3 defaultDistanceXZVector = direction * DefaultDistance;
-                    defaultDistanceXZVector.y = 0;
-                    float defaulltDistanceXZ = defaultDistanceXZVector.magnitude;
-                
-                    float interpolationRate = Mathf.Min(moveToDefaultDistanceLerpTime * 60.0f * SolverHandler.DeltaTime, 1.0f);
-                    desiredDistanceXZ = desiredDistanceXZ + (interpolationRate * (defaulltDistanceXZ - desiredDistanceXZ));
-                }
-
                 Vector3 desiredPosition = refPosition + directionXZ * desiredDistanceXZ;
                 float desiredHeight = refPosition.y + refForward.y * MaxDistance;
                 desiredPosition.y = desiredHeight;
@@ -649,15 +631,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                clampedDistance = currentDistance;
-
-                if (interpolateToDefaultDistance)
-                {
-                    float interpolationRate = Mathf.Min(moveToDefaultDistanceLerpTime * 60.0f * SolverHandler.DeltaTime, 1.0f);
-                    clampedDistance = clampedDistance + (interpolationRate * (DefaultDistance - clampedDistance));
-                }
-
-                clampedDistance = Mathf.Clamp(clampedDistance, MinDistance, MaxDistance);
+                clampedDistance = Mathf.Clamp(currentDistance, MinDistance, MaxDistance);
             }
 
             clampedPosition = refPosition + direction * clampedDistance;

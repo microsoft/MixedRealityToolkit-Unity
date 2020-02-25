@@ -508,7 +508,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
             var followSolver = (Follow)testObjects.solver;
-            followSolver.MoveToDefaultDistanceLerpTime = 0;
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
             var targetTransform = testObjects.target.transform;
 
@@ -580,7 +579,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
             var followSolver = (Follow)testObjects.solver;
-            followSolver.MoveToDefaultDistanceLerpTime = 0;
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
             var targetTransform = testObjects.target.transform;
 
@@ -633,7 +631,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
             var followSolver = (Follow)testObjects.solver;
-            followSolver.MoveToDefaultDistanceLerpTime = 0;
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
             var targetTransform = testObjects.target.transform;
 
@@ -687,7 +684,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
             var followSolver = (Follow)testObjects.solver;
-            followSolver.MoveToDefaultDistanceLerpTime = 0;
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
             var targetTransform = testObjects.target.transform;
 

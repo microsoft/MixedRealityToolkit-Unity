@@ -38,13 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty maxViewVerticalDegrees;
         private SerializedProperty boundsScaler;
 
-        // Smoothing
-        private SerializedProperty moveToDefaultDistanceLerpTime;
-
         private bool orientationFoldout = true;
         private bool distanceFoldout = true;
         private bool directionFoldout = true;
-        private bool smoothingFoldout = true;
 
         private Follow solverInBetween;
 
@@ -74,8 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             maxViewHorizontalDegrees = serializedObject.FindProperty("maxViewHorizontalDegrees");
             maxViewVerticalDegrees = serializedObject.FindProperty("maxViewVerticalDegrees");
             boundsScaler = serializedObject.FindProperty("boundsScaler");
-
-            moveToDefaultDistanceLerpTime = serializedObject.FindProperty("moveToDefaultDistanceLerpTime");
 
             solverInBetween = target as Follow;
         }
@@ -175,14 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                 {                    
                     EditorGUILayout.HelpBox("Disable \"Ignore Angle Clamp\" to show options", MessageType.Info);
                 }
-            }
-
-            EditorGUILayout.Space();
-            smoothingFoldout = EditorGUILayout.Foldout(smoothingFoldout, "Smoothing", true);
-
-            if (smoothingFoldout)
-            {
-                EditorGUILayout.PropertyField(moveToDefaultDistanceLerpTime);
             }
 
             // reset foldouts style

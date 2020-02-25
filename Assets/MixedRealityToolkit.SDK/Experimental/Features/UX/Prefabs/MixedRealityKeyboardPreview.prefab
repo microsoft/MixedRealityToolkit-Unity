@@ -847,7 +847,7 @@ MonoBehaviour:
   verticalMaxDistance: 0
   angularClampMode: 2
   tetherAngleSteps: 6
-  boundsScaler: 6
+  boundsScaler: 4
 --- !u!1001 &1090913102773355362
 PrefabInstance:
   m_ObjectHideFlags: 0
