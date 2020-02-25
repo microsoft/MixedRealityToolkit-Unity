@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             public System.Guid guid;
             public int[] indices;
             public Vector3[] vertices;
+            public Vector2[] uvs;
         }
 
         public struct Quad

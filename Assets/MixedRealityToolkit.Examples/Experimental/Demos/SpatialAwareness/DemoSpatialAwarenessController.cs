@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
@@ -151,6 +152,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 if (distance < closestDistance)
                 {
                     closestDistance = Math.Min(distance, closestDistance);
+                    if (platforms[i].Quads.Count == 0)
+                    {
+                        Debug.LogWarning("Can't ask for quads if observer wasn't configured to fetch them!");
+                        continue;
+                    }
                     closestGuid = platforms[i].Quads[0].guid;
                 }
             }
@@ -169,6 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 stuff.transform.position = placement;
                 stuff.transform.rotation = rotation;
                 Debug.Log($"Found transform @ {placement.ToString("F4")}");
+                var tmp = stuff.GetComponentInChildren<TextMeshPro>();
+                tmp.text = $"Distance = {closestDistance.ToString("F2")}";
             }
         }
 

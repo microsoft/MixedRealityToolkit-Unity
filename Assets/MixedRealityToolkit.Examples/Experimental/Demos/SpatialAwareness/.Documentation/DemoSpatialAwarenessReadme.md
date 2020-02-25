@@ -24,6 +24,12 @@ git clone https://github.com/pinkwerks/MixedRealityToolkit-Unity.git
 Install NuGetForUnity unitypackage from here
 https://github.com/GlitchEnzo/NuGetForUnity/releases
 
+Once NuGetForUnity is installed open NuGetForUnity and install SU
+
+![Manage Nuget packages](ManageNuget.png)
+
+![Search for Nuget package](NugetSearch.png)
+
 Ensure build settings are set to UWP
 
 # Unity demo scene

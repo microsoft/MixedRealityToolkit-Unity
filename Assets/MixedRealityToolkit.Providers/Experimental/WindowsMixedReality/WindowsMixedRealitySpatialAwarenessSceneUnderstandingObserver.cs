@@ -13,15 +13,11 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.Experimental.Extensions;
 using System.Threading;
 using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
 
 using Microsoft.Windows.Perception.Spatial.Preview;
 using Microsoft.Windows.Perception.Spatial;
-using System.Xml.Schema;
-//using System.Numerics;
 
 #if WINDOWS_UWP
 using Windows.Storage;
@@ -64,11 +60,42 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             Initialize();
         }
 
+        private void CreateQuadFromExtents(Mesh mesh, float x, float y)
+        {
+            List<Vector3> vertices = new List<Vector3>()
+            {
+                new Vector3(-x / 2, -y / 2, 0),
+                new Vector3( x / 2, -y / 2, 0),
+                new Vector3(-x / 2,  y / 2, 0),
+                new Vector3( x / 2,  y / 2, 0)
+            };
+
+            Vector2[] quadUVs = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 1)
+            };
+
+            int[] quadTriangles = new int[]
+            {
+                0, 3, 1,
+                0, 2, 3,
+                1, 3, 0,
+                3, 2, 0
+            };
+
+            mesh.SetVertices(vertices);
+            mesh.SetIndices(quadTriangles, MeshTopology.Triangles, 0);
+            mesh.SetUVs(0, new List<Vector2>(quadUVs));
+        }
+
         public override void Initialize()
         {
             //Debug.Log($"Initialize() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             base.Initialize();
-            MeshExtensions.CreateMeshFromQuad(normalizedQuadMesh, 1, 1);
+            CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
         }
 
         /// <inheritdoc />
@@ -504,7 +531,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             Scene scene = null;
 
-            if (ShouldLoadFromFile)
+            if (Application.isEditor && ShouldLoadFromFile)
             {
                 if (sceneBytes == null)
                 {
@@ -528,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     scene = Scene.Deserialize(sceneBytes);
                 }
             }
-            else if (!Application.isEditor)
+            else
             {
                 Debug.Log("Making SceneQuerySettings");
 
@@ -625,14 +652,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 }
             }
 
-            // Apply scene transform to scene objects so they are stored in world space
+            // World space conversion
 
             var sceneObjectXformSystem = sceneObject.GetLocationAsMatrix(); // local space
 
             Debug.Log($"sceneObjectTransform = {sceneObjectXformSystem}");
 
             System.Numerics.Matrix4x4 worldXformSystem = sceneObjectXformSystem * sceneToWorldXformSystem;
-            //System.Numerics.Matrix4x4 worldXformSystem = sceneObjectXformSystem;
 
             System.Numerics.Vector3 worldTranslationSystem;
             System.Numerics.Quaternion worldRotationSytem;
@@ -805,6 +831,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             saso.GameObject.transform.localPosition = saso.Position;
             saso.GameObject.transform.localRotation = saso.Rotation;
+            saso.GameObject.transform.localScale = Vector3.one;
 
             // Maybe make GameObjects for Quads and Meshes
 
@@ -831,6 +858,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     var meshRenderer = quadGo.AddComponent<MeshRenderer>();
 
+                    quadGo.AddComponent<BoxCollider>();
+
                     if (DefaultMaterial)
                     {
                         meshRenderer.sharedMaterial = DefaultMaterial;
@@ -838,6 +867,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         {
                             defaultTexture = DefaultMaterial.mainTexture;
                         }
+                        meshRenderer.material.color = ColorForSurfaceType(saso.SurfaceType);
                     }
 
                     if (RequestOcclusionMask)
@@ -855,15 +885,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     quadGo.transform.SetParent(saso.GameObject.transform);
 
-                    var scale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
-                    quadGo.transform.localScale = scale;
-
-                    // SU quad origin is top left. our mesh is center so adjust for that
-                    //quadGo.transform.localPosition = new Vector3((quad.extents.x / 2), (quad.extents.y / 2), 0);
                     quadGo.transform.localPosition = UnityEngine.Vector3.zero;
                     quadGo.transform.localRotation = UnityEngine.Quaternion.identity;
+                    quadGo.transform.localScale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
 
-                    quadGo.AddComponent<BoxCollider>();
                 }
             }
 
@@ -880,19 +905,46 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     var mf = go.AddComponent<MeshFilter>();
                     mf.mesh = UnityMeshFromMeshData(meshAlias);
 
-                    var mr = go.AddComponent<MeshRenderer>();
+                    var meshRenderer = go.AddComponent<MeshRenderer>();
+
+                    go.AddComponent<MeshCollider>();
 
                     if (DefaultMaterial)
                     {
-                        mr.sharedMaterial = DefaultMaterial;
+                        meshRenderer.sharedMaterial = DefaultMaterial;
+                        meshRenderer.material.color = ColorForSurfaceType(saso.SurfaceType);
                     }
-                    go.AddComponent<MeshCollider>();
 
                     go.transform.SetParent(saso.GameObject.transform, false);
                 }
             }
 
             return;
+        }
+
+        private Color ColorForSurfaceType(SpatialAwarenessSurfaceTypes surfaceType)
+        {
+            switch (surfaceType)
+            {
+                case SpatialAwarenessSurfaceTypes.Unknown:
+                    return new Color32(220, 50, 47, 255); // red
+                case SpatialAwarenessSurfaceTypes.Floor:
+                    return new Color32(38, 139, 210, 255); // blue
+                case SpatialAwarenessSurfaceTypes.Ceiling:
+                    return new Color32(108, 113, 196, 255); // violet
+                case SpatialAwarenessSurfaceTypes.Wall:
+                    return new Color32(181, 137, 0, 255); // yellow
+                case SpatialAwarenessSurfaceTypes.Platform:
+                    return new Color32(133, 153, 0, 255); // green
+                case SpatialAwarenessSurfaceTypes.Background:
+                    return new Color32(203, 75, 22, 255); // orange
+                case SpatialAwarenessSurfaceTypes.World:
+                    return new Color32(211, 54, 130, 255); // magenta
+                case SpatialAwarenessSurfaceTypes.CompletelyInferred:
+                    return new Color32(42, 161, 152, 255); // cyan
+                default:
+                    return new Color32(220, 50, 47, 255); // red
+            }
         }
 
         private Texture2D OcclulsionTexture(byte[] textureBytes)
@@ -1059,8 +1111,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 unityMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
             }
 
-            unityMesh.SetVertices(new List<UnityEngine.Vector3>(meshData.vertices));
+            unityMesh.SetVertices(new List<Vector3>(meshData.vertices));
             unityMesh.SetIndices(meshData.indices, MeshTopology.Triangles, 0);
+            unityMesh.SetUVs(0, new List<Vector2>(meshData.uvs));
             unityMesh.RecalculateNormals();
 
             return unityMesh;
@@ -1155,22 +1208,50 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             // Vertices
 
             var vertices = new UnityEngine.Vector3[sceneMesh.VertexCount];
+            var uvs = new UnityEngine.Vector2[sceneMesh.VertexCount];
 
             var meshVertices = new System.Numerics.Vector3[sceneMesh.VertexCount];
             sceneMesh.GetVertexPositions(meshVertices);
 
             var vlength = meshVertices.Length;
 
+            var minx = meshVertices[0].X;
+            var miny = meshVertices[0].Y;
+            var maxx = minx;
+            var maxy = miny;
+            float x = minx;
+            float y = miny;
+
             for (int i = 0; i < vlength; ++i)
             {
-                vertices[i] = new UnityEngine.Vector3(meshVertices[i].X, meshVertices[i].Y, -meshVertices[i].Z);
+                x = meshVertices[i].X;
+                y = meshVertices[i].Y;
+
+                vertices[i] = new UnityEngine.Vector3(x, y, -meshVertices[i].Z);
+                minx = Math.Min(minx, x);
+                miny = Math.Min(miny, y);
+                maxx = Math.Max(maxx, x);
+                maxy = Math.Max(maxy, y);
+            }
+
+            // UVs - planar square projection
+
+            float smallestDimension = Math.Min(minx, miny);
+            float biggestDimension = Math.Max(maxx, maxy);
+
+            for (int i = 0; i< vlength; ++i)
+            {
+                uvs[i] = new Vector2(
+                    Mathf.InverseLerp(smallestDimension, biggestDimension, vertices[i].x),
+                    Mathf.InverseLerp(smallestDimension, biggestDimension, vertices[i].y));
             }
 
             var result = new SpatialAwarenessSceneObject.MeshData
             {
                 indices = indices,
                 vertices = vertices,
-                guid = sceneMesh.Id
+                guid = sceneMesh.Id,
+                uvs = uvs
             };
 
             return result;
