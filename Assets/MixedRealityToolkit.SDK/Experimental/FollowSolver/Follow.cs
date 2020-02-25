@@ -252,22 +252,34 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// TODO
+        /// Specifies the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.
         /// </summary>
         public enum AngularClampType
         {
+            /// <summary>
+            /// Locks the rotation with a viewing cone.
+            /// </summary>
             ViewDegrees = 0,
-            AngleStepping = 1, // Lock the rotation to a specified number of steps around the tracked object.
+            /// <summary>
+            /// Locks the rotation to a specified number of steps around the tracked object.
+            /// </summary>
+            AngleStepping = 1,
+            /// <summary>
+            /// Uses the gameObject's renderer bounds to keep within the view frustum.
+            /// </summary>
             RendererBounds = 2,
+            /// <summary>
+            /// Uses the gameObject's collider bounds to keep within the view frustum.
+            /// </summary>
             ColliderBounds = 3,
         }
 
         [SerializeField]
-        [Tooltip("TODO")]
+        [Tooltip("Specifies the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.")]
         private AngularClampType angularClampMode = AngularClampType.ViewDegrees;
 
         /// <summary>
-        /// TODO
+        /// Accessors for specifying the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.
         /// </summary>
         public AngularClampType AngularClampMode
         {
@@ -290,16 +302,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         [SerializeField]
-        [Tooltip("TODO")]
-        private float boundsMargin = 1.0f;
+        [Tooltip("Scales the bounds to impose a larger or smaller bounds than the calculated bounds.")]
+        private float boundsScaler = 1.0f;
 
         /// <summary>
-        /// TODO
+        /// Scales the bounds to impose a larger or smaller bounds than the calculated bounds.
         /// </summary>
-        public float BoundsMargin
+        public float BoundsScaler
         {
-            get => boundsMargin;
-            set => boundsMargin = value;
+            get => boundsScaler;
+            set => boundsScaler = value;
         }
 
         public void Recenter()
@@ -460,8 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             // Calculate the bounds to use with angular clamping. 
             Bounds bounds;
             GetBounds(gameObject, angularClampMode, out bounds);
-
-            Vector3 extents = bounds.extents * boundsMargin;
+            Vector3 extents = bounds.extents * boundsScaler;
 
             // X-axis leashing
             // Leashing around the reference's X axis only makes sense if the reference isn't gravity aligned.

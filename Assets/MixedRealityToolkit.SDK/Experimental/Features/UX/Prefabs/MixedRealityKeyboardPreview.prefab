@@ -94,6 +94,37 @@ MonoBehaviour:
   - {fileID: 3490193353260647841}
   clippingSide: -1
   useOnPreRender: 0
+--- !u!1 &241817367976372379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8507539107667219505}
+  m_Layer: 0
+  m_Name: PreviewCaretRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8507539107667219505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241817367976372379}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.065, y: 0, z: -0.0011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3676246485763817785}
+  m_Father: {fileID: 6901291719397127952}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2973922908821219074
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,12 +670,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5819135953064820660}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.065, y: 0, z: -0.001}
-  m_LocalScale: {x: 0.0005, y: 0.015, z: 0.01}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.001, y: 0.015, z: 0.01}
   m_Children: []
-  m_Father: {fileID: 6901291719397127952}
-  m_RootOrder: 1
+  m_Father: {fileID: 8507539107667219505}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6912228345002898200
 MeshFilter:
@@ -736,7 +767,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 654040154712435274}
-  - {fileID: 3676246485763817785}
+  - {fileID: 8507539107667219505}
   - {fileID: 8910712925943562261}
   - {fileID: 9167226088367929190}
   - {fileID: 8593696031498887406}
@@ -816,7 +847,7 @@ MonoBehaviour:
   verticalMaxDistance: 0
   angularClampMode: 2
   tetherAngleSteps: 6
-  boundsMargin: 4
+  boundsScaler: 6
 --- !u!1001 &1090913102773355362
 PrefabInstance:
   m_ObjectHideFlags: 0

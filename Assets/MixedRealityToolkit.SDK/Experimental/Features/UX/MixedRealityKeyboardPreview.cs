@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -54,18 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     previewCaret = value;
 
-                    if (previewCaret)
-                    {
-                        initialCaretLocation = previewCaret.position;
-
-                        UpdateCaret();
-                    }
+                    UpdateCaret();
                 }
             }
         }
 
         [SerializeField, Tooltip("The initial pitch when spawned.")]
-        private float initialPitchOffsetDegrees = 5.0f;
+        private float initialPitchOffsetDegrees = -5.0f;
 
         /// <summary>
         /// The initial pitch when spawned.
@@ -141,17 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        private Vector3 initialCaretLocation = Vector3.zero;
-
         #region MonoBehaviour Implementation
 
-        private void Awake()
+        private void OnEnable()
         {
-            if (previewCaret != null)
-            {
-                initialCaretLocation = previewCaret.position;
-            }
-
+            StartCoroutine(BlinkCaret());
             ApplyShellSolverParameters();
         }
 
@@ -159,13 +149,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void UpdateCaret()
         {
-            caretIndex = Mathf.Clamp(caretIndex, 0, Text == null ? 0 : text.Length);
+            caretIndex = Mathf.Clamp(caretIndex, 0, string.IsNullOrEmpty(text) ? 0 : text.Length);
 
             if (previewCaret != null)
             {
-                if (string.IsNullOrEmpty(text) || caretIndex == 0)
+                if (caretIndex == 0)
                 {
-                    previewCaret.transform.position = initialCaretLocation;
+                    previewCaret.transform.localPosition = Vector3.zero;
                 }
                 else
                 {
@@ -189,6 +179,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
+        private IEnumerator BlinkCaret()
+        {
+            while (previewCaret != null)
+            {
+                previewCaret.gameObject.SetActive(!previewCaret.gameObject.activeSelf);
+
+                // The default Window's text caret blinks every 530 milliseconds.
+                yield return new WaitForSeconds(0.53f);
+            }
+        }
+
         private void ApplyShellSolverParameters()
         {
             var solver = GetComponent<Follow>();
@@ -204,19 +205,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     var forwardXZ = forward;
                     forwardXZ.y = 0.0f;
 
-                    var pitchOffsetDegrees = Mathf.Acos(forwardXZ.magnitude / forward.magnitude) * Mathf.Rad2Deg;
-
-                    if (forward.y < 0.0f)
-                    {
-                        // If the y component of the forward is negative that means the tracked transform is looking/
-                        // pointing down. We want to negate our pitch offset to move the keyboard down in response.
-                        pitchOffsetDegrees *= -1.0f;
-                    }
-
-                    // Initial carry pitch.
+                    var pitchOffsetDegrees = Mathf.Atan2(forward.y, forwardXZ.magnitude) * Mathf.Rad2Deg;
                     pitchOffsetDegrees += initialPitchOffsetDegrees;
+                    pitchOffsetDegrees = Mathf.Clamp(pitchOffsetDegrees, -50.0f, 50.0f);
 
                     solver.PitchOffset = pitchOffsetDegrees;
+                    solver.SolverUpdateEntry();
                 }
             }
         }

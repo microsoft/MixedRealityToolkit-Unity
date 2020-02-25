@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty tetherAngleSteps;
         private SerializedProperty maxViewHorizontalDegrees;
         private SerializedProperty maxViewVerticalDegrees;
-        private SerializedProperty boundsMargin;
+        private SerializedProperty boundsScaler;
 
         // Smoothing
         private SerializedProperty moveToDefaultDistanceLerpTime;
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             tetherAngleSteps = serializedObject.FindProperty("tetherAngleSteps");
             maxViewHorizontalDegrees = serializedObject.FindProperty("maxViewHorizontalDegrees");
             maxViewVerticalDegrees = serializedObject.FindProperty("maxViewVerticalDegrees");
-            boundsMargin = serializedObject.FindProperty("boundsMargin");
+            boundsScaler = serializedObject.FindProperty("boundsScaler");
 
             moveToDefaultDistanceLerpTime = serializedObject.FindProperty("moveToDefaultDistanceLerpTime");
 
@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                         case Follow.AngularClampType.RendererBounds:
                         case Follow.AngularClampType.ColliderBounds:
                             {
-                                EditorGUILayout.PropertyField(boundsMargin);
+                                EditorGUILayout.PropertyField(boundsScaler);
                             }
                             break;
                     }
