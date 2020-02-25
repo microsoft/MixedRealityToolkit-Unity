@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class GltfTests
     {
-        const string relativePath = "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/glTF/Avocado.gltf";
+        const string relativePath = "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/glTF/AvocadoCustomAttr.gltf";
 
         [UnityTest]
         public IEnumerator GltfLoads()
@@ -45,6 +45,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.normals.Length);
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.tangents.Length);
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.vertexCount);
+
+            // Check for custom attribute
+            int temperatureIdx;
+            gltfObject.meshes[0].primitives[0].Attributes.TryGetValue("_TEMPERATURE", out temperatureIdx);
+
+            int temperature = gltfObject.accessors[temperatureIdx].count;
+            Assert.AreEqual(100, temperature);
         }
     }
 }
