@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float height = maxButtonSize * ((float)spriteIcons.Length / maxButtonsPerColumn);
                 var maxHeight = GUILayout.MaxHeight(height);
 #if UNITY_2019_3_OR_NEWER
-                int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTexture, maxButtonsPerColumn, maxHeight);
+                int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTextures, maxButtonsPerColumn, maxHeight);
 #else
                 var maxWidth = GUILayout.MaxWidth(maxButtonSize * maxButtonsPerColumn);
                 int newSelection = GUILayout.SelectionGrid(currentSelection, spriteIconTextures, maxButtonsPerColumn, maxHeight, maxWidth);
