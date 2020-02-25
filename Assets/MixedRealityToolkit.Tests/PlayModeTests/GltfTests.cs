@@ -15,8 +15,6 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using NUnit.Framework;
 using System.Collections;
 using System.IO;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -24,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class GltfTests
     {
         const string relativePath = "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/glTF/Avocado.gltf";
-        
+
         [UnityTest]
         public IEnumerator GltfLoads()
         {
