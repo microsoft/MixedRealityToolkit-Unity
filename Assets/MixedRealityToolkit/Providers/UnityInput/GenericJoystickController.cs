@@ -17,11 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             // Update the spatial pointer rotation with the preconfigured offset angle
-            if (PointerOffsetAngle != 0f)
+            if (PointerOffsetAngle != 0f && Interactions != null)
             {
                 MixedRealityInteractionMapping pointerMapping = null;
-                foreach (MixedRealityInteractionMapping mapping in Interactions)
+                for (int i = 0; i < Interactions.Length; i++)
                 {
+                    MixedRealityInteractionMapping mapping = Interactions[i];
                     if (mapping.InputType == DeviceInputType.SpatialPointer)
                     {
                         pointerMapping = mapping;
