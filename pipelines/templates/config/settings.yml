@@ -1,0 +1,7 @@
+variables:
+  Unity2018Version: Unity2018.4.6f1
+  Unity2019Version: Unity2019.2.0f1
+  MRTKVersion: 2.4.0
+  MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
+  ToolsRepoName: mixedrealitytoolkit.build
+  ToolsDir: $(Build.SourcesDirectory)\$(ToolsRepoName)
