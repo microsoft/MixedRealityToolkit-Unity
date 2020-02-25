@@ -18,4 +18,6 @@ jobs:
   - template: templates/ci-common.yml
     parameters:
       packagingEnabled: true
-      packagePublishing: true
+      packagePublishing: false
+
+  - template: template/compliance.yml
