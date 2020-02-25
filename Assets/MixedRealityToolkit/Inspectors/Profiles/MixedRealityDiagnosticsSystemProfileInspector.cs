@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
 {
@@ -18,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
         private SerializedProperty windowOffset;
         private SerializedProperty windowScale;
         private SerializedProperty windowFollowSpeed;
+        private SerializedProperty showProfilerDuringMRC;
 
         private const string ProfileTitle = "Diagnostic Settings";
         private const string ProfileDescription = "Diagnostic visualizations can help monitor system resources and performance inside an application.";
@@ -37,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
             windowOffset = serializedObject.FindProperty("windowOffset");
             windowScale = serializedObject.FindProperty("windowScale");
             windowFollowSpeed = serializedObject.FindProperty("windowFollowSpeed");
+            showProfilerDuringMRC = serializedObject.FindProperty("showProfilerDuringMRC");
         }
 
         public override void OnInspectorGUI()
@@ -71,6 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics.Editor
                     EditorGUILayout.PropertyField(windowOffset);
                     EditorGUILayout.PropertyField(windowScale);
                     EditorGUILayout.PropertyField(windowFollowSpeed);
+                }
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("HoloLens Settings", EditorStyles.boldLabel);
+                {
+                    EditorGUILayout.PropertyField(showProfilerDuringMRC);
                 }
 
                 serializedObject.ApplyModifiedProperties();

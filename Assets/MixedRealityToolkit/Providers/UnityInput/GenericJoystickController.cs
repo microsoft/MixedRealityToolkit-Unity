@@ -46,12 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
 
-        /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            // Generic Unity controllers will not have default interactions
-        }
-
         /// <summary>
         /// Update the controller data from Unity's Input Manager
         /// </summary>

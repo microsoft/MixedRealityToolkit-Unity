@@ -137,12 +137,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                // If no controller mappings found, warn the user.  Does not stop the project from running.
+                // If no controller mappings found, warn the user. Does not stop the project from running.
                 if (Interactions == null || Interactions.Length < 1)
                 {
-                    SetupDefaultInteractions(ControllerHandedness);
+                    SetupDefaultInteractions();
 
-                    // We still don't have controller mappings, so this may be a custom controller. 
+                    // We still don't have controller mappings, so this may be a custom controller.
                     if (Interactions == null || Interactions.Length < 1)
                     {
                         Debug.LogWarning($"No Controller interaction mappings found for {controllerType}.");
@@ -161,9 +161,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness, if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary.
         /// </summary>
-        public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
+        [Obsolete("The handedness parameter is no longer used. This method now reads from the controller's handedness.")]
+        public virtual void SetupDefaultInteractions(Handedness controllerHandedness) => SetupDefaultInteractions();
+
+        /// <summary>
+        /// Assign the default interactions based on this controller's handedness, if necessary.
+        /// </summary>
+        public virtual void SetupDefaultInteractions()
+        {
+            switch (ControllerHandedness)
+            {
+                case Handedness.Left:
+                    AssignControllerMappings(DefaultLeftHandedInteractions);
+                    break;
+                case Handedness.Right:
+                    AssignControllerMappings(DefaultRightHandedInteractions);
+                    break;
+                default:
+                    AssignControllerMappings(DefaultInteractions);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile

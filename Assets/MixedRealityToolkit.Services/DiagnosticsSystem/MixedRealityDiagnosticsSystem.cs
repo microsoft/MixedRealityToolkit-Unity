@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             visualProfiler.WindowOffset = WindowOffset;
             visualProfiler.WindowScale = WindowScale;
             visualProfiler.WindowFollowSpeed = WindowFollowSpeed;
+            visualProfiler.ShowProfilerDuringMRC = ShowProfilerDuringMRC;
         }
 
         private MixedRealityToolkitVisualProfiler visualProfiler = null;
@@ -91,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             WindowOffset = profile.WindowOffset;
             WindowScale = profile.WindowScale;
             WindowFollowSpeed = profile.WindowFollowSpeed;
+            ShowProfilerDuringMRC = profile.ShowProfilerDuringMRC;
 
             CreateVisualizations();
         }
@@ -372,6 +374,30 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                     if (visualProfiler != null)
                     {
                         visualProfiler.WindowFollowSpeed = windowFollowSpeed;
+                    }
+                }
+            }
+        }
+
+        private bool showProfilerDuringMRC = false;
+
+        /// <summary>
+        /// If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.
+        /// </summary>
+        /// <remarks>This is not usually recommended, as MRC can have an effect on an app's frame rate.</remarks>
+        public bool ShowProfilerDuringMRC
+        {
+            get { return showProfilerDuringMRC; }
+
+            set
+            {
+                if (value != showProfilerDuringMRC)
+                {
+                    showProfilerDuringMRC = value;
+
+                    if (visualProfiler != null)
+                    {
+                        visualProfiler.ShowProfilerDuringMRC = showProfilerDuringMRC;
                     }
                 }
             }
