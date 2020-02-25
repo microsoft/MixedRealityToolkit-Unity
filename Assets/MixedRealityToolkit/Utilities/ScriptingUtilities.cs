@@ -19,15 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Appends a set of symbolic constant definitions to Unity's Scripting Define Symbols for the
         /// specified build target group.
         /// </summary>
-        /// </summary>
         /// <param name="fileName">The name of an optional file locate before appending.</param>
-        /// <returns>
         /// <param name="targetGroup">The build target group for which the symbols are to be defined.</param>
         /// <param name="symbols">Array of symbols to define.</param>
         /// <remarks>
         /// To always append the symbols, pass null (or the empty string) for the fileName parameter.
         /// </remarks>
-        [Obsolete("ScriptingUtilties.AppendScriptingDefinitions is obsolete and will be removed from a future version of MRTK. Please use FileUtilities.FindFilesInAssets and ScriptUtilties.AppendScriptingDefinitions.")]
+        [Obsolete("ScriptingUtilities.AppendScriptingDefinitions is obsolete and will be removed from a future version of MRTK. Please use FileUtilities.FindFilesInAssets and ScriptUtilities.AppendScriptingDefinitions.")]
         public static void AppendScriptingDefinitions(
             string fileName,
             BuildTargetGroup targetGroup,
