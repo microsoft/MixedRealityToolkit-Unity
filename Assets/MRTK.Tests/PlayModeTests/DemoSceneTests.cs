@@ -12,6 +12,7 @@
 
 using NUnit.Framework;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -21,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SanityTests
     public class DemoSceneTests
     {
         const string HandInteractionExamplesSceneName = "HandInteractionExamples";
+        const string HandInteractionExamplesScenePath = "MRTK.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity";
+
         const float ScenePlayDuration = 1f;
 
         [UnityTest]
