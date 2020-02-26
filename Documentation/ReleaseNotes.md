@@ -44,7 +44,12 @@ Custom controller classes previously had to define `SetupDefaultInteractions(Han
 
 ### What's new in 2.4.0
 
-*Coming soon*
+**Shorter folder names**
+
+In response to customer feedback regarding the length of MRTK file paths, the `MixedRealityToolkit` folders have been renamed to `MRTK`. For example, `MixedRealityToolkit.Provders` has become `MRTK.Providers`.
+
+>[!NOTE]
+> `MixedRealityToolkit.Generated` is a folder used to place customer files (ex: custom profiles). This folder is not renamed.
 
 ### Known issues in 2.4.0
 

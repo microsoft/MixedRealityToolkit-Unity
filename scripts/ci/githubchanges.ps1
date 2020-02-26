@@ -65,6 +65,9 @@ $gitDir = Join-Path -Path $RepoRoot -ChildPath ".git"
 # needed to do the diff.
 git --git-dir=$gitDir --work-tree=$RepoRoot  fetch --depth=1 --force --tags --prune --progress --no-recurse-submodules origin $TargetBranch
 
+# Ensure that git's rename limit is sufficienty high. It defaults to a low value.
+git config merge.renamelimit 10000
+
 # The set of changed files is the diff between the target branch and the pull request
 # branch that was checked out locally. Note that the format of the pull request branch
 # (i.e. "pull/$PullRequestId/merge") is based on the format that Azure DevOps does for its
