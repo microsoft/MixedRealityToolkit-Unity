@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if(headForward.magnitude < Mathf.Epsilon)
+                if (headForward.magnitude < Mathf.Epsilon)
                 {
                     return false;
                 }
@@ -57,7 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float HeadToPivotOffsetZ = 0.08f;
         private readonly float CursorBeamBackwardTolerance = 0.5f;
         private readonly float CursorBeamUpTolerance = 0.8f;
-
 
         // Smoothing factor for ray stabilization.
         private const float StabilizedRayHalfLife = 0.01f;

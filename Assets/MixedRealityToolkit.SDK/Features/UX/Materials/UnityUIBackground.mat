@@ -9,15 +9,15 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: UnityUIBackground
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _DISABLE_ALBEDO_MAP _HOVER_LIGHT _PROXIMITY_LIGHT
+  m_ShaderKeywords: _ALPHABLEND_ON _DISABLE_ALBEDO_MAP _HOVER_LIGHT _IRIDESCENCE _PROXIMITY_LIGHT
     _PROXIMITY_LIGHT_COLOR_OVERRIDE _PROXIMITY_LIGHT_SUBTRACTIVE _PROXIMITY_LIGHT_TWO_SIDED
     _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Transparent
+    RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 0.25, y: 0.25}
         m_Offset: {x: 0, y: 0}
     - _IridescentSpectrumMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 86609bdc7f4c43d42991f96373fb8081, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -115,10 +115,11 @@ Material:
     - _GlossyReflections: 1
     - _HoverLight: 1
     - _IgnoreZScale: 0
+    - _IndependentCorners: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
-    - _Iridescence: 0
+    - _Iridescence: 1
     - _IridescenceAngle: -0.78
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
@@ -162,7 +163,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
@@ -176,3 +177,4 @@ Material:
     - _ProximityLightOuterColorOverride: {r: 0.39215687, g: 0.39215687, b: 0.39215687,
         a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}

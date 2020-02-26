@@ -55,11 +55,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="query">Finalized Endpoint Query with parameters.</param>
         /// <param name="headers">Optional header information for the request.</param>
         /// <param name="timeout">Optional time in seconds before request expires.</param>
+        /// <param name="downloadHandler">Optional DownloadHandler for the request.</param>
         /// <returns>The response data.</returns>
-        public static async Task<Response> GetAsync(string query, Dictionary<string, string> headers = null, int timeout = -1)
+        public static async Task<Response> GetAsync(string query, Dictionary<string, string> headers = null, int timeout = -1, DownloadHandler downloadHandler = null)
         {
             using (var webRequest = UnityWebRequest.Get(query))
             {
+                if (downloadHandler != null)
+                {
+                    webRequest.downloadHandler = downloadHandler;
+                }
+
                 return await ProcessRequestAsync(webRequest, timeout, headers);
             }
         }

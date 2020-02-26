@@ -45,11 +45,5 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             new MixedRealityInteractionMapping(14, "X", AxisType.Digital, DeviceInputType.ButtonPress,KeyCode.JoystickButton2),
             new MixedRealityInteractionMapping(15, "Y", AxisType.Digital, DeviceInputType.ButtonPress,KeyCode.JoystickButton3),
         };
-
-        /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
     }
 }

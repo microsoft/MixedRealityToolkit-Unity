@@ -97,23 +97,48 @@ The *ButtonContent* object contains front plate, text label and icon. The *Fron
 
 ## How to change the icon and text
 
-To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned.
+MRTK buttons use a `ButtonConfigHelper` component to assist you in changing the button's icon, text and label. (Note that some fields may be absent if elements are not present on the selected button.)
 
-<img src="../Documentation/Images/Button/MRTK_Button_IconUpdate1.png">
+![Button](../Documentation/Images/Button/MRTK_Button_Config_Helper.png)
 
-To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder.
+### Creating and Modifying Icon Sets ###
 
-<img src="../Documentation/Images/Button/MRTK_Button_IconUpdate2.png"  width="350">
+An **Icon Set** is a shared set of icon assets used by the `ButtonConfigHelper` component. Three icon *styles* are supported.
+* **Quad** icons are rendered on a quad using a `MeshRenderer`. This is the default icon style.
+* **Sprite** icons are rendered using a `SpriteRenderer`. This is useful if you prefer to import your icons as a sprite sheet, or if you want your icon assets to be shared with Unity UI components. To use this style you will need to install the Sprite Editor package **(Windows -> Package Manager -> 2D Sprite)**
+* **Char** icons are rendered using a `TextMeshPro` component. This is useful if you prefer to use an icon font. To use the HoloLens icon font you will need to create a `TextMeshPro` font asset.
 
-Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. ``MixedRealityToolkit.SDK/Features/UX/Interactable/Textures``
+To change which style your button uses, expand the *Icons* dropdown in the ButtonConfigHelper and select from the *Icon Style* dropdown.
 
-Drag and drop newly created PNG texture onto the *Albedo* property in the material.
+You can create a new button icon set with the asset menu: **Create > Mixed Reality Toolkit > Icon Set.** To add quad and sprite icons, simply drag them into their respective arrays. To add Char icons, you must first create and assign a font asset.
 
-<img src="../Documentation/Images/Button/MRTK_Button_IconUpdate3.png">
+### Creating a HoloLens Icon Font Asset ###
 
-Assign the material to the *UIButtonSquareIcon* object.
+First, import the icon font into Unity. On Windows machines you can find the default HoloLens font in *Windows/Fonts/holomdl2.ttf.* Copy and paste this file into your Assets folder.
 
-<img src="../Documentation/Images/Button/MRTK_Button_IconUpdate4.png">
+Next, open the TextMeshPro Font Asset Creator via **Window > TextMeshPro > Font Asset Creator.** Here are the recommended settings for generating a HoloLens font atlas. To include all icons, paste the following Unicode range into the *Character Sequence* field:
+```c#
+E700-E702,E706,E70D-E70E,E710-E714,E718,E71A,E71D-E71E,E720,E722,E728,E72A-E72E,E736,E738,E73F,E74A-E74B,E74D,E74F-E752,E760-E761,E765,E767-E769,E76B-E76C,E770,E772,E774,E777,E779-E77B,E782-E783,E785-E786,E799,E7A9-E7AB,E7AF-E7B1,E7B4,E7C8,E7E8-E7E9,E7FC,E80F,E821,E83F,E850-E859,E872-E874,E894-E895,E8A7,E8B2,E8B7,E8B9,E8D5,E8EC,E8FB,E909,E91B,E92C,E942,E95B,E992-E995,E9E9-E9EA,EA37,EA40,EA4A,EA55,EA96,EB51-EB52,EB65,EB9D-EBB5,EBCB-EBCC,EBCF-EBD3,EC03,EC19,EC3F,EC7A,EC8E-EC98,ECA2,ECD8-ECDA,ECE0,ECE7-ECEB,ED17,EE93,EFA9,F114-F120,F132,F181,F183-F186
+```
+![Button](../Documentation/Images/Button/MRTK_Font_Asset_Creation_1.png)
+
+Once the font asset is generated, save it to your project and assign it to your Icon Set's *Char Icon Font* field. The *Available Icons* dropdown will now be populated. To make an icon available for use by a button, click it. It will be added to the *Selected Icons* dropdown and will now show up in the `ButtonConfigHelper.` You can optionally give the icon a tag. This enables setting the icon at runtime.
+
+![Button](../Documentation/Images/Button/MRTK_Font_Asset_Creation_3.png)
+
+![Button](../Documentation/Images/Button/MRTK_Font_Asset_Creation_2.png)
+
+```c#
+public void SetButtonToAdjust() 
+{
+    ButtonConfigHelper buttonConfigHelper = gameObject.GetComponent<ButtonConfigHelper>();
+    buttonConfigHelper.SetCharIconByName("AppBarAdjust");
+}
+```
+
+To use your Icon Set select a button, expand the Icons dropdown in the `ButtonConfigHelper` and assign it to the *Icon Set* field.
+
+![Button](../Documentation/Images/Button/MRTK_Button_Icon_Set_Assign.png)
 
 ## Voice command ('see-it, say-it')
 

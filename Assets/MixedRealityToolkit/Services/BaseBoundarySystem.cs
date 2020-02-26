@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             {
                 GetBoundaryWallVisualization();
             }
-            if (ShowBoundaryWalls)
+            if (ShowBoundaryCeiling)
             {
                 GetBoundaryCeilingVisualization();
             }
