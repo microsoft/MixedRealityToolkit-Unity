@@ -9,7 +9,7 @@ Tap to Place is a far interaction component that is used to place a game object 
 1. Set up the scene
     - Create a new unity scene
     - Add MRTK to the scene by navigating to the Mixed Reality Toolkit menu > Add to Scene and Configure
-    - Add a cube to your scene and change the scale to 0.2 and change the position to (0, 0, 0.7).
+    - Add a cube to the scene and change the scale to 0.2 and change the position to (0, 0, 0.7).
 1. Attach [Tap to Place](https://microsoft.github.io/MixedRealityToolkit-Unity/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.TapToPlace.html) to a game object with a collider
 
     ![TapToPlaceInspector](Images/Solver/TapToPlace/TapToPlaceInspector2.png)
