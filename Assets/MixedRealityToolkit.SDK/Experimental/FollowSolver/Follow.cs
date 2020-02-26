@@ -354,12 +354,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             Quaternion goalRotation = Quaternion.identity;
             ComputeOrientation(goalPosition, wasClamped, ref goalRotation);
 
-            // Avoid drift by not updating the goal when not clamped
+            // Avoid drift by not updating the goal position when not clamped
             if (wasClamped)
             {
                 GoalPosition = goalPosition;
-                GoalRotation = goalRotation;
             }
+
+            GoalRotation = goalRotation;
 
             PreviousGoalRotation = goalRotation;
 

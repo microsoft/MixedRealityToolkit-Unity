@@ -60,21 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        [SerializeField, Tooltip("The initial pitch when spawned.")]
-        private float initialPitchOffsetDegrees = -5.0f;
-
-        /// <summary>
-        /// The initial pitch when spawned.
-        /// </summary>
-        public float InitialPitchOffsetDegrees
-        {
-            get { return initialPitchOffsetDegrees; }
-            set
-            {
-                initialPitchOffsetDegrees = value;
-            }
-        }
-
         private string text = string.Empty;
 
         /// <summary>
@@ -186,7 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 previewCaret.gameObject.SetActive(!previewCaret.gameObject.activeSelf);
 
                 // The default Window's text caret blinks every 530 milliseconds.
-                yield return new WaitForSeconds(0.53f);
+                const float blinkTime = 0.53f;
+                yield return new WaitForSeconds(blinkTime);
             }
         }
 
@@ -202,15 +188,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (solverHandler != null)
                 {
                     var forward = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.forward : Vector3.forward;
-                    var forwardXZ = forward;
-                    forwardXZ.y = 0.0f;
+                    var right = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.right : Vector3.right;
 
-                    var pitchOffsetDegrees = Mathf.Atan2(forward.y, forwardXZ.magnitude) * Mathf.Rad2Deg;
-                    pitchOffsetDegrees += initialPitchOffsetDegrees;
-                    pitchOffsetDegrees = Mathf.Clamp(pitchOffsetDegrees, -50.0f, 50.0f);
+                    // Calculate the initial view pitch.
+                    var pitchOffsetDegrees = Vector3.SignedAngle(new Vector3(forward.x, 0.0f, forward.z), forward, right);
+
+                    const float shellPitchOffset = 5.0f;
+                    pitchOffsetDegrees += shellPitchOffset;
+
+                    const float shellPitchMin = -50.0f;
+                    const float shellPitchMax = 50.0f;
+                    pitchOffsetDegrees = Mathf.Clamp(pitchOffsetDegrees, shellPitchMin, shellPitchMax);
 
                     solver.PitchOffset = pitchOffsetDegrees;
-                    solver.SolverUpdateEntry();
+                    solver.SolverUpdate();
                 }
             }
         }
