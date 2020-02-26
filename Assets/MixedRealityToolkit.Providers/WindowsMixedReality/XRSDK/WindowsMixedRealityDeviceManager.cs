@@ -58,7 +58,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
+            bool hasCapability = false;
+
+            bool canQuerySourceKindSupport = false;
+
+#if WINDOWS_UWP
+            canQuerySourceKindSupport = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionManager", "IsSourceKindSupported");
+#endif // WINDOWS_UWP
+
+            if (canQuerySourceKindSupport)
             {
 #if WINDOWS_UWP
                 switch (capability)

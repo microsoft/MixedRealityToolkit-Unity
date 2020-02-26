@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
@@ -24,7 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
 
-            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
+            // GetForCurrentView and GetDetectedSourcesAtTimestamp were both introduced in the same Windows version.
+            // We need only check for one of them.
+            if (ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.Surfaces.SpatialInteractionManager", "GetForCurrentView"))
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = null;
 

@@ -13,6 +13,7 @@ using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
 #if WINDOWS_UWP
+using Windows.Foundation.Metadata;
 using WindowsSpatialSurfaces = global::Windows.Perception.Spatial.Surfaces;
 #endif // WINDOWS_UWP
 
@@ -143,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV4_IsAvailable)
-            {
 #if WINDOWS_UWP
+            if (ApiInformation.IsMethodPresent("Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver", "IsSupported"))
+            {
                 return (capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
-#endif // WINDOWS_UWP
             }
+#endif // WINDOWS_UWP
 
             return false;
         }
