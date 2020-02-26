@@ -81,8 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             {
                 0, 3, 1,
                 0, 2, 3,
-                1, 3, 0,
-                3, 2, 0
+                //1, 3, 0,
+                //3, 2, 0
             };
 
             mesh.SetVertices(vertices);
@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         await new WaitForUpdate();
 
                         sceneToWorldXformSystem = await GetSceneToWorldTransform();
-                        Debug.Log($"sceneToWorldXformSystem = {sceneToWorldXformSystem}");
+                        //Debug.Log($"sceneToWorldXformSystem = {sceneToWorldXformSystem}");
 
                         if (!UsePersistentObjects)
                         {
@@ -587,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
-            Debug.Log($"ConvertSceneObject() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Debug.Log($"ConvertSceneObject() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
             int quadCount = sceneObject.Quads.Count;
             int meshCount = sceneObject.Meshes.Count;
