@@ -2,7 +2,7 @@
 
 ![TapToPlace](Images/Solver/TapToPlace/TapToPlaceIntroGif.gif)
 
-Tap to Place is a far interaction component that is used to place a game object on surface. This component is useful for placing objects on a spatial mesh. Tap to Place uses a combination of two clicks and head movement to place an object. A click to start the placement, head movement to change the position of the object and a click to place.
+Tap to Place is a far interaction component that is used to place a game object on surface. This component is useful for placing objects on a spatial mesh. Tap to Place uses a combination of two clicks and head movement to place an object. A click to start the placement, head movement to control the position of the object and a click to place the object in the scene.
 
 ## Using Tap to Place
 
