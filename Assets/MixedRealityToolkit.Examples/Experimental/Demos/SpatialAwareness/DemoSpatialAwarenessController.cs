@@ -169,13 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             Vector3 placement;
             Vector2 queryArea = Vector2.one * .01f;
-            Quaternion rotation;
 
-            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement, out rotation))
+            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement))
             {
                 var stuff = Instantiate(StuffToPlace);
                 stuff.transform.position = placement;
-                //stuff.transform.rotation = rotation;
                 stuff.transform.rotation = closestPlatform.Rotation;
                 Debug.Log($"Found transform @ {placement.ToString("F4")}");
                 var tmp = stuff.GetComponentInChildren<TextMeshPro>();

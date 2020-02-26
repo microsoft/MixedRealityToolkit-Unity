@@ -33,8 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         "MixedRealityToolkit.SDK")]
     public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver :
         BaseSpatialSceneObserver,
-        IMixedRealityOnDemandObserver,
-        IWindowsMixedRealitySceneUnderstanding
+        IMixedRealityOnDemandObserver
     {
         /// <summary>
         /// Constructor.
@@ -322,14 +321,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <param name="objExtents">Total width and height of object to be placed in meters.</param>
         /// <param name="placementPosOnPlane">Base position on plane in local space.</param>
         /// <returns>returns <see cref="false"/> if API returns null.</returns>
-        public override bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnPlane, out Quaternion rotation)
+        public override bool TryFindCentermostPlacement(Guid quadGuid, Vector2 objExtents, out Vector3 placementPosOnPlane)
         {
             Tuple<SceneQuad, SceneObject> result;
 
             if (!cachedSceneQuads.TryGetValue(quadGuid, out result))
             {
                 placementPosOnPlane = Vector2.zero;
-                rotation = Quaternion.identity;
                 return false;
             }
 
@@ -351,15 +349,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             Debug.Log($"placementPosition = {centerPosition}");
 
-            // SU quad origin is top left. our mesh is center so adjust for that
+            // SU placement origin is top left (2d sheet of paper)
 
             centerPosition -= quad.Extents / new System.Numerics.Vector2(2.0f);
 
-            rotation = sceneObject.Orientation.ToUnityQuaternion();
-
-            var placementUnity = new Vector3(centerPosition.X, centerPosition.Y, 0);
-            placementPosOnPlane = (sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem).ToUnity().MultiplyPoint(placementUnity);
-            //placementPosOnPlane = (sceneObject.GetLocationAsMatrix()).ToUnity().MultiplyPoint(placementUnity);
+            var centerUnity = new Vector3(centerPosition.X, centerPosition.Y, 0);
+            placementPosOnPlane = (sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem).ToUnity().MultiplyPoint(centerUnity);
 
             return true;
         }
