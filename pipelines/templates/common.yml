@@ -47,6 +47,8 @@ steps:
 # notifications earlier in the CI process.
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP x86
 - ${{ if eq(parameters.buildUWPX86, true) }}:
