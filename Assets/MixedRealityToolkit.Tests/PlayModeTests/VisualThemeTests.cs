@@ -105,9 +105,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.position); });
         }
 
+        /// <summary>
+        /// Test InteractableRotationTheme applied not as local, non-relative rotation to host target
+        /// </summary>
         [UnityTest]
         public IEnumerator TestRotationTheme()
         {
+            // Point Cube diagonally to right
+            var hostGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            hostGameObject.transform.rotation = Quaternion.LookRotation(Vector3.forward + Vector3.right);
+
             Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
             Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
 
@@ -120,9 +127,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
             };
 
-            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(defaultStateValues,
-                (theme) => { Assert.AreEqual(state0, theme.Host.transform.rotation.eulerAngles); },
-                (theme) => { Assert.AreEqual(state1, theme.Host.transform.rotation.eulerAngles); });
+            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(hostGameObject, defaultStateValues,
+                (theme) => { Assert.AreEqual(state0, theme.Host.transform.localEulerAngles); },
+                (theme) => { Assert.AreEqual(state1, theme.Host.transform.localEulerAngles); });
+        }
+
+        /// <summary>
+        /// Test InteractableRotationTheme applied not as world space, relative rotation to host target
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestRotationThemeWorldSpace()
+        {
+            // Point Cube diagonally to right
+            var hostGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var initRotation = Quaternion.LookRotation(Vector3.forward + Vector3.right); ;
+            hostGameObject.transform.rotation = initRotation;
+
+            Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
+            Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
+
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
+            {
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Vector3 = state0 },
+                    new ThemePropertyValue() { Vector3 = state1 },
+                }
+            };
+
+            // Generate default theme properties for InteractableRotationTheme. 
+            // Set Relative Rotation property (index=0) to true so theme values are applied in addition instead of absolutely set
+            // Set Local Rotation property (index=1) to false so euler angles are world space
+            var defaultThemeProperties = (new InteractableRotationTheme()).GetDefaultThemeDefinition().CustomProperties;
+            defaultThemeProperties[0].Value.Bool = true;
+            defaultThemeProperties[1].Value.Bool = false;
+
+            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(hostGameObject, defaultStateValues, defaultThemeProperties,
+                (theme) => { Assert.AreEqual(initRotation.eulerAngles + state0, theme.Host.transform.eulerAngles); },
+                (theme) => { Assert.AreEqual(initRotation.eulerAngles + state1, theme.Host.transform.eulerAngles); });
         }
 
         /// <summary>

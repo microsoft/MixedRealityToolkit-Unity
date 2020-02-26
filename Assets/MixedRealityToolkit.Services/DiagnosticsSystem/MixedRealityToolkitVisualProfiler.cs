@@ -4,10 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 #if WINDOWS_UWP
+using Windows.Media.Capture;
 using Windows.System;
+#else
+using UnityEngine.Profiling;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Diagnostics
@@ -52,6 +54,12 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             get { return isVisible; }
             set { isVisible = value; }
         }
+
+        private bool ShouldShowProfiler =>
+#if WINDOWS_UWP
+            (appCapture == null || !appCapture.IsCapturingVideo || showProfilerDuringMRC) &&
+#endif // WINDOWS_UWP
+            isVisible;
 
         [SerializeField, Tooltip("Should the frame info (colored bars) be displayed.")]
         private bool frameInfoVisible = true;
@@ -115,6 +123,20 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         {
             get { return windowFollowSpeed; }
             set { windowFollowSpeed = Mathf.Abs(value); }
+        }
+
+        [SerializeField]
+        [Tooltip("If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.")]
+        private bool showProfilerDuringMRC = false;
+
+        /// <summary>
+        /// If the diagnostics profiler should be visible while a mixed reality capture is happening on HoloLens.
+        /// </summary>
+        /// <remarks>This is not usually recommended, as MRC can have an effect on an app's frame rate.</remarks>
+        public bool ShowProfilerDuringMRC
+        {
+            get { return showProfilerDuringMRC; }
+            set { showProfilerDuringMRC = value; }
         }
 
         [Header("UI Settings")]
@@ -193,6 +215,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         private Material textMaterial;
         private Mesh quadMesh;
 
+#if WINDOWS_UWP
+        private AppCapture appCapture;
+#endif // WINDOWS_UWP
+
         private void Reset()
         {
             if (defaultMaterial == null)
@@ -259,6 +285,10 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             Reset();
             BuildWindow();
             BuildFrameRateStrings();
+
+#if WINDOWS_UWP
+            appCapture = AppCapture.GetForCurrentView();
+#endif // WINDOWS_UWP
         }
 
         private void OnDestroy()
@@ -279,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             // Update window transformation.
             Transform cameraTransform = CameraCache.Main ? CameraCache.Main.transform : null;
 
-            if (isVisible && cameraTransform != null)
+            if (ShouldShowProfiler && cameraTransform != null)
             {
                 float t = Time.deltaTime * windowFollowSpeed;
                 window.position = Vector3.Lerp(window.position, CalculateWindowPosition(cameraTransform), t);
@@ -339,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Draw frame info.
-            if (isVisible && frameInfoVisible)
+            if (ShouldShowProfiler && frameInfoVisible)
             {
                 Matrix4x4 parentLocalToWorldMatrix = window.localToWorldMatrix;
 
@@ -360,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update memory statistics.
-            if (isVisible && memoryStatsVisible)
+            if (ShouldShowProfiler && memoryStatsVisible)
             {
                 ulong limit = AppMemoryUsageLimit;
 
@@ -402,7 +432,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
 
             // Update visibility state.
-            window.gameObject.SetActive(isVisible);
+            window.gameObject.SetActive(ShouldShowProfiler);
             memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
@@ -476,7 +506,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private void CalculateBackgroundSize()
         {
-            if (frameInfoVisible && memoryStatsVisible || memoryStatsVisible)
+            if (memoryStatsVisible)
             {
                 background.localPosition = backgroundOffsets[0];
                 background.localScale = backgroundScales[0];
@@ -576,7 +606,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
             }
 
-            window.gameObject.SetActive(isVisible);
+            window.gameObject.SetActive(ShouldShowProfiler);
             memoryStats.gameObject.SetActive(memoryStatsVisible);
         }
 
