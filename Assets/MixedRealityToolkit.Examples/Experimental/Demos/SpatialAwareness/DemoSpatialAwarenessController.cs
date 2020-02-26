@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public string SavedSceneNamePrefix = "DemoSceneUnderstanding";
 
-        public bool InstanciatePrefabs;
+        public bool InstantiatePrefabs;
 
         public GameObject autoUpdateToggle;
         public GameObject quadsToggle;
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 platforms.Add(sceneObject);
             }
 
-            if (InstanciatePrefabs)
+            if (InstantiatePrefabs)
             {
                 var prefab = Instantiate(SceneObjectPrefab);
                 prefab.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
@@ -270,6 +270,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             Debug.Log("TogglePlatforms");
             var surfaceType = SpatialAwarenessSurfaceTypes.Platform;
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
+            {
+                observer.SurfaceTypes &= ~surfaceType;
+            }
+            else
+            {
+                observer.SurfaceTypes |= surfaceType;
+            }
+            observer.UpdateOnDemand();
+        }
+
+        public void ToggleWorld()
+        {
+            Debug.Log("ToggleWorld");
+            var surfaceType = SpatialAwarenessSurfaceTypes.World;
             if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
                 observer.SurfaceTypes &= ~surfaceType;
