@@ -117,12 +117,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PressableButtonUnityUICircular
       objectReference: {fileID: 0}
+    - target: {fileID: 5234426577712821803, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676743, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 68f0ad9fadae8b3438ebd66cdba2b20f, type: 2}
-    - target: {fileID: 5234426577712821803, guid: df89e360642c6fc46abbc1c2656856f6,
+    - target: {fileID: 4703832778049971774, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
@@ -131,12 +136,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: ed88a1368a3ad7248b15504ada5915a6, type: 2}
-    - target: {fileID: 4703832778049971774, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 9c3c9d308f2be564192c53122c77079b, type: 2}
     - target: {fileID: 5215530967309281004, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Material
