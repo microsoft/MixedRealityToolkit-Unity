@@ -32,11 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const float ButtonReleaseAnimationDelay = 0.25f;
         private const float EaseDelay = 0.25f;
 
-        private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
-        private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
-        private const string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
+        private const string RadialSetPrefabAssetPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
+        private const string RadialPrefabAssetPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
+        private const string DisabledOnStartPrefabAssetPath = "Assets/MRTK.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
 
-        private const string DisabledInitializedPrefabAssetPath = @"Assets\MixedRealityToolkit.Tests\PlayModeTests\Prefabs\TestInteractableInitialize.prefab";
+        private const string DisabledInitializedPrefabAssetPath = @"Assets/MRTK.Tests/PlayModeTests/Prefabs/TestInteractableInitialize.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;

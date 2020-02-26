@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SlateTests
     {
-        const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
+        const string slatePrefabAssetPath = "Assets/MRTK.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
 
         GameObject panObject;
         HandInteractionPanZoom panZoom;

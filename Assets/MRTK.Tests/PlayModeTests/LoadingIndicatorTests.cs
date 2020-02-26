@@ -20,9 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class ProgressIndicatorTests
     {
-        private const string progressIndicatorLoadingBarPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab";
-        private const string progressIndicatorRotatingObjectPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab";
-        private const string progressIndicatorRotatingOrbsPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab";
+        private const string progressIndicatorLoadingBarPrefabPath = "Assets/MRTK.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab";
+        private const string progressIndicatorRotatingObjectPrefabPath = "Assets/MRTK.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab";
+        private const string progressIndicatorRotatingOrbsPrefabPath = "Assets/MRTK.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab";
         
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.

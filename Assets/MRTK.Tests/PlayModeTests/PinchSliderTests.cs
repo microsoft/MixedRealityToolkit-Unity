@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class PinchSliderTests
     {
-        const string defaultPinchSliderPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab";
+        const string defaultPinchSliderPrefabPath = "Assets/MRTK.SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab";
 
         [SetUp]
         public void Setup()

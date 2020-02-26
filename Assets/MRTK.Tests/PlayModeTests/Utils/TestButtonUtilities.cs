@@ -32,17 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Asset Path to default model push button prefab asset
         /// </summary>
-        public const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
+        public const string DefaultInteractablePrefabAssetPath = "Assets/MRTK.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
 
         /// <summary>
         /// Asset path to default Hololens 2 Pressable Button prefab asset
         /// </summary>
-        public const string PressableHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
+        public const string PressableHoloLens2PrefabPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
 
         /// <summary>
         /// Asset path to default Hololens 2 Toggle Pressable Button prefab asset
         /// </summary>
-        public const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
+        public const string PressableHoloLens2TogglePrefabPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
 
         /// <summary>
         /// Rought amount of time for press action on button

@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Utilities
 
-        private static string PrefabDirectoryPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs";
-        private static string UnitTestCanvasPrefabPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab";
+        private static string PrefabDirectoryPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs";
+        private static string UnitTestCanvasPrefabPath = "Assets/MRTK.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab";
 
         private static Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {

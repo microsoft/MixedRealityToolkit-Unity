@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pointer = new TestPointer();
             focusProvider.RegisterPointer(pointer);
             
-            GameObject raycastTestPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(Path.Combine("Assets", "MixedRealityToolkit.Tests", "PlayModeTests", "Prefabs", "FocusProviderRaycastTest.prefab"));
+            GameObject raycastTestPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(Path.Combine("Assets", "MRTK.Tests", "PlayModeTests", "Prefabs", "FocusProviderRaycastTest.prefab"));
             raycastTestPrefabInstance = Object.Instantiate(raycastTestPrefab);
         }
 

@@ -29,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class PointerTests 
     {
-        private const string LinePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab";
-        private const string CurvePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab";
+        private const string LinePointerPrefab = "Assets/MRTK.SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab";
+        private const string CurvePointerPrefab = "Assets/MRTK.SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab";
 
         [SetUp]
         public void Setup()

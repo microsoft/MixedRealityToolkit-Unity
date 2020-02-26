@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
         private readonly Vector3 boundsControlStartScale = Vector3.one * 0.5f;
-        private static readonly string appBarPrefabLink = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/AppBar/AppBar.prefab";
+        private static readonly string appBarPrefabLink = "Assets/MRTK.SDK/Features/UX/Prefabs/AppBar/AppBar.prefab";
         /// <summary>
         /// Instantiates a bounds control at boundsControlStartCenter
         /// transform is at scale boundsControlStartScale

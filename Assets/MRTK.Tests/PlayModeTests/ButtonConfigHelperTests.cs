@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ButtonConfigHelperTests : BasePlayModeTests
     {
-        private static string PressableButtonHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
+        private static string PressableButtonHoloLens2PrefabPath = "Assets/MRTK.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
 
         [UnityTest]
         /// <summary>

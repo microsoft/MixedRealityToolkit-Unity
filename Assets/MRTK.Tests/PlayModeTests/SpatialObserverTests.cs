@@ -25,8 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class SpatialObserverTests
     {
-        private const string TestSpatialAwarenessSystemProfilePath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
-        private const string TestSpatialAwarenessSystemProfilePath_ManualStart = "Assets/MixedRealityToolkit.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile_ManualStart.asset";
+        private const string TestSpatialAwarenessSystemProfilePath = "Assets/MRTK.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
+        private const string TestSpatialAwarenessSystemProfilePath_ManualStart = "Assets/MRTK.Tests/PlayModeTests/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile_ManualStart.asset";
 
         /// <summary>
         /// Test default case of Auto-Start SpatialObjectMeshObserver observer type and SpatialAwarenessSystem in editor
