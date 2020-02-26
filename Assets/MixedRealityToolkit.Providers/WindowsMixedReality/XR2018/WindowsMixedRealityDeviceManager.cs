@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
 #if WINDOWS_UWP
-using Windows.Foundation.Metadata;
 using WindowsInputSpatial = global::Windows.UI.Input.Spatial;
 #endif // WINDOWS_UWP
 
@@ -64,13 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            bool canQuerySourceKindSupport = false;
-
-#if WINDOWS_UWP
-            canQuerySourceKindSupport = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionManager", "IsSourceKindSupported");
-#endif // WINDOWS_UWP
-
-            if (canQuerySourceKindSupport)
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "IsSourceKindSupported"))
             {
 #if WINDOWS_UWP
                 switch (capability)

@@ -60,13 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             bool hasCapability = false;
 
-            bool canQuerySourceKindSupport = false;
-
-#if WINDOWS_UWP
-            canQuerySourceKindSupport = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionManager", "IsSourceKindSupported");
-#endif // WINDOWS_UWP
-
-            if (canQuerySourceKindSupport)
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "IsSourceKindSupported"))
             {
 #if WINDOWS_UWP
                 switch (capability)

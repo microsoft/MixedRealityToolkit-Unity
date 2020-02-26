@@ -144,12 +144,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-#if WINDOWS_UWP
-            if (ApiInformation.IsMethodPresent("Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver", "IsSupported"))
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.Perception.Spatial.Surfaces",
+                "SpatialSurfaceObserver",
+                "IsSupported"))
             {
+#if WINDOWS_UWP
                 return (capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
-            }
 #endif // WINDOWS_UWP
+            }
 
             return false;
         }

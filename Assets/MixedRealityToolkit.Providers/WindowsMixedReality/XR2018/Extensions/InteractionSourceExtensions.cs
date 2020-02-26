@@ -27,7 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             // GetForCurrentView and GetDetectedSourcesAtTimestamp were both introduced in the same Windows version.
             // We need only check for one of them.
-            if (ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.Surfaces.SpatialInteractionManager", "GetForCurrentView"))
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "GetForCurrentView"))
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = null;
 
