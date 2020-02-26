@@ -83,7 +83,7 @@
 <h1 id="microsoft-mixed-reality-toolkit-release-notes">Microsoft Mixed Reality Toolkit release notes</h1>
 
 <ul>
-<li><a href="#version-220">Version 2.3.0</a></li>
+<li><a href="#version-230">Version 2.3.0</a></li>
 <li><a href="#version-220">Version 2.2.0</a></li>
 <li><a href="#version-210">Version 2.1.0</a></li>
 <li><a href="#version-201">Version 2.0.1</a></li>
@@ -116,6 +116,10 @@
 <li><a href="https://unity3d.com/get-unity/download">Unity</a> 2018.4 LTS or 2019 (2019.3 recommended)</li>
 </ul>
 <p><strong>NuGet requirements</strong></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>NuGet packages require Unity version 2018.4 LTS. MRTK 2.3.0 does not support NuGet in combination with 2019.3.</p>
+</div>
 <p>If importing the <a href="MRTKNuGetPackage.html">Mixed Reality Toolkit NuGet packages</a>, the following software is recommended.</p>
 <ul>
 <li><a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGet for Unity 2.0.0 or newer</a></li>
@@ -218,14 +222,14 @@ asset database and reconcile existing custom profiles.</li>
 <p><img src="https://user-images.githubusercontent.com/1186832/68795768-77efdc00-0606-11ea-8fb9-b0e4191bdb05.gif" alt="Hand physics"></p>
 <p><strong>Non-native keyboard (Experimental)</strong></p>
 <p>A keyboard that can be used on platforms which do not provide native keyboard support.
-(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573">#6492</a>)</p>
+(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6492">#6492</a>)</p>
 <img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
 <p><strong>Hand coach (Experimental)</strong></p>
 <p>Hand animations that can give helpful hints for gestures users should perform.
-(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493">#6493</a>)</p>
+(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6943">#6943</a>)</p>
 <img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
 <p><strong>Follow solver (Experimental)</strong>
-A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493">#6981</a>)</p>
+A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6981">#6981</a>)</p>
 <img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
 <p><strong>Pinch Slider orientation</strong></p>
 <p>The Pinch Slider has been updated to orient TrackVisuals, TickMarks and ThumbRoot based on the sliderAxis orientation (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6858">#6858</a>)</p>
@@ -237,7 +241,7 @@ A solver that matches HoloLens 2 shell behavior. (<a href="https://github.com/mi
 <img src="https://user-images.githubusercontent.com/168492/73964695-8f69f880-48c7-11ea-857a-36448718ed1b.gif" width="200">
 <p>Improved ability to configure constraints for object manipulation.</p>
 <img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
-<p>We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924">#6294</a>)</p>
+<p>We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. (<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924">#6924</a>)</p>
 <p><strong>UnityAR package contents moved into Foundation</strong></p>
 <p>There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.</p>
 <h3 id="known-issues-in-230">Known issues in 2.3.0</h3>
