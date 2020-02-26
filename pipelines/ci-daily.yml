@@ -18,6 +18,7 @@ jobs:
   - template: templates/common-Unity2019.yml
     parameters:
       packagingEnabled: false
+      UnityVersion: $(Unity2019Version)
 
 - job: DailyUnity2018Validation
   timeoutInMinutes: 120
@@ -31,3 +32,4 @@ jobs:
   - template: templates/ci-common.yml
     parameters:
       packagingEnabled: false
+      UnityVersion: $(Unity2018Version)
