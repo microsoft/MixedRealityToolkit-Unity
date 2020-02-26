@@ -214,13 +214,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_System_String_Dictionary_System_String_System_String__System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync(System.String,Dictionary{System.String,System.String},System.Int32)">GetAsync(String, Dictionary&lt;String, String&gt;, Int32)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Rest_GetAsync_System_String_Dictionary_System_String_System_String__System_Int32_DownloadHandler_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Rest.GetAsync(System.String,Dictionary{System.String,System.String},System.Int32,DownloadHandler)">GetAsync(String, Dictionary&lt;String, String&gt;, Int32, DownloadHandler)</h4>
   <div class="markdown level1 summary"><p>Rest GET.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; GetAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;Response&gt; GetAsync(string query, Dictionary&lt;string, string&gt; headers = null, int timeout = -1, DownloadHandler downloadHandler = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -248,6 +248,12 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">timeout</span></td>
         <td><p>Optional time in seconds before request expires.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DownloadHandler</span></td>
+        <td><span class="parametername">downloadHandler</span></td>
+        <td><p>Optional DownloadHandler for the request.</p>
 </td>
       </tr>
     </tbody>
