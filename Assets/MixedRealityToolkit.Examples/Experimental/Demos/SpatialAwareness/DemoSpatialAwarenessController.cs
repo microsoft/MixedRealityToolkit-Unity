@@ -30,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public GameObject wallToggle;
         public GameObject floorToggle;
         public GameObject ceilingToggle;
+        public GameObject worldToggle;
 
         List<SpatialAwarenessSceneObject> platforms = new List<SpatialAwarenessSceneObject>(16);
 
@@ -98,6 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             wallToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
             floorToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
             ceilingToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
+            worldToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
         }
 
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
