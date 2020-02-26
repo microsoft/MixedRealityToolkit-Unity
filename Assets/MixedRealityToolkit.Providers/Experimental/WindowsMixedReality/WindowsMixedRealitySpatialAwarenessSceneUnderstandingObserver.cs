@@ -418,13 +418,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         sceneToWorldXformSystem = await GetSceneToWorldTransform();
                         Debug.Log($"sceneToWorldXformSystem = {sceneToWorldXformSystem}");
 
-                        // Transform scene root... XXX why and when???
-                        var currentSceneToWorldUnity = sceneToWorldXformSystem.ToUnity();
-                        Vector3 pos = currentSceneToWorldUnity.GetColumn(3);
-                        Quaternion rot = currentSceneToWorldUnity.rotation;
-
-                        //ObservedObjectParent.transform.SetPositionAndRotation(pos, rot);
-
                         if (!UsePersistentObjects)
                         {
                             // these are cached when we do ConvertSceneObject()
@@ -654,11 +647,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             // World space conversion
 
-            var sceneObjectXformSystem = sceneObject.GetLocationAsMatrix(); // local space
+            //Debug.Log($"sceneObjectTransform = {sceneObjectXformSystem}");
 
-            Debug.Log($"sceneObjectTransform = {sceneObjectXformSystem}");
-
-            System.Numerics.Matrix4x4 worldXformSystem = sceneObjectXformSystem * sceneToWorldXformSystem;
+            System.Numerics.Matrix4x4 worldXformSystem = sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem;
 
             System.Numerics.Vector3 worldTranslationSystem;
             System.Numerics.Quaternion worldRotationSytem;

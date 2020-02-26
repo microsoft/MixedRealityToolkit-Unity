@@ -144,6 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             float closestDistance = float.MaxValue;
             Guid closestGuid;
+            SpatialAwarenessSceneObject closestPlatform = null;
 
             for (int i = 0; i < platformCount; ++i)
             {
@@ -158,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                         continue;
                     }
                     closestGuid = platforms[i].Quads[0].guid;
+                    closestPlatform = platforms[i];
                 }
             }
 
@@ -173,7 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 var stuff = Instantiate(StuffToPlace);
                 stuff.transform.position = placement;
-                stuff.transform.rotation = rotation;
+                //stuff.transform.rotation = rotation;
+                stuff.transform.rotation = closestPlatform.Rotation;
                 Debug.Log($"Found transform @ {placement.ToString("F4")}");
                 var tmp = stuff.GetComponentInChildren<TextMeshPro>();
                 tmp.text = $"Distance = {closestDistance.ToString("F2")}";
