@@ -376,10 +376,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTextureTheme()
         {
-            const string TexturePathState0 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Panel_albedo.png";
+            const string TexturePathState0 = @"Assets/MRTK.Examples/Demos/StandardShader/Textures/Panel_albedo.png";
             Texture texState0 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState0);
 
-            const string TexturePathState1 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Checker_albedo.png";
+            const string TexturePathState1 = @"Assets/MRTK.Examples/Demos/StandardShader/Textures/Checker_albedo.png";
             Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState1);
 
             var defaultStateValues = new List<List<ThemePropertyValue>>()
