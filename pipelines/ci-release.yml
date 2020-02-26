@@ -19,11 +19,13 @@ jobs:
   pool:
     name: Analog On-Prem
     demands:
-    - Unity2018.4.12f1  # variable expansion not allowed here
+    - Unity2018.4.12f1
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/compilemsbuild.yml
+    parameters:
+      UnityVersion: $(Unity2018VersionInternal)
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)\NuGet'

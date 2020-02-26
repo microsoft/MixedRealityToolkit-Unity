@@ -17,3 +17,4 @@ jobs:
     parameters:
       packagingEnabled: true
       packagePublishing: true
+      UnityVersion: $(Unity2018VersionInternal)

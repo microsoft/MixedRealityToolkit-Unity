@@ -9,7 +9,7 @@ jobs:
   pool:
     name: On-Prem Unity
     demands:
-    - Unity2018.3.7f1
+    - Unity2018.4.6f1
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
@@ -17,3 +17,4 @@ jobs:
     parameters:
       packagingEnabled: true
       packagePublishing: true
+      UnityVersion: $(Unity2018Version)

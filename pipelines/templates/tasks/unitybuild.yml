@@ -7,12 +7,13 @@ parameters:
   ScriptingBackend: 'default'  # [optional] default|.NET
   PublishArtifacts: false
   PackagingDir: 'Win32'
-  UnityVer: ${Env:$(Unity2018Version)}
+  UnityVersion: ""
 
 steps:
 - powershell: |
+   $UnityPath = ${Env:${{ parameters.UnityVersion }}}
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
-   $editor = Get-ChildItem ${{ parameters.UnityVer }} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    # The build output goes to a unique combination of Platform + Arch + ScriptingBackend to ensure that
    # each build will have a fresh destination folder.

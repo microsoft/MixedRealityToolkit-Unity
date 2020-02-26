@@ -1,11 +1,12 @@
 # [Template] Run MRTK tests.
 
 parameters:
-  UnityVer: ${Env:$(Unity2018Version)}
+  UnityVersion: ""
 
 steps:
 - powershell: |
-   $editor = Get-ChildItem ${{ parameters.UnityVer }} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   $UnityPath = ${Env:${{ parameters.UnityVersion }}}
+   $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    Write-Host "======================= EditMode Tests ======================="
    
@@ -29,7 +30,8 @@ steps:
   displayName: 'Run EditMode tests'
 
 - powershell: |
-   $editor = Get-ChildItem ${{ parameters.UnityVer }} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   $UnityPath = ${Env:${{ parameters.UnityVersion }}}
+   $editor = Get-ChildItem $UnityPath -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    Write-Host "======================= PlayMode Tests ======================="
    
