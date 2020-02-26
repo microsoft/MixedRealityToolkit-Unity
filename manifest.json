@@ -410,6 +410,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "CODE_OF_CONDUCT.md",
+      "output": {
+        ".html": {
+          "relative_path": "CODE_OF_CONDUCT.html",
+          "hash": "mscEPgWUAcMuwkSb63XLxA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/ConfigurationAndProfiles.md",
       "output": {
         ".html": {
@@ -26350,7 +26362,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 148,
+          "total_file_count": 149,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
