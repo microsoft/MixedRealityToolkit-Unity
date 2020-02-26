@@ -64,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-
         private static Type[] controllerMappingTypes;
 
         public static Type[] ControllerMappingTypes { get { CollectControllerTypes(); return controllerMappingTypes; } }
