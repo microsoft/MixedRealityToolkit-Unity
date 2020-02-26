@@ -441,11 +441,235 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
         }
 
+        #region TapToPlace Tests
+        /// <summary>
+        /// Test the default behavior for Tap to Place.  The default behavior has the target object following the head.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceOnClickHead()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached and Head (default) as the TrackedTargetType 
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Set hand position 
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Select Tap to Place Obj
+            yield return leftHand.Click();
+
+            // Make sure the object is being placed
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.left * 1.5f;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj has followed the head
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+
+            // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
+            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
+            yield return WaitForFrames(30);
+
+            // Click object to stop placement
+            yield return leftHand.Click();
+
+            // Make sure the object is not being placed after the click
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement again
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.right;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is NOT following the head
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches camera position.x, when it should not");
+        }
+
+        /// <summary>
+        /// Test the controller ray as the Tracked Target Type for an object with tap to place attached.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceOnClickControllerRay()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Switch the TrackedTargetType to Controller Ray
+            SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
+            tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
+
+            // Set hand position
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            Vector3 initialObjPosition = tapToPlaceObj.target.transform.position;
+
+            yield return leftHand.Click();
+
+            // Make sure the object is being placed after selection
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move hand, object should follow
+            yield return leftHand.Move(Vector3.forward);
+            yield return leftHand.Move(Vector3.up);
+
+            // Make sure the object starting position is different from the current position
+            Assert.True(initialObjPosition != tapToPlaceObj.target.transform.position);
+
+            // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
+            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
+            yield return WaitForFrames(30);
+
+            // Click to stop the placement
+            yield return leftHand.Click();
+
+            // Make sure the object is not being placed
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Get new position of the object after it is placed
+            Vector3 newPosition = tapToPlaceObj.target.transform.position;
+
+            // Move hand, the object should NOT move
+            yield return leftHand.Move(Vector3.back, 30);
+
+            Assert.True(newPosition == tapToPlaceObj.target.transform.position);
+        }
+
+        /// <summary>
+        /// Test code configurability for tap to place. Events for tap to place by default are triggered by 
+        /// OnPointerClicked.  Code configurability for tap to place is calling Start/Stop Placement instead of 
+        /// clicking to select an object.  This test uses AutoStart to start placing the object and StopPlacement.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceCodeConfigurability()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+            
+            // Start Placing the object immediately
+            tapToPlace.AutoStart = true;
+
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Make sure the object is being placed after setting AutoStart
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.left * 1.5f;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is following the head
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+
+            // Stop the placement via code instead of click from the hand
+            tapToPlace.StopPlacement();
+
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement again
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.right;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is NOT following the head
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches the camera position.x, when it should not");
+        }
+
+        /// <summary>
+        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls
+        /// instead of OnPointerClicked.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceColliderTests()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a scene with 2 cubes
+            GameObject colliderObj1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj1.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj1.transform.position = new Vector3(0.3f, 0, 1.5f);
+
+            GameObject colliderObj2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj2.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj2.transform.position = new Vector3(-0.3f, 0, 1.5f);
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward * 2;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Switching the TrackedTargetType to Controller Ray
+            SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
+            tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
+
+            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Start the placement via code instead of click from the hand
+            tapToPlace.StartPlacement();
+            yield return null;
+
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move hand, object should follow
+            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
+
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
+
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
+
+            // Stop the placement via code instead of click from the hand
+            tapToPlace.StopPlacement();
+
+            Assert.False(tapToPlace.IsBeingPlaced);
+        }
+
+        #endregion
 
         #region Experimental
 
         /// <summary>
-        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// Tests that the DirectionalIndicator can be instatiated through code.
         /// </summary>
         [UnityTest]
         public IEnumerator TestDirectionalIndicator()
@@ -482,6 +706,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             directionTarget.transform.position = 5.0f * Vector3.forward;
 
             yield return WaitForFrames(2);
+            Assert.IsFalse(indicatorMesh.enabled);
+
+            // Get back to a position where the directional indicator should be visible
+            directionTarget.transform.position = -10.0f * Vector3.right;
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            // Destroy the object and then validate that the mesh is no longer visible
+            Object.Destroy(directionTarget);
+            yield return null;
             Assert.IsFalse(indicatorMesh.enabled);
         }
 

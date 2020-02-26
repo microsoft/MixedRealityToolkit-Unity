@@ -36,51 +36,58 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         [Min(0.0f)]
         public float ViewOffset = 0.3f;
 
-        private bool wasVisible = true;
+        private bool indicatorShown = false;
 
         protected override void Start()
         {
             base.Start();
 
-            SetVisible(IsVisible());
+            SetIndicatorVisibility(ShouldShowIndicator());
         }
 
         private void Update()
         {
-            bool isVisible = IsVisible();
-            if (isVisible != wasVisible)
+            bool showIndicator = ShouldShowIndicator();
+            if (showIndicator != indicatorShown)
             {
-                SetVisible(isVisible);
+                SetIndicatorVisibility(showIndicator);
             }
         }
 
-        private bool IsVisible()
+        private bool ShouldShowIndicator()
         {
             if (DirectionalTarget == null || SolverHandler.TransformTarget == null)
             {
                 return false;
             }
 
-            return MathUtilities.IsInFOV(DirectionalTarget.position, SolverHandler.TransformTarget,
+            return !MathUtilities.IsInFOV(DirectionalTarget.position, SolverHandler.TransformTarget,
                 VisibilityScaleFactor * CameraCache.Main.fieldOfView, VisibilityScaleFactor * CameraCache.Main.GetHorizontalFieldOfViewDegrees(),
                 CameraCache.Main.nearClipPlane, CameraCache.Main.farClipPlane);
         }
 
-        private void SetVisible(bool isVisible)
+        private void SetIndicatorVisibility(bool showIndicator)
         {
-            SolverHandler.UpdateSolvers = !isVisible;
+            SolverHandler.UpdateSolvers = showIndicator;
 
             foreach (var renderer in GetComponentsInChildren<Renderer>())
             {
-                renderer.enabled = !isVisible;
+                renderer.enabled = showIndicator;
             }
 
-            wasVisible = isVisible;
+            indicatorShown = showIndicator;
         }
 
         /// <inheritdoc />
         public override void SolverUpdate()
         {
+            // SolverUpdate is generally called in LateUpdate, at a time when it's possible that the DirectionalTarget
+            // has already been destroyed. This ensures that if the object has been destroyed, we don't access invalid
+            if (DirectionalTarget == null)
+            {
+                return;
+            }
+
             // This is the frame of reference to use when solving for the position of this.gameobject
             // The frame of reference will likely be the main camera
             var solverReferenceFrame = SolverHandler.TransformTarget;

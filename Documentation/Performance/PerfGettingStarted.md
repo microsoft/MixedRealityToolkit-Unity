@@ -166,11 +166,11 @@ If estimating the rough performance tradeoff between one shader and another, it 
 
 Unity Standard shader statistics example
 
-![Unity Standard Shader Statistics](../../Documentation/Images/Performance/UnityStandardShader-Stats.png)
+![Unity Standard Shader Statistics](../../Documentation/Images/Performance/UnityStandardShader-Stats.PNG)
 
 MRTK Standard shader statistics example
 
-![MRTK Standard Shader Statistics](../../Documentation/Images/Performance/MRTKStandardShader-Stats.png)
+![MRTK Standard Shader Statistics](../../Documentation/Images/Performance/MRTKStandardShader-Stats.PNG)
 
 ## See also
 

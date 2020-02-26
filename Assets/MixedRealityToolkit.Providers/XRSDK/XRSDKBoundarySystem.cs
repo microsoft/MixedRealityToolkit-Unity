@@ -81,9 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                     break;
             }
 
-            bool trackingSpaceSet = XRSDKSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode);
-
-            if (!trackingSpaceSet)
+            if (!XRSDKSubsystemHelpers.InputSubsystem.TrySetTrackingOriginMode(trackingOriginMode))
             {
                 Debug.LogWarning("Tracking origin unable to be set.");
             }

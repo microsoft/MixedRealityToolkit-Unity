@@ -1,9 +1,7 @@
 # Build for PR validation.
 
 variables:
-  Unity2018Version: Unity2018.4.6f1
-  Unity2019Version: Unity2019.2.0f1
-  MRTKVersion: 2.4.0
+- template: config/settings.yml
 
 jobs:
 - job: PRValidation

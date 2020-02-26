@@ -3,18 +3,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Runtime.CompilerServices;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Networking;
 using Version = System.Version;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Class that enables MRTK to add scoped registries and/or packages to the Unity Package Mangager manifest
+    /// Class that enables MRTK to add scoped registries and/or packages to the Unity Package Manager manifest
     /// </summary>
     internal static class PackageManifestUpdater
     {
@@ -66,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     // Parse the float component
                     string prereleaseString = versionComponents[1].Trim(trimChars);
-                    if (float.TryParse(prereleaseString, out prerelease))
+                    if (float.TryParse(prereleaseString, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo, out prerelease))
                     {
                         return true;
                     }
@@ -90,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="minPackageVersion">The minimum version of the package, as listed in the manifest.</param>
         /// <param name="packageVersion">The version of the package, as listed in the manifest.</param>
         /// <returns>
-        /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
+        /// True if an appropriate version of MS Build for Unity is configured in the manifest, otherwise false.
         /// </returns>
         internal static bool IsAppropriateMBuildVersion(string minPackageVersion, string packageVersion)
         {
@@ -115,17 +114,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // Evaluate the results.
-            // * (currentVersion > minVersion)                                                                  return true;
-            // * (currentVersion == minVersion && currentPrerelease == minPrerelease)                           return true;
+            // * (currentVersion > minVersion)                                                                return true;
+            // * (currentVersion == minVersion && currentPrerelease == minPrerelease)                         return true;
             // * (currentVersion == minVersion && minPrerelease != 0 && currentPrerelease >= minPrerelease)   return true;
-            // * all other combinatons                                                                          return false;
+            // * all other combinations                                                                       return false;
             if (currentVersion > minVersion)
             { 
                 return true; 
             }
             else if (currentVersion == minVersion)
             {
-                // The current and minumum versions are the same, check the prerelease portion
+                // The current and minimum versions are the same, check the prerelease portion
                 if (currentPrerelease == minPrerelease) 
                 { 
                     return true; 
@@ -143,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Reports whether or not the MSBuild for Unity is properly enabled in the Unity Package Manager manifest.
         /// </summary>
         /// <returns>
-        /// True if an appropriate verson of MS Build for Unity is configured in the manifest, otherwise false.
+        /// True if an appropriate version of MS Build for Unity is configured in the manifest, otherwise false.
         /// </returns>
         internal static bool IsMSBuildForUnityEnabled()
         {
@@ -224,14 +223,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return;
             }
 
-            // Ensure that pre-exising scoped registries are retained.
+            // Ensure that pre-existing scoped registries are retained.
             List<ScopedRegistry> scopedRegistries = new List<ScopedRegistry>();
             if ((manifest.scopedRegistries != null) && (manifest.scopedRegistries.Length > 0))
             {
                 scopedRegistries.AddRange(manifest.scopedRegistries);
             }
 
-            // Attempt to find an entry in the scoped regstries collection for the MSBuild for Unity url
+            // Attempt to find an entry in the scoped registries collection for the MSBuild for Unity URL
             bool needToAddRegistry = true;
             foreach (ScopedRegistry registry in scopedRegistries)
             {
@@ -266,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             bool needToAddPackage = true;
 
             // Attempt to find the MSBuild for Unity package entry in the dependencies collection
-            // This loop also identifies the dependecies collection line and the start / end of a
+            // This loop also identifies the dependencies collection line and the start / end of a
             // pre-existing scoped registries collections
             for (int i = 0; i < manifestFileLines.Count; i++)
             {

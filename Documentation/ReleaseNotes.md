@@ -1,10 +1,54 @@
 # Microsoft Mixed Reality Toolkit release notes
 
-- [Version 2.3.0](#version-220)
+- [Version 2.4.0](#version-240)
+- [Version 2.3.0](#version-230)
 - [Version 2.2.0](#version-220)
 - [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.4.0
+
+- [Upgrading projects](#upgrading-projects-to-240)
+- [What's new](#whats-new-in-240)
+- [Known issues](#known-issues-in-240)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+- (Experimental) Unity 2019.3 XR platform
+- Mobile AR via Unity AR Foundation
+  - Android
+  - iOS
+
+The following software is required.
+
+- [Microsoft Visual Studio](https://visualstudio.microsoft.com) (2017 or 2019) Community Edition or higher
+- [Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk) 18362 or later (installed by the Visual Studio Installer)
+- [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS or 2019 (2019.3 recommended)
+
+**NuGet requirements**
+
+If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
+
+- [NuGet for Unity 2.0.0 or newer](https://github.com/GlitchEnzo/NuGetForUnity/releases/latest)
+
+### Upgrading projects to 2.4.0
+
+#### Custom controller classes
+
+Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
+
+### What's new in 2.4.0
+
+*Coming soon*
+
+### Known issues in 2.4.0
+
+*Coming soon*
 
 ## Version 2.3.0
 
@@ -88,7 +132,6 @@ If your project was created using the [Mixed Reality Toolkit NuGet packages](MRT
 1. Select the **Installed** tab
 1. Click the **Update** button for each installed package
     - Microsoft.MixedReality.Toolkit.Foundation
-    - Microsoft.MixedReality.Toolkit.Providers.UnityAR
     - Microsoft.MixedReality.Toolkit.Tools
     - Microsoft.MixedReality.Toolkit.Extensions
     - Microsoft.MixedReality.Toolkit.Examples
@@ -164,7 +207,26 @@ Improved ability to configure constraints for object manipulation.
 
 We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
+**UnityAR package contents moved into Foundation**
+
+There is no longer the separate UnityAR package for Android and iOS support.  The contents have been moved to the Foundation package.
+
 ### Known issues in 2.3.0
+
+**Unity 2019.3 infinite loop when switching build target**
+
+There is a known issue ([#7299](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7299)) with switching build targets after entering and exiting play mode in Unity 2019.3.
+
+If this issue is encountered, please:
+
+- Terminate the process
+- Restart Unity and load the project
+- Do not enter / edit play mode
+- Change the build target
+
+**NuGet packages are not supported with Unity 2019**
+
+The current MRTK packages distributed via NuGet.org are precompiled with Unity 2018.4 and are not intended for use with Unity 2019. A future release of MRTK will provide Unity 2019 supported NuGet packages.
 
 **CS0579: Duplicate 'AssemblyVersion' attribute**
 
@@ -185,6 +247,21 @@ To resolve these errors:
 - If set to **.NET 4.x**, delete the **Dependencies\netstandard20** folder
 
     ![Duplicate dependencies](Images/ReleaseNotes/DuplicateDependencies.png)
+
+**NU1101: Unable to find package MSBuildForUnity**
+
+When using NuGet for Unity, applying MRTK configuration settings after switching the platform to UWP may generate an NU1101 error. This is due to an issue with MSBuild for Unity, where it is not correctly adding its package source.
+
+To resolve this error:
+
+- Open **Editor** > **Preferences**
+- Navigate to **NuGet for Unity**
+- Click **Add New Source**
+- Replace **New Source** with **MSBuild for Unity**
+- Replace **source_path** with **https://pkgs.dev.azure.com/UnityDeveloperTools/MSBuildForUnity/_packaging/UnityDeveloperTools/nuget/v3/index.json**
+- Click **Save**, at the bottom of the window
+- In the Project window expand **Assets** and select **<projectname>.Dependencies.msb4u**
+- In the Inspector window, click **Rebuild**
 
 **MRTK Configurator dialog does not show 'Enable MSBuild for Unity' in Unity 2019.3**
 
