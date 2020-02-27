@@ -1120,8 +1120,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        
-
         /// <summary>
         /// The collider reference tracking the bounds utilized by this component during runtime
         /// </summary>
@@ -1613,7 +1611,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
-                
+
                 Bounds bounds = new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale);
                 if (edgeAxes[i] == CardinalAxisType.X)
                 {
@@ -1904,7 +1902,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool AddColliderBoundsCornersToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
             if (colliderByTransform.Key == null) { return false; }
-            
+
             BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
 
             return colliderByTransform.Key != null;
