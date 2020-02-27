@@ -99,6 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
             }
         }
 
-#endregion IMixedRealityCameraSettings
+        #endregion IMixedRealityCameraSettings
     }
 }
