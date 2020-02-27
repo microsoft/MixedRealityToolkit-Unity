@@ -611,7 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead
         /// </summary>
-        public GameObject RotationHandleSlatePrefab
+        public GameObject RotationHandlePrefab
         {
             get { return rotationHandlePrefab; }
             set
@@ -623,6 +623,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
+        /// <summary>
+        /// Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead
+        /// </summary>
+        [Obsolete("This property has been renamed RotationHandlePrefab.")]
+        public GameObject RotationHandleSlatePrefab
+        {
+            get { return RotationHandlePrefab; }
+            set { RotationHandlePrefab = value; }
+        }
+
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the handle geometry of rotation handles")]

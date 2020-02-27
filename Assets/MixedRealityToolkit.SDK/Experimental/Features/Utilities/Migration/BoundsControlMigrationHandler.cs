@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.ShowRotationHandleForZ = box.ShowRotationHandleForZ;
             config.HandleMaterial = box.HandleMaterial;
             config.HandleGrabbedMaterial = box.HandleGrabbedMaterial;
-            config.HandlePrefab = box.RotationHandleSlatePrefab;
+            config.HandlePrefab = box.RotationHandlePrefab;
             config.HandleSize = box.RotationHandleSize;
             config.ColliderPadding = box.RotateHandleColliderPadding;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
