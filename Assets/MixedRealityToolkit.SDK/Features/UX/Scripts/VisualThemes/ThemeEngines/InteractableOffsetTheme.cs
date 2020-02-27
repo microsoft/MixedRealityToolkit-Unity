@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            hostTransform = Host.transform;
+            hostTransform = host.transform;
             originalPosition = hostTransform.localPosition;
 
             base.Init(host, settings);

@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            controller = Host.GetComponent<Animator>();
+            controller = host.GetComponent<Animator>();
             base.Init(host, settings);
         }
 

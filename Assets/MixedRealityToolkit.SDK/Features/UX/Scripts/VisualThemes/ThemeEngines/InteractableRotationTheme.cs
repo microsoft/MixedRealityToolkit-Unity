@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            hostTransform = Host.transform;
+            hostTransform = host.transform;
             originalLocalRotation = hostTransform.localEulerAngles;
             originalRotation = hostTransform.eulerAngles;
 

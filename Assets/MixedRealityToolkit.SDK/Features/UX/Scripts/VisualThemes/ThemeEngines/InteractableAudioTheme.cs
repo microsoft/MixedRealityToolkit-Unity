@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            audioSource = Host.GetComponentInChildren<AudioSource>();
+            audioSource = host.GetComponentInChildren<AudioSource>();
             base.Init(host, settings);
         }
 

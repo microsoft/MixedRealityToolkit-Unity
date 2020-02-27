@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private static ThemePropertyValue emptyValue = new ThemePropertyValue();
 
-        protected MaterialPropertyBlock propertyBlock;
+        protected MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
         protected List<ThemeStateProperty> shaderProperties;
         protected Renderer renderer;
         private Graphic graphic;
@@ -60,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition definition)
         {
+            renderer = host.GetComponent<Renderer>();
+            graphic = host.GetComponent<Graphic>();
+
+            base.Init(host, definition);
+
             shaderProperties = new List<ThemeStateProperty>();
             foreach (var prop in StateProperties)
             {
@@ -69,9 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            renderer = Host.GetComponent<Renderer>();
-            graphic = Host.GetComponent<Graphic>();
-
             if (renderer != null)
             {
                 propertyBlock = InteractableThemeShaderUtils.InitMaterialPropertyBlock(host, shaderProperties);
@@ -80,8 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 UIMaterialInstantiator.TryCreateMaterialCopy(graphic);
             }
-
-            base.Init(host, definition);
         }
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)

@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            renderer = Host.GetComponent<Renderer>();
+            renderer = host.GetComponent<Renderer>();
             base.Init(host, settings);
         }
 

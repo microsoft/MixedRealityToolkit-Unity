@@ -52,10 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            mesh = Host.GetComponent<TextMesh>();
-            text = Host.GetComponent<Text>();
-            meshPro = Host.GetComponent<TextMeshPro>();
-            meshProUGUI = Host.GetComponent<TextMeshProUGUI>();
+            mesh = host.GetComponent<TextMesh>();
+            text = host.GetComponent<Text>();
+            meshPro = host.GetComponent<TextMeshPro>();
+            meshProUGUI = host.GetComponent<TextMeshProUGUI>();
 
             base.Init(host, settings);
         }
