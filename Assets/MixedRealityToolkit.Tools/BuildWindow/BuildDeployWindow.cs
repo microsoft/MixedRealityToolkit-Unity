@@ -708,6 +708,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     if (GUILayout.Button("Test Connection", GUILayout.Width(128f)))
                     {
+                        lastTestConnectionTime = null;
+
                         EditorApplication.delayCall += async () =>
                         {
                             lastTestConnectionSuccessful = await ConnectToDevice();
