@@ -6,37 +6,56 @@ function createDropdown()
 	
 	//--------------------------------------
 
+	
+	// get web root path
+	var script = document.getElementById('dropdownScript');
+	var scriptPath = script.src;
+	var versionIndex = scriptPath.lastIndexOf('version/');
+	var rootDir = scriptPath;
+	var currentVersionName = defaultTitle;
+	if (versionIndex > 0)
+	{
+		rootDir = scriptPath.substring(0, versionIndex);
+		// currently we're in a different version - extract version name
+		for (var i = 0; i < versionArray.length; i++)
+		{
+			if (scriptPath.indexOf(versionArray[i]) > 0)
+			{
+				currentVersionName = versionArray[i];
+				break;
+			}
+		}
+	}
+	else
+	{
+		rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
+	}
+	
+	// create dropdown button
 	var versionDropDiv = document.getElementById('versionDropdown');
 	var btn = document.createElement('button');
 	btn.className = "dropbtn";
-	var btnText = document.createTextNode("Version");
+	var buttonName = "Version - " + currentVersionName;
+	var btnText = document.createTextNode(buttonName);
 	btn.appendChild(btnText);
 	var innerDiv = document.createElement('div');
 	innerDiv.className = "version-dropdown-content";
 	versionDropDiv.appendChild(btn);
 	versionDropDiv.appendChild(innerDiv);
 
-	// get web root path
-	var script = document.getElementById('dropdownScript');
-	var scriptPath = script.src;
-	var versionIndex = scriptPath.lastIndexOf('version/');
-	var rootDir = scriptPath;
-	if (versionIndex > 0)
+	// create default entry
+	if (currentVersionName != defaultTitle)
 	{
-		rootDir = scriptPath.substring(0, versionIndex);
+		createEntry(innerDiv, defaultTitle, rootDir+"README.html");
 	}
-	else
-	{
-		rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
-	}
-
-	// create default
-	createEntry(innerDiv, defaultTitle, rootDir+"README.html");
 	
 	// create version entries
 	for (i = 0; i<versionArray.length; i++)
 	{
-		createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html");
+		if (versionArray[i] != currentVersionName)
+		{
+			createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html");
+		}
 	}
 }
 
