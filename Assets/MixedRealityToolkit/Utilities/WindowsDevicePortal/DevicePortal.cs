@@ -340,15 +340,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         {
             Debug.Assert(!string.IsNullOrEmpty(appFullPath));
             var isAuth = await EnsureAuthenticationAsync(targetDevice);
-            if (!isAuth) { return false; }
+            if (!isAuth) 
+            { 
+                return false; 
+            }
 
-            Debug.Log($"Starting install on {targetDevice.MachineName}...");
+            Debug.Log($"Starting app install on {targetDevice.ToString()}...");
 
             // Calculate the cert and dependency paths
             string fileName = Path.GetFileName(appFullPath);
             string certFullPath = Path.ChangeExtension(appFullPath, ".cer");
             string certName = Path.GetFileName(certFullPath);
-            string depPath = $@"{Path.GetDirectoryName(appFullPath)}\Dependencies\x86\";
+
+            string arch = "ARM";
+            if (appFullPath.Contains("x86"))
+            {
+                arch = "x86";
+            }
+            else if (appFullPath.Contains("ARM64"))
+            {
+                arch = "ARM64";
+            }
+
+            string depPath = $@"{Path.GetDirectoryName(appFullPath)}\Dependencies\{arch}\";
 
             var form = new WWWForm();
 
@@ -406,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await InstallAppAsync(appFullPath, targetDevice, waitForDone);
                 }
 
-                Debug.LogError($"Failed to install {fileName} on {targetDevice.MachineName}.");
+                Debug.LogError($"Failed to install {fileName} on {targetDevice.ToString()}.");
                 return false;
             }
 
@@ -420,10 +434,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 switch (status)
                 {
                     case AppInstallStatus.InstallSuccess:
-                        Debug.Log($"Successfully installed {fileName} on {targetDevice.MachineName}.");
+                        Debug.Log($"Successfully installed {fileName} on {targetDevice.ToString()}.");
                         return true;
                     case AppInstallStatus.InstallFail:
-                        Debug.LogError($"Failed to install {fileName} on {targetDevice.MachineName}.");
+                        Debug.LogError($"Failed to install {fileName} on {targetDevice.ToString()}.");
                         return false;
                 }
             }
@@ -479,14 +493,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 return false;
             }
 
-            Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.MachineName}...");
+            Debug.Log($"Attempting to uninstall {packageName} on {targetDevice.ToString()}...");
 
             string query = $"{string.Format(InstallQuery, FinalizeUrl(targetDevice.IP))}?package={UnityWebRequest.EscapeURL(appInfo.PackageFullName)}";
             var response = await Rest.DeleteAsync(query, targetDevice.Authorization);
 
             if (response.Successful)
             {
-                Debug.Log($"Successfully uninstalled {packageName} on {targetDevice.MachineName}.");
+                Debug.Log($"Successfully uninstalled {packageName} on {targetDevice.ToString()}.");
             }
             else
             if (!response.Successful)
@@ -496,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                     return await UninstallAppAsync(packageName, targetDevice);
                 }
 
-                Debug.LogError($"Failed to uninstall {packageName} on {targetDevice.MachineName}");
+                Debug.LogError($"Failed to uninstall {packageName} on {targetDevice.ToString()}");
                 Debug.LogError(response.ResponseBody);
                 return false;
             }
