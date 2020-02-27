@@ -48,9 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            base.Init(host, settings);
-
             renderer = Host.GetComponent<Renderer>();
+            base.Init(host, settings);
         }
 
         /// <inheritdoc />
@@ -70,9 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
+            SetValue(property, property.Values[index]);
+        }
+
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
+        {
             if (renderer != null)
             {
-                material = property.Values[index].Material;
+                material = value.Material;
                 renderer.material = material;
             }
         }
