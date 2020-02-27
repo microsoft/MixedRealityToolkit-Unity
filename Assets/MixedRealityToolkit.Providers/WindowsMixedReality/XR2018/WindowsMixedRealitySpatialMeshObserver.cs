@@ -13,7 +13,6 @@ using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
 #if WINDOWS_UWP
-using Windows.Foundation.Metadata;
 using WindowsSpatialSurfaces = global::Windows.Perception.Spatial.Surfaces;
 #endif // WINDOWS_UWP
 

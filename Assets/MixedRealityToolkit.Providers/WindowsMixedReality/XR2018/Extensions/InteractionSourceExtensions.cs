@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.XR.WSA.Input;
 using Windows.Foundation;
-using Windows.Foundation.Metadata;
 using Windows.Perception;
 using Windows.Storage.Streams;
 using Windows.UI.Input.Spatial;
