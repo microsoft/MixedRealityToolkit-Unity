@@ -8,7 +8,7 @@ using UnityEngine;
 using Windows.Foundation.Metadata;
 #elif (UNITY_WSA && DOTNETWINRT_PRESENT)
 using Microsoft.Windows.Foundation.Metadata;
-#endif // WINDOWS_UWP)
+#endif // WINDOWS_UWP
 
 namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
 {
