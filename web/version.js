@@ -5,32 +5,24 @@ function createDropdown()
 	var versionArray = ["releases/2.0.0", "releases/2.1.0", "releases/2.2.0", "releases/2.3.0"]; // list of all versions in the version folder
 	
 	//--------------------------------------
-
 	
 	// get web root path
 	var script = document.getElementById('dropdownScript');
 	var scriptPath = script.src;
-	var versionIndex = scriptPath.lastIndexOf('version/');
-	var rootDir = scriptPath;
 	var currentVersionName = defaultTitle;
-	if (versionIndex > 0)
+	var rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
+	
+	// figure out in which version we're currently working in
+	for (var i = 0; i < versionArray.length; i++)
 	{
-		rootDir = scriptPath.substring(0, versionIndex);
-		// currently we're in a different version - extract version name
-		for (var i = 0; i < versionArray.length; i++)
+		var currentUrl = window.location.href.toString();
+		if (currentUrl.indexOf(versionArray[i]) > 0)
 		{
-			if (scriptPath.indexOf(versionArray[i]) > 0)
-			{
-				currentVersionName = versionArray[i];
-				break;
-			}
+			currentVersionName = versionArray[i];
+			break;
 		}
 	}
-	else
-	{
-		rootDir = scriptPath.substring(0, scriptPath.lastIndexOf('web/'));
-	}
-	
+		
 	// create dropdown button
 	var versionDropDiv = document.getElementById('versionDropdown');
 	var btn = document.createElement('button');
