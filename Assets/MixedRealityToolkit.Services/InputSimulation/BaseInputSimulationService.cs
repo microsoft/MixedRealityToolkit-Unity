@@ -123,16 +123,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
-            if (controller == null)
-            {
-                Debug.LogError($"Failed to create {controllerType} controller");
-                return null;
-            }
-
-            if (!controller.SetupConfiguration(controllerType))
+            
+            if (controller == null || !controller.Enabled)
             {
                 // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to Setup {controllerType} controller");
+                Debug.LogError($"Failed to create {controllerType} controller");
                 // Return null so we don't raise the source detected.
                 return null;
             }
