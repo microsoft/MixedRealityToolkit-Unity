@@ -897,6 +897,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
             Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+
+            // Test renderer bounds clamp mode.
+            followSolver.AngularClampMode = Follow.AngularClampType.RendererBounds;
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 180));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(targetTransform.position - CameraCache.Main.transform.position, CameraCache.Main.transform.forward), 0.0f, "Follow did not clamp angle when using AngularClampType.RendererBounds.");
+
+            // Test collider bounds clamp mode.
+            followSolver.AngularClampMode = Follow.AngularClampType.ColliderBounds;
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 0.0f));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(targetTransform.position - CameraCache.Main.transform.position, CameraCache.Main.transform.forward), 0.0f, "Follow did not clamp angle when using AngularClampType.ColliderBounds.");
         }
 
         /// <summary>
