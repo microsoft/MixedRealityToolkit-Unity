@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
@@ -252,6 +253,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static CancellationTokenSource appxCancellationTokenSource = null;
         private static float appxProgressBarTimer = 0.0f;
         private static DeviceInfo localConnection;
+
+        private static bool lastTestConnectionSuccessful = false;
+        private static DeviceInfo lastTestConnectionTarget;
+        private static DateTime? lastTestConnectionTime = null;
 
         #endregion Fields
 
@@ -681,6 +686,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
                 }
 
+                EditorGUILayout.Space();
+
                 RenderConnectionButtons();
             }
 
@@ -691,21 +698,35 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void RenderConnectionButtons()
         {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                DeviceInfo currentConnection = CurrentConnection;
+            DeviceInfo currentConnection = CurrentConnection;
 
-                bool canTestConnection = (!UseRemoteTarget || IsValidIpAddress(currentConnection.IP)) && AreCredentialsValid(currentConnection);
-                using (new EditorGUI.DisabledGroupScope(!canTestConnection))
+            bool canTestConnection = (!UseRemoteTarget || IsValidIpAddress(currentConnection.IP)) && AreCredentialsValid(currentConnection);
+            using (new EditorGUI.DisabledGroupScope(!canTestConnection))
+            {
+
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Test Connection"))
+                    if (GUILayout.Button("Test Connection", GUILayout.Width(128f)))
                     {
-                        EditorApplication.delayCall += () =>
+                        EditorApplication.delayCall += async () =>
                         {
-                            ConnectToDevice();
+                            lastTestConnectionSuccessful = await ConnectToDevice();
+                            lastTestConnectionTime = DateTime.UtcNow;
+                            lastTestConnectionTarget = currentConnection;
                         };
                     }
 
+                    if (lastTestConnectionTime != null)
+                    {
+                        string successStatus = lastTestConnectionSuccessful ? "Successful" : "Failed";
+                        EditorGUILayout.LabelField($"{successStatus} connection to {lastTestConnectionTarget.ToString()}, {lastTestConnectionTime.Value.GetRelativeTime()}");
+                    }
+                }
+
+                EditorGUILayout.Space();
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
                     using (new EditorGUI.DisabledGroupScope(false))
                     {
                         if (GUILayout.Button("Open Device Portal", GUILayout.Width(128f)))
@@ -713,9 +734,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             EditorApplication.delayCall += () => OpenDevicePortal();
                         }
                     }
-                }
 
-                GUILayout.FlexibleSpace();
+                    GUILayout.FlexibleSpace();
+                }
             }
         }
 
@@ -845,7 +866,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             {
                                 using (new EditorGUI.DisabledGroupScope(!CanInstall))
                                 {
-                                    if (GUILayout.Button(InstallAppXLabel, GUILayout.Width(96)))
+                                    if (GUILayout.Button(InstallAppXLabel, GUILayout.Width(120)))
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
@@ -854,7 +875,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                         };
                                     }
 
-                                    if (GUILayout.Button(UninstallAppXLabel, GUILayout.Width(96)))
+                                    if (GUILayout.Button(UninstallAppXLabel, GUILayout.Width(120)))
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
@@ -1058,7 +1079,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private async void ConnectToDevice()
+        private async Task<bool> ConnectToDevice()
         {
             DeviceInfo currentConnection = CurrentConnection;
             var machineName = await DevicePortal.GetMachineNameAsync(currentConnection);
@@ -1067,7 +1088,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 currentConnection.MachineName = machineName?.ComputerName;
                 SaveRemotePortalConnections();
                 Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -1373,6 +1396,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static async Task InstallAppOnDeviceAsync(string buildPath, DeviceInfo targetDevice)
         {
             isAppRunning = false;
+            Debug.Log($"Initiating app install on device {targetDevice.ToString()}");
 
             if (string.IsNullOrEmpty(PackageName))
             {
@@ -1385,9 +1409,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 await UninstallAppOnDeviceAsync(targetDevice);
             }
 
-            if (IsLocalConnection(targetDevice) && !IsHoloLensConnectedUsb || buildPath.Contains("x64"))
+            if (IsLocalConnection(targetDevice) && (!IsHoloLensConnectedUsb || buildPath.Contains("x64")))
             {
-                FileInfo[] installerFiles = new DirectoryInfo(buildPath).GetFiles("*.ps1");
+                FileInfo[] installerFiles = new DirectoryInfo(buildPath).GetFiles("Install.ps1");
                 if (installerFiles.Length == 1)
                 {
                     var pInfo = new ProcessStartInfo
@@ -1407,6 +1431,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (buildPath.Contains("x64"))
             {
+                Debug.Log("Cannot install a x64 app on HoloLens");
                 return;
             }
 
