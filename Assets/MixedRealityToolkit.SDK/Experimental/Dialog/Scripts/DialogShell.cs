@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
                         child.GetComponent<TextMeshPro>().text = Result.Title;
                     }
                 }
-                else if (child != null && child.name == "Description")
+                else if (child != null && child.name == "DescriptionText")
                 {
                     if (child.GetComponent<TextMeshPro>())
                     {
