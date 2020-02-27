@@ -214,6 +214,9 @@
       href: README_Tooltip.md
     - name: Solvers
       href: README_Solver.md
+      items:
+      - name: Tap to Place
+        href: README_TapToPlace.md
   - name: Example Scenes
     items:
     - name: Examples Hub

@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityInteractionMapping currentMapping = interactions[i];
                 MixedRealityInteractionMapping currentDefaultMapping = newDefaultInteractions[i];
 
-                if (Equals(currentMapping, currentDefaultMapping))
+                if (!Equals(currentMapping, currentDefaultMapping))
                 {
                     interactions[i] = new MixedRealityInteractionMapping(currentDefaultMapping)
                     {
