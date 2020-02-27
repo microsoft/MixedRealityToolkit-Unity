@@ -5991,6 +5991,72 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceExampleScene.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceExampleScene.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceHoloLens2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceHoloLens2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInputSimulationControllerRay.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInputSimulationControllerRay.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInputSimulationHead.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInputSimulationHead.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInspector2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceInspector2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceIntroGif.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TapToPlace/TapToPlaceIntroGif.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Solver/TrackedObjectType-Example.gif",
       "output": {
         "resource": {
@@ -7145,6 +7211,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_TapToPlace.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_TapToPlace.html",
+          "hash": "WyK4jLpz2CDFnN8MtNtlKQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_TextPrefab.md",
       "output": {
         ".html": {
@@ -7461,7 +7539,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "G1gtyPUwjPBe/LZV7x9bNQ=="
+          "hash": "+JQhvftxyb9yg3hiJTzsjw=="
         }
       },
       "is_incremental": false,
@@ -26352,16 +26430,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1566,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 149,
+          "total_file_count": 150,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -26371,11 +26450,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1566,
           "skipped_file_count": 0
         }
       }
