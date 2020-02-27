@@ -401,26 +401,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return 90 - (Mathf.Acos(Vector3.Dot(vec, normal)) * Mathf.Rad2Deg);
         }
 
-        private float AngleBetweenOnXYPlane(Vector3 from, Vector3 to)
-        {
-            float angle = Mathf.Atan2(to.y, to.x) - Mathf.Atan2(from.y, from.x);
-            return SimplifyAngle(angle) * Mathf.Rad2Deg;
-        }
-
-        float AngleBetweenOnXZPlane(Vector3 from, Vector3 to)
-        {
-            float angle = Mathf.Atan2(to.z, to.x) - Mathf.Atan2(from.z, from.x);
-            return SimplifyAngle(angle) * Mathf.Rad2Deg;
-        }
-
-        private float AngleBetweenOnAxis(Vector3 from, Vector3 to, Vector3 axis)
-        {
-            Quaternion axisQuat = Quaternion.Inverse(Quaternion.LookRotation(axis));
-            Vector3 v1 = axisQuat * from;
-            Vector3 v2 = axisQuat * to;
-            return AngleBetweenOnXYPlane(v1, v2);
-        }
-
         private float SimplifyAngle(float angle)
         {
             while (angle > Mathf.PI)
@@ -476,73 +456,43 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
+                float angle = -AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
+                float minMaxAngle;
+
                 switch (angularClampMode)
                 {
+                    default:
                     case AngularClampType.ViewDegrees:
                     case AngularClampType.AngleStepping:
                         {
-                            float angle = -AngleBetweenOnPlane(toTarget, currentRefForward, refRight);
-                            float minMaxAngle = MaxViewVerticalDegrees * 0.5f;
-
-                            if (angle < -minMaxAngle)
-                            {
-                                rotation = Quaternion.AngleAxis(-minMaxAngle - angle, refRight) * rotation;
-                                angularClamped = true;
-                            }
-                            else if (angle > minMaxAngle)
-                            {
-                                rotation = Quaternion.AngleAxis(minMaxAngle - angle, refRight) * rotation;
-                                angularClamped = true;
-                            }
+                            minMaxAngle = MaxViewVerticalDegrees * 0.5f;
                         }
                         break;
 
                     case AngularClampType.RendererBounds:
                     case AngularClampType.ColliderBounds:
                         {
-                           Vector3 min = refRotation * new Vector3(0.0f, -extents.y, currentDistance);
-                           Vector3 max = refRotation * new Vector3(0.0f, extents.y, currentDistance);
-
-                            float minAngle = AngleBetweenOnAxis(toTarget, min, refRight);
-                            float maxAngle = AngleBetweenOnAxis(toTarget, max, refRight);
-
-                            if (minAngle < 0)
-                            {
-                                rotation = Quaternion.AngleAxis(minAngle, refRight) * rotation;
-                                angularClamped = true;
-                            }
-                            else if (maxAngle > 0)
-                            {
-                                rotation = Quaternion.AngleAxis(maxAngle, refRight) * rotation;
-                                angularClamped = true;
-                            }
+                            Vector3 top = refRotation * new Vector3(0.0f, extents.y, currentDistance);
+                            minMaxAngle = AngleBetweenOnPlane(top, currentRefForward, refRight) * 2.0f;
                         }
                         break;
+                }
+
+                if (angle < -minMaxAngle)
+                {
+                    rotation = Quaternion.AngleAxis(-minMaxAngle - angle, refRight) * rotation;
+                    angularClamped = true;
+                }
+                else if (angle > minMaxAngle)
+                {
+                    rotation = Quaternion.AngleAxis(minMaxAngle - angle, refRight) * rotation;
+                    angularClamped = true;
                 }
             }
 
             // Y-axis leashing
             switch (angularClampMode)
             {
-                case AngularClampType.ViewDegrees:
-                    {
-                        // This is negated because Unity is left-handed
-                        float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
-                        float minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
-
-                        if (angle < -minMaxAngle)
-                        {
-                            rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
-                            angularClamped = true;
-                        }
-                        else if (angle > minMaxAngle)
-                        {
-                            rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
-                            angularClamped = true;
-                        }
-                    }
-                    break;
-
                 case AngularClampType.AngleStepping:
                     {
                         float stepAngle = 360f / tetherAngleSteps;
@@ -554,26 +504,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
                     break;
 
+                case AngularClampType.ViewDegrees:
                 case AngularClampType.RendererBounds:
                 case AngularClampType.ColliderBounds:
                     {
-                        var extentsXZ = new Vector3(extents.x, 0.0f, extents.z);
-                        var extentsXZMagnitude = extentsXZ.magnitude;
-                        Vector3 min = refRotation * new Vector3(-extentsXZMagnitude, 0.0f, currentDistance);
-                        Vector3 max = refRotation * new Vector3(extentsXZMagnitude, 0.0f, currentDistance);
+                        float angle = AngleBetweenVectorAndPlane(toTarget, refRight);
+                        float minMaxAngle;
 
-                        // These are negated because Unity is left-handed
-                        float minAngle = -AngleBetweenOnXZPlane(toTarget, min);
-                        float maxAngle = -AngleBetweenOnXZPlane(toTarget, max);
-
-                        if (minAngle > 0)
+                        if (angularClampMode == AngularClampType.ViewDegrees)
                         {
-                            rotation = Quaternion.AngleAxis(minAngle, Vector3.up) * rotation;
+                            minMaxAngle = MaxViewHorizontalDegrees * 0.5f;
+                        }
+                        else
+                        {
+                            Vector3 side = refRotation * new Vector3(extents.x, 0.0f, extents.z);
+                            minMaxAngle = AngleBetweenVectorAndPlane(side, refRight) * 2.0f;
+                        }
+
+                        if (angle < -minMaxAngle)
+                        {
+                            rotation = Quaternion.AngleAxis(-minMaxAngle - angle, Vector3.up) * rotation;
                             angularClamped = true;
                         }
-                        else if (maxAngle < 0)
+                        else if (angle > minMaxAngle)
                         {
-                            rotation = Quaternion.AngleAxis(maxAngle, Vector3.up) * rotation;
+                            rotation = Quaternion.AngleAxis(minMaxAngle - angle, Vector3.up) * rotation;
                             angularClamped = true;
                         }
                     }
