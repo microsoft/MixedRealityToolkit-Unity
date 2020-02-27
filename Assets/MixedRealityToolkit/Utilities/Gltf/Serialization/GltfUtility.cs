@@ -284,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static List<string> GetGltfMeshPrimitiveAttributes(string jsonString)
         {
-            var regex = new Regex("(?<Attributes>\"attributes\"[^}]+})");
+            var regex = new Regex("\"attributes\" ?: ?(?<Data>{[^}]+})");
             return GetGltfMeshPrimitiveAttributes(jsonString, regex);
         }
 
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
             for (var i = 0; i < matches.Count; i++)
             {
-                jsonObjects.Add(matches[i].Groups["Attributes"].Captures[0].Value.Replace("\"attributes\":", string.Empty));
+                jsonObjects.Add(matches[i].Groups["Data"].Captures[0].Value);
             }
 
             return jsonObjects;
