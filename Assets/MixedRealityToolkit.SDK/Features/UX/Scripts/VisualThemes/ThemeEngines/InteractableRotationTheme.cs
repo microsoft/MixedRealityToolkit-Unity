@@ -12,8 +12,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableRotationTheme : InteractableThemeBase
     {
+        /// <summary>
+        /// If true, the theme rotation value will be added to the initial Gameobject's rotation. Otherwise, it will set directly as absolute euler angles.
+        /// </summary>
+        public bool IsRelativeRotation => GetThemeProperty(RelativeRotationPropertyIndex).Value.Bool;
+
+        /// <summary>
+        /// If true, the theme manipulate the target's local rotation. Otherwise, the theme will control the world space rotation.
+        /// </summary>
+        public bool IsLocalRotation => GetThemeProperty(LocalRotationPropertyIndex).Value.Bool;
+
         protected Vector3 originalRotation;
         protected Transform hostTransform;
+
+        private const int RelativeRotationPropertyIndex = 0;
+        private const int LocalRotationPropertyIndex = 1;
 
         public InteractableRotationTheme()
         {
@@ -42,9 +55,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     new ThemeProperty()
                     {
                         Name = "Relative Rotation",
-                        Tooltip = "Should the rotation be added to initial Gameobject rotation, or absolute",
+                        Tooltip = "Should the theme rotation value be added to the initial Gameobject's rotation, or set directly as absolute euler angles",
                         Type = ThemePropertyTypes.Bool,
                         Value = new ThemePropertyValue() { Bool = false }
+                    },
+                    new ThemeProperty()
+                    {
+                        Name = "Local Rotation",
+                        Tooltip = "Should the theme manipulate the target's local rotation or world space rotation",
+                        Type = ThemePropertyTypes.Bool,
+                        Value = new ThemePropertyValue() { Bool = true }
                     },
                 },
             };
@@ -56,14 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.Init(host, settings);
 
             hostTransform = Host.transform;
-            originalRotation = hostTransform.localEulerAngles;
+            originalRotation = IsLocalRotation ? hostTransform.localEulerAngles : hostTransform.eulerAngles;
         }
 
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
-            start.Vector3 = hostTransform.eulerAngles;
+            start.Vector3 = IsLocalRotation ? hostTransform.localEulerAngles : hostTransform.eulerAngles;
             return start;
         }
 
@@ -72,13 +92,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 lerpTarget = property.Values[index].Vector3;
 
-            bool relative = Properties[0].Value.Bool;
-            if (relative)
+            if (IsRelativeRotation)
             {
                 lerpTarget = originalRotation + lerpTarget;
             }
 
-            hostTransform.localRotation = Quaternion.Euler(Vector3.Lerp(property.StartValue.Vector3, lerpTarget, percentage));
+            var setValue = Quaternion.Euler(Vector3.Lerp(property.StartValue.Vector3, lerpTarget, percentage));
+
+            if (IsLocalRotation)
+            {
+                hostTransform.localRotation = setValue;
+            }
+            else
+            {
+                hostTransform.rotation = setValue;
+            }
         }
     }
 }

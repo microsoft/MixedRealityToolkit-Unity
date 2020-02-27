@@ -38,7 +38,9 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### Upgrading projects to 2.4.0
 
-*Coming soon*
+#### Custom controller classes
+
+Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
 
 ### What's new in 2.4.0
 
@@ -72,6 +74,9 @@ The following software is required.
 - [Unity](https://unity3d.com/get-unity/download) 2018.4 LTS or 2019 (2019.3 recommended)
 
 **NuGet requirements**
+
+> [!NOTE] 
+> NuGet packages require Unity version 2018.4 LTS. MRTK 2.3.0 does not support NuGet in combination with 2019.3.
 
 If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), the following software is recommended.
 
@@ -168,19 +173,19 @@ A hand physics extension service has been added to allow for using physics inter
 **Non-native keyboard (Experimental)**
 
 A keyboard that can be used on platforms which do not provide native keyboard support.
-([#6492](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6573))
+([#6492](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6492))
 
 <img src="https://user-images.githubusercontent.com/168492/73916489-5b181d00-4872-11ea-9c1e-7ef6738a9f6f.png" width="400">
 
 **Hand coach (Experimental)**
 
 Hand animations that can give helpful hints for gestures users should perform.
-([#6493](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+([#6943](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6943))
 
 <img src="https://user-images.githubusercontent.com/168492/73916521-771bbe80-4872-11ea-80ce-c117253e3c24.png" width="400">
 
 **Follow solver (Experimental)**
-A solver that matches HoloLens 2 shell behavior. ([#6981](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/1493))
+A solver that matches HoloLens 2 shell behavior. ([#6981](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6981))
 
 <img src="https://user-images.githubusercontent.com/47415945/71829132-d338ca80-309b-11ea-97eb-9afc341a21ed.gif" width="400">
 
@@ -203,7 +208,7 @@ Improved ability to configure constraints for object manipulation.
 
 <img src="https://user-images.githubusercontent.com/168492/73964662-7a8d6500-48c7-11ea-9345-3183ca1bd85c.png" width="400">
 
-We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6294](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
+We are hoping to eventually deprecate ManipulationHandler and BoundingBox in favor of these more robust components. ([#6924](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6924))
 
 **UnityAR package contents moved into Foundation**
 

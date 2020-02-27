@@ -172,15 +172,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.AddComponent<NearInteractionGrabbable>();
-            cube.transform.position = Vector3.zero;
+            cube.transform.position = Vector3.forward;
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
             TestContext.Out.WriteLine("Show both hands near grabbable cube");
-            yield return rightHand.Show(Vector3.zero);
-            yield return leftHand.Show(Vector3.zero);
-            yield return new WaitForFixedUpdate();
+            yield return rightHand.Show(cube.transform.position);
+            yield return leftHand.Show(cube.transform.position);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             PointerStateContainer grabOn = new PointerStateContainer()
             {

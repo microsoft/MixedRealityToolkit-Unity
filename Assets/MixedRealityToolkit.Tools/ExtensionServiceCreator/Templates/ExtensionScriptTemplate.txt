@@ -6,20 +6,19 @@ namespace #NAMESPACE#
 	[MixedRealityExtensionService(#SUPPORTED_PLATFORMS_PARAM#)]
 	public class #SERVICE_NAME# : BaseExtensionService, #INTERFACE_NAME#, IMixedRealityExtensionService
 	{
-		private #PROFILE_NAME# #PROFILE_FIELD_NAME#;
-
-		public #SERVICE_NAME#(string name,  uint priority,  BaseMixedRealityProfile profile) : base(name, priority, profile) 
-		{
-			#PROFILE_FIELD_NAME# = (#PROFILE_NAME#)profile;
-		}
+#SERVICE_CONSTRUCTOR#
 
 		public override void Initialize()
 		{
+			base.Initialize();
+
 			// Do service initialization here.
 		}
 
 		public override void Update()
 		{
+			base.Update();
+
 			// Do service updates here.
 		}
 	}

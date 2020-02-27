@@ -1,6 +1,7 @@
 # [Template] Builds and publishes .unitypackages
 parameters:
   version: '$(MRTKVersion)-$(Build.BuildNumber)'
+  UnityVersion: ""
 
 steps:
 - task: PowerShell@2
@@ -9,7 +10,7 @@ steps:
     targetType: filePath
     filePath: ./scripts/packaging/unitypackage.ps1
     arguments: >
-      -UnityDirectory ${Env:$(Unity2018Version)}
+      -UnityDirectory ${Env:${{ parameters.UnityVersion }}}
       -OutputDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\output
       -RepoDirectory $(Get-Location)
       -LogDirectory $(Build.ArtifactStagingDirectory)\build\unitypackages\logs
