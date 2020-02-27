@@ -316,6 +316,8 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
             };
 
+            CBUFFER_START(UnityPerMaterial)
+
 #if defined(_INSTANCED_COLOR)
             UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
@@ -476,6 +478,8 @@ Shader "Mixed Reality Toolkit/Standard"
             fixed3 _EnvironmentColorY;
             fixed3 _EnvironmentColorZ;
 #endif
+
+            CBUFFER_END
 
 #if defined(_DIRECTIONAL_LIGHT)
             static const fixed _MinMetallicLightContribution = 0.7;
