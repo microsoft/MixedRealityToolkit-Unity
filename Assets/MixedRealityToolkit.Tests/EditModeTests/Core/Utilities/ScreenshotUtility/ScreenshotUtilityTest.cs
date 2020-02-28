@@ -8,7 +8,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
 {
     class ScreenshotUtilityTest
     {

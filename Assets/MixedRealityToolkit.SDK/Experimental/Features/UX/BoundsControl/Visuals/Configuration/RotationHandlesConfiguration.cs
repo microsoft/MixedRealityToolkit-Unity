@@ -1,4 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
@@ -7,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// Configuration for <see cref="RotationHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create rotation handles for <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Rotation Handles Configuration")]
+    [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Experimental/Bounds Control/Rotation Handles Configuration")]
     public class RotationHandlesConfiguration : HandlesBaseConfiguration
     {
 

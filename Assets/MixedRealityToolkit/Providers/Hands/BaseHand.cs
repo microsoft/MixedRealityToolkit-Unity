@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseHand : BaseController, IMixedRealityHand
     {
         // Hand ray
-        protected HandRay HandRay { get; } = new HandRay();
+        protected virtual IHandRay HandRay { get; } = new HandRay();
 
         public override bool IsInPointingPose => HandRay.ShouldShowRay;
 
@@ -17,8 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float deltaTimeStart;
         private const int velocityUpdateInterval = 6;
         private int frameOn = 0;
-        private Vector3[] velocityPositionsCache = new Vector3[velocityUpdateInterval];
-        private Vector3[] velocityNormalsCache = new Vector3[velocityUpdateInterval];
+
+        private readonly Vector3[] velocityPositionsCache = new Vector3[velocityUpdateInterval];
+        private readonly Vector3[] velocityNormalsCache = new Vector3[velocityUpdateInterval];
         private Vector3 velocityPositionsSum = Vector3.zero;
         private Vector3 velocityNormalsSum = Vector3.zero;
 
@@ -36,19 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
 
-        /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
         #region Protected InputSource Helpers
 
         #region Gesture Definitions
 
         protected void UpdateVelocity()
         {
-            if(frameOn < velocityUpdateInterval)
+            if (frameOn < velocityUpdateInterval)
             {
                 velocityPositionsCache[frameOn] = GetJointPosition(TrackedHandJoint.Palm);
                 velocityPositionsSum += velocityPositionsCache[frameOn];
@@ -85,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion Gesture Definitions
 
+        /// <inheritdoc />
         public abstract bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose);
 
         private Vector3 GetJointPosition(TrackedHandJoint jointToGet)
@@ -128,6 +124,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion Private InputSource Helpers
-
     }
 }

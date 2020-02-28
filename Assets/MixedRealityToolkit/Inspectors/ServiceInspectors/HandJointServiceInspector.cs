@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             ShowHandJointFoldout = SessionState.GetBool(ShowHandJointFoldoutKey, false);
-            ShowHandJointFoldout = EditorGUILayout.Foldout(ShowHandJointFoldout, "Visible Hand Joints");
+            ShowHandJointFoldout = EditorGUILayout.Foldout(ShowHandJointFoldout, "Visible Hand Joints", true);
             SessionState.SetBool(ShowHandJointFoldoutKey, ShowHandJointFoldout);
 
             if (ShowHandJointFoldout)

@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// A custom editor for the ClippingPlaneEditor to allow for specification of the framing bounds.
     /// </summary>
     [CustomEditor(typeof(ClippingPlane))]
+    [CanEditMultipleObjects]
     public class ClippingPlaneEditor : ClippingPrimitiveEditor
     {
         /// <inheritdoc/>

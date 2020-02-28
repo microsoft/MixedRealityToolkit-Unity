@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Is the observer running (actively accumulating spatial data)?
         /// </summary>
-        bool WaitingForSceneObserverAccess { get; }
+        bool IsRunning { get; }
 
         /// <summary>
         /// Should the observer remain stationary in the scene?

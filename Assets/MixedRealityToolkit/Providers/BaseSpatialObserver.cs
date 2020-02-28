@@ -13,23 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     public abstract class BaseSpatialObserver : BaseDataProvider<IMixedRealitySpatialAwarenessSystem>, IMixedRealitySpatialAwarenessObserver
     {
         /// <summary>
-        /// Constructor.
+        /// Default dedicated layer for spatial awareness layer used by most components in MRTK
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the observer.</param>
-        /// <param name="spatialAwarenessSystem">The <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
-        /// <param name="name">The friendly name of the data provider.</param>
-        /// <param name="priority">The registration priority of the data provider.</param>
-        /// <param name="profile">The configuration profile for the data provider.</param>
-        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        protected BaseSpatialObserver(
-            IMixedRealityServiceRegistrar registrar,
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            string name = null,
-            uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : this(spatialAwarenessSystem, name, priority, profile)
-        {
-            Registrar = registrar;
-        }
+        public const int DefaultSpatialAwarenessLayer = 31;
 
         /// <summary>
         /// Constructor.
@@ -55,10 +41,61 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         protected IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; private set; }
 
+        /// <summary>
+        /// Creates the spatial observer and handles the desired startup behavior.
+        /// </summary>
+        protected virtual void CreateObserver() { }
+
+        /// <summary>
+        /// Ensures that the spatial observer has been stopped and destroyed.
+        /// </summary>
+        protected virtual void CleanupObserver() { }
+
+        #region BaseService Implementation
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            base.Dispose(disposing);
+
+            if (disposing)
+            {
+                CleanupObservationsAndObserver();
+            }
+
+            disposed = true;
+        }
+
+        #endregion BaseService Implementation
+
+        #region IMixedRealityDataProvider Implementation
+
+        /// <summary>
+        /// Creates the observer.
+        /// </summary>
+        public override void Initialize()
+        {
+            CreateObserver();
+        }
+
+        /// <summary>
+        /// Suspends the observer, clears observations, cleans up the observer, then re-initializes.
+        /// </summary>
+        public override void Reset()
+        {
+            Destroy();
+            Initialize();
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!WaitingForSceneObserverAccess && StartupBehavior == AutoStartBehavior.AutoStart)
+            if (!IsRunning && StartupBehavior == AutoStartBehavior.AutoStart)
             {
                 Resume();
             }
@@ -67,12 +104,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public override void Disable()
         {
-            if (WaitingForSceneObserverAccess)
+            // If we are disabled while running...
+            if (IsRunning)
             {
+                // Suspend the observer
                 Suspend();
             }
         }
 
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            CleanupObservationsAndObserver();
+        }
+
+        #endregion IMixedRealityDataProvider Implementation
 
         #region IMixedRealityEventSource Implementation
 
@@ -125,7 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public AutoStartBehavior StartupBehavior { get; set; } = AutoStartBehavior.AutoStart;
 
         /// <inheritdoc />
-        public int DefaultPhysicsLayer { get; } = 31;
+        public int DefaultPhysicsLayer { get; } = DefaultSpatialAwarenessLayer;
+
+        /// <inheritdoc />
+        public bool IsRunning { get; protected set; } = false;
 
         /// <inheritdoc />
         public bool WaitingForSceneObserverAccess { get; protected set; } = true;
@@ -157,5 +206,44 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public virtual void ClearObservations() { }
 
         #endregion IMixedRealitySpatialAwarenessObserver Implementation
+
+        #region Helpers
+
+        /// <summary>
+        /// Destroys all observed objects and the observer.
+        /// </summary>
+        private void CleanupObservationsAndObserver()
+        {
+            Disable();
+
+            // Destroys all observed objects and the observer.
+            ClearObservations();
+            CleanupObserver();
+        }
+
+        #endregion Helpers
+        
+        #region Obsolete
+        
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the observer.</param>
+        /// <param name="spatialAwarenessSystem">The <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessSystem"/> to which the observer is providing data.</param>
+        /// <param name="name">The friendly name of the data provider.</param>
+        /// <param name="priority">The registration priority of the data provider.</param>
+        /// <param name="profile">The configuration profile for the data provider.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        protected BaseSpatialObserver(
+            IMixedRealityServiceRegistrar registrar,
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this(spatialAwarenessSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        #endregion
     }
 }

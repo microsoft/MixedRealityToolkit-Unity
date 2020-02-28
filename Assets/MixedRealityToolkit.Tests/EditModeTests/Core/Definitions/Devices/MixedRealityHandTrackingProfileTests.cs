@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     class MixedRealityHandTrackingProfileTests
     {
@@ -16,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Test]
         public void TestEditorOnlyChanges()
         {
-            MixedRealityHandTrackingProfile profile = new MixedRealityHandTrackingProfile();
+            MixedRealityHandTrackingProfile profile = ScriptableObject.CreateInstance<MixedRealityHandTrackingProfile>();
             profile.HandJointVisualizationModes = SupportedApplicationModes.Editor | SupportedApplicationModes.Player;
             profile.HandMeshVisualizationModes = SupportedApplicationModes.Editor | SupportedApplicationModes.Player;
 

@@ -56,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             // Ensure that touch up and source lost events are at least one frame apart.
             for (int i = 0; i < touchesToRemove.Count; i++)
             {
@@ -92,6 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             foreach (var controller in ActiveTouches)
             {
                 if (controller.Value == null || Service == null) { continue; }
@@ -135,7 +139,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     }
                 }
 
-                controller.SetupConfiguration(typeof(UnityTouchController));
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
@@ -168,6 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 return;
             }
+
+            RecyclePointers(controller.InputSource);
 
             controller.TouchData = touch;
             controller.EndTouch();

@@ -145,12 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         };
 
         /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
-        }
-
-        /// <inheritdoc />
         public override void UpdateController()
         {
             if (!Enabled) { return; }
@@ -264,7 +258,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 }
 
                 OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
-                openVRRenderModel.shader = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness).shader;
+                Material overrideMaterial = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness);
+                if (overrideMaterial != null)
+                {
+                    openVRRenderModel.shader = overrideMaterial.shader;
+                }
+
                 failedToObtainControllerModel = !openVRRenderModel.LoadModel(ControllerHandedness);
 
                 if (!failedToObtainControllerModel)

@@ -8,6 +8,10 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - Alex Cooper
 - Alexees
 - andreiborodin
+- artsouflMS
+- Austin Ha
+- Bertrand Oustrière
+- Bertrand75014
 - Cameron-Micka
 - CDiaz-MS
 - chbecker-ms
@@ -23,6 +27,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - gejohnst
 - gilbdev
 - googlan
+- graycelee
 - Jarodshow
 - jbienzms
 - Jerome Humbert
@@ -32,6 +37,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - julenka
  -julianloehr-kg
 - jwittner
+- Kent1LG
 - keveleigh
 - killerantz
 - LaneMax
@@ -40,6 +46,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - lukastonneMS
 - macborow
 - MenelvagorMilsom
+- michael-house
 - mpkoz
 - ms738
 - myrandaGoesToSpace
@@ -49,12 +56,14 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - paco-ms
 - phosphoer
 - provencher
+- Quentin LG
 - radicalad
 - Railboy
 - ritijain
 - ryzngard
 - sgwin
 - SimonDarksideJ
+- sloh-ms
 - sostel
 - stefan.wasserbauer
 - StephenHodgson
@@ -62,6 +71,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - tarukosu
 - thalbern
 - Troy-Ferrell
+- vaoliva
 - wassx
 - Weasy666
 - witian

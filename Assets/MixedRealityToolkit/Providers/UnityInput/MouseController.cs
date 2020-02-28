@@ -42,12 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             new MixedRealityInteractionMapping(9, "Mouse Button 6", AxisType.Digital, DeviceInputType.ButtonPress, KeyCode.Mouse6),
         };
 
-        /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
 
         private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
@@ -61,9 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             if (mouseDeviceManager == null)
             {
-                // Get the instance of the mouse device manager.
-                IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-                mouseDeviceManager = dataProviderAccess?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+                mouseDeviceManager = CoreServices.GetInputSystemDataProvider<IMixedRealityMouseDeviceManager>();
             }
 
             // Bail early if our mouse isn't in our game window.
@@ -92,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                     {
                         // Spatial pointer raises Pose events
-                        MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                        controllerPose = MixedRealityPose.ZeroIdentity;
                         controllerPose.Rotation = Quaternion.Euler(mouseDelta);
                         Interactions[i].PoseData = controllerPose;
 

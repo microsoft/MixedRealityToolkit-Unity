@@ -150,7 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 ProcessReferences(buildTarget, references, out HashSet<string> platformAssemblySearchPaths, out HashSet<string> platformAssemblyReferencePaths, priorToCheck);
 
                 string targetUWPPlatform = uwpTargetPlatformVersion;
-                if (string.IsNullOrWhiteSpace(targetUWPPlatform))
+                // If the version string is not a valid one, default to the highest available SDK version on the machine.
+                if (string.IsNullOrWhiteSpace(targetUWPPlatform) || !Version.TryParse(targetUWPPlatform, out _))
                 {
                     targetUWPPlatform = Utilities.GetUWPSDKs().Max().ToString(4);
                 }

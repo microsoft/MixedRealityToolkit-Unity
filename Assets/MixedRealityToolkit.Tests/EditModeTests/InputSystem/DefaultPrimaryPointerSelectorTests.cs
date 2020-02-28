@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using NUnit.Framework;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     public class DefaultPrimaryPointerSelectorTests
     {

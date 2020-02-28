@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8090720277987393429}
   - component: {fileID: 120690711267243118}
   - component: {fileID: 114903794112201558}
-  - component: {fileID: 7488119136884840896}
   - component: {fileID: 114269887534944512}
   - component: {fileID: 3980487836371375048}
   m_Layer: 0
@@ -135,28 +134,14 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0.00009899999}
-  - {x: 0, y: 0, z: 0.0431347}
-  - {x: 0, y: 0, z: 0.08617534}
-  - {x: 0, y: 0, z: 0.12922585}
-  - {x: 0, y: 0, z: 0.17229114}
-  - {x: 0, y: 0, z: 0.21537617}
-  - {x: 0, y: 0, z: 0.25848585}
-  - {x: 0, y: 0, z: 0.30162507}
-  - {x: 0, y: 0, z: 0.3447989}
-  - {x: 0, y: 0, z: 0.3880121}
-  - {x: 0, y: 0, z: 0.43126965}
-  - {x: 0, y: 0, z: 0.47457656}
-  - {x: 0, y: 0, z: 0.5179376}
-  - {x: 0, y: 0, z: 0.56135786}
-  - {x: 0, y: 0, z: 0.6048422}
-  - {x: 0, y: 0, z: 0.64839554}
-  - {x: 0, y: 0, z: 0.6920228}
-  - {x: 0, y: 0, z: 0.735729}
-  - {x: 0, y: 0, z: 0.77951896}
-  - {x: 0, y: 0, z: 0.82339764}
-  - {x: 0, y: 0, z: 0.86736983}
-  - {x: 0, y: 0, z: 0.9114408}
-  - {x: 0, y: 0, z: 0.95561516}
+  - {x: 0, y: 0, z: 0.110090755}
+  - {x: 0, y: 0, z: 0.22016485}
+  - {x: 0, y: 0, z: 0.3304035}
+  - {x: 0, y: 0, z: 0.440889}
+  - {x: 0, y: 0, z: 0.5517036}
+  - {x: 0, y: 0, z: 0.66292953}
+  - {x: 0, y: 0, z: 0.77464914}
+  - {x: 0, y: 0, z: 0.8869445}
   - {x: 0, y: 0, z: 0.999898}
   m_Parameters:
     serializedVersion: 3
@@ -188,14 +173,14 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 1}
-      key3: {r: 0, g: 0, b: 0, a: 0.49803922}
+      key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 0.087757625}
+      key3: {r: 0, g: 0, b: 0, a: 0.087757625}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0.9411765}
+      key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 32768
+      ctime0: 0
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -203,17 +188,17 @@ LineRenderer:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 4587
-      atime1: 11141
-      atime2: 13762
-      atime3: 16384
-      atime4: 22937
-      atime5: 49151
-      atime6: 58982
-      atime7: 65535
+      atime0: 0
+      atime1: 4587
+      atime2: 11141
+      atime3: 65535
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 8
+      m_NumAlphaKeys: 4
     numCornerVertices: 8
     numCapVertices: 8
     alignment: 0
@@ -229,7 +214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247086986094436}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
   m_Name: 
@@ -239,8 +224,8 @@ MonoBehaviour:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0.087757625}
+    key3: {r: 0, g: 0, b: 0, a: 0.087757625}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -292,113 +277,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 16
-  pointDistributionMode: 1
-  customPointDistributionLength: 0.2
-  customPointDistributionCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 1
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
-  roundedEdges: 1
-  roundedCaps: 1
-  fadeLineBrightnessOnEnable: 1
-  fadeLinePercentage: 0.55
-  fadeLineAnimationTime: 0.65
-  lineRenderer: {fileID: 120690711267243118}
-  tileMaterialByWorldLength: 0
-  tileMaterialScale: 1
---- !u!114 &7488119136884840896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247086986094436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1287d4d138a242f794bcfc01354d3ae2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineDataSource: {fileID: 8090720277987393429}
-  lineColor:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0.49803922}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0.9411765}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 32768
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 4587
-    atime1: 11141
-    atime2: 13762
-    atime3: 16384
-    atime4: 22937
-    atime5: 49151
-    atime6: 58982
-    atime7: 65535
-    m_Mode: 0
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 8
-  lineWidth:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.15
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0.15
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  widthMultiplier: 0.01
-  colorOffset: 0
-  widthOffset: 0
-  stepMode: 0
-  lineStepCount: 36
+  lineStepCount: 10
   pointDistributionMode: 1
   customPointDistributionLength: 0.1
   customPointDistributionCurve:
@@ -428,7 +307,7 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 876c7e981edab3a44918b5c51482a286, type: 2}
   roundedEdges: 1
   roundedCaps: 1
-  fadeLineBrightnessOnEnable: 1
+  fadeLineBrightnessOnEnable: 0
   fadeLinePercentage: 0.55
   fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 120690711267243118}
@@ -447,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 1
-  destroyOnSourceLost: 1
+  destroyOnSourceLost: 0
   useSourcePoseData: 0
   poseAction:
     id: 4
@@ -472,7 +351,6 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 5.5
   sphereCastRadius: 0.1
-  LineCastResolution: 2
   LineColorSelected:
     serializedVersion: 2
     key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
@@ -505,14 +383,14 @@ MonoBehaviour:
   LineColorValid:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
-    key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0.55}
+    key2: {r: 0, g: 0, b: 0, a: 0.55}
+    key3: {r: 0, g: 0, b: 0, a: 0.27392158}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.5176471}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -520,17 +398,17 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 4587
-    atime2: 11141
-    atime3: 65535
-    atime4: 63222
-    atime5: 0
-    atime6: 0
-    atime7: 0
+    atime0: 4587
+    atime1: 11141
+    atime2: 13762
+    atime3: 16384
+    atime4: 22937
+    atime5: 49151
+    atime6: 58982
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
+    m_NumAlphaKeys: 8
   LineColorInvalid:
     serializedVersion: 2
     key0: {r: 1, g: 0.7971698, b: 0.7971698, a: 0}
@@ -562,15 +440,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   LineColorNoTarget:
     serializedVersion: 2
-    key0: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
-    key1: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0.43137255}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 1, g: 1, b: 1, a: 0}
+    key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 0.55}
+    key2: {r: 0, g: 0, b: 0, a: 0.627451}
+    key3: {r: 0, g: 0, b: 0, a: 0.27392158}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.69411767}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -578,17 +456,17 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 1735
-    atime2: 50115
-    atime3: 65535
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
+    atime0: 4587
+    atime1: 11141
+    atime2: 13762
+    atime3: 16384
+    atime4: 22937
+    atime5: 49151
+    atime6: 59385
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 4
+    m_NumAlphaKeys: 8
   LineColorLockFocus:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
@@ -621,11 +499,15 @@ MonoBehaviour:
   lineBase: {fileID: 8090720277987393429}
   lineRenderers:
   - {fileID: 114903794112201558}
-  lineRendererSelected: {fileID: 114903794112201558}
-  lineRendererNoTarget: {fileID: 7488119136884840896}
+  lineMaterialSelected: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec,
+    type: 2}
+  lineMaterialNoTarget: {fileID: 2100000, guid: 876c7e981edab3a44918b5c51482a286,
+    type: 2}
   inertia: {fileID: 3980487836371375048}
   startPointLerp: 0.267
   endPointLerp: 0.637
+  lineRendererSelected: {fileID: 0}
+  lineRendererNoTarget: {fileID: 0}
 --- !u!114 &3980487836371375048
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -486,7 +486,7 @@ namespace Microsoft.MixedReality.Toolkit
             CameraCache.Main.transform.rotation = Quaternion.identity;
 
             // This will create the playspace
-            Transform playspace = MixedRealityPlayspace.Transform;
+            _ = MixedRealityPlayspace.Transform;
 
             bool addedComponents = false;
             if (!Application.isPlaying)

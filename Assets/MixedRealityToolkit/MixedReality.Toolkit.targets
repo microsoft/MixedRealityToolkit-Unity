@@ -1,6 +1,6 @@
 <Project>
-
-  <PropertyGroup>
+  <!-- Check if MSBuildForUnity is being used to resolve, by checking if its version is present or not -->
+  <PropertyGroup Condition="'$(MSBuildForUnityVersion)' == ''">
     <!-- If $(UnityPlayer) is not set, default to Standalone. -->
     <MRTKUnityPlayer Condition=" '$(MRTKUnityPlayer)' == '' ">Standalone</MRTKUnityPlayer>
 
@@ -8,7 +8,25 @@
     <_MRTKPlayerDirectory>$(MRTKUnityPlayer)Player</_MRTKPlayerDirectory>
   </PropertyGroup>
 
-  <ItemGroup>
+   <!-- MSBuild for Unity. -->
+   <ItemGroup Condition="'$(MSBuildForUnityVersion)' != ''">
+      <Content Include="$(MSBuildThisFileDirectory)..\MRTK\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <!-- Don't show .meta files in Solution Explorer - it's not useful. -->
+        <Visible Condition="'%(Extension)' == '.meta'">false</Visible>
+        <Link>$(MSBuildThisFileName)\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      </Content>
+
+      <Content Include="$(MSBuildThisFileDirectory)..\Plugins\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <!-- Don't show .meta files in Solution Explorer - it's not useful. -->
+        <Visible Condition="'%(Extension)' == '.meta'">false</Visible>
+        <Link>$(MSBuildThisFileName)\Plugins\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      </Content>
+  </ItemGroup>
+
+   <!-- MRW -->
+  <ItemGroup Condition="'$(MSBuildForUnityVersion)' == ''">
     <!-- Include content, but only if explicitly requested. This is useful if an MSBuild project references this
          nuget package, and the output of the MSBuild project is copied into a Unity project. -->
     <Content Include="$(MSBuildThisFileDirectory)..\MRTK\**" Condition=" '$(MRTKIncludeContent)' == 'true' ">
@@ -18,7 +36,7 @@
       <Link>MRTK\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </Content>
 
-	<Content Include="$(MSBuildThisFileDirectory)..\link.xml" Condition=" '$(MRTKIncludeContent)' == 'true' ">
+    <Content Include="$(MSBuildThisFileDirectory)..\link.xml" Condition=" '$(MRTKIncludeContent)' == 'true' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>MRTK\link.xml</Link>
     </Content>

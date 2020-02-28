@@ -3,10 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Build.Editor;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Build.Editor
 {
     class UwpAppxBuildToolsTest
     {
@@ -25,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
                      xmlns:mobile='http://schemas.microsoft.com/appx/manifest/mobile/windows10'
                      IgnorableNamespaces='uap uap2 uap3 uap4 mp mobile iot'
                      xmlns='http://schemas.microsoft.com/appx/manifest/foundation/windows10'>
-              <Identity Name='Microsoft.MixedReality.Toolkit' Publisher='CN=Microsoft' Version='2.3.0.0' />
+              <Identity Name='Microsoft.MixedReality.Toolkit' Publisher='CN=Microsoft' Version='2.4.0.0' />
               <mp:PhoneIdentity PhoneProductId='85c8bcd4-fbac-44ed-adf6-bfc01242a27f' PhonePublisherId='00000000-0000-0000-0000-000000000000' />
               <Properties>
                 <DisplayName>MixedRealityToolkit</DisplayName>
@@ -208,6 +209,33 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
             UwpAppxBuildTools.AddCapability(rootElement, rootElement.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
             AssertSingleGazeInputCapability(rootElement);
         }
+
+        /// <summary>
+        /// Validates that AddCapabilities adds a capability.
+        /// </summary>
+        [Test]
+        public void TestAddCapabilities_Adds()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+        }
+
+        /// <summary>
+        /// Validates that AddCapabilities will only add a capability if
+        /// it doesn't already exist.
+        /// </summary>
+        [Test]
+        public void TestAddCapabilities_AddsOnce()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+
+            UwpAppxBuildTools.AddCapabilities(rootElement, new List<string>() { "gazeInput", "gazeInput" });
+            AssertSingleGazeInputCapability(rootElement);
+        }
+
         #endregion
 
         #region AssemblyCSharp Tests

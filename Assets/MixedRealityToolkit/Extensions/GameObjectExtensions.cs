@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -157,6 +156,54 @@ namespace Microsoft.MixedReality.Toolkit
         public static void DestroyGameObject(GameObject gameObject, float t = 0.0f)
         {
             UnityObjectExtensions.DestroyObject(gameObject, t);
+        }
+
+        /// <summary>
+        /// Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T
+        /// </summary>
+        /// <remarks>Only functions when called within a UNITY_EDITOR context. Outside of UNITY_EDITOR, always returns false</remarks>
+        /// <typeparam name="T">The potentially required component</typeparam>
+        /// <param name="gameObject">the GameObject requiring the component</param>
+        /// <param name="requiringTypes">A list of types that do require the component in question</param>
+        /// <returns>true if <typeparamref name="T"/> appears in any RequireComponentAttribute, otherwise false </returns>
+        public static bool IsComponentRequired<T>(this GameObject gameObject, out List<Type> requiringTypes) where T : Component
+        {
+            var genericType = typeof(T);
+            requiringTypes = null;
+
+#if UNITY_EDITOR
+            foreach (var monoBehaviour in gameObject.GetComponents<MonoBehaviour>())
+            {
+                if (monoBehaviour == null)
+                {
+                    continue;
+                }
+
+                var monoBehaviourType = monoBehaviour.GetType();
+                var attributes = Attribute.GetCustomAttributes(monoBehaviourType);
+
+                foreach (var attribute in attributes)
+                {
+                    var requireComponentAttribute = attribute as RequireComponent;
+                    if (requireComponentAttribute != null)
+                    {
+                        if (requireComponentAttribute.m_Type0 == genericType ||
+                            requireComponentAttribute.m_Type1 == genericType ||
+                            requireComponentAttribute.m_Type2 == genericType)
+                        {
+                            if (requiringTypes == null)
+                            {
+                                requiringTypes = new List<Type>();
+                            }
+
+                            requiringTypes.Add(monoBehaviourType);
+                        }
+                    }
+                }
+            }
+#endif // UNITY_EDITOR
+
+            return requiringTypes != null;
         }
     }
 }

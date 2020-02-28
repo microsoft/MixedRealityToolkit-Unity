@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Services
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
 {
     internal interface ITestSpatialAwarenessDataProvider : IMixedRealityDataProvider, ITestService, IMixedRealitySpatialAwarenessObserver, IMixedRealitySpatialAwarenessMeshObserver
     {
@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
 
         public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public int DefaultPhysicsLayer => throw new System.NotImplementedException();
+        public bool IsRunning => throw new System.NotImplementedException();
         public bool WaitingForSceneObserverAccess => throw new System.NotImplementedException();
         public bool IsStationaryObserver { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public VolumeType ObserverVolumeType { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }

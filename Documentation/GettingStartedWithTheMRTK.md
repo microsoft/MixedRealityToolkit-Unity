@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit, you will need:
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, Unity 2019](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -29,7 +29,8 @@ To get started with the Mixed Reality Toolkit, you will need:
 
 ### Optional
 
-* [Getting started tutorials](#get-the-latest-mrtk-unity-packages)
+* [Getting started tutorials](#getting-started-tutorials)
+* [XR SDK getting started guide (Unity 2019.3 or later)](GettingStartedWithMRTKAndXRSDK.md).
 * [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
 * [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
@@ -41,7 +42,6 @@ To get started with the Mixed Reality Toolkit, you will need:
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
     * (**_Optional_**) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
-    * (**_Optional_**, **_Experimental_**) Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage
 
 For information on package contents, see [MRTK Package Contents](MRTK_PackageContents.md).
 
@@ -54,11 +54,9 @@ The Mixed Reality Toolkit is also available for download on NuGet.org; for detai
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as the foundation package. The tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
 1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as the foundation package. The extensions package provides a set of useful optional components for the MRTK.
-1. (**_Optional_**) Import the **Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage** following the same steps as the foundation package. This package provides support for mobile AR (phone, tablet) devices in the MRTK.
 
 > [!Note]
-> Importing Microsoft.MixedRealityToolkit.Unity.Providers.UnityAR.unitypackage requires additional steps to be performed. For more information, see the [UnityAR camera settings provider](CameraSystem/UnityArCameraSettings.md) article.
-
+> Android and iOS development require additional package installations. For more information, see [How to configure MRTK for iOS and Android](CrossPlatform/UsingARFoundation.md).
 After importing the Foundation package, you may see a prompt similar to the following:
 
 ![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)
@@ -101,8 +99,9 @@ To create a **HoloLens application**, switch to the Universal Windows Platform:
     Profiles configure the behavior of MRTK core components and are described in more detail in the [profiles](Profiles/Profiles.md) article.
 
     > [!NOTE]
-    > If you are getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.
-    > See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
+    > * If you're using Unity's XR SDK in Unity 2019.3 or later, you should choose the "DefaultXRSDKConfigurationProfile". This profile is set up with MRTK's XR SDK systems and providers, where needed.  
+    > * If you're getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.  
+    > * See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
 
     You will then see the following in your Scene hierarchy:
 
@@ -155,18 +154,18 @@ The in-editor input simulation allows you to test virtual object behavior given 
 
 How to move around in the scene:
 
-- Use **W/A/S/D** keys to move the camera forward/left/back/right.
-- Use **Q/E** to move the camera vertically.
-- Press and hold the **right mouse button** to rotate the camera.
+* Use **W/A/S/D** keys to move the camera forward/left/back/right.
+* Use **Q/E** to move the camera vertically.
+* Press and hold the **right mouse button** to rotate the camera.
 
 How to simulate hand input:
 
-- Press and hold the **spacebar** to enable the right hand.
-- While holding the space bar, move your mouse to move the hand.
-- Use the mouse **scroll wheel** to adjust the depth of the hand.
-- Click the **left mouse button** to simulate pinch gesture.
-- Use **T/Y** keys to make the hand persistent in the view.
-- Hold **CTRL** key and move the mouse to rotate the hand.
+* Press and hold the **spacebar** to enable the right hand.
+* While holding the space bar, move your mouse to move the hand.
+* Use the mouse **scroll wheel** to adjust the depth of the hand.
+* Click the **left mouse button** to simulate pinch gesture.
+* Use **T/Y** keys to make the hand persistent in the view.
+* Hold **CTRL** key and move the mouse to rotate the hand.
 
 Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
@@ -185,6 +184,17 @@ Here are some suggested next steps:
 * Learn about the [MRTK's Tools](../README.md#tools) that will empower your mixed reality design and development.
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 
+## Getting help
+
+If you run into issues caused by MRTK or otherwise have questions about how to do something, there are a few resources that can help:
+
+* For bug reports, please [file an issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/new/choose) on the GitHub repo.
+* For questions, please reach out on either [StackOverflow](https://stackoverflow.com/questions/tagged/mrtk) or the [mixed-reality-toolkit channel](https://holodevelopers.slack.com/messages/C2H4HT858) on Slack. You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
+
 ## Upgrading from the HoloToolkit (HTK/MRTK v1)
 
 There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information, see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+
+## Getting started with Unity's XR SDK
+
+Complete instructions and information can be found in our [XR SDK getting started guide](GettingStartedWithMRTKAndXRSDK.md).

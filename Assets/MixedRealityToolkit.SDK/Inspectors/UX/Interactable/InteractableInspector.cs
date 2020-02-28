@@ -11,6 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
     [CustomEditor(typeof(Interactable))]
+    [CanEditMultipleObjects]
     public class InteractableInspector : UnityEditor.Editor
     {
         protected Interactable instance;

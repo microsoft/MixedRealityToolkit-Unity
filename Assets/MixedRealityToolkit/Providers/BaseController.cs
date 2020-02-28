@@ -26,6 +26,70 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IsPositionApproximate = false;
             IsRotationAvailable = false;
 
+            Type controllerType = GetType();
+
+            if (IsControllerMappingEnabled() && Interactions == null)
+            {
+                // We can only enable controller profiles if mappings exist.
+                var controllerMappings = GetControllerMappings();
+
+                // Have to test that a controller type has been registered in the profiles,
+                // else its Unity input manager mappings will not have been set up by the inspector.
+                bool profileFound = false;
+                if (controllerMappings != null)
+                {
+                    for (int i = 0; i < controllerMappings.Length; i++)
+                    {
+                        if (controllerMappings[i].ControllerType.Type == controllerType)
+                        {
+                            profileFound = true;
+
+                            // If it is an exact match, assign interaction mappings.
+                            if (controllerMappings[i].Handedness == ControllerHandedness &&
+                                controllerMappings[i].Interactions.Length > 0)
+                            {
+                                MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
+                                MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
+
+                                for (int j = 0; j < profileInteractions.Length; j++)
+                                {
+                                    newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
+                                }
+
+                                AssignControllerMappings(newInteractions);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // If no controller mappings found, try to use default interactions.
+                if (Interactions == null || Interactions.Length < 1)
+                {
+                    SetupDefaultInteractions();
+
+                    // We still don't have controller mappings, so this may be a custom controller.
+                    if (Interactions == null || Interactions.Length < 1)
+                    {
+                        Debug.LogWarning($"No controller interaction mappings found for {controllerType}.");
+                        return;
+                    }
+                }
+
+                // If no profile was found, warn the user. Does not stop the project from running.
+                if (!profileFound)
+                {
+                    Debug.LogWarning($"No controller profile found for type {controllerType}; please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
+                }
+            }
+
+            if (GetControllerVisualizationProfile() != null &&
+                GetControllerVisualizationProfile().RenderMotionControllers &&
+                InputSource != null)
+            {
+                TryRenderControllerModel(controllerType, InputSource.SourceType);
+            }
+
             Enabled = true;
         }
 
@@ -94,76 +158,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Sets up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
         /// <param name="controllerType">The type this controller represents.</param>
+        [Obsolete("This method is no longer used. Configuration now happens in the constructor. You can check this controller's Enabled property for configuration state.")]
         public bool SetupConfiguration(Type controllerType)
         {
-            if (IsControllerMappingEnabled())
-            {
-                if (GetControllerVisualizationProfile() != null &&
-                    GetControllerVisualizationProfile().RenderMotionControllers)
-                {
-                    TryRenderControllerModel(controllerType, InputSource.SourceType);
-                }
-
-                // We can only enable controller profiles if mappings exist.
-                var controllerMappings = GetControllerMappings();
-
-                // Have to test that a controller type has been registered in the profiles,
-                // else its Unity Input manager mappings will not have been set up by the inspector.
-                bool profileFound = false;
-                if (controllerMappings != null)
-                {
-                    for (int i = 0; i < controllerMappings.Length; i++)
-                    {
-                        if (controllerMappings[i].ControllerType.Type == controllerType)
-                        {
-                            profileFound = true;
-
-                            // If it is an exact match, assign interaction mappings.
-                            if (controllerMappings[i].Handedness == ControllerHandedness &&
-                                controllerMappings[i].Interactions.Length > 0)
-                            {
-                                MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;
-                                MixedRealityInteractionMapping[] newInteractions = new MixedRealityInteractionMapping[profileInteractions.Length];
-
-                                for (int j = 0; j < profileInteractions.Length; j++)
-                                {
-                                    newInteractions[j] = new MixedRealityInteractionMapping(profileInteractions[j]);
-                                }
-
-                                AssignControllerMappings(newInteractions);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // If no controller mappings found, warn the user.  Does not stop the project from running.
-                if (Interactions == null || Interactions.Length < 1)
-                {
-                    SetupDefaultInteractions(ControllerHandedness);
-
-                    // We still don't have controller mappings, so this may be a custom controller. 
-                    if (Interactions == null || Interactions.Length < 1)
-                    {
-                        Debug.LogWarning($"No Controller interaction mappings found for {controllerType}.");
-                        return false;
-                    }
-                }
-
-                if (!profileFound)
-                {
-                    Debug.LogWarning($"No controller profile found for type {controllerType}, please ensure all controllers are defined in the configured MixedRealityControllerConfigurationProfile.");
-                    return false;
-                }
-            }
-
-            return true;
+            // If the constructor succeeded in finding interactions, Enabled will be true.
+            return Enabled;
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness, if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary.
         /// </summary>
-        public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
+        [Obsolete("The handedness parameter is no longer used. This method now reads from the controller's handedness.")]
+        public virtual void SetupDefaultInteractions(Handedness controllerHandedness) => SetupDefaultInteractions();
+
+        /// <summary>
+        /// Assign the default interactions based on this controller's handedness, if necessary.
+        /// </summary>
+        public virtual void SetupDefaultInteractions()
+        {
+            switch (ControllerHandedness)
+            {
+                case Handedness.Left:
+                    AssignControllerMappings(DefaultLeftHandedInteractions);
+                    break;
+                case Handedness.Right:
+                    AssignControllerMappings(DefaultRightHandedInteractions);
+                    break;
+                default:
+                    AssignControllerMappings(DefaultInteractions);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Load the Interaction mappings for this controller from the configured Controller Mapping profile
@@ -216,7 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
                     }
                 }
-
                 else if (inputSourceType == InputSourceType.Hand)
                 {
                     if (ControllerHandedness == Handedness.Left &&

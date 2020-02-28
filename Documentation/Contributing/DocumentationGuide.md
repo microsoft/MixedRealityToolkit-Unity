@@ -2,11 +2,9 @@
 
 # Documentation guidelines
 
-This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). Its purpose is to get you started quickly by giving an introduction about the technical aspects that you need to know, to point out common pitfalls and to describe the writing style that you should try to follow.
+This document outlines the documentation guidelines and standards for the Mixed Reality Toolkit (MRTK). This provides an introduction to technical aspects of documentation writing and generation, to highlight common pitfalls, and to describe the recommended writing style.
 
 The page itself is supposed to serve as an example, therefore it uses the intended style and the most common markup features of the documentation.
-
-Herein you will find some general style advice as well as the standards for the following forms of the MRTK documentation:
 
 - [Source](#source-documentation)
 - [How-to](#how-to-documentation)
@@ -91,8 +89,11 @@ Most pages should end with a chapter called *See also*. This chapter is simply a
 ## Table of Contents (TOC)
 
 Toc files are used for generating the navigation bars in the MRTK github.io documentation.
-Whenever you're adding a new file to the documentation make sure that there's an entry for that file in one of the toc.yml files of the documentation folder. Only articles listed in the toc files will show up in the navigation of the developer docs.
-There can be a toc file for every subfolder in the documentation folder which can be linked into any existing toc file to add it as a subsection to the corresponding part of the navigation.
+Whenever a new documentation file is added, make sure that there's an entry for that file in one
+of the toc.yml files of the documentation folder. Only articles listed in the toc files will show
+up in the navigation of the developer docs. There can be a toc file for every subfolder in the
+documentation folder which can be linked into any existing toc file to add it as a subsection
+to the corresponding part of the navigation.
 
 ## Style
 
@@ -102,7 +103,7 @@ General rule of thumb: Try to **sound professional**. That usually means to avoi
 
 1. Don't try to be (overly) funny.
 2. Never write 'I'
-3. Avoid 'we'. This can usually be rephrased easily, sometimes you can use 'MRTK' instead. Example: "we support this feature" -> "MRTK supports this feature" or "the following features are supported ...".
+3. Avoid 'we'. This can usually be rephrased easily, using 'MRTK' instead. Example: "we support this feature" -> "MRTK supports this feature" or "the following features are supported ...".
 4. Similarly, try to avoid 'you'. Example: "With this simple change your shader becomes configurable!" -> "Shaders can be made configurable with little effort."
 5. Do not use 'sloppy phrases'.
 6. Avoid sounding overly excited, we do not need to sell anything.
@@ -111,7 +112,7 @@ General rule of thumb: Try to **sound professional**. That usually means to avoi
 ### Capitalization
 
 * Use **Sentence case for headlines**. Ie. capitalize the first letter and names, but nothing else.
-* Use regular English for everything else. That means **do not capitalize arbitrary words**, even if they hold a special meaning in that context. Prefer *italic text*, if you really want to highlight certain words, [see below](#emphasis-and-highlighting).
+* Use regular English for everything else. That means **do not capitalize arbitrary words**, even if they hold a special meaning in that context. Prefer *italic text* for highlighting certain words, [see below](#emphasis-and-highlighting).
 * When a link is embedded in a sentence (which is the preferred method), the standard chapter name always uses capital letters, thus breaking the rule of no arbitrary capitalization inside text. Therefore use a custom link name to fix the capitalization. As an example, here is a link to the [bounding box](../README_BoundingBox.md) documentation.
 * Do capitalize names, such as *Unity*.
 * Do NOT capitalize "editor" when writing *Unity editor*.
@@ -133,7 +134,7 @@ When mentioning a menu entry that a user should click, the current convention is
 
 ### Links
 
-Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in your page, and think about how annoying it would be, if the same page opens 20 times.
+Insert as many useful links to other pages as possible, but each link only once. Assume a reader clicks on every link in the page, and think about how annoying it would be, if the same page opens 20 times.
 
 Prefer links embedded in a sentence:
 
@@ -142,17 +143,17 @@ Prefer links embedded in a sentence:
 
 Avoid external links, they can become outdated or contain copyrighted content.
 
-When you add a link, consider whether it should also be listed in the [See also](#see-also) section. Similarly, check whether a link to your new page should be added to the linked-to page.
+When adding a link, consider whether it should also be listed in the [See also](#see-also) section. Similarly, check whether a link to the new page should be added to the linked-to page.
 
 ### Images / screenshots
 
 **Use screenshots sparingly.** Maintaining images in documentation is a lot of work, small UI changes can make a lot of screenshots outdated. The following rules will reduce maintenance effort:
 
 1. Do not use screenshots for things that can be described in text. Especially, **never screenshot a property grid** for the sole purpose of showing property names and values.
-2. Do not include things in a screenshot that are irrelevant to what is shown. For instance, when a rendering effect is shown, make a screenshot of the viewport, but exclude any UI around it. When you have to show some UI, try to move windows around such that only that important part is in the image.
-3. When you do screenshot UI, only show the important parts. For example, when talking about buttons in a toolbar, you can make a small image that shows the important toolbar buttons, but exclude everything around it.
+2. Do not include things in a screenshot that are irrelevant to what is shown. For instance, when a rendering effect is shown, make a screenshot of the viewport, but exclude any UI around it. Showing some UI, try to move windows around such that only that important part is in the image.
+3. When including screenshot UI, only show the important parts. For example, when talking about buttons in a toolbar, make a small image that shows the important toolbar buttons, but exclude everything around it.
 4. Only use images that are easy to reproduce. That means do not paint markers or highlights into screenshots. First, there are no consistent rules how these should look, anyway. Second, reproducing such a screenshot is additional effort. Instead, describe the important parts in text. There are exceptions to this rule, but they are rare.
-5. Obviously, it is much more effort to recreate an animated GIF. If you make one, expect to be responsible to recreate it for the rest of your life, or expect people to throw it out, if they don't want to spend that time.
+5. Obviously, it is much more effort to recreate an animated GIF. Expect to be responsible to recreate it until the end of time, or expect people to throw it out, if they don't want to spend that time.
 6. Keep the number of images in an article low. Often a good method is to make one overall screenshot of some tool, that shows everything, and then describe the rest in text. This makes it easy to replace the screenshot when necessary.
 
 Some other aspects:
@@ -167,12 +168,12 @@ When documenting a list of properties, use bold text to highlight the property n
 
 Also, don't forget to finish all sentences with a period.
 
-## When you are finished with a page
+## Page completion checklist
 
-1. Make sure you followed the guidelines in this document.
-1. Browse the document structure and see if your new document could be mentioned under the [See also](#see-also) section of other pages.
+1. Ensure that this document's guidelines were followed.
+1. Browse the document structure and see if the new document could be mentioned under the [See also](#see-also) section of other pages.
 1. If available, have someone with knowledge of the topic proof-read the page for technical correctness.
-1. Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.
+1. Have someone proof-read the page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.
 
 ## Source documentation
 
@@ -299,7 +300,7 @@ For example:
 
 ```md
 When using the spatial mapping component, the performance impact will increase with the level of detail requested.  
-It is recommended to use the least detail possible for your experience.
+It is recommended to use the least detail possible for the desired experience.
 ```
 
 Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overview documentation.

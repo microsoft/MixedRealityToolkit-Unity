@@ -3,11 +3,12 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -168,6 +169,44 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             style.fontStyle = previousStyle;
 
             serializedObject.ApplyModifiedProperties();
+
+            // Draws warning message for deprecated object with button for migration option
+            DrawDeprecated();
+        }
+
+        private void DrawDeprecated()
+        {
+            List<Type> requiringTypes;
+
+            if ((target as ManipulationHandler).gameObject.IsComponentRequired<ManipulationHandler>(out requiringTypes))
+            {
+                string requiringComponentNames = null;
+
+                for (int i = 0; i < requiringTypes.Count; i++)
+                {
+                    requiringComponentNames += "- " + requiringTypes[i].FullName;
+                    if (i < requiringTypes.Count - 1)
+                    {
+                        requiringComponentNames += '\n';
+                    }
+                }
+
+                EditorGUILayout.HelpBox($"This component is deprecated. Please migrate object to up to date version. Remove the RequiredComponentAttribute from:\n{requiringComponentNames}", MessageType.Error);
+                return;
+            }
+
+            EditorGUILayout.HelpBox("This component is deprecated. Please migrate object to up to date version", MessageType.Warning);
+            if (GUILayout.Button("Migrate Object"))
+            {
+#if UNITY_EDITOR
+                MigrationTool migrationTool = new MigrationTool();
+
+                var component = (ManipulationHandler)target;
+
+                migrationTool.TryAddObjectForMigration((GameObject)component.gameObject);
+                migrationTool.MigrateSelection(typeof(ObjectManipulatorMigrationHandler), true);
+#endif
+            }
         }
     }
 }

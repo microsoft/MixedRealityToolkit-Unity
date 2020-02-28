@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Tests.Services;
+using Microsoft.MixedReality.Toolkit.Tests.EditMode.Services;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Core
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
 {
     public class MixedRealityToolkitTests
     {

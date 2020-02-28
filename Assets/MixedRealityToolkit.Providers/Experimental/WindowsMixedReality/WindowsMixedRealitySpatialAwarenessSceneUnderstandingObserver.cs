@@ -716,11 +716,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             OrientScene = profile.OrientScene;
         }
 
-        private void CleanupObserver()
-        {
-            Dispose(true);
-        }
-
         private enum ObserverState
         {
             Idle = 0,

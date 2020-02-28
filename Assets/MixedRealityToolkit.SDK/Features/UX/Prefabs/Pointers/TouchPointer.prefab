@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 0
-  destroyOnSourceLost: 1
+  destroyOnSourceLost: 0
   useSourcePoseData: 1
   poseAction:
     id: 0

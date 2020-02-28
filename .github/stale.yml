@@ -1,0 +1,25 @@
+# MRTK stale configuration
+# In order to ensure that the issues on Github remain somewhat fresh
+# and up to date (i.e. aren't tracking releases from over a year
+# ago which have seen significant churn), we're using Stale Bot
+# (https://github.com/apps/stale) to mark issues as stale and then close
+# ones that haven't seen updates in a long time.
+daysUntilStale: 150
+daysUntilClose: 30
+# Below are labels that are exempt from stale checks
+exemptLabels:
+  # Exempt because feature requests are generally still relevant later
+  # and get closed when we complete them - unlike bugs which can often
+  # become no longer relevant as we have a bunch of churn in fixes for
+  # and area
+  - Feature Request
+staleLabel: Stale
+markComment: >
+  This issue has been marked as stale by an automated process because
+  it has not had any recent activity. It will be automatically closed
+  in 30 days if no further activity occurs. If this is still an issue
+  please add a new comment with more recent details and repro steps.
+closeComment: >
+  This issue has been closed by an automated process because it is
+  stale. If this is still an issue please add a new comment with more
+  recent details and repro steps.

@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 {
@@ -19,16 +20,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
     public class TestGltfLoading : MonoBehaviour
     {
         [SerializeField]
+        [FormerlySerializedAs("uri")]
         [Tooltip("The relative asset path to the glTF asset in the Streaming Assets folder.")]
-        private string uri = "\\GltfModels\\Lantern\\glTF\\Lantern.gltf";
+        private string relativePath = "GltfModels/Lantern/glTF/Lantern.gltf";
 
-        public string Uri
-        {
-            get
-            {
-                return uri;
-            }
-        }
+        /// <summary>
+        /// The relative asset path to the glTF asset in the Streaming Assets folder.
+        /// </summary>
+        public string RelativePath => relativePath.NormalizeSeparators();
+
+        /// <summary>
+        /// Combines Streaming Assets folder path with RelativePath
+        /// </summary>
+        public string AbsolutePath => Path.Combine(Path.GetFullPath(Application.streamingAssetsPath),RelativePath);
 
         [SerializeField]
         [Tooltip("Scale factor to apply on load")]
@@ -39,17 +43,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
 
         private async void Start()
         {
-            var path = $"{Application.streamingAssetsPath}{uri}";
-            path = path.Replace("/", "\\");
-
+            var path = AbsolutePath;
             if (!File.Exists(path))
             {
                 Debug.LogError($"Unable to find the glTF object at {path}");
-                this.DebugText.SetActive(true);
+                DebugText.SetActive(true);
                 return;
             }
 
-            this.DebugText.SetActive(false);
+            DebugText.SetActive(false);
 
             GltfObject gltfObject = null;
 
@@ -64,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
             }
             catch (Exception e)
             {
-                Debug.LogError($"{e.Message}\n{e.StackTrace}");
+                Debug.LogError($"TestGltfLoading start failed - {e.Message}\n{e.StackTrace}");
             }
 
             if (gltfObject != null)

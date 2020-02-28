@@ -69,37 +69,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestTargetTypes()
         {
             Vector3 rightHandPos = Vector3.right * 50.0f;
+            Vector3 leftHandPos = -rightHandPos;
             Vector3 customTransformPos = Vector3.up * 50.0f;
 
             var transformOverride = new GameObject("Override");
             transformOverride.transform.position = customTransformPos;
 
             var testObjects = InstantiateTestSolver<Orbital>();
-
-            // Set solver handler to track hands
-            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
-
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+                yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
+            }
+
+            // Test orbital around left hand line pointer
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.ControllerRay;
+                testObjects.handler.TrackedHandness = Handedness.Left;
+
+                yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
+            }
 
             // Test orbital around head
-            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
+            }
 
             // Test orbital around custom override
-            testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.TransformOverride = transformOverride.transform;
+            {
+                testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
+                testObjects.handler.TransformOverride = transformOverride.transform;
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
+                Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
-            yield return WaitForFrames(2);
+                yield return WaitForFrames(2);
+            }
         }
 
         /// <summary>
@@ -122,10 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Test orbital around right hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, rightHandPos, Handedness.Right);
+            yield return TestHandSolver(testObjects, inputSimulationService, rightHandPos, Handedness.Right);
 
             // Test orbital around left hand
-            yield return TestHandSolver(testObjects.target, inputSimulationService, leftHandPos, Handedness.Left);
+            yield return TestHandSolver(testObjects, inputSimulationService, leftHandPos, Handedness.Left);
 
             // Test orbital with both hands visible
             yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
@@ -285,6 +297,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test the HandConstraintPalm up to make sure the FollowHandUntilFacingCamera behavior works as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverPlacement()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            handConstraintSolver.FollowHandUntilFacingCamera = true;
+
+            // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
+            Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
+
+            var cameraTransform = CameraCache.Main.transform;
+
+            // Place hand 1 meter in front of user, 50 cm below eye level
+            var handTestPos = cameraTransform.position + cameraTransform.forward - (Vector3.up * 0.5f);
+            
+            var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
+
+            // Generate hand rotation with hand palm facing camera
+            var handRoation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
+
+            // Add a right hand.
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(handTestPos);
+            yield return rightHand.SetRotation(handRoation);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtMainCamera);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.LookAtCameraRotation);
+
+            // Rotate hand so palm is no longer within the FollowHandCameraFacingThresholdAngle
+            var newHandRot = handRoation * Quaternion.Euler(-(handConstraintSolver.FollowHandCameraFacingThresholdAngle + 1), 0f, 0f);
+            yield return rightHand.SetRotation(newHandRot);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Rotation and offset behavior are following camera
+            Assert.AreEqual(handConstraintSolver.RotationBehavior, HandConstraint.SolverRotationBehavior.LookAtTrackedObject);
+            Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.TrackedObjectRotation);
+
+            yield return rightHand.Hide();
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+        }
+
+        /// <summary>
         /// Test the Overlap solver and make sure it tracks the left simulated hand exactly
         /// </summary>
         [UnityTest]
@@ -372,21 +441,241 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
         }
 
+        #region TapToPlace Tests
+        /// <summary>
+        /// Test the default behavior for Tap to Place.  The default behavior has the target object following the head.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceOnClickHead()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached and Head (default) as the TrackedTargetType 
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Set hand position 
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Select Tap to Place Obj
+            yield return leftHand.Click();
+
+            // Make sure the object is being placed
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.left * 1.5f;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj has followed the head
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+
+            // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
+            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
+            yield return WaitForFrames(30);
+
+            // Click object to stop placement
+            yield return leftHand.Click();
+
+            // Make sure the object is not being placed after the click
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement again
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.right;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is NOT following the head
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches camera position.x, when it should not");
+        }
+
+        /// <summary>
+        /// Test the controller ray as the Tracked Target Type for an object with tap to place attached.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceOnClickControllerRay()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Switch the TrackedTargetType to Controller Ray
+            SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
+            tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
+
+            // Set hand position
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            Vector3 initialObjPosition = tapToPlaceObj.target.transform.position;
+
+            yield return leftHand.Click();
+
+            // Make sure the object is being placed after selection
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move hand, object should follow
+            yield return leftHand.Move(Vector3.forward);
+            yield return leftHand.Move(Vector3.up);
+
+            // Make sure the object starting position is different from the current position
+            Assert.True(initialObjPosition != tapToPlaceObj.target.transform.position);
+
+            // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
+            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
+            yield return WaitForFrames(30);
+
+            // Click to stop the placement
+            yield return leftHand.Click();
+
+            // Make sure the object is not being placed
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Get new position of the object after it is placed
+            Vector3 newPosition = tapToPlaceObj.target.transform.position;
+
+            // Move hand, the object should NOT move
+            yield return leftHand.Move(Vector3.back, 30);
+
+            Assert.True(newPosition == tapToPlaceObj.target.transform.position);
+        }
+
+        /// <summary>
+        /// Test code configurability for tap to place. Events for tap to place by default are triggered by 
+        /// OnPointerClicked.  Code configurability for tap to place is calling Start/Stop Placement instead of 
+        /// clicking to select an object.  This test uses AutoStart to start placing the object and StopPlacement.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceCodeConfigurability()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+            
+            // Start Placing the object immediately
+            tapToPlace.AutoStart = true;
+
+            Vector3 handStartPosition = new Vector3(0, -0.1f, 0.6f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Make sure the object is being placed after setting AutoStart
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.left * 1.5f;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is following the head
+            Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
+
+            // Stop the placement via code instead of click from the hand
+            tapToPlace.StopPlacement();
+
+            Assert.False(tapToPlace.IsBeingPlaced);
+
+            // Move the playspace to simulate head movement again
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.right;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Make sure the target obj is NOT following the head
+            Assert.AreNotEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x matches the camera position.x, when it should not");
+        }
+
+        /// <summary>
+        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls
+        /// instead of OnPointerClicked.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestTapToPlaceColliderTests()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Create a scene with 2 cubes
+            GameObject colliderObj1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj1.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj1.transform.position = new Vector3(0.3f, 0, 1.5f);
+
+            GameObject colliderObj2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            colliderObj2.transform.localScale = new Vector3(0.3f, 0.3f, 0.05f);
+            colliderObj2.transform.position = new Vector3(-0.3f, 0, 1.5f);
+
+            // Create a cube with Tap to Place attached
+            var tapToPlaceObj = InstantiateTestSolver<TapToPlace>();
+            tapToPlaceObj.target.transform.position = Vector3.forward * 2;
+            TapToPlace tapToPlace = tapToPlaceObj.solver as TapToPlace;
+
+            // Switching the TrackedTargetType to Controller Ray
+            SolverHandler tapToPlaceSolverHandler = tapToPlaceObj.handler;
+            tapToPlaceSolverHandler.TrackedTargetType = TrackedObjectType.ControllerRay;
+
+            Vector3 handStartPosition = new Vector3(0, -0.15f, 0.5f);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handStartPosition);
+
+            // Start the placement via code instead of click from the hand
+            tapToPlace.StartPlacement();
+            yield return null;
+
+            Assert.True(tapToPlace.IsBeingPlaced);
+
+            // Move hand, object should follow
+            yield return leftHand.Move(new Vector3(-0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
+
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z > colliderObj1.transform.position.z);
+
+            yield return leftHand.Move(new Vector3(0.15f, 0, 0), 30);
+            Assert.True(tapToPlaceObj.target.transform.position.z < colliderObj1.transform.position.z);
+
+            // Stop the placement via code instead of click from the hand
+            tapToPlace.StopPlacement();
+
+            Assert.False(tapToPlace.IsBeingPlaced);
+        }
+
+        #endregion
 
         #region Experimental
 
         /// <summary>
-        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// Tests that the DirectionalIndicator can be instatiated through code.
         /// </summary>
         [UnityTest]
         public IEnumerator TestDirectionalIndicator()
         {
             // Reset view to origin
-            MixedRealityPlayspace.PerformTransformation(p =>
-            {
-                p.position = Vector3.zero;
-                p.LookAt(Vector3.forward);
-            });
+            TestUtilities.PlayspaceToOriginLookingForward();
 
             const float ANGLE_THRESHOLD = 30.0f;
 
@@ -418,21 +707,267 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return WaitForFrames(2);
             Assert.IsFalse(indicatorMesh.enabled);
+
+            // Get back to a position where the directional indicator should be visible
+            directionTarget.transform.position = -10.0f * Vector3.right;
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            // Destroy the object and then validate that the mesh is no longer visible
+            Object.Destroy(directionTarget);
+            yield return null;
+            Assert.IsFalse(indicatorMesh.enabled);
+        }
+
+        /// <summary>
+        /// Test the Follow solver distance clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowDistance()
+        {
+            // Reset view to origin
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Test distance remains within min/max bounds
+            float distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.back * 2;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.forward * 4;
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
+            Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
+            Assert.GreaterOrEqual(distanceToHead, followSolver.MinDistance, "Follow subceeded min distance");
+
+            // Test VerticalMaxDistance
+            followSolver.VerticalMaxDistance = 0.1f;
+            targetTransform.position = Vector3.forward;
+            targetTransform.rotation = Quaternion.identity;
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.LookAt(Vector3.forward + Vector3.up);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            float yDistance = targetTransform.position.y - CameraCache.Main.transform.position.y;
+            Assert.AreEqual(followSolver.VerticalMaxDistance, yDistance);
+
+            followSolver.VerticalMaxDistance = 0f;
+        }
+
+        /// <summary>
+        /// Test the Follow solver orientation options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowOrientation()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // Test orientation deadzone
+            followSolver.OrientToControllerDeadzoneDegrees = 70;
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.back;
+                p.LookAt(Vector3.forward);
+            });
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            
+            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
+
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreEqual(targetTransform.rotation, Quaternion.identity, "Target rotated before we moved beyond the deadzone");
+
+            MixedRealityPlayspace.PerformTransformation(p => p.RotateAround(Vector3.zero, Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.AreNotEqual(targetTransform.rotation, Quaternion.identity, "Target did not rotate after we moved beyond the deadzone");
+
+            // Test FaceUserDefinedTargetTransform
+            var hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward + Vector3.right);
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            followSolver.FaceUserDefinedTargetTransform = true;
+            followSolver.TargetToFace = CameraCache.Main.transform;
+
+            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+
+            yield return hand.MoveTo(Vector3.forward + Vector3.left, 1);
+            yield return null;
+
+            Assert.AreEqual(Quaternion.LookRotation(targetTransform.position - CameraCache.Main.transform.position), targetTransform.rotation);
+        }
+
+        /// <summary>
+        /// Test the Follow solver angular clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowDirection()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // variables and lambdas to test direction remains within bounds
+            var maxXAngle = followSolver.MaxViewHorizontalDegrees / 2;
+            var maxYAngle = followSolver.MaxViewVerticalDegrees / 2;
+            Vector3 directionToHead() => CameraCache.Main.transform.position - targetTransform.position;
+            float xAngle() => (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.right)) * Mathf.Rad2Deg) - 90;
+            float yAngle() => 90 - (Mathf.Acos(Vector3.Dot(directionToHead(), targetTransform.up)) * Mathf.Rad2Deg);
+
+            // Test without rotation
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+
+            // Test y axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+            
+            // Test x axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.right, 45));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+
+            // Test translation
+            MixedRealityPlayspace.PerformTransformation(p => p.Translate(Vector3.back, Space.World));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.LessOrEqual(Mathf.Abs(xAngle()), maxXAngle, "Follow exceeded the max horizontal angular bounds");
+            Assert.LessOrEqual(Mathf.Abs(yAngle()), maxYAngle, "Follow exceeded the max vertical angular bounds");
+        }
+
+        /// <summary>
+        /// Test the Follow solver angular clamp options
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFollowStuckBehind()
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<Follow>();
+            var followSolver = (Follow)testObjects.solver;
+            followSolver.MoveToDefaultDistanceLerpTime = 0;
+            testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
+            var targetTransform = testObjects.target.transform;
+
+            // variables and lambdas to test direction remains within bounds
+            Vector3 toTarget() => targetTransform.position - CameraCache.Main.transform.position;
+
+            // Test without rotation
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
+
+            // Test y axis rotation
+            MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 180));
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
         }
 
         #endregion
 
         #region Test Helpers
 
-        private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
+        private IEnumerator TestHandSolver(SetupData testData, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
+            Assert.IsTrue(testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay 
+                || testData.handler.TrackedTargetType == TrackedObjectType.HandJoint, "TestHandSolver supports on ControllerRay and HandJoint tracked target types");
+
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
             yield return WaitForFrames(2);
 
-            Vector3 handOrbitalPos = target.transform.position;
+            Vector3 handOrbitalPos = testData.target.transform.position;
             Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
+
+            Transform expectedTransform = null;
+            if (testData.handler.TrackedTargetType == TrackedObjectType.ControllerRay)
+            {
+                expectedTransform = PointerUtils.GetPointer<LinePointer>(hand)?.transform;
+            }
+            else
+            {
+                var handJointService = CoreServices.GetInputSystemDataProvider<IMixedRealityHandJointService>();
+                expectedTransform = handJointService.RequestJointTransform(testData.handler.TrackedHandJoint, hand);
+            }
+
+            Assert.AreEqual(testData.handler.CurrentTrackedHandedness, hand);
+            Assert.IsNotNull(expectedTransform);
+            
+            // SolverHandler creates a dummy GameObject to provide a transform for tracking so it can be managed (allocated/deleted)
+            // Look at the parent to compare transform equality for what we should be tracking against
+            Assert.AreEqual(testData.handler.TransformTarget.parent, expectedTransform);
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 

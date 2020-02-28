@@ -61,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             deviceRefreshTimer += Time.unscaledDeltaTime;
 
             if (deviceRefreshTimer >= DeviceRefreshInterval)
@@ -78,6 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             foreach (var genericJoystick in ActiveControllers)
@@ -179,15 +183,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             var inputSource = inputSystem?.RequestNewGenericInputSource($"{controllerType.Name} Controller", sourceType: InputSourceType.Controller);
             var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, Handedness.None, inputSource, null) as GenericJoystickController;
 
-            if (detectedController == null)
-            {
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-                return null;
-            }
-
-            if (!detectedController.SetupConfiguration(controllerType))
+            if (detectedController == null || !detectedController.Enabled)
             {
                 // Controller failed to be setup correctly.
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
                 // Return null so we don't raise the source detected.
                 return null;
             }

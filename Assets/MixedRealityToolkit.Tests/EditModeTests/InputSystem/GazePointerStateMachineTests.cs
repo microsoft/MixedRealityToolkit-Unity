@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
+namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     class GazePointerStateMachineTests
     {

@@ -3,6 +3,7 @@
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public GameObject SceneObjectPrefab;
         public Transform ParentGameObject;
         public GameObject StuffToPlace;
-        [Header ("UI")]
+        [Header("UI")]
         public GameObject autoUpdateToggle;
         public GameObject quadsToggle;
         public GameObject meshesToggle;
@@ -40,8 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         // by default stick something on the nearest platform without the user requesting it
         bool tryFindDebug = true;
 
-        void OnEnable()
+        async Task RegisterHandlersAsync()
         {
+            await new WaitUntil(() => CoreServices.SpatialAwarenessSystem != null);
+
             CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
 
             var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
@@ -59,6 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 Debug.LogError("Couldn't access Scene Understanding Observer!");
                 return;
             }
+        }
+
+        async void OnEnable()
+        {
+            await RegisterHandlersAsync();
 
             // setting IsToggled not working in Enable() (mrkt 2.0 bug?) ... do in Update()
             // InitToggleButtonState();
@@ -311,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 observer.SurfaceTypes |= surfaceType;
             }
 
-            if(observer.SurfaceTypes.HasFlag(surfaceType))
+            if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
                 // Ensure we requesting meshes
                 observer.RequestMeshData = true;
