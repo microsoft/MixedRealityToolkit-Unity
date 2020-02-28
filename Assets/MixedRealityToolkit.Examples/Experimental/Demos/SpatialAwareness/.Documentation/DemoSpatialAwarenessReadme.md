@@ -9,7 +9,7 @@ SU - in a nutshell, will return a semantic representation of scene entities as w
 * Example script that excersises the event system demonstrating common tasks
 * Save device room data for offline development
 * In-editor workflow for developing with previously saved room data (.bytes files)
-* Offers access to the highest possible resolution of the world mesh!
+* For the first time, access to the highest possible resolution of the world mesh!
 
 ## Observer overview
 

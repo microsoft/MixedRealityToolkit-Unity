@@ -123,13 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             updateTimer = new System.Timers.Timer
             {
                 Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
-                AutoReset = false
             };
-
-            //if (AutoUpdate)
-            //{
-                //updateTimer.AutoReset = true;
-            //};
 
             updateTimer.Elapsed += UpdateTimerEventHandler;
 
@@ -387,6 +381,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         continue;
 
                     case ObserverState.GetScene:
+                        observerState = ObserverState.Working;
+
                         await new WaitForBackgroundThread();
                         {
                             scene = GetSceneAsync(previousScene);
@@ -456,7 +452,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                             }
                         }
 
-                        observerState = ObserverState.Idle;
+                        if (observerState == ObserverState.Working)
+                        {
+                            observerState = ObserverState.Idle;
+                        }
+
                         continue;
 
                     default:
@@ -727,7 +727,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             WaitForAccess,
             GetScene,
             GetSceneTransform,
-            Convert
+            Working
         }
         private ObserverState observerState = ObserverState.WaitForAccess;
         private CancellationToken killToken;
