@@ -105,8 +105,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates Pressable Button based on list of arguments provided
         /// </summary>
-        public static void InstantiatePressableButtonPrefab(Vector3 position, Quaternion rotation, 
-            string prefabPath, string translateTargetPath, 
+        public static void InstantiatePressableButtonPrefab(Vector3 position, Quaternion rotation,
+            string prefabPath, string translateTargetPath,
             out Interactable interactable, out Transform translateTargetTransform)
         {
             // Load interactable prefab

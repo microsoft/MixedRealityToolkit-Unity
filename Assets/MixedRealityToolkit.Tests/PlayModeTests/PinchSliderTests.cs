@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
             PlayModeTestUtilities.PopHandSimulationProfile();
         }
-        
+
         /// <summary>
         /// Tests that interactable raises proper events
         /// </summary>
@@ -352,7 +352,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             sliderObject.transform.eulerAngles = rotation;
         }
         #endregion Private methods
-
     }
 }
 #endif

@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float distance = Mathf.Abs(buttonComponent.MaxPushDistance) + Mathf.Abs(buttonComponent.StartPushDistance);
             distance = buttonComponent.DistanceSpaceMode == SpaceMode.Local ? distance * buttonComponent.LocalToWorldScale : distance;
             testButton2.transform.position += Vector3.forward * distance;
-            
+
             bool buttonPressed = false;
             buttonComponent.ButtonPressed.AddListener(() =>
             {
@@ -329,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int numSteps = (int)Mathf.Ceil(handReach / (distance * 0.5f)); // Maximum hand speed in order to trigger touch started in the first button before the second button becomes the closest touchable to pointer
 
             yield return hand.Show(new Vector3(0, 0, -handReach / 2));
-            yield return hand.Move(new Vector3(0,0, handReach), numSteps);
+            yield return hand.Move(new Vector3(0, 0, handReach), numSteps);
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when a second button is nearby");
 
@@ -691,7 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(interactable);
 
             bool wasClicked = false;
-            interactable.OnClick.AddListener(() => { wasClicked = true; } );
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             yield return PressButtonWithHand();
 

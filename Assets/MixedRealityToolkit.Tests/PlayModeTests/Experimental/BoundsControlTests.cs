@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            
+
             Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
             Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
@@ -375,13 +375,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();           
+            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
-            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
+            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3(0.1f, 0f, 1.5f));
             TestHand rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(startHandPos);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
@@ -679,7 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             appBarGameObject.transform.localScale = Vector3.one * 5.0f;
             appBar.Target = boundsControl;
-            appBarGameObject.SetActive(true);          
+            appBarGameObject.SetActive(true);
 
             // manipulation coords
             Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
@@ -711,7 +711,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(scalePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
-            Vector3 expectedScaleCenter = new Vector3(0.0453f, 0.0453f, 1.455f); 
+            Vector3 expectedScaleCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
             Vector3 expectedScaleSize = Vector3.one * 0.59f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedScaleCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedScaleSize, "endBounds incorrect size");

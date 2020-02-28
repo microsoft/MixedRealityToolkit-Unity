@@ -293,12 +293,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state0, theme.Host.transform.localScale);
                     Assert.AreEqual(state0Offset, theme.Host.transform.position);
                 },
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state1, theme.Host.transform.localScale);
                     Assert.AreEqual(state1Offset, theme.Host.transform.position);
@@ -508,7 +508,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator TestShaderTheme<T>(
-            List<List<ThemePropertyValue>> stateValues, 
+            List<List<ThemePropertyValue>> stateValues,
             params Action<MaterialPropertyBlock>[] stateTests)
             where T : InteractableThemeBase
         {
@@ -527,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 };
             }
 
-            yield return TestTheme<T, AudioSource>(targetHost, stateValues,convertedStateTests);
+            yield return TestTheme<T, AudioSource>(targetHost, stateValues, convertedStateTests);
         }
 
         private bool AreEulerEquals(Vector3 eulerA, Vector3 eulerB)

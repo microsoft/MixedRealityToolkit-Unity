@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests to verify pointer state and pointer direction
     /// </summary>
-    public class PointerTests 
+    public class PointerTests
     {
         private const string LinePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab";
         private const string CurvePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab";
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
 
-            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab, 
+            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab,
                 out IMixedRealityInputSource lineInputSource, out IMixedRealityController lineController);
 
             var curvePointer = CreatePointerPrefab<TeleportPointer>(CurvePointerPrefab,
@@ -329,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
-                                                out IMixedRealityController controller) 
+                                                out IMixedRealityController controller)
             where T : IMixedRealityPointer
         {
             var pointerPrefab = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(prefabPath);

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
+
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // Unity doesn't include the required assemblies (i.e. the ones below).
 // Given that the .NET backend is deprecated by Unity at this point it's we have
 // to work around this on our end.
-using Microsoft.MixedReality.Toolkit.Input;
+
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System.Collections;
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string progressIndicatorLoadingBarPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab";
         private const string progressIndicatorRotatingObjectPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab";
         private const string progressIndicatorRotatingOrbsPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab";
-        
+
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.
         /// </summary>
@@ -124,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             progressIndicatorObject = null;
             progressIndicator = null;
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             progressIndicatorObject = GameObject.Instantiate(prefab);
             progressIndicator = (IProgressIndicator)progressIndicatorObject.GetComponent(typeof(IProgressIndicator));
-            #endif
+#endif
         }
     }
 }

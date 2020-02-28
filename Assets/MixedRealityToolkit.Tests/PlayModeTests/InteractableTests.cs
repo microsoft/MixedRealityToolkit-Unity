@@ -24,7 +24,7 @@ using UnityEngine.TestTools;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// Class that tests various types of Interactable buttons and UX components. 
+    /// Class that tests various types of Interactable buttons and UX components.
     /// Validates various forms of input (i.e speech etc) against various configurations of Interactable.
     /// </summary>
     public class InteractableTests : BasePlayModeTests
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestButtonUtilities.InstantiateDefaultButton(
                 TestButtonUtilities.DefaultButtonType.DefaultPushButton,
-                out Interactable interactable, 
+                out Interactable interactable,
                 out Transform translateTargetObject);
 
             interactable.transform.position = new Vector3(10f, 0.0f, 0.5f);
@@ -644,9 +644,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 Assert.True(wasClicked, "Toggle button was not clicked");
                 Assert.AreEqual((i + 1) % 2, interactable.CurrentDimension, $"Toggle button is in incorrect toggle state on click {i}");
-                
+
                 // Make sure the button depth is back at the starting position
-                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");                
+                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");
             }
 
             GameObject.Destroy(interactable.gameObject);
@@ -705,7 +705,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestButtonUtilities.DefaultButtonType.DefaultHL2Button,
                 out Interactable interactable,
                 out Transform interactableTransform);
-            
+
             interactable.transform.position = new Vector3(0.0f, 0.1f, 0.4f);
             Assert.True(interactable.IsEnabled);
 
@@ -817,12 +817,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(result);
         }
 
-            #region Test Helpers
+        #region Test Helpers
 
-            /// <summary>
-            /// Generates an interactable from primitives and assigns a select action.
-            /// </summary>
-            private void AssembleInteractableButton(out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
+        /// <summary>
+        /// Generates an interactable from primitives and assigns a select action.
+        /// </summary>
+        private void AssembleInteractableButton(out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
         {
             // Assemble an interactable out of a set of primitives
             // This will be the button housing
@@ -908,10 +908,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactableToggleCollection.ToggleList = toggleCollection.GetComponentsInChildren<Interactable>();
         }
 
-        private IEnumerator RunGlobalClick(IMixedRealityInputSource defaultInputSource, 
-            MixedRealityInputAction inputAction, 
-            Vector3 targetStartPosition, 
-            Transform translateTargetObject, 
+        private IEnumerator RunGlobalClick(IMixedRealityInputSource defaultInputSource,
+            MixedRealityInputAction inputAction,
+            Vector3 targetStartPosition,
+            Transform translateTargetObject,
             bool shouldTranslate = true)
         {
             yield return TestInputUtilities.ExecuteGlobalClick(defaultInputSource, inputAction, () =>
