@@ -58,8 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override bool CheckCapability(MixedRealityCapability capability)
         {
-            bool hasCapability = false;
-
             if (WindowsApiChecker.IsMethodAvailable(
                 "Windows.UI.Input.Spatial",
                 "SpatialInteractionManager",
