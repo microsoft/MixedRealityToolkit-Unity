@@ -146,7 +146,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="variable"></param>
         public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, System.Object variable = null)
         {
+            // TODO
+            // For HoloLens 2, instantiate at 45cm from the user for the near hand interactions.
+            // For HoloLens 1 and other platforms, instantiate at 1.5m for far interactions with gaze or pointers.
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
+
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();
 
             DialogResult result = new DialogResult

@@ -13,21 +13,51 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
     public class DialogExampleController : MonoBehaviour
     {
         [SerializeField]        
-        private GameObject dialogPrefab;
-        public GameObject DialogPrefab
+        private GameObject dialogPrefabLarge;
+        public GameObject DialogPrefabLarge
         {
-            get => dialogPrefab;
-            set => dialogPrefab = value;
+            get => dialogPrefabLarge;
+            set => dialogPrefabLarge = value;
         }
 
-        public void OpenConfirmationDialog()
+        [SerializeField]
+        private GameObject dialogPrefabMedium;
+        public GameObject DialogPrefabMedium
         {
-            Dialog confDialog = Dialog.Open(DialogPrefab, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button");
+            get => dialogPrefabMedium;
+            set => dialogPrefabMedium = value;
         }
 
-        public void OpenChoiceDialog()
+        /// <summary>
+        /// Opens confirmation dialog example
+        /// </summary>
+        public void OpenConfirmationDialogLarge()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefab, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
+            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button");
+        }
+
+        /// <summary>
+        /// Opens choice dialog example
+        /// </summary>
+        public void OpenChoiceDialogLarge()
+        {
+            Dialog myDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
+            if (myDialog != null)
+            {
+                myDialog.OnClosed += OnClosedDialogEvent;
+            }
+        }
+        public void OpenConfirmationDialogMedium()
+        {
+            Dialog confDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button");
+        }
+
+        /// <summary>
+        /// Opens choice dialog example
+        /// </summary>
+        public void OpenChoiceDialogMedium()
+        {
+            Dialog myDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;

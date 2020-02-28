@@ -161,7 +161,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 21433621844796372, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -217,8 +217,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Adjust your device
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
-  m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
+  m_fontAsset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
+  m_sharedMaterial: {fileID: 21433621844796372, guid: f137eba12ee10834cb19632437cfdb2e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: -4298106040071967345}
   - component: {fileID: 1281587130050934810}
   m_Layer: 0
-  m_Name: DialogLarge
+  m_Name: DialogLarge_192x192
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -640,7 +640,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8451469530216736246}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0019999966, y: 0, z: 1.2931898}
+  m_LocalPosition: {x: -0.0019999966, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6149322787555490021}
@@ -702,7 +702,7 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   referenceDirection: 1
-  minDistance: 0.3
+  minDistance: 0.4
   maxDistance: 2
   minViewDegrees: 0
   maxViewDegrees: 20
@@ -731,8 +731,8 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  targetViewPercentV: 0.25
-  minDistance: 0.5
+  targetViewPercentV: 0.3
+  minDistance: 0.4
   maxDistance: 2
   minScale: 0.01
   maxScale: 100
