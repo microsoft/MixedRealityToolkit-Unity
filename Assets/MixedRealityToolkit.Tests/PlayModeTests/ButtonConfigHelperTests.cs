@@ -72,14 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             buttonIconSetObject.ApplyModifiedProperties();
 
             // These calls should not fail even if we have null / empty elements.
-            Texture2D quadIcon;
-            Assert.IsFalse(buttonIconSet.TryGetQuadIcon("EmptyIcon", out quadIcon));
-
-            Sprite spritecon;
-            Assert.IsFalse(buttonIconSet.TryGetSpriteIcon("EmptyIcon", out spritecon));
-
-            uint charIcon;
-            Assert.IsFalse(buttonIconSet.TryGetCharIcon("EmptyIcon", out charIcon));
+            Assert.IsFalse(buttonIconSet.TryGetQuadIcon("EmptyIcon", out _));
+            Assert.IsFalse(buttonIconSet.TryGetSpriteIcon("EmptyIcon", out _));
+            Assert.IsFalse(buttonIconSet.TryGetCharIcon("EmptyIcon", out _));
             yield break;
         }
 
@@ -93,26 +88,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             ButtonIconSet buttonIconSet = ScriptableObject.CreateInstance<ButtonIconSet>();
 
             // The icon set will nave no quad icons.
-            Texture2D quadIcon;
             Assert.IsNotNull(buttonIconSet.QuadIcons);
             Assert.IsTrue(buttonIconSet.QuadIcons.Length == 0);
-            Assert.IsFalse(buttonIconSet.TryGetQuadIcon("EmptyIcon", out quadIcon));
+            Assert.IsFalse(buttonIconSet.TryGetQuadIcon("EmptyIcon", out _));
 
             // The icon set will nave no sprite icons.
-            Sprite spritecon;
             Assert.IsNotNull(buttonIconSet.SpriteIcons);
             Assert.IsTrue(buttonIconSet.SpriteIcons.Length == 0);
-            Assert.IsFalse(buttonIconSet.TryGetSpriteIcon("EmptyIcon", out spritecon));
+            Assert.IsFalse(buttonIconSet.TryGetSpriteIcon("EmptyIcon", out _));
 
             // The icon set should have the following icons by default.
-            uint charIcon;
             Assert.IsNotNull(buttonIconSet.CharIcons);
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarAdjust", out charIcon));
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarClose", out charIcon));
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarDone", out charIcon));
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarHide", out charIcon));
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarShow", out charIcon));
-            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarHome", out charIcon));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarAdjust", out _));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarClose", out _));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarDone", out _));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarHide", out _));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarShow", out _));
+            Assert.IsTrue(buttonIconSet.TryGetCharIcon("AppBarHome", out _));
             yield break;
         }
 
