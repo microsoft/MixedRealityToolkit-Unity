@@ -33,6 +33,8 @@ Scene Understanding is a __platform specific__ technology. Spatial Awareness is 
 
 ## Prerequisites
 
+Assumes you have not enabled "MSBuild" in MRTK configuration.
+
 Install NuGetForUnity unitypackage from here
 https://github.com/GlitchEnzo/NuGetForUnity/releases
 
@@ -50,7 +52,9 @@ Ensure build settings are set to UWP
 
 ### Install roadmap
 
-MSBuild will be replacing this processin the future which will eliminate the NuGetForUnity dependency.
+MSBuild will be replacing this process in the future which will eliminate the NuGetForUnity dependency.
+
+If you have installed MSBuild you need to remove the Microsoft.Windows.MixedReality.DotNetWinRT package from NuGet.
 
 ## Demonstration and debugging SU
 
