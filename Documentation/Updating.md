@@ -1,6 +1,6 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
-- [2.3.0 to 2.4.0](#updating-220-to-230)
+- [2.3.0 to 2.4.0](#updating-230-to-240)
 - [2.2.0 to 2.3.0](#updating-220-to-230)
 - [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
@@ -11,7 +11,26 @@
 
 ## Updating 2.3.0 to 2.4.0
 
-*Coming soon*
+[API changes](#api-changes-in-240)
+
+### API changes in 2.4.0
+
+**Custom controller classes**
+
+Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
+
+**WindowsApiChecker properties**
+
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+
+- UniversalApiContractV8_IsAvailable
+- UniversalApiContractV7_IsAvailable
+- UniversalApiContractV6_IsAvailable
+- UniversalApiContractV5_IsAvailable
+- UniversalApiContractV4_IsAvailable
+- UniversalApiContractV3_IsAvailable
+
+There are no plans to add properties to WindowsApiChecker for future API contract versions.
 
 ## Updating 2.2.0 to 2.3.0
 
