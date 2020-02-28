@@ -687,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
-            GameObject testButton = InstantiateDefaultPressableButton(PressableButtonHoloLens2Guid);
+            GameObject testButton = InstantiateDefaultPressableButton(TestButtonUtilities.PressableHoloLens2PrefabPath);
             testButton.transform.position = new Vector3(0, 0, 1);
             testButton.transform.localScale = Vector3.one * 1.5f;
 
