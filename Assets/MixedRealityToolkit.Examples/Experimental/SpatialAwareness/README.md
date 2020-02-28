@@ -40,9 +40,9 @@ https://github.com/GlitchEnzo/NuGetForUnity/releases
 
 Once NuGetForUnity is installed open NuGetForUnity and install SU, DotNetWinRT. VCRTForwarders should be automatically pulled in as a dependency.
 
-![Manage Nuget packages](ManageNuget.png)
+![Manage Nuget packages](.Documentation/ManageNuget.png)
 
-![Search for Nuget package](NugetSearch.png)
+![Search for Nuget package](.Documentation/NugetSearch.png)
 
 Ensure build settings are set to UWP
 
@@ -60,8 +60,8 @@ MSBuild will be replacing this processin the future which will eliminate the NuG
 
 Select the 'MixedRealityTookit' game object and check the inspector.
 
-![scene understanding location in heirarchy](MRTKHierarchy.png)
-![mrkt location in inspector](MRTKLocation.png)
+![scene understanding location in heirarchy](.Documentation/MRTKHierarchy.png)
+![mrkt location in inspector](.Documentation/MRTKLocation.png)
 
 These options will allow you to configure the observer on play. 
 
@@ -84,7 +84,7 @@ The script uses MRKT UI to toggle service features on the controller.
 
 Turning on "Instantiate Prefabs", will demonstrate creating objects that size to fit themselves to all Scene Objects, gathered neatly under a parent object.
 
-![demo controller options](Controller.png)
+![demo controller options](.Documentation/Controller.png)
 
 ### Built app notes
 
@@ -99,5 +99,5 @@ As this effort in in EXPERIMENTAL things are likely to change. Feedback requeste
 
 Saved .bytes files can be accessed through the device portal at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. You can use these `bytes` for your workflow in edtor by specifying them in the observer profile.
 
-![Device Portal location of bytes file](BytesInDevicePortal.png)
-![Serialized scene bytes in observer](BytesLocationInObserver.png)
+![Device Portal location of bytes file](.Documentation/BytesInDevicePortal.png)
+![Serialized scene bytes in observer](.Documentation/BytesLocationInObserver.png)
