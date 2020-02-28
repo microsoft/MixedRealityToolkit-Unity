@@ -33,8 +33,6 @@ Scene Understanding is a __platform specific__ technology. Spatial Awareness is 
 
 ## Prerequisites
 
-git clone https://github.com/pinkwerks/MixedRealityToolkit-Unity.git
-
 Install NuGetForUnity unitypackage from here
 https://github.com/GlitchEnzo/NuGetForUnity/releases
 
@@ -95,7 +93,7 @@ The "Place" button will make a prefab appear on the nearest platform. (which may
 
 Note, their are some pit falls in making queries to the observer. Misconfiguration of a fetch request result in your event payload not containing the data you expected. For example, if you don't request quads, then you won't see the occlusion mask textures. Like wise, you wont see the world mesh if you don't request meshes. The `DemoSpatialAwarenessController` script takes care of some of these dependencies, but not all.
 
-As this effort in in EXPERIMENTAL things are likely to change. Feedback requested at https://github.com/microsoft/MixedRealityToolkit-Unity/issues
+As this effort in in EXPERIMENTAL things are likely to change. Feedback requested at https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7458
 
 Saved .bytes files can be accessed through the device portal at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. You can use these `bytes` for your workflow in edtor by specifying them in the observer profile.
 
