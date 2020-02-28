@@ -14,8 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
     {
         // Tests/EditModeTests/Services/TestProfiles/TestMixedRealityInputSystemProfile.asset
         private const string TestInputSystemProfileGuid = "9c5be3fea81382342b84623b5b225012";
+        private static readonly string TestInputSystemProfilePath = AssetDatabase.GUIDToAssetPath(TestInputSystemProfileGuid);
+
         // Tests/EditModeTests/Services/TestProfiles/TestEmptyMixedRealityInputSystemProfile.asset
         private const string TestEmptyInputSystemProfileGuid = "45c96c8b3073919419eae31f72ca8e4e";
+        private static readonly string TestEmptyInputSystemProfilePath = AssetDatabase.GUIDToAssetPath(TestEmptyInputSystemProfileGuid);
 
         [TearDown]
         public void TearDown()
@@ -71,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         public void TestEmptyDataProvider()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
-            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(AssetDatabase.GUIDToAssetPath(TestEmptyInputSystemProfileGuid));
+            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(TestEmptyInputSystemProfilePath);
 
             var inputSystem = new MixedRealityInputSystem(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(inputSystem));
@@ -90,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         public void TestDataProviderRegistration()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
-            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(AssetDatabase.GUIDToAssetPath(TestInputSystemProfileGuid));
+            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(TestInputSystemProfilePath);
 
             var inputSystem = new MixedRealityInputSystem(MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(inputSystem));

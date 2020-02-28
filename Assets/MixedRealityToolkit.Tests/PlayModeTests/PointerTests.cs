@@ -31,8 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         // SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab
         private const string LinePointerGuid = "d5b94136462644c9873bb3347169ae7e";
+        private static readonly string LinePointerPrefab = AssetDatabase.GUIDToAssetPath(LinePointerGuid);
+
         // SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab
         private const string CurvePointerGuid = "c4fd3c6fc7ff484eb434775066e7f327";
+        private static readonly string CurvePointerPrefab = AssetDatabase.GUIDToAssetPath(CurvePointerGuid);
 
         [SetUp]
         public void Setup()
@@ -58,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
 
-            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerGuid,
+            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab,
                 out IMixedRealityInputSource lineInputSource, out IMixedRealityController lineController);
 
-            var curvePointer = CreatePointerPrefab<TeleportPointer>(CurvePointerGuid,
+            var curvePointer = CreatePointerPrefab<TeleportPointer>(CurvePointerPrefab,
                     out IMixedRealityInputSource curveInputSource, out IMixedRealityController curveController);
 
             Assert.IsNotNull(linePointer);
@@ -329,12 +332,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Helpers
 
-        private static T CreatePointerPrefab<T>(string prefabGuid,
+        private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
                                                 out IMixedRealityController controller)
             where T : IMixedRealityPointer
         {
-            var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(AssetDatabase.GUIDToAssetPath(prefabGuid));
+            var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);
             var result = PrefabUtility.InstantiatePrefab(pointerPrefab) as GameObject;
             T pointer = result.GetComponent<T>();
 

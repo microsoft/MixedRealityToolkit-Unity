@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         // SDK/Features/UX/Prefabs/AppBar/AppBar.prefab
         private const string appBarPrefabGuid = "83c02591e2867124181bcd3bcb65e288";
+        private static readonly string appBarPrefabLink = AssetDatabase.GUIDToAssetPath(appBarPrefabGuid);
 
         /// <summary>
         /// Instantiates a bounds control at boundsControlStartCenter
@@ -674,7 +675,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.PlayspaceToOriginLookingForward();
 
             boundsControl.transform.localScale = boundsControlStartScale;
-            Object appBarPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(appBarPrefabGuid), typeof(Object));
+            Object appBarPrefab = AssetDatabase.LoadAssetAtPath(appBarPrefabLink, typeof(Object));
             Assert.IsNotNull(appBarPrefab, "Couldn't load app bar prefab from assetdatabase");
             GameObject appBarGameObject = Object.Instantiate(appBarPrefab) as GameObject;
             Assert.IsNotNull(appBarGameObject, "Couldn't instantiate appbar prefab");

@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         // SDK/Features/UX/Prefabs/Slate/Slate.prefab
         private const string slatePrefabAssetGuid = "937ce507dd7ee334ba569554e24adbdd";
+        private static readonly string slatePrefabAssetPath = AssetDatabase.GUIDToAssetPath(slatePrefabAssetGuid);
 
         GameObject panObject;
         HandInteractionPanZoom panZoom;
@@ -205,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         private void InstantiateFromPrefab(Vector3 position)
         {
-            UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(slatePrefabAssetGuid), typeof(UnityEngine.Object));
+            UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));
             panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
             Assert.IsNotNull(panObject);
             panObject.transform.position = position;

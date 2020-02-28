@@ -34,12 +34,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         // SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab
         private const string RadialSetPrefabAssetGuid = "8b83134143223104c9bc3865a565cab3";
+        private static readonly string RadialSetPrefabAssetPath = AssetDatabase.GUIDToAssetPath(RadialSetPrefabAssetGuid);
+
         // SDK/Features/UX/Interactable/Prefabs/Radial.prefab
         private const string RadialPrefabAssetGuid = "0f83fa6afa56ead46bbd762156f1137e";
+        private static readonly string RadialPrefabAssetPath = AssetDatabase.GUIDToAssetPath(RadialPrefabAssetGuid);
+
         // Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab
         private const string DisabledOnStartPrefabAssetGuid = "19bd42ed40b63a746af7320db5558f86";
-        // Tests\PlayModeTests\Prefabs\TestInteractableInitialize.prefab
+        private static readonly string DisabledOnStartPrefabAssetPath = AssetDatabase.GUIDToAssetPath(DisabledOnStartPrefabAssetGuid);
+
+        // Tests/PlayModeTests/Prefabs/TestInteractableInitialize.prefab
         private const string DisabledInitializedPrefabAssetGuid = "0401ea9158809914798d0a74023e3779";
+        private static readonly string DisabledInitializedPrefabAssetPath = AssetDatabase.GUIDToAssetPath(DisabledInitializedPrefabAssetGuid);
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
@@ -495,7 +502,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestButtonUtilities.InstantiatePressableButtonPrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
                 TestButtonUtilities.DefaultRotation,
-                AssetDatabase.GUIDToAssetPath(DisabledOnStartPrefabAssetGuid),
+                DisabledOnStartPrefabAssetPath,
                 "Cylinder",
                 out Interactable interactable,
                 out Transform pressButtonCylinder);
@@ -574,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRadialSetPrefab()
         {
-            var radialSet = TestButtonUtilities.InstantiateInteractableFromPath(Vector3.forward, Quaternion.identity, AssetDatabase.GUIDToAssetPath(RadialSetPrefabAssetGuid));
+            var radialSet = TestButtonUtilities.InstantiateInteractableFromPath(Vector3.forward, Quaternion.identity, RadialSetPrefabAssetPath);
             var firstRadialButton = radialSet.transform.Find("Radial (1)").GetComponent<Interactable>();
             var secondRadialButton = radialSet.transform.Find("Radial (2)").GetComponent<Interactable>();
             var thirdRadialButton = radialSet.transform.Find("Radial (3)").GetComponent<Interactable>();
@@ -780,7 +787,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestForceInitialize()
         {
-            Object checkboxesPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(DisabledInitializedPrefabAssetGuid), typeof(Object));
+            Object checkboxesPrefab = AssetDatabase.LoadAssetAtPath(DisabledInitializedPrefabAssetPath, typeof(Object));
             var result = Object.Instantiate(checkboxesPrefab, Vector3.forward * 1.0f, Quaternion.identity) as GameObject;
             var interactables = result.GetComponentsInChildren<Interactable>(true);
 
@@ -902,7 +909,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Instantiate radial prefabs with toggleCollection as the parent
             for (int i = 0; i < numRadials; i++)
             {
-                var radial = TestButtonUtilities.InstantiateInteractableFromPath(pos + new Vector3(0.1f, i * 0.1f, 0), Quaternion.identity, AssetDatabase.GUIDToAssetPath(RadialPrefabAssetGuid));
+                var radial = TestButtonUtilities.InstantiateInteractableFromPath(pos + new Vector3(0.1f, i * 0.1f, 0), Quaternion.identity, RadialPrefabAssetPath);
                 radial.name = "Radial " + i;
                 Assert.IsNotNull(radial);
                 radial.transform.parent = toggleCollection.transform;
