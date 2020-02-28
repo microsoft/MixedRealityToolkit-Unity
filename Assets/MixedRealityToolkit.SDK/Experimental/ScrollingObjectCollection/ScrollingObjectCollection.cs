@@ -2088,44 +2088,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         ///<inheritdoc/>
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (eventData.Pointer.Controller.IsPositionAvailable)
+            //Quick check for the global listener to bail if the object is not in the list
+            if (eventData.Pointer?.Result?.CurrentPointerTarget == null
+                || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
             {
-                //Quick check for the global listener to bail if the object is not in the list
-                if (eventData.Pointer?.Result?.CurrentPointerTarget == null 
-                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
-                {
-                    return;
-                }
-
-                currentPointer = eventData.Pointer;
-
-                currentPointer.IsTargetPositionLockedOnFocusLock = false;
-
-                pointerHitPoint = currentPointer.Result.Details.Point;
-                pointerHitDistance = currentPointer.Result.Details.RayDistance;
-
-                initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
-
-                //Reset the scroll state
-                scrollVelocity = 0.0f;
-
-                if (TryGetPointerPositionOnPlane(out initialPointerPos))
-                {
-                    initialPressTime = Time.time;
-                    initialScrollerPos = scrollContainer.transform.localPosition;
-                    velocityState = VelocityState.None;
-
-                    isTouched = false;
-                    isEngaged = true;
-                    isDragging = false;
-
-                    TouchStarted?.Invoke(initialFocusedObject);
-                }
+                return;
             }
-            else
+
+            currentPointer = eventData.Pointer;
+
+            currentPointer.IsTargetPositionLockedOnFocusLock = false;
+
+            pointerHitPoint = currentPointer.Result.Details.Point;
+            pointerHitDistance = currentPointer.Result.Details.RayDistance;
+
+            initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
+
+            //Reset the scroll state
+            scrollVelocity = 0.0f;
+
+            if (TryGetPointerPositionOnPlane(out initialPointerPos))
             {
-                //not sure what to do with this pointer
-                Debug.Log(name + " intercepted a pointer from " + gameObject.name + ". " + eventData.Pointer.PointerName + ", but don't know what to do with it.");
+                initialPressTime = Time.time;
+                initialScrollerPos = scrollContainer.transform.localPosition;
+                velocityState = VelocityState.None;
+
+                isTouched = false;
+                isEngaged = true;
+                isDragging = false;
+
+                TouchStarted?.Invoke(initialFocusedObject);
             }
         }
 
