@@ -34,37 +34,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         #region Utilities
 
-        private static string PrefabDirectoryPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs";
-        private static string UnitTestCanvasPrefabPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab";
+        // Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab
+        private const string UnitTestCanvasPrefabGuid = "489163bd64fdf84418a1536cefbb4c80";
 
-        private static Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
+        private static readonly Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {
-            // Key is file name.  Value is whether or not it needs to be placed in a Canvas.
-            { "PressableButtonHoloLens2.prefab", false },
-            { "PressableButtonHoloLens2UnityUI.prefab", true },
+            // Key is GUID. Value is whether or not it needs to be placed in a Canvas.
+            { "3f1f46cbecbe08e46a303ccfdb5b498a", false }, // PressableButtonHoloLens2.prefab
+            { "2f626628bde0879488068de0e9f25f8d", true }, // PressableButtonHoloLens2UnityUI.prefab
         };
 
-        public static IEnumerable<string> PressableButtonsTestPrefabFilenames
+        private static IEnumerable<string> PressableButtonsTestPrefabGuids
         {
             get
             {
-                foreach (var prefabFilename in PressableButtonTestPrefabs.Keys)
+                foreach (var prefabGuid in PressableButtonTestPrefabs.Keys)
                 {
-                    yield return prefabFilename;
+                    yield return prefabGuid;
                 }
             }
         }
 
-        private GameObject InstantiateDefaultPressableButton(string prefabFilename)
+        private GameObject InstantiateDefaultPressableButton(string prefabGuid)
         {
-            var path = Path.Combine(PrefabDirectoryPath, prefabFilename);
-            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(prefabGuid), typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
 
-            if (PressableButtonTestPrefabs[prefabFilename])
+            if (PressableButtonTestPrefabs[prefabGuid])
             {
-                // Need to place this test button in a Canvas.  Instantiate the test canvas and place the button into it.
-                var canvasPrefab = AssetDatabase.LoadAssetAtPath(UnitTestCanvasPrefabPath, typeof(Object));
+                // Need to place this test button in a Canvas. Instantiate the test canvas and place the button into it.
+                var canvasPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(UnitTestCanvasPrefabGuid), typeof(Object));
                 var canvasObject = (GameObject)Object.Instantiate(canvasPrefab);
                 testButton.transform.SetParent(canvasObject.transform, worldPositionStays: false);
             }
@@ -97,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Tests
 
         [UnityTest]
-        public IEnumerator ButtonInstantiate([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator ButtonInstantiate([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             yield return null;
@@ -115,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024
         /// </summary>
         [UnityTest]
-        public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -142,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025
         /// </summary>
         [UnityTest]
-        public IEnumerator RotateButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator RotateButton([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -182,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683
         /// </summary>
         [UnityTest]
-        public IEnumerator PressButtonWithHand([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator PressButtonWithHand([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -218,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test disabling the PressableButton GameObject and re-enabling
         /// </summary>
         [UnityTest]
-        public IEnumerator DisablePressableButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator DisablePressableButton([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -263,7 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// if hands were moving too fast in low framerate
         /// </summary>
         [UnityTest]
-        public IEnumerator PressButtonFast([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator PressButtonFast([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -300,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests if button pressed event is triggered when a second button is overlapping right behind the first button
         /// </summary>
         [UnityTest]
-        public IEnumerator PressButtonWhenSecondButtonIsNearby([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator PressButtonWhenSecondButtonIsNearby([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton1 = InstantiateDefaultPressableButton(prefabFilename);
             GameObject testButton2 = InstantiateDefaultPressableButton(prefabFilename);
@@ -343,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This test verifies that buttons will trigger with far interaction
         /// </summary>
         [UnityTest]
-        public IEnumerator TriggerButtonFarInteraction([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator TriggerButtonFarInteraction([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
@@ -396,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator ScaleWorldDistances([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator ScaleWorldDistances([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
@@ -449,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator SwitchWorldToLocalDistanceMode([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator SwitchWorldToLocalDistanceMode([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
@@ -519,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator ScaleLocalDistances([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator ScaleLocalDistances([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
@@ -572,7 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This tests the release behavior of a button
         /// </summary>
         [UnityTest]
-        public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabGuids))] string prefabFilename)
         {
             GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -712,6 +711,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #endregion
     }
 }
-
 
 #endif

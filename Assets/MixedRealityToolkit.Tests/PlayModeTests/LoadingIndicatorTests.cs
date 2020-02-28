@@ -21,9 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class ProgressIndicatorTests
     {
-        private const string progressIndicatorLoadingBarPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab";
-        private const string progressIndicatorRotatingObjectPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab";
-        private const string progressIndicatorRotatingOrbsPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab";
+        // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorLoadingBar.prefab
+        private const string progressIndicatorLoadingBarPrefabGuid = "57d2436112e7d424da7e9a8e41c608dc";
+        // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingObject.prefab
+        private const string progressIndicatorRotatingObjectPrefabGuid = "274fde8ad8cd85a4a88acb4c2c892028";
+        // SDK/Features/UX/Prefabs/ProgressIndicators/ProgressIndicatorRotatingOrbs.prefab
+        private const string progressIndicatorRotatingOrbsPrefabGuid = "65fa42bb01c733c42b05a4e91628f494";
 
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.
@@ -33,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject progressIndicatorObject;
             IProgressIndicator progressIndicator;
-            InstantiatePrefab(progressIndicatorLoadingBarPrefabPath, out progressIndicatorObject, out progressIndicator);
+            InstantiatePrefab(progressIndicatorLoadingBarPrefabGuid, out progressIndicatorObject, out progressIndicator);
             Task testTask = TestOpenCloseProgressIndicatorAsync(progressIndicatorObject, progressIndicator);
             while (!testTask.IsCompleted)
             {
@@ -53,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject progressIndicatorObject;
             IProgressIndicator progressIndicator;
-            InstantiatePrefab(progressIndicatorRotatingObjectPrefabPath, out progressIndicatorObject, out progressIndicator);
+            InstantiatePrefab(progressIndicatorRotatingObjectPrefabGuid, out progressIndicatorObject, out progressIndicator);
             Task testTask = TestOpenCloseProgressIndicatorAsync(progressIndicatorObject, progressIndicator);
             while (!testTask.IsCompleted)
             {
@@ -73,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             GameObject progressIndicatorObject;
             IProgressIndicator progressIndicator;
-            InstantiatePrefab(progressIndicatorRotatingOrbsPrefabPath, out progressIndicatorObject, out progressIndicator);
+            InstantiatePrefab(progressIndicatorRotatingOrbsPrefabGuid, out progressIndicatorObject, out progressIndicator);
             Task testTask = TestOpenCloseProgressIndicatorAsync(progressIndicatorObject, progressIndicator, 3f);
             while (!testTask.IsCompleted)
             {
@@ -120,14 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(progressIndicator.State == ProgressIndicatorState.Closed, "Progress indicator was not closed after close async call: " + progressIndicator.State);
         }
 
-        private void InstantiatePrefab(string path, out GameObject progressIndicatorObject, out IProgressIndicator progressIndicator)
+        private void InstantiatePrefab(string guid, out GameObject progressIndicatorObject, out IProgressIndicator progressIndicator)
         {
             progressIndicatorObject = null;
             progressIndicator = null;
 
 #if UNITY_EDITOR
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            progressIndicatorObject = GameObject.Instantiate(prefab);
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+            progressIndicatorObject = Object.Instantiate(prefab);
             progressIndicator = (IProgressIndicator)progressIndicatorObject.GetComponent(typeof(IProgressIndicator));
 #endif
         }

@@ -12,7 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
 {
     public class SpatialAwarenessSystemTests
     {
-        private const string TestSpatialAwarenessSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
+        // Tests/EditModeTests/Services/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset
+        private const string TestSpatialAwarenessSystemProfileGuid = "757d72d70f9c56144b05346288682e00";
 
         [TearDown]
         public void TearDown()
@@ -65,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
         public void TestDataProviderRegistration()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
-            MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(TestSpatialAwarenessSystemProfilePath);
+            MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(AssetDatabase.GUIDToAssetPath(TestSpatialAwarenessSystemProfileGuid));
 
             var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
 

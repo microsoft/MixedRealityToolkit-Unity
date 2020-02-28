@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ButtonConfigHelperTests : BasePlayModeTests
     {
-        private static string PressableButtonHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
+        private const string PressableButtonHoloLens2PrefabGuid = "3f1f46cbecbe08e46a303ccfdb5b498a";
 
         [UnityTest]
         /// <summary>
@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestPressableButtonHololens2Prefab()
         {
-            GameObject buttonObject = InstantiateButtonFromPath(Vector3.zero, Quaternion.identity, PressableButtonHoloLens2PrefabPath);
+            GameObject buttonObject = InstantiateButtonFromGuid(Vector3.zero, Quaternion.identity, PressableButtonHoloLens2PrefabGuid);
             ButtonConfigHelper bch = buttonObject.GetComponent<ButtonConfigHelper>();
 
             bch.MainLabelText = "MainLabelText";
@@ -141,10 +141,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield break;
         }
 
-        private GameObject InstantiateButtonFromPath(Vector3 position, Quaternion rotation, string path)
+        private GameObject InstantiateButtonFromGuid(Vector3 position, Quaternion rotation, string guid)
         {
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(Object));
             GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
             Assert.IsNotNull(result);
 

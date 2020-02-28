@@ -15,7 +15,6 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -24,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class PinchSliderTests
     {
-        const string defaultPinchSliderPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab";
+        // SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab
+        private const string defaultPinchSliderPrefabGuid = "1093263a89abe47499cccf7dcb08effb";
 
         [SetUp]
         public void Setup()
@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void InstantiateDefaultSliderPrefab(Vector3 position, Vector3 rotation, out GameObject sliderObject, out PinchSlider pinchSlider)
         {
             // Load interactable prefab
-            Object sliderPrefab = AssetDatabase.LoadAssetAtPath(defaultPinchSliderPrefabPath, typeof(Object));
+            Object sliderPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(defaultPinchSliderPrefabGuid), typeof(Object));
             sliderObject = Object.Instantiate(sliderPrefab) as GameObject;
             pinchSlider = sliderObject.GetComponent<PinchSlider>();
             Assert.IsNotNull(pinchSlider);

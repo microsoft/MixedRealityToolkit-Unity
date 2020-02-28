@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class CoreServicesTests
     {
+        // SDK/Experimental/ServiceManagers/Camera/Prefabs/CameraSystem.prefab
+        private const string cameraSystemPrefabGuid = "8a5d96f565aaee14ca3e07575bb9ce80";
+
         /// <summary>
         /// Test if we can register and unregister a core MRTK service
         /// </summary>
@@ -31,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.InitializeCamera();
 
-            UnityEngine.Object cameraSystemPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Experimental/ServiceManagers/Camera/Prefabs/CameraSystem.prefab", typeof(UnityEngine.Object));
+            UnityEngine.Object cameraSystemPrefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(cameraSystemPrefabGuid), typeof(UnityEngine.Object));
             Assert.IsNull(CoreServices.CameraSystem);
 
             GameObject cameraSystem1 = UnityEngine.Object.Instantiate(cameraSystemPrefab) as GameObject;
@@ -49,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsNull(CoreServices.CameraSystem);
 
-            GameObject cameraSystem2 = UnityEngine.Object.Instantiate(cameraSystemPrefab) as GameObject;
+            UnityEngine.Object.Instantiate(cameraSystemPrefab);
             Assert.IsNotNull(CoreServices.CameraSystem);
         }
     }

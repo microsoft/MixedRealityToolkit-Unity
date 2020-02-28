@@ -10,21 +10,21 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SlateTests
     {
-        const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
+        // SDK/Features/UX/Prefabs/Slate/Slate.prefab
+        private const string slatePrefabAssetGuid = "937ce507dd7ee334ba569554e24adbdd";
 
         GameObject panObject;
         HandInteractionPanZoom panZoom;
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         private void InstantiateFromPrefab(Vector3 position)
         {
-            UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));
+            UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(slatePrefabAssetGuid), typeof(UnityEngine.Object));
             panObject = UnityEngine.Object.Instantiate(prefab) as GameObject;
             Assert.IsNotNull(panObject);
             panObject.transform.position = position;
