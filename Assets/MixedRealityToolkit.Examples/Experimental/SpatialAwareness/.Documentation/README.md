@@ -1,6 +1,6 @@
 # MRTK Scene Understanding Demo
 
-This is an __experminental__ prelease that integrates [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) (SU) as a MRTK service.
+This is an __experminental__ prelease that integrates [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) (SU) as a MRTK.
 
 SU - in a nutshell, will return a semantic representation of scene entities as well as their geometric forms on __HoloLens 2__.
 
@@ -29,6 +29,8 @@ The Scene Understanding observer inherits from older spatial awareness concepts 
 
 Eventually this system should replace the existing SpatialAwareness observer.
 
+Scene Understanding is a __platform specific__ technology. Spatial Awareness is meant to cover _platform agnostic_ capabilities. With few data points, it's likely we don't have the proper abstraction yet. 
+
 ## Prerequisites
 
 git clone https://github.com/pinkwerks/MixedRealityToolkit-Unity.git
@@ -48,11 +50,11 @@ Ensure build settings are set to UWP
 
 MSBuild will be replacing this processin the future which will eliminate the NuGetForUnity dependency.
 
-## Debugging features
+## Demonstration and debugging SU
 
 ### Unity demo scene
 
-DemoSpatialAwareness.unity
+`DemoSpatialAwareness.unity`
 
 #### Configuring the observer service
 
@@ -90,8 +92,12 @@ You may build and deploy to HoloLens in the standard way. Once running, you'll b
 
 The "Place" button will make a prefab appear on the nearest platform. (which may be behind you!) You should hear a spatial sound when this occurs to help you find it.
 
-Saved .bytes files can be accessed through the device portal at App.../LocalState/PREFIX_yyyyMMddhhmmss.bytes
 
-Note, if you don't request quads, then you won't see the occlusion mask textures. Like wise, you wont see the world mesh if you don't request meshes.
+Note, their are some pit falls in making queries to the observer. Misconfiguration of a fetch request result in your event payload not containing the data you expected. For example, if you don't request quads, then you won't see the occlusion mask textures. Like wise, you wont see the world mesh if you don't request meshes. The `DemoSpatialAwarenessController` script takes care of some of these dependencies, but not all.
 
-As this effort in in EXPERIMENTAL things are likely to change, feedback welcome at https://github.com/microsoft/MixedRealityToolkit-Unity/issues
+As this effort in in EXPERIMENTAL things are likely to change. Feedback requested at https://github.com/microsoft/MixedRealityToolkit-Unity/issues
+
+Saved .bytes files can be accessed through the device portal at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. You can use these `bytes` for your workflow in edtor by specifying them in the observer profile.
+
+![Device Portal location of bytes file](BytesInDevicePortal.png)
+![Serialized scene bytes in observer](BytesLocationInObserver.png)
