@@ -245,8 +245,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// Test bounds control rotation via HoloLens 1 interaction / GGV
+        /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
         public IEnumerator RotateViaHololens1Interaction()
