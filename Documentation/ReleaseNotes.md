@@ -38,7 +38,7 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### Upgrading projects to 2.4.0
 
-The 2.3.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.2.0 to 2.3.0**](Updating.md#updating-220-to-230) article.
+The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
 
 > [!NOTE]
 > At this time, it is not supported to switch between using .unitypackage files and NuGet.
