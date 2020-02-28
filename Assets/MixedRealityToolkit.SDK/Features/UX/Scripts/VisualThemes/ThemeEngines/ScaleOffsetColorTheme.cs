@@ -73,6 +73,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
+        public override void Reset()
+        {
+            hostTransform.localPosition = originalPosition;
+            hostTransform.localScale = originalScale;
+            
+            base.Reset();
+        }
+
+        /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
