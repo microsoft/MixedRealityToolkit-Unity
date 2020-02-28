@@ -75,11 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     case MixedRealityCapability.ArticulatedHand:
                     case MixedRealityCapability.GGVHand:
                         return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
-                        break;
 
                     case MixedRealityCapability.MotionController:
                         return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
-                        break;
                 }
 #endif // WINDOWS_UWP
             }
