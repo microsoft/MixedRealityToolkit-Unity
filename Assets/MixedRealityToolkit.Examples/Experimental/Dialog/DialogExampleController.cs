@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
 
         public void OpenChoiceDialog()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefab, DialogButtonType.Yes | DialogButtonType.Cancel, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
+            Dialog myDialog = Dialog.Open(DialogPrefab, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user");
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         {
             if (obj.Result == DialogButtonType.Yes)
             {
-                //The user chose the "Yes" button            
+                Debug.Log(obj.Result);       
             }
         }
     }

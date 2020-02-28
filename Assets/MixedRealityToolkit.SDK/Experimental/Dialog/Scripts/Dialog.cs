@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>        
         protected IEnumerator RunDialogOverTime()
         {
-            // Create our buttons and set up our message
+            // Create buttons and set up message
             GenerateButtons();
             SetTitleAndMessage();
             FinalizeLayout();
