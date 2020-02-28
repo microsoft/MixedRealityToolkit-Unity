@@ -72,13 +72,13 @@ For the smoothest upgrade path, please use the following steps.
     > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
    asset database and reconcile existing custom profiles.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
-            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
+            - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
 
 **Updating from NuGet**
 
