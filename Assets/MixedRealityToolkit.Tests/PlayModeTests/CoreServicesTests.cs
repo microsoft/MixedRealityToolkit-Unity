@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class CoreServicesTests
     {
         /// <summary>
-        /// Test if we can register and deregister a core MRTK service
+        /// Test if we can register and unregister a core MRTK service
         /// </summary>
         /// <returns>enumerator for Unity</returns>
         [UnityTest]

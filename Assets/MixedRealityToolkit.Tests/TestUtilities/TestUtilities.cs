@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
+
         /// <summary>
         /// Forces the playspace camera to face forward.
         /// </summary>

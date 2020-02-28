@@ -30,27 +30,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         };
 
         /// <summary>
-        /// Asset Path to default model push button prefab asset
+        /// Asset path to default model push button prefab asset
         /// </summary>
         public const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
 
         /// <summary>
-        /// Asset path to default Hololens 2 Pressable Button prefab asset
+        /// Asset path to default HoloLens 2 Pressable Button prefab asset
         /// </summary>
         public const string PressableHoloLens2PrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab";
 
         /// <summary>
-        /// Asset path to default Hololens 2 Toggle Pressable Button prefab asset
+        /// Asset path to default HoloLens 2 Toggle Pressable Button prefab asset
         /// </summary>
         public const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
 
         /// <summary>
-        /// Rought amount of time for press action on button
+        /// Amount of time for press action on button
         /// </summary>
         public const float ButtonPressAnimationDelay = 0.25f;
 
         /// <summary>
-        /// Rought amount of time for release action on button
+        /// Amount of time for release action on button
         /// </summary>
         public const float ButtonReleaseAnimationDelay = 0.25f;
 

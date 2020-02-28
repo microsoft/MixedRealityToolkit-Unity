@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that the same PokePointer
         /// 1) is not destroyed
-        /// 2) retreived and re-used from the pointer cache
+        /// 2) retrieved and re-used from the pointer cache
         /// 3) still click buttons and provides input after re-use
         /// </summary>
         [UnityTest]

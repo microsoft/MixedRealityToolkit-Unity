@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     public class BoundsControlTests
     {
         #region Utilities
+
         [SetUp]
         public void Setup()
         {
@@ -76,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
             yield return null;
         }
+
         #endregion
 
         /// <summary>
@@ -138,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
+            // This particular test is sensitive to the number of test frames and is run at a slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
@@ -240,8 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// </summary>
         [UnityTest]
         public IEnumerator RotateViaHololens1Interaction()
@@ -524,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
