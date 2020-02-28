@@ -31,7 +31,7 @@ MonoBehaviour:
   inferRegions: 1
   firstUpdateDelay: 5
   worldMeshLevelOfDetail: 1
-  usePersistentObjects: 0
+  usePersistentObjects: 1
   queryRadius: 10
   requestOcclusionMask: 0
   occlusionMaskResolution: {x: 256, y: 256}
