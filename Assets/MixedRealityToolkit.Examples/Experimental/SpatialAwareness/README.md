@@ -60,7 +60,9 @@ If you have installed MSBuild you need to remove the Microsoft.Windows.MixedReal
 
 ### Unity demo scene
 
-`DemoSpatialAwareness.unity`
+Open the scene file and press play!
+
+`Assets/MixedRealityToolkit.Examples/Experimental/SpatialAwareness/DemoSpatialAwareness.unity`
 
 #### Configuring the observer service
 
