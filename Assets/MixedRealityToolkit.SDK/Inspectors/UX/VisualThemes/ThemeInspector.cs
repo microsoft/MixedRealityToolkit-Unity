@@ -94,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     {
                         theme.States = states.objectReferenceValue as States;
                         theme.ValidateDefinitions();
+                        serializedObject.Update();
                     }
                 }
 
