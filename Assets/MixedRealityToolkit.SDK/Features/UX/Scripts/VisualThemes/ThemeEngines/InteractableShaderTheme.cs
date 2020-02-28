@@ -25,8 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Renderer renderer;
         private Graphic graphic;
 
-        private ThemePropertyValue startValue = new ThemePropertyValue();
-
         protected const string DefaultShaderProperty = "_Color";
 
         public InteractableShaderTheme()
@@ -82,11 +80,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 UIMaterialInstantiator.TryCreateMaterialCopy(graphic);
             }
+
+            // Need to update reset history tracking now that property blocks are populated correctly via above code
+            var keys = new List<ThemeStateProperty>(originalStateValues.Keys);
+            foreach (var value in keys)
+            {
+                originalStateValues[value] = GetProperty(value);
+            }
         }
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            startValue.Reset();
+            var result = new ThemePropertyValue();
+
             int propId = property.GetShaderPropertyId();
 
             if (renderer != null)
@@ -95,14 +101,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 switch (property.Type)
                 {
                     case ThemePropertyTypes.Color:
-                        startValue.Color = propertyBlock.GetVector(propId);
+                        result.Color = propertyBlock.GetVector(propId);
                         break;
                     case ThemePropertyTypes.Texture:
-                        startValue.Texture = propertyBlock.GetTexture(propId);
+                        result.Texture = propertyBlock.GetTexture(propId);
                         break;
                     case ThemePropertyTypes.ShaderFloat:
                     case ThemePropertyTypes.ShaderRange:
-                        startValue.Float = propertyBlock.GetFloat(propId);
+                        result.Float = propertyBlock.GetFloat(propId);
                         break;
                     default:
                         break;
@@ -113,20 +119,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 switch (property.Type)
                 {
                     case ThemePropertyTypes.Color:
-                        startValue.Color = graphic.material.GetVector(propId);
+                        result.Color = graphic.material.GetVector(propId);
                         break;
                     case ThemePropertyTypes.Texture:
-                        startValue.Texture = graphic.material.GetTexture(propId);
+                        result.Texture = graphic.material.GetTexture(propId);
                         break;
                     case ThemePropertyTypes.ShaderFloat:
                     case ThemePropertyTypes.ShaderRange:
-                        startValue.Float = graphic.material.GetFloat(propId);
+                        result.Float = graphic.material.GetFloat(propId);
                         break;
                     default:
                         break;
                 }
             }
-            return startValue;
+            return result;
         }
 
         /// <inheritdoc />

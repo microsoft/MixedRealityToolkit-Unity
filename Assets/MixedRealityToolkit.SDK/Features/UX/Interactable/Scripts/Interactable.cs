@@ -596,11 +596,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region MonoBehaviour Implementation
 
+        /// <inheritdoc/>
         protected virtual void Awake()
         {
             EnsureInitialized();
         }
 
+        /// <inheritdoc/>
         protected virtual void OnEnable()
         {
             if (!VoiceRequiresFocus)
@@ -621,6 +623,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <inheritdoc/>
         protected virtual void OnDisable()
         {
             // If we registered to receive global events, remove ourselves when disabled
@@ -637,14 +640,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ResetInputTrackingStates();
         }
 
+        /// <inheritdoc/>
         protected virtual void Start()
         {
             InternalUpdate();
         }
 
+        /// <inheritdoc/>
         protected virtual void Update()
         {
             InternalUpdate();
+        }
+
+        /// <inheritdoc/>
+        protected virtual void OnDestroy()
+        {
+            foreach (var theme in activeThemes)
+            {
+                theme.Reset();
+            }
         }
 
         private void InternalUpdate()
