@@ -36,7 +36,11 @@ Scene Understanding is a __platform specific__ technology. Spatial Awareness is 
 Install NuGetForUnity unitypackage from here
 https://github.com/GlitchEnzo/NuGetForUnity/releases
 
-Once NuGetForUnity is installed open NuGetForUnity and install Sceneunderstanding, DotNetWinRT. VCRTForwarders should be automatically pulled in as a dependency.
+Once NuGetForUnity is installed open NuGetForUnity, search then install these packages:
+- Sceneunderstanding
+- Microsoft.Windows.MixedReality.DotNetWinRT
+
+VCRTForwarders should be automatically pulled in as a dependency.
 
 ![Manage Nuget packages](.Documentation/ManageNuget.png)
 
