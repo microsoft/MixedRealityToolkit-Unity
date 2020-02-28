@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab
         private const string UnitTestCanvasPrefabGuid = "489163bd64fdf84418a1536cefbb4c80";
 
+        // SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab
+        private const string PressableButtonHoloLens2Guid = "3f1f46cbecbe08e46a303ccfdb5b498a";
+
         private static readonly Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {
             // Key is GUID. Value is whether or not it needs to be placed in a Canvas.
@@ -682,7 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
-            GameObject testButton = InstantiateDefaultPressableButton("PressableButtonHoloLens2.prefab");
+            GameObject testButton = InstantiateDefaultPressableButton(PressableButtonHoloLens2Guid);
             testButton.transform.position = new Vector3(0, 0, 1);
             testButton.transform.localScale = Vector3.one * 1.5f;
 
