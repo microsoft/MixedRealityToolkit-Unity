@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// A surface that isn't a Platform but are known as objects (not unknown)
         /// </summary>
         /// <remarks>
-        /// These objets may be windows, monitors, stairs, etc.
+        /// These objects may be windows, monitors, stairs, etc.
         /// </remarks>
         Background = 1 << 5,
 
