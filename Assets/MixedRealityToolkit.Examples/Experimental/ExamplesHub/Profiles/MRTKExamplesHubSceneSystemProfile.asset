@@ -39,8 +39,8 @@ MonoBehaviour:
     Asset: {fileID: 102900000, guid: 63a00118e809c754f9c7911bb85d635f, type: 3}
   - Name: HandInteractionExamples
     Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
-    Included: 0
-    BuildIndex: -1
+    Included: 1
+    BuildIndex: 0
     Tag: Untagged
     Asset: {fileID: 102900000, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
   - Name: ClippingExamples
