@@ -425,6 +425,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
+            var originalColor = translateTargetObject.gameObject.GetComponent<Renderer>().material.color;
+
             // Put GGV focus on the Interactable button
             CameraCache.Main.transform.LookAt(interactable.transform.position);
 
@@ -440,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
             propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
-            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+            Assert.AreEqual(propBlock.GetColor("_Color"), originalColor);
         }
 
         /// <summary>

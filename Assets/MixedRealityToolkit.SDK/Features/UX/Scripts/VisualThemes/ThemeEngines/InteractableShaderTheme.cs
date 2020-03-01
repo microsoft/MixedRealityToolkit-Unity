@@ -179,7 +179,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         propertyBlock.SetColor(propId, color);
                         break;
                     case ThemePropertyTypes.Texture:
-                        propertyBlock.SetTexture(propId, tex);
+                        if (tex != null)
+                        {
+                            propertyBlock.SetTexture(propId, tex);
+                        }
                         break;
                     case ThemePropertyTypes.ShaderFloat:
                     case ThemePropertyTypes.ShaderRange:
