@@ -453,6 +453,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
+            interactable.ResetOnDestroy = true;
+
             var originalColor = translateTargetObject.gameObject.GetComponent<Renderer>().material.color;
 
             // Put GGV focus on the Interactable button
