@@ -4,9 +4,9 @@ parameters:
   packagePublishing: true
 
 steps:
-- template: common.yml
-  parameters:
-    buildUWPDotNet: false
+# - template: common.yml
+#   parameters:
+#     buildUWPDotNet: false
 - template: compilemsbuild.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
   - template: tasks/unitypackages.yml

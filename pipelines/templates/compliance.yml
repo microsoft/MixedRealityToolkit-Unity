@@ -23,16 +23,16 @@ steps:
   inputs:
     InputType: 'Basic'
     Function: 'analyze'
-    AnalyzeTarget: '$(Build.SourcesDirectory)\**\*.dll;$(Build.SourcesDirectory)\**\*.exe'
+    AnalyzeTarget: 'Microsoft.MixedReality.Toolkit.*.dll'
     AnalyzeSymPath: '$(Build.SourcesDirectory)'
-    AnalyzeRecurse: false
+    AnalyzeRecurse: true
     toolVersion: '1.4.5'
 
 - task: APIScan@1
   inputs:
     softwareFolder: '$(Build.SourcesDirectory)'
-    softwareName: 'Azure Remote Rendering'
-    softwareVersionNum: '1.0'
+    softwareName: 'MixedRealityToolkit-Unity'
+    softwareVersionNum: $(MRTKVersion)
     softwareBuildNum: '$(Build.BuildId)'
     symbolsFolder: '$(Build.SourcesDirectory)'
 
