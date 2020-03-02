@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <DotNetWinRTVersion>0.5.1037</DotNetWinRTVersion>
+    <DotNetWinRTVersion>0.5.1045</DotNetWinRTVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.MixedReality.DotNetWinRT" Version="$(DotNetWinRTVersion)" ExcludeAssets="Compile" />
