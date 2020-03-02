@@ -293,12 +293,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state0, theme.Host.transform.localScale);
                     Assert.AreEqual(state0Offset, theme.Host.transform.position);
                 },
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state1, theme.Host.transform.localScale);
                     Assert.AreEqual(state1Offset, theme.Host.transform.position);
@@ -376,11 +376,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTextureTheme()
         {
-            const string TexturePathState0 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Panel_albedo.png";
-            Texture texState0 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState0);
+            // Examples/Demos/StandardShader/Textures/Panel_albedo.png
+            const string TexturePathState0 = "7b551659cf4349242ba72d82b4f9cdc7";
+            Texture texState0 = AssetDatabase.LoadAssetAtPath<Texture>(AssetDatabase.GUIDToAssetPath(TexturePathState0));
 
-            const string TexturePathState1 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Checker_albedo.png";
-            Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState1);
+            // Examples/Demos/StandardShader/Textures/Checker_albedo.png
+            const string TexturePathState1 = "e2cd08a4d181dcc4ea7beb0992656c7e";
+            Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(AssetDatabase.GUIDToAssetPath(TexturePathState1));
 
             var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
@@ -508,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator TestShaderTheme<T>(
-            List<List<ThemePropertyValue>> stateValues, 
+            List<List<ThemePropertyValue>> stateValues,
             params Action<MaterialPropertyBlock>[] stateTests)
             where T : InteractableThemeBase
         {
@@ -527,7 +529,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 };
             }
 
-            yield return TestTheme<T, AudioSource>(targetHost, stateValues,convertedStateTests);
+            yield return TestTheme<T, AudioSource>(targetHost, stateValues, convertedStateTests);
         }
 
         private bool AreEulerEquals(Vector3 eulerA, Vector3 eulerB)

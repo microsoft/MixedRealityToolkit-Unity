@@ -15,7 +15,6 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -24,7 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class PinchSliderTests
     {
-        const string defaultPinchSliderPrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab";
+        // SDK/Features/UX/Prefabs/Sliders/PinchSlider.prefab
+        private const string defaultPinchSliderPrefabGuid = "1093263a89abe47499cccf7dcb08effb";
+        private static readonly string defaultPinchSliderPrefabPath = AssetDatabase.GUIDToAssetPath(defaultPinchSliderPrefabGuid);
 
         [SetUp]
         public void Setup()
@@ -130,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(pinchSliderObject);
             PlayModeTestUtilities.PopHandSimulationProfile();
         }
-        
+
         /// <summary>
         /// Tests that interactable raises proper events
         /// </summary>
@@ -352,7 +353,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             sliderObject.transform.eulerAngles = rotation;
         }
         #endregion Private methods
-
     }
 }
 #endif
