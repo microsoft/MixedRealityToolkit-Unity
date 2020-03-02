@@ -45,12 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
 
-        /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
         /// <summary>
         /// Update the controller data from XR SDK.
         /// </summary>

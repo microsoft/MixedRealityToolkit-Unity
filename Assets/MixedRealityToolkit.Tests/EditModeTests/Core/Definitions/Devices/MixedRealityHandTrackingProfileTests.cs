@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
         [Test]
         public void TestEditorOnlyChanges()
         {
-            MixedRealityHandTrackingProfile profile = new MixedRealityHandTrackingProfile();
+            MixedRealityHandTrackingProfile profile = ScriptableObject.CreateInstance<MixedRealityHandTrackingProfile>();
             profile.HandJointVisualizationModes = SupportedApplicationModes.Editor | SupportedApplicationModes.Player;
             profile.HandMeshVisualizationModes = SupportedApplicationModes.Editor | SupportedApplicationModes.Player;
 

@@ -16,12 +16,36 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public GenericJoystickController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            // Update the spatial pointer rotation with the preconfigured offset angle
+            if (PointerOffsetAngle != 0f && Interactions != null)
+            {
+                MixedRealityInteractionMapping pointerMapping = null;
+                for (int i = 0; i < Interactions.Length; i++)
+                {
+                    MixedRealityInteractionMapping mapping = Interactions[i];
+                    if (mapping.InputType == DeviceInputType.SpatialPointer)
+                    {
+                        pointerMapping = mapping;
+                        break;
+                    }
+                }
+
+                if (pointerMapping == null)
+                {
+                    Debug.LogWarning($"A pointer offset is defined for {GetType()}, but no spatial pointer mapping could be found.");
+                    return;
+                }
+
+                MixedRealityPose startingRotation = MixedRealityPose.ZeroIdentity;
+                startingRotation.Rotation *= Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
+                pointerMapping.PoseData = startingRotation;
+            }
         }
 
         /// <summary>
         /// The pointer's offset angle.
         /// </summary>
-        public float PointerOffsetAngle { get; protected set; } = 0f;
+        public virtual float PointerOffsetAngle { get; protected set; } = 0f;
 
         private Vector2 dualAxisPosition = Vector2.zero;
         private MixedRealityPose pointerOffsetPose = MixedRealityPose.ZeroIdentity;

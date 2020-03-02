@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         public static bool UseSSL
         {
-            get => EditorPreferences.Get(EDITOR_PREF_USE_SSL, true);
+            get => EditorPreferences.Get(EDITOR_PREF_USE_SSL, false);
             set => EditorPreferences.Set(EDITOR_PREF_USE_SSL, value);
         }
 

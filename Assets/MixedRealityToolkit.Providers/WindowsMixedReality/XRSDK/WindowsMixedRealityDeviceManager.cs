@@ -58,7 +58,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "IsSourceKindSupported"))
             {
 #if WINDOWS_UWP
                 switch (capability)

@@ -158,7 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             if (handMeshFilter == null &&
-                CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile?.HandMeshPrefab != null)
+                CoreServices.InputSystem?.InputSystemProfile != null &&
+                CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
+                CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
             {
                 handMeshFilter = Instantiate(CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
                 lastHandMeshVertices = handMeshFilter.mesh.vertices;

@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Moves the the hand from startPos to endPos.
+        /// Moves the hand from startPos to endPos.
         /// </summary>
         /// <remarks>
         /// Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the

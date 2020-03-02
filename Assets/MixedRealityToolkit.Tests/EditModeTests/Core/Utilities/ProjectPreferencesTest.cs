@@ -4,17 +4,16 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
 {
     /// <summary>
     /// Test structure to test <see cref="Microsoft.MixedReality.Toolkit.Utilities.Editor.ProjectPreferences"/>
     /// </summary>
-    public class ProjectPreferencesTest : MonoBehaviour
+    public class ProjectPreferencesTest
     {
         private const string BaseKey = "ProjectPreferencesTest_";
-        private static Dictionary<string, object> TestData = new Dictionary<string, object>
+        private static readonly Dictionary<string, object> TestData = new Dictionary<string, object>
         {
             { BaseKey + typeof(bool).Name, (object)true },
             { BaseKey + typeof(float).Name, (object)2.3f },
@@ -68,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core.Utilities.Editor
         }
 
         /// <summary>
-        /// Validate that the default value provided with Get is returned for new prefernce entries
+        /// Validate that the default value provided with Get is returned for new preference entries
         /// </summary>
         [Test]
         public void TestDefaultValues()

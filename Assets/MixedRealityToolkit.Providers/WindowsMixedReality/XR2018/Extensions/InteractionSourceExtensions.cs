@@ -24,7 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         {
             IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
 
-            if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
+            // GetForCurrentView and GetDetectedSourcesAtTimestamp were both introduced in the same Windows version.
+            // We need only check for one of them.
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "GetForCurrentView"))
             {
                 IReadOnlyList<SpatialInteractionSourceState> sources = null;
 

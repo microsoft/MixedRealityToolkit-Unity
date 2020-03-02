@@ -134,17 +134,12 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
             IMixedRealityPointer[] pointers = RequestPointers(currentControllerType, controllingHand);
             IMixedRealityInputSource inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, inputSourceType);
+            GenericXRSDKController detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericXRSDKController;
 
-            if (!(Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) is GenericXRSDKController detectedController))
-            {
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-                return null;
-            }
-
-            if (!detectedController.SetupConfiguration(controllerType))
+            if (detectedController == null || !detectedController.Enabled)
             {
                 // Controller failed to be set up correctly.
-                Debug.LogError($"Failed to set up {controllerType.Name} controller");
+                Debug.LogError($"Failed to create {controllerType.Name} controller");
                 // Return null so we don't raise the source detected.
                 return null;
             }

@@ -64,7 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable) // Windows 10 1903 or later
+            if (WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionManager",
+                "IsSourceKindSupported"))
             {
 #if WINDOWS_UWP
                 switch (capability)
@@ -78,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
 #endif // WINDOWS_UWP
             }
-            else // Pre-Windows 10 1903.
+            else
             {
                 if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {

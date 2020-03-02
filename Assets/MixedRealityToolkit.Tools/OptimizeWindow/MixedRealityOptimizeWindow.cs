@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        string analysisTimeLabel = lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + GetRelativeTime(lastAnalyzedTime);
+                        string analysisTimeLabel = lastAnalyzedTime == null ? "Click analysis button for MRTK to scan your currently opened scene" : "Scanned " + lastAnalyzedTime.Value.GetRelativeTime();
                         EditorGUILayout.LabelField(analysisTimeLabel);
 
                         if (GUILayout.Button("Analyze Scene", GUILayout.Width(160f)))
@@ -604,30 +604,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private bool IsHololensTargeted()
         {
             return PerfTarget == PerformanceTarget.AR_Headsets && MixedRealityOptimizeUtils.IsBuildTargetUWP();
-        }
-
-        private static string GetRelativeTime(DateTime? time)
-        {
-            if (time == null) return string.Empty;
-
-            var delta = new TimeSpan(DateTime.UtcNow.Ticks - time.Value.Ticks);
-
-            if (Math.Abs(delta.TotalDays) > 1.0)
-            {
-                return (int)Math.Abs(delta.TotalDays) + " days ago";
-            }
-            else if (Math.Abs(delta.TotalHours) > 1.0)
-            {
-                return (int)Math.Abs(delta.TotalHours) + " hours ago";
-            }
-            else if (Math.Abs(delta.TotalMinutes) > 1.0)
-            {
-                return (int)Math.Abs(delta.TotalMinutes) + " minutes ago";
-            }
-            else 
-            {
-                return (int)Math.Abs(delta.TotalSeconds) + " seconds ago";
-            }
         }
 
         #endregion
