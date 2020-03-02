@@ -60,7 +60,55 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Checkbox",
+          "Name": "HoloLens2 Checkbox Button 32x32mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleCheckBox_32x32.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_CheckBox_32x32mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Radio Button 32x32mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleRadio_32x32.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Radio_32x32mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Switch Button 32x32mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleSwitch_32x32.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Switch_32x32mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Checkbox Button 32x96mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleCheckBox_32x96.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_CheckBox_32x96mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Radio Button 32x96mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleRadio_32x96.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Radio_32x96mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "HoloLens2 Switch Button 32x96mm",
+          "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\PressableButtonHoloLens2ToggleSwitch_32x96.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_ButtonHoloLens2_Switch_32x96mm.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
+        },
+        {
+          "Name": "Generic Checkbox",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\CheckBox.prefab",
           "AssetModule": 5,
           "IconModule": 1,
@@ -68,7 +116,7 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Radial Set",
+          "Name": "Generic Radio Set",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\RadialSet.prefab",
           "AssetModule": 5,
           "IconModule": 1,
@@ -76,7 +124,7 @@
           "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html"
         },
         {
-          "Name": "Toggle Switch",
+          "Name": "Generic Toggle Switch",
           "RelativeAssetPath": "Features\\UX\\Interactable\\Prefabs\\ToggleSwitch.prefab",
           "AssetModule": 5,
           "IconModule": 1,
