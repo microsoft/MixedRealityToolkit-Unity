@@ -425,6 +425,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out Interactable interactable,
                 out Transform translateTargetObject);
 
+            // Put GGV focus on the Interactable button
+            CameraCache.Main.transform.LookAt(interactable.transform.position);
+
+            yield return new WaitForSeconds(EaseDelay);
+            var propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+
+            // Destroy the interactable component
+            GameObject.Destroy(interactable);
+
+            // Remove focus
+            CameraCache.Main.transform.LookAt(Vector3.zero);
+
+            yield return null;
+            propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+        }
+
+        /// <summary>
+        /// Instantiates a runtime assembled Interactable with ResetOnDestroy property true and destroy the Interactable component. 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestResetOnDestroy()
+        {
+            AssembleInteractableButton(
+                out Interactable interactable,
+                out Transform translateTargetObject);
+
             var originalColor = translateTargetObject.gameObject.GetComponent<Renderer>().material.color;
 
             // Put GGV focus on the Interactable button
