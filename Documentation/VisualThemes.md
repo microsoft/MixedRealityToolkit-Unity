@@ -162,7 +162,7 @@ If the custom Theme Engine can support targeting shader properties. It is recomm
 
 [`InteractableThemeBase.Reset`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Reset)
 
-Directs the theme to reset any modified properties back to their original values that were set on the Host GameObject when this theme engine was initialized.  
+Directs the theme to reset any modified properties back to their original values that were set on the host GameObject when this theme engine was initialized.  
 
 ### Custom theme engine example
 
