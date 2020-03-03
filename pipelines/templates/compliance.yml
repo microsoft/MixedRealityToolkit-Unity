@@ -28,14 +28,6 @@ steps:
     AnalyzeRecurse: true
     toolVersion: '1.4.5'
 
-- task: APIScan@1
-  inputs:
-    softwareFolder: '$(Build.SourcesDirectory)'
-    softwareName: 'MixedRealityToolkit-Unity'
-    softwareVersionNum: $(MRTKVersion)
-    softwareBuildNum: '$(Build.BuildId)'
-    symbolsFolder: '$(Build.SourcesDirectory)'
-
 - task: RoslynAnalyzers@2
   inputs:
       userProvideBuildInfo: 'auto'
@@ -48,7 +40,7 @@ steps:
 - task: PostAnalysis@1
   inputs:
     AllTools: false
-    APIScan: true
+    APIScan: false
     BinSkim: true
     CodesignValidation: false
     CredScan: true
