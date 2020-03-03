@@ -271,7 +271,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         public AngularClampType AngularClampMode
         {
             get => angularClampMode;
-            set => angularClampMode = value;
+            set
+            {
+                angularClampMode = value;
+                RecalculateBoundsExtents();
+            }
         }
 
         [Range(2, 24)]
@@ -298,12 +302,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         public float BoundsScaler
         {
             get => boundsScaler;
-            set => boundsScaler = value;
+            set
+            {
+                boundsScaler = value;
+                RecalculateBoundsExtents();
+            }
         }
 
+        /// <summary>
+        /// Re-centers the target in the next update.
+        /// </summary>
         public void Recenter()
         {
             recenterNextUpdate = true;
+        }
+
+        /// <summary>
+        /// Recalculates the bounds based on the angular clamp mode.
+        /// </summary>
+        public void RecalculateBoundsExtents()
+        {
+            Bounds bounds;
+            GetBounds(gameObject, angularClampMode, out bounds);
+            boundsExtents = bounds.extents * boundsScaler;
         }
 
         private Vector3 ReferencePosition => SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;
@@ -312,11 +333,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private Quaternion PreviousReferenceRotation = Quaternion.identity;
         private Quaternion PreviousGoalRotation = Quaternion.identity;
         private bool recenterNextUpdate = true;
+        private Vector3 boundsExtents = Vector3.one;
 
         protected override void OnEnable()
         {
             base.OnEnable();
             Recenter();
+            RecalculateBoundsExtents();
         }
 
         /// <inheritdoc />
@@ -442,11 +465,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             bool angularClamped = false;
 
-            // Calculate the bounds to use with angular clamping. 
-            Bounds bounds;
-            GetBounds(gameObject, angularClampMode, out bounds);
-            Vector3 extents = bounds.extents * boundsScaler;
-
             // X-axis leashing
             // Leashing around the reference's X axis only makes sense if the reference isn't gravity aligned.
             if (IgnoreReferencePitchAndRoll)
@@ -472,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     case AngularClampType.RendererBounds:
                     case AngularClampType.ColliderBounds:
                         {
-                            Vector3 top = refRotation * new Vector3(0.0f, extents.y, currentDistance);
+                            Vector3 top = refRotation * new Vector3(0.0f, boundsExtents.y, currentDistance);
                             minMaxAngle = AngleBetweenOnPlane(top, currentRefForward, refRight) * 2.0f;
                         }
                         break;
@@ -517,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         }
                         else
                         {
-                            Vector3 side = refRotation * new Vector3(extents.x, 0.0f, extents.z);
+                            Vector3 side = refRotation * new Vector3(boundsExtents.x, 0.0f, boundsExtents.z);
                             minMaxAngle = AngleBetweenVectorAndPlane(side, refRight) * 2.0f;
                         }
 
