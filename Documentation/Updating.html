@@ -83,7 +83,7 @@
 <h1 id="updating-the-microsoft-mixed-reality-toolkit">Updating the Microsoft Mixed Reality Toolkit</h1>
 
 <ul>
-<li><a href="#updating-220-to-230">2.3.0 to 2.4.0</a></li>
+<li><a href="#updating-230-to-240">2.3.0 to 2.4.0</a></li>
 <li><a href="#updating-220-to-230">2.2.0 to 2.3.0</a></li>
 <li><a href="#updating-210-to-220">2.1.0 to 2.2.0</a></li>
 <li><a href="#updating-200-to-210">2.0.0 to 2.1.0</a></li>
@@ -94,7 +94,21 @@
 <p>Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the <a href="ReleaseNotes.html">release notes</a> for each version.</p>
 </div>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
-<p><em>Coming soon</em></p>
+<p><a href="#api-changes-in-240">API changes</a></p>
+<h3 id="api-changes-in-240">API changes in 2.4.0</h3>
+<p><strong>Custom controller classes</strong></p>
+<p>Custom controller classes previously had to define <code>SetupDefaultInteractions(Handedness)</code>. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (<code>AssignControllerMappings(DefaultInteractions);</code>), so the full call has been refactored down into <code>BaseController</code> and made an optional override instead of required.</p>
+<p><strong>WindowsApiChecker properties</strong></p>
+<p>The following WindowsApiChecker properties have been marked as obsolete. Please use <code>IsMethodAvilable</code>, <code>IsPropertyAvailable</code> or <code>IsTypeAvailable</code>.</p>
+<ul>
+<li>UniversalApiContractV8_IsAvailable</li>
+<li>UniversalApiContractV7_IsAvailable</li>
+<li>UniversalApiContractV6_IsAvailable</li>
+<li>UniversalApiContractV5_IsAvailable</li>
+<li>UniversalApiContractV4_IsAvailable</li>
+<li>UniversalApiContractV3_IsAvailable</li>
+</ul>
+<p>There are no plans to add properties to WindowsApiChecker for future API contract versions.</p>
 <h2 id="updating-220-to-230">Updating 2.2.0 to 2.3.0</h2>
 <ul>
 <li><a href="#api-changes-in-230">API changes</a></li>
