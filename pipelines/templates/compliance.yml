@@ -1,10 +1,12 @@
 parameters:
   SOMWorkspaceID: '9aee72fc-a4e1-4f86-8343-8bcb69b03955'
+  # ComplianceBranch: 'refs/heads/mrtk_development'
+  ComplianceBranch: 'refs/heads/user/maboro/compliance'
 
 steps:
 # the following tasks should only be run on mrtk_development branch, otherwise we risk issue being reported multiple times on topic/release branches
 - task: PoliCheck@1
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
     inputType: 'Basic'
     targetType: 'F'
@@ -17,13 +19,13 @@ steps:
     uploadErrorLevel: 'Error'
 
 - task: CredScan@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
     toolMajorVersion: 'V2'
     # suppressionsFile: '$(Build.SourcesDirectory)\pipelines\config\CredScanSuppressions.json'
 
 - task: BinSkim@3
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
     InputType: 'Basic'
     Function: 'analyze'
@@ -33,18 +35,18 @@ steps:
     toolVersion: '1.4.5'
 
 - task: RoslynAnalyzers@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
       userProvideBuildInfo: 'auto'
 
 - task: PublishSecurityAnalysisLogs@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
     ArtifactName: 'CodeAnalysisLogs'
     ArtifactType: 'Container'
 
 - task: PostAnalysis@1
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/mrtk_development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], ${{ parameters.ComplianceBranch }}))
   inputs:
     AllTools: false
     APIScan: false
