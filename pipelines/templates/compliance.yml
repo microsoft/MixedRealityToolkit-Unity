@@ -33,6 +33,7 @@ steps:
     AnalyzeSymPath: '$(Build.SourcesDirectory)'
     AnalyzeRecurse: true
     toolVersion: '1.4.5'
+    AnalyzeVerbose: true
 
 - task: RoslynAnalyzers@2
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], '${{ parameters.ComplianceBranch }}'))
