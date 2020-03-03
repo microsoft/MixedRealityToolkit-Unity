@@ -6,7 +6,7 @@ The *ManipulationHandler* script allows for an object to be made movable, scalab
 
 ## How to use the manipulation handler
 
-Add the `ManipulationHandler`script component to a GameObject:
+Add the `ManipulationHandler` script component to a GameObject:
 
 - Selecting the GameObject in the Hierarchy
 - In the Inspector, click the Add Component button
