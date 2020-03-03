@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
-    public class DemoSpatialAwarenessSceneObjectConsumer : MonoBehaviour, ISpatialAwarenessSceneObjectConsumer
+    public class DemoSceneUnderstandingObjectConsumer : MonoBehaviour, ISceneUnderstandingSceneObjectConsumer
     {
         [PhysicsLayer]
         public int DefaultLayer;

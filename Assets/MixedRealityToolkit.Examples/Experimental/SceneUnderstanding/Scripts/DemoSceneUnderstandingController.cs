@@ -11,13 +11,13 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
-    public class DemoSpatialAwarenessController : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
+    public class DemoSceneUnderstandingController : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>
     {
         public string SavedSceneNamePrefix = "DemoSceneUnderstanding";
-        public bool InstantiatePrefabs;
-        public GameObject SceneObjectPrefab;
-        public Transform ParentGameObject;
         public GameObject StuffToPlace;
+        public bool InstantiatePrefabs;
+        public GameObject InstantiatedPrefab;
+        public Transform InstantiatedParent;
         [Header("UI")]
         public GameObject autoUpdateToggle;
         public GameObject quadsToggle;
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         bool isInit = false;
 
         // by default stick something on the nearest platform without the user requesting it
-        bool tryFindDebug = true;
+        bool autoPlaceStuffOnce = true;
 
         async Task RegisterHandlersAsync()
         {
@@ -67,10 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         async void OnEnable()
         {
             await RegisterHandlersAsync();
-
-            // setting IsToggled not working in Enable() (mrkt 2.0 bug?) ... do in Update()
-            // InitToggleButtonState();
-
             platforms.Clear();
         }
 
@@ -81,16 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         async void Update()
         {
-            // Ugly hack around toggle not working in Enable()
-            if (!isInit)
+            if (!isInit && (observer != null))
             {
                 InitToggleButtonState();
                 isInit = true;
             }
 
-            if (tryFindDebug)
+            if (autoPlaceStuffOnce)
             {
-                tryFindDebug = false;
+                autoPlaceStuffOnce = false;
                 await Task.Delay(TimeSpan.FromSeconds(4));
                 PutStuffOnNearestPlatform();
             }
@@ -126,19 +121,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             if (InstantiatePrefabs)
             {
-                var prefab = Instantiate(SceneObjectPrefab);
+                var prefab = Instantiate(InstantiatedPrefab);
                 prefab.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
 
-                if (ParentGameObject)
+                if (InstantiatedParent)
                 {
-                    prefab.transform.SetParent(ParentGameObject);
+                    prefab.transform.SetParent(InstantiatedParent);
                 }
 
                 // A prefab can implement the ISpatialAwarenessSceneObjectConsumer contract
                 // this will let the prefab author decide how it wants to "react" to the new sceneObject
                 // In the demo scene, the prefab will scale itself to fit quad extents
 
-                foreach (var x in prefab.GetComponents<ISpatialAwarenessSceneObjectConsumer>())
+                foreach (var x in prefab.GetComponents<ISceneUnderstandingSceneObjectConsumer>())
                 {
                     x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
                 }

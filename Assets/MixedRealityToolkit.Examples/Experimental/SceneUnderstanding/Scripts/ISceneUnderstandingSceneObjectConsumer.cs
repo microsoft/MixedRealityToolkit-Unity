@@ -1,6 +1,6 @@
 ﻿using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
 
-public interface ISpatialAwarenessSceneObjectConsumer
+public interface ISceneUnderstandingSceneObjectConsumer
 {
     void OnSpatialAwarenessSceneObjectCreated(SpatialAwarenessSceneObject sceneObject);
 }
