@@ -33,6 +33,8 @@ This object would get touch events when focused by a hand that is near it. These
 events go "up" the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.
 
+This is done by using [ExecuteHierarchy](https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html) from within the default input system implementation.
+
 ### Global listeners
 
 Events can be sent to global listeners. It's possible to register for all input events by using
