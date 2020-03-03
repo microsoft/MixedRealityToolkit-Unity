@@ -427,13 +427,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         }
                         await new WaitForUpdate();
 
-                        //if (!UsePersistentObjects)
-                        //{
-                        //    CleanupDebugGameObjects();
-                        //    instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
-                        //    sceneObjects.Clear();
-                        //}
-
                         await new WaitForBackgroundThread();
                         {
                             AddUniqueTo(sasos, instantiationQueue);

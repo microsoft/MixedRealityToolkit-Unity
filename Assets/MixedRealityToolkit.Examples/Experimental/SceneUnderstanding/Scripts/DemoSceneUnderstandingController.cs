@@ -154,6 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             float closestDistance = float.MaxValue;
             Guid closestGuid;
+            bool foundGuid = false;
             SpatialAwarenessSceneObject closestPlatform = null;
 
             for (int i = 0; i < platformCount; ++i)
@@ -169,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                         continue;
                     }
                     closestGuid = platforms[i].Quads[0].guid;
+                    foundGuid = true;
                     closestPlatform = platforms[i];
                 }
             }
@@ -177,10 +179,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             // Place our stuff
 
-            Vector3 placement;
-            Vector2 queryArea = Vector2.one * .01f;
+            if (!foundGuid)
+            {
+                Debug.LogWarning("Can't find placement for quad!");
+                return;
+            }
 
-            if (observer.TryFindCentermostPlacement(closestGuid, queryArea, out placement))
+            var bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+            foreach (Renderer r in StuffToPlace.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(r.bounds);
+            }
+
+            var queryArea = new Vector2(bounds.size.x, bounds.size.y);
+
+            Vector3 placement;
+
+            if (observer.TryFindCentermostPlacement((Guid)closestGuid, queryArea, out placement))
             {
                 var stuff = Instantiate(StuffToPlace);
                 stuff.transform.position = placement;
