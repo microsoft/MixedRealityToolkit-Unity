@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using Collider method.
+        /// Method to get bounds using collider method.
         /// </summary>
         /// <param name="target">GameObject to generate the bounds around.</param>
         /// <param name="bounds">An AABB in world space around all the colliders in a gameObject hierarchy.</param>
