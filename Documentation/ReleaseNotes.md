@@ -2,6 +2,7 @@
 
 - [What's new](#whats-new-in-240)
 - [Known issues](#known-issues-in-240)
+- [Updating guidance](Updating.md#updating-230-to-240)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
