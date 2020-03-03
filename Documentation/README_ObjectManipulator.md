@@ -10,7 +10,7 @@ The *ObjectManipulator* script makes an object movable, scalable, and rotatable 
 
 To use the object manipulator, first add the [`ObjectManipulator.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/Input/Handlers/ObjectManipulator.cs) component to a GameObject.
 
-Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
+Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MRTK.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
 
 Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
 

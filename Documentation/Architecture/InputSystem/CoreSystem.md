@@ -1,6 +1,6 @@
 # Core system
 
-At the heart of the input system is the [MixedRealityInputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs),
+At the heart of the input system is the [MixedRealityInputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK.Services/InputSystem/MixedRealityInputSystem.cs),
 which is a service that is responsible for initializing and operating all of the input related
 functionality associated with the MRTK.
 
@@ -15,10 +15,10 @@ This service is responsible for:
   [Windows Mixed Reality](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs),
   [Unity Touch](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Providers/UnityInput/UnityTouchDeviceManager.cs)).
   The set of device managers that are instantiated is configured by the input system profile.
-- Instantiation of the [GazeProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/GazeProvider.cs),
+- Instantiation of the [GazeProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK.Services/InputSystem/GazeProvider.cs),
   which is a component that is responsible for providing HoloLens1-style head gaze information
   in addition to HoloLens2-style eye gaze information.
-- Instantiation of the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs),
+- Instantiation of the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK.Services/InputSystem/FocusProvider.cs),
   which is a component that is responsible for determining objects that have focus. This
   is described in more depth in the [pointers and focus](ControllersPointersAndFocus.md#pointers-and-focus) section of the
   documentation.
@@ -38,7 +38,7 @@ events go "up" the GameObject hierarchy until it finds a GameObject that is capa
 the event.
 
 This is done by using [ExecuteHierarchy](https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html)
-in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs#L471).
+in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK.Services/InputSystem/MixedRealityInputSystem.cs#L471).
 
 ### Global listeners
 
