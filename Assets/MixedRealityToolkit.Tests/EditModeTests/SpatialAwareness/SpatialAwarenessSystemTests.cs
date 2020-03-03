@@ -12,7 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
 {
     public class SpatialAwarenessSystemTests
     {
-        private const string TestSpatialAwarenessSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset";
+        // Tests/EditModeTests/Services/TestProfiles/TestMixedRealitySpatialAwarenessSystemProfile.asset
+        private const string TestSpatialAwarenessSystemProfileGuid = "757d72d70f9c56144b05346288682e00";
+        private static readonly string TestSpatialAwarenessSystemProfilePath = AssetDatabase.GUIDToAssetPath(TestSpatialAwarenessSystemProfileGuid);
 
         [TearDown]
         public void TearDown()

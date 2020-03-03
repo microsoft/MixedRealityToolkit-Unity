@@ -51,9 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private enum SearchType
         {
             /// <summary>
-            /// This indicates
+            /// Search for a file.
             /// </summary>
             File,
+            /// <summary>
+            /// Search for a folder.
+            /// </summary>
             Folder,
         }
 
@@ -433,7 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void TryToCreateGeneratedFolder()
         {
-            // Always add the the MixedRealityToolkit.Generated folder to Assets
+            // Always add the MixedRealityToolkit.Generated folder to Assets
             var generatedDirs = GetDirectories(MixedRealityToolkitModuleType.Generated);
             if (generatedDirs == null || !generatedDirs.Any())
             {

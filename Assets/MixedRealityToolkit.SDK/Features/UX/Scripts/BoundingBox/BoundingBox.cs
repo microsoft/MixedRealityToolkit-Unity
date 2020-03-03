@@ -611,7 +611,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead
         /// </summary>
-        public GameObject RotationHandleSlatePrefab
+        public GameObject RotationHandlePrefab
         {
             get { return rotationHandlePrefab; }
             set
@@ -623,6 +623,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
+
+        /// <summary>
+        /// Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead
+        /// </summary>
+        [Obsolete("This property has been renamed RotationHandlePrefab.")]
+        public GameObject RotationHandleSlatePrefab
+        {
+            get { return RotationHandlePrefab; }
+            set { RotationHandlePrefab = value; }
+        }
+
         [SerializeField]
         [FormerlySerializedAs("ballRadius")]
         [Tooltip("Radius of the handle geometry of rotation handles")]
@@ -1120,8 +1131,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        
-
         /// <summary>
         /// The collider reference tracking the bounds utilized by this component during runtime
         /// </summary>
@@ -1613,7 +1622,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
-                
+
                 Bounds bounds = new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale);
                 if (edgeAxes[i] == CardinalAxisType.X)
                 {
@@ -1904,7 +1913,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool AddColliderBoundsCornersToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
             if (colliderByTransform.Key == null) { return false; }
-            
+
             BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
 
             return colliderByTransform.Key != null;

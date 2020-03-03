@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             serializedObject.Update();
 
             InspectorUIUtility.DrawTitle("States");
-            InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Transitions");
+            EditorGUILayout.HelpBox("Manage state configurations to drive Interactables or Transitions", MessageType.None);
 
             SerializedProperty stateModelClassName = serializedObject.FindProperty("StateModelClassName");
             SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
@@ -41,12 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var stateModelTypes = TypeCacheUtility.GetSubClasses<BaseStateModel>();
             var stateModelClassNames = stateModelTypes.Select(t => t?.Name).ToArray();
             int id = Array.IndexOf(stateModelClassNames, stateModelClassName.stringValue);
-            int newId = EditorGUILayout.Popup("State Model", id, stateModelClassNames);
-            if (id != newId)
+
+            Rect stateModelPos = EditorGUILayout.GetControlRect();
+            using (new EditorGUI.PropertyScope(stateModelPos, new GUIContent("State Model"), stateModelClassName))
             {
-                Type newType = stateModelTypes[newId];
-                stateModelClassName.stringValue = newType.Name;
-                assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
+                int newId = EditorGUILayout.Popup("State Model", id, stateModelClassNames);
+                if (id != newId)
+                {
+                    Type newType = stateModelTypes[newId];
+                    stateModelClassName.stringValue = newType.Name;
+                    assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
+                }
             }
 
             for (int i = 0; i < stateList.arraySize; i++)
@@ -65,16 +70,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     activeIndex.intValue = i;
 
+                    Rect position = EditorGUILayout.GetControlRect();
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        string[] stateEnums = Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));
-                        int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
+                        var label = new GUIContent(name.stringValue + " (" + bit.intValue + ")");
+                        using (new EditorGUI.PropertyScope(position, new GUIContent(), name))
+                        {
+                            string[] stateEnums = Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));
+                            int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
 
-                        int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bit.intValue + ")", enumIndex, stateEnums);
-                        if (newEnumIndex == -1) { newEnumIndex = 0; }
+                            int newEnumIndex = EditorGUILayout.Popup(label, enumIndex, stateEnums);
+                            if (newEnumIndex == -1) { newEnumIndex = 0; }
 
-                        name.stringValue = stateEnums[newEnumIndex];
-                        index.intValue = newEnumIndex;
+                            name.stringValue = stateEnums[newEnumIndex];
+                            index.intValue = newEnumIndex;
+                        }
 
                         if (InspectorUIUtility.SmallButton(RemoveStateLabel))
                         {

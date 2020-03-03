@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     {
         private static readonly GUIContent RemoveButtonContent = new GUIContent("-", "Remove keyword");
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
+        private static readonly GUIContent KeywordContent = new GUIContent("Keyword", "Speech keyword item");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
 
         private string[] distinctRegisteredKeywords;
@@ -162,13 +163,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                     if (!elementRemoved && elementExpanded)
                     {
-                        string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
-                        int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
-                        int currentSelection = EditorGUILayout.Popup("Keyword", previousSelection, keywords);
-
-                        if (currentSelection != previousSelection)
+                        Rect position = EditorGUILayout.GetControlRect();
+                        using (new EditorGUI.PropertyScope(position, KeywordContent, keywordProperty))
                         {
-                            keywordProperty.stringValue = keywords[currentSelection];
+                            string[] keywords = availableKeywords.Concat(new[] { keywordProperty.stringValue }).OrderBy(keyword => keyword).ToArray();
+                            int previousSelection = ArrayUtility.IndexOf(keywords, keywordProperty.stringValue);
+                            int currentSelection = EditorGUILayout.Popup(KeywordContent, previousSelection, keywords);
+
+                            if (currentSelection != previousSelection)
+                            {
+                                keywordProperty.stringValue = keywords[currentSelection];
+                            }
                         }
 
                         SerializedProperty responseProperty = speechCommandProperty.FindPropertyRelative("response");

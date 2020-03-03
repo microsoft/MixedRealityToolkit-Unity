@@ -106,6 +106,68 @@ In the example below, the *Package here* should be filled with the package locat
 public class MyNewComponent : MonoBehaviour
 ```
 
+### Adding new Unity inspector scripts
+
+In general, try to avoid creating custom inspector scripts for MRTK components. It adds additional overhead and management of the codebase that could be handled by the Unity engine. 
+
+If an inspector class is necessary, try to use Unity's [`DrawDefaultInspector()`](https://docs.unity3d.com/ScriptReference/Editor.DrawDefaultInspector.html). This again simplifies the inspector class and leaves much of the work to Unity.
+
+```c#
+public override void OnInspectorGUI()
+{
+    // Do some custom calculations or checks
+    // ....
+    DrawDefaultInspector();
+}
+```
+
+If custom rendering is required in the inspector class, try to utilize [`SerializedProperty`](https://docs.unity3d.com/ScriptReference/SerializedProperty.html) and [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html). This will ensure Unity correctly handles rendering nested prefabs and modified values. 
+
+If [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html) cannot be used due to a requirement in custom logic, ensure all usage is wrapped around a [`EditorGUI.PropertyScope`](https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyScope.html). This will ensure Unity renders the inspector correctly for nested prefabs and modified values with the given property. 
+
+Furthermore, try to decorate the custom inspector class with a [`CanEditMultipleObjects`](https://docs.unity3d.com/ScriptReference/CanEditMultipleObjects.html). This tag ensure multiple objects with this component in the scene can be selected and modified together. Any new inspector classes should test that their code works in this situation in the scene.
+
+```c#
+    // Example inspector class demonstrating usage of SerializedProperty & EditorGUILayout.PropertyField
+    // as well as use of EditorGUI.PropertyScope for custom property logic
+    [CustomEditor(typeof(MyComponent))]
+    public class MyComponentInspector : UnityEditor.Editor
+    {
+        private SerializedProperty myProperty;
+        private SerializedProperty handedness;
+
+        protected virtual void OnEnable()
+        {
+            myProperty = serializedObject.FindProperty("myProperty");
+            handedness = serializedObject.FindProperty("handedness");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.PropertyField(destroyOnSourceLost);
+
+            Rect position = EditorGUILayout.GetControlRect();
+            var label = new GUIContent(handedness.displayName);
+            using (new EditorGUI.PropertyScope(position, label, handedness))
+            {
+                var currentHandedness = (Handedness)handedness.enumValueIndex;
+
+                handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(
+                    position, 
+                    label, 
+                    currentHandedness,
+                    (value) => { 
+                        // This function is executed by Unity to determine if a possible enum value
+                        // is valid for selection in the editor view
+                        // In this case, only Handedness.Left and Handedness.Right can be selected
+                        return (Handedness)value == Handedness.Left 
+                        || (Handedness)value == Handedness.Right; 
+                    });
+            }
+        }
+    }
+```
+
 ### Adding new ScriptableObjects
 
 When adding new ScriptableObject scripts, ensure the [`CreateAssetMenu`](https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.

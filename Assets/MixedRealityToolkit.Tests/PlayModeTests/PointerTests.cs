@@ -27,10 +27,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Tests to verify pointer state and pointer direction
     /// </summary>
-    public class PointerTests 
+    public class PointerTests
     {
-        private const string LinePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab";
-        private const string CurvePointerPrefab = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab";
+        // SDK/Features/UX/Prefabs/Pointers/DefaultControllerPointer.prefab
+        private const string LinePointerGuid = "d5b94136462644c9873bb3347169ae7e";
+        private static readonly string LinePointerPrefab = AssetDatabase.GUIDToAssetPath(LinePointerGuid);
+
+        // SDK/Features/UX/Prefabs/Pointers/ParabolicPointer.prefab
+        private const string CurvePointerGuid = "c4fd3c6fc7ff484eb434775066e7f327";
+        private static readonly string CurvePointerPrefab = AssetDatabase.GUIDToAssetPath(CurvePointerGuid);
 
         [SetUp]
         public void Setup()
@@ -56,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             BaseEventSystem.enableDanglingHandlerDiagnostics = false;
 
-            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab, 
+            var linePointer = CreatePointerPrefab<LinePointer>(LinePointerPrefab,
                 out IMixedRealityInputSource lineInputSource, out IMixedRealityController lineController);
 
             var curvePointer = CreatePointerPrefab<TeleportPointer>(CurvePointerPrefab,
@@ -210,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that the same PokePointer
         /// 1) is not destroyed
-        /// 2) retreived and re-used from the pointer cache
+        /// 2) retrieved and re-used from the pointer cache
         /// 3) still click buttons and provides input after re-use
         /// </summary>
         [UnityTest]
@@ -329,10 +334,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static T CreatePointerPrefab<T>(string prefabPath,
                                                 out IMixedRealityInputSource inputSource,
-                                                out IMixedRealityController controller) 
+                                                out IMixedRealityController controller)
             where T : IMixedRealityPointer
         {
-            var pointerPrefab = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(prefabPath);
+            var pointerPrefab = AssetDatabase.LoadAssetAtPath<Object>(prefabPath);
             var result = PrefabUtility.InstantiatePrefab(pointerPrefab) as GameObject;
             T pointer = result.GetComponent<T>();
 

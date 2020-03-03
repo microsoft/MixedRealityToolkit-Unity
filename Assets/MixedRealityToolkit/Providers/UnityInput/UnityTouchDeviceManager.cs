@@ -139,7 +139,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     }
                 }
 
-                controller.SetupConfiguration(typeof(UnityTouchController));
                 ActiveTouches.Add(touch.fingerId, controller);
             }
 
