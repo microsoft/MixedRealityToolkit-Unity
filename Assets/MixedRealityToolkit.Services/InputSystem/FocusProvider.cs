@@ -556,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // The gaze hit result may be populated from previous raycasts this frame, only recompute
             // another raycast if it's not populated
-            if (gazeHitResult == null)
+            if (gazeHitResult == null && gazeProviderPointingData != null)
             {
                 // get 3d hit
                 hitResult3d.Clear();
@@ -1006,7 +1006,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointerData.UpdateHit(hit);
 
                     // set gaze hit result - make sure to include unity ui hits
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (gazeProviderPointingData?.Pointer != null && pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
                         gazeHitResult = hit;
                     }
@@ -1423,7 +1423,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
-                if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                if (gazeProviderPointingData?.Pointer != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
                     if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
