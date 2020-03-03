@@ -477,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using Renderer method.
+        /// Method to get bounds using renderer method.
         /// </summary>
         /// <param name="target">GameObject to generate the bounds around.</param>
         /// <param name="bounds">An AABB in world space around all the renderers in a gameObject hierarchy.</param>
