@@ -514,7 +514,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using MeshFilters method.
+        /// Method to get bounds using mesh filters method.
         /// </summary>
         /// <param name="target">GameObject to generate the bounds around.</param>
         /// <param name="bounds">An AABB in world space around all the meshFilters in a gameObject hierarchy.</param>
