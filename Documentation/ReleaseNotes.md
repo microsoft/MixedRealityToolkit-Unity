@@ -1,6 +1,5 @@
 # Microsoft Mixed Reality Toolkit release notes
 
-- [Upgrading projects](#upgrading-projects-to-240)
 - [What's new](#whats-new-in-240)
 - [Known issues](#known-issues-in-240)
 
