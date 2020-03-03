@@ -12,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     public class ControllerPoseSynchronizerInspector : UnityEditor.Editor
     {
         private const string SynchronizationSettingsKey = "MRTK_Inspector_SynchronizationSettingsFoldout";
-        private static readonly string[] HandednessLabels = { "Left", "Right" };
 
         private static bool synchronizationSettingsFoldout = true;
 
