@@ -519,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="target">GameObject to generate the bounds around.</param>
         /// <param name="bounds">An AABB in world space around all the meshFilters in a gameObject hierarchy.</param>
         /// <param name="ignoreLayers">A LayerMask to restrict the colliers selected.</param>
-        /// <returns>True if bounds were calculated, if zero meshFilters are present bounds will not be calculated.</returns>
+        /// <returns>True if bounds were calculated, if zero mesh filters are present bounds will not be calculated.</returns>
         public static bool GetMeshFilterBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)
         {
             var boundsPoints = new List<Vector3>();
