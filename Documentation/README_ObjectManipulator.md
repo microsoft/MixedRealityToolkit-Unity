@@ -8,9 +8,14 @@ The *ObjectManipulator* script makes an object movable, scalable, and rotatable 
 
 ## How to use the object manipulator
 
-To use the object manipulator, first add the [`ObjectManipulator.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Experimental/Features/Input/Handlers/ObjectManipulator.cs) component to a GameObject.
+To use the object manipulator, first add the `ObjectManipulator` script component to a GameObject:
 
-Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MRTK.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
+- Selecting the GameObject in the Hierarchy
+- In the Inspector, click the Add Component button
+- Type "Object Manipulator" in the search field
+- Press enter
+
+Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
 
 Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
 
@@ -32,8 +37,8 @@ The object transform that will be manipulated. Defaults to the object of the com
 
 Specifies whether the object can be manipulated using one hand or two hands. Because this property is a flag, both options can be selected.
 
-* *One handed*: Enables one handed manipulation if selected.
-* *Two handed*: Enables two handed manipulation if selected.
+- *One handed*: Enables one handed manipulation if selected.
+- *Two handed*: Enables two handed manipulation if selected.
 
 #### Allow far manipulation
 
