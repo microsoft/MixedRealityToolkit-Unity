@@ -177,7 +177,7 @@ In the Mixed Reality Toolkit, data providers are configured using [profiles](../
 Data providers with additional configuration options (ex: [InputSimulationService](../InputSimulation/InputSimulationService.md)) should create a profile and inspector to allow
 customers to modify the behavior to best suit the needs of the application.
 
-> The complete code for the example in this section can be found in the MRTK.Services\InputSimulation folder.
+> The complete code for the example in this section can be found in the MRTK.Services/InputSimulation folder.
 
 ### Define the profile
 

@@ -45,7 +45,7 @@ The input system has some of its own terminology that are worth defining:
     IMixedRealityFocusHandler to receive focus. It's possible to globally register an object to receive
     unfiltered pointer events, but this approach is not recommended.
 
-    The component that updates which objects are in focus is the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK.Services/InputSystem/FocusProvider.cs)
+    The component that updates which objects are in focus is the [FocusProvider](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider)
 
 - **Cursor**
 
@@ -67,4 +67,3 @@ The input system has some of its own terminology that are worth defining:
 The image below captures the high level build up (from bottom up) of the MRTK input stack:
 
 ![Input System Diagram](../../Images/Input/MRTK_InputSystem.png)
- 
