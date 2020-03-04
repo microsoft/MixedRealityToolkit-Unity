@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using NUnit.Framework;
 using System.Collections;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -23,16 +24,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         const string relativePath = "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/glTF/AvocadoCustomAttr.gltf";
 
-        [UnityTest]
-        public IEnumerator GltfLoads()
+        private IEnumerator WaitForTask(Task task)
         {
-            string path = Path.GetFullPath(relativePath);
+            while (!task.IsCompleted) { yield return null; }
+            if (task.IsFaulted) { throw task.Exception; }
+            yield return null;
+        }
 
+        [UnityTest]
+        public IEnumerator TestGltfLoads()
+        {
+            // Load glTF
+            string path = Path.GetFullPath(relativePath);
             var task = GltfUtility.ImportGltfObjectFromPathAsync(relativePath);
 
-            while (!task.IsCompleted) { yield return null; }
-
-            if (task.IsFaulted) { throw task.Exception; }
+            yield return WaitForTask(task);
 
             GltfObject gltfObject = task.Result;
 
@@ -45,6 +51,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.normals.Length);
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.tangents.Length);
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.vertexCount);
+        }
+
+        [UnityTest]
+        public IEnumerator TestGltfCustomAttributes()
+        {
+            // Load glTF
+            string path = Path.GetFullPath(relativePath);
+            var task = GltfUtility.ImportGltfObjectFromPathAsync(relativePath);
+
+            yield return WaitForTask(task);
+
+            GltfObject gltfObject = task.Result;
 
             // Check for custom attribute
             int temperatureIdx;
@@ -53,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int temperature = gltfObject.accessors[temperatureIdx].count;
             Assert.AreEqual(100, temperature);
         }
+
     }
 }
 #endif
