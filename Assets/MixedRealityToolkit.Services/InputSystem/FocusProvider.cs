@@ -551,21 +551,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // The gaze hit result may be populated from previous raycasts this frame, only recompute
             // another raycast if it's not populated
-            if (gazeHitResult == null && gazeProviderPointingData != null)
+            if (gazeHitResult == null)
             {
-                // get 3d hit
-                hitResult3d.Clear();
-                var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-                QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
-                    hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
+                if (gazeProviderPointingData != null)
+                {
+                    // get 3d hit
+                    hitResult3d.Clear();
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                    LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                    QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
+                        hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                // get ui hit
-                hitResultUi.Clear();
-                RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                    // get ui hit
+                    hitResultUi.Clear();
+                    RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
-                // set gaze hit according to distance and prioritization layer mask
-                gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                    // set gaze hit according to distance and prioritization layer mask
+                    gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                }
+                else
+                {
+                    return;
+                }
             }
 
             CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
