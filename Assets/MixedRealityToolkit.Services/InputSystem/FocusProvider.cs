@@ -553,7 +553,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // another raycast if it's not populated
             if (gazeHitResult == null)
             {
-                if (gazeProviderPointingData != null)
+                if (gazeProviderPointingData?.Pointer != null)
                 {
                     // get 3d hit
                     hitResult3d.Clear();
