@@ -82,9 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="core-system">Core system</h1>
 
-<p>At the heart of the input system is the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs">MixedRealityInputSystem</a>,
-which is a service that is responsible for initializing and operating all of the input related
-functionality associated with the MRTK.</p>
+<p>At the heart of the input system is the <a href="../../Input/Overview.html">InputSystem</a>, which is a service that is responsible for initializing and operating all of the input related functionality associated with the MRTK.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>It is assumed that readers have already read and have a basic understanding of the
@@ -97,11 +95,9 @@ functionality associated with the MRTK.</p>
 <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs">Windows Mixed Reality</a>,
 <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Providers/UnityInput/UnityTouchDeviceManager.cs">Unity Touch</a>).
 The set of device managers that are instantiated is configured by the input system profile.</li>
-<li>Instantiation of the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/GazeProvider.cs">GazeProvider</a>,
-which is a component that is responsible for providing HoloLens1-style head gaze information
-in addition to HoloLens2-style eye gaze information.</li>
-<li>Instantiation of the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs">FocusProvider</a>,
-which is a component that is responsible for determining objects that have focus. This
+<li>Instantiation of the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">GazeProvider</a>, which is a component that is responsible for providing HoloLens (1st generation) style head gaze information
+in addition to HoloLens 2 style eye gaze information.</li>
+<li>Instantiation of the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html">FocusProvider</a>, which is a component that is responsible for determining objects that have focus. This
 is described in more depth in the <a href="ControllersPointersAndFocus.html#pointers-and-focus">pointers and focus</a> section of the
 documentation.</li>
 <li>Providing registration points for all input events (as <a href="#global-listeners">global listeners</a>).</li>
@@ -115,8 +111,7 @@ have a script that implements <a href="https://github.com/microsoft/MixedReality
 This object would get touch events when focused by a hand that is near it. These types of
 events go &quot;up&quot; the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.</p>
-<p>This is done by using <a href="https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html">ExecuteHierarchy</a>
-in <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs#L471">DispatchEventToObjectFocusedByPointer</a>.</p>
+<p>This is done by using <a href="https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html">ExecuteHierarchy</a> from within the default input system implementation.</p>
 <h3 id="global-listeners">Global listeners</h3>
 <p>Events can be sent to global listeners. It's possible to register for all input events by using
 the input system's <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>IMixedRealityEventSystem</code></a>
