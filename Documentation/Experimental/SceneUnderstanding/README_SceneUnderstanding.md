@@ -33,28 +33,16 @@ Scene Understanding is a __platform specific__ technology. Spatial Awareness is 
 
 ## Prerequisites
 
-Assumes you have not enabled "MSBuild" in MRTK configuration.
+Ensure build settings' platform is set to UWP.
 
-Install NuGetForUnity unitypackage from here
-https://github.com/GlitchEnzo/NuGetForUnity/releases
+Ensure your project is configured to use MSBuild.
 
-Once NuGetForUnity is installed open NuGetForUnity, search then install these packages:
-- Sceneunderstanding
-- Microsoft.Windows.MixedReality.DotNetWinRT
+You may need to restart unity if you get errors about missing assembly references. This should trigger download of packages.
 
-VCRTForwarders should be automatically pulled in as a dependency.
+![Manage MRTK Configuration](Images/ConfigureMRTKMSBuildMenu.jpg)
 
-![Manage Nuget packages](/Documentation/ImagesManageNuget.png)
+![MSBuild enabled](Images/MRTKProjectConfiguratorMSBuildEnabled.jpg)
 
-![Search for Nuget package](/Documentation/ImagesNugetSearch.png)
-
-Ensure build settings are set to UWP
-
-### Install roadmap
-
-MSBuild will be replacing this process in the future which will eliminate the NuGetForUnity dependency.
-
-If you have installed MSBuild you need to remove the Microsoft.Windows.MixedReality.DotNetWinRT package from NuGet.
 
 ## Demonstration and debugging SU
 
@@ -68,8 +56,8 @@ Open the scene file and press play!
 
 Select the 'MixedRealityTookit' game object and check the inspector.
 
-![scene understanding location in heirarchy](/Documentation/ImagesMRTKHierarchy.png)
-![mrkt location in inspector](/Documentation/Images/MRTKLocation.png)
+![scene understanding location in heirarchy](Images/MRTKHierarchy.png)
+![mrkt location in inspector](Images/MRTKLocation.png)
 
 These options will allow you to configure the observer on play. 
 
@@ -92,7 +80,7 @@ The script uses MRKT UI to toggle service features on the controller.
 
 Turning on "Instantiate Prefabs", will demonstrate creating objects that size to fit themselves to all Scene Objects, gathered neatly under a parent object.
 
-![demo controller options](/Documentation/Images/Controller.png)
+![demo controller options](Images/Controller.png)
 
 ### Built app notes
 
@@ -107,5 +95,5 @@ As this effort in in EXPERIMENTAL things are likely to change. Feedback requeste
 
 Saved .bytes files can be accessed through the device portal at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. You can use these `bytes` for your workflow in edtor by specifying them in the observer profile.
 
-![Device Portal location of bytes file](/Documentation/Images/BytesInDevicePortal.png)
-![Serialized scene bytes in observer](/Documentation/Images/BytesLocationInObserver.png)
+![Device Portal location of bytes file](Images/BytesInDevicePortal.png)
+![Serialized scene bytes in observer](Images/BytesLocationInObserver.png)
