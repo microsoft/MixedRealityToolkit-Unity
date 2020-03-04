@@ -8,14 +8,9 @@ The *ObjectManipulator* script makes an object movable, scalable, and rotatable 
 
 ## How to use the object manipulator
 
-To use the object manipulator, first add the `ObjectManipulator` script component to a GameObject:
+To use the object manipulator, first add the `ObjectManipulator` script component to a GameObject.Mak e sure to also add a collider to the object, matching its grabbable bounds.
 
-- Selecting the GameObject in the Hierarchy
-- In the Inspector, click the Add Component button
-- Type "Object Manipulator" in the search field
-- Press enter
-
-Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
+To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
 
 Physics behaviour can be enabled for the object manipulator by adding a rigidbody component to the object. Physics behaviour enabled by adding this component is discussed in greater detail in [*Physics and collisions*](#physics-and-collisions).
 
