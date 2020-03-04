@@ -726,6 +726,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestFollowDistance()
         {
+            const float followWaitTime = 0.1f;
+
             // Reset view to origin
             TestUtilities.PlayspaceToOriginLookingForward();
 
@@ -736,7 +738,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var targetTransform = testObjects.target.transform;
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             // Test distance remains within min/max bounds
             float distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
@@ -749,7 +751,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
             Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
@@ -761,7 +763,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             distanceToHead = Vector3.Distance(targetTransform.position, CameraCache.Main.transform.position);
             Assert.LessOrEqual(distanceToHead, followSolver.MaxDistance, "Follow exceeded max distance");
@@ -778,7 +780,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             MixedRealityPlayspace.PerformTransformation(p =>
             {
@@ -786,7 +788,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             float yDistance = targetTransform.position.y - CameraCache.Main.transform.position.y;
             Assert.AreEqual(followSolver.VerticalMaxDistance, yDistance);
@@ -921,6 +923,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestFollowStuckBehind()
         {
+            const float followWaitTime = 0.1f;
+
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Follow>();
             var followSolver = (Follow)testObjects.solver;
@@ -934,14 +938,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.PlayspaceToOriginLookingForward();
 
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
 
             // Test y axis rotation
             MixedRealityPlayspace.PerformTransformation(p => p.Rotate(Vector3.up, 180));
             yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return new WaitForSeconds(followWaitTime);
 
             Assert.Greater(Vector3.Dot(CameraCache.Main.transform.forward, toTarget()), 0, "Follow behind the player");
         }
