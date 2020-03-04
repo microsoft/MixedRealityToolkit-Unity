@@ -6,9 +6,9 @@ The *ManipulationHandler* script allows for an object to be made movable, scalab
 
 ## How to use the manipulation handler
 
-Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) component to a GameObject.
+Add the `ManipulationHandler` script component to a GameObject. Make sure to also add a collider to the object, matching its grabbable bounds.
 
-Make sure to also add a collider to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well.
+To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
 
 If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
 

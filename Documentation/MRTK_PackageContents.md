@@ -26,7 +26,7 @@ The Microsoft.MixedRealityToolkit.Unity.Foundation package includes the core com
 | | Features | Functionality that builds upon the Foundation package. |
 | | Profiles | Default profiles for the Microsoft Mixed Reality Toolkit systems and services. |
 | | StandardAssets | Common assets; models, textures, materials, etc. |
-| MixedRealityToolkit.Services | | |
+| MRTK.Services | | |
 | | [BoundarySystem](Boundary/BoundarySystemGettingStarted.md) | System implementing VR boundary support. |
 | | [CameraSystem](CameraSystem/CameraSystemOverview.md) | System implementing camera configuration and management. |
 | | [DiagnosticsSystem](Diagnostics/DiagnosticsSystemGettingStarted.md) | System implementing in application diagnostics, for example a visual profiler. |
