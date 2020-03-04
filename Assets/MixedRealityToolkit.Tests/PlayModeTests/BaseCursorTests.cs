@@ -273,8 +273,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
-            Object.Destroy(manipulationHandler);
             Object.Destroy(cursorContextManipulationHandler);
+            Object.Destroy(manipulationHandler);
         }
 
         [UnityTest]
