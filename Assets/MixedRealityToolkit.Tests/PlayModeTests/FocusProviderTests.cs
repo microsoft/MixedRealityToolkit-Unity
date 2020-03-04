@@ -386,6 +386,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Ensures the focus provider runs its update loop properly without a gaze provider.
+        /// Also tests that a gaze provider can successfully be cleaned up at runtime.
         /// </summary>
         [UnityTest]
         public IEnumerator TestFocusProviderWithoutGaze()
