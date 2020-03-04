@@ -538,12 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!IsSetupValid) { return; }
 
             UpdatePointers();
-
-            if (gazeProviderPointingData?.Pointer != null)
-            {
-                UpdateGazeProvider();
-            }
-
+            UpdateGazeProvider();
             UpdateFocusedObjects();
 
             PrimaryPointer = primaryPointerSelector?.Update();
