@@ -385,6 +385,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(shellHandRayPointer.Result?.CurrentPointerTarget, $"{noPriorityCube.name} should NOT be raycast target by shell hand ray pointer");
         }
 
+        /// <summary>
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFocusProviderWithoutGaze()
+        {
+            IMixedRealityInputSystem inputSystem = PlayModeTestUtilities.GetInputSystem();
+            yield return null;
+
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            yield return null;
+
+            // Put up a hand to ensure there's a second pointer, which will keep the FocusProvider UpdatePointers loop spinning
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+
+            // Verify that the GazeProvider exists at the start
+            Assert.IsTrue(inputSystem.GazeProvider as MonoBehaviour != null, "Gaze provider should exist at start");
+            yield return null;
+
+            // Destroy the GazeProvider
+            Object.Destroy(inputSystem.GazeProvider as MonoBehaviour);
+            yield return null;
+
+            // Verify that the GazeProvider no longer exists
+            Assert.IsTrue(inputSystem.GazeProvider as MonoBehaviour == null, "Gaze provider should no longer exist");
+            yield return null;
+
+            // Hide the hand for other tests
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+        }
+
         private static GameObject CreateTestCube(Vector3 position, float scale = 0.2f)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
