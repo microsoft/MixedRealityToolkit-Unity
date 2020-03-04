@@ -46,29 +46,41 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public override void Init(GameObject host, ThemeDefinition settings)
         {
+            audioSource = host.GetComponentInChildren<AudioSource>();
             base.Init(host, settings);
-            audioSource = Host.GetComponentInChildren<AudioSource>();
         }
 
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
-            AudioSource audioSource = Host.GetComponentInChildren<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = Host.GetComponentInChildren<AudioSource>();
+            }
+
             if (audioSource != null)
             {
                 start.AudioClip = audioSource.clip;
             }
+
             return start;
         }
 
+        /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
+        {
+            SetValue(property, property.Values[index]);
+        }
+
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
         {
             if (audioSource == null)
             {
                 audioSource = Host.AddComponent<AudioSource>();
             }
 
-            audioSource.clip = property.Values[index].AudioClip;
+            audioSource.clip = value.AudioClip;
             audioSource.Play();
         }
     }

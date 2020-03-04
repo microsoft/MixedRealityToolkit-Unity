@@ -299,6 +299,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        [Tooltip("If true, when this component is destroyed, active themes will reset their modified properties to original values on the targeted GameObjects. If false, GameObject properties will remain as-is.")]
+        [SerializeField]
+        private bool resetOnDestroy = false;
+
+        /// <summary>
+        /// If true, when this component is destroyed, active themes will reset their modified properties to original values on the targeted GameObjects. If false, GameObject properties will remain as-is.
+        /// </summary>
+        public bool ResetOnDestroy
+        {
+            get => resetOnDestroy;
+            set => resetOnDestroy = value;
+        }
+
         private List<InteractableThemeBase> activeThemes = new List<InteractableThemeBase>();
 
         /// <summary>
@@ -596,11 +609,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region MonoBehaviour Implementation
 
+        /// <inheritdoc/>
         protected virtual void Awake()
         {
             EnsureInitialized();
         }
 
+        /// <inheritdoc/>
         protected virtual void OnEnable()
         {
             if (!VoiceRequiresFocus)
@@ -621,6 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <inheritdoc/>
         protected virtual void OnDisable()
         {
             // If we registered to receive global events, remove ourselves when disabled
@@ -637,14 +653,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ResetInputTrackingStates();
         }
 
+        /// <inheritdoc/>
         protected virtual void Start()
         {
             InternalUpdate();
         }
 
+        /// <inheritdoc/>
         protected virtual void Update()
         {
             InternalUpdate();
+        }
+
+        /// <inheritdoc/>
+        protected virtual void OnDestroy()
+        {
+            if (ResetOnDestroy)
+            {
+                foreach (var theme in activeThemes)
+                {
+                    theme.Reset();
+                }
+            }
         }
 
         private void InternalUpdate()

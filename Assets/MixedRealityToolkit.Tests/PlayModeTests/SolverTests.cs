@@ -479,8 +479,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(CameraCache.Main.transform.position.x, tapToPlaceObj.target.transform.position.x, "The tap to place object position.x does not match the camera position.x");
 
             // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
-            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
-            yield return WaitForFrames(30);
+            // We need to wait at least 0.5 secs until another click is called or tap to place will ignore the action
+            yield return new WaitForSeconds(0.5f);
 
             // Click object to stop placement
             yield return leftHand.Click();
@@ -538,8 +538,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(initialObjPosition != tapToPlaceObj.target.transform.position);
 
             // Tap to place has a 0.5 sec timer between clicks to make sure a double click does not get registered
-            // We need to wait at least 30 frames until another click is called or tap to place will ignore the action
-            yield return WaitForFrames(30);
+            // We need to wait at least 0.5 secs until another click is called or tap to place will ignore the action
+            yield return new WaitForSeconds(0.5f);
 
             // Click to stop the placement
             yield return leftHand.Click();
