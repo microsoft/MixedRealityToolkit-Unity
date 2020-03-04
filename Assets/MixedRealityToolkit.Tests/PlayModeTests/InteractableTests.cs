@@ -454,6 +454,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Instantiates a runtime assembled Interactable with ResetOnDestroy property true and destroy the Interactable component. 
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestResetOnDestroy()
+        {
+            AssembleInteractableButton(
+                out Interactable interactable,
+                out Transform translateTargetObject);
+
+            interactable.ResetOnDestroy = true;
+
+            var originalColor = translateTargetObject.gameObject.GetComponent<Renderer>().material.color;
+
+            // Put GGV focus on the Interactable button
+            CameraCache.Main.transform.LookAt(interactable.transform.position);
+
+            yield return new WaitForSeconds(EaseDelay);
+            var propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+
+            // Destroy the interactable component
+            GameObject.Destroy(interactable);
+
+            // Remove focus
+            CameraCache.Main.transform.LookAt(Vector3.zero);
+
+            yield return null;
+            propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), originalColor);
+        }
+
+        /// <summary>
         /// Tests button depth and focus state after enabling, disabling and re-enabling Interactable 
         /// internally via IsEnabled. The focus state after re-enabling should be false and button
         /// depth should be in its default position.  This test is specifically addressing behavior described 

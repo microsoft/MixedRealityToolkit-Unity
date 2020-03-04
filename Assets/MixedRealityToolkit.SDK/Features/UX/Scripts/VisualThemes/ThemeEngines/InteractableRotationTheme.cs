@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool IsLocalRotation => GetThemeProperty(LocalRotationPropertyIndex).Value.Bool;
 
+        protected Vector3 originalLocalRotation;
         protected Vector3 originalRotation;
         protected Transform hostTransform;
 
@@ -73,10 +74,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            base.Init(host, settings);
+            hostTransform = host.transform;
+            originalLocalRotation = hostTransform.localEulerAngles;
+            originalRotation = hostTransform.eulerAngles;
 
-            hostTransform = Host.transform;
-            originalRotation = IsLocalRotation ? hostTransform.localEulerAngles : hostTransform.eulerAngles;
+            base.Init(host, settings);
+        }
+
+        /// <inheritdoc />
+        public override void Reset()
+        {
+            if (hostTransform != null)
+            {
+                hostTransform.localEulerAngles = originalLocalRotation;
+                hostTransform.eulerAngles = originalRotation;
+            }
         }
 
         /// <inheritdoc />
@@ -94,18 +106,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (IsRelativeRotation)
             {
-                lerpTarget = originalRotation + lerpTarget;
+                lerpTarget = (IsLocalRotation ? originalLocalRotation : originalRotation) + lerpTarget;
             }
 
-            var setValue = Quaternion.Euler(Vector3.Lerp(property.StartValue.Vector3, lerpTarget, percentage));
+            SetRotation(Quaternion.Euler(Vector3.Lerp(property.StartValue.Vector3, lerpTarget, percentage)));
+        }
 
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
+        {
+            SetRotation(value.Quaternion);
+        }
+
+        private void SetRotation(Quaternion rot)
+        {
             if (IsLocalRotation)
             {
-                hostTransform.localRotation = setValue;
+                hostTransform.localRotation = rot;
             }
             else
             {
-                hostTransform.rotation = setValue;
+                hostTransform.rotation = rot;
             }
         }
     }

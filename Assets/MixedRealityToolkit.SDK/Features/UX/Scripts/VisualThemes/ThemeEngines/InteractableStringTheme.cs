@@ -52,12 +52,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            base.Init(host, settings);
+            mesh = host.GetComponent<TextMesh>();
+            text = host.GetComponent<Text>();
+            meshPro = host.GetComponent<TextMeshPro>();
+            meshProUGUI = host.GetComponent<TextMeshProUGUI>();
 
-            mesh = Host.GetComponent<TextMesh>();
-            text = Host.GetComponent<Text>();
-            meshPro = Host.GetComponent<TextMeshPro>();
-            meshProUGUI = Host.GetComponent<TextMeshProUGUI>();
+            base.Init(host, settings);
         }
 
         /// <inheritdoc />
@@ -89,23 +89,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            string strValue = property.Values[index].String;
+            SetValue(property, property.Values[index]);
+        }
 
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
+        {
             if (mesh != null)
             {
-                mesh.text = strValue;
+                mesh.text = value.String;
             }
             else if (text != null)
             {
-                text.text = strValue;
+                text.text = value.String;
             }
             else if (meshPro != null)
             {
-                meshPro.text = strValue;
+                meshPro.text = value.String;
             }
             else if (meshProUGUI != null)
             {
-                meshProUGUI.text = strValue;
+                meshProUGUI.text = value.String;
             }
         }
     }
