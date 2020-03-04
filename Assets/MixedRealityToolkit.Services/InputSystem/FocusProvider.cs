@@ -569,7 +569,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 hitResultUi.Clear();
                 RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
-                // set gaze hit according to distance and priorization layer mask
+                // set gaze hit according to distance and prioritization layer mask
                 gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
             }
 
@@ -1452,7 +1452,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
         #endregion
 
-
         #region IPointerPreferences Implementation
         private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
 
@@ -1582,6 +1581,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         #endregion
-
     }
 }
