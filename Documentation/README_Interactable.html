@@ -150,6 +150,8 @@
 <h3 id="interactable-profiles">Interactable profiles</h3>
 <p><em>Profiles</em> are items that create a relationship between a GameObject and a <a href="VisualThemes.html">Visual Theme</a>. The profile defines what content will be manipulated by a theme when a <a href="#general-input-settings">state change occurs</a>.</p>
 <p>Themes work a lot like materials. They are scriptable objects that contain a list of properties that will be assigned to an object based on the current state. Themes are also re-usable and can be assigned across multiple <em>Interactable</em> UX objects.</p>
+<p><strong>Reset On Destroy</strong></p>
+<p>Visual themes modify various properties on a targeted GameObject, dependent on the class and type of theme engine selected. If <em>Reset On Destroy</em> is true when the Interactable component is destroyed, the component will reset all modified properties from active themes to their original values. Otherwise, when destroyed, the Interactable component will leave any modified properties as-is. In this latter case, the last state of values will persist unless altered by another external component. The default is false.</p>
 <p><img src="Images/Interactable/Profiles_Themes.png" alt="Interactable Profiles"></p>
 <h2 id="events">Events</h2>
 <p>Every <em>Interactable</em> component has an <em>OnClick</em> event that fires when the component is simply selected. However, <em>Interactable</em> can be used to detect input events other than just <em>OnClick</em>.</p>

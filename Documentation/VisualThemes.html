@@ -170,6 +170,8 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 <p>For the given property, which can be identified by <code>ThemeStateProperty.Name</code>, return the current value set on the targeted Host  GameObject (i.e the current material color, the current local position offset, etc). This is primarily used for caching the start value when easing between states.</p>
 <p><code>public abstract ThemeDefinition GetDefaultThemeDefinition()</code>(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetDefaultThemeDefinition)</p>
 <p>Returns a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html"><code>ThemeDefinition</code></a> object that defines the default properties and configuration needed for the custom theme</p>
+<p><code>protected abstract void SetValue(ThemeStateProperty property, ThemePropertyValue value)</code></p>
+<p>Protected variant of the public <code>SetValue()</code> definition, except provided ThemePropertyValue to set instead of directing to use index and/or percentage configuration.</p>
 <h4 id="recommended-overrides">Recommended overrides</h4>
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html"><code>InteractableThemeBase.Init(GameObject host, ThemeDefinition settings)</code></a></p>
 <p>Perform any initialization steps here targeting the provided <em>GameObject</em> parameter and using the properties and configurations defined in the <em>ThemeDefinition</em> parameter. It is recommended to call <code>base.Init(host, settings)</code> at the beginning of an override.</p>
@@ -189,6 +191,8 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme.html"><code>ScaleOffsetColorTheme</code></a></li>
 </ul>
 </div>
+<p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html#Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Reset"><code>InteractableThemeBase.Reset</code></a></p>
+<p>Directs the theme to reset any modified properties back to their original values that were set on the host GameObject when this theme engine was initialized.</p>
 <h3 id="custom-theme-engine-example">Custom theme engine example</h3>
 <p>The class below is an example of a custom new Theme Engine. This implementation will find a <a href="https://docs.unity3d.com/ScriptReference/MeshRenderer.html">MeshRenderer</a> component on the initialized host object and control its visibility based on the current state.</p>
 <pre><code class="lang-c#">using Microsoft.MixedReality.Toolkit.UI;

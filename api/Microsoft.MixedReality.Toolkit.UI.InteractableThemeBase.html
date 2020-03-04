@@ -134,6 +134,32 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class InteractableThemeBase</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_originalStateValues" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.originalStateValues">originalStateValues</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Dictionary&lt;ThemeStateProperty, ThemePropertyValue&gt; originalStateValues</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a>, <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemePropertyValue.html">ThemePropertyValue</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -752,6 +778,53 @@
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">force</span></td>
         <td><p>force update call even if state is not new</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Reset_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Reset*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Reset" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Resets properties on Host GameObject to their original values when Init() was called for this theme engine.
+Useful for reverting changes done by this theme engine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Reset()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_SetValue_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_SetValue_Microsoft_MixedReality_Toolkit_UI_ThemeStateProperty_Microsoft_MixedReality_Toolkit_UI_ThemePropertyValue_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue(Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty,Microsoft.MixedReality.Toolkit.UI.ThemePropertyValue)">SetValue(ThemeStateProperty, ThemePropertyValue)</h4>
+  <div class="markdown level1 summary"><p>Instruct theme to set value for current property with ThemePropertyValue value provided</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract void SetValue(ThemeStateProperty property, ThemePropertyValue value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></td>
+        <td><span class="parametername">property</span></td>
+        <td><p>property to update value</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemePropertyValue.html">ThemePropertyValue</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value for theme to set</p>
 </td>
       </tr>
     </tbody>
