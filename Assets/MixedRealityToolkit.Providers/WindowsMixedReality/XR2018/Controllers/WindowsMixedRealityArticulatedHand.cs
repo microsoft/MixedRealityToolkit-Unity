@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 
 #if UNITY_WSA
@@ -11,12 +12,10 @@ using UnityEngine.XR.WSA.Input;
 using System;
 using UnityEngine;
 #if WINDOWS_UWP
-using Windows.Foundation.Metadata;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.UI.Input.Spatial;
 #elif DOTNETWINRT_PRESENT
-using Microsoft.Windows.Foundation.Metadata;
 using Microsoft.Windows.Perception;
 using Microsoft.Windows.Perception.People;
 using Microsoft.Windows.UI.Input.Spatial;
@@ -41,9 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             handDefinition = new WindowsMixedRealityArticulatedHandDefinition(inputSource, controllerHandedness);
-#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            articulatedHandApiAvailable = ApiInformation.IsMethodPresent("Windows.UI.Input.Spatial.SpatialInteractionSourceState", "TryGetHandPose");
-#endif
+            articulatedHandApiAvailable = WindowsApiChecker.IsMethodAvailable(
+                "Windows.UI.Input.Spatial",
+                "SpatialInteractionSourceState",
+                "TryGetHandPose");
         }
 
         /// <summary>
@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private readonly Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private readonly WindowsMixedRealityArticulatedHandDefinition handDefinition;
+        private readonly bool articulatedHandApiAvailable = false;
 
         #region IMixedRealityHand Implementation
 
@@ -84,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-        private readonly bool articulatedHandApiAvailable = false;
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         #region Update data functions

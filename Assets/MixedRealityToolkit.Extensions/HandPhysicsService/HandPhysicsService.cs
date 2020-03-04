@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             {
                 if (HandJointService.IsHandTracked(jointKinematicBody.HandednessType))
                 {
-                    jointKinematicBody.Joint = jointKinematicBody.Joint ?? HandJointService.RequestJointTransform(jointKinematicBody.JointType, jointKinematicBody.HandednessType);
+                    jointKinematicBody.Joint = jointKinematicBody.Joint != null ? jointKinematicBody.Joint : HandJointService.RequestJointTransform(jointKinematicBody.JointType, jointKinematicBody.HandednessType);
                     jointKinematicBody.UpdateState(jointKinematicBody.Joint != null);
                 }
                 else
