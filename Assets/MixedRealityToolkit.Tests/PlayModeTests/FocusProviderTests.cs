@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test that the gaze cursor behaves properly with articulated hand pointers.
         /// </summary>
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
@@ -72,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Ensure that the gaze provider hit result is not null when looking at an object,
-        /// even when the hand is up
+        /// even when the hand is up.
         /// </summary>
         [UnityTest]
         public IEnumerator TestGazeProviderTargetNotNull()
@@ -382,6 +383,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             lowPriorityCube.SetActive(false);
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             Assert.IsNull(shellHandRayPointer.Result?.CurrentPointerTarget, $"{noPriorityCube.name} should NOT be raycast target by shell hand ray pointer");
+        }
+
+        /// <summary>
+        /// Ensures the focus provider runs its update loop properly without a gaze provider.
+        /// Also tests that a gaze provider can successfully be cleaned up at runtime.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestFocusProviderWithoutGaze()
+        {
+            IMixedRealityInputSystem inputSystem = PlayModeTestUtilities.GetInputSystem();
+            yield return null;
+
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            yield return null;
+
+            // Put up a hand to ensure there's a second pointer, which will keep the FocusProvider UpdatePointers loop spinning
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+
+            // Verify that the GazeProvider exists at the start
+            Assert.IsTrue(inputSystem.GazeProvider as MonoBehaviour != null, "Gaze provider should exist at start");
+            yield return null;
+
+            // Destroy the GazeProvider
+            Object.Destroy(inputSystem.GazeProvider as MonoBehaviour);
+            yield return null;
+
+            // Verify that the GazeProvider no longer exists
+            Assert.IsTrue(inputSystem.GazeProvider as MonoBehaviour == null, "Gaze provider should no longer exist");
+            yield return null;
+
+            // Hide the hand for other tests
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
         }
 
         private static GameObject CreateTestCube(Vector3 position, float scale = 0.2f)

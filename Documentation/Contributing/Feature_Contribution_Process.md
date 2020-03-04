@@ -92,7 +92,7 @@ Most feature implementations can be broken down into 3 main parts:
     * Features should have a configuration profile that derives from a scriptable object.
     * A default configuration profile located in `MixedRealityToolkit.SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
   * If this feature is **not** a core feature, then it must be registered using the extension service configuration profile and implement `IMixedRealityExtensionService`.
-* Have a default implementation located in `MixedRealityToolkit.Services/<FeatureName>`
+* Have a default implementation located in `MRTK.Services/<FeatureName>`
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
 ### Event data implementation requirements
