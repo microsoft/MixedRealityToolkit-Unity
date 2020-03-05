@@ -439,10 +439,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         }
 
         [System.Serializable]
-        public class StringKeyValue
+        private class StringKeyValue
         {
-            public string key;
-            public int value;
+            public string key = string.Empty;
+            public int value = 0;
         }
 
         [System.Serializable]
