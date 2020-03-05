@@ -125,71 +125,74 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (editorSettingsFoldout)
             {
-                EditorGUI.indentLevel++;
-                EditorGUI.BeginChangeCheck();
-
-                GUI.enabled = RenderLinePreview;
-                EditorGUI.BeginChangeCheck();
-                LinePreviewResolution = EditorGUILayout.IntSlider("Preview Resolution", LinePreviewResolution, 2, 128);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    SessionState.SetInt(LinePreviewResolutionKey, LinePreviewResolution);
-                }
-
-                EditorGUI.BeginChangeCheck();
-                DrawLinePoints = EditorGUILayout.Toggle("Draw Line Points", DrawLinePoints);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    SessionState.SetBool(DrawLinePointsKey, DrawLinePoints);
-                }
-
-                GUI.enabled = true;
-                EditorGUI.BeginChangeCheck();
-                DrawLineRotations = EditorGUILayout.Toggle("Draw Line Rotations", DrawLineRotations);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    SessionState.SetBool(DrawLineRotationsKey, DrawLineRotations);
-                }
-
-                if (DrawLineRotations)
+                using (new EditorGUI.IndentLevelScope())
                 {
                     EditorGUI.BeginChangeCheck();
-                    RotationArrowLength = EditorGUILayout.Slider("Rotation Arrow Length", RotationArrowLength, 0.01f, 5f);
+
+                    using (new EditorGUI.DisabledGroupScope(!RenderLinePreview))
+                    {
+                        EditorGUI.BeginChangeCheck();
+
+                        LinePreviewResolution = EditorGUILayout.IntSlider("Preview Resolution", LinePreviewResolution, 2, 128);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            SessionState.SetInt(LinePreviewResolutionKey, LinePreviewResolution);
+                        }
+
+                        EditorGUI.BeginChangeCheck();
+                        DrawLinePoints = EditorGUILayout.Toggle("Draw Line Points", DrawLinePoints);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            SessionState.SetBool(DrawLinePointsKey, DrawLinePoints);
+                        }
+
+                    }
+
+                    EditorGUI.BeginChangeCheck();
+                    DrawLineRotations = EditorGUILayout.Toggle("Draw Line Rotations", DrawLineRotations);
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        SessionState.SetFloat(RotationArrowLengthKey, RotationArrowLength);
+                        SessionState.SetBool(DrawLineRotationsKey, DrawLineRotations);
                     }
-                }
 
-                EditorGUI.BeginChangeCheck();
-                DrawLineManualUpVectors = EditorGUILayout.Toggle("Draw Manual Up Vectors", DrawLineManualUpVectors);
+                    if (DrawLineRotations)
+                    {
+                        EditorGUI.BeginChangeCheck();
+                        RotationArrowLength = EditorGUILayout.Slider("Rotation Arrow Length", RotationArrowLength, 0.01f, 5f);
 
-                if (EditorGUI.EndChangeCheck())
-                {
-                    SessionState.SetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
-                }
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            SessionState.SetFloat(RotationArrowLengthKey, RotationArrowLength);
+                        }
+                    }
 
-                if (DrawLineManualUpVectors)
-                {
                     EditorGUI.BeginChangeCheck();
-                    ManualUpVectorLength = EditorGUILayout.Slider("Manual Up Vector Length", ManualUpVectorLength, 1f, 10f);
+                    DrawLineManualUpVectors = EditorGUILayout.Toggle("Draw Manual Up Vectors", DrawLineManualUpVectors);
 
                     if (EditorGUI.EndChangeCheck())
                     {
-                        SessionState.SetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
+                        SessionState.SetBool(DrawLineManualUpVectorsKey, DrawLineManualUpVectors);
+                    }
+
+                    if (DrawLineManualUpVectors)
+                    {
+                        EditorGUI.BeginChangeCheck();
+                        ManualUpVectorLength = EditorGUILayout.Slider("Manual Up Vector Length", ManualUpVectorLength, 1f, 10f);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            SessionState.SetFloat(ManualUpVectorLengthKey, ManualUpVectorLength);
+                        }
+                    }
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        SceneView.RepaintAll();
                     }
                 }
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    SceneView.RepaintAll();
-                }
-
-                EditorGUI.indentLevel--;
             }
 
             basicSettingsFoldout = EditorGUILayout.Foldout(basicSettingsFoldout, BasicSettingsContent, true);
@@ -197,15 +200,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (basicSettingsFoldout)
             {
-                EditorGUI.indentLevel++;
-
-                EditorGUILayout.PropertyField(transformMode);
-                EditorGUILayout.PropertyField(customLineTransform);
-                EditorGUILayout.PropertyField(lineStartClamp);
-                EditorGUILayout.PropertyField(lineEndClamp);
-                EditorGUILayout.PropertyField(loops);
-
-                EditorGUI.indentLevel--;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(transformMode);
+                    EditorGUILayout.PropertyField(customLineTransform);
+                    EditorGUILayout.PropertyField(lineStartClamp);
+                    EditorGUILayout.PropertyField(lineEndClamp);
+                    EditorGUILayout.PropertyField(loops);
+                }
             }
 
             rotationSettingsFoldout = EditorGUILayout.Foldout(rotationSettingsFoldout, RotationSettingsContent, true);
@@ -213,39 +215,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (rotationSettingsFoldout)
             {
-                EditorGUI.indentLevel++;
-
-                EditorGUILayout.PropertyField(rotationType);
-                EditorGUILayout.PropertyField(flipUpVector);
-                EditorGUILayout.PropertyField(originOffset);
-                EditorGUILayout.PropertyField(velocitySearchRange);
-
-                if (DrawLineManualUpVectors)
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    manualUpVectorList.DoLayoutList();
+                    EditorGUILayout.PropertyField(rotationType);
+                    EditorGUILayout.PropertyField(flipUpVector);
+                    EditorGUILayout.PropertyField(originOffset);
+                    EditorGUILayout.PropertyField(velocitySearchRange);
 
-                    if (GUILayout.Button("Normalize Up Vectors"))
+                    if (DrawLineManualUpVectors)
                     {
+                        manualUpVectorList.DoLayoutList();
 
-                        for (int i = 0; i < manualUpVectors.arraySize; i++)
+                        if (GUILayout.Button("Normalize Up Vectors"))
                         {
-                            var manualUpVectorProperty = manualUpVectors.GetArrayElementAtIndex(i);
 
-                            Vector3 upVector = manualUpVectorProperty.vector3Value;
-
-                            if (upVector == Vector3.zero)
+                            for (int i = 0; i < manualUpVectors.arraySize; i++)
                             {
-                                upVector = Vector3.up;
+                                var manualUpVectorProperty = manualUpVectors.GetArrayElementAtIndex(i);
+
+                                Vector3 upVector = manualUpVectorProperty.vector3Value;
+
+                                if (upVector == Vector3.zero)
+                                {
+                                    upVector = Vector3.up;
+                                }
+
+                                manualUpVectorProperty.vector3Value = upVector.normalized;
                             }
-
-                            manualUpVectorProperty.vector3Value = upVector.normalized;
                         }
+
+                        EditorGUILayout.PropertyField(manualUpVectorBlend);
                     }
-
-                    EditorGUILayout.PropertyField(manualUpVectorBlend);
                 }
-
-                EditorGUI.indentLevel--;
             }
 
             distortionSettingsFoldout = EditorGUILayout.Foldout(distortionSettingsFoldout, DistortionSettingsContent, true);
@@ -258,14 +259,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     EditorGUILayout.HelpBox("No distorters attached to this line.\nTry adding a distortion component.", MessageType.Info);
                 }
 
-                EditorGUI.indentLevel++;
-
-                EditorGUILayout.PropertyField(distortionEnabled);
-                EditorGUILayout.PropertyField(distortionMode);
-                EditorGUILayout.PropertyField(distortionStrength);
-                EditorGUILayout.PropertyField(uniformDistortionStrength);
-
-                EditorGUI.indentLevel--;
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    EditorGUILayout.PropertyField(distortionEnabled);
+                    EditorGUILayout.PropertyField(distortionMode);
+                    EditorGUILayout.PropertyField(distortionStrength);
+                    EditorGUILayout.PropertyField(uniformDistortionStrength);
+                }
             }
 
             serializedObject.ApplyModifiedProperties();

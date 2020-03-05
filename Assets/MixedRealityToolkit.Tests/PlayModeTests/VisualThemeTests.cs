@@ -61,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableActivateTheme, MeshRenderer>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(true, host.activeInHierarchy); },
                 (theme) => { Assert.AreEqual(state0, theme.Host.activeInHierarchy); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.activeInHierarchy); });
         }
@@ -68,6 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestMaterialTheme()
         {
+            // Point Cube diagonally to right
+            var hostGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            hostGameObject.GetComponent<Renderer>().material = new Material(Shader.Find("Unlit/Color"));
+            var initMaterial = hostGameObject.GetComponent<Renderer>().material;
+
             Material state0 = new Material(StandardShaderUtility.MrtkStandardShader);
             Material state1 = new Material(Shader.Find("Standard"));
 
@@ -80,7 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
             };
 
-            yield return TestTheme<InteractableMaterialTheme, MeshRenderer>(defaultStateValues,
+            yield return TestTheme<InteractableMaterialTheme, MeshRenderer>(hostGameObject, defaultStateValues,
+                (host, theme) => { Assert.AreEqual(initMaterial, host.GetComponent<Renderer>().material); },
                 (theme) => { Assert.AreEqual(state0, theme.Host.GetComponent<Renderer>().sharedMaterial); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.GetComponent<Renderer>().sharedMaterial); });
         }
@@ -101,6 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableOffsetTheme, MeshRenderer>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(Vector3.zero, host.transform.position); },
                 (theme) => { Assert.AreEqual(state0, theme.Host.transform.position); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.position); });
         }
@@ -113,7 +121,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Point Cube diagonally to right
             var hostGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            hostGameObject.transform.rotation = Quaternion.LookRotation(Vector3.forward + Vector3.right);
+            var initLocalRotation = Quaternion.LookRotation(Vector3.forward + Vector3.right);
+            hostGameObject.transform.localRotation = initLocalRotation;
 
             Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
             Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
@@ -128,8 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableRotationTheme, MeshRenderer>(hostGameObject, defaultStateValues,
-                (theme) => { Assert.AreEqual(state0, theme.Host.transform.localEulerAngles); },
-                (theme) => { Assert.AreEqual(state1, theme.Host.transform.localEulerAngles); });
+                (host, theme) => { Assert.IsTrue(AreEulerEquals(initLocalRotation.eulerAngles, host.transform.localEulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(state0, theme.Host.transform.localEulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(state1, theme.Host.transform.localEulerAngles)); });
         }
 
         /// <summary>
@@ -163,8 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             defaultThemeProperties[1].Value.Bool = false;
 
             yield return TestTheme<InteractableRotationTheme, MeshRenderer>(hostGameObject, defaultStateValues, defaultThemeProperties,
-                (theme) => { Assert.AreEqual(initRotation.eulerAngles + state0, theme.Host.transform.eulerAngles); },
-                (theme) => { Assert.AreEqual(initRotation.eulerAngles + state1, theme.Host.transform.eulerAngles); });
+                (host, theme) => { Assert.IsTrue(AreEulerEquals(initRotation.eulerAngles, host.transform.eulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(initRotation.eulerAngles + state0, theme.Host.transform.eulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(initRotation.eulerAngles + state1, theme.Host.transform.eulerAngles)); });
         }
 
         /// <summary>
@@ -173,9 +184,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRelativeRotationTheme()
         {
-            GameObject host = new GameObject();
+            GameObject target = new GameObject();
             Vector3 hostInitialRotation = new Vector3(42f, 130f, 12.5f);
-            host.transform.localEulerAngles = hostInitialRotation;
+            target.transform.localEulerAngles = hostInitialRotation;
 
             Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
             Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
@@ -200,9 +211,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
             };
 
-            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(host, defaultStateValues, defaultCustomProperties,
-                  (theme) => { Assert.IsTrue(AreEulerEquals(expectedState0, theme.Host.transform.rotation.eulerAngles)); },
-                  (theme) => { Assert.IsTrue(AreEulerEquals(expectedState1, theme.Host.transform.rotation.eulerAngles)); });
+            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(target, defaultStateValues, defaultCustomProperties,
+                (host, theme) => { Assert.IsTrue(AreEulerEquals(hostInitialRotation, host.transform.eulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(expectedState0, theme.Host.transform.eulerAngles)); },
+                (theme) => { Assert.IsTrue(AreEulerEquals(expectedState1, theme.Host.transform.eulerAngles)); });
         }
 
         [UnityTest]
@@ -221,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableScaleTheme, MeshRenderer>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(Vector3.one, host.transform.localScale); },
                 (theme) => { Assert.AreEqual(state0, theme.Host.transform.localScale); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.localScale); });
         }
@@ -231,9 +244,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestRelativeScaleTheme()
         {
-            GameObject host = new GameObject();
+            GameObject target = new GameObject();
             Vector3 hostInitialScale = new Vector3(1f, 3f, 0.5f);
-            host.transform.localScale = hostInitialScale;
+            target.transform.localScale = hostInitialScale;
 
             Vector3 state0 = Vector3.one * 4.0f;
             Vector3 state1 = Vector3.one;
@@ -258,7 +271,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 }
             };
 
-            yield return TestTheme<InteractableScaleTheme, MeshRenderer>(host, defaultStateValues, defaultCustomProperties,
+            yield return TestTheme<InteractableScaleTheme, MeshRenderer>(target, defaultStateValues, defaultCustomProperties,
+                (host, theme) => { Assert.AreEqual(hostInitialScale, host.transform.localScale); },
                 (theme) => { Assert.AreEqual(expectedState0, theme.Host.transform.localScale); },
                 (theme) => { Assert.AreEqual(expectedState1, theme.Host.transform.localScale); });
         }
@@ -293,18 +307,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
+                (host, theme) => 
+                {
+                    Assert.AreEqual(Vector3.one, host.transform.localScale);
+                    Assert.AreEqual(Vector3.zero, host.transform.position);
+                },
                 (theme) => 
                 {
                     Assert.AreEqual(state0, theme.Host.transform.localScale);
                     Assert.AreEqual(state0Offset, theme.Host.transform.position);
                 },
-                (theme) => 
+                (theme) =>
                 {
                     Assert.AreEqual(state1, theme.Host.transform.localScale);
                     Assert.AreEqual(state1Offset, theme.Host.transform.position);
                 });
 
             yield return TestShaderTheme<ScaleOffsetColorTheme>(defaultStateValues,
+                (host, theme) => { },
                 (block) => { Assert.AreEqual(state0Color, block.GetColor(DefaultColorProperty)); },
                 (block) => { Assert.AreEqual(state1Color, block.GetColor(DefaultColorProperty)); });
         }
@@ -325,6 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestShaderTheme<InteractableColorTheme>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(Color.white, host.GetComponent<Renderer>().material.color); },
                 (block) => { Assert.AreEqual(state0Color, block.GetColor(DefaultColorProperty)); },
                 (block) => { Assert.AreEqual(state1Color, block.GetColor(DefaultColorProperty)); });
         }
@@ -348,11 +369,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var parent = new GameObject("Parent");
             for (int i = 0; i < numOfChildren; i++)
             {
-                GameObject.CreatePrimitive(PrimitiveType.Cube).transform.parent = parent.transform;
+                var childCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                childCube.transform.parent = parent.transform;
+                childCube.GetComponent<Renderer>().material.color = Color.white;
             }
 
             yield return TestTheme<InteractableColorChildrenTheme, AudioSource>(parent,
                 defaultStateValues,
+                (host, theme) => 
+                {
+                    foreach (Transform child in host.transform)
+                    {
+                        Assert.AreEqual(Color.white, child.GetComponent<Renderer>().material.color);
+                    }
+                },
                 (theme) =>
                 {
                     var block = new MaterialPropertyBlock();
@@ -376,11 +406,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestTextureTheme()
         {
-            const string TexturePathState0 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Panel_albedo.png";
-            Texture texState0 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState0);
+            // Examples/Demos/StandardShader/Textures/Panel_albedo.png
+            const string TexturePathState0 = "7b551659cf4349242ba72d82b4f9cdc7";
+            Texture texState0 = AssetDatabase.LoadAssetAtPath<Texture>(AssetDatabase.GUIDToAssetPath(TexturePathState0));
 
-            const string TexturePathState1 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Checker_albedo.png";
-            Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState1);
+            // Examples/Demos/StandardShader/Textures/Checker_albedo.png
+            const string TexturePathState1 = "e2cd08a4d181dcc4ea7beb0992656c7e";
+            Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(AssetDatabase.GUIDToAssetPath(TexturePathState1));
 
             var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
@@ -392,6 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestShaderTheme<InteractableTextureTheme>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(null, host.GetComponent<Renderer>().material.mainTexture); },
                 (block) => { Assert.AreEqual(texState0, block.GetTexture("_MainTex")); },
                 (block) => { Assert.AreEqual(texState1, block.GetTexture("_MainTex")); });
         }
@@ -412,18 +445,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             };
 
             yield return TestTheme<InteractableStringTheme, Text>(defaultStateValues,
+                (host,theme) => { Assert.AreEqual(string.Empty, host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<Text>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<Text>().text); });
 
             yield return TestTheme<InteractableStringTheme, TextMesh>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(string.Empty, host.GetComponent<TextMesh>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<TextMesh>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<TextMesh>().text); });
 
             yield return TestTheme<InteractableStringTheme, TMPro.TextMeshPro>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(null, host.GetComponent<TMPro.TextMeshPro>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<TMPro.TextMeshPro>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<TMPro.TextMeshPro>().text); });
 
             yield return TestTheme<InteractableStringTheme, TMPro.TextMeshProUGUI>(defaultStateValues,
+                (host, theme) => { Assert.AreEqual(null, host.GetComponent<TMPro.TextMeshProUGUI>().text); },
                 (theme) => { Assert.AreEqual(State0, theme.Host.GetComponent<TMPro.TextMeshProUGUI>().text); },
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<TMPro.TextMeshProUGUI>().text); });
         }
@@ -434,37 +471,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestTheme<T, C>(
             List<List<ThemePropertyValue>> stateValues,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
         {
-            yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, new List<ThemeProperty>() { }, stateTests);
+            yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, new List<ThemeProperty>() { }, resetTest, stateTests);
         }
 
         private IEnumerator TestTheme<T, C>(
             List<List<ThemePropertyValue>> stateValues,
             List<ThemeProperty> customProperties,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
         {
-            yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, customProperties, stateTests);
+            yield return TestTheme<T, C>(new GameObject("TestObject"), stateValues, customProperties, resetTest, stateTests);
         }
 
         private IEnumerator TestTheme<T, C>(
             GameObject host,
             List<List<ThemePropertyValue>> stateValues,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
         {
-            yield return TestTheme<T, C>(host, stateValues, new List<ThemeProperty>() { }, stateTests);
+            yield return TestTheme<T, C>(host, stateValues, new List<ThemeProperty>() { }, resetTest, stateTests);
         }
 
         private IEnumerator TestTheme<T, C>(
             GameObject host,
             List<List<ThemePropertyValue>> stateValues,
             List<ThemeProperty> customProperties,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
@@ -485,12 +526,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 themeDefinition.CustomProperties[i] = customProperties[i];
             }
 
-            yield return TestTheme<C>(host, themeDefinition, stateTests);
+            yield return TestTheme<C>(host, themeDefinition, resetTest, stateTests);
         }
 
         private IEnumerator TestTheme<C>(
             GameObject host,
             ThemeDefinition themeDefinition,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<InteractableThemeBase>[] stateTests)
             where C : UnityEngine.Component
         {
@@ -504,11 +546,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return null;
                 stateTests[i](theme);
             }
+
+            theme.Reset();
+            resetTest(host, theme);
+
             GameObjectExtensions.DestroyGameObject(host);
         }
 
         private IEnumerator TestShaderTheme<T>(
-            List<List<ThemePropertyValue>> stateValues, 
+            List<List<ThemePropertyValue>> stateValues,
+            Action<GameObject, InteractableThemeBase> resetTest,
             params Action<MaterialPropertyBlock>[] stateTests)
             where T : InteractableThemeBase
         {
@@ -527,7 +574,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 };
             }
 
-            yield return TestTheme<T, AudioSource>(targetHost, stateValues,convertedStateTests);
+            yield return TestTheme<T, AudioSource>(targetHost, stateValues, resetTest, convertedStateTests);
         }
 
         private bool AreEulerEquals(Vector3 eulerA, Vector3 eulerB)

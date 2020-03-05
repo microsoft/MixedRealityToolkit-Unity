@@ -430,9 +430,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Color prevColor = GUI.color;
 
             GUI.color = ColorTint100;
-            EditorGUILayout.BeginVertical(EditorStyles.textArea);
-            EditorGUILayout.LabelField(notice, EditorStyles.wordWrappedMiniLabel);
-            EditorGUILayout.EndVertical();
+            using (new EditorGUILayout.VerticalScope(EditorStyles.textArea))
+            {
+                EditorGUILayout.LabelField(notice, EditorStyles.wordWrappedMiniLabel);
+            }
 
             GUI.color = prevColor;
         }

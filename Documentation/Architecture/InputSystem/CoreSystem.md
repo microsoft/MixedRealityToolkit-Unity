@@ -1,8 +1,6 @@
 # Core system
 
-At the heart of the input system is the [MixedRealityInputSystem](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs),
-which is a service that is responsible for initializing and operating all of the input related
-functionality associated with the MRTK.
+At the heart of the input system is the [InputSystem](../../Input/Overview.md), which is a service that is responsible for initializing and operating all of the input related functionality associated with the MRTK.
 
 > [!NOTE]
 > It is assumed that readers have already read and have a basic understanding of the
@@ -15,11 +13,9 @@ This service is responsible for:
   [Windows Mixed Reality](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs),
   [Unity Touch](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Providers/UnityInput/UnityTouchDeviceManager.cs)).
   The set of device managers that are instantiated is configured by the input system profile.
-- Instantiation of the [GazeProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/GazeProvider.cs),
-  which is a component that is responsible for providing HoloLens1-style head gaze information
-  in addition to HoloLens2-style eye gaze information.
-- Instantiation of the [FocusProvider](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/FocusProvider.cs),
-  which is a component that is responsible for determining objects that have focus. This
+- Instantiation of the [GazeProvider](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider), which is a component that is responsible for providing HoloLens (1st generation) style head gaze information
+  in addition to HoloLens 2 style eye gaze information.
+- Instantiation of the [FocusProvider](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider), which is a component that is responsible for determining objects that have focus. This
   is described in more depth in the [pointers and focus](ControllersPointersAndFocus.md#pointers-and-focus) section of the
   documentation.
 - Providing registration points for all input events (as [global listeners](#global-listeners)).
@@ -37,8 +33,7 @@ This object would get touch events when focused by a hand that is near it. These
 events go "up" the GameObject hierarchy until it finds a GameObject that is capable of handling
 the event.
 
-This is done by using [ExecuteHierarchy](https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html)
-in [DispatchEventToObjectFocusedByPointer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Services/InputSystem/MixedRealityInputSystem.cs#L471).
+This is done by using [ExecuteHierarchy](https://docs.unity3d.com/ScriptReference/EventSystems.ExecuteEvents.ExecuteHierarchy.html) from within the default input system implementation.
 
 ### Global listeners
 

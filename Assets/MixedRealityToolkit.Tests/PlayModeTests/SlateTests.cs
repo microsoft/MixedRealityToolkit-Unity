@@ -10,21 +10,22 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SlateTests
     {
-        const string slatePrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Slate/Slate.prefab";
+        // SDK/Features/UX/Prefabs/Slate/Slate.prefab
+        private const string slatePrefabAssetGuid = "937ce507dd7ee334ba569554e24adbdd";
+        private static readonly string slatePrefabAssetPath = AssetDatabase.GUIDToAssetPath(slatePrefabAssetGuid);
 
         GameObject panObject;
         HandInteractionPanZoom panZoom;

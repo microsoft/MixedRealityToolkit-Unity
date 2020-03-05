@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableAnimatorTheme : InteractableThemeBase
     {
-        private int lastIndex = 0;
+        private int lastIndex = -1;
         private Animator controller;
 
         public InteractableAnimatorTheme()
@@ -45,28 +45,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
+            controller = host.GetComponent<Animator>();
             base.Init(host, settings);
-            controller = Host.GetComponent<Animator>();
         }
 
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
-            start.String = property.Values[lastIndex].String;
+            start.String = lastIndex != -1 ? property.Values[lastIndex].String : string.Empty;
             return start;
         }
 
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            if(lastIndex != index)
+            if (lastIndex != index)
             {
-                if(controller != null)
-                {
-                    controller.SetTrigger(property.Values[index].String);
-                }
+                SetValue(property, property.Values[index]);
                 lastIndex = index;
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
+        {
+            if (controller != null && !string.IsNullOrEmpty(value.String))
+            {
+                controller.SetTrigger(value.String);
             }
         }
     }

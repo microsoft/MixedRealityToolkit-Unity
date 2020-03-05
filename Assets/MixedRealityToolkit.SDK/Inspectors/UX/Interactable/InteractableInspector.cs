@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected SerializedProperty startDimensionIndex;
         protected SerializedProperty dimensionIndex;
         protected SerializedProperty dimensions;
+        protected SerializedProperty resetOnDestroy;
 
         protected const string ShowProfilesPrefKey = "InteractableInspectorProfiles";
         protected const string ShowEventsPrefKey = "InteractableInspectorProfiles_ShowEvents";
@@ -62,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             startDimensionIndex = serializedObject.FindProperty("startDimensionIndex");
             dimensionIndex = serializedObject.FindProperty("dimensionIndex");
             dimensions = serializedObject.FindProperty("Dimensions");
+            resetOnDestroy = serializedObject.FindProperty("resetOnDestroy");
 
             enabled = true;
         }
@@ -117,6 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             if (InspectorUIUtility.DrawSectionFoldoutWithKey("Profiles", ShowProfilesPrefKey, MixedRealityStylesUtility.BoldTitleFoldoutStyle))
             {
+                EditorGUILayout.PropertyField(resetOnDestroy);
+
                 // Render all profile items. Profiles are per GameObject/ThemeContainer
                 for (int i = 0; i < profileList.arraySize; i++)
                 {

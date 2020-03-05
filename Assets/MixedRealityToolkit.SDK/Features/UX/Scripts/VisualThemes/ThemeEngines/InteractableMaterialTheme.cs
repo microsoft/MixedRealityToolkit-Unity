@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override bool IsEasingSupported => false;
 
+        private Material initMaterial;
         private Material material = null;
         private Renderer renderer;
 
@@ -48,9 +49,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
         {
-            base.Init(host, settings);
+            renderer = host.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                initMaterial = renderer.material;
+            }
+            else
+            {
+                Debug.LogError($"Host GameObject {host} does not have a {typeof(Renderer).Name} component. InteractableMaterialTheme cannot execute.");
+            }
 
-            renderer = Host.GetComponent<Renderer>();
+            base.Init(host, settings);
+        }
+
+        /// <inheritdoc />
+        public override void Reset()
+        {
+            if (renderer != null)
+            {
+                renderer.material = initMaterial;
+            }
         }
 
         /// <inheritdoc />
@@ -70,9 +88,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
+            SetValue(property, property.Values[index]);
+        }
+
+        /// <inheritdoc />
+        protected override void SetValue(ThemeStateProperty property, ThemePropertyValue value)
+        {
             if (renderer != null)
             {
-                material = property.Values[index].Material;
+                material = value.Material;
                 renderer.material = material;
             }
         }

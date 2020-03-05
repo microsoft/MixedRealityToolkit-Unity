@@ -226,8 +226,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            cube.AddComponent<ManipulationHandler>();
-            var temp = cube.AddComponent<CursorContextManipulationHandler>();
+            ManipulationHandler manipulationHandler = cube.AddComponent<ManipulationHandler>();
+            CursorContextManipulationHandler cursorContextManipulationHandler = cube.AddComponent<CursorContextManipulationHandler>();
             yield return new WaitForFixedUpdate();
             yield return null;
 
@@ -273,8 +273,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
-            Object.Destroy(cube.GetComponent<ManipulationHandler>());
-            Object.Destroy(cube.GetComponent<CursorContextManipulationHandler>());
+            Object.Destroy(cursorContextManipulationHandler);
+            Object.Destroy(manipulationHandler);
         }
 
         [UnityTest]
