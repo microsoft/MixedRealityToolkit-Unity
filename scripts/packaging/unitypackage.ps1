@@ -79,7 +79,7 @@ if ( $Verbose ) { $VerbosePreference = 'Continue' }
 $packages = @{
     "Foundation" = @(
         "Assets\MixedRealityToolkit",
-        "Assets\MixedRealityToolkit.Providers",
+        "Assets\MRTK\Providers",
         "Assets\MixedRealityToolkit.SDK",
         "Assets\MRTK\Services"
     );
