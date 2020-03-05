@@ -32,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Performs basic check that a glTF loads and contains data
+        /// </summary>
         [UnityTest]
         public IEnumerator TestGltfLoads()
         {
@@ -54,6 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(406, gltfObject.meshes[0].Mesh.vertexCount);
         }
 
+        /// <summary>
+        /// Tests that custom glTF attributes are parsed and accessible
+        /// </summary>
         [UnityTest]
         public IEnumerator TestGltfCustomAttributes()
         {
