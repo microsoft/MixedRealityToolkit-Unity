@@ -448,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         [System.Serializable]
         private class StringIntKeyValueArray
         {
-            public StringKeyValue[] items = new StringKeyValue[0];
+            public StringKeyValue[] items = Array.Empty<StringKeyValue>();
         }
 
     }
