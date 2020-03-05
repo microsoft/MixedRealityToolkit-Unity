@@ -14,6 +14,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Providers/UnityAR/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Providers/UnityAR/README.html",
+          "hash": "+R7b6c/OxX8h8aqxSG1D0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/README.md",
       "output": {
         ".html": {
@@ -79,18 +91,6 @@
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.html",
           "hash": "zVjbdUI8taKS1TEHCIuSSg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Providers/UnityAR/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Providers/UnityAR/README.html",
-          "hash": "SDhjRnH3JzBCTxf+koj2mA=="
         }
       },
       "is_incremental": false,
