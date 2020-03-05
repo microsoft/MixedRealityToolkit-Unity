@@ -16,13 +16,14 @@ using NUnit.Framework;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class GltfTests
     {
-        const string relativePath = "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/glTF/AvocadoCustomAttr.gltf";
+        private const string AvocadoCustomAttrGuid = "580aacc9e0f515247a4f038289f0209c";
 
         private IEnumerator WaitForTask(Task task)
         {
@@ -35,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestGltfLoads()
         {
             // Load glTF
-            string path = Path.GetFullPath(relativePath);
-            var task = GltfUtility.ImportGltfObjectFromPathAsync(relativePath);
+            string path = AssetDatabase.GUIDToAssetPath(AvocadoCustomAttrGuid);
+            var task = GltfUtility.ImportGltfObjectFromPathAsync(path);
 
             yield return WaitForTask(task);
 
@@ -57,8 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestGltfCustomAttributes()
         {
             // Load glTF
-            string path = Path.GetFullPath(relativePath);
-            var task = GltfUtility.ImportGltfObjectFromPathAsync(relativePath);
+            string path = AssetDatabase.GUIDToAssetPath(AvocadoCustomAttrGuid);
+            var task = GltfUtility.ImportGltfObjectFromPathAsync(path);
 
             yield return WaitForTask(task);
 
