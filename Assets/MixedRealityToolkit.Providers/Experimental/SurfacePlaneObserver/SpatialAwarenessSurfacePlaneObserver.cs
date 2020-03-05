@@ -2,9 +2,11 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections.Concurrent;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
@@ -76,7 +78,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         /// <summary>
         /// Indicates if SurfaceToPlanes is currently creating planes based on the Spatial Mapping Mesh.
         /// </summary>
-        private bool makingPlanes = false;
+        //private bool makingPlanes = false;
+
+        private CancellationTokenSource tokenSource;
+        private ConcurrentQueue<BoundedPlane> instantiationQueue = new ConcurrentQueue<BoundedPlane>();
+
+        private bool isRendering = false;
 
 #if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
@@ -114,75 +121,109 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public override void Enable()
         {
             base.Enable();
-            makingPlanes = false;
+            //makingPlanes = false;
             ActivePlanes = new List<GameObject>();
             planesParent = new GameObject("SurfacePlanes");
             planesParent.transform.position = Vector3.zero;
             planesParent.transform.rotation = Quaternion.identity;
+
+            tokenSource = new CancellationTokenSource();
+            var x = MakePlanes(tokenSource.Token).ConfigureAwait(true);
+        }
+
+        public override void Destroy()
+        {
+            base.Destroy();
+            tokenSource.Cancel();
         }
 
         // Update is called once per frame
         public override void Update()
         {
-            if (!makingPlanes)
-            {
-                makingPlanes = true;
-                // Processing the mesh can be expensive...
-                // We use Coroutine to split the work across multiple frames and avoid impacting the frame rate too much.
-                MakePlanes();
-            }
+            isRendering = true;
+            CreateGameObjects(instantiationQueue);
+            isRendering = false;
+            //if (!makingPlanes)
+            //{
+            //    makingPlanes = true;
+            //    // Processing the mesh can be expensive...
+            //    // We use Coroutine to split the work across multiple frames and avoid impacting the frame rate too much.
+            //    MakePlanes();
+            //}
         }
 
         /// <summary>
         /// Iterator block, analyzes surface meshes to find planes and create new 3D cubes to represent each plane.
         /// </summary>
         /// <returns>Yield result.</returns>
-        private void MakePlanes()
+        private async Task MakePlanes(System.Threading.CancellationToken cancellationToken)
         {
-
-            float start = Time.realtimeSinceStartup;
-
-            // Get the latest Mesh data from the Spatial Mapping Manager.
-            List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
-            List<MeshFilter> filters = new List<MeshFilter>();
-
-            var spatialAwarenessSystem = CoreServices.SpatialAwarenessSystem;
-            if (spatialAwarenessSystem != null)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                GameObject parentObject = spatialAwarenessSystem.SpatialAwarenessObjectParent;
-
-                // Loop over each observer
-                foreach (MeshFilter filter in parentObject.GetComponentsInChildren<MeshFilter>())
+                if (isRendering)
                 {
-                    filters.Add(filter);
+                    continue;
                 }
-            }
 
+                await new WaitForUpdate();
 
-            for (int index = 0; index < filters.Count; index++)
-            {
-                MeshFilter filter = filters[index];
-                if (filter != null && filter.sharedMesh != null)
+                DestroyPreviousPlanes();
+                ActivePlanes.Clear();
+                instantiationQueue = new ConcurrentQueue<BoundedPlane>();
+
+                // Get the latest Mesh data from the Spatial Mapping Manager.
+                List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
+                List<MeshFilter> filters = new List<MeshFilter>();
+
+                var spatialAwarenessSystem = CoreServices.SpatialAwarenessSystem;
+                if (spatialAwarenessSystem != null)
                 {
-                    // fix surface mesh normals so we can get correct plane orientation.
-                    filter.mesh.RecalculateNormals();
-                    meshData.Add(new PlaneFinding.MeshData(filter));
-                }
-            }
+                    GameObject parentObject = spatialAwarenessSystem.SpatialAwarenessObjectParent;
 
-            BoundedPlane[] planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);
-            CreateGameObjects(planes);
+                    // Loop over each observer
+                    foreach (MeshFilter filter in parentObject.GetComponentsInChildren<MeshFilter>())
+                    {
+                        filters.Add(filter);
+                    }
+                }
+
+
+                for (int index = 0; index < filters.Count; index++)
+                {
+                    MeshFilter filter = filters[index];
+                    if (filter != null && filter.sharedMesh != null)
+                    {
+                        // fix surface mesh normals so we can get correct plane orientation.
+                        filter.mesh.RecalculateNormals();
+                        meshData.Add(new PlaneFinding.MeshData(filter));
+                    }
+                }
+
+                await new WaitForBackgroundThread();
+                {
+                    BoundedPlane[] planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);
+                    for (int i = 0; i < planes.Length; i++)
+                    {
+                        instantiationQueue.Enqueue(planes[i]);
+                    }
+                }
+
+                //makingPlanes = false;
+            }
         }
 
-        private void CreateGameObjects(BoundedPlane[] planes)
+        private void CreateGameObjects(ConcurrentQueue<BoundedPlane> queue)
         {
-            for (int index = 0; index < planes.Length; index++)
+            while(!queue.IsEmpty)
             {
                 GameObject destinationPlane;
-                BoundedPlane boundedPlane = planes[index];
+                BoundedPlane boundedPlane;
+                queue.TryDequeue(out boundedPlane);
 
                 // Instantiate a SurfacePlane object, which will have the same bounds as our BoundedPlane object.
                 destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                SetPlaneGeometry(destinationPlane, boundedPlane);
+
                 destinationPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
               
                 destinationPlane.transform.parent = planesParent.transform;
@@ -192,8 +233,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             }
         }
 
-            // TODO: Read configuration from profile
-            private void ReadProfile()
+        private void DestroyPreviousPlanes()
+        {
+            // Remove any previously existing planes, as they may no longer be valid.
+            for (int index = 0; index < ActivePlanes.Count; index++)
+            {
+                UnityEngine.Object.Destroy(ActivePlanes[index]);
+            }
+        }
+
+        /// <summary>
+        /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
+        /// </summary>
+        private void SetPlaneGeometry(GameObject gameObject, BoundedPlane plane)
+        {
+            var PlaneThickness = 0.01f;
+            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
+            gameObject.transform.position = plane.Bounds.Center;
+            gameObject.transform.rotation = plane.Bounds.Rotation;
+            Vector3 extents = plane.Bounds.Extents * 2;
+            gameObject.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
+        }
+
+        // TODO: Read configuration from profile
+        private void ReadProfile()
         {
             // TODO: ensure profile is correct type
         }
