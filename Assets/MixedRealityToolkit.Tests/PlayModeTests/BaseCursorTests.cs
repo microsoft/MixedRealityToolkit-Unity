@@ -18,6 +18,7 @@ using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -228,6 +229,73 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             ManipulationHandler manipulationHandler = cube.AddComponent<ManipulationHandler>();
             CursorContextManipulationHandler cursorContextManipulationHandler = cube.AddComponent<CursorContextManipulationHandler>();
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Move cube back to original position (described above)
+            cube.transform.localPosition = new Vector3(0, 0, 2);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Show right hand on object
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 rightPos = new Vector3(0.05f, 0, 1.5f);
+            yield return rightHand.Show(rightPos);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
+
+            // Pinch right hand
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            // Show left hand on object
+            var leftHand = new TestHand(Handedness.Left);
+            Vector3 leftPos = new Vector3(-0.05f, 0, 1.5f);
+            yield return rightHand.Hide();
+            yield return leftHand.Show(leftPos);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
+
+            // Pinch left hand
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            // Show both hands on object
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Show(rightPos);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            Object.Destroy(cursorContextManipulationHandler);
+            Object.Destroy(manipulationHandler);
+        }
+
+
+        [UnityTest]
+        public IEnumerator CursorContextObjectManipulatorMove()
+        {
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+
+            // The cube needs to be moved from under the gaze cursor before we add the manipulation handler.
+            // Because the cube is under the gaze cursor from the beginning, it gets a focus gained event
+            // in Setup(). When we show the right hand, we get a focus lost event from the gaze pointer. 
+            // This messes with the CursorContextManipulationHandler hoverCount, as it decrements without
+            // ever having incremented. To avoid this, we move the cube out of focus before we add the
+            // ManipulationHandler and CursorContextManipulationHandler.
+            cube.transform.localPosition = new Vector3(0, -2, 2);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            ObjectManipulator manipulationHandler = cube.AddComponent<ObjectManipulator>();
+            CursorContextObjectManipulator cursorContextManipulationHandler = cube.AddComponent<CursorContextObjectManipulator>();
             yield return new WaitForFixedUpdate();
             yield return null;
 
