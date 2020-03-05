@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -53,12 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     previewCaret = value;
 
-                    if (previewCaret)
-                    {
-                        initialCaretLocation = previewCaret.position;
-
-                        UpdateCaret();
-                    }
+                    UpdateCaret();
                 }
             }
         }
@@ -117,32 +114,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (solverHandler != null)
             {
                 solverHandler.UpdateSolvers = !solverHandler.UpdateSolvers;
+
+                if (solverHandler.UpdateSolvers)
+                {
+                    ApplyShellSolverParameters();
+                }
             }
         }
 
-        private Vector3 initialCaretLocation = Vector3.zero;
-
         #region MonoBehaviour Implementation
 
-        private void Awake()
+        private void OnEnable()
         {
-            if (previewCaret != null)
-            {
-                initialCaretLocation = previewCaret.position;
-            }
+            StartCoroutine(BlinkCaret());
+            ApplyShellSolverParameters();
         }
 
         #endregion MonoBehaviour Implementation
 
         private void UpdateCaret()
         {
-            caretIndex = Mathf.Clamp(caretIndex, 0, Text == null ? 0 : text.Length);
+            caretIndex = Mathf.Clamp(caretIndex, 0, string.IsNullOrEmpty(text) ? 0 : text.Length);
 
             if (previewCaret != null)
             {
-                if (string.IsNullOrEmpty(text) || caretIndex == 0)
+                if (caretIndex == 0)
                 {
-                    previewCaret.transform.position = initialCaretLocation;
+                    previewCaret.transform.localPosition = Vector3.zero;
                 }
                 else
                 {
@@ -162,6 +160,48 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     var position = PreviewText.transform.TransformPoint(localPosition);
                     previewCaret.transform.position = position;
+                }
+            }
+        }
+
+        private IEnumerator BlinkCaret()
+        {
+            while (previewCaret != null)
+            {
+                previewCaret.gameObject.SetActive(!previewCaret.gameObject.activeSelf);
+
+                // The default Window's text caret blinks every 530 milliseconds.
+                const float blinkTime = 0.53f;
+                yield return new WaitForSeconds(blinkTime);
+            }
+        }
+
+        private void ApplyShellSolverParameters()
+        {
+            var solver = GetComponent<Follow>();
+
+            if (solver != null)
+            {
+                // Position the keyboard in a comfortable place with a fixed pitch relative to the forward direction.
+                var solverHandler = solver.GetComponent<SolverHandler>();
+
+                if (solverHandler != null)
+                {
+                    var forward = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.forward : Vector3.forward;
+                    var right = solverHandler.TransformTarget != null ? solverHandler.TransformTarget.right : Vector3.right;
+
+                    // Calculate the initial view pitch.
+                    var pitchOffsetDegrees = Vector3.SignedAngle(new Vector3(forward.x, 0.0f, forward.z), forward, right);
+
+                    const float shellPitchOffset = 5.0f;
+                    pitchOffsetDegrees += shellPitchOffset;
+
+                    const float shellPitchMin = -50.0f;
+                    const float shellPitchMax = 50.0f;
+                    pitchOffsetDegrees = Mathf.Clamp(pitchOffsetDegrees, shellPitchMin, shellPitchMax);
+
+                    solver.PitchOffset = pitchOffsetDegrees;
+                    solver.SolverUpdate();
                 }
             }
         }
