@@ -1047,6 +1047,53 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_DebugDraw_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.DebugDraw*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_DebugDraw_Bounds_Color_System_Single_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.DebugDraw(Bounds,Color,System.Single,System.Boolean)">DebugDraw(Bounds, Color, Single, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Draws a wire frame <a href="https://docs.unity3d.com/ScriptReference/Bounds.html">Bounds</a> object using <a href="https://docs.unity3d.com/ScriptReference/Debug.DrawLine.html">Debug.DrawLine</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DebugDraw(this Bounds bounds, Color color, float duration = 0F, bool depthTest = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td><p>The <a href="https://docs.unity3d.com/ScriptReference/Bounds.html">Bounds</a> to draw.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Color</span></td>
+        <td><span class="parametername">color</span></td>
+        <td><p>Color of the line.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">duration</span></td>
+        <td><p>How long the line should be visible for in seconds.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">depthTest</span></td>
+        <td><p>Should the line be obscured by objects closer to the camera?</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_ExpandToContain_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.ExpandToContain*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_ExpandToContain_Bounds_Bounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.ExpandToContain(Bounds,Bounds)">ExpandToContain(Bounds, Bounds)</h4>
   <div class="markdown level1 summary"><p>Returns bounds that contain both this bounds and the bounds passed in.</p>
@@ -1090,6 +1137,63 @@
       <tr>
         <td><span class="xref">Bounds</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetColliderBounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetColliderBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetColliderBounds_GameObject_Bounds__LayerMask_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetColliderBounds(GameObject,Bounds@,LayerMask)">GetColliderBounds(GameObject, out Bounds, LayerMask)</h4>
+  <div class="markdown level1 summary"><p>Method to get bounds using collider method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool GetColliderBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>GameObject to generate the bounds around.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td><p>An AABB in world space around all the colliders in a gameObject hierarchy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LayerMask</span></td>
+        <td><span class="parametername">ignoreLayers</span></td>
+        <td><p>A LayerMask to restrict the colliders selected.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if bounds were calculated, if zero colliders are present bounds will not be calculated.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1438,6 +1542,63 @@ of an invalid bounds instance is the zero vector.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetMeshFilterBounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetMeshFilterBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetMeshFilterBounds_GameObject_Bounds__LayerMask_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetMeshFilterBounds(GameObject,Bounds@,LayerMask)">GetMeshFilterBounds(GameObject, out Bounds, LayerMask)</h4>
+  <div class="markdown level1 summary"><p>Method to get bounds using mesh filters method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool GetMeshFilterBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>GameObject to generate the bounds around.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td><p>An AABB in world space around all the mesh filters in a GameObject hierarchy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LayerMask</span></td>
+        <td><span class="parametername">ignoreLayers</span></td>
+        <td><p>A LayerMask to restrict the colliders selected.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if bounds were calculated, if zero mesh filters are present bounds will not be calculated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetMeshFilterBoundsPoints_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetMeshFilterBoundsPoints*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetMeshFilterBoundsPoints_GameObject_List_Vector3__LayerMask_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetMeshFilterBoundsPoints(GameObject,List{Vector3},LayerMask)">GetMeshFilterBoundsPoints(GameObject, List&lt;Vector3&gt;, LayerMask)</h4>
   <div class="markdown level1 summary"><p>GetMeshFilterBoundsPoints - gets bounding box points using MeshFilter method.</p>
@@ -1473,6 +1634,114 @@ of an invalid bounds instance is the zero vector.</p>
         <td><span class="xref">LayerMask</span></td>
         <td><span class="parametername">ignoreLayers</span></td>
         <td><p>layerMask to simplify search</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetPointsBounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetPointsBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetPointsBounds_List_Vector3__Bounds__" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetPointsBounds(List{Vector3},Bounds@)">GetPointsBounds(List&lt;Vector3&gt;, out Bounds)</h4>
+  <div class="markdown level1 summary"><p>Method to get bounds from a collection of points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool GetPointsBounds(List&lt;Vector3&gt; points, out Bounds bounds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vector3</span>&gt;</td>
+        <td><span class="parametername">points</span></td>
+        <td><p>The points to construct a bounds around.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td><p>An AABB in world space around all the points.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if bounds were calculated, if zero points are present bounds will not be calculated.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetRenderBounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetRenderBounds*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetRenderBounds_GameObject_Bounds__LayerMask_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetRenderBounds(GameObject,Bounds@,LayerMask)">GetRenderBounds(GameObject, out Bounds, LayerMask)</h4>
+  <div class="markdown level1 summary"><p>Method to get bounds using renderer method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool GetRenderBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>GameObject to generate the bounds around.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td><p>An AABB in world space around all the renderers in a gameObject hierarchy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LayerMask</span></td>
+        <td><span class="parametername">ignoreLayers</span></td>
+        <td><p>A LayerMask to restrict the colliders selected.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if bounds were calculated, if zero renderers are present bounds will not be calculated.</p>
 </td>
       </tr>
     </tbody>

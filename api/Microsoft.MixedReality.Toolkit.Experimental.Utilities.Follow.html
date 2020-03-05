@@ -132,6 +132,58 @@ beyond user defined bounds.</p>
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_AngularClampMode_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_AngularClampMode" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampMode">AngularClampMode</h4>
+  <div class="markdown level1 summary"><p>Accessors for specifying the method used to ensure the refForward vector remains within the bounds set by the leashing parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Follow.AngularClampType AngularClampMode { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.AngularClampType.html">Follow.AngularClampType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_BoundsScaler_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.BoundsScaler*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_BoundsScaler" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.BoundsScaler">BoundsScaler</h4>
+  <div class="markdown level1 summary"><p>Scales the bounds to impose a larger or smaller bounds than the calculated bounds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float BoundsScaler { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_DefaultDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.DefaultDistance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_DefaultDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.DefaultDistance">DefaultDistance</h4>
   <div class="markdown level1 summary"><p>Initial placement distance. Should be between min and max.</p>
@@ -392,32 +444,6 @@ beyond user defined bounds.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MoveToDefaultDistanceLerpTime_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MoveToDefaultDistanceLerpTime*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_MoveToDefaultDistanceLerpTime" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.MoveToDefaultDistanceLerpTime">MoveToDefaultDistanceLerpTime</h4>
-  <div class="markdown level1 summary"><p>Position lerp multiplier.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MoveToDefaultDistanceLerpTime { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientationType_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientationType*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_OrientationType" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.OrientationType">OrientationType</h4>
   <div class="markdown level1 summary"><p>The desired orientation of this object.</p>
@@ -600,32 +626,6 @@ beyond user defined bounds.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_UseAngleStepping_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.UseAngleStepping*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_UseAngleStepping" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.UseAngleStepping">UseAngleStepping</h4>
-  <div class="markdown level1 summary"><p>Lock the rotation to a specified number of steps around the tracked object.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool UseAngleStepping { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_VerticalMaxDistance_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.VerticalMaxDistance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_VerticalMaxDistance" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.VerticalMaxDistance">VerticalMaxDistance</h4>
   <div class="markdown level1 summary"><p>Max vertical distance between element and reference.</p>
@@ -664,9 +664,21 @@ beyond user defined bounds.</p>
   </div>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_RecalculateBoundsExtents_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.RecalculateBoundsExtents*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_RecalculateBoundsExtents" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.RecalculateBoundsExtents">RecalculateBoundsExtents()</h4>
+  <div class="markdown level1 summary"><p>Recalculates the bounds based on the angular clamp mode.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RecalculateBoundsExtents()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_Recenter_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.Recenter*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_Utilities_Follow_Recenter" data-uid="Microsoft.MixedReality.Toolkit.Experimental.Utilities.Follow.Recenter">Recenter()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Re-centers the target in the next update.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
