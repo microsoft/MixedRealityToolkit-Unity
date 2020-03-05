@@ -46,6 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             GltfObject gltfObject = task.Result;
 
+            yield return null;
+
             Assert.IsNotNull(gltfObject);
             Assert.AreEqual(1, gltfObject.meshes.Length);
             Assert.AreEqual(1, gltfObject.nodes.Length);
@@ -70,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return WaitForTask(task);
 
             GltfObject gltfObject = task.Result;
+
+            yield return null;
 
             // Check for custom attribute
             int temperatureIdx;
