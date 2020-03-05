@@ -1,17 +1,92 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
-- [2.3.0 to 2.4.0](#updating-220-to-230)
+- [Upgrading to a new version of MRTK](#upgrading-to-a-new-version-of-mrtk)
+- [2.3.0 to 2.4.0](#updating-230-to-240)
 - [2.2.0 to 2.3.0](#updating-220-to-230)
 - [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
+## Upgrading to a new version of MRTK
+
+The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
+
 > [!NOTE]
-> Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
+> At this time, it is not supported to switch between using .unitypackage files and NuGet.
+
+### Unity asset (.unitypackage) files
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting these folders.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Staging
+    > [!NOTE]
+    > The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+### NuGet packages
+
+If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Close and re-open the project in Unity
 
 ## Updating 2.3.0 to 2.4.0
 
-*Coming soon*
+[API changes](#api-changes-in-240)
+
+### API changes in 2.4.0
+
+**Custom controller classes**
+
+Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
+
+**WindowsApiChecker properties**
+
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+
+- UniversalApiContractV8_IsAvailable
+- UniversalApiContractV7_IsAvailable
+- UniversalApiContractV6_IsAvailable
+- UniversalApiContractV5_IsAvailable
+- UniversalApiContractV4_IsAvailable
+- UniversalApiContractV3_IsAvailable
+
+There are no plans to add properties to WindowsApiChecker for future API contract versions.
 
 ## Updating 2.2.0 to 2.3.0
 

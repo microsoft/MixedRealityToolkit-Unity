@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
     public class BoundsControlTests
     {
         #region Utilities
+
         [SetUp]
         public void Setup()
         {
@@ -43,7 +44,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
         private readonly Vector3 boundsControlStartScale = Vector3.one * 0.5f;
-        private static readonly string appBarPrefabLink = "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/AppBar/AppBar.prefab";
+
+        // SDK/Features/UX/Prefabs/AppBar/AppBar.prefab
+        private const string appBarPrefabGuid = "83c02591e2867124181bcd3bcb65e288";
+        private static readonly string appBarPrefabLink = AssetDatabase.GUIDToAssetPath(appBarPrefabGuid);
+
         /// <summary>
         /// Instantiates a bounds control at boundsControlStartCenter
         /// transform is at scale boundsControlStartScale
@@ -76,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
             yield return null;
         }
+
         #endregion
 
         /// <summary>
@@ -138,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
+            // This particular test is sensitive to the number of test frames and is run at a slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
@@ -240,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via hololens 1 interaction / GGV
+        /// Test bounds control rotation via HoloLens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -295,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            
+
             Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
             Vector3 pointOnCube = new Vector3(-0.033f, -0.129f, 0.499f); // position where hand ray points on center of the test cube
             Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
@@ -375,13 +381,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();           
+            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
             CameraCache.Main.transform.LookAt(boundsControl.gameObject.transform.Find("rigRoot/corner_3").transform);
 
-            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
+            var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3(0.1f, 0f, 1.5f));
             TestHand rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(startHandPos);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
@@ -524,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in poximity scaling range - check if proximity scaling wasn't applied
+            // we're in proximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -679,7 +685,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             appBarGameObject.transform.localScale = Vector3.one * 5.0f;
             appBar.Target = boundsControl;
-            appBarGameObject.SetActive(true);          
+            appBarGameObject.SetActive(true);
 
             // manipulation coords
             Vector3 rightCornerInteractionPoint = new Vector3(0.184f, 0.078f, 0.79f); // position of hand for far interacting with front right corner 
@@ -711,7 +717,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(scalePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             endBounds = boundsControl.GetComponent<BoxCollider>().bounds;
-            Vector3 expectedScaleCenter = new Vector3(0.0453f, 0.0453f, 1.455f); 
+            Vector3 expectedScaleCenter = new Vector3(0.0453f, 0.0453f, 1.455f);
             Vector3 expectedScaleSize = Vector3.one * 0.59f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedScaleCenter, "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, expectedScaleSize, "endBounds incorrect size");

@@ -642,7 +642,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 if (interactionSource.kind == InteractionSourceKind.Hand)
                 {
                     detectedController = new WindowsMixedRealityArticulatedHand(TrackingState.NotTracked, controllingHand, inputSource);
-                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityArticulatedHand)))
+                    if (!detectedController.Enabled)
                     {
                         // Controller failed to be setup correctly.
                         // Return null so we don't raise the source detected.
@@ -652,7 +652,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 else if (interactionSource.kind == InteractionSourceKind.Controller)
                 {
                     detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController)))
+                    if (!detectedController.Enabled)
                     {
                         // Controller failed to be setup correctly.
                         // Return null so we don't raise the source detected.
@@ -668,7 +668,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             else
             {
                 detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
-                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand)))
+                if (!detectedController.Enabled)
                 {
                     // Controller failed to be setup correctly.
                     // Return null so we don't raise the source detected.

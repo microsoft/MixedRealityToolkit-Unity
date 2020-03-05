@@ -12,8 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
 {
     public class InputSystemTests
     {
-        private const string TestInputSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestMixedRealityInputSystemProfile.asset";
-        private const string TestEmptyInputSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestEmptyMixedRealityInputSystemProfile.asset";
+        // Tests/EditModeTests/Services/TestProfiles/TestMixedRealityInputSystemProfile.asset
+        private const string TestInputSystemProfileGuid = "9c5be3fea81382342b84623b5b225012";
+        private static readonly string TestInputSystemProfilePath = AssetDatabase.GUIDToAssetPath(TestInputSystemProfileGuid);
+
+        // Tests/EditModeTests/Services/TestProfiles/TestEmptyMixedRealityInputSystemProfile.asset
+        private const string TestEmptyInputSystemProfileGuid = "45c96c8b3073919419eae31f72ca8e4e";
+        private static readonly string TestEmptyInputSystemProfilePath = AssetDatabase.GUIDToAssetPath(TestEmptyInputSystemProfileGuid);
 
         [TearDown]
         public void TearDown()

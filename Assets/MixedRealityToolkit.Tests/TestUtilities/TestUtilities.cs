@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(Vector3.zero);
             });
         }
+
         /// <summary>
         /// Forces the playspace camera to face forward.
         /// </summary>
@@ -231,9 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
-            var testDirectories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
-            var directories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
-
             Texture2D icon = null;
 
             foreach (string iconPath in MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons"))
@@ -250,6 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Debug.Log("Couldn't find test icon.");
                 return;
             }
+            
+            IEnumerable<string> testDirectories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
 
             foreach (string directory in testDirectories)
             {

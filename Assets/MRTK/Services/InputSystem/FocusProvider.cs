@@ -538,12 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (!IsSetupValid) { return; }
 
             UpdatePointers();
-
-            if (gazeProviderPointingData?.Pointer != null)
-            {
-                UpdateGazeProvider();
-            }
-
+            UpdateGazeProvider();
             UpdateFocusedObjects();
 
             PrimaryPointer = primaryPointerSelector?.Update();
@@ -558,19 +553,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // another raycast if it's not populated
             if (gazeHitResult == null)
             {
-                // get 3d hit
-                hitResult3d.Clear();
-                var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-                QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
-                    hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
+                if (gazeProviderPointingData?.Pointer != null)
+                {
+                    // get 3d hit
+                    hitResult3d.Clear();
+                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                    LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                    QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
+                        hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                // get ui hit
-                hitResultUi.Clear();
-                RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                    // get ui hit
+                    hitResultUi.Clear();
+                    RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
-                // set gaze hit according to distance and priorization layer mask
-                gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                    // set gaze hit according to distance and prioritization layer mask
+                    gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                }
+                else
+                {
+                    return;
+                }
             }
 
             CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
@@ -1006,7 +1008,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     pointerData.UpdateHit(hit);
 
                     // set gaze hit result - make sure to include unity ui hits
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if (gazeProviderPointingData?.Pointer != null && pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
                         gazeHitResult = hit;
                     }
@@ -1423,7 +1425,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
             {
                 // Special unregistration for Gaze
-                if (gazeProviderPointingData != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                if (gazeProviderPointingData?.Pointer != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
                 {
                     // If the source lost is the gaze input source, then reset it.
                     if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
@@ -1451,7 +1453,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
         }
         #endregion
-
 
         #region IPointerPreferences Implementation
         private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
@@ -1582,6 +1583,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
         #endregion
-
     }
 }
