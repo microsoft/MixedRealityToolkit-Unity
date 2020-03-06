@@ -80,7 +80,7 @@ $packages = @{
     "Foundation" = @(
         "Assets\MixedRealityToolkit",
         "Assets\MRTK\Providers",
-        "Assets\MixedRealityToolkit.SDK",
+        "Assets\MRTK\SDK",
         "Assets\MRTK\Services"
     );
     "Extensions" = @(

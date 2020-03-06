@@ -18,13 +18,13 @@ If a component is marked experimental you can expect the following:
 Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:
 
 - Example scenes, scripts go into `MRTK.Examples/Experimental/FooBar/`
-- Component scripts, prefabs go into `MRTK.SDK/Experimental/FooBar/`
-- Component inspectors go into `MRTK.SDK/Inspectors/Experimental/FooBar`
+- Component scripts, prefabs go into `MRTK/SDK/Experimental/FooBar/`
+- Component inspectors go into `MRTK/SDK/Inspectors/Experimental/FooBar`
 
 When using sub-folders under the experimental feature name, try to mirror the same folder structure of MRTK.
 
 For example, solvers would go under
-`MRTK.SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs`
+`MRTK/SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs`
 
 Keep scenes in a scene folder near the top: `MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity`
 
@@ -63,7 +63,7 @@ Adding a component menu:
 
 Follow these steps to add documentation for your experimental feature:
 
-1. Any documentation for an experimental feature should go in a `README.md` file in the experimental folder. For example, [`MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md`](../../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md).
+1. Any documentation for an experimental feature should go in a `README.md` file in the experimental folder. For example, [`MRTK/SDK/Experimental/ScrollingObjectCollection/README.md`](../../Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.md).
 
 1. Under *Feature Overviews* Add a link in the *Experimental* section at [`Documentation/toc.yml`](../toc.yml).
 
@@ -74,8 +74,8 @@ Any regressions you make to the MRTK core code would result in your pull request
 
 Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:
 
-- MixedRealityToolkit.SDK\Experimental
-- MixedRealityToolkit.SDK\Inspectors\Experimental
+- MRTK/SDK\Experimental
+- MRTK/SDK\Inspectors\Experimental
 - MixedRealityToolkit.Examples\Experimental
 
 Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
