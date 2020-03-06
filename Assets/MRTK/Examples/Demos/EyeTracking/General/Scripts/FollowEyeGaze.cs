@@ -23,11 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             var eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             if (eyeGazeProvider != null)
             {
-                if(!eyeGazeProvider.UseEyeTracking)
-                {
-                    eyeGazeProvider.UseEyeTracking = true;
-                }
-
                 gameObject.transform.position = eyeGazeProvider.GazeOrigin + eyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 
                 EyeTrackingTarget lookedAtEyeTarget = EyeTrackingTarget.LookedAtEyeTarget;

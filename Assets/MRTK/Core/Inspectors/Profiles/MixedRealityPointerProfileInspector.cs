@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
+        private SerializedProperty useEyeTracking;
         private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
         private SerializedProperty primaryPointerSelector;
@@ -43,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
+            useEyeTracking = serializedObject.FindProperty("useEyeTracking");
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
@@ -65,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(gazeCursorPrefab);
                     EditorGUILayout.PropertyField(gazeProviderType);
+                    EditorGUILayout.PropertyField(useEyeTracking);
                     EditorGUILayout.Space();
 
                     if (InspectorUIUtility.RenderIndentedButton("Customize Gaze Provider Settings"))
