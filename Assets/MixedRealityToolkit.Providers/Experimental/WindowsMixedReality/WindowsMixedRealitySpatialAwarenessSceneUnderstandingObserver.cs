@@ -240,7 +240,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         #endregion IMixedRealityOnDemandObserver
 
         #region Public Profile
-        public Material DefaultMaterial { get; set; }
+        public Material DefaultMaterial { get; set; } // Need references so they are included for runtime
+        public Material DefaultWorldMeshMaterial { get; set; } // Need references so they are included for runtime
 
         /// <summary>
         /// File path to load previously saved scene data
@@ -690,6 +691,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             StartupBehavior = profile.StartupBehavior;
             AutoUpdate = profile.AutoUpdate;
             DefaultMaterial = profile.DefaultMaterial;
+            DefaultWorldMeshMaterial = profile.DefaultWorldMeshMaterial;
             SurfaceTypes = profile.SurfaceTypes;
             RequestMeshData = profile.RequestMeshData;
             RequestPlaneData = profile.RequestPlaneData;
@@ -825,6 +827,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     else
                     {
                         meshRenderer.material.mainTexture = defaultTexture;
+                    }
+
+                    if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
+                    {
+                        meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
                     }
 
                     quadGo.transform.SetParent(saso.GameObject.transform);

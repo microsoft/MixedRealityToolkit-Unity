@@ -22,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         private SerializedProperty surfaceTypes;
         private SerializedProperty instantiationBatchRate;
         private SerializedProperty defaultMaterial;
+        private SerializedProperty defaultWorldMeshMaterial;
         private SerializedProperty shouldLoadFromFile;
         private SerializedProperty serializedScene;
         private SerializedProperty requestMeshData;
@@ -56,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
             instantiationBatchRate = serializedObject.FindProperty("instantiationBatchRate");
             defaultMaterial = serializedObject.FindProperty("defaultMaterial");
+            defaultWorldMeshMaterial = serializedObject.FindProperty("defaultWorldMeshMaterial");
             requestPlaneData = serializedObject.FindProperty("requestPlaneData");
             requestMeshData = serializedObject.FindProperty("requestMeshData");
             createGameObjects = serializedObject.FindProperty("createGameObjects");
@@ -109,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(instantiationBatchRate);
                     EditorGUILayout.PropertyField(physicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
+                    EditorGUILayout.PropertyField(defaultWorldMeshMaterial);
                     EditorGUILayout.PropertyField(occlusionMaskResolution);
                 }
 

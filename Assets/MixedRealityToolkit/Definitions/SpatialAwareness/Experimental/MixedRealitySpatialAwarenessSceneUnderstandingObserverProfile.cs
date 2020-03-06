@@ -58,12 +58,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         public int InstantiationBatchRate => instantiationBatchRate;
 
         [SerializeField]
-        [Tooltip("Material to use when displaying understood planes")]
+        [Tooltip("Material to use when displaying understood planes and meshes")]
         private Material defaultMaterial = null;
         /// <summary>
         /// The material to be used when displaying understood planes.
         /// </summary>
         public Material DefaultMaterial => defaultMaterial;
+
+        [SerializeField]
+        [Tooltip("Material to use when displaying the world mesh")]
+        private Material defaultWorldMeshMaterial = null;
+        /// <summary>
+        /// The material to be used when displaying understood planes.
+        /// </summary>
+        public Material DefaultWorldMeshMaterial => defaultWorldMeshMaterial;
 
         [SerializeField]
         [Tooltip("Load saved scan data from a file instead of device")]
