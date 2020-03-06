@@ -14,6 +14,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Extensions/HandPhysicsService/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Extensions/HandPhysicsService/README.html",
+          "hash": "RAnb7uI+cX9cr4bnx2+/xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MRTK/Providers/UnityAR/README.md",
       "output": {
         ".html": {
@@ -307,18 +319,6 @@
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/toc.html",
           "hash": "7nUNDBGE2EDlQ5n2qlXvsw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Extensions/HandPhysicsService/README.html",
-          "hash": "zVjbdUI8taKS1TEHCIuSSg=="
         }
       },
       "is_incremental": false,
