@@ -46,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsSpeechInputProvider(
             IMixedRealityInputSystem inputSystem,
             string name = null,
