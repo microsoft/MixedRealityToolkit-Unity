@@ -96,12 +96,12 @@
 <p>Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:</p>
 <ul>
 <li>Example scenes, scripts go into <code>MRTK.Examples/Experimental/FooBar/</code></li>
-<li>Component scripts, prefabs go into <code>MRTK.SDK/Experimental/FooBar/</code></li>
-<li>Component inspectors go into <code>MRTK.SDK/Inspectors/Experimental/FooBar</code></li>
+<li>Component scripts, prefabs go into <code>MRTK/SDK/Experimental/FooBar/</code></li>
+<li>Component inspectors go into <code>MRTK/SDK/Inspectors/Experimental/FooBar</code></li>
 </ul>
 <p>When using sub-folders under the experimental feature name, try to mirror the same folder structure of MRTK.</p>
 <p>For example, solvers would go under
-<code>MRTK.SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs</code></p>
+<code>MRTK/SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs</code></p>
 <p>Keep scenes in a scene folder near the top: <code>MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity</code></p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -125,7 +125,7 @@ public static void MyCommand()
 <h2 id="documentation">Documentation</h2>
 <p>Follow these steps to add documentation for your experimental feature:</p>
 <ol>
-<li><p>Any documentation for an experimental feature should go in a <code>README.md</code> file in the experimental folder. For example, <a href="../../Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.html"><code>MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md</code></a>.</p>
+<li><p>Any documentation for an experimental feature should go in a <code>README.md</code> file in the experimental folder. For example, <a href="../../Assets/MRTK/SDK/Experimental/ScrollingObjectCollection/README.html"><code>MRTK/SDK/Experimental/ScrollingObjectCollection/README.md</code></a>.</p>
 </li>
 <li><p>Under <em>Feature Overviews</em> Add a link in the <em>Experimental</em> section at <a href="../toc.html"><code>Documentation/toc.yml</code></a>.</p>
 </li>
@@ -135,8 +135,8 @@ public static void MyCommand()
 Any regressions you make to the MRTK core code would result in your pull request getting reverted.</p>
 <p>Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:</p>
 <ul>
-<li>MixedRealityToolkit.SDK\Experimental</li>
-<li>MixedRealityToolkit.SDK\Inspectors\Experimental</li>
+<li>MRTK/SDK\Experimental</li>
+<li>MRTK/SDK\Inspectors\Experimental</li>
 <li>MixedRealityToolkit.Examples\Experimental</li>
 </ul>
 <p>Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.</p>
