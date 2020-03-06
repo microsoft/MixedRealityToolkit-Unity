@@ -84,7 +84,7 @@ $packages = @{
         "Assets\MRTK\Services"
     );
     "Extensions" = @(
-        "Assets\MixedRealityToolkit.Extensions"
+        "Assets\MRTK\Extensions"
     );
     "Examples" = @(
         "Assets\MixedRealityToolkit.Examples"
