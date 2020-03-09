@@ -74,12 +74,10 @@ We do recommend to hide the default head gaze cursor that is attached to the MRT
     - Clone the _'DefaultMixedRealityInputPointerProfile'_ to make changes to it.
     - At the top of the _'Pointer Settings'_, you should assign an invisible cursor prefab to the _'GazeCursor'_. If you downloaded the MRTK Examples folder, you can simply reference the included _'EyeGazeCursor'_ prefab.
 
-    ![MRTK](../Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg)
-
 ### Enabling eye-based gaze in the gaze provider
 
 In HoloLens v1, head gaze was used as primary pointing technique.
-While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'UseEyeTracking'_ checkbox as shown in the screenshot below.
+While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'UseEyeTracking'_ checkbox in the gaze settings of the input pointer profile as shown in the screenshot below.
 
 ![MRTK](../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
 
