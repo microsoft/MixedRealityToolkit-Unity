@@ -22,9 +22,9 @@
   </metadata>
   <files>
     <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit\toc.yml*" target="MRTK\" />
-    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Providers\License.txt*;MixedRealityToolkit.Providers\Version.txt*;MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter*;MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;MixedRealityToolkit.Providers\UnityAR*;MixedRealityToolkit.Providers\UnityAR\**\*.*" target="MRTK\" />
-    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.SDK\License.txt*;MixedRealityToolkit.SDK\Version.txt*;MixedRealityToolkit.SDK\toc.yml*;MixedRealityToolkit.SDK\StandardAssets.meta;MixedRealityToolkit.SDK\StandardAssets\Fonts.meta;MixedRealityToolkit.SDK\StandardAssets\Materials.meta;MixedRealityToolkit.SDK\StandardAssets\Shaders.meta;MixedRealityToolkit.SDK\StandardAssets\Textures.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Services\License.txt*;MixedRealityToolkit.Services\Version.txt*" target="MRTK\" />
+    <file src="MRTK\Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Providers\License.txt*;MRTK\Providers\Version.txt*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;MRTK\Providers\UnityAR*;MRTK\Providers\UnityAR\**\*.*" target="MRTK\" />
+    <file src="MRTK\SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\SDK\License.txt*;MRTK\SDK\Version.txt*;MRTK\SDK\toc.yml*;MRTK\SDK\StandardAssets.meta;MRTK\SDK\StandardAssets\Fonts.meta;MRTK\SDK\StandardAssets\Materials.meta;MRTK\SDK\StandardAssets\Shaders.meta;MRTK\SDK\StandardAssets\Textures.meta" target="MRTK\" />
+    <file src="MRTK\Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Services\License.txt*;MRTK\Services\Version.txt*" target="MRTK\" />
 
     <file src="MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
 
@@ -35,23 +35,23 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
     <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" /> -->
+    <!-- <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Core" /> -->
 
-    <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Providers folder -->
+    <!-- Assemblies and Sources that are built from the Providers folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" exclude="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR*;..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR\**\*.*" target="Plugins\" />
     <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" /> -->
+    <!-- <file src="..\..\Assets\MRTK\Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Providers" /> -->
 
-    <!-- Assemblies and Sources that are built from the MixedRealityToolkit.SDK folder -->
+    <!-- Assemblies and Sources that are built from the SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
     <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" /> -->
+    <!-- <file src="..\..\Assets\MRTK\SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\SDK" /> -->
 
-    <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Services folder -->
+    <!-- Assemblies and Sources that are built from the Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
     <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" /> -->
+    <!-- <file src="..\..\Assets\MRTK\Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Services" /> -->
     
     <!-- 
       link.xml is copied to the root location, so that it can catch IL2CPP

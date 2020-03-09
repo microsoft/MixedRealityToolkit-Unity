@@ -24,8 +24,9 @@ A change is a breaking change if it satisfies any of the conditions in the [List
 
   - MixedRealityToolkit/
   - MixedRealityToolkit.Providers/
-  - MixedRealityToolkit.Services/
+  - MRTK.Services/
   - MixedRealityToolkit.SDK/
+  - MixedRealityToolkit.Extensions
 
 - The asset in question does not belong to the experimental namespace.
 
