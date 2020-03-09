@@ -18,7 +18,6 @@ using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
