@@ -83,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         private CancellationTokenSource tokenSource;
         private ConcurrentQueue<BoundedPlane> instantiationQueue = new ConcurrentQueue<BoundedPlane>();
 
-        private bool isRendering = false;
-
 #if UNITY_EDITOR || UNITY_STANDALONE
         /// <summary>
         /// How much time (in sec), while running in the Unity Editor, to allow RemoveSurfaceVertices to consume before returning control to the main program.
@@ -137,21 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             tokenSource.Cancel();
         }
 
-        // Update is called once per frame
-        public override void Update()
-        {
-            isRendering = true;
-            CreateGameObjects(instantiationQueue);
-            isRendering = false;
-            //if (!makingPlanes)
-            //{
-            //    makingPlanes = true;
-            //    // Processing the mesh can be expensive...
-            //    // We use Coroutine to split the work across multiple frames and avoid impacting the frame rate too much.
-            //    MakePlanes();
-            //}
-        }
-
         /// <summary>
         /// Iterator block, analyzes surface meshes to find planes and create new 3D cubes to represent each plane.
         /// </summary>
@@ -160,16 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (isRendering)
-                {
-                    continue;
-                }
-
                 await new WaitForUpdate();
-
-                DestroyPreviousPlanes();
-                ActivePlanes.Clear();
-                instantiationQueue = new ConcurrentQueue<BoundedPlane>();
 
                 // Get the latest Mesh data from the Spatial Mapping Manager.
                 List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
@@ -187,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                     }
                 }
 
-
                 for (int index = 0; index < filters.Count; index++)
                 {
                     MeshFilter filter = filters[index];
@@ -199,26 +172,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
                     }
                 }
 
+                BoundedPlane[] planes;
+
                 await new WaitForBackgroundThread();
                 {
-                    BoundedPlane[] planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);
-                    for (int i = 0; i < planes.Length; i++)
-                    {
-                        instantiationQueue.Enqueue(planes[i]);
-                    }
+                    planes = PlaneFinding.FindPlanes(meshData, snapToGravityThreshold, MinArea);
                 }
 
-                //makingPlanes = false;
+                await new WaitForUpdate();
+
+                DestroyPreviousPlanes();
+                ActivePlanes.Clear();
+                CreateGameObjects(planes);
             }
         }
 
-        private void CreateGameObjects(ConcurrentQueue<BoundedPlane> queue)
+        private void CreateGameObjects(BoundedPlane[] planes)
         {
-            while(!queue.IsEmpty)
+            for(int i = 0; i < planes.Length; i++)
             {
                 GameObject destinationPlane;
-                BoundedPlane boundedPlane;
-                queue.TryDequeue(out boundedPlane);
+                BoundedPlane boundedPlane = planes[i];
 
                 // Instantiate a SurfacePlane object, which will have the same bounds as our BoundedPlane object.
                 destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
