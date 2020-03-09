@@ -246,6 +246,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 material.mainTexture = gltfObject.images[gltfMaterial.pbrMetallicRoughness.baseColorTexture.index].Texture;
             }
 
+            material.EnableKeyword("_DIRECTIONAL_LIGHT");
+            material.EnableKeyword("_SPECULAR_HIGHLIGHTS");
+
             material.color = gltfMaterial.pbrMetallicRoughness.baseColorFactor.GetColorValue();
 
             if (gltfMaterial.alphaMode == "MASK")
@@ -558,53 +561,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             GltfAccessor joint0Accessor = null;
             int vertexCount = 0;
 
-            int attributeIndex;
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.POSITION, out attributeIndex))
+            if (meshPrimitive.Attributes.POSITION >= 0)
             {
-                positionAccessor = gltfObject.accessors[attributeIndex];
+                positionAccessor = gltfObject.accessors[meshPrimitive.Attributes.POSITION];
                 positionAccessor.BufferView = gltfObject.bufferViews[positionAccessor.bufferView];
                 positionAccessor.BufferView.Buffer = gltfObject.buffers[positionAccessor.BufferView.buffer];
                 vertexCount = positionAccessor.count;
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.NORMAL, out attributeIndex))
+            if (meshPrimitive.Attributes.NORMAL >= 0)
             {
-                normalsAccessor = gltfObject.accessors[attributeIndex];
+                normalsAccessor = gltfObject.accessors[meshPrimitive.Attributes.NORMAL];
                 normalsAccessor.BufferView = gltfObject.bufferViews[normalsAccessor.bufferView];
                 normalsAccessor.BufferView.Buffer = gltfObject.buffers[normalsAccessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.TEXCOORD_0, out attributeIndex))
+            if (meshPrimitive.Attributes.TEXCOORD_0 >= 0)
             {
-                textCoord0Accessor = gltfObject.accessors[attributeIndex];
+                textCoord0Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_0];
                 textCoord0Accessor.BufferView = gltfObject.bufferViews[textCoord0Accessor.bufferView];
                 textCoord0Accessor.BufferView.Buffer = gltfObject.buffers[textCoord0Accessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.TEXCOORD_1, out attributeIndex))
+            if (meshPrimitive.Attributes.TEXCOORD_1 >= 0)
             {
-                textCoord1Accessor = gltfObject.accessors[attributeIndex];
+                textCoord1Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_1];
                 textCoord1Accessor.BufferView = gltfObject.bufferViews[textCoord1Accessor.bufferView];
                 textCoord1Accessor.BufferView.Buffer = gltfObject.buffers[textCoord1Accessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.TEXCOORD_2, out attributeIndex))
+            if (meshPrimitive.Attributes.TEXCOORD_2 >= 0)
             {
-                textCoord2Accessor = gltfObject.accessors[attributeIndex];
+                textCoord2Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_2];
                 textCoord2Accessor.BufferView = gltfObject.bufferViews[textCoord2Accessor.bufferView];
                 textCoord2Accessor.BufferView.Buffer = gltfObject.buffers[textCoord2Accessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.TEXCOORD_3, out attributeIndex))
+            if (meshPrimitive.Attributes.TEXCOORD_3 >= 0)
             {
-                textCoord3Accessor = gltfObject.accessors[attributeIndex];
+                textCoord3Accessor = gltfObject.accessors[meshPrimitive.Attributes.TEXCOORD_3];
                 textCoord3Accessor.BufferView = gltfObject.bufferViews[textCoord3Accessor.bufferView];
                 textCoord3Accessor.BufferView.Buffer = gltfObject.buffers[textCoord3Accessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.COLOR_0, out attributeIndex))
+            if (meshPrimitive.Attributes.COLOR_0 >= 0)
             {
-                colorAccessor = gltfObject.accessors[attributeIndex];
+                colorAccessor = gltfObject.accessors[meshPrimitive.Attributes.COLOR_0];
                 colorAccessor.BufferView = gltfObject.bufferViews[colorAccessor.bufferView];
                 colorAccessor.BufferView.Buffer = gltfObject.buffers[colorAccessor.BufferView.buffer];
             }
@@ -616,23 +618,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                 indicesAccessor.BufferView.Buffer = gltfObject.buffers[indicesAccessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.TANGENT, out attributeIndex))
+            if (meshPrimitive.Attributes.TANGENT >= 0)
             {
-                tangentAccessor = gltfObject.accessors[attributeIndex];
+                tangentAccessor = gltfObject.accessors[meshPrimitive.Attributes.TANGENT];
                 tangentAccessor.BufferView = gltfObject.bufferViews[tangentAccessor.bufferView];
                 tangentAccessor.BufferView.Buffer = gltfObject.buffers[tangentAccessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.WEIGHTS_0, out attributeIndex))
+            if (meshPrimitive.Attributes.WEIGHTS_0 >= 0)
             {
-                weight0Accessor = gltfObject.accessors[attributeIndex];
+                weight0Accessor = gltfObject.accessors[meshPrimitive.Attributes.WEIGHTS_0];
                 weight0Accessor.BufferView = gltfObject.bufferViews[weight0Accessor.bufferView];
                 weight0Accessor.BufferView.Buffer = gltfObject.buffers[weight0Accessor.BufferView.buffer];
             }
 
-            if (meshPrimitive.Attributes.TryGetValue(GltfMeshPrimitiveAttributes.JOINTS_0, out attributeIndex))
+            if (meshPrimitive.Attributes.JOINTS_0 >= 0)
             {
-                joint0Accessor = gltfObject.accessors[attributeIndex];
+                joint0Accessor = gltfObject.accessors[meshPrimitive.Attributes.JOINTS_0];
                 joint0Accessor.BufferView = gltfObject.bufferViews[joint0Accessor.bufferView];
                 joint0Accessor.BufferView.Buffer = gltfObject.buffers[joint0Accessor.BufferView.buffer];
             }

@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
             {
                 for (int j = 0; j < gltfObject.meshes[i].primitives.Length; j++)
                 {
-                    gltfObject.meshes[i].primitives[j].Attributes = StringIntDictionaryFromJson(meshPrimitiveAttributes[primitiveIndex]);
+                    gltfObject.meshes[i].primitives[j].Attributes = new GltfMeshPrimitiveAttributes(StringIntDictionaryFromJson(meshPrimitiveAttributes[primitiveIndex]));
                     primitiveIndex++;
                 }
             }
