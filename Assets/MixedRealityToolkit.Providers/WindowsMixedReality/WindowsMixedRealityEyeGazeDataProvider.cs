@@ -62,6 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             eyesApiAvailable = ApiInformation.IsPropertyPresent("Windows.UI.Input.Spatial.SpatialPointerPose", "Eyes");
+            if (eyesApiAvailable)
+            {
+                eyesApiAvailable &= EyesPose.IsSupported();
+            }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 
@@ -95,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (eyesApiAvailable)
             {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-                return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
+                return (capability == MixedRealityCapability.EyeTracking);
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             }
 
@@ -179,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </summary>
         private async void AskForETPermission()
         {
-            if (!askedForETAccessAlready)  // Making sure this is only triggered once
+            if (!askedForETAccessAlready) // Making sure this is only triggered once
             {
                 askedForETAccessAlready = true;
                 await EyesPose.RequestAccessAsync();
@@ -248,7 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 smoothedGaze.direction = newGaze.Value.direction;
                 smoothedGaze.origin = newGaze.Value.origin;
                 confidenceOfSaccade = 0;
-                isSaccading = false;
             }
             else
             {
