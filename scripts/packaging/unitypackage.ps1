@@ -12,11 +12,11 @@
 
     - Examples
 
-    This contains all of the content under MixedRealityToolkit.Examples
+    This contains all of the content under MRTK/Examples
 
     Note that these packages are intended to mirror the NuGet packages
     described in Assets/MixedReality.Toolkit.Foundation.nuspec and
-    Assets/MixedRealityToolkit.Examples/MixedReality.Toolkit.Examples.nuspec.
+    Assets/MRTK/Examples/MixedReality.Toolkit.Examples.nuspec.
 
     Defaults to assuming that the current working directory of the script is in the root
     directory of the repo.
