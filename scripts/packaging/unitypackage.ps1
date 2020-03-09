@@ -90,7 +90,7 @@ $packages = @{
         "Assets\MixedRealityToolkit.Examples"
     );
     "Tools" = @(
-        "Assets\MixedRealityToolkit.Tools"
+        "Assets\MRTK\Tools"
     );
 }
 
