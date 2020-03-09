@@ -25,7 +25,7 @@
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
-    <file src="..\..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
+    <file src="..\..\..\MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
 
     <file src="..\..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
     <!-- <file src="..\..\..\..\Assets\MRTK\Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Tests\TestUtilities" /> -->
