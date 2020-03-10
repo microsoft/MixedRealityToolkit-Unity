@@ -1257,7 +1257,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests the Cursor context object manipulator - makes sure cursor context is shown when
         /// an object is manipulated by object manipulator
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator CursorContextObjectManipulatorMove()
         {
