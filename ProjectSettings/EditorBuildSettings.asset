@@ -6,8 +6,50 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
+    path: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
     guid: 3dd4a396b5225f8469b9a1eb608bfa57
+  - enabled: 1
+    path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+    guid: 63a00118e809c754f9c7911bb85d635f
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
+    guid: e532091edada3e04aa706112e8d5f310
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
+    guid: de90a43947eced441b4c426e11f35f28
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
+    guid: c6b1477d31864dff836e9738518eae60
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
+    guid: 9da574c0affd04d42a6b1e5db09e82b4
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
+    guid: b2d06bb8d7f107d4783a56c796c5c120
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity
+    guid: 2792ec9767804e644906ab978f2eed23
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity
+    guid: 86e8b0c6246dbb74aa04ecd40a57d89c
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity
+    guid: 086aad2912678d04e968264b2398004b
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
+    guid: 55643f7e4eceb734784192b162f565e0
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
+    guid: 5df475f0bf57b1f488d59e0e16040d9a
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
+    guid: 91ded1f5ef2ae854ba4ac94eca7a2494
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
+    guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a
+  - enabled: 1
+    path: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
+    guid: bf3eb3415bffceb41810526380c2c71c
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: b473d8d1ff820a242915cc3633363b8d,
       type: 2}

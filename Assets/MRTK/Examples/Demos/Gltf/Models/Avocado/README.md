@@ -2,7 +2,7 @@
 
 ## Screenshot
 
-![screenshot](../../../../../../Documentation/Images/gltf/avocado_screenshot.jpg)
+![screenshot](../../../../../../../Documentation/Images/gltf/avocado_screenshot.jpg)
 
 ## License information
 
