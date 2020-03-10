@@ -14,6 +14,66 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Examples/Demos/Gltf/Models/Avocado/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Examples/Demos/Gltf/Models/Avocado/README.html",
+          "hash": "9rDLp05OdFd0Umytr1MqSw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Examples/Demos/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Examples/Demos/README.html",
+          "hash": "PpztWW0xs+3Cpo+zaOag3A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Examples/Demos/StandardShader/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Examples/Demos/StandardShader/README.html",
+          "hash": "E0zD5O542ZK4Z5M6JhR/4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Examples/StandardAssets/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Examples/StandardAssets/README.html",
+          "hash": "P9pmq0tJOZAy0otsbBOCIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "Assets/MRTK/Examples/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Examples/toc.html",
+          "hash": "7nUNDBGE2EDlQ5n2qlXvsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MRTK/Extensions/HandPhysicsService/README.md",
       "output": {
         ".html": {
@@ -259,66 +319,6 @@
         ".html": {
           "relative_path": "Assets/MRTK/SDK/toc.html",
           "hash": "o1ih/q/z+Pj2mgu2IceiCw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/README.html",
-          "hash": "0vtqYcf/RnfsZIhF6YOJDQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/README.html",
-          "hash": "wiJ5jjZByRrYBvTKje5ulQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/README.html",
-          "hash": "EFr4VKdXXDyUhsPIhbc/DQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/StandardAssets/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/StandardAssets/README.html",
-          "hash": "vyIlsXb8HtsS4TwSsHC3GQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "Assets/MixedRealityToolkit.Examples/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit.Examples/toc.html",
-          "hash": "7nUNDBGE2EDlQ5n2qlXvsw=="
         }
       },
       "is_incremental": false,
@@ -26467,17 +26467,17 @@
           "total_file_count": 150,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1568,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1568,
           "skipped_file_count": 0
         }
       }
