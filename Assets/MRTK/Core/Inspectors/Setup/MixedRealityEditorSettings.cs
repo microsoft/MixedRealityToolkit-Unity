@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (PlayerSettings.stripUnusedMeshComponents)
             {
-                Debug.LogWarning("<b>Optimize Mesh Data</b> is enabled. This setting can drastically increase build times. It is recommended to disable this setting during development and re-enable during \"Master\" build creation. Check <i>Player Settings</i> > <i>Other Settings</i> > <i>Optimize Mesh Data</i>");
+                Debug.LogWarning("<b>Optimize Mesh Data</b> is enabled. This setting can drastically increase build times. It is recommended to disable this setting during development and re-enable during \"Master\" build creation. See <i>Player Settings</i> > <i>Other Settings</i> > <i>Optimize Mesh Data</i>");
             }
         }
     }
