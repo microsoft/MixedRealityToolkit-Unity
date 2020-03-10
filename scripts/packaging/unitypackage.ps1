@@ -78,7 +78,7 @@ if ( $Verbose ) { $VerbosePreference = 'Continue' }
 # These paths are project-root relative.
 $packages = @{
     "Foundation" = @(
-        "Assets\MixedRealityToolkit",
+        "Assets\MRTK\Core",
         "Assets\MRTK\Providers",
         "Assets\MRTK\SDK",
         "Assets\MRTK\Services"

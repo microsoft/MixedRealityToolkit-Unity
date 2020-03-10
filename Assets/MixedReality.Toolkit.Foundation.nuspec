@@ -21,12 +21,12 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit\toc.yml*" target="MRTK\" />
+    <file src="MRTK\Core\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Core\toc.yml*" target="MRTK\" />
     <file src="MRTK\Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Providers\License.txt*;MRTK\Providers\Version.txt*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter*;MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;MRTK\Providers\UnityAR*;MRTK\Providers\UnityAR\**\*.*" target="MRTK\" />
     <file src="MRTK\SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\SDK\License.txt*;MRTK\SDK\Version.txt*;MRTK\SDK\toc.yml*;MRTK\SDK\StandardAssets.meta;MRTK\SDK\StandardAssets\Fonts.meta;MRTK\SDK\StandardAssets\Materials.meta;MRTK\SDK\StandardAssets\Shaders.meta;MRTK\SDK\StandardAssets\Textures.meta" target="MRTK\" />
     <file src="MRTK\Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MRTK\Services\License.txt*;MRTK\Services\Version.txt*" target="MRTK\" />
 
-    <file src="MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
+    <file src="MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.*" target="Plugins\" />
