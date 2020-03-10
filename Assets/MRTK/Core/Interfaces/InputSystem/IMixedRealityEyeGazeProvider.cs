@@ -50,6 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="provider">The provider raising the event.</param>
         /// <param name="userIsEyeCalibrated">Boolean whether the user is eye calibrated or not.</param>
-        void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated);
+        void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool? userIsEyeCalibrated);
     }
 }

@@ -136,8 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
             if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !eyesApiAvailable)
             {
+                Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, null);
                 return;
             }
+
+            bool? isCalibrationValid = null;
 
             SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
             if (pointerPose != null)
@@ -145,8 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 var eyes = pointerPose.Eyes;
                 if (eyes != null)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
-
+                    isCalibrationValid = eyes.IsCalibrationValid;
                     if (eyes.Gaze.HasValue)
                     {
                         Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
@@ -160,6 +162,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     }
                 }
             }
+
+            Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, isCalibrationValid);
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
         }
 

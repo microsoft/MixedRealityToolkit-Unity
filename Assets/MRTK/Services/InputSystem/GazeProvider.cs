@@ -544,7 +544,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Timestamp = timestamp;
         }
 
-        public void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated)
+        public void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool? userIsEyeCalibrated)
         {
             this.IsEyeCalibrationValid = userIsEyeCalibrated;
         }
