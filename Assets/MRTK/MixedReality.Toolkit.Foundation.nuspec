@@ -22,7 +22,7 @@
   </metadata>
   <files>
     <file src="Core\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;Core\toc.yml*" target="MRTK\" />
-    <file src="Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;Providers\License.txt*;Providers\Version.txt*;Providers\WindowsMixedReality\Shared\DotNetAdapter*;Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;Providers\UnityAR*;MRTK\Providers\UnityAR\**\*.*" target="MRTK\" />
+    <file src="Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;Providers\License.txt*;Providers\Version.txt*;Providers\WindowsMixedReality\Shared\DotNetAdapter*;Providers\WindowsMixedReality\Shared\DotNetAdapter\**\*.*;Providers\UnityAR*;Providers\UnityAR\**\*.*" target="MRTK\" />
     <file src="SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;SDK\License.txt*;SDK\Version.txt*;SDK\toc.yml*;SDK\StandardAssets.meta;SDK\StandardAssets\Fonts.meta;SDK\StandardAssets\Materials.meta;SDK\StandardAssets\Shaders.meta;SDK\StandardAssets\Textures.meta" target="MRTK\" />
     <file src="Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;Services\License.txt*;Services\Version.txt*" target="MRTK\" />
 
