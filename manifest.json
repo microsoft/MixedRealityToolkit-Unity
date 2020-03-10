@@ -14,6 +14,90 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/EventDatum/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/EventDatum/README.html",
+          "hash": "w3mwWtbt38Q5g6RjZDt+7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/Providers/Hands/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/Providers/Hands/README.html",
+          "hash": "GjjIkRTOVVNK576vQrYMRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/StandardAssets/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/StandardAssets/README.html",
+          "hash": "nWE0Z4ixn5EbdMGLjcD5Uw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/Utilities/Async/License.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/Utilities/Async/License.html",
+          "hash": "DasPndYwN2pWJwkN9CxEbg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/Utilities/Async/ReadMe.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/Utilities/Async/ReadMe.html",
+          "hash": "Xk3UFgIexmIgpGHKTw8s0w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Assets/MRTK/Core/Utilities/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/Utilities/README.html",
+          "hash": "KhFHpyAOCbdF/I3E+HDCAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "Assets/MRTK/Core/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MRTK/Core/toc.html",
+          "hash": "5/EZG53sCTgzOsroemCRlw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MRTK/Examples/Demos/Gltf/Models/Avocado/README.md",
       "output": {
         ".html": {
@@ -319,90 +403,6 @@
         ".html": {
           "relative_path": "Assets/MRTK/SDK/toc.html",
           "hash": "o1ih/q/z+Pj2mgu2IceiCw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/EventDatum/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/EventDatum/README.html",
-          "hash": "ZILzUSPugJmSVIGCmdj9oA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Providers/Hands/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Providers/Hands/README.html",
-          "hash": "ARkQouU4/Vq/+FJTgbRxEw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/StandardAssets/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/StandardAssets/README.html",
-          "hash": "9kdR7Zp2y01ICjaYeCPaXg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Utilities/Async/License.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Utilities/Async/License.html",
-          "hash": "qwms+VIdpCsa3DNBv4ahFg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Utilities/Async/ReadMe.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Utilities/Async/ReadMe.html",
-          "hash": "r7hiLxxfP1OVk+PMvt1YVA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Assets/MixedRealityToolkit/Utilities/README.md",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/Utilities/README.html",
-          "hash": "Na1ykgkl8S8BKw7WaiPfxQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "Assets/MixedRealityToolkit/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "Assets/MixedRealityToolkit/toc.html",
-          "hash": "5/EZG53sCTgzOsroemCRlw=="
         }
       },
       "is_incremental": false,
@@ -26461,12 +26461,6 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1568,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -26478,6 +26472,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1568,
           "skipped_file_count": 0
         }
       }
