@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Microsoft.MixedReality.Toolkit.Examples</id>
+    <id>Microsoft.MixedReality.Toolkit.Tests.Utilities</id>
     <version>$version$</version>
     <authors>Microsoft</authors>
     <owners>Microsoft,MixedReality</owners>
@@ -9,10 +9,10 @@
     <projectUrl>https://aka.ms/MRTK</projectUrl>
     <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Examples of the Mixed Reality Toolkit</description>
+    <description>Test Utilities for the Mixed Reality Toolkit.</description>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <releaseNotes>$releaseNotes$</releaseNotes>
-    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK Test</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
     </dependencies>
@@ -21,14 +21,13 @@
     </contentFiles>
   </metadata>
   <files>
+     <!-- Keep the following line to include extra files-->
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
-    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Examples.targets" />
+    <file src="..\..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tests.Utilities.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
-    <!-- The following line is commented out because of a path length issue -->
-    <!-- <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" /> -->
+    <file src="..\..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tests.Utilities*" target="Plugins\" />
+    <!-- <file src="..\..\..\..\Assets\MRTK\Tests\TestUtilities\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Tests\TestUtilities" /> -->
   </files>
 </package>
