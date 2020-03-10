@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SinglePassInstancing,
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
+            OptimizeMeshData,
 
             // WSA Capabilities
             SpatialPerceptionCapability = 1000,
@@ -105,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return PackageManifestUpdater.IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
 #endif // !UNITY_2019_3_OR_NEWER
+            { Configurations.OptimizeMeshData, new ConfigGetter(() => { return !PlayerSettings.stripUnusedMeshComponents; }) },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.SpatialPerception); }, BuildTarget.WSAPlayer) },
@@ -143,6 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
 #endif // !UNITY_2019_3_OR_NEWER
+            { Configurations.OptimizeMeshData,  () => { PlayerSettings.stripUnusedMeshComponents = false; } },
 
             // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },

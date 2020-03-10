@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { MRConfig.EnableMSBuildForUnity, true },
 #endif // !UNITY_2019_3_OR_NEWER
+            { MRConfig.OptimizeMeshData, true },
             // UWP Capabilities
             { MRConfig.MicrophoneCapability, true },
             { MRConfig.InternetClientCapability, true },
@@ -180,6 +181,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+                EditorGUILayout.HelpBox("The \"Optimize Mesh Data\" player setting can drastically increase build times. It is recommended to disable this setting during development and re-enable during final build creation.", MessageType.Info);
+                RenderToggle(MRConfig.OptimizeMeshData, "Disable Optimize Mesh Data");
+
                 EditorGUILayout.Space();
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
