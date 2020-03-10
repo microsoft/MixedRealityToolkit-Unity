@@ -334,7 +334,7 @@ MonoBehaviour:
   loadSceneMode: 0
   contentScene:
     Name: MRTKExamplesHubMainMenu
-    Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+    Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
     Included: 1
     BuildIndex: 1
     Tag: Untagged
@@ -613,7 +613,7 @@ PrefabInstance:
     - target: {fileID: 7236097622359626994, guid: 26b0c24187a40734a89bfc6c224c8c60,
         type: 3}
       propertyPath: contentScene.Path
-      value: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+      value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
       objectReference: {fileID: 0}
     - target: {fileID: 7236097622359626994, guid: 26b0c24187a40734a89bfc6c224c8c60,
         type: 3}
