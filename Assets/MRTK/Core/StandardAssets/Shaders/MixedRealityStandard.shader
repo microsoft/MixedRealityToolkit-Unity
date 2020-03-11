@@ -138,7 +138,6 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ _MULTI_HOVER_LIGHT
             #pragma multi_compile _ _CLIPPING_PLANE
             #pragma multi_compile _ _CLIPPING_SPHERE
             #pragma multi_compile _ _CLIPPING_BOX
@@ -408,11 +407,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
-#if defined(_MULTI_HOVER_LIGHT)
-#define HOVER_LIGHT_COUNT 3
-#else
-#define HOVER_LIGHT_COUNT 1
-#endif
+#define HOVER_LIGHT_COUNT 2
 #define HOVER_LIGHT_DATA_SIZE 2
             float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)

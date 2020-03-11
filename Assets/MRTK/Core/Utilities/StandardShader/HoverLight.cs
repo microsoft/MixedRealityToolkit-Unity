@@ -14,10 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/HoverLight")]
     public class HoverLight : MonoBehaviour
     {
-        // Three hover lights are supported at this time.
-        private const int hoverLightCount = 3;
+        // Two hover lights are supported at this time.
+        private const int hoverLightCount = 2;
         private const int hoverLightDataSize = 2;
-        private const string multiHoverLightKeyword = "_MULTI_HOVER_LIGHT";
         private static List<HoverLight> activeHoverLights = new List<HoverLight>(hoverLightCount);
         private static Vector4[] hoverLightData = new Vector4[hoverLightCount * hoverLightDataSize];
         private static int _HoverLightDataID;
@@ -126,15 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (!forceUpdate && (Time.frameCount == lastHoverLightUpdate))
             {
                 return;
-            }
-
-            if (activeHoverLights.Count > 1)
-            {
-                Shader.EnableKeyword(multiHoverLightKeyword);
-            }
-            else
-            {
-                Shader.DisableKeyword(multiHoverLightKeyword);
             }
 
             for (int i = 0; i < hoverLightCount; ++i)
