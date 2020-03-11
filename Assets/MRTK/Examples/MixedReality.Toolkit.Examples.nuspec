@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedReality.Toolkit.Examples</id>
+    <version>$version$</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft,MixedReality</owners>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/License.txt</licenseUrl>
+    <projectUrl>https://aka.ms/MRTK</projectUrl>
+    <iconUrl>https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_NuGet.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Examples of the Mixed Reality Toolkit</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <tags>Unity MixedReality MixedRealityToolkit MRTK</tags>
+    <dependencies>
+      <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
+    </dependencies>
+    <contentFiles>
+      <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
+    <file src="..\..\MRTK\Core\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Examples.targets" />
+
+    <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
+    <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
+    <!-- The following line is commented out because of a path length issue -->
+    <!-- <file src="..\..\..\Assets\MRTK\Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\Examples" /> -->
+  </files>
+</package>

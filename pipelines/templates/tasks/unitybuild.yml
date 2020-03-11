@@ -21,7 +21,7 @@ steps:
    $logFile = New-Item -Path "$outDir\build\build.log" -ItemType File -Force
    $logDirectory = "$outDir\logs"
 
-   $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
+   $sceneList = "Assets\MRTK\Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
    
    $extraArgs = ''
    If ("${{ parameters.Platform }}" -eq "UWP")
