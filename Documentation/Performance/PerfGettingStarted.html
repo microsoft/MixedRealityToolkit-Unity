@@ -151,6 +151,9 @@ v2f vert (appdata v)
 <h5>Note</h5>
 <p>To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the <a href="../MixedRealityConfigurationGuide.html#editor-utilities"><em>Render Depth Buffer</em> utility</a> under the <em>Editor Settings</em> in the MRTK Configuration profile.</p>
 </div>
+<h3 id="optimize-mesh-data">Optimize Mesh Data</h3>
+<p>The <a href="https://docs.unity3d.com/ScriptReference/PlayerSettings-stripUnusedMeshComponents.html">Optimize Mesh Data</a> settings tries to remove unused vertex attributes within your application. The setting performs this by running over every shader pass in every material that is on every mesh in the build. This is good for game data size and runtime performance but can drastically hinder build times.</p>
+<p>It is recommended to disable this setting during development and re-enable during &quot;Master&quot; build creation. The setting can be found under <strong>Edit</strong> &gt; <strong>Project Settings</strong> &gt; <strong>Player</strong> &gt; <strong>Other Settings</strong> &gt; <strong>Optimize Mesh Data</strong>.</p>
 <h2 id="general-recommendations">General recommendations</h2>
 <p>Performance can be an ambiguous and constantly changing challenge for mixed reality developers and the spectrum of knowledge to rationalize performance is vast. There are some general recommendations for understanding how to approach performance for an application though.</p>
 <p>It is useful to simplify the execution of an application into the pieces that run on the <em>CPU</em> or the <em>GPU</em> and thus identify whether an app is bounded by either component.  There can be bottlenecks that span both processing units and some unique scenarios that have to be carefully investigated. However, for getting started, it is good to grasp where an application is executing for the most amount of time.</p>
