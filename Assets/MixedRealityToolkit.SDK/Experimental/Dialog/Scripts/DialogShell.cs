@@ -15,6 +15,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     {
         private GameObject[] twoButtonSet;
 
+
+        [SerializeField]
+        [Tooltip("Title text of the dialog")]
+        private TextMeshPro titleText = null;
+        /// <summary>
+        /// Title text of the dialog
+        /// </summary>
+        public TextMeshPro TitleText
+        {
+            get { return titleText; }
+            set { titleText = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Description text of the dialog")]
+        private TextMeshPro descriptionText = null;
+        /// <summary>
+        /// Description text of the dialog
+        /// </summary>
+        public TextMeshPro DescriptionText
+        {
+            get { return descriptionText; }
+            set { descriptionText = value; }
+        }
+
         /// < inheritdoc / >
         protected override void FinalizeLayout()
         {
@@ -89,22 +114,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>
         protected override void SetTitleAndMessage()
         {
-            var textContentChild = transform.GetChild(0);
-            foreach (Transform child in textContentChild)
+            if(titleText != null)
             {
-                if (child != null && child.name == "TitleText")
-                {
-                    if (child.GetComponent<TextMeshPro>()) {
-                        child.GetComponent<TextMeshPro>().text = Result.Title;
-                    }
-                }
-                else if (child != null && child.name == "DescriptionText")
-                {
-                    if (child.GetComponent<TextMeshPro>())
-                    {
-                        child.GetComponent<TextMeshPro>().text = Result.Message;
-                    }
-                }
+                titleText.text = Result.Title;
+            }
+
+            if (descriptionText != null)
+            {
+                descriptionText.text = Result.Message;
             }
         }
 

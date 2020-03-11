@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogLarge()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button", true);
+            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Near", "This is an example of a large dialog with only one button, placed at near interaction range", true);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenChoiceDialogLarge()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user", false);
+            Dialog myDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Large, Far", "This is an example of a large dialog with a choice message for the user, placed at far interaction range", false);
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogMedium()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Success", "This is an example of a dialog with only one button", true);
+            Dialog confDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "This is an example of a dialog with only one button, placed at near interaction range", true);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenChoiceDialogMedium()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.Yes | DialogButtonType.No, "Are You Sure?", "This is an example of a dialog with a choice message for the user", false);
+            Dialog myDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Medium, Far", "This is an example of a dialog with a choice message for the user, placed at far interaction range", false);
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
