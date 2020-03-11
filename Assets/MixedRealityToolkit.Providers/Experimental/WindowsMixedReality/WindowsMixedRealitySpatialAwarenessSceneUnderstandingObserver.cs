@@ -176,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             killTokenSource.Cancel();
             CleanupObserver();
         }
-
         #endregion IMixedRealityToolkit
 
         /// <inheritdoc />
@@ -398,11 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                         if (!UsePersistentObjects)
                         {
-                            // these are cached when we do ConvertSceneObject()
-                            cachedSceneQuads.Clear();
-                            CleanupDebugGameObjects();
-                            instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
-                            sceneObjects.Clear();
+                            ClearObservations();
                         }
 
                         if (OrientScene && CoreServices.CameraSystem.IsOpaque)
@@ -521,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     EnableSceneObjectQuads = RequestPlaneData,
                     EnableSceneObjectMeshes = RequestMeshData,
-                    EnableOnlyObservedSceneObjects = InferRegions,
+                    EnableOnlyObservedSceneObjects = !InferRegions,
                     EnableWorldMesh = SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World),
                     RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
                 };
@@ -695,13 +690,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             SurfaceTypes = profile.SurfaceTypes;
             RequestMeshData = profile.RequestMeshData;
             RequestPlaneData = profile.RequestPlaneData;
+            InferRegions = profile.InferRegions;
             CreateGameObjects = profile.CreateGameObjects;
             UsePersistentObjects = profile.UsePersistentObjects;
             UpdateInterval = profile.UpdateInterval;
             FirstUpdateDelay = profile.FirstUpdateDelay;
             ShouldLoadFromFile = profile.ShouldLoadFromFile;
             SerializedScene = profile.SerializedScene;
-            InferRegions = profile.InferRegions;
             WorldMeshLevelOfDetail = profile.WorldMeshLevelOfDetail;
             InstantiationBatchRate = profile.InstantiationBatchRate;
             ObservationExtents = profile.ObservationExtents;
@@ -829,17 +824,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                         meshRenderer.material.mainTexture = defaultTexture;
                     }
 
-                    if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
-                    {
-                        meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
-                    }
-
                     quadGo.transform.SetParent(saso.GameObject.transform);
 
                     quadGo.transform.localPosition = UnityEngine.Vector3.zero;
                     quadGo.transform.localRotation = UnityEngine.Quaternion.identity;
                     quadGo.transform.localScale = new UnityEngine.Vector3(quad.extents.x, quad.extents.y, 0);
-
                 }
             }
 
@@ -864,6 +853,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     {
                         meshRenderer.sharedMaterial = DefaultMaterial;
                         meshRenderer.material.color = ColorForSurfaceType(saso.SurfaceType);
+                    }
+
+                    if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
+                    {
+                        Debug.Log("Assigning custom world mesh material");
+                        meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
                     }
 
                     go.transform.SetParent(saso.GameObject.transform, false);
@@ -956,6 +951,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             }
         }
 
+        public override void ClearObservations()
+        {
+            base.ClearObservations();
+            //cachedSceneQuads.Clear();
+            CleanupDebugGameObjects();
+            instantiationQueue = new ConcurrentQueue<SpatialAwarenessSceneObject>();
+            sceneObjects.Clear();
+        }
+
         public override void SaveScene(string prefix)
         {
 #if WINDOWS_UWP
@@ -974,11 +978,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         {
             SceneQuerySettings sceneQuerySettings = new SceneQuerySettings()
             {
-                EnableSceneObjectQuads = RequestPlaneData,
-                EnableSceneObjectMeshes = RequestMeshData,
-                EnableOnlyObservedSceneObjects = InferRegions,
-                EnableWorldMesh = SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World),
-                RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
+                EnableSceneObjectQuads = true,
+                EnableSceneObjectMeshes = true,
+                EnableOnlyObservedSceneObjects = false,
+                EnableWorldMesh = true,
+                RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(SpatialAwarenessMeshLevelOfDetail.Unlimited)
             };
 
             var serializedScene = SceneObserver.ComputeSerializedAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();

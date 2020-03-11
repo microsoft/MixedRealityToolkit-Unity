@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Animations;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
@@ -18,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
     {
         public string SavedSceneNamePrefix = "DemoSceneUnderstanding";
         public GameObject StuffToPlace;
+        public SpatialAwarenessSurfaceTypes surfaceTypeToPlaceOn = SpatialAwarenessSurfaceTypes.Platform;
         public bool InstantiatePrefabs;
         public GameObject InstantiatedPrefab;
         public Transform InstantiatedParent;
@@ -31,11 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public GameObject floorToggle;
         public GameObject ceilingToggle;
         public GameObject worldToggle;
-        public GameObject usePersistentToggle;
         public GameObject completelyToggle;
         public GameObject backgroundToggle;
 
-        List<SpatialAwarenessSceneObject> platforms = new List<SpatialAwarenessSceneObject>(16);
+        List<SpatialAwarenessSceneObject> observedSceneObjects = new List<SpatialAwarenessSceneObject>(16);
 
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver observer;
 
@@ -70,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         async void OnEnable()
         {
             await RegisterHandlersAsync();
-            platforms.Clear();
+            observedSceneObjects.Clear();
         }
 
         void OnDisable()
@@ -90,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 autoPlaceStuffOnce = false;
                 await Task.Delay(TimeSpan.FromSeconds(4));
-                PutStuffOnNearestPlatform();
+                PutStuffOnNearest();
             }
         }
 
@@ -107,7 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             worldToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
             completelyToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.CompletelyInferred);
             backgroundToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Background);
-            usePersistentToggle.GetComponent<Interactable>().IsToggled = observer.UsePersistentObjects;
         }
 
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
@@ -117,9 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             var sceneObject = eventData.SpatialObject; // alias
 
-            if (sceneObject.SurfaceType == SpatialAwarenessSurfaceTypes.Platform)
+            if (sceneObject.SurfaceType == surfaceTypeToPlaceOn)
             {
-                platforms.Add(sceneObject);
+                observedSceneObjects.Add(sceneObject);
             }
 
             if (InstantiatePrefabs)
@@ -143,9 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
         }
 
-        public async void PutStuffOnNearestPlatform()
+        public async void PutStuffOnNearest()
         {
-            var platformCount = platforms.Count;
+            var platformCount = observedSceneObjects.Count;
 
             if (platformCount < 1)
             {
@@ -157,55 +157,75 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             float closestDistance = float.MaxValue;
             Guid closestGuid;
-            bool foundGuid = false;
-            SpatialAwarenessSceneObject closestPlatform = null;
+            bool foundQuadGuid = false;
+            SpatialAwarenessSceneObject closestObject = null;
 
             for (int i = 0; i < platformCount; ++i)
             {
-                var distance = Vector3.Distance(Camera.main.transform.position, platforms[i].Position);
+                var distance = Vector3.Distance(Camera.main.transform.position, observedSceneObjects[i].Position);
 
                 if (distance < closestDistance)
                 {
+                    closestObject = observedSceneObjects[i];
+
                     closestDistance = Math.Min(distance, closestDistance);
-                    if (platforms[i].Quads.Count == 0)
+
+                    if (observedSceneObjects[i].Quads.Count == 0)
                     {
                         Debug.LogWarning("Can't ask for quads if observer wasn't configured to fetch them!");
                         continue;
                     }
-                    closestGuid = platforms[i].Quads[0].guid;
-                    foundGuid = true;
-                    closestPlatform = platforms[i];
+
+                    closestGuid = observedSceneObjects[i].Quads[0].guid;
+                    foundQuadGuid = true;
                 }
             }
 
             Debug.Log($"closestGuid = {closestGuid}, closestDistance = {closestDistance}");
 
+            var stuff = Instantiate(StuffToPlace);
+
             // Place our stuff
 
-            if (!foundGuid)
+            if (closestObject == null)
             {
-                Debug.LogWarning("Can't find placement for quad!");
                 return;
             }
 
-            var bounds = new Bounds(Vector3.zero, Vector3.zero);
-
-            foreach (Renderer r in StuffToPlace.GetComponentsInChildren<Renderer>())
+            if (foundQuadGuid)
             {
-                bounds.Encapsulate(r.bounds);
+                var bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+                foreach (Renderer r in StuffToPlace.GetComponentsInChildren<Renderer>())
+                {
+                    bounds.Encapsulate(r.bounds);
+                }
+
+                var queryArea = new Vector2(bounds.size.x, bounds.size.y);
+
+                Vector3 placement;
+
+                if (observer.TryFindCentermostPlacement((Guid)closestGuid, queryArea, out placement))
+                {
+                    stuff.transform.position = placement;
+                    stuff.transform.rotation = closestObject.Rotation;
+                }
+            }
+            else
+            {
+                stuff.transform.position = closestObject.Position;
+                stuff.transform.rotation = closestObject.Rotation;
             }
 
-            var queryArea = new Vector2(bounds.size.x, bounds.size.y);
+            var tmp = stuff.GetComponentInChildren<TextMeshPro>();
+            tmp.text = $"Distance = {closestDistance.ToString("F2")}";
 
-            Vector3 placement;
-
-            if (observer.TryFindCentermostPlacement((Guid)closestGuid, queryArea, out placement))
+            var demoConstraint = stuff.GetComponent<ParentConstraint>();
+            if (demoConstraint)
             {
-                var stuff = Instantiate(StuffToPlace);
-                stuff.transform.position = placement;
-                stuff.transform.rotation = closestPlatform.Rotation;
-                var tmp = stuff.GetComponentInChildren<TextMeshPro>();
-                tmp.text = $"Distance = {closestDistance.ToString("F2")}";
+                demoConstraint.rotationAtRest = stuff.transform.rotation.eulerAngles;
+                demoConstraint.translationAtRest = stuff.transform.position;
+                demoConstraint.constraintActive = true;
             }
         }
 
@@ -223,6 +243,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             observer.SaveScene(SavedSceneNamePrefix);
         }
 
+        public void ClearScene()
+        {
+            observer.ClearObservations();
+        }
+
         public void ToggleAutoUpdate()
         {
             Debug.Log("ToggleAutoUpdate");
@@ -238,7 +263,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.RequestPlaneData = true;
                 quadsToggle.GetComponent<Interactable>().IsToggled = true;
+                observer.RequestMeshData = false;
+                meshesToggle.GetComponent<Interactable>().IsToggled = false;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -246,6 +274,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             Debug.Log("ToggleGeneratePlanes");
             observer.RequestPlaneData = !observer.RequestPlaneData;
+            if (observer.RequestPlaneData)
+            {
+                observer.RequestMeshData = false;
+                meshesToggle.GetComponent<Interactable>().IsToggled = false;
+            }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -253,11 +287,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             Debug.Log("ToggleGenerateMeshes");
             observer.RequestMeshData = !observer.RequestMeshData;
-            if (!observer.RequestMeshData)
+            if (observer.RequestMeshData)
             {
-                observer.SurfaceTypes &= ~SpatialAwarenessSurfaceTypes.World;
-                worldToggle.GetComponent<Interactable>().IsToggled = false;
+                observer.RequestPlaneData = false;
+                quadsToggle.GetComponent<Interactable>().IsToggled = false;
+                observer.RequestOcclusionMask = false;
+                maskToggle.GetComponent<Interactable>().IsToggled = false;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -273,6 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -288,6 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -303,6 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -318,6 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -339,12 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 observer.RequestMeshData = true;
                 meshesToggle.GetComponent<Interactable>().IsToggled = true;
             }
-            observer.UpdateOnDemand();
-        }
-
-        public void TogglePersistentObjects()
-        {
-            observer.UsePersistentObjects = !observer.UsePersistentObjects;
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -359,6 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 
@@ -373,6 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
             observer.UpdateOnDemand();
         }
 

@@ -116,6 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         [SerializeField]
         [Tooltip("Fills in the gaps for unobserved data.")]
         private bool inferRegions = true;
+
         /// <summary>
         /// When enabled, renders observed and inferred regions for scene objects.
         /// When disabled, renders only the observed regions for scene objects.
