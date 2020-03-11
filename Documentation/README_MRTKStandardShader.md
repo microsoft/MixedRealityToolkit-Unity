@@ -6,12 +6,12 @@ MRTK Standard shading system utilizes a single, flexible shader that can achieve
 
 ## Example scenes
 
-You can find the shader material examples in the **MaterialGallery** scene under:
-[MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes) All materials in this scene are using the MRTK/Standard shader.
+You can find the shader material examples in the **MaterialGallery** scene under 
+`MRTK/Examples/Demos/StandardShader/Scenes/`. All materials in this scene are using the MRTK/Standard shader.
 
 ![Material Gallery](../Documentation/Images/MRTKStandardShader/MRTK_MaterialGallery.jpg)
 
-You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the **StandardMaterialComparison** scene under `MRTK/Examples/Demos/StandardShader/Scenes/`.
 
 ![Material Comparison](../Documentation/Images/MRTKStandardShader/MRTK_StandardMaterialComparison.gif)
 
@@ -130,7 +130,7 @@ Below are extra details on a handful of feature details available with the MRTK/
 
 ### Primitive clipping
 
-Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under `[MRTK/Examples/Demos/StandardShader/Scenes/`.
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
@@ -144,7 +144,7 @@ Performant plane, sphere, and box shape clipping with the ability to specify whi
 
 ### Mesh outlines
 
-Many mesh outline techniques are done using a [post processing](https://docs.unity3d.com/Manual/PostProcessingOverview.html) technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  **OutlineExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+Many mesh outline techniques are done using a [post processing](https://docs.unity3d.com/Manual/PostProcessingOverview.html) technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  **OutlineExamples** scene under `MRTK/Examples/Demos/StandardShader/Scenes/`.
 
 <img src="../Documentation/Images/MRTKStandardShader/MRTK_MeshOutline.jpg" width="900">
 
