@@ -138,9 +138,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ _CLIPPING_PLANE
-            #pragma multi_compile _ _CLIPPING_SPHERE
-            #pragma multi_compile _ _CLIPPING_BOX
+            #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
