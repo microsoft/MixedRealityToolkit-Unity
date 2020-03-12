@@ -957,7 +957,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 EnableSceneObjectMeshes = true,
                 EnableOnlyObservedSceneObjects = false,
                 EnableWorldMesh = true,
-                RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(SpatialAwarenessMeshLevelOfDetail.Unlimited)
+                RequestedMeshLevelOfDetail = LevelOfDetailToMeshLOD(WorldMeshLevelOfDetail)
             };
 
             var serializedScene = SceneObserver.ComputeSerializedAsync(sceneQuerySettings, QueryRadius).GetAwaiter().GetResult();
