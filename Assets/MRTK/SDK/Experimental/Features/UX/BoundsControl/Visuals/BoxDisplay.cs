@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             // This has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
             boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            GameObject.Destroy(boxDisplay.GetComponent<Collider>());
+            Object.Destroy(boxDisplay.GetComponent<Collider>());
             boxDisplay.name = "bounding box";
             flattenMode = flattenAxis;
             cachedExtents = currentBoundsExtents;

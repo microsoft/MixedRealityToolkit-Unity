@@ -781,19 +781,85 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests scaling of box display after flattening bounds control during runtime
         /// and making sure neither box display nor rig get recreated.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BoxDisplayFlattenAxisScaleTest()
         {
-            //boxDisplayConfig.FlattenAxisDisplayScale = 5.0f;
+            // test flatten mode of rotation handle
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            // get box display and activate by setting material
+            Transform boxDisplay = rigRoot.transform.Find("bounding box");
+            Assert.IsNotNull(boxDisplay, "couldn't find box display");
+            BoxDisplayConfiguration boxDisplayConfig = boundsControl.BoxDisplayConfig;
+            boxDisplayConfig.BoxMaterial = testMaterial;
+            Assert.IsTrue(boxDisplay.gameObject.activeSelf, "box should be active when material is set");
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
+            Vector3 originalScale = boxDisplay.localScale;
+
+            // flatten x axis and make sure box gets flattened
+            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+            yield return new WaitForFixedUpdate();
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(boxDisplay, "box display got destroyed while flattening axis");
+            Vector3 expectedXScale = originalScale;
+            expectedXScale.x = boxDisplayConfig.FlattenAxisDisplayScale;
+            Assert.AreEqual(boxDisplay.localScale, expectedXScale, "Flatten axis scale wasn't applied properly to box display");
+
+            // modify flatten scale
+            boxDisplayConfig.FlattenAxisDisplayScale = 5.0f;
+            yield return new WaitForFixedUpdate();
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(boxDisplay, "box display got destroyed while changing flatten scale");
+            expectedXScale = originalScale;
+            expectedXScale.x = boxDisplayConfig.FlattenAxisDisplayScale;
+            Assert.AreEqual(boxDisplay.localScale, expectedXScale, "Flatten axis scale wasn't applied properly to box display");
+
+            // unflatten the control again and make sure handle gets activated accordingly
+            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+            yield return new WaitForFixedUpdate();
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(boxDisplay, "box display got destroyed while unflattening control");
+            Assert.AreEqual(originalScale, boxDisplay.localScale, "Unflattening axis didn't return original scaling");
+
             yield return null;
         }
 
-
+        /// <summary>
+        /// Test for verifying that rotation handles are properly switched off/on when flattening/ unflattening the rig.
+        /// Makes sure rig and handles are not recreated on changing flattening mode.
+        /// </summary>
         [UnityTest]
         public IEnumerator RotationHandleFlattenTest()
         {
             // test flatten mode of rotation handle
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            // get rotation handle and make sure it's active per default
+            Transform rotationHandle = rigRoot.transform.Find("midpoint_2");
+            Assert.IsNotNull(rotationHandle, "couldn't find rotation handle");
+            Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled by default");
+
+            // flatten x axis and make sure handle gets deactivated
+            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+            Assert.IsFalse(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't disabled when control was flattened in X axis");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+
+            // unflatten the control again and make sure handle gets activated accordingly
+            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+            Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled on unflatten");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+
             yield return null;
         }
 
