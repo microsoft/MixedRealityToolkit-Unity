@@ -147,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
             var invScale = config.HandleSize / visualSize.x;
+            GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             BoxCollider collider = handle.gameObject.GetComponent<BoxCollider>();
             Vector3 colliderSize = visualSize * invScale;
             collider.size = colliderSize;
