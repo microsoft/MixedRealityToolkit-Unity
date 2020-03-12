@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Response body from the resource.
         /// </summary>
-        public string ResponseBody => responseBodyAction?.Invoke();
+        public string ResponseBody => cachedString ?? (cachedString = responseBodyAction?.Invoke());
+        private string cachedString;
         private System.Func<string> responseBodyAction;
 
         /// <summary>
@@ -37,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             Successful = successful;
             responseBodyAction = responseBody == null ? null : (System.Func<string>)(() => responseBody);
+            cachedString = null;
             responseDataAction = responseData == null ? null : (System.Func<byte[]>)(() => responseData);
             ResponseCode = responseCode;
         }
@@ -45,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             Successful = successful;
             this.responseBodyAction = responseBodyAction;
+            cachedString = null;
             this.responseDataAction = responseDataAction;
             ResponseCode = responseCode;
         }
