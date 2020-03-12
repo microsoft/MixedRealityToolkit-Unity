@@ -698,7 +698,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator LinksVisibilityTest()
         {
-            //linksConfig.ShowWireFrame = false;
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, corner visual and rotation handle config
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform linkVisual = rigRoot.transform.Find("link_0");
+            Assert.IsNotNull(linkVisual, "link visual couldn't be found");
+            Assert.IsTrue(linkVisual.gameObject.activeSelf, "links not visible by default");
+            yield return new WaitForFixedUpdate();
+
+            // disable wireframe and make sure we're not recreating anything
+            LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
+            linkConfiguration.ShowWireFrame = false;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(linkVisual, "link visual was recreated on changing visibility");
+            Assert.IsFalse(linkVisual.gameObject.activeSelf, "links did not get deactivated on hide");
+            yield return new WaitForFixedUpdate();
+
+            // enable links again
+            linkConfiguration.ShowWireFrame = true;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(linkVisual, "link visual was recreated on changing visibility");
+            Assert.IsTrue(linkVisual.gameObject.activeSelf, "links did not get activated on show");
+            yield return new WaitForFixedUpdate();
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator LinksFlattenTest()
+        {
+            // test flatten and unflatten for links
             yield return null;
         }
 
@@ -723,7 +756,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator LinksMaterialTest()
         {
-            //linksConfig.WireframeMaterial = testMaterial;
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
@@ -745,7 +777,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             yield return null;
         }
-
 
         /// <summary>
         /// Tests changing the box display default and grabbed material during runtime,

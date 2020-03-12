@@ -49,18 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             switch (changedType)
             {
                 case LinksConfiguration.WireframeChangedEventType.VISIBILITY:
-                    if (links != null)
-                    {
-                        // todo
-                        // show links but links haven't been created yet -> create links
-                        if (config.ShowWireFrame && links.Count == 0)
-                        { 
-                        }
-                        else
-                        {
-                            ResetVisibility(config.ShowWireFrame);
-                        }
-                    }
+                    ResetVisibility(config.ShowWireFrame);
                     break;
                 case LinksConfiguration.WireframeChangedEventType.RADIUS:
                     UpdateLinkScales(cachedExtents);
@@ -118,11 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 for (int i = 0; i < links.Count; ++i)
                 {
-                    Renderer linkRenderer = links[i].transform.gameObject.GetComponent<Renderer>();
-                    if (linkRenderer != null)
-                    {
-                        linkRenderer.enabled = isVisible;
-                    }
+                    links[i].transform.gameObject.SetActive(isVisible);
                 }
             }
         }
@@ -181,11 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 for (int i = 0; i < flattenedHandles.Length; ++i)
                 {
-                    Renderer linkRenderer = links[flattenedHandles[i]].transform.gameObject.GetComponent<Renderer>();
-                    if (linkRenderer)
-                    {
-                        linkRenderer.enabled = false;
-                    }
+                    links[flattenedHandles[i]].transform.gameObject.SetActive(false);
                 }
             }
         }
@@ -219,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
-            if (links != null && config.ShowWireFrame)
+            if (links != null)
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
@@ -264,6 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                         linkRenderer.material = config.WireframeMaterial;
                     }
 
+                    link.SetActive(config.ShowWireFrame);
                     links.Add(new Link(link.transform, axisType));
                 }
             }
