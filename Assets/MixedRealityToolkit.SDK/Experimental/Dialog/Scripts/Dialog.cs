@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>        
         protected IEnumerator RunDialogOverTime()
         {
-            // Create our buttons and set up our message
+            // Create buttons and set up message
             GenerateButtons();
             SetTitleAndMessage();
             FinalizeLayout();
@@ -144,9 +145,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <param name="variable"></param>
-        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, System.Object variable = null)
+        public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, bool placeForNearInteraction, System.Object variable = null)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
+
+            if (placeForNearInteraction == true)
+            {
+                // For HoloLens 2, place the dialog at 45cm from the user for the near hand interactions.
+                // Size is maintained by ConstantViewSize solver
+                RadialView rv = dialogGameObject.GetComponent<RadialView>();
+                rv.MinDistance = 0.4f;
+                rv.MaxDistance = 0.7f;
+            }
+            else
+            {
+                // For HoloLens 1 and other platforms, place the dialog for far interactions with gaze or pointers.
+                // Size is maintained by ConstantViewSize solver
+                RadialView rv = dialogGameObject.GetComponent<RadialView>();
+                rv.MinDistance = 1.5f;
+                rv.MaxDistance = 2.0f;
+            }
+
             Dialog dialog = dialogGameObject.GetComponent<Dialog>();
 
             DialogResult result = new DialogResult
