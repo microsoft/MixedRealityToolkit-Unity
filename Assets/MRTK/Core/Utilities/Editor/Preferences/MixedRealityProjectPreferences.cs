@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Run optimal configuration analysis on Play
 
-        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis on play", "Run optimal configuration analysis for current project and log warnings on entering play mode.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis", "Run optimal configuration analysis for current project and log warnings on entering play mode or building.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
         private const string RUN_OPTIMAL_CONFIG_KEY = "MixedRealityToolkit_Editor_RunOptimalConfig";
         private static bool runOptimalConfigPrefLoaded;
         private static bool runOptimalConfig;
