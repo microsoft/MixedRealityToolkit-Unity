@@ -481,7 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 #if UNITY_ANDROID
         private void RenderSinglePassSection()
         {
-            bool isSinglePassEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
+            bool isSinglePassEnabled = MixedRealityOptimizeUtils.IsSinglePass();
             BuildSection("Single Pass Stereo Rendering", SinglePass_URL, GetTitleIcon(isSinglePassEnabled), () =>
             {
                 EditorGUILayout.LabelField("Single Pass Stereo rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
@@ -492,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
                     {
-                        PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+                        MixedRealityOptimizeUtils.SetSinglePass();
                     }
                 }
             });
@@ -500,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 #else
         private void RenderSinglePassInstancingSection()
         {
-            bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+            bool isSinglePassInstancedEnabled = MixedRealityOptimizeUtils.IsSinglePassInstanced();
             BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
             {
                 EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
@@ -511,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
                     {
-                        PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+                        MixedRealityOptimizeUtils.SetSinglePassInstanced();
                     }
                 }
             });
