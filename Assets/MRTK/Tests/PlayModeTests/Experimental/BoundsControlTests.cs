@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Test that if we update the bounds of a box collider, that the corners will move correctly
         /// </summary>
         [UnityTest]
-        public IEnumerator BBoxOverride()
+        public IEnumerator BoundsOverrideTest()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
@@ -670,28 +670,56 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         }
 
-        /// <summary>
-        /// Tests instantiating the default bounds control and then configuring the control during runtime
-        /// Making sure settings are applied correctly and rig isn't recreated.
-        /// </summary>
-        /// <returns></returns>
+       
+        //[UnityTest] - todo: don't think we need that after the other flatten test but leaving here for checking later that we cover all handles / visuals
+        //public IEnumerator FlattenTest()
+        //{ 
+        //    //boundsControl.FlattenAxis = FlattenModeType.FlattenAuto;
+        //    yield return null;
+        //}
+
         [UnityTest]
-        public IEnumerator RuntimeConfigurationTest()
+        public IEnumerator HandlesIgnoreColliderTest()
         {
-            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
-            yield return VerifyInitialBoundsCorrect(boundsControl);
-
-           
-            //boundsControl.Target = childSphere;
-            //boundsControl.BoundsOverride = collider;
-            //boundsControl.CalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
-            //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
-            //boundsControl.DrawTetherWhenManipulating = false;
             //boundsControl.HandlesIgnoreCollider = collider;
-            //boundsControl.FlattenAxis = FlattenModeType.FlattenAuto;
+            yield return null;
+        }
+
+
+        [UnityTest]
+        public IEnumerator ManipulationTetherTest()
+        {
+            //boundsControl.DrawTetherWhenManipulating = false;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ActivationTypeTest()
+        {
+            //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator CalculationMethodTest()
+        {
+            //boundsControl.CalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SetTargetRuntimeTest()
+        {
+            // maybe unify with existing settarget test
+            //boundsControl.Target = childSphere;
+            yield return null;
+        }
+
+
+        [UnityTest]
+        public IEnumerator BoundsControlPaddingTest()
+        {
             //boundsControl.BoxPadding = Vector3.one;
-
-
             yield return null;
         }
 
