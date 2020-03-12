@@ -24,17 +24,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         public GameObject InstantiatedPrefab;
         public Transform InstantiatedParent;
         [Header("UI")]
-        public GameObject autoUpdateToggle;
-        public GameObject quadsToggle;
-        public GameObject meshesToggle;
-        public GameObject maskToggle;
-        public GameObject platformToggle;
-        public GameObject wallToggle;
-        public GameObject floorToggle;
-        public GameObject ceilingToggle;
-        public GameObject worldToggle;
-        public GameObject completelyToggle;
-        public GameObject backgroundToggle;
+        public Interactable autoUpdateToggle;
+        public Interactable quadsToggle;
+        public Interactable inferRegionsToggle;
+        public Interactable meshesToggle;
+        public Interactable maskToggle;
+        public Interactable platformToggle;
+        public Interactable wallToggle;
+        public Interactable floorToggle;
+        public Interactable ceilingToggle;
+        public Interactable worldToggle;
+        public Interactable completelyInferred;
+        public Interactable backgroundToggle;
 
         List<SpatialAwarenessSceneObject> observedSceneObjects = new List<SpatialAwarenessSceneObject>(16);
 
@@ -97,17 +98,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         private void InitToggleButtonState()
         {
-            autoUpdateToggle.GetComponent<Interactable>().IsToggled = observer.AutoUpdate;
-            quadsToggle.GetComponent<Interactable>().IsToggled = observer.RequestPlaneData;
-            meshesToggle.GetComponent<Interactable>().IsToggled = observer.RequestMeshData;
-            maskToggle.GetComponent<Interactable>().IsToggled = observer.RequestOcclusionMask;
-            platformToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Platform);
-            wallToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
-            floorToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
-            ceilingToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
-            worldToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
-            completelyToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.CompletelyInferred);
-            backgroundToggle.GetComponent<Interactable>().IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Background);
+            // Configure observer
+            autoUpdateToggle.IsToggled = observer.AutoUpdate;
+            quadsToggle.IsToggled = observer.RequestPlaneData;
+            meshesToggle.IsToggled = observer.RequestMeshData;
+            maskToggle.IsToggled = observer.RequestOcclusionMask;
+            inferRegionsToggle.IsToggled = observer.InferRegions;
+            // Filter display
+            platformToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Platform);
+            wallToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Wall);
+            floorToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Floor);
+            ceilingToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Ceiling);
+            worldToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.World);
+            completelyInferred.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.CompletelyInferred);
+            backgroundToggle.IsToggled = observer.SurfaceTypes.HasFlag(SpatialAwarenessSurfaceTypes.Background);
         }
 
         public void OnObservationAdded(MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> eventData)
@@ -181,8 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 }
             }
 
-            Debug.Log($"closestGuid = {closestGuid}, closestDistance = {closestDistance}");
-
             var stuff = Instantiate(StuffToPlace);
 
             // Place our stuff
@@ -233,13 +235,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void UpdateScene()
         {
-            Debug.Log("UpdateScene");
             observer.UpdateOnDemand();
         }
 
         public void SaveSave()
         {
-            Debug.Log("SaveSave");
             observer.SaveScene(SavedSceneNamePrefix);
         }
 
@@ -250,21 +250,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleAutoUpdate()
         {
-            Debug.Log("ToggleAutoUpdate");
             observer.AutoUpdate = !observer.AutoUpdate;
         }
 
         public void ToggleOcclusionMask()
         {
-            Debug.Log("ToggleOcclusionMask");
             var observerMask = observer.RequestOcclusionMask;
             observer.RequestOcclusionMask = !observerMask;
             if (observer.RequestOcclusionMask)
             {
-                observer.RequestPlaneData = true;
-                quadsToggle.GetComponent<Interactable>().IsToggled = true;
-                observer.RequestMeshData = false;
-                meshesToggle.GetComponent<Interactable>().IsToggled = false;
+                if (!(observer.RequestPlaneData || observer.RequestMeshData))
+                {
+                    observer.RequestPlaneData = true;
+                    quadsToggle.IsToggled = true;
+                }
             }
             observer.ClearObservations();
             observer.UpdateOnDemand();
@@ -272,12 +271,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleGeneratePlanes()
         {
-            Debug.Log("ToggleGeneratePlanes");
             observer.RequestPlaneData = !observer.RequestPlaneData;
             if (observer.RequestPlaneData)
             {
                 observer.RequestMeshData = false;
-                meshesToggle.GetComponent<Interactable>().IsToggled = false;
+                meshesToggle.IsToggled = false;
             }
             observer.ClearObservations();
             observer.UpdateOnDemand();
@@ -285,14 +283,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleGenerateMeshes()
         {
-            Debug.Log("ToggleGenerateMeshes");
             observer.RequestMeshData = !observer.RequestMeshData;
             if (observer.RequestMeshData)
             {
                 observer.RequestPlaneData = false;
-                quadsToggle.GetComponent<Interactable>().IsToggled = false;
-                observer.RequestOcclusionMask = false;
-                maskToggle.GetComponent<Interactable>().IsToggled = false;
+                quadsToggle.IsToggled = false;
             }
             observer.ClearObservations();
             observer.UpdateOnDemand();
@@ -300,7 +295,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleFloors()
         {
-            Debug.Log("ToggleFloors");
             var surfaceType = SpatialAwarenessSurfaceTypes.Floor;
             if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
@@ -316,7 +310,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleWalls()
         {
-            Debug.Log("ToggleWalls");
             var surfaceType = SpatialAwarenessSurfaceTypes.Wall;
             if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
@@ -332,7 +325,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void ToggleCeilings()
         {
-            Debug.Log("ToggleCeilings");
             var surfaceType = SpatialAwarenessSurfaceTypes.Ceiling;
             if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
@@ -348,7 +340,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         public void TogglePlatforms()
         {
-            Debug.Log("TogglePlatforms");
             var surfaceType = SpatialAwarenessSurfaceTypes.Platform;
             if (observer.SurfaceTypes.HasFlag(surfaceType))
             {
@@ -358,6 +349,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 observer.SurfaceTypes |= surfaceType;
             }
+            observer.ClearObservations();
+            observer.UpdateOnDemand();
+        }
+
+        public void ToggleInferRegions()
+        {
+            observer.InferRegions = !observer.InferRegions;
             observer.ClearObservations();
             observer.UpdateOnDemand();
         }

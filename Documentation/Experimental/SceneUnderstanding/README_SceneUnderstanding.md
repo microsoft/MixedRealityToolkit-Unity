@@ -1,8 +1,14 @@
 # MRTK Scene Understanding Demo
 
-This is an __experminental__ prelease that integrates [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) (SU) as a MRTK.
+Scene Understanding will return a semantic representation of scene entities as well as their geometric forms on __HoloLens 2__ (not HoloLens 1!).
 
-SU - in a nutshell, will return a semantic representation of scene entities as well as their geometric forms on __HoloLens 2__.
+Expected use cases of this technology include:
+* Placement. Objects on nearest surface such as wall or platform
+* Construct nav-mesh for platform style games
+* Provide physics engine friendly geometry as quads
+* Accelerlate development by avoiding the need to write similar algorithims
+
+This is an __experminental__ prelease that integrates [Scene Understanding](https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding) as a new MRTK spatial observer.
 
 ## Goals and features of the demo
 * Demo scene with visualization of Scene Objects with options for configuring the observer
@@ -13,21 +19,15 @@ SU - in a nutshell, will return a semantic representation of scene entities as w
 
 ## Observer overview
 
-When asked, the SU observer will return Scene Objects with attributes useful for mixed world development. What is returned is dependent on the configuration of the observer when fetched. For instance, if you want the occlusion mask, the observer must be configured to generate quads.
+When asked, the SU observer will return Scene Objects with attributes useful for mixed world development. What is returned is dependent on the configuration of the observer when fetched. For instance, one may want the occlusion mask, the observer must be configured to generate quads.
 
 It is expected the majority of "real" applications will never show the underlying data in raw form.
 
 ## Background and development notes
 
-These links cover the underlying technology the Spatial Awareness service is using behind the scenes.
+This feature built atop Spatial Awareness is based on scene understanding technology from Microsoft. 
 
-https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding
-
-https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding-sdk
-
-The Scene Understanding observer inherits from older spatial awareness concepts so the implementation is and odd fit in places.
-
-Eventually this system should replace the existing SpatialAwareness observer.
+The Scene Understanding observer inherits from the older spatial awareness infrastructure, and thus the implementation is and odd fit in places.
 
 Scene Understanding is a __platform specific__ technology. Spatial Awareness is meant to cover _platform agnostic_ capabilities. With few data points, it's likely we don't have the proper abstraction yet. 
 
@@ -37,7 +37,7 @@ Ensure build settings' platform is set to UWP.
 
 Ensure your project is configured to use MSBuild.
 
-You may need to restart unity if you get errors about missing assembly references. This should trigger download of packages.
+A restart of the unity editor maybe required if there are errors about missing assembly references. This should trigger download of packages.
 
 ![Manage MRTK Configuration](Images/ConfigureMRTKMSBuildMenu.jpg)
 
@@ -59,13 +59,9 @@ Select the 'MixedRealityTookit' game object and check the inspector.
 ![scene understanding location in heirarchy](Images/MRTKHierarchy.png)
 ![mrkt location in inspector](Images/MRTKLocation.png)
 
-These options will allow you to configure the observer on play. 
+These options will allow one to configure the observer on play. 
 
-If you press play at this point the example serialized scene data will be loaded and displayed in the editor (assuming the observer is configured to show 'debug' objects)
-
-These 'debug' options are meant to demonstrate some of the features of the SU DLL. It is intended that most consumers of SU will write their own scripts that subscribe to SU events, and do whatever they want with the info. In addition many observer options may be set at runtime.
-
-The provided DemoSpatialAwarenessController.cs offers examples of these things.
+Press play at this point the example serialized scene data will be loaded and displayed in the editor (assuming the observer is configured to show 'debug' objects)
 
 ### Example script
 
@@ -76,24 +72,27 @@ The example script _DemoSpatialAwarenessController.cs_, demonstrates the major c
 * Finding the nearest platform
 * Instantiating a prefab and placing it in an open spot
 
-The script uses MRKT UI to toggle service features on the controller.
+This example script uses MRKT UI to toggle service features on the Spatial Understanding observer.
 
-Turning on "Instantiate Prefabs", will demonstrate creating objects that size to fit themselves to all Scene Objects, gathered neatly under a parent object.
+Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [Scene Objects](), gathered neatly under a parent object.
 
 ![demo controller options](Images/Controller.png)
 
 ### Built app notes
 
-You may build and deploy to HoloLens in the standard way. Once running, you'll be presented with a number of buttons to play with the features.
+Build and deploy to HoloLens in the standard way. Once running, a number of buttons should appear to play with the features.
 
-The "Place" button will make a prefab appear on the nearest platform. (which may be behind you!) You should hear a spatial sound when this occurs to help you find it.
+The "Place" button will make a prefab appear on the nearest platform. (which may be behind the person!) One should hear a spatial sound when this occurs in order to help locate it.
 
 
-Note, their are some pit falls in making queries to the observer. Misconfiguration of a fetch request result in your event payload not containing the data you expected. For example, if you don't request quads, then you won't see the occlusion mask textures. Like wise, you wont see the world mesh if you don't request meshes. The `DemoSpatialAwarenessController` script takes care of some of these dependencies, but not all.
+Note, their are some pit falls in making queries to the observer. Misconfiguration of a fetch request result in your event payload not containing the expected data. For example, if one dosen't request quads, then no occlusion mask textures will be present. Like wise, no world mesh will appear if the observer is not configured to request meshes. The `DemoSpatialAwarenessController` script takes care of some of these dependencies, but not all.
 
-As this effort in in EXPERIMENTAL things are likely to change. Feedback requested at https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7458
-
-Saved .bytes files can be accessed through the device portal at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. You can use these `bytes` for your workflow in edtor by specifying them in the observer profile.
+Saved .bytes files can be accessed through the [device portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal) at `User Folders/LocalAppData/.../LocalState/PREFIX_yyyyMMdd_hhmmss.bytes`. These `bytes` can be used in edtor by specifying them in the observer profile found in the inspector.
 
 ![Device Portal location of bytes file](Images/BytesInDevicePortal.png)
 ![Serialized scene bytes in observer](Images/BytesLocationInObserver.png)
+
+# See Also
+
+* https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding
+* https://docs.microsoft.com/en-us/windows/mixed-reality/scene-understanding-sdk

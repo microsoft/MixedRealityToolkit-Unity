@@ -9,6 +9,17 @@ using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
+    /// <summary>
+    /// Represents a higher order of environmental information than just a mesh
+    /// </summary>
+    /// <discussion>
+    /// BaseSpatialObserver was created before Scene Understanding and as such
+    /// would be overloaded by Scene Understanding's particular needs
+    /// BaseSpatialObserver contains the core contract for all spatial observers
+    /// This class is experimental at this point as we only have one example
+    /// implementation. TBD on how something like ARKit would be handled.
+    /// </discussion>
+
     public abstract class BaseSpatialSceneObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
         public BaseSpatialSceneObserver(

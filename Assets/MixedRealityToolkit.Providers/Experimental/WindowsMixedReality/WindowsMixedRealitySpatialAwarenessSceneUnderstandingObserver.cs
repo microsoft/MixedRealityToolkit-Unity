@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             ReadProfile();
         }
 
-        #region IMixedRealityToolkit implementation
+        #region IMixedRealityService
 
         /// <inheritdoc />
         public override void Reset()
@@ -59,40 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             Initialize();
         }
 
-        private void CreateQuadFromExtents(Mesh mesh, float x, float y)
-        {
-            List<Vector3> vertices = new List<Vector3>()
-            {
-                new Vector3(-x / 2, -y / 2, 0),
-                new Vector3( x / 2, -y / 2, 0),
-                new Vector3(-x / 2,  y / 2, 0),
-                new Vector3( x / 2,  y / 2, 0)
-            };
-
-            Vector2[] quadUVs = new Vector2[]
-            {
-                new Vector2(0, 0),
-                new Vector2(1, 0),
-                new Vector2(0, 1),
-                new Vector2(1, 1)
-            };
-
-            int[] quadTriangles = new int[]
-            {
-                0, 3, 1,
-                0, 2, 3,
-                //1, 3, 0,
-                //3, 2, 0
-            };
-
-            mesh.SetVertices(vertices);
-            mesh.SetIndices(quadTriangles, MeshTopology.Triangles, 0);
-            mesh.SetUVs(0, new List<Vector2>(quadUVs));
-        }
-
+        /// <inheritdoc />
         public override void Initialize()
         {
-            Debug.Log($"Initialize() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             base.Initialize();
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
         }
@@ -116,42 +85,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             var x = RunObserverAsync(killToken).ConfigureAwait(true);
         }
 
-        private void StartUpdateTimers()
-        {
-            // setup and start service timers
-
-            updateTimer = new System.Timers.Timer
-            {
-                Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
-            };
-
-            updateTimer.Elapsed += UpdateTimerEventHandler;
-
-            firstUpdateTimer = new System.Timers.Timer()
-            {
-                Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
-                AutoReset = false
-            };
-
-            // After an initial delay, start the auto update
-            firstUpdateTimer.Elapsed += (sender, e) =>
-            {
-                if (shouldAutoStart)
-                {
-                    updateTimer.Start();
-                }
-            };
-
-            firstUpdateTimer.Start();
-        }
-
         /// <inheritdoc />
         public override void Update()
         {
             if (instantiationQueue.Count > 0)
             {
-                //Debug.Log($"Got {instantiationQueue.Count} things to instantiate.");
-
                 // Make our new objects in batches and tell observers about it
                 int batchCount = Math.Min(InstantiationBatchRate, instantiationQueue.Count);
 
@@ -172,11 +110,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Destroy()
         {
-            //Debug.Log("Destroy()");
             killTokenSource.Cancel();
             CleanupObserver();
         }
-        #endregion IMixedRealityToolkit
+
+        #endregion IMixedRealityService
+
+        #region BaseService
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
@@ -198,11 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             disposed = true;
         }
 
+        #endregion
+        
         #region IMixedRealitySpatialAwarenessObserver
-
-        private GameObject observedObjectParent = null;
-
-        protected virtual GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
 
         /// <inheritdoc/>
         public override void Resume()
@@ -223,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         #region IMixedRealityOnDemandObserver
 
+        /// <inheritdoc/>
         public float FirstUpdateDelay { get; set; }
 
         /// <inheritdoc/>
@@ -275,6 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         #region Private Fields
 
+        private GameObject observedObjectParent = null;
+        protected virtual GameObject ObservedObjectParent => observedObjectParent ?? (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySceneUnderstandingObserver"));
         private System.Timers.Timer firstUpdateTimer = null;
         private System.Timers.Timer updateTimer = null;
         private Dictionary<Guid, Tuple<SceneQuad, SceneObject>> cachedSceneQuads = new Dictionary<Guid, Tuple<SceneQuad, SceneObject>>(256);
@@ -285,6 +226,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private string surfaceTypeName;
         private CancellationTokenSource killTokenSource = new System.Threading.CancellationTokenSource();
         private System.Numerics.Matrix4x4 correctOrientation = System.Numerics.Matrix4x4.Identity;
+        private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
+        private enum ObserverState
+        {
+            Idle = 0,
+            WaitForAccess,
+            GetScene,
+            GetSceneTransform,
+            Working
+        }
+        private ObserverState observerState = ObserverState.WaitForAccess;
+        private CancellationToken killToken;
+        private bool shouldAutoStart;
+        private bool isRemoting;
+        private Guid sceneOriginId;
+        private System.Numerics.Matrix4x4 sceneToWorldXformSystem;
+        private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
+        private Texture defaultTexture;
 
         #endregion Private Fields
 
@@ -348,11 +306,68 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         #endregion Public Methods
 
         #region Private
+        private void StartUpdateTimers()
+        {
+            // setup and start service timers
+
+            updateTimer = new System.Timers.Timer
+            {
+                Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
+            };
+
+            updateTimer.Elapsed += UpdateTimerEventHandler;
+
+            firstUpdateTimer = new System.Timers.Timer()
+            {
+                Interval = Math.Max(FirstUpdateDelay, Mathf.Epsilon) * 1000.0, // convert to milliseconds
+                AutoReset = false
+            };
+
+            // After an initial delay, start the auto update
+            firstUpdateTimer.Elapsed += (sender, e) =>
+            {
+                if (shouldAutoStart)
+                {
+                    updateTimer.Start();
+                }
+            };
+
+            firstUpdateTimer.Start();
+        }
+
+        private void CreateQuadFromExtents(Mesh mesh, float x, float y)
+        {
+            List<Vector3> vertices = new List<Vector3>()
+            {
+                new Vector3(-x / 2, -y / 2, 0),
+                new Vector3( x / 2, -y / 2, 0),
+                new Vector3(-x / 2,  y / 2, 0),
+                new Vector3( x / 2,  y / 2, 0)
+            };
+
+            Vector2[] quadUVs = new Vector2[]
+            {
+                new Vector2(0, 0),
+                new Vector2(1, 0),
+                new Vector2(0, 1),
+                new Vector2(1, 1)
+            };
+
+            int[] quadTriangles = new int[]
+            {
+                0, 3, 1,
+                0, 2, 3,
+                //1, 3, 0,
+                //3, 2, 0
+            };
+
+            mesh.SetVertices(vertices);
+            mesh.SetIndices(quadTriangles, MeshTopology.Triangles, 0);
+            mesh.SetUVs(0, new List<Vector2>(quadUVs));
+        }
 
         private async Task RunObserverAsync(CancellationToken cancellationToken)
         {
-            Debug.Log($"RunObserver() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             Scene scene = null;
             Scene previousScene = null;
             var sasos = new List<SpatialAwarenessSceneObject>(256);
@@ -457,8 +472,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private System.Numerics.Matrix4x4 GetSceneToWorldTransform()
         {
-            Debug.Log($"GetSceneToWorldTransform() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             var result = System.Numerics.Matrix4x4.Identity;
 
             if (Application.isEditor && !isRemoting)
@@ -487,8 +500,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private Scene GetSceneAsync(Scene previousScene)
         {
-            Debug.Log($"GetSceneAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             Scene scene = null;
 
             if (Application.isEditor && ShouldLoadFromFile)
@@ -549,8 +560,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private SpatialAwarenessSceneObject ConvertSceneObject(SceneObject sceneObject)
         {
-            //Debug.Log($"ConvertSceneObject() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             int quadCount = sceneObject.Quads.Count;
             int meshCount = sceneObject.Meshes.Count;
 
@@ -604,8 +613,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             // World space conversion
 
-            //Debug.Log($"sceneObjectTransform = {sceneObjectXformSystem}");
-
             System.Numerics.Matrix4x4 worldXformSystem = sceneObject.GetLocationAsMatrix() * sceneToWorldXformSystem * correctOrientation;
 
             System.Numerics.Vector3 worldTranslationSystem;
@@ -613,8 +620,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             System.Numerics.Vector3 localScale;
 
             System.Numerics.Matrix4x4.Decompose(worldXformSystem, out localScale, out worldRotationSytem, out worldTranslationSystem);
-
-            //Debug.Log($"worldTranslation = {worldTranslation}");
 
             var result = new SpatialAwarenessSceneObject(
                 sceneObject.Id,
@@ -627,12 +632,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return result;
         }
 
-        private List<SpatialAwarenessSceneObject> convertedObjects = new List<SpatialAwarenessSceneObject>(256);
-
         private async Task<List<SpatialAwarenessSceneObject>> ConvertSceneObjectsAsync(Scene scene)
         {
-            Debug.Log($"ConvertSceneObjectsAsync() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             var result = new List<SpatialAwarenessSceneObject>(256);
 
             // Add scene objects we're interested in to the stack of GameObjects to instantiate
@@ -669,8 +670,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void ReadProfile()
         {
-            //Debug.Log("ReadProfile");
-
             if (ConfigurationProfile == null)
             {
                 return;
@@ -705,26 +704,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             OcclusionMaskResolution = profile.OcclusionMaskResolution;
             OrientScene = profile.OrientScene;
         }
-
-        private enum ObserverState
-        {
-            Idle = 0,
-            WaitForAccess,
-            GetScene,
-            GetSceneTransform,
-            Working
-        }
-        private ObserverState observerState = ObserverState.WaitForAccess;
-        private CancellationToken killToken;
-        private bool shouldAutoStart;
-        private bool isRemoting;
-        private Guid sceneOriginId;
-
-        private System.Numerics.Matrix4x4 sceneToWorldXformSystem;
-
-        private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
-        private Texture defaultTexture;
-
+ 
         private List<SceneObject> FilterSelectedSurfaceTypes(IReadOnlyList<SceneObject> newObjects)
         {
             filteredSelectedSurfaceTypesResult.Clear();
@@ -857,7 +837,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
                     if (saso.SurfaceType == SpatialAwarenessSurfaceTypes.World && DefaultWorldMeshMaterial)
                     {
-                        Debug.Log("Assigning custom world mesh material");
                         meshRenderer.sharedMaterial = DefaultWorldMeshMaterial;
                     }
 
@@ -938,8 +917,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
         private void CleanupDebugGameObjects()
         {
-            Debug.Log($"CleanupDebugGameObjects() ManagedThreadId = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-
             if (observedObjectParent != null)
             {
                 int kidCount = observedObjectParent.transform.childCount;
@@ -1026,7 +1003,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                     return SceneMeshLevelOfDetail.Unlimited;
 
                 default:
-                    return SceneMeshLevelOfDetail.Medium;
+                    throw new NotImplementedException();
             }
         }
 
