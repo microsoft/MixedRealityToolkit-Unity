@@ -16,7 +16,7 @@ This page covers the following:
 
 ### How to detect the eye calibration state
 
-The [CoreSystems.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
+The [CoreServices.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
