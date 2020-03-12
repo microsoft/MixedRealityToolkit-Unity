@@ -720,11 +720,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Tests changing the links material during runtime and making sure links and rig are not recreated.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator LinksMaterialTest()
         {
             //linksConfig.WireframeMaterial = testMaterial;
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, corner visual and rotation handle config
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform linkVisual = rigRoot.transform.Find("link_0");
+            Assert.IsNotNull(linkVisual, "link visual couldn't be found");
+            
+            LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
+            // set material and make sure rig root and link isn't destroyed while doing so
+            linkConfiguration.WireframeMaterial = testMaterial;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(linkVisual, "link visual was recreated on setting material");
+            
+            // make sure color changed on visual
+            Assert.AreEqual(linkVisual.GetComponent<Renderer>().material.color, testMaterial.color, "wireframe material wasn't applied to visual");
+
             yield return null;
         }
 
