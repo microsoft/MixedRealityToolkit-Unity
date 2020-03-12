@@ -737,9 +737,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator BoxDisplayMaterialTest()
         {
-            //var testMaterial = new Material(Shader.Find("Specular"));
-            //boxDisplayConfig.BoxMaterial = testMaterial;
-            //boxDisplayConfig.BoxGrabbedMaterial = testMaterial;
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, corner visual and rotation handle config
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            // box visual should be disabled per default
+            Transform boxVisual = rigRoot.transform.Find("bounding box");
+            Assert.IsNotNull(boxVisual, "box visual couldn't be found");
+            Assert.IsFalse(boxVisual.gameObject.activeSelf, "box was active as default - correct behavior is box display being disabled as a default");
+
+            BoxDisplayConfiguration boxConfig = boundsControl.BoxDisplayConfig;
+            // set materials and make 1. rig root hasn't been destroyed 2. box hasn't been destroyed 3. box has been activated
+            boxConfig.BoxMaterial = testMaterial;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(boxVisual, "box visual was recreated on setting material");
+            Assert.IsTrue(boxVisual.gameObject.activeSelf, "box wasn't set active when setting the material");
+            // now set grabbed material and make sure we neither destroy rig root nor the box display
+            boxConfig.BoxGrabbedMaterial = testMaterialGrabbed;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(boxVisual, "box visual got destroyed when setting grabbed material");
+            // make sure color changed on visual
+            Assert.AreEqual(boxVisual.GetComponent<Renderer>().material.color, testMaterial.color, "box material wasn't applied to visual");
+
+            // grab one of the scale handles and make sure grabbed material is applied to box
+            Transform cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
+            Assert.IsNotNull(cornerVisual, "couldn't find scale handle visual");
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.zero);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(cornerVisual.position);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(boxVisual.GetComponent<Renderer>().material.color, testMaterialGrabbed.color, "box grabbed material wasn't applied to visual");
+            // release handle
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
             yield return null;
         }
 
