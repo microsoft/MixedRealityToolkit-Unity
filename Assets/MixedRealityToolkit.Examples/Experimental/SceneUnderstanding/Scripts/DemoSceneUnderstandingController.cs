@@ -50,17 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
         {
             await new WaitUntil(() => CoreServices.SpatialAwarenessSystem != null);
 
-            CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
-
-            var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-
-            if (access == null)
-            {
-                Debug.LogError("Couldn't get access to CoreServices.SpatialAwarenessSystem");
-                return;
-            }
-
-            observer = access.GetDataProvider<IMixedRealitySpatialAwarenessSceneUnderstandingObserver>();
+            observer = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySpatialAwarenessSceneUnderstandingObserver>();
 
             if (observer == null)
             {
