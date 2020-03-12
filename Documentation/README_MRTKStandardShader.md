@@ -77,11 +77,11 @@ For static lighting, the shader will respect lightmaps built by Unity's [Lightma
 
 ### Hover light
 
-A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting, the application can control the properties of a Hover Light via the [`HoverLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 2 Hover Lights are supported at a time.
+* See [Hover Light](/Rendering/HoverLight.md)
 
 ### Proximity light
 
-A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting, the application can control the properties of a Proximity Light via the [`ProximityLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
+* See [Proximity Light](/Rendering/ProximityLight.md)
 
 ## Lightweight Scriptable Render Pipeline support
 
@@ -132,7 +132,7 @@ Below are extra details on a handful of feature details available with the MRTK/
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-* Please see [ClippingPrimitive](/Rendering/ClippingPrimitive.md)
+* See [Clipping Primitive](/Rendering/ClippingPrimitive.md)
 
 ### Mesh outlines
 
@@ -196,4 +196,6 @@ Per pixel clipping textures, local edge based anti aliasing, and normal map scal
 ## See also
 
 - [Interactable](README_Interactable.md)
-- [ClippingPrimitive](/Rendering/ClippingPrimitive.md)
+- [Hover Light](/Rendering/HoverLight.md)
+- [Proximity Light](/Rendering/ProximityLight.md)
+- [Clipping Primitive](/Rendering/ClippingPrimitive.md)

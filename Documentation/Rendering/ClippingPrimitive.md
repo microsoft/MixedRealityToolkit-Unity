@@ -29,9 +29,11 @@ By default only one [`ClippingPrimitive`](xref:Microsoft.MixedReality.Toolkit.Ut
 
 ```C#
 // Within MRTK/Core/StandardAssets/Shaders/MixedRealityStandard.shader (or another MRTK shader) change:
+
 #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
-// To the following:
+// to:
+
 #pragma multi_compile _ _CLIPPING_PLANE
 #pragma multi_compile _ _CLIPPING_SPHERE
 #pragma multi_compile _ _CLIPPING_BOX
