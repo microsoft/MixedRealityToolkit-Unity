@@ -202,7 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         [SerializeField]
-        // [FormerlySerializedAs("wireframePadding")]
         [Tooltip("Extra padding added to the actual Target bounds")]
         private Vector3 boxPadding = Vector3.zero;
 
@@ -230,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Bounds control box display configuration section.
         /// </summary>
-        public BoxDisplayConfiguration BoxDisplayConfiguration
+        public BoxDisplayConfiguration BoxDisplayConfig
         {
             get => boxDisplayConfiguration;
             set => boxDisplayConfiguration = value;
@@ -242,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// This section defines the links / lines that are drawn between the corners of the control.
         /// </summary>
-        public LinksConfiguration LinksConfiguration
+        public LinksConfiguration LinksConfig
         {
             get => linksConfiguration;
             set => linksConfiguration = value;
@@ -254,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration of the scale handles.
         /// </summary>
-        public ScaleHandlesConfiguration ScaleHandlesConfiguration
+        public ScaleHandlesConfiguration ScaleHandlesConfig
         {
             get => scaleHandlesConfiguration;
             set => scaleHandlesConfiguration = value;
@@ -266,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration of the rotation handles.
         /// </summary>
-        public RotationHandlesConfiguration RotationHandles
+        public RotationHandlesConfiguration RotationHandlesConfig
         {
             get => rotationHandlesConfiguration;
             set => rotationHandlesConfiguration = value;
@@ -278,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Configuration for Proximity Effect to scale handles or change materials on proximity.
         /// </summary>
-        public ProximityEffectConfiguration HandleProximityEffectConfiguration
+        public ProximityEffectConfiguration HandleProximityEffectConfig
         {
             get => handleProximityEffectConfiguration;
             set => handleProximityEffectConfiguration = value;
