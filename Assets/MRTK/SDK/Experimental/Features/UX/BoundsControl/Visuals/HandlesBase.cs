@@ -161,7 +161,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         protected void UpdateGrabbedMaterial()
         {
-            SetHighlighted(highlightedHandle);
+            if (highlightedHandle)
+            {
+                SetHighlighted(highlightedHandle);
+            }
         }
 
         //protected void UpdateColliderPadding(HandlePrefabCollider colliderType, Vector3 size)
