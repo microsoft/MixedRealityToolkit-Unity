@@ -139,12 +139,12 @@
       href: MixedRealityConfigurationGuide.md
   - name: Rendering
     items:
+    - name: MRTK Standard Shader
+      href: README_MRTKStandardShader.md
     - name: Material Instance Overview
       href: Rendering/MaterialInstance.md
-    - name: Shaders
-      items:
-      - name: MRTK Standard Shader
-        href: README_MRTKStandardShader.md
+    - name: Clipping Primitive Overview
+      href: Rendering/ClippingPrimitive.md
   - name: Services
     items:
     - name: What makes a mixed reality feature

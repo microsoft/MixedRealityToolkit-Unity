@@ -799,7 +799,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Primitive clipping.
 #if defined(_CLIPPING_PRIMITIVE)
-                float primitiveDistance = 1.0; 
+                float primitiveDistance = 1.0;
 #if defined(_CLIPPING_PLANE)
                 primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
 #endif

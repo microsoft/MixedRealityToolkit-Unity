@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/ClippingBox")]
     public class ClippingBox : ClippingPrimitive
     {
-        private int clipBoxSizeID;
-        private int clipBoxInverseTransformID;
+        protected int clipBoxSizeID;
+        protected int clipBoxInverseTransformID;
 
         /// <inheritdoc />
         protected override string Keyword

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [AddComponentMenu("Scripts/MRTK/Core/ClippingPlane")]
     public class ClippingPlane : ClippingPrimitive
     {
-        private int clipPlaneID;
+        protected int clipPlaneID;
 
         /// <inheritdoc />
         protected override string Keyword

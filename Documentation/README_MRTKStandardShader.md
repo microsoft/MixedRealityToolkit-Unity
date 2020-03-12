@@ -77,7 +77,7 @@ For static lighting, the shader will respect lightmaps built by Unity's [Lightma
 
 ### Hover light
 
-A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting, the application can control the properties of a Hover Light via the [`HoverLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
+A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting, the application can control the properties of a Hover Light via the [`HoverLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 2 Hover Lights are supported at a time.
 
 ### Proximity light
 
@@ -130,17 +130,9 @@ Below are extra details on a handful of feature details available with the MRTK/
 
 ### Primitive clipping
 
-Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
-
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-[`ClippingPlane.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [`ClippingSphere.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [`ClippingBox.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties. Use these components with the following shaders to leverage clipping scenarios. 
-
-- *Mixed Reality Toolkit/Standard*
-- *Mixed Reality Toolkit/TextMeshPro*
-- *Mixed Reality Toolkit/Text3DShader*
-
-![primitive clipping gizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
+* Please see [ClippingPrimitive](/Rendering/ClippingPrimitive.md)
 
 ### Mesh outlines
 
@@ -204,3 +196,4 @@ Per pixel clipping textures, local edge based anti aliasing, and normal map scal
 ## See also
 
 - [Interactable](README_Interactable.md)
+- [ClippingPrimitive](/Rendering/ClippingPrimitive.md)

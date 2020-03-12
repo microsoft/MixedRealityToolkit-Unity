@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        private int clipSphereID;
+        protected int clipSphereID;
 
         /// <inheritdoc />
         protected override string Keyword
