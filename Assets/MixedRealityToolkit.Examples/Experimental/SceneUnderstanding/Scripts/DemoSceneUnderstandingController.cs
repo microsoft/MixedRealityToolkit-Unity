@@ -164,9 +164,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             bool foundQuadGuid = false;
             SpatialAwarenessSceneObject closestObject = null;
 
+            var cameraPosition = Camera.main.transform.position;
+
             for (int i = 0; i < platformCount; ++i)
             {
-                var distance = Vector3.Distance(Camera.main.transform.position, observedSceneObjects[i].Position);
+                var distance = Vector3.Distance(cameraPosition, observedSceneObjects[i].Position);
 
                 if (distance < closestDistance)
                 {
@@ -220,9 +222,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
 
             var tmp = stuff.GetComponentInChildren<TextMeshPro>();
-            tmp.text = $"Distance = {closestDistance.ToString("F2")}";
+
+            if (tmp)
+            {
+                tmp.text = $"Distance = {closestDistance.ToString("F2")}";
+            }
 
             var demoConstraint = stuff.GetComponent<ParentConstraint>();
+
             if (demoConstraint)
             {
                 demoConstraint.rotationAtRest = stuff.transform.rotation.eulerAngles;
