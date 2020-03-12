@@ -16,12 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Response body from the resource.
         /// </summary>
-        public string ResponseBody { get; }
+        public string ResponseBody => responseBodyAction?.Invoke();
+        private System.Func<string> responseBodyAction;
 
         /// <summary>
         /// Response data from the resource.
         /// </summary>
-        public byte[] ResponseData { get; }
+        public byte[] ResponseData => responseDataAction?.Invoke();
+        private System.Func<byte[]> responseDataAction;
 
         /// <summary>
         /// Response code from the resource.
@@ -34,8 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Response(bool successful, string responseBody, byte[] responseData, long responseCode)
         {
             Successful = successful;
-            ResponseBody = responseBody;
-            ResponseData = responseData;
+            responseBodyAction = responseBody == null ? null : (System.Func<string>)(() => responseBody);
+            responseDataAction = responseData == null ? null : (System.Func<byte[]>)(() => responseData);
+            ResponseCode = responseCode;
+        }
+
+        public Response(bool successful, System.Func<string> responseBodyAction, System.Func<byte[]> responseDataAction, long responseCode)
+        {
+            Successful = successful;
+            this.responseBodyAction = responseBodyAction;
+            this.responseDataAction = responseDataAction;
             ResponseCode = responseCode;
         }
     }
