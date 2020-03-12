@@ -138,7 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
             { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
             { Configurations.VirtualRealitySupported,  () => { XRSettingsUtilities.LegacyXREnabled = true; } },
+#if UNITY_ANDROID
+            { Configurations.SinglePass,  () => { MixedRealityOptimizeUtils.SetSinglePass(); } },
+#else
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
+#endif
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
