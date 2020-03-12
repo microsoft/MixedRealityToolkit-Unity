@@ -243,11 +243,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                Debug.LogError($"REST Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
-                return new Response(false, $"{responseHeaders}\n{webRequest.downloadHandler?.text}", webRequest.downloadHandler?.data, webRequest.responseCode);
+                string downloadHandlerText = webRequest.downloadHandler?.text;
+                Debug.LogError($"REST Error: {webRequest.responseCode}\n{downloadHandlerText}{responseHeaders}");
+                return new Response(false, $"{responseHeaders}\n{downloadHandlerText}", webRequest.downloadHandler?.data, webRequest.responseCode);
             }
 
-            return new Response(true, webRequest.downloadHandler?.text, webRequest.downloadHandler?.data, webRequest.responseCode);
+            return new Response(true, () => webRequest.downloadHandler?.text, () => webRequest.downloadHandler?.data, webRequest.responseCode);
         }
     }
 }
