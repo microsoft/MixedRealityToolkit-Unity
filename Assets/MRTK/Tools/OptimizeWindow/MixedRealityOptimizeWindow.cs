@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderSinglePassSection()
         {
             bool isSinglePassEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
-            BuildSection("Single Pass Rendering", SinglePass_URL, GetTitleIcon(isSinglePassEnabled), () =>
+            BuildSection("Single Pass Stereo Rendering", SinglePass_URL, GetTitleIcon(isSinglePassEnabled), () =>
             {
                 EditorGUILayout.LabelField("Single Pass Stereo rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 

@@ -30,7 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ForceTextSerialization,
             VisibleMetaFiles,
             VirtualRealitySupported,
+#if UNITY_ANDROID
+            SinglePass,
+#else
             SinglePassInstancing,
+#endif
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
 
@@ -100,7 +104,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, new ConfigGetter(() => { return IsForceTextSerialization(); }) },
             { Configurations.VisibleMetaFiles, new ConfigGetter(() => { return IsVisibleMetaFiles(); }) },
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return XRSettingsUtilities.LegacyXREnabled; }) },
-            { Configurations.SinglePassInstancing, new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
+#if UNITY_ANDROID
+            { Configurations.SinglePass,  new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePass(); }) },
+#else
+            { Configurations.SinglePassInstancing,  new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); }) },
+#endif
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return PackageManifestUpdater.IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
