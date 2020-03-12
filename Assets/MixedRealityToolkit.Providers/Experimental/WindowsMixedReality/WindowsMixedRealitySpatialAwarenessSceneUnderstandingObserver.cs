@@ -69,8 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         /// <inheritdoc />
         public override void Enable()
         {
-            //Debug.Log("Enable()");
-
             shouldAutoStart = StartupBehavior == AutoStartBehavior.AutoStart;
 
             StartUpdateTimers();
