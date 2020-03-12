@@ -10,15 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class MixedRealityOptimizeUtils
     {
-        public static bool IsSinglePassInstanced()
-        {
-            return PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
-        }
 
-        public static void SetSinglePassInstanced()
-        {
-            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
-        }
+#if UNITY_ANDROID
+        public static bool IsSinglePass() => PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
+
+        public static void SetSinglePass() => PlayerSettings.stereoRenderingPath = StereoRenderingPath.SinglePass;
+#else
+        public static bool IsSinglePassInstanced() => PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+
+        public static void SetSinglePassInstanced() => PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+#endif
 
         /// <summary>
         /// Checks if the project has depth buffer sharing enabled.
