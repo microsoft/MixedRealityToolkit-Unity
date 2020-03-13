@@ -4,7 +4,7 @@ A [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLigh
 
 For a material to be influenced by a [`ProximityLight`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) the *Mixed Reality Toolkit/Standard* shader must be used and the *Proximity Light* property must be enabled.
 
-> [!Note]
+> [!NOTE]
 > Up to two [`ProximityLights`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) are supported by default.
 
 ## Examples
@@ -16,7 +16,7 @@ Most scenes within the MRTK utilize a [`ProximityLight`](xref:Microsoft.MixedRea
 
 By default only two [`ProximityLights`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) can illuminate a [material](https://docs.unity3d.com/ScriptReference/Material.html) at a time. If your project requires more than two [`ProximityLights`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) to influence a [material](https://docs.unity3d.com/ScriptReference/Material.html) the sample code below demonstrates how to achive this.
 
-> [!Note]
+> [!NOTE]
 > Having many [`ProximityLights`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight) illuminate a [material](https://docs.unity3d.com/ScriptReference/Material.html) will increase pixel shader instructions and will impact performance. Please profile these changes within your project.
 
 *How to increase the number of avalible [`ProximityLights`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight)
@@ -40,12 +40,12 @@ private const int proximityLightCount = 2;
 private const int proximityLightCount = 4;
 ```
 
-> [!Note]
+> [!NOTE]
 > If Unity logs a warning simular to below then you must restart Unity before your changes will take effect.
-
-```
-Property (_ProximityLightData) exceeds previous array size (24 vs 12). Cap to previous size.
-```
+>
+>```
+>Property (_ProximityLightData) exceeds previous array size (24 vs 12). Cap to previous size.
+>```
 
 ## See also
 

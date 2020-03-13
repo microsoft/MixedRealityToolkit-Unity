@@ -40,12 +40,11 @@ private const int hoverLightCount = 2;
 private const int hoverLightCount = 4;
 ```
 
-> [!Note]
+> [!NOTE]
 > If Unity logs a warning simular to below then you must restart Unity before your changes will take effect.
-
-```
-Property (_HoverLightData) exceeds previous array size (8 vs 4). Cap to previous size.
-```
+> ```
+> Property (_HoverLightData) exceeds previous array size (8 vs 4). Cap to previous >size.
+> ```
 
 ## See also
 
