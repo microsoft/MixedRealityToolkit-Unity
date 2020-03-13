@@ -764,13 +764,55 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         public IEnumerator LinksFlattenTest()
         {
             // test flatten and unflatten for links
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, and one of the link visuals
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform linkVisual = rigRoot.transform.Find("link_0");
+            Assert.IsNotNull(linkVisual, "link visual couldn't be found");
+
+            Assert.IsTrue(linkVisual.gameObject.activeSelf, "link with index 0 wasn't enabled by default");
+
+            // flatten x axis and make sure link gets deactivated
+            boundsControl.FlattenAxis = FlattenModeType.FlattenX;
+            Assert.IsFalse(linkVisual.gameObject.activeSelf, "link with index 0 wasn't disabled when control was flattened in X axis");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+
+            // unflatten the control again and make sure link gets activated accordingly
+            boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
+            Assert.IsTrue(linkVisual.gameObject.activeSelf, "link with index 0 wasn't enabled on unflatten");
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator LinksRadiusTest()
-        {
-            //linksConfig.WireframeEdgeRadius = 1.0f;
+        { 
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, and one of the link visuals
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform linkVisual = rigRoot.transform.Find("link_0");
+            Assert.IsNotNull(linkVisual, "link visual couldn't be found");
+
+            LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
+            // verify default radius
+            Assert.AreEqual(linkVisual.localScale.x, linkConfiguration.WireframeEdgeRadius, "Wireframe default edge radius wasn't applied to link local scale");
+            
+            // change radius
+            linkConfiguration.WireframeEdgeRadius = 0.5f;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(linkVisual, "link visual shouldn't be destroyed when changing edge radius");
+
+            //check if radius was applied
+            Assert.AreEqual(linkVisual.localScale.x, linkConfiguration.WireframeEdgeRadius, "Wireframe edge radius wasn't applied to link local scale");
+
             yield return null;
         }
 
@@ -800,7 +842,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(linkVisual, "link visual shouldn't be destroyed when switching mesh");
 
-            //refetch link and check if shape was applied
+            //check if shape was applied
             Assert.IsTrue(linkMeshFilter.mesh.name == "Cylinder Instance", "Link shape wasn't switched to cylinder");
 
             yield return null;
