@@ -88,6 +88,11 @@ The following WindowsApiChecker properties have been marked as obsolete. Please 
 
 There are no plans to add properties to WindowsApiChecker for future API contract versions.
 
+**GltfMeshPrimitiveAttributes read-only**
+
+The gltf mesh primitive attributes used to be settable, they are now read-only. Their values
+will be set once when deserialized.
+
 ## Updating 2.2.0 to 2.3.0
 
 - [API changes](#api-changes-in-230)
