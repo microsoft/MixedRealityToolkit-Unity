@@ -7107,7 +7107,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "+mMQMfFLeh4BAFT6rV5IJg=="
+          "hash": "sYkOWLbwgr+gcETrnpq5Ng=="
         }
       },
       "is_incremental": false,
@@ -7259,11 +7259,47 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Rendering/ClippingPrimitive.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Rendering/ClippingPrimitive.html",
+          "hash": "byqhf1yDVo2Sz7tAtlfixw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Rendering/HoverLight.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Rendering/HoverLight.html",
+          "hash": "OdtmGrZgFeVkd6Q7X+4v7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Rendering/MaterialInstance.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Rendering/MaterialInstance.html",
           "hash": "KdjPrRbsJaJ5v/T1V1lTtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/Rendering/ProximityLight.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Rendering/ProximityLight.html",
+          "hash": "xdkIKdVinPbk1WidLV8T1A=="
         }
       },
       "is_incremental": false,
@@ -7539,7 +7575,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ladQ04d2j0UA1YHVkM6/CQ=="
+          "hash": "iJIKv1T7Ljta6RJAP+fczg=="
         }
       },
       "is_incremental": false,
@@ -22718,7 +22754,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html",
-          "hash": "XsIgT8iYzRPog1Z5t/WtUg=="
+          "hash": "oJPNxL4ODz2cBiF5PK4Lnw=="
         }
       },
       "is_incremental": false,
@@ -22730,7 +22766,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html",
-          "hash": "uk2Z6BlcpElDIyYdchIM/w=="
+          "hash": "g8BSFi4yQoEU+Ctvx2OyQg=="
         }
       },
       "is_incremental": false,
@@ -22766,7 +22802,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html",
-          "hash": "W6sWiTh+4fgl8QEeRFXpQQ=="
+          "hash": "oArGC9bo4g5MztbQbcXJSA=="
         }
       },
       "is_incremental": false,
@@ -26461,16 +26497,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 153,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1568,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 150,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

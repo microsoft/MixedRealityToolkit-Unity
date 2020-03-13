@@ -179,9 +179,13 @@
 <h3 id="lightmapping">Lightmapping</h3>
 <p>For static lighting, the shader will respect lightmaps built by Unity's <a href="https://docs.unity3d.com/Manual/Lightmapping.html">Lightmapping system</a>. Simply mark the renderer as static (or lightmap static) to use lightmaps.</p>
 <h3 id="hover-light">Hover light</h3>
-<p>A Hover Light is a Fluent Design System paradigm that mimics a &quot;point light&quot; hovering near the surface of an object. Often used for far away cursor lighting, the application can control the properties of a Hover Light via the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html"><code>HoverLight.cs</code></a>. Up to 3 Hover Lights are supported at a time.</p>
+<ul>
+<li>See <a href="/Rendering/HoverLight.md">Hover Light</a></li>
+</ul>
 <h3 id="proximity-light">Proximity light</h3>
-<p>A Proximity Light is a Fluent Design System paradigm that mimics a &quot;gradient inverse point light&quot; hovering near the surface of an object. Often used for near cursor lighting, the application can control the properties of a Proximity Light via the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ProximityLight.html"><code>ProximityLight.cs</code></a>. Up to 2 Proximity Lights are supported at a time.</p>
+<ul>
+<li>See <a href="/Rendering/ProximityLight.md">Proximity Light</a></li>
+</ul>
 <h2 id="lightweight-scriptable-render-pipeline-support">Lightweight Scriptable Render Pipeline support</h2>
 <p>The MRTK contains an upgrade path to allow developers to utilize Unity's Lightweight Scriptable Render Pipeline (LWRP) with MRTK shaders. Tested in Unity 2019.1.1f1 and Lightweight RP 5.7.2 package. or instructions on getting started with the LWRP, see <a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.lightweight@5.10/manual/getting-started-with-lwrp.html">this page</a>.</p>
 <p>To perform the MRTK upgrade, select: <strong>Mixed Reality Toolkit -&gt; Utilities -&gt; Upgrade MRTK Standard Shader for Lightweight Render Pipeline</strong></p>
@@ -228,15 +232,10 @@
 <h2 id="additional-feature-documentation">Additional feature documentation</h2>
 <p>Below are extra details on a handful of feature details available with the MRTK/Standard shader.</p>
 <h3 id="primitive-clipping">Primitive clipping</h3>
-<p>Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  <strong>ClippingExamples</strong> scene under <code>MRTK/Examples/Demos/StandardShader/Scenes</code>.</p>
 <p><img src="Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif" alt="primitive clipping"></p>
-<p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html"><code>ClippingPlane.cs</code></a>, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html"><code>ClippingSphere.cs</code></a>, and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBox.cs</code></a> can be used to easily control clipping primitive properties. Use these components with the following shaders to leverage clipping scenarios.</p>
 <ul>
-<li><em>Mixed Reality Toolkit/Standard</em></li>
-<li><em>Mixed Reality Toolkit/TextMeshPro</em></li>
-<li><em>Mixed Reality Toolkit/Text3DShader</em></li>
+<li>See <a href="/Rendering/ClippingPrimitive.md">Clipping Primitive</a></li>
 </ul>
-<p><img src="Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif" alt="primitive clipping gizmos"></p>
 <h3 id="mesh-outlines">Mesh outlines</h3>
 <p>Many mesh outline techniques are done using a <a href="https://docs.unity3d.com/Manual/PostProcessingOverview.html">post processing</a> technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  <strong>OutlineExamples</strong> scene under <code>MRTK/Examples/Demos/StandardShader/Scenes/</code>.</p>
 <img src="Images/MRTKStandardShader/MRTK_MeshOutline.jpg" width="900">
@@ -275,6 +274,9 @@
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="README_Interactable.html">Interactable</a></li>
+<li><a href="/Rendering/HoverLight.md">Hover Light</a></li>
+<li><a href="/Rendering/ProximityLight.md">Proximity Light</a></li>
+<li><a href="/Rendering/ClippingPrimitive.md">Clipping Primitive</a></li>
 </ul>
 </article>
           </div>
