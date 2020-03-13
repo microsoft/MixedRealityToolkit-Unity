@@ -66,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float poseBlending = 0.0f;
         private ArticulatedHandPose pose = new ArticulatedHandPose();
         private float viewportPositionZTarget;
+        private readonly float smoothScrollSpeed = 5f;
 
         public SimulatedHandState(Handedness _handedness)
         {
@@ -127,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         internal void Update()
         {
-            ViewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, 5f * Time.deltaTime);
+            ViewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, smoothScrollSpeed * Time.deltaTime);
         }
 
         internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
