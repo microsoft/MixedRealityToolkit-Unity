@@ -155,7 +155,7 @@ public IEnumerator MyTest() {...}
 <p>New play mode tests can inherit <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html">BasePlayModeTests</a> or the skeleton below can be used.</p>
 <p>To create a new play mode test:</p>
 <ul>
-<li>Navigate to Assets &gt; MixedRealityToolkit.Tests &gt; PlayModeTests</li>
+<li>Navigate to Assets &gt; MRTK &gt; Tests &gt; PlayModeTests</li>
 <li>Right click, Create &gt; Testing &gt; C# Test Script</li>
 <li>Replace the default template with the skeleton below</li>
 </ul>
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
 </code></pre>
 <h3 id="edit-mode-tests">Edit mode tests</h3>
-<p>Edit mode tests are executed in Unity's edit mode and can be added under the <strong>MixedRealityToolkit.Tests</strong> &gt; <strong>EditModeTests</strong> folder in the Mixed Reality Toolkit repo.
+<p>Edit mode tests are executed in Unity's edit mode and can be added under the <strong>MRTK</strong> &gt; <strong>Tests</strong> &gt; <strong>EditModeTests</strong> folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:</p>
 <pre><code class="lang-c#">// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
@@ -283,8 +283,8 @@ For example, given a to-be-tested class:</p>
 </code></pre>
 <p>Consider placing the test in a folder hierarchy that is similar to its corresponding non-test file.
 For example:</p>
-<pre><code class="lang-md">Non-Test: Assets/MixedRealityToolkit/Utilities/InterestingUtilityClass.cs
-Test: Assets/MixedRealityToolkit.Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
+<pre><code class="lang-md">Non-Test: Assets/MRTK/Core/Utilities/InterestingUtilityClass.cs
+Test: Assets/MRTK/Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
 </code></pre>
 <p>This is to ensure that there's a clear an obvious way of finding each class's corresponding test class,
 if such a test class exists.</p>

@@ -97,12 +97,12 @@ The main reason for it to be invalid is that the user has chosen to skip the eye
 </li>
 </ul>
 <h3 id="how-to-detect-the-eye-calibration-state">How to detect the eye calibration state</h3>
-<p>The <a href="EyeTracking_EyeGazeProvider.html">MixedRealityToolkit.InputSystem.EyeGazeProvider</a> provides a <code>bool?</code> property called <code>IsEyeGazeValid</code>.
+<p>The <a href="EyeTracking_EyeGazeProvider.html">CoreServices.InputSystem.EyeGazeProvider</a> provides a <code>bool?</code> property called <code>IsEyeGazeValid</code>.
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.</p>
 <h3 id="sample-eye-calibration-notification---step-by-step">Sample eye calibration notification - step-by-step</h3>
 <ol>
-<li><p>Open the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking">MRTK eye tracking example package</a></p>
+<li><p>Open the MRTK eye tracking example package (Assets/MRTK/Examples/Demos/EyeTracking)</p>
 </li>
 <li><p>Load <em>EyeTrackingDemo-00-RootScene.unity</em> scene</p>
 </li>

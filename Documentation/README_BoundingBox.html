@@ -83,7 +83,7 @@
 <h1 id="bounding-box">Bounding box</h1>
 
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Main.png" alt="Bounding box"></p>
-<p>The <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2, for example, the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.</p>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html"><code>BoundingBox.cs</code></a> script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2, for example, the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized.</p>
 <p>For more information, see <a href="https://docs.microsoft.com/windows/mixed-reality/app-bar-and-bounding-box">Bounding box and App bar</a> in the Windows Dev Center.</p>
 <h2 id="example-scene">Example scene</h2>
 <p>You can find examples of bounding box configurations in the <code>BoundingBoxExamples</code> scene.</p>
@@ -170,9 +170,9 @@ scaleConstraint.ScaleMaximum = 2f;
 <li><em>Activate Manually</em>: Bounding box does not become visible automatically. You can manually activate it through a script by accessing the boundingBox.Active property.</li>
 </ul>
 <h3 id="scale-minimum">Scale minimum</h3>
-<p>The minimum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the minimum scale will be taken from it instead of from the bounding box.</p>
+<p>The minimum allowed scale. This property is deprecated and it is preferable to add a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the minimum scale will be taken from it instead of from the bounding box.</p>
 <h3 id="scale-maximum">Scale maximum</h3>
-<p>The maximum allowed scale. This property is deprecated and it is preferable to add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/MinMaxScaleConstraint.cs"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the maximum scale will be taken from it instead of from the bounding box.</p>
+<p>The maximum allowed scale. This property is deprecated and it is preferable to add a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html"><code>MinMaxScaleConstraint</code></a> script. If this script is added, the maximum scale will be taken from it instead of from the bounding box.</p>
 <h3 id="box-display">Box display</h3>
 <p>Various bounding box visualization options.</p>
 <p>If Flatten Axis is set to <em>Flatten Auto</em>, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.</p>
@@ -188,7 +188,7 @@ scaleConstraint.ScaleMaximum = 2f;
 </ul>
 <img src="Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 <h2 id="handle-styles">Handle styles</h2>
-<p>By default, when you just assign the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.</p>
+<p>By default, when you just assign the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html"><code>BoundingBox.cs</code></a> script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.</p>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles1.png" alt="Bounding Box"></p>
 <p>Below are the prefabs, materials, and the scaling values for the HoloLens 2 style bounding box handles. You can find this example in the <code>BoundingBoxExamples</code> scene.</p>
 <img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">

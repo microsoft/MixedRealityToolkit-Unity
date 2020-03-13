@@ -91,10 +91,10 @@
 <li>Right click in the <em>Project Window</em></li>
 <li>Select <strong>Create</strong> &gt; <strong>Mixed Reality Toolkit</strong> &gt; <strong>Theme</strong></li>
 </ol>
-<p>Example Theme configuration assets can be found under <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Themes">MixedRealityToolkit.SDK/Features/UX/Interactable/Themes</a>.</p>
+<p>Example Theme configuration assets can be found under <code>MRTK/SDK/Features/UX/Interactable/Themes</code>.</p>
 <p><img src="Images/VisualThemes/ThemeInspectorExample.png" alt="Theme ScriptableObject example in inspector"></p>
 <h3 id="states">States</h3>
-<p>When creating a new <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Theme.html"><code>Theme</code></a>, the first thing to set is what states are available. The <em>States</em> property indicates how many values a Theme configuration needs to define as there will be one value per state. In the example image above, the <a href="README_Interactable.html#general-input-settings">default states defined for the Interactable</a> component are <em>Default</em>, <em>Focus</em>, <em>Pressed</em>, and <em>Disabled</em>. These are defined in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset">DefaultInteractableStates</a> asset file.</p>
+<p>When creating a new <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Theme.html"><code>Theme</code></a>, the first thing to set is what states are available. The <em>States</em> property indicates how many values a Theme configuration needs to define as there will be one value per state. In the example image above, the <a href="README_Interactable.html#general-input-settings">default states defined for the Interactable</a> component are <em>Default</em>, <em>Focus</em>, <em>Pressed</em>, and <em>Disabled</em>. These are defined in the <code>DefaultInteractableStates</code> (Assets/MRTK/SDK/Features/UX/Interactable/States) asset file.</p>
 <p>To create a new <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.States.html"><code>State</code></a> asset:</p>
 <ol>
 <li>Right click in the <em>Project Window</em></li>
@@ -159,7 +159,7 @@ testTheme.Definitions = new List&lt;ThemeDefinition&gt;() { newThemeType };
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme.html"><code>InteractableTextureTheme</code></a></li>
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme.html"><code>ScaleOffsetColorTheme</code></a></li>
 </ul>
-<p>The default Theme Engines can be found under <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines">MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines</a>.</p>
+<p>The default Theme Engines can be found under <code>MRTK/SDK/Features/UX/Scripts/VisualThemes/ThemeEngines</code>.</p>
 <h3 id="custom-theme-engines">Custom theme engines</h3>
 <p>As stated, a Theme Engine is defined as a class that extends from the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html"><code>InteractableThemeBase</code></a> class. Thus, new Theme Engine need only extend this class and implement the following:</p>
 <h4 id="mandatory-implementations">Mandatory implementations</h4>

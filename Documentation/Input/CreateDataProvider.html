@@ -87,7 +87,7 @@ a custom input data provider may be required.</p>
 <p>This article describes how to create custom data providers, also called device managers, for the input system. The example code shown here is
 from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager.html"><code>WindowsMixedRealityDeviceManager</code></a>.</p>
 <blockquote>
-<p>The complete code used in this example can be found in the MixedRealityToolkit.Providers\WindowsMixedReality folder.</p>
+<p>The complete code used in this example can be found in the MRTK/Providers/WindowsMixedReality folder.</p>
 </blockquote>
 <h2 id="namespace-and-folder-structure">Namespace and folder structure</h2>
 <p>Data providers can be distributed as a third party add-on or as a part of the Microsoft Mixed Reality Toolkit. The approval process for submissions of
@@ -96,7 +96,7 @@ new data providers to the MRTK will vary on a case-by-case basis and will be com
 <h5>Important</h5>
 <p>If an input system data provider is being submitted to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity">Mixed Reality Toolkit repository</a>, the
 namespace <strong>must</strong> begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.WindowsMixedReality) and the code should be
-located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\WindowsMixedReality).</p>
+located in a folder beneath MRTK/Providers (ex: MRTK/Providers/WindowsMixedReality).</p>
 </div>
 <h3 id="namespace">Namespace</h3>
 <p>Data providers are required to have a namespace to mitigate potential name collisions. It is recommended that the namespace includes the following components.</p>
@@ -166,7 +166,7 @@ interface.</p>
 <h3 id="implement-the-controller-classes">Implement the controller classes</h3>
 <p>The example of the <code>WindowsMixedRealityDeviceManager</code> defines and implements the following controller classes.</p>
 <blockquote>
-<p>The source code for each of these classes can be found in the MixedRealityToolkit.Providers\WindowsMixedReality folder.</p>
+<p>The source code for each of these classes can be found in the MRTK/Providers/WindowsMixedReality folder.</p>
 </blockquote>
 <ul>
 <li>WindowsMixedRealityArticulatedHand.cs</li>
@@ -188,7 +188,7 @@ interface.</p>
 </code></pre>
 <h4 id="configure-the-interaction-mappings">Configure the interaction mappings</h4>
 <p>The next step is to define the set of interaction mappings supported by the controller. For devices that receive their data via Unity's Input class, the <a href="../Tools/ControllerMappingTool.html">controller mapping tool</a> is a helpful resource to confirm the correct axis and button mappings to assign to interactions.</p>
-<p>The following example is abbreviated from the <code>GenericOpenVRController</code> class, located in the MixedRealityToolkit.Providers\OpenVR folder.</p>
+<p>The following example is abbreviated from the <code>GenericOpenVRController</code> class, located in the MRTK/Providers/OpenVR folder.</p>
 <pre><code class="lang-c#">public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =&gt; new[]
 {
     // Controller Pose

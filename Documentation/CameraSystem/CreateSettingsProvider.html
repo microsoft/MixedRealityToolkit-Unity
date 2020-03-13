@@ -85,7 +85,7 @@
 <p>The Camera system is an extensible system for providing support for platform specific camera configurations. To add support for a new camera configuration, a custom settings provider may be required.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>The complete source code used in this example can be found in the <strong>MixedRealityToolkit.Extensions\Providers\Experimental\UnityAR</strong> folder after importing the <strong>Microsoft.MixedReality.Toolkit.Unity.Extensions</strong> package.</p>
+<p>The complete source code used in this example can be found in the <strong>MRTK/Providers/UnityAR</strong> folder.</p>
 </div>
 <h2 id="namespace-and-folder-structure">Namespace and folder structure</h2>
 <p>Data providers can be distributed in one of two ways:</p>
@@ -112,7 +112,7 @@ folder contains one or more pre-made profile scriptable objects.</p>
 <p>If a camera settings provider is being submitted to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity">Mixed Reality Toolkit repository</a>, the namespace <strong>must</strong> begin with
 Microsoft.MixedReality.Toolkit (ex: <em>Microsoft.MixedReality.Toolkit.CameraSystem</em>).</p>
 <p><strong>Folder structure</strong></p>
-<p>All code must be located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\UnityAR).</p>
+<p>All code must be located in a folder beneath MRTK/Providers (ex: MRTK/Providers/UnityAR).</p>
 <h2 id="define-the-camera-settings-object">Define the camera settings object</h2>
 <p>The first step in creating a camera settings provider is determining the type of data (ex: meshes or planes) it will provide to applications.</p>
 <p>All spatial data objects must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html"><code>IMixedRealityCameraSettingsProvider</code></a>

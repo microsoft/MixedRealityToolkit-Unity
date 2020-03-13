@@ -85,10 +85,10 @@
 <p><img src="Images/MRTKStandardShader/MRTK_StandardShader.jpg" alt="Standard shader examples"></p>
 <p>MRTK Standard shading system utilizes a single, flexible shader that can achieve visuals similar to Unity's Standard Shader, implement <a href="https://www.microsoft.com/design/fluent/">Fluent Design System</a> principles, and remain performant on mixed reality devices.</p>
 <h2 id="example-scenes">Example scenes</h2>
-<p>You can find the shader material examples in the <strong>MaterialGallery</strong> scene under:
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes">MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/</a> All materials in this scene are using the MRTK/Standard shader.</p>
+<p>You can find the shader material examples in the <strong>MaterialGallery</strong> scene under
+<code>MRTK/Examples/Demos/StandardShader/Scenes/</code>. All materials in this scene are using the MRTK/Standard shader.</p>
 <p><img src="Images/MRTKStandardShader/MRTK_MaterialGallery.jpg" alt="Material Gallery"></p>
-<p>You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the <strong>StandardMaterialComparison</strong> scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes">MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/</a></p>
+<p>You can find a comparison scene to compare and test the MRTK/Standard shader against the Unity/Standard shader example in the <strong>StandardMaterialComparison</strong> scene under <code>MRTK/Examples/Demos/StandardShader/Scenes/</code>.</p>
 <p><img src="Images/MRTKStandardShader/MRTK_StandardMaterialComparison.gif" alt="Material Comparison"></p>
 <h2 id="architecture">Architecture</h2>
 <p>The MRTK/Standard shading system is an &quot;uber shader&quot; that uses <a href="https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html">Unity's shader program variant feature</a> to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector, they only incur performance cost for features they have enabled.</p>
@@ -228,7 +228,7 @@
 <h2 id="additional-feature-documentation">Additional feature documentation</h2>
 <p>Below are extra details on a handful of feature details available with the MRTK/Standard shader.</p>
 <h3 id="primitive-clipping">Primitive clipping</h3>
-<p>Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  <strong>ClippingExamples</strong> scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes">MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/</a></p>
+<p>Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  <strong>ClippingExamples</strong> scene under <code>MRTK/Examples/Demos/StandardShader/Scenes</code>.</p>
 <p><img src="Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif" alt="primitive clipping"></p>
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html"><code>ClippingPlane.cs</code></a>, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html"><code>ClippingSphere.cs</code></a>, and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html"><code>ClippingBox.cs</code></a> can be used to easily control clipping primitive properties. Use these components with the following shaders to leverage clipping scenarios.</p>
 <ul>
@@ -238,7 +238,7 @@
 </ul>
 <p><img src="Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif" alt="primitive clipping gizmos"></p>
 <h3 id="mesh-outlines">Mesh outlines</h3>
-<p>Many mesh outline techniques are done using a <a href="https://docs.unity3d.com/Manual/PostProcessingOverview.html">post processing</a> technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  <strong>OutlineExamples</strong> scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes">MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/</a></p>
+<p>Many mesh outline techniques are done using a <a href="https://docs.unity3d.com/Manual/PostProcessingOverview.html">post processing</a> technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  <strong>OutlineExamples</strong> scene under <code>MRTK/Examples/Demos/StandardShader/Scenes/</code>.</p>
 <img src="Images/MRTKStandardShader/MRTK_MeshOutline.jpg" width="900">
 <p><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.MeshOutline.html"><code>MeshOutline.cs</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.MeshOutlineHierarchy.html"><code>MeshOutlineHierarchy.cs</code></a> can be used to render an outline around a mesh renderer. Enabling this component introduces an additional render pass of the object being outlined, but is designed to run performantly on mobile Mixed Reality devices and does not utilize any post processes. Limitations of this effect include it not working well on objects which are not watertight (or required to be two sided) and depth sorting issues can occur on overlapping objects.</p>
 <p>The outline behaviors are designed to be used in conjunction with the MRTK/Standard shader. Outline materials are usually a solid unlit color, but can be configured to achieve a wide array of effects. The default configuration of a outline material is as follows:</p>

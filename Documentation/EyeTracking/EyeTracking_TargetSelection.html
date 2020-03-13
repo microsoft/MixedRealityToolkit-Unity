@@ -174,7 +174,7 @@ The required action to trigger the event is defined by <code>eventData.MixedReal
 <p>Given that eye gaze can be very different to other pointer inputs, you may want to make sure to only react to the focus input if it is <em>eye gaze</em> and it is currently the primary input pointer.
 For this purpose, you would use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseEyeFocusHandler.html"><code>BaseEyeFocusHandler</code></a> which is specific to eye tracking and which derives from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseFocusHandler.html"><code>BaseFocusHandler</code></a>.
 As mentioned before, it will only trigger if eye gaze targeting is currently the primary pointer input (i.e., no hand ray is active). For more information, see <a href="EyeTracking_EyesAndHands.html">How to support eye gaze + hand gestures</a>.</p>
-<p>Here is an example from <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity">EyeTrackingDemo-03-Navigation.unity</a>.
+<p>Here is an example from <code>EyeTrackingDemo-03-Navigation</code> (Assets/MRTK/Examples/Demos/EyeTracking/Scenes).
 In this demo, there are two 3D holograms that will turn depending on which part of the object is looked at:
 If the user looks at the left side of the hologram, then that part will slowly move towards the front facing the user.
 If the right side is looked at, then that part will slowly move to the front.
@@ -236,7 +236,7 @@ attached, a GameObject will rotate while being looked at.</p>
 </ul>
 <p>In the following, we walk you through a few examples for how to use <em>EyeTrackingTarget</em>.</p>
 <h3 id="example-1-eye-supported-smart-notifications">Example #1: Eye-supported smart notifications</h3>
-<p>In <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a>,
+<p>In <code>EyeTrackingDemo-02-TargetSelection</code> (Assets/MRTK/Examples/Demos/EyeTracking/Scenes),
 you can find an example for <em>'smart attentive notifications'</em> that react to your eye gaze.
 These are 3D text boxes that can be placed in the scene and that will smoothly enlarge and turn toward the user when being looked at to ease legibility. While the user is reading the notification, the information keeps getting displayed crisp and clear. After reading it and looking away from the notification, the notification will automatically be dismissed and fades out. To achieve all this, there are a few generic behavior scripts that are not specific to eye tracking at all, such as:</p>
 <ul>
@@ -269,7 +269,7 @@ The key to an enjoyable experience here is to carefully tune the speed of any of
 Otherwise this can quickly feel extremely overwhelming.</p>
 <img src="../Images/EyeTracking/mrtk_et_EyeTrackingTarget_Notification.jpg" width="750" alt="MRTK">
 <h3 id="example-2-holographic-gem-rotates-slowly-when-looking-at-it">Example #2: Holographic gem rotates slowly when looking at it</h3>
-<p>Similar to Example #1, we can easily create a hover feedback for our holographic gems in <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity">EyeTrackingDemo-02-TargetSelection.unity</a> scene that will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above) when being looked at. All you need is to trigger the rotation of the holographic gem from the <em>EyeTrackingTarget</em>'s <em>WhileLookingAtTarget()</em> event. Here are a few more details:</p>
+<p>Similar to Example #1, we can easily create a hover feedback for our holographic gems in <code>EyeTrackingDemo-02-TargetSelection</code> (Assets/MRTK/Examples/Demos/EyeTracking/Scenes) scene that will slowly rotate in a constant direction and at a constant speed (in contrast to the rotation example from above) when being looked at. All you need is to trigger the rotation of the holographic gem from the <em>EyeTrackingTarget</em>'s <em>WhileLookingAtTarget()</em> event. Here are a few more details:</p>
 <ol>
 <li><p>Create a generic script that includes a public function to rotate the GameObject it is attached to. Below is an example from <em>RotateWithConstSpeedDir.cs</em> where we can tweak the rotation direction and speed from the Unity Editor.</p>
 <pre><code class="lang-c#">using UnityEngine;

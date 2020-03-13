@@ -142,7 +142,7 @@ public struct Controller
 <p>Omitting the namespace for an interface, class or data type will cause your change to be blocked.</p>
 <h3 id="adding-new-monobehaviour-scripts">Adding new MonoBehaviour scripts</h3>
 <p>When adding new MonoBehaviour scripts with a pull request, ensure the <a href="https://docs.unity3d.com/ScriptReference/AddComponentMenu.html"><code>AddComponentMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the <em>Add Component</em> button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
-<p>In the example below, the <em>Package here</em> should be filled with the package location of the component. If placing an item in <em>MixedRealityToolkit.SDK</em> folder, then the package will be <em>SDK</em>. If placing an item in the <em>MixedRealityToolkit</em> folder, then use <em>Core</em> as the string to insert.</p>
+<p>In the example below, the <em>Package here</em> should be filled with the package location of the component. If placing an item in <em>MRTK/SDK</em> folder, then the package will be <em>SDK</em>.</p>
 <pre><code class="lang-c#">[AddComponentMenu(&quot;Scripts/MRTK/{Package here}/MyNewComponent&quot;)]
 public class MyNewComponent : MonoBehaviour
 </code></pre>
@@ -200,7 +200,7 @@ public class MyNewComponent : MonoBehaviour
 </code></pre>
 <h3 id="adding-new-scriptableobjects">Adding new ScriptableObjects</h3>
 <p>When adding new ScriptableObject scripts, ensure the <a href="https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html"><code>CreateAssetMenu</code></a> attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.</p>
-<p>In the example below, the <em>Subfolder</em> should be filled with the MRTK subfolder, if applicable. If placing an item in <em>MixedRealityToolkit.Providers</em> folder, then the package will be <em>Providers</em>. If placing an item in the <em>MixedRealityToolkit</em> folder, set this to &quot;Profiles&quot;.</p>
+<p>In the example below, the <em>Subfolder</em> should be filled with the MRTK subfolder, if applicable. If placing an item in <em>MRTK/Providers</em> folder, then the package will be <em>Providers</em>. If placing an item in the <em>MRTK/Core</em> folder, set this to &quot;Profiles&quot;.</p>
 <p>In the example below, the <em>MyNewService | MyNewProvider</em> should be filled with the your new class' name, if applicable. If placing an item in the <em>MixedRealityToolkit</em> folder, leave this string out.</p>
 <pre><code class="lang-c#">[CreateAssetMenu(fileName = &quot;MyNewProfile&quot;, menuName = &quot;Mixed Reality Toolkit/{Subfolder}/{MyNewService | MyNewProvider}/MyNewProfile&quot;)]
 public class MyNewProfile : ScriptableObject

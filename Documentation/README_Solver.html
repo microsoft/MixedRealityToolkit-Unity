@@ -214,7 +214,7 @@ public class InFront : Solver
 <p>Finally, surfaces farther than the <code>MaxRaycastDistance</code> property setting will be ignored by the <code>SurfaceMagnetism</code> raycasts.</p>
 <h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand menu with HandConstraint and HandConstraintPalmUp</h3>
 <p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt="Hand Menu UX Example"></p>
-<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under <code>MRTK/Examples/Demos/HandTracking/Scenes/</code>.</p>
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
 <img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
 <ul>
@@ -225,7 +225,7 @@ public class InFront : Solver
 </ul>
 <img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
 <ul>
-<li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a> for examples of these behaviors.</p>
+<li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under <code>MRTK/Examples/Demos/HandTracking/Scenes/</code> for examples of these behaviors.</p>
 <ul>
 <li><em>OnHandActivate</em>: triggers when a hand satisfies the IsHandActive method</li>
 <li><em>OnHandDeactivate</em>: triggers when the IsHandActive method is no longer satisfied.</li>
@@ -248,7 +248,7 @@ public class InFront : Solver
 <p><img src="Images/Solver/DirectionalIndicatorExample.png" alt="Directional Indicator properties"><br>
 <em>Directional Indicator properties</em></p>
 <p><img src="Images/Solver/DirectionalIndicatorExampleScene.gif" alt="Directional Indicator example scene"></p>
-<p><em><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity">Directional Indicator Example Scene</a></em></p>
+<p><em>Directional Indicator Example Scene (Assets/MRTK/Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)</em></p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="Input/HandTracking.html">Hand Tracking</a></li>

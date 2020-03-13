@@ -83,9 +83,9 @@
 <h1 id="accessing-eye-tracking-data-in-your-unity-script">Accessing eye tracking data in your Unity script</h1>
 
 <p>The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see <a href="EyeTracking_BasicSetup.html">Basic MRTK setup to use eye tracking</a>).
-To access eye tracking data in your MonoBehaviour scripts is easy! Simply use <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em>.</p>
-<h2 id="mixedrealitytoolkitinputsystemeyegazeprovider">MixedRealityToolkit.InputSystem.EyeGazeProvider</h2>
-<p>While the <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em> provides several helpful variables, the key ones for eye tracking input are the following:</p>
+To access eye tracking data in your MonoBehaviour scripts is easy! Simply use <em>CoreServices.InputSystem.EyeGazeProvider</em>.</p>
+<h2 id="coreservicesinputsystemeyegazeprovider">CoreServices.InputSystem.EyeGazeProvider</h2>
+<p>While the <em>CoreServices.InputSystem.EyeGazeProvider</em> provides several helpful variables, the key ones for eye tracking input are the following:</p>
 <ul>
 <li><p><strong>UseEyeTracking</strong>:
 True if eye tracking hardware is available and the user has given permission to use eye tracking in the app.</p>
@@ -113,21 +113,21 @@ Information about the currently gazed at target.
 Again, if 'IsEyeGazeValid' is false, this will be based on the user's <em>head</em> gaze.</p>
 </li>
 </ul>
-<h2 id="examples-for-using-mixedrealitytoolkitinputsystemeyegazeprovider">Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider</h2>
+<h2 id="examples-for-using-coreservicesinputsystemeyegazeprovider">Examples for using CoreServices.InputSystem.EyeGazeProvider</h2>
 <p>Here is an example from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html">FollowEyeGaze.cs</a>:</p>
 <ul>
 <li>Get the point of a hologram that the user is looking at:</li>
 </ul>
 <pre><code class="lang-c#">// Show the object at the hit position of the user's eye gaze ray with the target.
-gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition;
+gameObject.transform.position = CoreServices.InputSystem.EyeGazeProvider.HitPosition;
 </code></pre>
 <ul>
 <li>Showing a visual asset at a fixed distance from where the user is currently looking:</li>
 </ul>
 <pre><code class="lang-c#">// If no target is hit, show the object at a default distance along the gaze ray.
 gameObject.transform.position =
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin +
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+CoreServices.InputSystem.EyeGazeProvider.GazeOrigin +
+CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 </code></pre>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>

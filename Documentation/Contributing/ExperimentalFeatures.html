@@ -86,7 +86,7 @@
 <h2 id="what-to-expect-from-an-experimental-feature">What to expect from an experimental feature</h2>
 <p>If a component is marked experimental you can expect the following:</p>
 <ul>
-<li>An example scene demonstrating usage, located under <code>MixedRealityToolkit.Examples\Experimental</code> sub-folder</li>
+<li>An example scene demonstrating usage, located under <code>MRTK/Examples/Experimental</code> sub-folder</li>
 <li>Experimental features may not have docs.</li>
 <li>They probably don't have tests.</li>
 <li>Experimental features are subject to change.</li>
@@ -95,17 +95,17 @@
 <h3 id="experimental-code-should-live-in-a-separate-folder">Experimental code should live in a separate folder</h3>
 <p>Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:</p>
 <ul>
-<li>Example scenes, scripts go into <code>MRTK.Examples/Experimental/FooBar/</code></li>
+<li>Example scenes, scripts go into <code>MRTK/Examples/Experimental/FooBar/</code></li>
 <li>Component scripts, prefabs go into <code>MRTK/SDK/Experimental/FooBar/</code></li>
 <li>Component inspectors go into <code>MRTK/SDK/Inspectors/Experimental/FooBar</code></li>
 </ul>
 <p>When using sub-folders under the experimental feature name, try to mirror the same folder structure of MRTK.</p>
 <p>For example, solvers would go under
 <code>MRTK/SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs</code></p>
-<p>Keep scenes in a scene folder near the top: <code>MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity</code></p>
+<p>Keep scenes in a scene folder near the top: <code>MRTK/Examples/Experimental/FooBar/Scenes/FooBarExample.unity</code></p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>We considered not having a single Experimental root folder and instead putting Experimental under say <code>MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity</code>. We decided to go with folders at the base to make the experimental features easier to discover.</p>
+<p>We considered not having a single Experimental root folder and instead putting Experimental under say <code>MRTK/Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity</code>. We decided to go with folders at the base to make the experimental features easier to discover.</p>
 </div>
 <h3 id="experimental-code-should-be-in-a-special-namespace">Experimental code should be in a special namespace</h3>
 <p>Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
@@ -135,9 +135,9 @@ public static void MyCommand()
 Any regressions you make to the MRTK core code would result in your pull request getting reverted.</p>
 <p>Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:</p>
 <ul>
-<li>MRTK/SDK\Experimental</li>
-<li>MRTK/SDK\Inspectors\Experimental</li>
-<li>MixedRealityToolkit.Examples\Experimental</li>
+<li>MRTK/SDK/Experimental</li>
+<li>MRTK/SDK/Inspectors/Experimental</li>
+<li>MRTK/Examples/Experimental</li>
 </ul>
 <p>Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.</p>
 <h3 id="using-your-experimental-feature-should-not-impact-peoples-ability-to-use-core-controls">Using your experimental feature should not impact people's ability to use core controls</h3>
@@ -146,7 +146,7 @@ Any regressions you make to the MRTK core code would result in your pull request
 <p>For example, in <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6001">this ScrollableObjectCollection PR</a>, adding a ScrollableObjectCollection caused people to not be able to use the HoloLens button prefabs. Even though this was not caused by a bug in the PR (but rather exposed an existing bug), it prevented the PR from getting checked in.</p>
 <h3 id="provide-an-example-scene-that-demonstrates-how-to-use-the-feature">Provide an example scene that demonstrates how to use the feature</h3>
 <p>People need to see how to use your feature, and how to test it.</p>
-<p>Provide an example under MRTK.Examples/Experimental/YOUR_FEATURE</p>
+<p>Provide an example under MRTK/Examples/Experimental/YOUR_FEATURE</p>
 <h3 id="minimize-user-visible-flaws-in-experimental-features">Minimize user visible flaws in experimental features</h3>
 <p>Others will not use the experimental feature if it does not work, it will not graduate to a feature.</p>
 <p>Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.</p>

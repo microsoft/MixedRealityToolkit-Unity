@@ -83,7 +83,7 @@
 <h1 id="profiles">Profiles</h1>
 
 <p>One of the main ways that the MRTK is configured is through the many profiles available in the foundation package. The main <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityToolkit.html"><code>MixedRealityToolkit</code></a> object in a scene will have the active profile, which is essentially a ScriptableObject. The top level MRTK Configuration Profile contains sub-profile data for each core of the primary core systems, each of which are designed to configure the behavior of their corresponding sub-systems. Furthermore, these sub-profiles are also Scriptable Objects and thus can contain references to other profile objects one level below them. There is essentially an entire tree of connected profiles that make up the configuration information for how to initialize the MRTK sub-systems and features.</p>
-<p>For example, the Input system's behavior is governed by an <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset">input system profile object</a>. It's highly recommended to always modify the profile ScriptableObject assets via the in-editor inspector.</p>
+<p>For example, the Input system's behavior is governed by an input system profile, for example the <code>DefaultMixedRealityInputSystemProfile</code> (Assets/MRTK/SDK/Profiles). It's highly recommended to always modify the profile ScriptableObject assets via the in-editor inspector.</p>
 <img src="../Images/Profiles/input_profile.png" width="650px" style="display:block;">
 <sup>Profile Inspector</sup>
 <div class="NOTE">
@@ -91,12 +91,12 @@
 <p>While it is intended that profiles can be swapped out at runtime, this <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">currently does not work</a></p>
 </div>
 <h2 id="default-profile">Default profile</h2>
-<p>The MRTK provides a set of default profiles which cover most platforms and scenarios that the MRTK supports. For example, when you select the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset">DefaultMixedRealityToolkitConfigurationProfile</a> you will be able to try out scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2).</p>
+<p>The MRTK provides a set of default profiles which cover most platforms and scenarios that the MRTK supports. For example, when you select the <code>DefaultMixedRealityToolkitConfigurationProfile</code> (Assets/MRTK/SDK/Profiles) you will be able to try out scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2).</p>
 <p>Note that because this is a general use profile, it's not optimized for any particular use case. If you want to have
 more performant/specific settings that are better on other platforms, see the other profiles below, which are slightly tweaked to be better on their respective platforms.</p>
 <h2 id="hololens-2-profile">HoloLens 2 profile</h2>
 <p>The MRTK also provides a default profile that is optimized for deployment and testing on
-the HoloLens 2: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset">DefaultHoloLens2ConfigurationProfile</a>.</p>
+the HoloLens 2: <code>DefaultHoloLens2ConfigurationProfile</code> (Assets/MRTK/SDK/Profiles/HoloLens2).</p>
 <p>When prompted to choose a profile for the MixedRealityToolkit object, use this profile instead
 of the default selected profile.</p>
 <p>The key differences between the HoloLens2 profile and the Default Profile are:</p>

@@ -95,7 +95,7 @@
 <p><img src="Images/Interactable/InputFeatures_short.png" alt="General Interactable Settings"></p>
 <p><strong>States</strong></p>
 <p><em>States</em> is a <a href="https://docs.unity3d.com/Manual/class-ScriptableObject.html">ScriptableObject</a> parameter that defines the interactions phases, like press or observed, for <a href="#interactable-profiles">Interactable Profiles</a> and <a href="VisualThemes.html">Visual Themes</a>.</p>
-<p>The <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset"><strong>DefaultInteractableStates</strong></a> ships with MRTK out-of-box and is the default parameter for <em>Interactable</em> components.</p>
+<p>The <strong>DefaultInteractableStates</strong> (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) ships with MRTK out-of-box and is the default parameter for <em>Interactable</em> components.</p>
 <p><img src="Images/Interactable/DefaultInteractableStates.png" alt="States ScriptableObject example in inspector"></p>
 <p>The <em>DefaultInteractableStates</em> asset contains four states and utilizes the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableStates.html"><code>InteractableStates</code></a> state model implementation.</p>
 <ul>
@@ -111,7 +111,7 @@
 <p>A bit value (#) is assigned to the state depending on the order in the list.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>It is generally recommended to utilize the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset"><strong>DefaultInteractableStates</strong></a> when creating <em>Interactable</em> components.</p>
+<p>It is generally recommended to utilize the <strong>DefaultInteractableStates</strong> (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) when creating <em>Interactable</em> components.</p>
 <p>However, there are 17 Interactable states available that can be used to drive themes, though some are meant to be driven by other components. Here is a list of those with built-in functionality.</p>
 <ul>
 <li>Visited: the Interactable has been clicked.</li>
@@ -185,7 +185,7 @@
 </li>
 </ol>
 <h4 id="example-of-extending-receiverbase">Example of extending <code>ReceiverBase</code></h4>
-<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.html"><code>CustomInteractablesReceiver</code></a> class under <code>MixedRealityToolkit.Examples</code> displays status information about an <em>Interactable</em> and is an example of how to create a custom Event Receiver.</p>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.html"><code>CustomInteractablesReceiver</code></a> class displays status information about an <em>Interactable</em> and is an example of how to create a custom Event Receiver.</p>
 <pre><code class="lang-c#">public CustomInteractablesReceiver(UnityEvent ev) : base(ev, &quot;CustomEvent&quot;)
 {
     HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
@@ -247,7 +247,7 @@ bool isSelected = myInteractable.IsToggled;
 </code></pre>
 <h5 id="toggle-button-collection">Toggle button collection</h5>
 <p>It is common to have a list of toggle buttons where only one can be active at any given time, also known as a radial set or radio buttons etc.</p>
-<p>Use the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection.html"><code>InteractableToggleCollection</code></a> component to enable this functionality. This control ensures only one <em>Interactable</em> is toggled on at any given time. The <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab"><em>RadialSet</em> prefab</a> is also a great starting point out-of-box.</p>
+<p>Use the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection.html"><code>InteractableToggleCollection</code></a> component to enable this functionality. This control ensures only one <em>Interactable</em> is toggled on at any given time. The <em>RadialSet</em> (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab) is also a great starting point out-of-box.</p>
 <p>To create a custom radial button group:</p>
 <ol>
 <li>Create multiple <em>Interactable</em> GameObjects/buttons</li>

@@ -146,12 +146,12 @@
 </ol>
 <h3 id="manager-implementation-requirements">Manager implementation requirements</h3>
 <ul>
-<li>Assembly Definitions for code outside of the <code>MixedRealityToolkit</code> folder.
+<li>Assembly Definitions for code outside of the <code>MRTK/Core</code> folder.
 <ul>
 <li>This ensures features are self-contained and have no dependencies to other features.</li>
 </ul>
 </li>
-<li>Be defined using an interface found in <code>MixedRealityToolkit/Definitions/&lt;FeatureName&gt;System</code>.</li>
+<li>Be defined using an interface found in <code>MRTK/Core/Definitions/&lt;FeatureName&gt;System</code>.</li>
 <li>A feature's concrete manager implementation should inherit directly from <code>BaseManager</code> or <code>MixedRealityEventManager</code> if they will raise events.</li>
 <li>A feature's concrete manager implementation should setup and verify that the scene is ready for that system to use in <code>Initialize</code>.</li>
 <li>A feature's concrete manager should also clean up after themselves removing anything created in the scene in <code>Destroy</code>.</li>
@@ -161,13 +161,13 @@
 <ul>
 <li>This includes being able to specify a concrete implementation via dropdown using <code>SystemType</code>.</li>
 <li>Features should have a configuration profile that derives from a scriptable object.</li>
-<li>A default configuration profile located in <code>MixedRealityToolkit.SDK/Profiles</code> and be assigned in the default configuration profile for the Mixed Reality Manager</li>
+<li>A default configuration profile located in <code>MRTK/SDK/Profiles</code> and be assigned in the default configuration profile for the Mixed Reality Manager</li>
 </ul>
 </li>
 <li>If this feature is <strong>not</strong> a core feature, then it must be registered using the extension service configuration profile and implement <code>IMixedRealityExtensionService</code>.</li>
 </ul>
 </li>
-<li>Have a default implementation located in <code>MRTK.Services/&lt;FeatureName&gt;</code></li>
+<li>Have a default implementation located in <code>MRTK/Services/&lt;FeatureName&gt;</code></li>
 <li>Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.</li>
 </ul>
 <h3 id="event-data-implementation-requirements">Event data implementation requirements</h3>

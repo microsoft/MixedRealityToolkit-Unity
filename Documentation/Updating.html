@@ -172,7 +172,57 @@ asset database and reconcile existing custom profiles.</li>
 <li>Close and re-open the project in Unity</li>
 </ol>
 <h2 id="updating-230-to-240">Updating 2.3.0 to 2.4.0</h2>
-<p><a href="#api-changes-in-240">API changes</a></p>
+<p><a href="#folder-renames-in-240">Folder renames</a>
+<a href="#api-changes-in-240">API changes</a></p>
+<h3 id="folder-renames-in-240">Folder renames in 2.4.0</h3>
+<p>The MixedRealityToolkit folders have been renamed and moved into a common hierarchy in version 2.4. If an application
+uses hard coded paths to MRTK resources, they will need to be updated per the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Previous Folder</th>
+<th>New Folder</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit</td>
+<td>MRTK/Core</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples</td>
+<td>MRTK/Examples</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Extensions</td>
+<td>MRTK/Extensions</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Providers</td>
+<td>MRTK/Providers</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.SDK</td>
+<td>MRTK/SDK</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services</td>
+<td>MRTK/Services</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Tests</td>
+<td>MRTK/Tests</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Tools</td>
+<td>MRTK/Tools</td>
+</tr>
+</tbody>
+</table>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The <code>MixedRealityToolkit.Generated</code> contains customer generated files and remains unchanged.</p>
+</div>
 <h3 id="api-changes-in-240">API changes in 2.4.0</h3>
 <p><strong>Custom controller classes</strong></p>
 <p>Custom controller classes previously had to define <code>SetupDefaultInteractions(Handedness)</code>. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (<code>AssignControllerMappings(DefaultInteractions);</code>), so the full call has been refactored down into <code>BaseController</code> and made an optional override instead of required.</p>

@@ -114,14 +114,14 @@
 <ul>
 <li><em>Pointer Prefab</em> - This prefab asset will be instantiated when a controller matching the specified controller type and handedness starts being tracked.</li>
 </ul>
-<p>It is possible to have multiple pointers associated with a controller. For example, in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2InputSystemProfile.asset">default HoloLens 2 profile</a>
+<p>It is possible to have multiple pointers associated with a controller. For example, in <code>DefaultHoloLens2InputSystemProfile</code> (Assets/MRTK/SDK/Profiles/HoloLens2/)
 the articulated hand controller is associated with the <em>PokePointer</em>, <em>GrabPointer</em>, and the <em>DefaultControllerPointer</em> (i.e hand rays).</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>MRTK provides a set of pointer prefabs in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em>. A new custom prefab can be built as long as it contains one of the pointer scripts in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html"><code>IMixedRealityPointer</code></a>.</p>
+<p>MRTK provides a set of pointer prefabs in <em>Assets/MRTK/SDK/Features/UX/Prefabs/Pointers</em>. A new custom prefab can be built as long as it contains one of the pointer scripts in <em>Assets/MRTK/SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html"><code>IMixedRealityPointer</code></a>.</p>
 </div>
 <h3 id="default-pointer-classes">Default pointer classes</h3>
-<p>The following classes are the out-of-box MRTK pointers available and defined in the default <em>MRTK Pointer Profile</em> outlined above. Each pointer prefab provided under <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em> contains one of the pointer components attached.</p>
+<p>The following classes are the out-of-box MRTK pointers available and defined in the default <em>MRTK Pointer Profile</em> outlined above. Each pointer prefab provided under <em>Assets/MRTK/SDK/Features/UX/Prefabs/Pointers</em> contains one of the pointer components attached.</p>
 <p><img src="../Images/Input/Pointers/MRTK_Pointers.png" alt="MRTK Default Pointers"></p>
 <h4 id="far-pointers">Far pointers</h4>
 <h5 id="linepointer"><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.LinePointer.html"><code>LinePointer</code></a></h5>
@@ -359,7 +359,7 @@ private void OnDisable()
     OnPrimaryPointerChanged(null, null);
 }
 </code></pre>
-<p>The <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PrimaryPointer/PrimaryPointerExample.unity">PrimaryPointerExample scene</a> shows how to use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html"><code>PrimaryPointerChangedHandler</code></a> for events to respond to a new primary pointer.</p>
+<p>The <code>PrimaryPointerExample</code> (Assets/MRTK/Examples/Demos/Input/Scenes/PrimaryPointer) scene shows how to use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html"><code>PrimaryPointerChangedHandler</code></a> for events to respond to a new primary pointer.</p>
 <img src="../Images/Pointers/PrimaryPointerExample.png" style="max-width:100%;">
 <h3 id="pointer-result">Pointer result</h3>
 <p>The pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.</p>
@@ -371,7 +371,7 @@ private void OnDisable()
     Instantiate(MyPrefab, spawnPosition, spawnRotation);
 }
 </code></pre>
-<p>The <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity">PointerResultExample scene</a> shows how to use the pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> to spawn an object at the hit location.</p>
+<p>The <code>PointerResultExample</code> scene (Assets/MRTK/Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> to spawn an object at the hit location.</p>
 <img src="../Images/Input/PointerResultExample.png" style="max-width:100%;">
 <h3 id="disable-pointers">Disable pointers</h3>
 <p>To turn enable and disable pointers (for example, to disable the hand ray), set the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerBehavior.html"><code>PointerBehavior</code></a> for a given pointer type via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerUtils.html"><code>PointerUtils</code></a>.</p>

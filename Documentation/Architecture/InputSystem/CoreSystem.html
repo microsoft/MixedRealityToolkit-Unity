@@ -90,11 +90,8 @@
 </div>
 <p>This service is responsible for:</p>
 <ul>
-<li>Reading the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Definitions/InputSystem/MixedRealityInputSystemProfile.cs">input system profile</a></li>
-<li>Starting the various device managers (for example, <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/OpenVR/OpenVRDeviceManager.cs">OpenVR</a>,
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs">Windows Mixed Reality</a>,
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit/Providers/UnityInput/UnityTouchDeviceManager.cs">Unity Touch</a>).
-The set of device managers that are instantiated is configured by the input system profile.</li>
+<li>Reading the <a href="../../MixedRealityConfigurationGuide.html#input-system-settings">input system profile</a></li>
+<li>Starting the configured <a href="../../Input/InputProviders.html">data providers</a> (for example, <code>Windows Mixed Reality Device Manager</code> and <code>OpenVR Device Manager</code>).</li>
 <li>Instantiation of the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">GazeProvider</a>, which is a component that is responsible for providing HoloLens (1st generation) style head gaze information
 in addition to HoloLens 2 style eye gaze information.</li>
 <li>Instantiation of the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html">FocusProvider</a>, which is a component that is responsible for determining objects that have focus. This
@@ -141,7 +138,7 @@ level input abstractions. They are responsible for detecting, creating, and mana
 <ol>
 <li>The device manager is instantiated by the input system service.</li>
 <li>The device manager registers with its underlying system (for example, the Windows Mixed Reality
-device manager will register for <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealityDeviceManager.cs#L651">gesture and interaction events</a>).</li>
+device manager will register for <a href="../../Input/InputEvents.html">input</a> and <a href="../../Input/Gestures.html#gesture-events">gesture</a> events.</li>
 <li>It creates controllers that it discovers from the underlying system (for example
 the provider could detect the presence of articulated hands)</li>
 <li>In its Update() loop, call UpdateController() to poll for the new state of the underlying system
