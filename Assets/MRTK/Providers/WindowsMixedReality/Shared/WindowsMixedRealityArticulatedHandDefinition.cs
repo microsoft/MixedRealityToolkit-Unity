@@ -137,7 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     Parallel.For(0, handMeshObserver.VertexCount,
                     i =>
                     {
-                        neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
+                        //neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
+                        neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
                     });
 
                     // Compute UV mapping
@@ -168,8 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         Parallel.For(0, handMeshObserver.VertexCount,
                         i =>
                         {
-                            handMeshVerticesUnity[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                            handMeshNormalsUnity[i] = vertexAndNormals[i].Normal.ToUnityVector3();
+                            vertexAndNormals[i].Position.ConvertToUnityVector3(ref handMeshVerticesUnity[i]);
+                            vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
+
+                            //handMeshVerticesUnity[i] = vertexAndNormals[i].Position.ToUnityVector3();
+                            //handMeshNormalsUnity[i] = vertexAndNormals[i].Normal.ToUnityVector3();
                         });
 
                         // TODO: Compare*
