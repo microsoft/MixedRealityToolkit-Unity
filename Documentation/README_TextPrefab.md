@@ -14,7 +14,7 @@ UI Text Mesh prefab (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) with optimized
 
 ## Fonts
 
-Open-source fonts (/Assets/MRTK/Core/StandardAssets/Fonts) included in Mixed Reality Toolkit.
+Open-source fonts (Assets/MRTK/Core/StandardAssets/Fonts) included in Mixed Reality Toolkit.
 
 > [!IMPORTANT]
 > Text Prefab uses the open source font 'Selawik'. To use Text Prefab with a different font, please import the font file and follow the instructions below. Below example shows how to use 'Segoe UI' font with Text Prefab.
