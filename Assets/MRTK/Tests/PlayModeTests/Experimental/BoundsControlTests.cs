@@ -12,6 +12,7 @@
 
 using Assert = UnityEngine.Assertions.Assert;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl;
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -118,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
-            boundsControl.BoundsControlActivation = Toolkit.Experimental.UI.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
+            boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
             boundsControl.HideElementsInInspector = false;
             yield return null;
 
@@ -777,7 +778,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator LinksShapeTest()
         {
-            //linksConfig.WireframeShape = WireframeType.Cylindrical;
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // fetch rigroot, and one of the link visuals
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            Transform linkVisual = rigRoot.transform.Find("link_0");
+            Assert.IsNotNull(linkVisual, "link visual couldn't be found");
+
+            LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
+            // verify default shape
+            Assert.AreEqual(linkConfiguration.WireframeShape, WireframeType.Cubic);
+            var linkMeshFilter = linkVisual.GetComponent<MeshFilter>();
+
+            Assert.IsTrue(linkMeshFilter.mesh.name == "Cube Instance", "Links weren't created with default cube");
+
+            // change shape - this should only affect the sharedmesh property of the mesh filter
+            linkConfiguration.WireframeShape = WireframeType.Cylindrical;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(linkVisual, "link visual shouldn't be destroyed when switching mesh");
+
+            //refetch link and check if shape was applied
+            Assert.IsTrue(linkMeshFilter.mesh.name == "Cylinder Instance", "Link shape wasn't switched to cylinder");
+
             yield return null;
         }
 
@@ -790,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
 
-            // fetch rigroot, corner visual and rotation handle config
+            // fetch rigroot and one of the link visuals
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
 
@@ -883,7 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 originalScale = boxDisplay.localScale;
 
             // flatten x axis and make sure box gets flattened
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+            boundsControl.FlattenAxis = FlattenModeType.FlattenX;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(boxDisplay, "box display got destroyed while flattening axis");
@@ -901,7 +926,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.AreEqual(boxDisplay.localScale, expectedXScale, "Flatten axis scale wasn't applied properly to box display");
 
             // unflatten the control again and make sure handle gets activated accordingly
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+            boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
             yield return new WaitForFixedUpdate();
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(boxDisplay, "box display got destroyed while unflattening control");
@@ -931,12 +956,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled by default");
 
             // flatten x axis and make sure handle gets deactivated
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+            boundsControl.FlattenAxis = FlattenModeType.FlattenX;
             Assert.IsFalse(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't disabled when control was flattened in X axis");
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
 
             // unflatten the control again and make sure handle gets activated accordingly
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+            boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
             Assert.IsTrue(rotationHandle.gameObject.activeSelf, "rotation handle idx 2 wasn't enabled on unflatten");
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
 
@@ -1035,7 +1060,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsTrue(sharedMeshFilter.mesh.name == cornerMeshFilter.mesh.name, "sphere scale handle wasn't applied");
 
             // set flatten mode
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.FlattenX;
+            boundsControl.FlattenAxis = FlattenModeType.FlattenX;
             yield return null;
             yield return new WaitForFixedUpdate();
 
@@ -1049,7 +1074,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cornerMeshFilter = cornerVisual.GetComponent<MeshFilter>();
             Assert.IsTrue(cornerMeshFilter.mesh.name == "Cube Instance", "Flattened scale handles weren't created with default cube");
             // reset flatten mode
-            boundsControl.FlattenAxis = Toolkit.Experimental.UI.BoundsControlTypes.FlattenModeType.DoNotFlatten;
+            boundsControl.FlattenAxis = FlattenModeType.DoNotFlatten;
 
             scaleHandleConfig.HandleSlatePrefab = childSphere;
             yield return null;
@@ -1207,7 +1232,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return HandleColliderPaddingTest("midpoint_2/visuals", boundsControl.RotationHandlesConfig, boundsControl);
             //rotationHandles.RotationHandlePrefabColliderType = HandlePrefabCollider.Box;
             // TODO check if visual or rigroot gets recreated
-            boundsControl.RotationHandlesConfig.RotationHandlePrefabColliderType = Toolkit.Experimental.UI.BoundsControlTypes.HandlePrefabCollider.Box;
+            boundsControl.RotationHandlesConfig.RotationHandlePrefabColliderType = HandlePrefabCollider.Box;
             yield return HandleColliderPaddingTest("midpoint_2/visuals", boundsControl.RotationHandlesConfig, boundsControl);
         }
 
