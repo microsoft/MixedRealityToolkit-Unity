@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         private Material testMaterialGrabbed;
 
         #region Utilities
-
         [SetUp]
         public void Setup()
         {
@@ -93,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
             yield return null;
         }
-
         #endregion
 
         /// <summary>
@@ -156,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            // This particular test is sensitive to the number of test frames and is run at a slower pace.
+            // This particular test is sensitive to the number of test frames, and is run at at slower pace.
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
@@ -258,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
-        /// Test bounds control rotation via HoloLens 1 interaction / GGV
+        /// Test bounds control rotation via hololens 1 interaction / GGV
         /// Verifies gameobject has rotation in one axis only applied and no other transform changes happen during interaction
         /// </summary>
         [UnityTest]
@@ -542,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return null;
 
-            // we're in proximity scaling range - check if proximity scaling wasn't applied
+            // we're in poximity scaling range - check if proximity scaling wasn't applied
             Assert.AreEqual(proximityScaledVisual.localScale, defaultHandleSize, "Handle was scaled even though proximity effect wasn't active");
 
             //// reset hand
@@ -683,7 +681,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         }
 
-       
         //[UnityTest] - todo: don't think we need that after the other flatten test but leaving here for checking later that we cover all handles / visuals
         //public IEnumerator FlattenTest()
         //{ 
@@ -713,7 +710,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // test default and runtime changing draw tether flag of both handle types
             yield return TestDrawManipulationTetherFlag(boundsControl.ScaleHandlesConfig, rigRoot, "corner_3");
             yield return TestDrawManipulationTetherFlag(boundsControl.RotationHandlesConfig, rigRoot, "midpoint_2");
-         
             yield return null;
         }
 
@@ -836,7 +832,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
             // verify default radius
             Assert.AreEqual(linkVisual.localScale.x, linkConfiguration.WireframeEdgeRadius, "Wireframe default edge radius wasn't applied to link local scale");
-            
             // change radius
             linkConfiguration.WireframeEdgeRadius = 0.5f;
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
@@ -895,13 +890,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             Transform linkVisual = rigRoot.transform.Find("link_0");
             Assert.IsNotNull(linkVisual, "link visual couldn't be found");
-            
             LinksConfiguration linkConfiguration = boundsControl.LinksConfig;
             // set material and make sure rig root and link isn't destroyed while doing so
             linkConfiguration.WireframeMaterial = testMaterial;
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(linkVisual, "link visual was recreated on setting material");
-            
             // make sure color changed on visual
             Assert.AreEqual(linkVisual.GetComponent<Renderer>().material.color, testMaterial.color, "wireframe material wasn't applied to visual");
 
@@ -1100,7 +1093,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return VerifyInitialBoundsCorrect(boundsControl);
             GameObject childSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             var sharedMeshFilter = childSphere.GetComponent<MeshFilter>();
-            
             // cache rig root for verifying that we're not recreating the rig on config changes
             GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
@@ -1129,7 +1121,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             cornerVisual = rigRoot.transform.Find("corner_3/visualsScale/visuals");
             Assert.IsNotNull(cornerVisual, "couldn't find corner visual");
             cornerMeshFilter = cornerVisual.GetComponent<MeshFilter>();
-            
             // check if new mesh filter was applied
             Assert.IsTrue(sharedMeshFilter.mesh.name == cornerMeshFilter.mesh.name, "sphere scale handle wasn't applied");
 
@@ -1165,7 +1156,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // check if new mesh filter was applied
             Assert.IsTrue(cornerMeshFilter.mesh.name.StartsWith(sharedMeshFilter.mesh.name), "sphere scale handle wasn't applied");
-            
             yield return null; 
         }
 
@@ -1313,7 +1303,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
             Transform cornerVisual = rigRoot.transform.Find(handleVisualName);
             Assert.IsNotNull(cornerVisual, "couldn't find visual" + handleVisualName);
-           
             // init test hand
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.zero);
@@ -1326,7 +1315,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             // move hand to edge of rotation handle
             yield return hand.MoveTo(cornerVisual.position + Vector3.one * handleConfig.HandleSize * 0.5f);
-            
             // test runtime collider padding configuration
             Vector3 colliderPaddingDelta = Vector3.one * 0.3f;
             yield return PlayModeTestUtilities.WaitForEnterKey();
