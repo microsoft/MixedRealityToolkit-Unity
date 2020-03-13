@@ -638,13 +638,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // create another gameobject with boundscontrol attached 
             var emptyGameObject = new GameObject("empty");
             BoundsControl boundsControl = emptyGameObject.AddComponent<BoundsControl>();
+            yield return new WaitForFixedUpdate();
+
+            // fetch root and scale handle
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+            var scaleHandle = boundsControl.transform.Find("rigRoot/corner_3");
+            Assert.IsNotNull(scaleHandle, "scale handle couldn't be found");
+
+            // verify root is parented to bounds control gameobject
+            Assert.AreEqual(boundsControl.gameObject, rigRoot.transform.parent.gameObject);
 
             // set target to cube
             boundsControl.Target = cube;
-            boundsControl.Active = true;
+            Assert.IsNotNull(rigRoot, "rigRoot was destroyed on setting a new target");
+            Assert.IsNotNull(scaleHandle, "scale handle was destroyed on setting a new target");
 
-            // front right corner is corner 3
-            var frontRightCornerPos = cube.transform.Find("rigRoot/corner_3").position;
+            // verify root is parented to target gameobject
+            Assert.AreEqual(cube, rigRoot.transform.parent.gameObject);
 
             // grab corner and scale object
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
@@ -653,9 +664,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(initialHandPosition);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            yield return hand.MoveTo(frontRightCornerPos, numSteps);
+            var scaleHandlePos = scaleHandle.position;
+            yield return hand.MoveTo(scaleHandlePos, numSteps);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return hand.MoveTo(frontRightCornerPos + delta, numSteps);
+            yield return hand.MoveTo(scaleHandlePos + delta, numSteps);
 
             var endBounds = cube.GetComponent<BoxCollider>().bounds;
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
@@ -706,15 +718,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             //boundsControl.CalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
             yield return null;
         }
-
-        [UnityTest]
-        public IEnumerator SetTargetRuntimeTest()
-        {
-            // maybe unify with existing settarget test
-            //boundsControl.Target = childSphere;
-            yield return null;
-        }
-
 
         [UnityTest]
         public IEnumerator BoundsControlPaddingTest()

@@ -52,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     targetObject = value;
                     isChildOfTarget = transform.IsChildOf(targetObject.transform);
+                    // reparent rigroot
+                    rigRoot.parent = targetObject.transform;
                     DetermineTargetBounds();
                     UpdateExtents();
                     UpdateVisuals();
