@@ -26,12 +26,12 @@ At this moment, the MRTK is imported as a single foundation package (ignoring fo
 
 It is possible to uncheck arbitrary items during the import of the Foundation package. However, it's not recommended to do this at an early stage in development as it might break functionality. After having figured out the final feature set of an app, pruning unneeded providers and services can be done on the following folders:
 
-- MRTK.Services
-- MixedRealityToolkit.Providers
-- MixedRealityToolkit.SDK\Features
+- MRTK/Services
+- MRTK/Providers
+- MRTK/SDK/Features
 
 > [!NOTE]
-> MRTK v2 **_requires_** the contents of the Assets\MixedRealityToolkit folder.
+> MRTK v2.x **_requires_** the contents of the Assets/MRTK/Core folder.
 
 ## Upcoming features
 
