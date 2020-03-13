@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
 #if UNITY_ANDROID
-        const string renderingMode = "Single Pass Stereo";
+        const string RenderingMode = "Single Pass Stereo";
 #else
         const string RenderingMode = "Single Pass Instanced";
 #endif
