@@ -130,7 +130,7 @@ Below are extra details on a handful of feature details available with the MRTK/
 
 ### Primitive clipping
 
-Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under `[MRTK/Examples/Demos/StandardShader/Scenes/`.
+Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under `MRTK/Examples/Demos/StandardShader/Scenes`.
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
