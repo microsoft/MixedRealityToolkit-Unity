@@ -130,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     
                     Parallel.For(0, handMeshObserver.VertexCount, i =>
                     {
-                        //neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
                         neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
                     });
 

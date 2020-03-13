@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// TODO: Troy - convert
+        /// Converts this System.Numerics Vector3 to a UnityEngine Vector3 format, storing values directly in referenced parameter
         /// </summary>
         public static void ConvertToUnityVector3(this System.Numerics.Vector3 source, ref UnityEngine.Vector3 target)
         {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// TODO: Troy - convert
+        /// Converts this System.Numerics Quaternion to a UnityEngine Quaternion, storing values directly in referenced parameter
         /// </summary>
         public static void ConvertToUnityQuaternion(this System.Numerics.Quaternion source, ref UnityEngine.Quaternion target)
         {
