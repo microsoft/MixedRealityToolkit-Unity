@@ -58,9 +58,7 @@ Shader "Mixed Reality Toolkit/Text3DShader"
                 
             #pragma multi_compile_instancing
 
-            #pragma multi_compile __ _CLIPPING_PLANE
-            #pragma multi_compile __ _CLIPPING_SPHERE
-            #pragma multi_compile __ _CLIPPING_BOX                
+            #pragma multi_compile __ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX                
 
             #if defined(_CLIPPING_PLANE) || defined(_CLIPPING_SPHERE) || defined(_CLIPPING_BOX)
                 #define _CLIPPING_PRIMITIVE
