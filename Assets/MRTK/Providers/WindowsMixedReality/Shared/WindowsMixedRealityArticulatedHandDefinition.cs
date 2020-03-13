@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
 
 #if WINDOWS_UWP
-        private Vector2[] handMeshUVs = null;
         private HandMeshObserver handMeshObserver = null;
 
         private ushort[] handMeshTriangleIndices = null;
@@ -31,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         private Vector3[] handMeshVerticesUnity = null;
         private Vector3[] handMeshNormalsUnity = null;
         private int[] handMeshTriangleIndicesUnity = null;
+        private Vector2[] handMeshUVsUnity = null;
 
         private bool hasRequestedHandMeshObserver = false;
 
@@ -65,13 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
             float scale = 1.0f / (maxY - minY);
 
-            handMeshUVs = new Vector2[neutralPoseVertices.Length];
+            handMeshUVsUnity = new Vector2[neutralPoseVertices.Length];
 
             for (int ix = 0; ix < neutralPoseVertices.Length; ix++)
             {
                 Vector3 p = neutralPoseVertices[ix];
 
-                handMeshUVs[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
+                handMeshUVsUnity[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
             }
         }
 
@@ -119,6 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     handMeshTriangleIndicesUnity = new int[handMeshObserver.TriangleIndexCount];
                     handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
 
+                    Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
+
                     // Compute neutral pose
                     Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
                     HandPose neutralPose = handMeshObserver.NeutralPose;
@@ -133,9 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                         neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
                     }
                     */
-
-                    Parallel.For(0, handMeshObserver.VertexCount,
-                    i =>
+                    
+                    Parallel.For(0, handMeshObserver.VertexCount, i =>
                     {
                         //neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
                         neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
@@ -160,28 +161,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
                     if (meshTransform.HasValue)
                     {
-                        System.Numerics.Vector3 scale;
-                        System.Numerics.Quaternion rotation;
-                        System.Numerics.Vector3 translation;
-                        System.Numerics.Matrix4x4.Decompose(meshTransform.Value, out scale, out rotation, out translation);
+                        System.Numerics.Matrix4x4.Decompose(meshTransform.Value, 
+                            out System.Numerics.Vector3 scale, 
+                            out System.Numerics.Quaternion rotation,
+                            out System.Numerics.Vector3 translation);
 
-                        // TODO: Troy - SIMD
-                        Parallel.For(0, handMeshObserver.VertexCount,
-                        i =>
+                        Parallel.For(0, handMeshObserver.VertexCount, i =>
                         {
                             vertexAndNormals[i].Position.ConvertToUnityVector3(ref handMeshVerticesUnity[i]);
                             vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
-
-                            //handMeshVerticesUnity[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                            //handMeshNormalsUnity[i] = vertexAndNormals[i].Normal.ToUnityVector3();
                         });
-
-                        // TODO: Compare*
+                        
                         /*
+                        // TODO: Compare*
                         for (int i = 0; i < handMeshObserver.VertexCount; i++)
                         {
-                            handMeshVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                            handMeshNormals[i] = vertexAndNormals[i].Normal.ToUnityVector3();
+                            handMeshVerticesUnity[i] = vertexAndNormals[i].Position.ToUnityVector3();
+                            handMeshNormalsUnity[i] = vertexAndNormals[i].Normal.ToUnityVector3();
                         }*/
 
                         HandMeshInfo handMeshInfo = new HandMeshInfo
@@ -189,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                             vertices = handMeshVerticesUnity,
                             normals = handMeshNormalsUnity,
                             triangles = handMeshTriangleIndicesUnity,
-                            uvs = handMeshUVs,
+                            uvs = handMeshUVsUnity,
                             position = translation.ToUnityVector3(),
                             rotation = rotation.ToUnityQuaternion()
                         };

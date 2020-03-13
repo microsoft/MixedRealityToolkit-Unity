@@ -14,40 +14,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void OnHandMeshUpdated(InputEventData<HandMeshInfo> eventData);
     }
 
-    // See BaseHandVisualizer.OnHandMeshUpdated for an example of how to use the
-    // hand mesh info to render a mesh.
+    /// <summary>
+    /// TODO: Troy - better comment
+    /// See BaseHandVisualizer.OnHandMeshUpdated for an example of how to use the hand mesh info to render a mesh.
+    /// </summary>
     public class HandMeshInfo
     {
-        // The vertices of the hand mesh in the initial coordinate system
+        /// <summary>
+        /// The vertices of the hand mesh in the initial coordinate system
+        /// </summary>
         public Vector3[] vertices;
-
-        // TODO: Troy -> add conversion*
-        // Mesh triangle indices
-        public int[] triangles;
-
-        /*
-         *                     uint indexCount = handMeshObserver.TriangleIndexCount;
-                    ushort[] indices = new ushort[indexCount];
-                    handMeshObserver.GetTriangleIndices(indices);
-                    handMeshTriangleIndices = new int[indexCount];
-                    Array.Copy(indices, handMeshTriangleIndices, (int)handMeshObserver.TriangleIndexCount);
-        */
 
         /// <summary>
         /// Mesh triangle indices
         /// </summary>
-        public ushort[] indices;
+        public int[] triangles;
 
-        // Hand mesh normals, in initial coordinate system
+        /// <summary>
+        /// Hand mesh normals, in initial coordinate system
+        /// </summary>
         public Vector3[] normals;
 
-        // UV mapping of the hand. TODO: Give more specific details about UVs.
+        /// <summary>
+        /// UV mapping of the hand. TODO: Give more specific details about UVs.
+        /// </summary>
         public Vector2[] uvs;
 
-        // Translation to apply to mesh to go from initial coordinates to world coordinates
+        /// <summary>
+        /// Translation to apply to mesh to go from initial coordinates to world coordinates
+        /// </summary>
         public Vector3 position;
 
-        // Rotation to apply to mesh to go from initial coordinates to world coordinates
+        /// <summary>
+        /// Rotation to apply to mesh to go from initial coordinates to world coordinates
+        /// </summary>
         public Quaternion rotation;
     }
 }
