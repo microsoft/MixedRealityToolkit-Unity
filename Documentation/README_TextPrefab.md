@@ -6,7 +6,7 @@ These prefabs are optimized for the rendering quality in Windows Mixed Reality. 
 
 ### 3DTextPrefab
 
-3D Text Mesh prefab (MRTK/SDK/StandardAssets/Prefabs/Text) with optimized scaling factor at 2-meter distance. (Please read the instructions below)
+3D Text Mesh prefab (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
 ### UITextPrefab
 
