@@ -186,11 +186,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 mesh.vertices = eventData.InputData.vertices;
+                mesh.normals = eventData.InputData.normals;
                 lastHandMeshVertices = eventData.InputData.vertices;
 
                 if (newMesh || meshChanged)
-                {
-                    mesh.normals = eventData.InputData.normals;
+                {                    
                     mesh.triangles = eventData.InputData.triangles;
 
                     if (eventData.InputData.uvs?.Length > 0)

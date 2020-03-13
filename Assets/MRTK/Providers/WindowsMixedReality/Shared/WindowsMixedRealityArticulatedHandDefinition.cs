@@ -127,14 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     var neutralVertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
                     HandMeshVertexState handMeshVertexState = handMeshObserver.GetVertexStateForPose(neutralPose);
                     handMeshVertexState.GetVertices(neutralVertexAndNormals);
-
-                    // TODO: Troy - parrelize
-                    /*
-                    for (int i = 0; i < handMeshObserver.VertexCount; i++)
-                    {
-                        neutralPoseVertices[i] = neutralVertexAndNormals[i].Position.ToUnityVector3();
-                    }
-                    */
                     
                     Parallel.For(0, handMeshObserver.VertexCount, i =>
                     {
@@ -172,14 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                             vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
                         });
                         
-                        /*
-                        // TODO: Compare*
-                        for (int i = 0; i < handMeshObserver.VertexCount; i++)
-                        {
-                            handMeshVerticesUnity[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                            handMeshNormalsUnity[i] = vertexAndNormals[i].Normal.ToUnityVector3();
-                        }*/
-
                         HandMeshInfo handMeshInfo = new HandMeshInfo
                         {
                             vertices = handMeshVerticesUnity,
