@@ -21,8 +21,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // The vertices of the hand mesh in the initial coordinate system
         public Vector3[] vertices;
 
+        // TODO: Troy -> add conversion*
         // Mesh triangle indices
         public int[] triangles;
+
+        /*
+         *                     uint indexCount = handMeshObserver.TriangleIndexCount;
+                    ushort[] indices = new ushort[indexCount];
+                    handMeshObserver.GetTriangleIndices(indices);
+                    handMeshTriangleIndices = new int[indexCount];
+                    Array.Copy(indices, handMeshTriangleIndices, (int)handMeshObserver.TriangleIndexCount);
+        */
+
+        /// <summary>
+        /// Mesh triangle indices
+        /// </summary>
+        public ushort[] indices;
 
         // Hand mesh normals, in initial coordinate system
         public Vector3[] normals;
@@ -37,3 +51,4 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Quaternion rotation;
     }
 }
+ 
