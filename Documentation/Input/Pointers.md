@@ -268,7 +268,7 @@ private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEve
 }
 ```
 
-The `PointerResultExample` (Assets/MRTK/Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) scene shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
+The `PointerResultExample` scene (Assets/MRTK/Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
