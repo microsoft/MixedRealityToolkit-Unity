@@ -178,9 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
 #else
 #if UNITY_ANDROID
-                RenderToggle(MRConfig.SinglePass, "Set Single Pass Stereo rendering path");
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Stereo rendering path");
 #else
-                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path");
 #endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
