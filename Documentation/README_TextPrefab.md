@@ -4,17 +4,17 @@ These prefabs are optimized for the rendering quality in Windows Mixed Reality. 
 
 ## Prefabs
 
-### [3DTextPrefab.prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text)
+### 3DTextPrefab
 
-3D Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
+3D Text Mesh prefab (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-### [UITextPrefab.prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.SDK/StandardAssets/Prefabs/Text)
+### UITextPrefab
 
-UI Text Mesh prefab with optimized scaling factor at 2-meter distance. (Please read the instructions below)
+UI Text Mesh prefab (Assets/MRTK/SDK/StandardAssets/Prefabs/Text) with optimized scaling factor at 2-meter distance. (Please read the instructions below)
 
-## [Fonts](/Assets/MixedRealityToolkit/StandardAssets/Fonts)
+## Fonts
 
-Open-source fonts included in Mixed Reality Toolkit.
+Open-source fonts (Assets/MRTK/Core/StandardAssets/Fonts) included in Mixed Reality Toolkit.
 
 > [!IMPORTANT]
 > Text Prefab uses the open source font 'Selawik'. To use Text Prefab with a different font, please import the font file and follow the instructions below. Below example shows how to use 'Segoe UI' font with Text Prefab.
