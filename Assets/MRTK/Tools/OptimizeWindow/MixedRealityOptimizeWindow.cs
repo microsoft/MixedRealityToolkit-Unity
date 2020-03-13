@@ -88,20 +88,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/OptimizeWindow.html";
 #if UNITY_ANDROID
-        private const string SinglePass_URL = "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html";
+        private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html";
 #else
-        private const string SinglePassInstanced_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
+        private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
 #endif
         private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-sharing";
         private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-format";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
 
 #if UNITY_ANDROID
-        private const string renderingMode = "Single Pass Stereo Rendering";
-        private const string gpuMode = "Single Pass Stereo Rendering";
+        private const string RenderingMode = "Single Pass Stereo Rendering";
+        private const string GpuMode = "Single Pass Stereo Rendering";
 #else
-        private const string renderingMode = "Single Pass Instanced Rendering";
-        private const string gpuMode = "GPU Instancing";
+        private const string RenderingMode = "Single Pass Instanced Rendering";
+        private const string GpuMode = "GPU Instancing";
 #endif
 
         private readonly int[] SceneLightCountMax = { 1, 2, 4 };
@@ -486,15 +486,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void RenderOptimalRenderingSection()
         {
             bool isOptimalRenderingPath = MixedRealityOptimizeUtils.IsOptimalRenderingPath();
-            BuildSection(renderingMode, SinglePassInstanced_URL, GetTitleIcon(isOptimalRenderingPath), () =>
+            BuildSection(RenderingMode, OptimalRenderingPath_URL, GetTitleIcon(isOptimalRenderingPath), () =>
             {
-                EditorGUILayout.LabelField($"{renderingMode} is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+                EditorGUILayout.LabelField($"{RenderingMode} is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
                 if (!isOptimalRenderingPath)
                 {
-                    EditorGUILayout.HelpBox($"This rendering configuration requires shaders to be written to support {gpuMode} which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support {gpuMode}.", MessageType.Info);
+                    EditorGUILayout.HelpBox($"This rendering configuration requires shaders to be written to support {GpuMode} which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support {GpuMode}.", MessageType.Info);
 
-                    if (InspectorUIUtility.RenderIndentedButton(renderingMode))
+                    if (InspectorUIUtility.RenderIndentedButton(RenderingMode))
                     {
                         MixedRealityOptimizeUtils.SetOptimalRenderingPath();
                     }
@@ -502,9 +502,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             });
         }
 
-            #region Utility Helpers
+        #region Utility Helpers
 
-            private void AnalyzeScene()
+        private void AnalyzeScene()
         {
             sceneLights = FindObjectsOfType<Light>();
 
