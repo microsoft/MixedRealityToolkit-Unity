@@ -127,7 +127,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         public bool DrawTetherWhenManipulating
         {
             get => drawTetherWhenManipulating;
-            set => drawTetherWhenManipulating = value;
+            set
+            {
+                if (value != drawTetherWhenManipulating)
+                {
+                    drawTetherWhenManipulating = value;
+                    handlesChanged.Invoke(HandlesChangedEventType.MANIPULATION_TETHER);
+                }
+            }
+            
+        }
+
+        [SerializeField]
+        [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
+        private Collider handlesIgnoreCollider = null;
+
+        /// <summary>
+        /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
+        /// </summary>
+        public Collider HandlesIgnoreCollider
+        {
+            get => handlesIgnoreCollider;
+            set
+            {
+                if (value != handlesIgnoreCollider)
+                {
+                    handlesChanged.Invoke(HandlesChangedEventType.IGNORE_COLLIDER_REMOVE);
+                    handlesIgnoreCollider = value;
+                    handlesChanged.Invoke(HandlesChangedEventType.IGNORE_COLLIDER_ADD);
+                }
+            }
         }
 
         //internal protected UnityEvent configurationChanged = new UnityEvent();
@@ -141,6 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             COLLIDER_SIZE,
             COLLIDER_PADDING,
             MANIPULATION_TETHER,
+            IGNORE_COLLIDER_REMOVE,
+            IGNORE_COLLIDER_ADD,
             VISIBILITY
         }
         internal class HandlesChangedEvent : UnityEvent<HandlesChangedEventType> { }

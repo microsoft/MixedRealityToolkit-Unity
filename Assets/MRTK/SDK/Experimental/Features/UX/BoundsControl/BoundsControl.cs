@@ -135,18 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         
 
-        [SerializeField]
-        [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
-        private Collider handlesIgnoreCollider = null;
-
-        /// <summary>
-        /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
-        /// </summary>
-        public Collider HandlesIgnoreCollider
-        {
-            get => handlesIgnoreCollider;
-            set => handlesIgnoreCollider = value;
-        }
+        
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -1216,11 +1205,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             // add box display
             boxDisplay.AddBoxDisplay(rigRoot.transform, currentBoundsExtents, flattenAxis);
-
-            // setup colliders
-            // Make the handle colliders ignore specified collider. (e.g. spatial mapping's floor collider to avoid the object get lifted up)
-            scaleHandles.HandleIgnoreCollider(handlesIgnoreCollider);
-            rotationHandles.HandleIgnoreCollider(handlesIgnoreCollider);
 
             // update visuals
             UpdateVisuals();

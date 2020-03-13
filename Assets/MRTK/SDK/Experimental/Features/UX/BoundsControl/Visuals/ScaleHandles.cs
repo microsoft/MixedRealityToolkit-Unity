@@ -110,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 handles.Add(corner.transform);       
             }
 
+            VisualUtils.HandleIgnoreCollider(config.HandlesIgnoreCollider, handles);
             objectsChangedEvent.Invoke(this);
         }
 

@@ -181,6 +181,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 handles.Add(midpoint.transform);
             }
 
+            VisualUtils.HandleIgnoreCollider(config.HandlesIgnoreCollider, handles);
+
             objectsChangedEvent.Invoke(this);
         }
 

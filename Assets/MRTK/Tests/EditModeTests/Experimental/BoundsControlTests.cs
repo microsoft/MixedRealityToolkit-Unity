@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             boundsControl.BoundsOverride = collider;
             boundsControl.CalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
             boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
-            boundsControl.HandlesIgnoreCollider = collider;
             boundsControl.FlattenAxis = FlattenModeType.FlattenAuto;
             boundsControl.BoxPadding = Vector3.one;
 
@@ -78,7 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             scaleConfig.HandlePrefab = testCube;
             scaleConfig.HandleSize = 0.05f ;
             scaleConfig.ColliderPadding = Vector3.one;
-            scaleConfig.DrawTetherWhenManipulating = true;
+            scaleConfig.DrawTetherWhenManipulating = false;
+            scaleConfig.HandlesIgnoreCollider = collider;
 
             boundsControl.ScaleHandlesConfig = scaleConfig;
 
@@ -97,7 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Experimental
             rotationHandles.HandlePrefab = childSphere;
             rotationHandles.HandleSize = 0.05f;
             rotationHandles.ColliderPadding = Vector3.zero;
-            rotationHandles.DrawTetherWhenManipulating = true;
+            rotationHandles.DrawTetherWhenManipulating = false;
+            rotationHandles.HandlesIgnoreCollider = collider;
 
             boundsControl.RotationHandlesConfig = rotationHandles;
 

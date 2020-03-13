@@ -52,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 // migrate visuals
-                boundsControl.HandlesIgnoreCollider = boundingBox.HandlesIgnoreCollider;
                 boundsControl.FlattenAxis = MigrateFlattenAxis(boundingBox.FlattenAxis);
                 boundsControl.BoxPadding = boundingBox.BoxPadding;
                 string configDir = GetBoundsControlConfigDirectory(boundingBox);
@@ -244,6 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandleSize = box.ScaleHandleSize;
             config.ColliderPadding = box.ScaleHandleColliderPadding;
             config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
+            config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "ScaleHandlesConfiguration"));
 
             control.ScaleHandlesConfig = config;
@@ -262,6 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             config.HandleSize = box.RotationHandleSize;
             config.ColliderPadding = box.RotateHandleColliderPadding;
             config.DrawTetherWhenManipulating = box.DrawTetherWhenManipulating;
+            config.HandlesIgnoreCollider = box.HandlesIgnoreCollider;
             AssetDatabase.CreateAsset(config, GenerateUniqueConfigName(configAssetDirectory, box.gameObject, "RotationHandlesConfiguration"));
 
             control.RotationHandlesConfig = config;

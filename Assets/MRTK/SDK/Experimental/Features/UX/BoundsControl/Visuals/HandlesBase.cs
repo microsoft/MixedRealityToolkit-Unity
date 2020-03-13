@@ -45,10 +45,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 case HandlesBaseConfiguration.HandlesChangedEventType.MANIPULATION_TETHER:
                     UpdateDrawTether();
                     break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.IGNORE_COLLIDER_REMOVE:
+                    HandlesIgnoreConfigCollider(false);
+                    break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.IGNORE_COLLIDER_ADD:
+                    HandlesIgnoreConfigCollider(true);
+                    break;
                 case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
                     //TODO
                     break;
             }
+        }
+
+        private void HandlesIgnoreConfigCollider(bool ignore)
+        {
+            VisualUtils.HandleIgnoreCollider(BaseConfig.HandlesIgnoreCollider, handles, ignore);
         }
 
         private void UpdateDrawTether()
@@ -118,11 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     }
                 }
             }
-        }
-
-        internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
-        {
-            VisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
         }
 
         internal void DestroyHandles()

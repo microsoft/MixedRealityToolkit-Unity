@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     internal class VisualUtils
     {
 
-        internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)
+        internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles, bool ignore = true)
         {
             if (handlesIgnoreCollider != null)
             {
@@ -22,8 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     Collider[] colliders = handle.gameObject.GetComponents<Collider>();
                     foreach (Collider collider in colliders)
-                    {
-                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider);
+                    { 
+                        UnityEngine.Physics.IgnoreCollision(collider, handlesIgnoreCollider, ignore);
                     }
                 }
             }

@@ -715,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
         private IEnumerator TestDrawManipulationTetherFlag(HandlesBaseConfiguration config, GameObject rigRoot, string handleName)
         {
-            Assert.IsFalse(config.DrawTetherWhenManipulating, "tether drawing should be off as default");
+            Assert.IsTrue(config.DrawTetherWhenManipulating, "tether drawing should be on as default");
 
             // cache rig root for verifying that we're not recreating the rig on config changes
             Transform handle = rigRoot.transform.Find(handleName);
@@ -723,10 +723,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var grabbable = handle.gameObject.GetComponent<NearInteractionGrabbable>();
             Assert.AreEqual(config.DrawTetherWhenManipulating, grabbable.ShowTetherWhenManipulating, "draw tether wasn't propagated to handle NearInteractionGrabbable component");
 
-            config.DrawTetherWhenManipulating = true;
+            config.DrawTetherWhenManipulating = false;
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(handle, "handle was destroyed when changing tether visibility");
-            Assert.IsTrue(grabbable.ShowTetherWhenManipulating, "show tether wasn't applied to nearinteractiongrabbable of handle");
+            Assert.IsFalse(grabbable.ShowTetherWhenManipulating, "show tether wasn't applied to nearinteractiongrabbable of handle");
 
             yield return null;
         }
