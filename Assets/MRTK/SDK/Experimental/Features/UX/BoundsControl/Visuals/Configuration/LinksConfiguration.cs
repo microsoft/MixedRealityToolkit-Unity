@@ -31,8 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     wireframeMaterial = value;
                     TrySetDefaultMaterial();
-                    //configurationChanged.Invoke();
-                    // update materials
                     wireFrameChanged.Invoke(WireframeChangedEventType.MATERIAL);
                 }
             }

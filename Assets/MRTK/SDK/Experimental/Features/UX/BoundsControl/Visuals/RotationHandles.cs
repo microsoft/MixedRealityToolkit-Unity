@@ -155,15 +155,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether)
+        internal void Create(ref Vector3[] boundsCorners, Transform parent)
         {
             edgeCenters = new Vector3[12];
             CalculateEdgeCenters(ref boundsCorners);
             InitEdgeAxis();
-            CreateHandles(parent, drawManipulationTether);
+            CreateHandles(parent);
         }
         
-        private void CreateHandles(Transform parent, bool drawManipulationTether)
+        private void CreateHandles(Transform parent)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)
             {
@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 float maxDim = VisualUtils.GetMaxComponent(midpointBounds.size);
                 float invScale = config.HandleSize / maxDim;
                 VisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
-                    config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, drawManipulationTether);
+                    config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
 
                 handles.Add(midpoint.transform);
             }

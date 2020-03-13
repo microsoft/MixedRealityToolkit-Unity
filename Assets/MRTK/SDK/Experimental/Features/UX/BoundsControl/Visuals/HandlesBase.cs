@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,9 +42,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
                     UpdateColliderBounds();
                     break;
+                case HandlesBaseConfiguration.HandlesChangedEventType.MANIPULATION_TETHER:
+                    UpdateDrawTether();
+                    break;
                 case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
                     //TODO
                     break;
+            }
+        }
+
+        private void UpdateDrawTether()
+        {
+            // enable / disable tether in near interaction grabbable of handle
+            foreach (var handle in handles)
+            {
+                var grabbable = handle.gameObject.EnsureComponent<NearInteractionGrabbable>();
+                grabbable.ShowTetherWhenManipulating = BaseConfig.DrawTetherWhenManipulating;
             }
         }
 

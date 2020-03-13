@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Verify that we can instantiate bounds control at runtime
         /// </summary>
         [UnityTest]
-        public IEnumerator BBoxInstantiate()
+        public IEnumerator BoundsControlInstantiate()
         {
             BoundsControl boundsControl = InstantiateSceneAndDefaultBoundsControl();
             yield return VerifyInitialBoundsCorrect(boundsControl);
@@ -695,6 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         public IEnumerator HandlesIgnoreColliderTest()
         {
             //boundsControl.HandlesIgnoreCollider = collider;
+            Assert.IsTrue(false, "not implemented");
             yield return null;
         }
 
@@ -702,13 +703,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator ManipulationTetherTest()
         {
-            //boundsControl.DrawTetherWhenManipulating = false;
+            var boundsControl = InstantiateSceneAndDefaultBoundsControl();
+            yield return VerifyInitialBoundsCorrect(boundsControl);
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            GameObject rigRoot = boundsControl.transform.Find("rigRoot").gameObject;
+            Assert.IsNotNull(rigRoot, "rigRoot couldn't be found");
+
+            // test default and runtime changing draw tether flag of both handle types
+            yield return TestDrawManipulationTetherFlag(boundsControl.ScaleHandlesConfig, rigRoot, "corner_3");
+            yield return TestDrawManipulationTetherFlag(boundsControl.RotationHandlesConfig, rigRoot, "midpoint_2");
+         
+            yield return null;
+        }
+
+        private IEnumerator TestDrawManipulationTetherFlag(HandlesBaseConfiguration config, GameObject rigRoot, string handleName)
+        {
+            Assert.IsFalse(config.DrawTetherWhenManipulating, "tether drawing should be off as default");
+
+            // cache rig root for verifying that we're not recreating the rig on config changes
+            Transform handle = rigRoot.transform.Find(handleName);
+            Assert.IsNotNull(handle, "couldn't find handle");
+            var grabbable = handle.gameObject.GetComponent<NearInteractionGrabbable>();
+            Assert.AreEqual(config.DrawTetherWhenManipulating, grabbable.ShowTetherWhenManipulating, "draw tether wasn't propagated to handle NearInteractionGrabbable component");
+
+            config.DrawTetherWhenManipulating = true;
+            Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
+            Assert.IsNotNull(handle, "handle was destroyed when changing tether visibility");
+            Assert.IsTrue(grabbable.ShowTetherWhenManipulating, "show tether wasn't applied to nearinteractiongrabbable of handle");
+
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator ActivationTypeTest()
         {
+            Assert.IsTrue(false, "not implemented");
             //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateByProximityAndPointer;
             yield return null;
         }
@@ -716,6 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator CalculationMethodTest()
         {
+            Assert.IsTrue(false, "not implemented");
             //boundsControl.CalculationMethod = BoundsCalculationMethod.ColliderOverRenderer;
             yield return null;
         }
@@ -723,6 +754,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator BoundsControlPaddingTest()
         {
+            Assert.IsTrue(false, "not implemented");
             //boundsControl.BoxPadding = Vector3.one;
             yield return null;
         }
@@ -1180,7 +1212,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // make sure color changed on visual
             Assert.AreEqual(cornerVisual.GetComponent<Renderer>().material.color, testMaterial.color, "handle material wasn't applied to visual");
 
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             // grab handle and make sure grabbed material is applied
             var frontRightCornerPos = cornerVisual.position;
             TestHand hand = new TestHand(Handedness.Right);
@@ -1189,7 +1220,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(frontRightCornerPos);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return new WaitForFixedUpdate();
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             Assert.AreEqual(cornerVisual.GetComponent<Renderer>().material.color, testMaterialGrabbed.color, "handle grabbed material wasn't applied to visual");
             // release handle
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
@@ -1237,13 +1267,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             handleConfig.HandleGrabbedMaterial = testMaterialGrabbed;
 
             // test runtime handle size configuration
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             handleConfig.HandleSize = 0.1f;
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(handleVisual, "visual got destroyed when setting material");
             yield return hand.MoveTo(handleVisual.position + Vector3.one * handleConfig.HandleSize * 0.5f);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             Assert.AreEqual(handleVisual.GetComponent<Renderer>().material.color, testMaterialGrabbed.color, "handle wasn't grabbed");
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
         }
@@ -1300,8 +1328,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.MoveTo(cornerVisual.position + Vector3.one * handleConfig.HandleSize * 0.5f);
             
             // test runtime collider padding configuration
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             Vector3 colliderPaddingDelta = Vector3.one * 0.3f;
+            yield return PlayModeTestUtilities.WaitForEnterKey();
 
             // move hand to new collider bounds edge before setting the new value in the config
             yield return hand.Move(colliderPaddingDelta * 0.5f);
@@ -1329,6 +1357,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator ScaleHandleVisibilityTest()
         {
+            Assert.IsTrue(false, "not implemented");
             /// TODO:
             // check if visual gameobject has been switched off  TODO THIS IS NOT IMPLEMENTED
             //scaleHandleConfig.ShowScaleHandles = true;
@@ -1341,7 +1370,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         public IEnumerator RotationHandleVisibilityTest()
         {
             //TODO
-            
+            Assert.IsTrue(false, "not implemented");
             //rotationHandles.ShowRotationHandleForX = false;
             //rotationHandles.ShowRotationHandleForY = true;
             //rotationHandles.ShowRotationHandleForZ = true;

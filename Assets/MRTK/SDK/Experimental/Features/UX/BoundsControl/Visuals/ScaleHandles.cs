@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether, bool isFlattened)
+        internal void Create(ref Vector3[] boundsCorners, Transform parent, bool isFlattened)
         {
             // create corners
             for (int i = 0; i < boundsCorners.Length; ++i)
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 var invScale = config.HandleSize / visualBounds.size.x;
                 VisualUtils.AddComponentsToAffordance(corner, new Bounds(visualBounds.center * invScale, visualBounds.size * invScale), 
-                    HandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, drawManipulationTether);
+                    HandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, config.DrawTetherWhenManipulating);
                 handles.Add(corner.transform);       
             }
 

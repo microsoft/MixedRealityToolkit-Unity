@@ -117,6 +117,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
+        [SerializeField]
+        [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
+        private bool drawTetherWhenManipulating = true;
+
+        /// <summary>
+        /// Check to draw a tether point from the handles to the hand when manipulating.
+        /// </summary>
+        public bool DrawTetherWhenManipulating
+        {
+            get => drawTetherWhenManipulating;
+            set => drawTetherWhenManipulating = value;
+        }
+
         //internal protected UnityEvent configurationChanged = new UnityEvent();
         //internal protected UnityEvent visibilityChanged = new UnityEvent();
 
@@ -127,6 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             PREFAB,
             COLLIDER_SIZE,
             COLLIDER_PADDING,
+            MANIPULATION_TETHER,
             VISIBILITY
         }
         internal class HandlesChangedEvent : UnityEvent<HandlesChangedEventType> { }

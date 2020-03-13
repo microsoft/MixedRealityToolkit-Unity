@@ -133,18 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         [Header("Visuals")]
 
-        [SerializeField]
-        [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
-        private bool drawTetherWhenManipulating = true;
-
-        /// <summary>
-        /// Check to draw a tether point from the handles to the hand when manipulating.
-        /// </summary>
-        public bool DrawTetherWhenManipulating
-        {
-            get => drawTetherWhenManipulating;
-            set => drawTetherWhenManipulating = value;
-        }
+        
 
         [SerializeField]
         [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
@@ -1217,11 +1206,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-            scaleHandles.Create(ref boundsCorners, rigRoot, drawTetherWhenManipulating, isFlattened);
+            scaleHandles.Create(ref boundsCorners, rigRoot, isFlattened);
             proximityEffect.RegisterObjectProvider(scaleHandles);
 
             // add links
-            rotationHandles.Create(ref boundsCorners, rigRoot, drawTetherWhenManipulating);
+            rotationHandles.Create(ref boundsCorners, rigRoot);
             proximityEffect.RegisterObjectProvider(rotationHandles);
             links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
 
