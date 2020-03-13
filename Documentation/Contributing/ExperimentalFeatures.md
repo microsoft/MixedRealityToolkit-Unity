@@ -6,7 +6,7 @@ Some features the MRTK team works on appear to have a lot of initial value even 
 
 If a component is marked experimental you can expect the following:
 
-- An example scene demonstrating usage, located under `MixedRealityToolkit.Examples\Experimental` sub-folder
+- An example scene demonstrating usage, located under `MRTK/Examples/Experimental` sub-folder
 - Experimental features may not have docs.
 - They probably don't have tests.
 - Experimental features are subject to change.
@@ -17,7 +17,7 @@ If a component is marked experimental you can expect the following:
 
 Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:
 
-- Example scenes, scripts go into `MRTK.Examples/Experimental/FooBar/`
+- Example scenes, scripts go into `MRTK/Examples/Experimental/FooBar/`
 - Component scripts, prefabs go into `MRTK/SDK/Experimental/FooBar/`
 - Component inspectors go into `MRTK/SDK/Inspectors/Experimental/FooBar`
 
@@ -26,10 +26,10 @@ When using sub-folders under the experimental feature name, try to mirror the sa
 For example, solvers would go under
 `MRTK/SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs`
 
-Keep scenes in a scene folder near the top: `MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity`
+Keep scenes in a scene folder near the top: `MRTK/Examples/Experimental/FooBar/Scenes/FooBarExample.unity`
 
 > [!NOTE]
-> We considered not having a single Experimental root folder and instead putting Experimental under say `MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity`. We decided to go with folders at the base to make the experimental features easier to discover.
+> We considered not having a single Experimental root folder and instead putting Experimental under say `MRTK/Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity`. We decided to go with folders at the base to make the experimental features easier to discover.
 
 ### Experimental code should be in a special namespace
 
@@ -74,9 +74,9 @@ Any regressions you make to the MRTK core code would result in your pull request
 
 Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:
 
-- MRTK/SDK\Experimental
-- MRTK/SDK\Inspectors\Experimental
-- MixedRealityToolkit.Examples\Experimental
+- MRTK/SDK/Experimental
+- MRTK/SDK/Inspectors/Experimental
+- MRTK/Examples/Experimental
 
 Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
 
@@ -92,7 +92,7 @@ For example, in [this ScrollableObjectCollection PR](https://github.com/microsof
 
 People need to see how to use your feature, and how to test it.
 
-Provide an example under MRTK.Examples/Experimental/YOUR_FEATURE
+Provide an example under MRTK/Examples/Experimental/YOUR_FEATURE
 
 ### Minimize user visible flaws in experimental features
 

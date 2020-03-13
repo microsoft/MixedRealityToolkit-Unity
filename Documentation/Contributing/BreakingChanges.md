@@ -22,16 +22,16 @@ A change is a breaking change if it satisfies any of the conditions in the [List
 
 - The asset in question is in the foundation package (i.e. it's in one of the following folders):
 
-  - MixedRealityToolkit/
-  - MixedRealityToolkit.Providers/
-  - MRTK.Services/
-  - MixedRealityToolkit.SDK/
-  - MixedRealityToolkit.Extensions
+  - MRTK/Core
+  - MRTK/Providers/
+  - MRTK/Services/
+  - MRTK/SDK/
+  - MRTK/Extensions
 
 - The asset in question does not belong to the experimental namespace.
 
 > [!IMPORTANT]
-> Any asset that sits in the examples package (i.e. part of the MixedRealityToolkit.Examples/ folder) is subject to change at any time, as assets there are designed to be copied and viewed by consumers as 'reference implementations' but are not part of the core set of APIs and assets. Assets in the experimental namespace (or more generally, features labelled as experimental) are ones that get published before all due diligence has been done (i.e. tests, UX iteration, documentation) and is published early to get feedback sooner.  However, because they don't have tests and documentation, and because we likely haven't nailed down all of the interactions and designs, we publish them in a state where the public should assume that they can and will change (i.e. be modified, completely removed, etc).
+> Any asset that sits in the examples package (i.e. part of the MRTK/Examples/ folder) is subject to change at any time, as assets there are designed to be copied and viewed by consumers as 'reference implementations' but are not part of the core set of APIs and assets. Assets in the experimental namespace (or more generally, features labelled as experimental) are ones that get published before all due diligence has been done (i.e. tests, UX iteration, documentation) and is published early to get feedback sooner.  However, because they don't have tests and documentation, and because we likely haven't nailed down all of the interactions and designs, we publish them in a state where the public should assume that they can and will change (i.e. be modified, completely removed, etc).
 >
 > See [Experimental features](../Contributing/ExperimentalFeatures.md) for more information.
 

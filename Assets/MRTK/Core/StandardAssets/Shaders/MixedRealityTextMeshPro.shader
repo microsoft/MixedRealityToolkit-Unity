@@ -97,9 +97,7 @@ SubShader {
         #pragma multi_compile __ UNITY_UI_CLIP_RECT
         #pragma multi_compile __ UNITY_UI_ALPHACLIP
 
-        #pragma multi_compile __ _CLIPPING_PLANE
-        #pragma multi_compile __ _CLIPPING_SPHERE
-        #pragma multi_compile __ _CLIPPING_BOX
+        #pragma multi_compile __ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
         #include "UnityCG.cginc"
         #include "UnityUI.cginc"

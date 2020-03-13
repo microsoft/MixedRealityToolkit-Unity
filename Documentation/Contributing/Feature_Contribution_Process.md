@@ -80,9 +80,9 @@ Most feature implementations can be broken down into 3 main parts:
 
 ### Manager implementation requirements
 
-* Assembly Definitions for code outside of the `MixedRealityToolkit` folder.
+* Assembly Definitions for code outside of the `MRTK/Core` folder.
   * This ensures features are self-contained and have no dependencies to other features.
-* Be defined using an interface found in `MixedRealityToolkit/Definitions/<FeatureName>System`.
+* Be defined using an interface found in `MRTK/Core/Definitions/<FeatureName>System`.
 * A feature's concrete manager implementation should inherit directly from `BaseManager` or `MixedRealityEventManager` if they will raise events.
 * A feature's concrete manager implementation should setup and verify that the scene is ready for that system to use in `Initialize`.
 * A feature's concrete manager should also clean up after themselves removing anything created in the scene in `Destroy`.
@@ -90,9 +90,9 @@ Most feature implementations can be broken down into 3 main parts:
   * If the feature is a core feature, this should be hard coded into the `MixedRealityToolkit` and `CoreServices` and added to the `MixedRealityConfigurationProfile`.
     * This includes being able to specify a concrete implementation via dropdown using `SystemType`.
     * Features should have a configuration profile that derives from a scriptable object.
-    * A default configuration profile located in `MixedRealityToolkit.SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
+    * A default configuration profile located in `MRTK/SDK/Profiles` and be assigned in the default configuration profile for the Mixed Reality Manager
   * If this feature is **not** a core feature, then it must be registered using the extension service configuration profile and implement `IMixedRealityExtensionService`.
-* Have a default implementation located in `MRTK.Services/<FeatureName>`
+* Have a default implementation located in `MRTK/Services/<FeatureName>`
 * Events that can be raised with the system should be defined in the interface, with all the required parameters for initializing the event data.
 
 ### Event data implementation requirements
