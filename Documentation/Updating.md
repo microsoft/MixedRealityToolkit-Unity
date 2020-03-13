@@ -77,14 +77,17 @@ uses hard coded paths to MRTK resources, they will need to be updated per the fo
 
 | Previous Folder | New Folder |
 | --- | --- |
-| MixedRealityToolkit | MRTK\Core |
-| MixedRealityToolkit.Examples | MRTK\Examples |
-| MixedRealityToolkit.Extensions | MRTK\Extensions |
-| MixedRealityToolkit.Providers | MRTK\Providers |
-| MixedRealityToolkit.SDK | MRTK\SDK |
-| MixedRealityToolkit.Services | MRTK\Services |
-| MixedRealityToolkit.Tests | MRTK\Tests |
-| MixedRealityToolkit.Tools | MRTK\Tools |
+| MixedRealityToolkit | MRTK/Core |
+| MixedRealityToolkit.Examples | MRTK/Examples |
+| MixedRealityToolkit.Extensions | MRTK/Extensions |
+| MixedRealityToolkit.Providers | MRTK/Providers |
+| MixedRealityToolkit.SDK | MRTK/SDK |
+| MixedRealityToolkit.Services | MRTK/Services |
+| MixedRealityToolkit.Tests | MRTK/Tests |
+| MixedRealityToolkit.Tools | MRTK/Tools |
+
+> [!IMPORTANT]
+> The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
 ### API changes in 2.4.0
 

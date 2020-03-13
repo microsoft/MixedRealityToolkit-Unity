@@ -44,7 +44,7 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 | MixedRealityToolkit.Tests | MRTK\Tests |
 | MixedRealityToolkit.Tools | MRTK\Tools |
 
-> [!NOTE]
+> [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
