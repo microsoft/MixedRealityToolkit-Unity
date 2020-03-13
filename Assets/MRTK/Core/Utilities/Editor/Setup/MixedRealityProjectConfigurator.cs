@@ -119,17 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.AndroidMinSdkVersion, new ConfigGetter(() =>  PlayerSettings.Android.minSdkVersion >= MinAndroidSdk, BuildTarget.Android) },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, new ConfigGetter(() =>
-                {
-                    float version;
-                    if (!float.TryParse(PlayerSettings.iOS.targetOSVersionString, out version)) { return false; }
-                    return version >= iOSMinOsVersion;
-                }
-            , BuildTarget.iOS) },
-            { Configurations.IOSArchitecture, 
-                new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
-            { Configurations.IOSCameraUsageDescription, 
-                new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
+            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) ? version >= iOSMinOsVersion : false, BuildTarget.iOS) },
+            { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
+            { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
         };
 
         // The configure functions for each type of setting
