@@ -215,7 +215,7 @@ If the directional target is viewable by the user, or whatever frame of referenc
 
 ![Directional Indicator example scene](Images/Solver/DirectionalIndicatorExampleScene.gif)
 
-*[Directional Indicator Example Scene](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MRTK/Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
+*Directional Indicator Example Scene (Assets/MRTK/Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
 
 ## See also
 

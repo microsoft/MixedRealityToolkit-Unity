@@ -56,7 +56,7 @@ public static void MyCommand()
 Adding a component menu:
 
 ```c#
-[AddComponentMenu("Mixed Reality Toolkit/Experimental/MyCommand")]
+[AddComponentMenu("MRTK/Experimental/MyCommand")]
 ```
 
 ## Documentation
