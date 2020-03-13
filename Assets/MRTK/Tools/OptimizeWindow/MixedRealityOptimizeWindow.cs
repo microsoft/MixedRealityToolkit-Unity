@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public class MixedRealityOptimizeWindow : EditorWindow
     {
+
         private int selectedToolbarIndex = 0;
         private readonly string[] ToolbarTitles = { "Setting Optimizations", "Scene Analysis", "Shader Analysis" };
         private enum ToolbarSection
@@ -94,6 +95,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-sharing";
         private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-format";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
+
+#if UNITY_ANDROID
+        private const string renderingMode = "Single Pass Stereo Rendering";
+        private const string gpuMode = "Single Pass Stereo Rendering";
+#else
+        private const string renderingMode = "Single Pass Instanced Rendering";
+        private const string gpuMode = "GPU Instancing";
+#endif
 
         private readonly int[] SceneLightCountMax = { 1, 2, 4 };
 
@@ -399,11 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
-#if UNITY_ANDROID
-                    RenderSinglePassSection();
-#else
-                    RenderSinglePassInstancingSection();
-#endif
+                    RenderOptimalRenderingSection();
 
                     RenderDepthBufferSharingSection();
 
@@ -478,49 +483,28 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             });
         }
 
-#if UNITY_ANDROID
-        private void RenderSinglePassSection()
+        private void RenderOptimalRenderingSection()
         {
-            bool isSinglePassEnabled = MixedRealityOptimizeUtils.IsSinglePass();
-            BuildSection("Single Pass Stereo Rendering", SinglePass_URL, GetTitleIcon(isSinglePassEnabled), () =>
+            bool isOptimalRenderingPath = MixedRealityOptimizeUtils.IsOptimalRenderingPath();
+            BuildSection(renderingMode, SinglePassInstanced_URL, GetTitleIcon(isOptimalRenderingPath), () =>
             {
-                EditorGUILayout.LabelField("Single Pass Stereo rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+                EditorGUILayout.LabelField($"{renderingMode} is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
-                if (!isSinglePassEnabled)
+                if (!isOptimalRenderingPath)
                 {
-                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support Single Pass Stereo rendering which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support Single Pass Stereo rendering.", MessageType.Info);
+                    EditorGUILayout.HelpBox($"This rendering configuration requires shaders to be written to support {gpuMode} which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support {gpuMode}.", MessageType.Info);
 
-                    if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
+                    if (InspectorUIUtility.RenderIndentedButton(renderingMode))
                     {
-                        MixedRealityOptimizeUtils.SetSinglePass();
+                        MixedRealityOptimizeUtils.SetOptimalRenderingPath();
                     }
                 }
             });
         }
-#else
-        private void RenderSinglePassInstancingSection()
-        {
-            bool isSinglePassInstancedEnabled = MixedRealityOptimizeUtils.IsSinglePassInstanced();
-            BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
-            {
-                EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
-                if (!isSinglePassInstancedEnabled)
-                {
-                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
+            #region Utility Helpers
 
-                    if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
-                    {
-                        MixedRealityOptimizeUtils.SetSinglePassInstanced();
-                    }
-                }
-            });
-        }
-#endif
-
-        #region Utility Helpers
-
-        private void AnalyzeScene()
+            private void AnalyzeScene()
         {
             sceneLights = FindObjectsOfType<Light>();
 

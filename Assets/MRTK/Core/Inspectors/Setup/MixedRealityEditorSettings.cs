@@ -98,17 +98,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
             }
 
+            if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())
+            {
 #if UNITY_ANDROID
-            if (!MixedRealityOptimizeUtils.IsSinglePass())
-            {
                 Debug.LogWarning("XR stereo rendering mode not set to <b>Single Pass Stereo</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
-            }
 #else
-            if (!MixedRealityOptimizeUtils.IsSinglePassInstanced())
-            {
                 Debug.LogWarning("XR stereo rendering mode not set to <b>Single Pass Instanced</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
-            }
 #endif
+            }
 
             // If targeting Windows Mixed Reality platform
             if (MixedRealityOptimizeUtils.IsBuildTargetUWP())

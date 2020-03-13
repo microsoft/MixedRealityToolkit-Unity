@@ -10,15 +10,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class MixedRealityOptimizeUtils
     {
-
+        public static bool IsOptimalRenderingPath()
 #if UNITY_ANDROID
-        public static bool IsSinglePass() => PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
-
-        public static void SetSinglePass() => PlayerSettings.stereoRenderingPath = StereoRenderingPath.SinglePass;
+        => PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
 #else
-        public static bool IsSinglePassInstanced() => PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+        => PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+#endif
 
-        public static void SetSinglePassInstanced() => PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+        public static void SetOptimalRenderingPath()
+#if UNITY_ANDROID
+        => PlayerSettings.stereoRenderingPath = StereoRenderingPath.SinglePass;
+#else
+        => PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
 #endif
 
         /// <summary>
