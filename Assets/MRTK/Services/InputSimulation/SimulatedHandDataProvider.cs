@@ -65,6 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private float poseBlending = 0.0f;
         private ArticulatedHandPose pose = new ArticulatedHandPose();
+        private float viewportPositionZTarget;
+        private readonly float smoothScrollSpeed = 5f;
 
         public SimulatedHandState(Handedness _handedness)
         {
@@ -85,7 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                ViewportPosition += mouseDelta.viewportDelta;
+                ViewportPosition.x += mouseDelta.viewportDelta.x;
+				ViewportPosition.y += mouseDelta.viewportDelta.y;
+				viewportPositionZTarget += mouseDelta.viewportDelta.z;
             }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
@@ -102,11 +106,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Resets simulated hand position.
+        /// </summary>
+        /// <param name="resetTo">The position to reset hand to.</param>
+        public void ResetPosition(Vector3 resetTo)
+        {
+            ViewportPosition = resetTo;
+            viewportPositionZTarget = ViewportPosition.z;
+        }
+
         public void ResetRotation()
         {
             // Use wrist joint rotation as the default
             Quaternion rotationRef = pose.GetLocalJointPose(TrackedHandJoint.Wrist, handedness).Rotation;
             ViewportRotation = rotationRef.eulerAngles;
+        }
+
+        /// <summary>
+        /// Update information about the hand state or position.
+        /// </summary>
+        internal void Update()
+        {
+            ViewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, smoothScrollSpeed * Time.deltaTime);
         }
 
         internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
@@ -199,6 +221,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SimulateUserInput(mouseDelta);
 
+            HandStateLeft.Update();
+            HandStateRight.Update();
+            
             bool handDataChanged = false;
 
             // Cache the generator delegates so we don't gc alloc every frame
@@ -352,11 +377,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Start at current mouse position
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
-                state.ViewportPosition = CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance));
+                state.ResetPosition(CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance)));
             }
             else
             {
-                state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
+                state.ResetPosition(new Vector3(0.5f, 0.5f, profile.DefaultHandDistance));
             }
 
             state.Gesture = profile.DefaultHandGesture;
