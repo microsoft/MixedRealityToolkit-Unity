@@ -199,3 +199,8 @@ MRTK Standard shader statistics example
 
 - [Performance Guidelines](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/)
 - [Performance Tools](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-tools/)
+
+### Mesh optimization
+
+- [Optimize 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/optimize-models#performance-targets)
+- [Best practices for converting and optimizing real-time 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/best-practices)
