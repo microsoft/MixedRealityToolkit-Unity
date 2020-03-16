@@ -45,6 +45,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - luis-valverde-ms
 - lukastonneMS
 - macborow
+- marek-stoj
 - MenelvagorMilsom
 - michael-house
 - mpkoz
@@ -60,6 +61,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - radicalad
 - Railboy
 - ritijain
+- Rosthouse
 - ryzngard
 - sgwin
 - SimonDarksideJ
