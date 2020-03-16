@@ -233,8 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         private static async Task<Material> CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
         {
             var material = Resources.Load<Material>("Materials/StandardglTFMaterial");
-            Debug.Log(material.name);
-
             if (material == null) { return null; }
 
             string materialName = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name;
