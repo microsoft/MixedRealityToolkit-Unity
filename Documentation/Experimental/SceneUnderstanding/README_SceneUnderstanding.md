@@ -19,7 +19,7 @@ This is an __experminental__ prelease that integrates [Scene Understanding](http
 
 ## Observer overview
 
-When asked, the SU observer will return Scene Objects with attributes useful for mixed world development. What is returned is dependent on the configuration of the observer when fetched. For instance, one may want the occlusion mask, the observer must be configured to generate quads.
+When asked, the [Scene Understanding Observer](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/ff68a86445152d98ee5b0b1a25bd5f303169e4ed/Assets/MixedRealityToolkit.Providers/Experimental/WindowsMixedReality/WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver.cs) will return [Scene Objects](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/ff68a86445152d98ee5b0b1a25bd5f303169e4ed/Assets/MixedRealityToolkit/Definitions/SpatialAwareness/Experimental/SpatialAwarenessSceneObject.cs) with attributes useful for mixed world development. What is returned is dependent on the configuration of the observer when fetched. For instance, one may want the occlusion mask, the observer must be configured to generate quads.
 
 It is expected the majority of "real" applications will never show the underlying data in raw form.
 
@@ -44,7 +44,7 @@ A restart of the unity editor maybe required if there are errors about missing a
 ![MSBuild enabled](Images/MRTKProjectConfiguratorMSBuildEnabled.jpg)
 
 
-## Demonstration and debugging SU
+## Demonstration and debugging Scene Understanding
 
 ### Unity demo scene
 
@@ -65,16 +65,16 @@ Press play at this point the example serialized scene data will be loaded and di
 
 ### Example script
 
-The example script _DemoSpatialAwarenessController.cs_, demonstrates the major concepts in working with the SU service.
+The example script _DemoSpatialAwarenessController.cs_, demonstrates the major concepts in working with the Scene Understanding service.
 
-* Subscribing to SU events
-* Handling SU events
+* Subscribing to Scene Understanding events
+* Handling Scene Understanding events
 * Finding the nearest platform
 * Instantiating a prefab and placing it in an open spot
 
 This example script uses MRKT UI to toggle service features on the Spatial Understanding observer.
 
-Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [Scene Objects](), gathered neatly under a parent object.
+Turning on *Instantiate Prefabs*, will demonstrate creating objects that size to fit themselves to all [Scene Objects](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/ff68a86445152d98ee5b0b1a25bd5f303169e4ed/Assets/MixedRealityToolkit/Definitions/SpatialAwareness/Experimental/SpatialAwarenessSceneObject.cs), gathered neatly under a parent object.
 
 ![demo controller options](Images/Controller.png)
 
