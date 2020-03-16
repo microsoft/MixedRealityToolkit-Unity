@@ -299,6 +299,11 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 3260291379440523098}
+    - target: {fileID: 1623203068370651143, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: b5066c514f7f02f4292cf842f3c8b75f, type: 3}
     - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -1185,6 +1190,11 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 3260291378513708569}
+    - target: {fileID: 1623203068370651143, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 0bee624b4074e5445929e56287795085, type: 3}
     - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -1624,6 +1634,11 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 3260291378836614402}
+    - target: {fileID: 1623203068370651143, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: d74cdc58c5d172a469ea5ca987eb17f6, type: 3}
     - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -2159,6 +2174,11 @@ PrefabInstance:
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 5875670467301799863}
+    - target: {fileID: 1623203068370651143, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: iconQuadTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 8d0274d8bc6a17844a08b493920d9491, type: 3}
     - target: {fileID: 8985933139182662606, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
