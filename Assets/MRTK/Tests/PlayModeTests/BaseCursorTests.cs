@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(state, baseCursor.CursorState);
         }
 
-        private void VerifyCursorContextFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorContextEnum context)
+        static internal void VerifyCursorContextFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorContextEnum context)
         {
             Assert.NotZero(pointers.ToReadOnlyCollection().Count);
             foreach (var pointer in pointers)
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        private void VerifyCursorContext(IMixedRealityCursor cursor, CursorContextEnum context)
+        static private void VerifyCursorContext(IMixedRealityCursor cursor, CursorContextEnum context)
         {
             var baseCursor = cursor as BaseCursor;
             Assert.IsNotNull(baseCursor);
