@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <summary>
         /// Observer will update once after initialization then require manual update thereafter. Uses <see cref="FirstUpdateDelay"/> to determine when.
         /// </summary>
-        bool UpdateOnLoad { get; set; }
+        bool UpdateOnceOnLoad { get; set; }
 
         /// <summary>
         /// Delay in seconds before the observer will update automatically, once.

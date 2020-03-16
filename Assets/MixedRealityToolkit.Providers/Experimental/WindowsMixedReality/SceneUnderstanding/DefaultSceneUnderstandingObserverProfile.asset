@@ -23,6 +23,7 @@ MonoBehaviour:
   surfaceTypes: 30
   instantiationBatchRate: 1
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
+  defaultWorldMeshMaterial: {fileID: 0}
   shouldLoadFromFile: 0
   serializedScene: {fileID: 0}
   createGameObjects: 0

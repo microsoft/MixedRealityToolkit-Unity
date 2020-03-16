@@ -194,9 +194,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7984562311453334286}
   - component: {fileID: 3402978075079478295}
-  - component: {fileID: 8045654446599123305}
+  - component: {fileID: 2717140161886616784}
   m_Layer: 0
-  m_Name: DemoSpatialAwarenessWall
+  m_Name: DemoSceneUnderstandingSceneObjectPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8045654446599123305
+--- !u!114 &2717140161886616784
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -247,9 +247,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultLayer: 0
-  DefaultTag: Player
+  DefaultTag: 
   WallLayer: 0
-  WallTag: Player
+  WallTag: 
 --- !u!1 &6976370194182884529
 GameObject:
   m_ObjectHideFlags: 0

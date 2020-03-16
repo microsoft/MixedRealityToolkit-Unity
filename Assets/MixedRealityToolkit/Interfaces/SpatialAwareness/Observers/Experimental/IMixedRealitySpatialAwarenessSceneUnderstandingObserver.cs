@@ -81,5 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// When true, automatically fetch data from the service
         /// </summary>
         bool AutoUpdate { get; set; }
+
+        /// <summary>
+        /// Configures the density of the mesh retrieved from the service
+        /// </summary>
+        SpatialAwarenessMeshLevelOfDetail WorldMeshLevelOfDetail { get; set; }
     }
 }
