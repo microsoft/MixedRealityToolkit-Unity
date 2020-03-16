@@ -232,14 +232,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 
         private static async Task<Material> CreateMRTKShaderMaterial(GltfObject gltfObject, GltfMaterial gltfMaterial, int materialId)
         {
-            var shader = Shader.Find("Mixed Reality Toolkit/Standard");
+            var material = Resources.Load<Material>("Materials/StandardglTFMaterial");
+            Debug.Log(material.name);
 
-            if (shader == null) { return null; }
+            if (material == null) { return null; }
 
-            var material = new Material(shader)
-            {
-                name = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name
-            };
+            string materialName = string.IsNullOrEmpty(gltfMaterial.name) ? $"glTF Material {materialId}" : gltfMaterial.name;
+            material.name = materialName;
 
             if (gltfMaterial.pbrMetallicRoughness.baseColorTexture.index >= 0)
             {
