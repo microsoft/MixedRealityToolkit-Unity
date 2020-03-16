@@ -136,7 +136,7 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) article
 
 To try the hand interaction scene, do the following steps.
 
-1. Open the **HandInteractionExamples** scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+1. Open the **HandInteractionExamples** scene under `Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples`
 
 1. You may get a prompt asking you to import "TMP Essentials".
 

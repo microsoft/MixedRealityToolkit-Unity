@@ -112,7 +112,7 @@ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.
 
 To create a new play mode test:
 
-* Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
+* Navigate to Assets > MRTK > Tests > PlayModeTests
 * Right click, Create > Testing > C# Test Script
 * Replace the default template with the skeleton below
 
@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 ### Edit mode tests
 
-Edit mode tests are executed in Unity's edit mode and can be added under the **MixedRealityToolkit.Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
+Edit mode tests are executed in Unity's edit mode and can be added under the **MRTK** > **Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:
 
 ```c#
@@ -255,8 +255,8 @@ Consider placing the test in a folder hierarchy that is similar to its correspon
 For example:
 
 ```md
-Non-Test: Assets/MixedRealityToolkit/Utilities/InterestingUtilityClass.cs
-Test: Assets/MixedRealityToolkit.Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
+Non-Test: Assets/MRTK/Core/Utilities/InterestingUtilityClass.cs
+Test: Assets/MRTK/Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
 ```
 
 This is to ensure that there's a clear an obvious way of finding each class's corresponding test class,

@@ -20,7 +20,7 @@ The component allows for three primary sections of configuration:
 
 *States* is a [ScriptableObject](https://docs.unity3d.com/Manual/class-ScriptableObject.html) parameter that defines the interactions phases, like press or observed, for [Interactable Profiles](#interactable-profiles) and [Visual Themes](VisualThemes.md).
 
-The [**DefaultInteractableStates**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) ships with MRTK out-of-box and is the default parameter for *Interactable* components.
+The **DefaultInteractableStates** (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) ships with MRTK out-of-box and is the default parameter for *Interactable* components.
 
 ![States ScriptableObject example in inspector](Images/Interactable/DefaultInteractableStates.png)
 
@@ -37,7 +37,7 @@ The *DefaultInteractableStates* asset contains four states and utilizes the [`In
 A bit value (#) is assigned to the state depending on the order in the list.
 
 > [!NOTE]
-> It is generally recommended to utilize the [**DefaultInteractableStates**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) when creating *Interactable* components.
+> It is generally recommended to utilize the **DefaultInteractableStates** (Assets/MRTK/SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) when creating *Interactable* components.
 >
 > However, there are 17 Interactable states available that can be used to drive themes, though some are meant to be driven by other components. Here is a list of those with built-in functionality.
 >
@@ -149,7 +149,7 @@ Custom events can be created in two main ways:
 
 #### Example of extending `ReceiverBase`
 
-The [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) class under `MixedRealityToolkit.Examples` displays status information about an *Interactable* and is an example of how to create a custom Event Receiver.
+The [`CustomInteractablesReceiver`](xref:Microsoft.MixedReality.Toolkit.UI) class displays status information about an *Interactable* and is an example of how to create a custom Event Receiver.
 
 ```c#
 public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
@@ -235,7 +235,7 @@ bool isSelected = myInteractable.IsToggled;
 
 It is common to have a list of toggle buttons where only one can be active at any given time, also known as a radial set or radio buttons etc.
 
-Use the [`InteractableToggleCollection`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection) component to enable this functionality. This control ensures only one *Interactable* is toggled on at any given time. The [*RadialSet* prefab](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab) is also a great starting point out-of-box.
+Use the [`InteractableToggleCollection`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection) component to enable this functionality. This control ensures only one *Interactable* is toggled on at any given time. The *RadialSet* (Assets/MRTK/SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab) is also a great starting point out-of-box.
 
 To create a custom radial button group:
 

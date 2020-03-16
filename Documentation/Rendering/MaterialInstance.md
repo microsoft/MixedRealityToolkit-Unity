@@ -3,7 +3,7 @@
 The [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. This utility component can be used as a replacement to [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") or
 [Renderer.materials]("https://docs.unity3d.com/ScriptReference/Renderer-materials.html").
 
-> [!Note]
+> [!NOTE]
 > [MaterialPropertyBlocks](https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html) are preferred over material instancing but are not always available  in all scenarios.
 
 Why can using [Renderer.material]("https://docs.unity3d.com/ScriptReference/Renderer-material.html") be an issue? If you add the below code to a Unity scene and hit play memory usage will continue to climb and climb:
@@ -22,7 +22,7 @@ public class Leak : MonoBehaviour
 }
 ```
 
-> [!Note]
+> [!NOTE]
 > The above Leak behavior **will crash Unity** if ran for too long!
 
 As an alternative try using the [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior:

@@ -86,7 +86,7 @@ Tap to Place object selection timing can also be controlled via `StartPlacement(
 
 ## Tap to Place Example Scene
 
-The Tap to Place example scene consists of 4 placeable objects, each with a different configuration. The example scene contains walls to show the surface placement behavior that are disabled by default in the hierarchy. The example scene can be found in the Microsoft.MixedReality.Toolkit.Unity.Examples unity package found on the [Release Page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases). The scene location is: *MixedRealityToolkit.Examples/Demos/Solvers/Scenes/TapToPlaceExample.unity*
+The Tap to Place example scene consists of 4 placeable objects, each with a different configuration. The example scene contains walls to show the surface placement behavior that are disabled by default in the hierarchy. The example scene can be found in the Microsoft.MixedReality.Toolkit.Unity.Examples unity package found on the [Release Page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases). The scene location is: *MRTK.Examples/Demos/Solvers/Scenes/TapToPlaceExample.unity*
 
 ![TapToPlaceExampleScene](Images/Solver/TapToPlace/TapToPlaceExampleScene.gif)
 

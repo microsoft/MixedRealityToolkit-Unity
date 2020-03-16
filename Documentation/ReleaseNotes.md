@@ -29,6 +29,24 @@ If importing the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), th
 
 ### What's new in 2.4.0
 
+**MRTK folder layout changes**
+
+This version of MRTK modifies the layout of the MRTK folder structure. This change encapsulates all MRTK code into a single folder hierarchy and reduces the total path length of all MRTK files.
+
+| Previous Folder | New Folder |
+| --- | --- |
+| MixedRealityToolkit | MRTK\Core |
+| MixedRealityToolkit.Examples | MRTK\Examples |
+| MixedRealityToolkit.Extensions | MRTK\Extensions |
+| MixedRealityToolkit.Providers | MRTK\Providers |
+| MixedRealityToolkit.SDK | MRTK\SDK |
+| MixedRealityToolkit.Services | MRTK\Services |
+| MixedRealityToolkit.Tests | MRTK\Tests |
+| MixedRealityToolkit.Tools | MRTK\Tools |
+
+> [!IMPORTANT]
+> The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
+
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
 This version of MRTK adds three new methods to the `WindowsApiChecker` class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.

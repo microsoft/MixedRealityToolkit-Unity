@@ -138,10 +138,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
             #pragma multi_compile_instancing
             #pragma multi_compile _ LIGHTMAP_ON
-            #pragma multi_compile _ _MULTI_HOVER_LIGHT
-            #pragma multi_compile _ _CLIPPING_PLANE
-            #pragma multi_compile _ _CLIPPING_SPHERE
-            #pragma multi_compile _ _CLIPPING_BOX
+            #pragma multi_compile _ _CLIPPING_PLANE _CLIPPING_SPHERE _CLIPPING_BOX
 
             #pragma shader_feature _ _ALPHATEST_ON _ALPHABLEND_ON
             #pragma shader_feature _DISABLE_ALBEDO_MAP
@@ -408,11 +405,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(_HOVER_LIGHT) || defined(_NEAR_LIGHT_FADE)
-#if defined(_MULTI_HOVER_LIGHT)
-#define HOVER_LIGHT_COUNT 3
-#else
-#define HOVER_LIGHT_COUNT 1
-#endif
+#define HOVER_LIGHT_COUNT 2
 #define HOVER_LIGHT_DATA_SIZE 2
             float4 _HoverLightData[HOVER_LIGHT_COUNT * HOVER_LIGHT_DATA_SIZE];
 #if defined(_HOVER_COLOR_OVERRIDE)
@@ -806,7 +799,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
                 // Primitive clipping.
 #if defined(_CLIPPING_PRIMITIVE)
-                float primitiveDistance = 1.0; 
+                float primitiveDistance = 1.0;
 #if defined(_CLIPPING_PLANE)
                 primitiveDistance = min(primitiveDistance, PointVsPlane(i.worldPosition.xyz, _ClipPlane) * _ClipPlaneSide);
 #endif
