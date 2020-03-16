@@ -469,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                             ClearObservations();
                         }
 
-                        if (OrientScene && CoreServices.CameraSystem.IsOpaque)
+                        if (OrientScene && Application.isEditor)
                         {
                             var toUp = System.Numerics.Vector3.Zero;
 

@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Animations;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
@@ -57,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 Debug.LogError("Couldn't access Scene Understanding Observer!");
                 return;
             }
+
+            CoreServices.SpatialAwarenessSystem.RegisterHandler<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>>(this);
         }
 
         async void OnEnable()

@@ -249,7 +249,7 @@ MonoBehaviour:
   DefaultLayer: 0
   DefaultTag: 
   WallLayer: 0
-  WallTag: 
+  WallTag: SUWalls
 --- !u!1 &6976370194182884529
 GameObject:
   m_ObjectHideFlags: 0
