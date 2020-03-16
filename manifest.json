@@ -11530,6 +11530,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.CursorContextObjectManipulator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.CursorContextObjectManipulator.html",
+          "hash": "NQ16gvzIDF1WAz+9KvBB+Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.UI.HandCoach.MoveToTarget.yml",
       "output": {
         ".html": {
@@ -11822,7 +11834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UI.html",
-          "hash": "WorqVi6qG5MatAltNE9aNg=="
+          "hash": "7JEyvVZcNyf9VxXiJVxacw=="
         }
       },
       "is_incremental": false,
@@ -20162,7 +20174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Experimental.ObjectManipulatorTests.html",
-          "hash": "3J4gvYF5m0+wbic85PSMHQ=="
+          "hash": "24A/DoeEoqeGIh4nCmy+DQ=="
         }
       },
       "is_incremental": false,
@@ -26438,7 +26450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Pnt25tqvV68pjguix2lHRg=="
+          "hash": "Ut7sKvwQhHz+4mQ+aWCxJA=="
         }
       },
       "is_incremental": false,
@@ -26503,17 +26515,17 @@
           "total_file_count": 153,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1568,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1569,
           "skipped_file_count": 0
         }
       }
