@@ -9,7 +9,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// This script provides cursor context for the object manipulator
+    /// This script provides cursor context for the object manipulator.
+    /// It will show an icon next to the cursor indicating the available action 
+    /// that can be performed. Currently this component only supports context 
+    /// for moving an object.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/CursorContextObjectManipulator")]
     [RequireComponent(typeof(ObjectManipulator))]

@@ -1281,27 +1281,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             ObjectManipulator manipulationHandler = cube.AddComponent<ObjectManipulator>();
             CursorContextObjectManipulator cursorContextManipulationHandler = cube.AddComponent<CursorContextObjectManipulator>();
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Move cube back to original position (described above)
             cube.transform.localPosition = new Vector3(0, 0, 2);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Show right hand on object
             var rightHand = new TestHand(Handedness.Right);
             Vector3 rightPos = new Vector3(0.05f, 0, 1.5f);
             yield return rightHand.Show(rightPos);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // Pinch right hand
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
             // Show left hand on object
@@ -1309,22 +1305,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 leftPos = new Vector3(-0.05f, 0, 1.5f);
             yield return rightHand.Hide();
             yield return leftHand.Show(leftPos);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
 
             // Pinch left hand
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
             // Show both hands on object
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return rightHand.Show(rightPos);
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
             UnityEngine.Object.Destroy(cursorContextManipulationHandler);
