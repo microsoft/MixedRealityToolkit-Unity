@@ -7,7 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// Represents a position where a <see cref="Dockable"/> object can be docked.
-    /// This component also adds a <see cref="Collider"/> and a <see cref="Rigidbody"/>, if they're not already present.
+    /// This component also adds a Collider and a Rigidbody, if they're not already present.
     /// </summary>
     /// <seealso cref="Dock"/>
     /// <seealso cref="Dockable"/>
@@ -18,8 +18,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// The object that is currently docked in this position (can be null).
         /// </summary>
         [Experimental]
-        [Tooltip("The object that is currently docked in this position.")]
-        public Dockable dockedObject = null;
+        [SerializeField]
+        [Tooltip("The object that is currently docked in this position (can be null).")]
+        private Dockable dockedObject = null;
+
+        /// <summary>
+        /// The object that is currently docked in this position (can be null).
+        /// </summary>
+        public Dockable DockedObject
+        {
+            get => dockedObject;
+            set => dockedObject = value;
+        }
 
         /// <summary>
         /// True if this position is occupied, false otherwise.

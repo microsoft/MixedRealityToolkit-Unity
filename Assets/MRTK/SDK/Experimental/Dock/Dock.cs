@@ -23,12 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Experimental]
         [SerializeField]
         [Tooltip("A read-only list of possible positions in this dock.")]
-        public ReadOnlyCollection<DockPosition> dockPositions;
+        private ReadOnlyCollection<DockPosition> dockPositions;
+
+        /// <summary>
+        /// A read-only list of possible positions in this dock.
+        /// </summary>
+        public ReadOnlyCollection<DockPosition> DockPositions => dockPositions;
 
         /// <summary>
         /// Initializes the list of positions in this dock.
         /// </summary>
-        private void Start()
+        private void OnEnable()
         {
             UpdatePositions();
         }
@@ -57,6 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <returns>Returns true if the desired position is now available, false otherwise.</returns>
         public bool TryMoveToFreeSpace(DockPosition position)
         {
+            if (dockPositions == null)
+            {
+                UpdatePositions();
+            }
+
             if (!dockPositions.Contains(position))
             {
                 Debug.LogError("Looking for a DockPosition in the wrong Dock.");
@@ -97,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Check if we can undock all of them
                 for (int i = closestFreeSpace.Value + 1; i <= index; i++)
                 {
-                    if (!dockPositions[i].dockedObject.CanUndock)
+                    if (!dockPositions[i].DockedObject.CanUndock)
                     {
                         return false;
                     }
@@ -115,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Check if we can undock all of them
                 for (int i = closestFreeSpace.Value - 1; i >= index; i--)
                 {
-                    if (!dockPositions[i].dockedObject.CanUndock)
+                    if (!dockPositions[i].DockedObject.CanUndock)
                     {
                         return false;
                     }
@@ -138,10 +148,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="to">The position we're moving the object to.</param>
         private void MoveDockedObject(int from, int to)
         {
-            var objectToMove = dockPositions[from].dockedObject;
+            var objectToMove = dockPositions[from].DockedObject;
             objectToMove.Undock();
             objectToMove.Dock(dockPositions[to]);
-            Assert.AreEqual(dockPositions[to].dockedObject, objectToMove, "The object we just moved needs to match the object docked in the new position.");
+            Assert.AreEqual(dockPositions[to].DockedObject, objectToMove, "The object we just moved needs to match the object docked in the new position.");
         }
     }
 }

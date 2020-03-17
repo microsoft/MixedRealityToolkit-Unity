@@ -407,6 +407,18 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Calculates how much scale is required for this Bounds to fit inside another bounds without stretching.
+        /// </summary>
+        /// <param name="containerBounds">The bounds of the container we're trying to fit this object.</param>
+        /// <returns>A single scale factor that can be applied to this object to fit inside the container.</returns>
+        public static float GetScaleToFitInside(this Bounds bounds, Bounds containerBounds)
+        {
+            var objectSize = bounds.size;
+            var containerSize = containerBounds.size;
+            return Mathf.Min(containerSize.x / objectSize.x, containerSize.y / objectSize.y, containerSize.z / objectSize.z);
+        }
+
+        /// <summary>
         /// Method to get bounding box points using Collider method.
         /// </summary>
         /// <param name="target">gameObject that boundingBox bounds.</param>

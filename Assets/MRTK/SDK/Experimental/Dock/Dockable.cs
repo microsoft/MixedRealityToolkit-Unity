@@ -10,17 +10,6 @@ using UnityEngine.Assertions;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// The possible states of a <see cref="Dockable"/> object.
-    /// </summary>
-    public enum DockingState
-    {
-        Undocked,
-        Docking,
-        Docked,
-        Undocking
-    }
-
-    /// <summary>
     /// Add a Dockable component to any object that has a <see cref="Dockable"/> and an <see cref="ObjectManipulator"/>
     /// or <see cref="ManipulationHandler"/> to make it dockable in Docks. That allows this object to be used
     /// as part of a palette, shelf or navigation bar together with other objects.
@@ -70,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Subscribes to manipulation events.
         /// </summary>
-        private void Start()
+        private void OnEnable()
         {
             objectManipulator = gameObject.GetComponent<ObjectManipulator>();
             if (objectManipulator != null)
@@ -95,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Unsubscribes from manipulation events.
         /// </summary>
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (objectManipulator != null)
             {
@@ -115,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (dockedPosition != null)
             {
-                dockedPosition.dockedObject = null;
+                dockedPosition.DockedObject = null;
                 dockedPosition = null;
             }
 
@@ -140,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (dockingState == DockingState.Docked || dockingState == DockingState.Docking)
             {
                 Assert.IsNotNull(dockedPosition, "When a dockable is docked, its dockedPosition must be valid.");
-                Assert.AreEqual(dockedPosition.dockedObject, this, "When a dockable is docked, its dockedPosition reference the dockable.");
+                Assert.AreEqual(dockedPosition.DockedObject, this, "When a dockable is docked, its dockedPosition reference the dockable.");
 
                 var lerpTime = dockingState == DockingState.Docked ? moveLerpTimeWhenDocked : moveLerpTime;
 
@@ -153,9 +142,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 transform.localScale = Solver.SmoothTo(transform.localScale, dockedPositionScale, Time.deltaTime, lerpTime);
 
-                if (CloseEnough(dockedPosition.transform.position, transform.position) &&
-                    AlignedEnough(dockedPosition.transform.rotation, transform.rotation) &&
-                    AboutTheSameSize(dockedPositionScale, transform.localScale))
+                if (VectorExtensions.CloseEnough(dockedPosition.transform.position, transform.position, distanceTolerance) &&
+                    QuaternionExtensions.AlignedEnough(dockedPosition.transform.rotation, transform.rotation, angleTolerance) &&
+                    AboutTheSameSize(dockedPositionScale.x, transform.localScale.x))
                 {
                     // Finished docking
                     dockingState = DockingState.Docked;
@@ -170,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 transform.localScale = Solver.SmoothTo(transform.localScale, originalScale, Time.deltaTime, moveLerpTime);
 
-                if (AboutTheSameSize(originalScale, transform.localScale))
+                if (AboutTheSameSize(originalScale.x, transform.localScale.x))
                 {
                     // Finished undocking
                     dockingState = DockingState.Undocked;
@@ -196,8 +185,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Debug.Log($"Docking object {gameObject.name} on position {position.gameObject.name}");
 
             dockedPosition = position;
-            dockedPosition.dockedObject = this;
-            float scaleToFit = ScaleToFit(gameObject.GetComponent<Collider>().bounds, dockedPosition.GetComponent<Collider>().bounds);
+            dockedPosition.DockedObject = this;
+            float scaleToFit = gameObject.GetComponent<Collider>().bounds.GetScaleToFitInside(dockedPosition.GetComponent<Collider>().bounds);
             dockedPositionScale = transform.localScale * scaleToFit;
 
             if (dockingState == DockingState.Undocked)
@@ -222,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             Debug.Log($"Undocking object {gameObject.name} from position {dockedPosition.gameObject.name}");
 
-            dockedPosition.dockedObject = null;
+            dockedPosition.DockedObject = null;
             dockedPosition = null;
             dockedPositionScale = Vector3.one;
             dockingState = DockingState.Undocking;
@@ -308,26 +297,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Helpers
 
-        private static float ScaleToFit(Bounds objectBounds, Bounds containerBounds)
+        private static bool AboutTheSameSize(float scale1, float scale2)
         {
-            var objectSize = objectBounds.size;
-            var containerSize = containerBounds.size;
-            return Mathf.Min(containerSize.x / objectSize.x, containerSize.y / objectSize.y, containerSize.z / objectSize.z);
-        }
-
-        private static bool CloseEnough(Vector3 v1, Vector3 v2)
-        {
-            return Mathf.Abs(Vector3.Distance(v1, v2)) < distanceTolerance;
-        }
-
-        private static bool AlignedEnough(Quaternion q1, Quaternion q2)
-        {
-            return Mathf.Abs(Quaternion.Angle(q1, q2)) < angleTolerance;
-        }
-
-        private static bool AboutTheSameSize(Vector3 scale1, Vector3 scale2)
-        {
-            return Mathf.Abs(scale1.x / scale2.x - 1.0f) < scaleTolerance;
+            return Mathf.Abs(scale1 / scale2 - 1.0f) < scaleTolerance;
         }
 
         #endregion

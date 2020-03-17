@@ -8,7 +8,7 @@ This control enables moving objects in and out of predetermined positions, to cr
 - Docked objects automatically move away to make space for new objects
 - Objects scale to fit the docked space, then resize to their original position when dragged out.
 
-## Getting started with scrolling object collection
+## Getting started with Dock
 
 - Create a GameObject with the Dock component and add some children GameObjects to it.
 - Add the DockPosition component to each of the children.
