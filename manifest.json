@@ -7539,7 +7539,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "xvOm7HTeyrvJmFpszYLdFQ=="
+          "hash": "zm95Ivb385WcEbn41vQVHw=="
         }
       },
       "is_incremental": false,
@@ -20254,6 +20254,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.GltfTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.GltfTests.html",
+          "hash": "vyKzD4MozQUNIBxZgkvGkQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputRayUtilsTests.yml",
       "output": {
         ".html": {
@@ -20630,7 +20642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "2Ni+Dx9VEphc1vu/3DCp5g=="
+          "hash": "rjZwhXZAku8/mh7EqP2AkQ=="
         }
       },
       "is_incremental": false,
@@ -24206,7 +24218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.html",
-          "hash": "oHe1YjOQDCglkJFzj45YVQ=="
+          "hash": "1PZFjBxpYWAP0nR1c3ipYg=="
         }
       },
       "is_incremental": false,
@@ -26450,7 +26462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Ut7sKvwQhHz+4mQ+aWCxJA=="
+          "hash": "fvSyj7ivdkPCmHimUawiDg=="
         }
       },
       "is_incremental": false,
@@ -26502,6 +26514,13 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -26511,19 +26530,12 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1569,
+          "total_file_count": 1570,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

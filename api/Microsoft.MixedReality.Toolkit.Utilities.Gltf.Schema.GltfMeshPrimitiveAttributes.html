@@ -95,51 +95,54 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">GltfMeshPrimitiveAttributes</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.html">Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GltfMeshPrimitiveAttributes</code></pre>
+    <pre><code class="lang-csharp hljs">public class GltfMeshPrimitiveAttributes : ReadOnlyDictionary&lt;string, int&gt;</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Application specific semantics are not supported</p>
-</div>
-  <h3 id="fields">Fields
+  <h3 id="constructors">Constructors
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes__ctor_IDictionary_System_String_System_Int32__" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.#ctor(IDictionary{System.String,System.Int32})">GltfMeshPrimitiveAttributes(IDictionary&lt;String, Int32&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GltfMeshPrimitiveAttributes(IDictionary&lt;string, int&gt; dictionary)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;</td>
+        <td><span class="parametername">dictionary</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_COLOR_0_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.COLOR_0*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_COLOR_0" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.COLOR_0">COLOR_0</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int COLOR_0</code></pre>
+    <pre><code class="lang-csharp hljs">public int COLOR_0 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -156,14 +159,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_JOINTS_0_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.JOINTS_0*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_JOINTS_0" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.JOINTS_0">JOINTS_0</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int JOINTS_0</code></pre>
+    <pre><code class="lang-csharp hljs">public int JOINTS_0 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -180,14 +184,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_NORMAL_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.NORMAL*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_NORMAL" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.NORMAL">NORMAL</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int NORMAL</code></pre>
+    <pre><code class="lang-csharp hljs">public int NORMAL { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -204,14 +209,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_POSITION_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.POSITION*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_POSITION" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.POSITION">POSITION</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int POSITION</code></pre>
+    <pre><code class="lang-csharp hljs">public int POSITION { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -228,14 +234,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TANGENT_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TANGENT*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TANGENT" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TANGENT">TANGENT</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TANGENT</code></pre>
+    <pre><code class="lang-csharp hljs">public int TANGENT { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -252,14 +259,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_0_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_0*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_0" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_0">TEXCOORD_0</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TEXCOORD_0</code></pre>
+    <pre><code class="lang-csharp hljs">public int TEXCOORD_0 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -276,14 +284,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_1_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_1*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_1" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_1">TEXCOORD_1</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TEXCOORD_1</code></pre>
+    <pre><code class="lang-csharp hljs">public int TEXCOORD_1 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -300,14 +309,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_2_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_2*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_2" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_2">TEXCOORD_2</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TEXCOORD_2</code></pre>
+    <pre><code class="lang-csharp hljs">public int TEXCOORD_2 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -324,14 +334,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_3_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_3*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_TEXCOORD_3" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.TEXCOORD_3">TEXCOORD_3</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int TEXCOORD_3</code></pre>
+    <pre><code class="lang-csharp hljs">public int TEXCOORD_3 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -348,14 +359,15 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_WEIGHTS_0_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.WEIGHTS_0*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Gltf_Schema_GltfMeshPrimitiveAttributes_WEIGHTS_0" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema.GltfMeshPrimitiveAttributes.WEIGHTS_0">WEIGHTS_0</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int WEIGHTS_0</code></pre>
+    <pre><code class="lang-csharp hljs">public int WEIGHTS_0 { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
