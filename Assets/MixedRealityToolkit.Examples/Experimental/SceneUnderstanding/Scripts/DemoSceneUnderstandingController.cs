@@ -110,17 +110,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             // This method called everytime a SceneObject created by the SU observer
             // The eventData contains everything you need do something useful
 
-            var sceneObject = eventData.SpatialObject; // alias
-
-            if (sceneObject.SurfaceType == surfaceTypeToPlaceOn)
+            if (eventData.SpatialObject.SurfaceType == surfaceTypeToPlaceOn)
             {
-                observedSceneObjects.Add(sceneObject);
+                observedSceneObjects.Add(eventData.SpatialObject);
             }
 
             if (InstantiatePrefabs)
             {
                 var prefab = Instantiate(InstantiatedPrefab);
-                prefab.transform.SetPositionAndRotation(sceneObject.Position, sceneObject.Rotation);
+                prefab.transform.SetPositionAndRotation(eventData.SpatialObject.Position, eventData.SpatialObject.Rotation);
 
                 if (InstantiatedParent)
                 {
@@ -133,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
                 foreach (var x in prefab.GetComponents<ISceneUnderstandingSceneObjectConsumer>())
                 {
-                    x.OnSpatialAwarenessSceneObjectCreated(sceneObject);
+                    x.OnSpatialAwarenessSceneObjectCreated(eventData.SpatialObject);
                 }
             }
         }
@@ -169,7 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
                     if (observedSceneObjects[i].Quads.Count == 0)
                     {
-                        Debug.LogWarning("Can't ask for quads if observer wasn't configured to fetch them!");
                         continue;
                     }
 

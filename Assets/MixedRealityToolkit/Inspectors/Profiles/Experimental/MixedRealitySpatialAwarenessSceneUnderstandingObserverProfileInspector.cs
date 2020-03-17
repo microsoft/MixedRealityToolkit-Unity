@@ -12,13 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
     {
         // BaseSpatialAwarenessObserverProfile
 
-        private SerializedProperty startupBehavior;
+        private SerializedProperty updateOnceOnLoad;
         private SerializedProperty updateInterval;
 
         // MixedRealitySpatialAwarenessSceneUnderstandingObserverProfile
 
         private SerializedProperty autoUpdate;
-        private SerializedProperty physicsLayer;
+        private SerializedProperty defaultPhysicsLayer;
         private SerializedProperty surfaceTypes;
         private SerializedProperty instantiationBatchRate;
         private SerializedProperty defaultMaterial;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
         {
             base.OnEnable();
 
-            startupBehavior = serializedObject.FindProperty("startupBehavior");
+            updateOnceOnLoad = serializedObject.FindProperty("updateOnceOnLoad");
             firstUpdateDelay = serializedObject.FindProperty("firstUpdateDelay");
             autoUpdate = serializedObject.FindProperty("autoUpdate");
             updateInterval = serializedObject.FindProperty("updateInterval");
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             requestMeshData = serializedObject.FindProperty("requestMeshData");
             createGameObjects = serializedObject.FindProperty("createGameObjects");
 
-            physicsLayer = serializedObject.FindProperty("physicsLayer");
+            defaultPhysicsLayer = serializedObject.FindProperty("defaultPhysicsLayer");
             surfaceTypes = serializedObject.FindProperty("surfaceTypes");
             inferRegions = serializedObject.FindProperty("inferRegions");
             queryRadius = serializedObject.FindProperty("queryRadius");
@@ -82,10 +82,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
 
                 EditorGUILayout.LabelField("Life cycle", EditorStyles.boldLabel);
                 {
-                    EditorGUILayout.PropertyField(startupBehavior);
-                    EditorGUILayout.PropertyField(firstUpdateDelay);
+                    EditorGUILayout.PropertyField(updateOnceOnLoad);
                     EditorGUILayout.PropertyField(autoUpdate);
                     EditorGUILayout.PropertyField(updateInterval);
+                    EditorGUILayout.PropertyField(firstUpdateDelay);
                 }
                 EditorGUILayout.Space();
 
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                     EditorGUILayout.PropertyField(orientScene);
                     EditorGUILayout.PropertyField(createGameObjects);
                     EditorGUILayout.PropertyField(instantiationBatchRate);
-                    EditorGUILayout.PropertyField(physicsLayer);
+                    EditorGUILayout.PropertyField(defaultPhysicsLayer);
                     EditorGUILayout.PropertyField(defaultMaterial);
                     EditorGUILayout.PropertyField(defaultWorldMeshMaterial);
                     EditorGUILayout.PropertyField(occlusionMaskResolution);

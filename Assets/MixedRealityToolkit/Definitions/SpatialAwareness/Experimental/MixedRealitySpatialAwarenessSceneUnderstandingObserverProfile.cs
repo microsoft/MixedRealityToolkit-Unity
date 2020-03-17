@@ -18,6 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         #region IMixedRealityOnDemandObserver settings
 
         [SerializeField]
+        [Tooltip("Observer will update once after initialization then require manual update thereafter.")]
+        private bool updateOnceOnLoad = false;
+        /// <summary>
+        /// Observer will update once after initialization then require manual update thereafter. Uses <see cref="FirstUpdateDelay"/> to determine when.
+        /// </summary>
+        public bool UpdateOnceOnLoad => updateOnceOnLoad;
+
+        [SerializeField]
         [Tooltip("Should the observer update on an interval or on demand?")]
         private bool autoUpdate = false;
 
@@ -34,11 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         [PhysicsLayer]
         [SerializeField]
         [Tooltip("Physics layer on which to set understood planes.")]
-        private int physicsLayer = 31;
+        private int defaultPhysicsLayer = 31;
         /// <summary>
         /// Physics layer on which to set understood planes
         /// </summary>
-        public int PhysicsLayer => physicsLayer;
+        public int DefaultPhysicsLayer => defaultPhysicsLayer;
 
         [EnumFlags]
         [SerializeField]

@@ -1,23 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Timers;
-
-using UnityEngine;
-using UnityEngine.Assertions;
 using Microsoft.MixedReality.SceneUnderstanding;
 using Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness;
-using System.Threading;
-using System.Collections.Concurrent;
-
-using Microsoft.Windows.Perception.Spatial.Preview;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.Windows.Perception.Spatial;
+using Microsoft.Windows.Perception.Spatial.Preview;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
 #if WINDOWS_UWP
@@ -34,7 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         "MixedRealityToolkit.Providers")]
     public class WindowsMixedRealitySpatialAwarenessSceneUnderstandingObserver :
         BaseSpatialObserver,
-        IMixedRealityOnDemandObserver,
         IMixedRealitySpatialAwarenessSceneUnderstandingObserver
     {
         /// <summary>
@@ -67,15 +63,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             base.Initialize();
             sceneEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>(EventSystem.current);
             CreateQuadFromExtents(normalizedQuadMesh, 1, 1);
+
+            var accessStatus = SceneObserver.RequestAccessAsync().GetAwaiter().GetResult();
+            if (accessStatus == SceneObserverAccessStatus.Allowed)
+            {
+                IsRunning = true;
+                observerState = ObserverState.Idle;
+                StartUpdateTimers();
+            }
+            else
+            {
+                Debug.LogError("Something went terribly wrong getting scene observer access!");
+            }
+
+            if (UpdateOnceOnLoad)
+            {
+                observerState = ObserverState.GetScene;
+                //doUpdateOnceOnLoad = true;
+            }
         }
 
-        /// <inheritdoc />
-        public override void Enable()
+    /// <inheritdoc />
+    public override void Enable()
         {
-            shouldAutoStart = StartupBehavior == AutoStartBehavior.AutoStart;
-
-            StartUpdateTimers();
-
             isRemoting = UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected;
 
             // This will kill the background thread when we stop in editor.
@@ -166,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         public IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects { get; set; }
         /// <inheritdoc/>
         public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
-        public int PhysicsLayer { get; set; }
         /// <inheritdoc/>
         public bool ShouldLoadFromFile { get; set; }
         /// <inheritdoc/>
@@ -258,15 +267,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private enum ObserverState
         {
             Idle = 0,
-            WaitForAccess,
             GetScene,
             GetSceneTransform,
             Working
         }
-        private ObserverState observerState = ObserverState.WaitForAccess;
+        private ObserverState observerState;
         private CancellationToken killToken;
-        private bool shouldAutoStart;
         private bool isRemoting;
+        //private bool doUpdateOnceOnLoad = false;
         private Guid sceneOriginId;
         private System.Numerics.Matrix4x4 sceneToWorldXformSystem;
         private List<SceneObject> filteredSelectedSurfaceTypesResult = new List<SceneObject>(128);
@@ -340,8 +348,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject>> OnSceneObjectAdded =
             delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessSceneObject> handler, BaseEventData eventData)
             {
-                 MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>>(eventData);
-                 handler.OnObservationAdded(spatialEventData);
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessSceneObject>>(eventData);
+                handler.OnObservationAdded(spatialEventData);
             };
 
         /// <summary>
@@ -365,7 +373,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 Interval = Math.Max(UpdateInterval, Mathf.Epsilon) * 1000.0, // convert to milliseconds
             };
 
-            updateTimer.Elapsed += UpdateTimerEventHandler;
+            updateTimer.Elapsed += (sender, e) =>
+            {
+                //if (AutoUpdate || doUpdateOnceOnLoad)
+                if (AutoUpdate)
+                {
+                        observerState = ObserverState.GetScene;
+                    //doUpdateOnceOnLoad = false;
+                }
+            };
 
             firstUpdateTimer = new System.Timers.Timer()
             {
@@ -377,11 +393,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             firstUpdateTimer.Elapsed += (sender, e) =>
             {
                 updateTimer.Start();
-
-                if (UpdateOnceOnLoad)
-                {
-                    observerState = ObserverState.GetScene;
-                }
             };
 
             firstUpdateTimer.Start();
@@ -430,23 +441,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 {
                     case ObserverState.Idle:
                         await new WaitForUpdate();
-                        continue;
-
-                    case ObserverState.WaitForAccess:
-                        await new WaitForUpdate();
-                        var task = await SceneObserver.RequestAccessAsync();
-
-                        if (StartupBehavior == AutoStartBehavior.AutoStart)
-                        {
-                            // the updateTimer is always running, this gates it internally
-                            // after UpdateInterval updateTimer will set observerState to GetScene
-                            AutoUpdate = true;
-                        }
-                        else
-                        {
-                            observerState = ObserverState.Idle;
-                        }
-
                         continue;
 
                     case ObserverState.GetScene:
@@ -713,15 +707,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
             return convertedObjects;
         }
 
-        private void UpdateTimerEventHandler(object sender, ElapsedEventArgs args)
-        {
-            if (AutoUpdate)
-            {
-                observerState = ObserverState.GetScene;
-            }
-            return;
-        }
-
         private void ReadProfile()
         {
             if (ConfigurationProfile == null)
@@ -736,8 +721,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
                 return;
             }
 
-            StartupBehavior = profile.StartupBehavior;
             AutoUpdate = profile.AutoUpdate;
+            UpdateOnceOnLoad = profile.UpdateOnceOnLoad;
             DefaultMaterial = profile.DefaultMaterial;
             DefaultWorldMeshMaterial = profile.DefaultWorldMeshMaterial;
             SurfaceTypes = profile.SurfaceTypes;
@@ -799,7 +784,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Experimental.Spatia
 
             saso.GameObject = new GameObject(surfaceTypeName)
             {
-                layer = PhysicsLayer
+                layer = DefaultPhysicsLayer
             };
 
             saso.GameObject.transform.SetParent(ObservedObjectParent.transform);

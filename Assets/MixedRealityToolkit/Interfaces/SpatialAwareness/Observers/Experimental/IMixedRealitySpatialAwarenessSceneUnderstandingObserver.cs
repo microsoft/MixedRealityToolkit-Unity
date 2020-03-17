@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// The interface for defining an <see cref="IMixedRealitySpatialAwarenessObserver"/> which provides scene data.
     /// </summary>
-    public interface IMixedRealitySpatialAwarenessSceneUnderstandingObserver : IMixedRealitySpatialAwarenessObserver
+    public interface IMixedRealitySpatialAwarenessSceneUnderstandingObserver : IMixedRealityOnDemandObserver
     {
         /// <summary>
         /// Loads the serialized scene file
@@ -22,11 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         void SaveScene(string filename);
 
-        /// <summary>
-        /// When the startup behavior is manual, call the function to perform an update
-        /// </summary>
-        void UpdateOnDemand();
-
         bool TryFindCentermostPlacement(System.Guid quadGuid, Vector2 forSize, out Vector3 bestLocationOnPlane);
 
         /// <summary>
@@ -35,8 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         IReadOnlyDictionary<System.Guid, SpatialAwarenessSceneObject> SceneObjects { get; }
 
         SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
-
-        int PhysicsLayer { get; set; }
 
         /// <summary>
         /// Number of meshes to generate per frame. Throttled to keep framerate under control.
@@ -76,11 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// The distance infer surface understanding
         /// </summary>
         float QueryRadius { get; set; }
-
-        /// <summary>
-        /// When true, automatically fetch data from the service
-        /// </summary>
-        bool AutoUpdate { get; set; }
 
         /// <summary>
         /// Configures the density of the mesh retrieved from the service
