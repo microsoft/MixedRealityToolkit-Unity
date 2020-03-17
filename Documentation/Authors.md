@@ -24,6 +24,7 @@ The Microsoft Mixed Reality Toolkit is a collaborative project containing contri
 - dfields-msft
 - Ecnassianer
 - ericob
+- FreakTheMighty
 - gejohnst
 - gilbdev
 - googlan
