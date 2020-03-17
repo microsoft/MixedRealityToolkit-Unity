@@ -1,0 +1,26 @@
+﻿<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove(MSBuildForUnity.Common.props))" Condition="Exists('$([MSBuild]::GetPathOfFileAbove(MSBuildForUnity.Common.props))')" />
+
+  <PropertyGroup Condition="'$(UnityCurrentTargetFramework)' == ''">
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(UnityCurrentTargetFramework)' != ''">
+    <TargetFramework>$(UnityCurrentTargetFramework)</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Make sure Unity ignores the contents of the output path. -->
+    <BaseIntermediateOutputPath>.obj\</BaseIntermediateOutputPath>
+    <OutputPath>.bin\</OutputPath>
+  </PropertyGroup>
+
+  <!-- Note that this is the special "NoTarget" SDK to prevent this project from producing a dll. -->
+  <Import Project="Sdk.props" Sdk="Microsoft.Build.NoTargets" Version="1.0.85" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.MixedReality.DotNetWinRT" Version="0.5.1045" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.Build.NoTargets" Version="1.0.85" />
+</Project>

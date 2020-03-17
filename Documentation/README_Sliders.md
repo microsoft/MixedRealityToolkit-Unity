@@ -6,8 +6,7 @@ Sliders are UI components that allow you to continuously change a value by movin
 
 ## Example scene
 
-You can find examples in the **SliderExample** scene under:
-[MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
+You can find examples in the **SliderExample** scene under `MRTK/Examples/Demos/UX/Slider/Scenes/`.
 
 ## How to use sliders
 
@@ -61,7 +60,7 @@ If you cannot use the handles, you can instead specify the start and end points 
 
 **Slider End Distance** Where the slider track ends, as distance from center along slider axis, in local space units.
 
-When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated. 
+When user updates the slider axis value in editor then if Track Visuals or Tick Visuals are specified then their transform is updated.
 Specifically, their local position is reset and their local rotation is set to match the Slider Axis orientation.
 Their scale isn't modified.
 If Tick Marks have a Grid Object Collection component then the Layout and CellWidth or CellHeight is updated accordingly to match the Slider Axis.

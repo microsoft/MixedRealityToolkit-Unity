@@ -174,31 +174,31 @@ $HardcodedPathExceptions = @{
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHub.unity" = @(
-        'Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHubMainMenu.unity" = @(
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slate/SlateExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
     );
 }
 
 <#
 .SYNOPSIS
-    Checks if the line contains a hardcoded path i.e. "Assets/MixedRealityToolkit.Examples"
+    Checks if the line contains a hardcoded path i.e. "Assets/MRTK/Examples"
     Hardcoded paths are generally not allowed, except in certain cases such as:
 
     - Tests cases (tests are not run by consumers of the toolkit)
@@ -268,6 +268,25 @@ function CheckForActualFile {
         # Remove .meta from path
         if (-not (Test-Path $FileName.Substring(0, $FileName.LastIndexOf('.')))) {
             Write-Warning "Actual file missing for meta file $FileName. Please be sure to check it in or remove this meta."
+            $true;
+        }
+        $false;
+    }
+}
+
+<#
+.SYNOPSIS
+    Checks if all assembly definitions have a corresponding AssemblyInfo.cs checked in.
+    Returns true if the AssemblyInfo is missing.
+#>
+function CheckForAssemblyInfo {
+    [CmdletBinding()]
+    param(
+        [string]$FileName
+    )
+    process {
+        if (-not (Test-Path (Join-Path -Path (Split-Path $FileName) -ChildPath "AssemblyInfo.cs"))) {
+            Write-Warning "AssemblyInfo.cs missing for $FileName. Please be sure to check it in alongside this asmdef."
             $true;
         }
         $false;
@@ -346,9 +365,9 @@ function CheckUnityScene {
         [string]$FileName
     )
     process {
-        # Checks if there is more than one MixedRealityPlayspace objects in each example unity scene
         $containsIssue = $false
 
+        # Checks if there is more than one MixedRealityPlayspace objects in each example unity scene
         $MatchesPlayspaces = Select-String MixedRealityPlayspace $FileName -AllMatches
         $NumPlayspaces = $MatchesPlayspaces.Matches.Count
 
@@ -362,6 +381,22 @@ function CheckUnityScene {
         }
 
         if (CheckForMetaFile $FileName) {
+            $containsIssue = $true
+        }
+
+        $containsIssue
+    }
+}
+
+function CheckAssemblyDefinition {
+    [CmdletBinding()]
+    param(
+        [string]$FileName
+    )
+    process {
+        $containsIssue = $false
+
+        if (CheckForAssemblyInfo $FileName) {
             $containsIssue = $true
         }
 
@@ -383,7 +418,8 @@ if ($ChangesFile -and (Test-Path $ChangesFile -PathType leaf)) {
         if (((IsCSharpFile -Filename $changedFile) -and (CheckScript $changedFile)) -or
             ((IsAssetFile -Filename $changedFile) -and (CheckAsset $changedFile)) -or
             ((IsUnityScene -Filename $changedFile) -and (CheckUnityScene $changedFile)) -or
-            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile))) {
+            ((IsMetaFile -Filename $changedFile) -and (CheckForActualFile $changedFile)) -or 
+            ((IsAsmDef -Filename $changedFile) -and (CheckAssemblyDefinition $changedFile))) {
             $containsIssue = $true;
         }
     }
@@ -417,6 +453,13 @@ else {
     $metas = Get-ChildItem $Directory *.meta -File -Recurse | Select-Object FullName
     foreach ($meta in $metas) {
         if (CheckForActualFile $meta.FullName) {
+            $containsIssue = $true
+        }
+    }
+
+    $asmdefs = Get-ChildItem $Directory *.asmdef -File -Recurse | Select-Object FullName
+    foreach ($asmdef in $asmdefs) {
+        if (CheckAssemblyDefinition $asmdef.FullName) {
             $containsIssue = $true
         }
     }

@@ -99,18 +99,80 @@ Omitting the namespace for an interface, class or data type will cause your chan
 
 When adding new MonoBehaviour scripts with a pull request, ensure the [`AddComponentMenu`](https://docs.unity3d.com/ScriptReference/AddComponentMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor under the *Add Component* button. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
 
-In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MixedRealityToolkit.SDK* folder, then the package will be *SDK*. If placing an item in the *MixedRealityToolkit* folder, then use *Core* as the string to insert.
+In the example below, the *Package here* should be filled with the package location of the component. If placing an item in *MRTK/SDK* folder, then the package will be *SDK*.
 
 ```c#
 [AddComponentMenu("Scripts/MRTK/{Package here}/MyNewComponent")]
 public class MyNewComponent : MonoBehaviour
 ```
 
+### Adding new Unity inspector scripts
+
+In general, try to avoid creating custom inspector scripts for MRTK components. It adds additional overhead and management of the codebase that could be handled by the Unity engine. 
+
+If an inspector class is necessary, try to use Unity's [`DrawDefaultInspector()`](https://docs.unity3d.com/ScriptReference/Editor.DrawDefaultInspector.html). This again simplifies the inspector class and leaves much of the work to Unity.
+
+```c#
+public override void OnInspectorGUI()
+{
+    // Do some custom calculations or checks
+    // ....
+    DrawDefaultInspector();
+}
+```
+
+If custom rendering is required in the inspector class, try to utilize [`SerializedProperty`](https://docs.unity3d.com/ScriptReference/SerializedProperty.html) and [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html). This will ensure Unity correctly handles rendering nested prefabs and modified values. 
+
+If [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html) cannot be used due to a requirement in custom logic, ensure all usage is wrapped around a [`EditorGUI.PropertyScope`](https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyScope.html). This will ensure Unity renders the inspector correctly for nested prefabs and modified values with the given property. 
+
+Furthermore, try to decorate the custom inspector class with a [`CanEditMultipleObjects`](https://docs.unity3d.com/ScriptReference/CanEditMultipleObjects.html). This tag ensure multiple objects with this component in the scene can be selected and modified together. Any new inspector classes should test that their code works in this situation in the scene.
+
+```c#
+    // Example inspector class demonstrating usage of SerializedProperty & EditorGUILayout.PropertyField
+    // as well as use of EditorGUI.PropertyScope for custom property logic
+    [CustomEditor(typeof(MyComponent))]
+    public class MyComponentInspector : UnityEditor.Editor
+    {
+        private SerializedProperty myProperty;
+        private SerializedProperty handedness;
+
+        protected virtual void OnEnable()
+        {
+            myProperty = serializedObject.FindProperty("myProperty");
+            handedness = serializedObject.FindProperty("handedness");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            EditorGUILayout.PropertyField(destroyOnSourceLost);
+
+            Rect position = EditorGUILayout.GetControlRect();
+            var label = new GUIContent(handedness.displayName);
+            using (new EditorGUI.PropertyScope(position, label, handedness))
+            {
+                var currentHandedness = (Handedness)handedness.enumValueIndex;
+
+                handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(
+                    position, 
+                    label, 
+                    currentHandedness,
+                    (value) => { 
+                        // This function is executed by Unity to determine if a possible enum value
+                        // is valid for selection in the editor view
+                        // In this case, only Handedness.Left and Handedness.Right can be selected
+                        return (Handedness)value == Handedness.Left 
+                        || (Handedness)value == Handedness.Right; 
+                    });
+            }
+        }
+    }
+```
+
 ### Adding new ScriptableObjects
 
 When adding new ScriptableObject scripts, ensure the [`CreateAssetMenu`](https://docs.unity3d.com/ScriptReference/CreateAssetMenu.html) attribute is applied to all applicable files. This ensures the component is easily discoverable in the editor via the asset creation menus. The attribute flag is not necessary if the component cannot show up in editor such as an abstract class.
 
-In the example below, the *Subfolder* should be filled with the MRTK subfolder, if applicable. If placing an item in *MixedRealityToolkit.Providers* folder, then the package will be *Providers*. If placing an item in the *MixedRealityToolkit* folder, set this to "Profiles".
+In the example below, the *Subfolder* should be filled with the MRTK subfolder, if applicable. If placing an item in *MRTK/Providers* folder, then the package will be *Providers*. If placing an item in the *MRTK/Core* folder, set this to "Profiles".
 
 In the example below, the *MyNewService | MyNewProvider* should be filled with the your new class' name, if applicable. If placing an item in the *MixedRealityToolkit* folder, leave this string out.
 
@@ -405,6 +467,36 @@ public enum Handedness
     Right = 1 << 1,
     Both = Left | Right
 }
+```
+
+### Hard-coded file paths
+
+When generating string file paths, and in particular writing hard-coded string paths, do the following:
+
+1. Use C#'s [`Path` APIs](https://docs.microsoft.com/en-us/dotnet/api/system.io.path?view=netframework-4.8) whenever possible such as `Path.Combine` or `Path.GetFullPath`.
+1. Use / or [`Path.DirectorySeparatorChar`](https://docs.microsoft.com/en-us/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8) instead of \ or \\\\.
+
+These steps ensure that MRTK works on both Windows and Unix-based systems.
+
+### Don't
+
+```c#
+private const string Filepath = "Mypath\\to\\a\\file.txt";
+private const string OtherFilePath = "Mypath\to\a\file.txt";
+
+string filePath = myVarRootPath + myRelativePath;
+```
+
+### Do
+
+```c#
+private const string Filepath = "Mypath/to/a/file.txt";
+private const string OtherFilePath = "folder{Path.DirectorySeparatorChar}file.txt";
+
+string filePath = Path.Combine(myVarRootPath,myRelativePath);
+
+// Path.GetFullPath() will return the full length path of provided with correct system directory separators
+string cleanedFilePath = Path.GetFullPath(unknownSourceFilePath);
 ```
 
 ## Best practices, including Unity recommendations

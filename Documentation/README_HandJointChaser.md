@@ -5,7 +5,7 @@ This example scene demonstrates how to use Solver to attach objects to the hand 
 
 ## Example scene
 
-You can find the example scene **HandJointChaserExample** scene in the MixedRealityToolkit.Examples package under `Demos/Input/Scenes/`.
+You can find the example scene **HandJointChaserExample** scene in the `Assets/MRTK/Examples` folder under `Demos/Input/Scenes/`.
 
 ## Solver handler
 

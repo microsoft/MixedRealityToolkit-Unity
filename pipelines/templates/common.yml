@@ -1,5 +1,6 @@
 # [Template] Common build tasks shared between CI builds and PR validation.
 parameters:
+  UnityVersion: ""
   buildStandalone: true
   buildUWPArm: true
   buildUWPDotNet: true
@@ -40,11 +41,14 @@ steps:
     parameters:
       Arch: 'x86'
       Platform: 'Standalone'
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Tests should run earlier in the process, so that engineers can get test failure
 # notifications earlier in the CI process.
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
+    parameters:
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP x86
 - ${{ if eq(parameters.buildUWPX86, true) }}:
@@ -53,6 +57,7 @@ steps:
       Arch: 'x86'
       Platform: 'UWP'
       PublishArtifacts: true
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP ARM
 - ${{ if eq(parameters.buildUWPArm, true) }}:
@@ -62,6 +67,7 @@ steps:
       Platform: 'UWP'
       PublishArtifacts: true
       PackagingDir: 'ARM'
+      UnityVersion: ${{ parameters.UnityVersion }}
 
 # Build UWP x86 .NET backend
 - ${{ if eq(parameters.buildUWPDotNet, true) }}:
@@ -71,3 +77,4 @@ steps:
       Platform: 'UWP'
       PublishArtifacts: true
       ScriptingBackend: '.NET'
+      UnityVersion: ${{ parameters.UnityVersion }}

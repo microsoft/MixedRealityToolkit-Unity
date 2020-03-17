@@ -1,12 +1,112 @@
 # Updating the Microsoft Mixed Reality Toolkit
 
-- [2.1.0 to 2.2.0](#updating-210-to-220)
+- [Upgrading to a new version of MRTK](#upgrading-to-a-new-version-of-mrtk)
+- [2.3.0 to 2.4.0](#updating-230-to-240)
 - [2.2.0 to 2.3.0](#updating-220-to-230)
+- [2.1.0 to 2.2.0](#updating-210-to-220)
 - [2.0.0 to 2.1.0](#updating-200-to-210)
 - [RC2 to 2.0.0](#updating-rc2-to-200)
 
+## Upgrading to a new version of MRTK
+
+The 2.4.0 release has some changes that may impact application projects. Breaking change details, including mitigation guidance, can be found in the [**Updating 2.3.0 to 2.4.0**](Updating.md#updating-230-to-240) article.
+
 > [!NOTE]
-> Instructions to properly migrate to the latest version of the Mixed Reality Toolkit are documented in the [release notes](ReleaseNotes.md) for each version.
+> At this time, it is not supported to switch between using .unitypackage files and NuGet.
+
+### Unity asset (.unitypackage) files
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Inside the *Assets* folder, delete most of the **MixedRealityToolkit** folders, along with their .meta files (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting these folders.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Staging
+    > [!NOTE]
+    > The contents of the MixedRealityToolkit.Staging folder have been moved into the MixedRealityToolkit.Providers folder in MRTK 2.3.0.
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder, or its .meta file.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy. This will delete the main camera, but it will be re-created in the next step. If any properties of the main camera have been manually changed, these will have to be re-applied manually once the new camera is created.
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom controller mapping profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+### NuGet packages
+
+If your project was created using the [Mixed Reality Toolkit NuGet packages](MRTKNuGetPackage.md), please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Close and re-open the project in Unity
+
+## Updating 2.3.0 to 2.4.0
+
+[Folder renames](#folder-renames-in-240)
+[API changes](#api-changes-in-240)
+
+### Folder renames in 2.4.0
+
+The MixedRealityToolkit folders have been renamed and moved into a common hierarchy in version 2.4. If an application
+uses hard coded paths to MRTK resources, they will need to be updated per the following table.
+
+| Previous Folder | New Folder |
+| --- | --- |
+| MixedRealityToolkit | MRTK/Core |
+| MixedRealityToolkit.Examples | MRTK/Examples |
+| MixedRealityToolkit.Extensions | MRTK/Extensions |
+| MixedRealityToolkit.Providers | MRTK/Providers |
+| MixedRealityToolkit.SDK | MRTK/SDK |
+| MixedRealityToolkit.Services | MRTK/Services |
+| MixedRealityToolkit.Tests | MRTK/Tests |
+| MixedRealityToolkit.Tools | MRTK/Tools |
+
+> [!IMPORTANT]
+> The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
+
+### API changes in 2.4.0
+
+**Custom controller classes**
+
+Custom controller classes previously had to define `SetupDefaultInteractions(Handedness)`. This method has been made obsolete in 2.4, as the handedness parameter was redundant with the controller class' own handedness. The new method has no parameters. Additionally, many controller classes defined this the same way (`AssignControllerMappings(DefaultInteractions);`), so the full call has been refactored down into `BaseController` and made an optional override instead of required.
+
+**WindowsApiChecker properties**
+
+The following WindowsApiChecker properties have been marked as obsolete. Please use `IsMethodAvilable`, `IsPropertyAvailable` or `IsTypeAvailable`.
+
+- UniversalApiContractV8_IsAvailable
+- UniversalApiContractV7_IsAvailable
+- UniversalApiContractV6_IsAvailable
+- UniversalApiContractV5_IsAvailable
+- UniversalApiContractV4_IsAvailable
+- UniversalApiContractV3_IsAvailable
+
+There are no plans to add properties to WindowsApiChecker for future API contract versions.
 
 ## Updating 2.2.0 to 2.3.0
 
@@ -14,11 +114,59 @@
 
 ### API changes in 2.3.0
 
-#### ScriptingUtilities.cs
+**ControllerPoseSynchronizer**
 
-The ScriptingUtilities.cs file was moved from the MixedRealityToolkit\Utilities folder to MixedRealityToolkit\Utilities\Editor. As a result, the class has been moved to the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly.
+The private ControllerPoseSynchronizer.handedness field has been marked as obsolete. This should have minimal impact on applications as the field is not visible outside of its class.
 
-In addition, the `AppendScriptingDefinitions` method has a new signature.  It no longer takes the fileName argument.
+The public ControllerPoseSynchronizer.Handedness property's setter has been removed ([#7012](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7012)). 
+
+**MSBuild for Unity**
+
+This version of MRTK uses a newer version of MSBuild for Unity than previous releases. During project load, if the older version is listed in the Unity Package Manger
+manifest, the configuration dialog will appear, with the Enable MSBuild for Unity option checked. Applying will perform an upgrade.
+
+**ScriptingUtilities**
+
+The ScriptingUtilities class has been marked as obsolete and has been replaced by ScriptUtilities, in the Microsoft.MixedReality.Toolkit.Editor.Utilities assembly. The new class refines previous behavior and adds support for removing scripting definitions.
+
+While existing code will continue to function in version 2.3.0, it is recommended to update to the new class.
+
+**ShellHandRayPointer**
+
+The lineRendererSelected and lineRendererNoTarget members of the ShellHandRayPointer class have been replaced by lineMaterialSelected and lineMaterialNoTarget, respectively ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6863)).
+
+Please replace lineRendererSelected with lineMaterialSelected and/or lineRendererNoTarget with lineMaterialNoTarget to resolve compile errors.
+
+**Spatial observer StarupBehavior**
+
+Spatial observers built upon the `BaseSpatialObserver` class now honor the value of StartupBehavior when re-enabled ([#6919](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6919)).
+
+No changes are required to take advantage of this fix.
+
+**UX control prefabs updated to use PressableButton**
+
+The following prefabs are now using the PressableButton component instead of TouchHandler for near interaction ([7070](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/7070))
+
+- AnimationButton
+- Button
+- ButtonHoloLens1
+- ButtonHoloLens1Toggle
+- CheckBox
+- RadialSet
+- ToggleButton
+- ToggleSwitch
+- UnityUIButton
+- UnityUICheckboxButton
+- UnityUIRadialButton
+- UnityUIToggleButton
+
+Application code may require updating due to this change.
+
+**WindowsMixedRealityUtilities namespace**
+
+The namespace of WindowsMixedRealityUtilities changed from Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input to Microsoft.MixedReality.Toolkit.WindowsMixedReality ([#6863](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6989)).
+
+Please update #using statements to resolve compile errors.
 
 ## Updating 2.1.0 to 2.2.0
 
@@ -26,11 +174,11 @@ In addition, the `AppendScriptingDefinitions` method has a new signature.  It no
 
 ### API changes in 2.2.0
 
-#### IMixedRealityBoundarySystem.Contains
+**IMixedRealityBoundarySystem.Contains**
 
 This method previously took in a specific, Unity-defined experimental enum. It now takes in an MRTK-defined enum that's identical to the Unity enum. This change helps prepare the MRTK for Unity's future boundary APIs.
 
-#### MixedRealityServiceProfileAttribute
+**MixedRealityServiceProfileAttribute**
 
 To better describe the requirements for supporting a profile, the MixedRealityServiceProfileAttribute has been updated to add an optional collection of excluded types. As part of this change, the ServiceType property has been changed from Type to Type[] and been renamed to RequiredTypes.
 

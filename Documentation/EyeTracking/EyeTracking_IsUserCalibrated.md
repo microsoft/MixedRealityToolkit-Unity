@@ -16,13 +16,13 @@ This page covers the following:
 
 ### How to detect the eye calibration state
 
-The [MixedRealityToolkit.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
+The [CoreServices.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
 It returns null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
 ### Sample eye calibration notification - step-by-step
 
-1. Open the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking)
+1. Open the MRTK eye tracking example package (Assets/MRTK/Examples/Demos/EyeTracking)
 
 2. Load _EyeTrackingDemo-00-RootScene.unity_ scene
 

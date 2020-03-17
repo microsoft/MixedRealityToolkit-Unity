@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f279aded72cb741b4de89a54359dd4, type: 3}
+  m_Name: TestMixedRealitySpatialAwarenessSystemProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 0
+  observerConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.Tests.EditMode.Services.TestSpatialAwarenessDataProvider,
+        Microsoft.MixedReality.Toolkit.Tests.EditModeTests
+    componentName: Test Spatial Awareness Data Provider
+    priority: 0
+    runtimePlatform: -1
+    observerProfile: {fileID: 11400000, guid: 8be0bcd2117dd214da41ed98f0def2e3, type: 2}
