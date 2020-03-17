@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             set { descriptionText = value; }
         }
 
-        /// < inheritdoc / >
+        /// <inheritdoc />
         protected override void FinalizeLayout()
         {
         }
