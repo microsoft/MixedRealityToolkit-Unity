@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ForceTextSerialization,
             VisibleMetaFiles,
             VirtualRealitySupported,
-            [Obsolete("SinglePassInstancing is obsolete, use SinglePass instead")]
+            [Obsolete("SinglePassInstancing is obsolete, use OptimalRenderingPath instead")]
             SinglePassInstancing = 5,
             OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
