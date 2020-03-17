@@ -170,14 +170,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167935244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0899, y: -0.15, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.064, z: -0.035299}
+  m_LocalScale: {x: 2.2003279, y: 2.2003279, z: 2.2003279}
   m_Children:
   - {fileID: 540369140}
   - {fileID: 837362921}
   - {fileID: 1388026288}
   - {fileID: 1090116488}
-  m_Father: {fileID: 198949298}
+  m_Father: {fileID: 697440977}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &167935246
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167935244}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
   m_Name: 
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167935244}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
@@ -303,8 +303,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 697440977}
   - {fileID: 769440710}
-  - {fileID: 167935245}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -384,11 +384,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 167935245}
     m_Modifications:
-    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHoloLens2_32x96
-      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -444,20 +439,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 769440711}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenConfirmationDialogLarge
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: PressableButtonHoloLens2_32x96
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -495,6 +480,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 769440711}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenConfirmationDialogLarge
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 721660114511089077, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -538,6 +538,164 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
     type: 3}
   m_PrefabInstance: {fileID: 540369139}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &697440976
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 198949298}
+    m_Modifications:
+    - target: {fileID: 1951033628531078, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.762
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 114107642412081004, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Dialog Example
+      objectReference: {fileID: 0}
+    - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: 'This scene demonstrates use of the Dialog control. DialogExampleController.cs
+        shows how to open Dialog controls in the code. You can specify the title,
+        description text, and the placement location - near or far. Use near placement
+        option for HoloLens 2.
+
+
+
+
+        DialogLarge_192x192.prefab
+
+        DialogMedium_192x96.prefab
+
+
+
+
+        Use these buttons to open dialog examples
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Usage
+      objectReference: {fileID: 0}
+    - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Dialog Prefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1054075472835142, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171793634254456, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114186135864427680, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Dialog Examples
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866669652097362, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866669652097362, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 4866669652097362, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774059059315698, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1397
+      objectReference: {fileID: 0}
+    - target: {fileID: 4774059059315698, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7051046
+      objectReference: {fileID: 0}
+    - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: 'HoloLens, HoloLens 2
+
+        Windows Mixed Reality
+
+        Open VR'
+      objectReference: {fileID: 0}
+    - target: {fileID: 224748019550390170, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.4097
+      objectReference: {fileID: 0}
+    - target: {fileID: 224748019550390170, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110.2064
+      objectReference: {fileID: 0}
+    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.165
+      objectReference: {fileID: 0}
+    - target: {fileID: 224963507392718102, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.064
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+--- !u!4 &697440977 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4753320988497866, guid: a900c08743a94c328074df8bbe3eb63c,
+    type: 3}
+  m_PrefabInstance: {fileID: 697440976}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &720845022
 GameObject:
@@ -710,7 +868,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 198949298}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &769440711
 MonoBehaviour:
@@ -735,11 +893,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 167935245}
     m_Modifications:
-    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHoloLens2_32x96 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -795,20 +948,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 769440711}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenChoiceDialogLarge
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: PressableButtonHoloLens2_32x96 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -846,6 +989,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 769440711}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenChoiceDialogLarge
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 721660114511089077, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -897,11 +1055,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 167935245}
     m_Modifications:
-    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHoloLens2_32x96 (3)
-      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -957,20 +1110,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 769440711}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenChoiceDialogMedium
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: PressableButtonHoloLens2_32x96 (3)
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -1008,6 +1151,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 769440711}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenChoiceDialogMedium
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 721660114511089077, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -1059,11 +1217,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 167935245}
     m_Modifications:
-    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHoloLens2_32x96 (2)
-      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1119,20 +1272,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+    - target: {fileID: 3126786008848669196, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 769440711}
-    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenConfirmationDialogMedium
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
+      propertyPath: m_Name
+      value: PressableButtonHoloLens2_32x96 (2)
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193212, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -1170,6 +1313,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_firstOverflowCharacterIndex
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 769440711}
+    - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenConfirmationDialogMedium
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 721660114511089077, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
