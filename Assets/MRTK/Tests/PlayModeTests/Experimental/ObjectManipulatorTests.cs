@@ -1251,6 +1251,78 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             TestUtilities.AssertAboutEqual(Quaternion.identity, testObject.transform.rotation, "Object moved after it was disabled");
         }
+
+        /// <summary>
+        /// TODO: This test should move into base cursor tests once object manipulator graduates
+        /// Tests the Cursor context object manipulator - makes sure cursor context is shown when
+        /// an object is manipulated by object manipulator
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CursorContextObjectManipulatorMove()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.localPosition = new Vector3(0, 0, 2);
+            cube.transform.localScale = new Vector3(.2f, .2f, .2f);
+
+            var collider = cube.GetComponentInChildren<Collider>();
+            Assert.IsNotNull(collider);
+
+            // The cube needs to be moved from under the gaze cursor before we add the manipulation handler.
+            // Because the cube is under the gaze cursor from the beginning, it gets a focus gained event
+            // in Setup(). When we show the right hand, we get a focus lost event from the gaze pointer. 
+            // This messes with the CursorContextManipulationHandler hoverCount, as it decrements without
+            // ever having incremented. To avoid this, we move the cube out of focus before we add the
+            // ManipulationHandler and CursorContextManipulationHandler.
+            cube.transform.localPosition = new Vector3(0, -2, 2);
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            ObjectManipulator manipulationHandler = cube.AddComponent<ObjectManipulator>();
+            CursorContextObjectManipulator cursorContextManipulationHandler = cube.AddComponent<CursorContextObjectManipulator>();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Move cube back to original position (described above)
+            cube.transform.localPosition = new Vector3(0, 0, 2);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+
+            // Show right hand on object
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 rightPos = new Vector3(0.05f, 0, 1.5f);
+            yield return rightHand.Show(rightPos);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+            BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
+
+            // Pinch right hand
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            // Show left hand on object
+            var leftHand = new TestHand(Handedness.Left);
+            Vector3 leftPos = new Vector3(-0.05f, 0, 1.5f);
+            yield return rightHand.Hide();
+            yield return leftHand.Show(leftPos);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.None);
+
+            // Pinch left hand
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            // Show both hands on object
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return rightHand.Show(rightPos);
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
+
+            UnityEngine.Object.Destroy(cursorContextManipulationHandler);
+            UnityEngine.Object.Destroy(manipulationHandler);
+        }
     }
 }
 #endif
