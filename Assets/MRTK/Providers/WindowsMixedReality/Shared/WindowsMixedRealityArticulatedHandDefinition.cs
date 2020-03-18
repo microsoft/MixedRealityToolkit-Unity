@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -21,9 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         public WindowsMixedRealityArticulatedHandDefinition(IMixedRealityInputSource source, Handedness handedness) : base(source, handedness) { }
 
 #if WINDOWS_UWP
-        private Vector2[] handMeshUVs = null;
         private HandMeshObserver handMeshObserver = null;
-        private int[] handMeshTriangleIndices = null;
+
+        private ushort[] handMeshTriangleIndices = null;
+        private HandMeshVertex[] vertexAndNormals = null;
+
+        private Vector3[] handMeshVerticesUnity = null;
+        private Vector3[] handMeshNormalsUnity = null;
+        private int[] handMeshTriangleIndicesUnity = null;
+        private Vector2[] handMeshUVsUnity = null;
+
         private bool hasRequestedHandMeshObserver = false;
 
         private async void SetHandMeshObserver(SpatialInteractionSourceState sourceState)
@@ -57,13 +65,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 
             float scale = 1.0f / (maxY - minY);
 
-            handMeshUVs = new Vector2[neutralPoseVertices.Length];
+            handMeshUVsUnity = new Vector2[neutralPoseVertices.Length];
 
             for (int ix = 0; ix < neutralPoseVertices.Length; ix++)
             {
                 Vector3 p = neutralPoseVertices[ix];
 
-                handMeshUVs[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
+                handMeshUVsUnity[ix] = new Vector2(p.x * scale + 0.5f, (p.y - minY) * scale);
             }
         }
 
@@ -103,64 +111,70 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 hasRequestedHandMeshObserver = true;
             }
 
-            if (handMeshObserver != null && handMeshTriangleIndices == null)
+            if (handMeshObserver != null && handPose != null)
             {
-                uint indexCount = handMeshObserver.TriangleIndexCount;
-                ushort[] indices = new ushort[indexCount];
-                handMeshObserver.GetTriangleIndices(indices);
-                handMeshTriangleIndices = new int[indexCount];
-                Array.Copy(indices, handMeshTriangleIndices, (int)handMeshObserver.TriangleIndexCount);
-
-                // Compute neutral pose
-                Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
-                HandPose neutralPose = handMeshObserver.NeutralPose;
-                var vertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
-                HandMeshVertexState handMeshVertexState = handMeshObserver.GetVertexStateForPose(neutralPose);
-                handMeshVertexState.GetVertices(vertexAndNormals);
-
-                for (int i = 0; i < handMeshObserver.VertexCount; i++)
+                if (handMeshTriangleIndices == null)
                 {
-                    neutralPoseVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
+                    handMeshTriangleIndices = new ushort[handMeshObserver.TriangleIndexCount];
+                    handMeshTriangleIndicesUnity = new int[handMeshObserver.TriangleIndexCount];
+                    handMeshObserver.GetTriangleIndices(handMeshTriangleIndices);
+
+                    Array.Copy(handMeshTriangleIndices, handMeshTriangleIndicesUnity, (int)handMeshObserver.TriangleIndexCount);
+
+                    // Compute neutral pose
+                    Vector3[] neutralPoseVertices = new Vector3[handMeshObserver.VertexCount];
+                    HandPose neutralPose = handMeshObserver.NeutralPose;
+                    var neutralVertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
+                    HandMeshVertexState handMeshVertexState = handMeshObserver.GetVertexStateForPose(neutralPose);
+                    handMeshVertexState.GetVertices(neutralVertexAndNormals);
+                    
+                    Parallel.For(0, handMeshObserver.VertexCount, i =>
+                    {
+                        neutralVertexAndNormals[i].Position.ConvertToUnityVector3(ref neutralPoseVertices[i]);
+                    });
+
+                    // Compute UV mapping
+                    InitializeUVs(neutralPoseVertices);
                 }
 
-                // Compute UV mapping
-                InitializeUVs(neutralPoseVertices);
-            }
-
-            if (handPose != null && handMeshObserver != null && handMeshTriangleIndices != null)
-            {
-                var vertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
-                var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
-                handMeshVertexState.GetVertices(vertexAndNormals);
-
-                var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
-                if (meshTransform.HasValue)
+                if (vertexAndNormals == null)
                 {
-                    System.Numerics.Vector3 scale;
-                    System.Numerics.Quaternion rotation;
-                    System.Numerics.Vector3 translation;
-                    System.Numerics.Matrix4x4.Decompose(meshTransform.Value, out scale, out rotation, out translation);
+                    vertexAndNormals = new HandMeshVertex[handMeshObserver.VertexCount];
+                    handMeshVerticesUnity = new Vector3[handMeshObserver.VertexCount];
+                    handMeshNormalsUnity = new Vector3[handMeshObserver.VertexCount];
+                }
 
-                    var handMeshVertices = new Vector3[handMeshObserver.VertexCount];
-                    var handMeshNormals = new Vector3[handMeshObserver.VertexCount];
+                if (vertexAndNormals != null && handMeshTriangleIndices != null)
+                {
+                    var handMeshVertexState = handMeshObserver.GetVertexStateForPose(handPose);
+                    handMeshVertexState.GetVertices(vertexAndNormals);
 
-                    for (int i = 0; i < handMeshObserver.VertexCount; i++)
+                    var meshTransform = handMeshVertexState.CoordinateSystem.TryGetTransformTo(WindowsMixedRealityUtilities.SpatialCoordinateSystem);
+                    if (meshTransform.HasValue)
                     {
-                        handMeshVertices[i] = vertexAndNormals[i].Position.ToUnityVector3();
-                        handMeshNormals[i] = vertexAndNormals[i].Normal.ToUnityVector3();
+                        System.Numerics.Matrix4x4.Decompose(meshTransform.Value, 
+                            out System.Numerics.Vector3 scale, 
+                            out System.Numerics.Quaternion rotation,
+                            out System.Numerics.Vector3 translation);
+
+                        Parallel.For(0, handMeshObserver.VertexCount, i =>
+                        {
+                            vertexAndNormals[i].Position.ConvertToUnityVector3(ref handMeshVerticesUnity[i]);
+                            vertexAndNormals[i].Normal.ConvertToUnityVector3(ref handMeshNormalsUnity[i]);
+                        });
+                        
+                        HandMeshInfo handMeshInfo = new HandMeshInfo
+                        {
+                            vertices = handMeshVerticesUnity,
+                            normals = handMeshNormalsUnity,
+                            triangles = handMeshTriangleIndicesUnity,
+                            uvs = handMeshUVsUnity,
+                            position = translation.ToUnityVector3(),
+                            rotation = rotation.ToUnityQuaternion()
+                        };
+
+                        CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                     }
-
-                    HandMeshInfo handMeshInfo = new HandMeshInfo
-                    {
-                        vertices = handMeshVertices,
-                        normals = handMeshNormals,
-                        triangles = handMeshTriangleIndices,
-                        uvs = handMeshUVs,
-                        position = translation.ToUnityVector3(),
-                        rotation = rotation.ToUnityQuaternion()
-                    };
-
-                    CoreServices.InputSystem?.RaiseHandMeshUpdated(inputSource, handedness, handMeshInfo);
                 }
             }
         }

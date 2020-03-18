@@ -22,6 +22,6 @@ Alternatively, developers can implement the [`IMixedRealitySpeechHandler`](xref:
 
 ## Example scene
 
-The **SpeechInputExample** scene, in `MixedRealityToolkit.Examples\Demos\Input\Scenes\Speech`, shows how to use speech. You can also listen to speech command events directly in your own script by implementing [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) (see table of [event handlers](InputEvents.md)).
+The **SpeechInputExample** scene, in `MRTK/Examples/Demos/Input/Scenes/Speech`, shows how to use speech. You can also listen to speech command events directly in your own script by implementing [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) (see table of [event handlers](InputEvents.md)).
 
 <img src="../../Documentation/Images/Input/SpeechExampleScene.png" width="750px">

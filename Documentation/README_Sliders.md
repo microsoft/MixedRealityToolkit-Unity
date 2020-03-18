@@ -6,8 +6,7 @@ Sliders are UI components that allow you to continuously change a value by movin
 
 ## Example scene
 
-You can find examples in the **SliderExample** scene under:
-[MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/](/Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes)
+You can find examples in the **SliderExample** scene under `MRTK/Examples/Demos/UX/Slider/Scenes/`.
 
 ## How to use sliders
 

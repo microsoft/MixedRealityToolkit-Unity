@@ -98,70 +98,63 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         // The check functions for each type of setting
         private static readonly Dictionary<Configurations, ConfigGetter> ConfigurationGetters = new Dictionary<Configurations, ConfigGetter>()
         {
-            { Configurations.LatestScriptingRuntime, new ConfigGetter(() => { return IsLatestScriptingRuntime(); }) },
-            { Configurations.ForceTextSerialization, new ConfigGetter(() => { return IsForceTextSerialization(); }) },
-            { Configurations.VisibleMetaFiles, new ConfigGetter(() => { return IsVisibleMetaFiles(); }) },
-            { Configurations.VirtualRealitySupported, new ConfigGetter(() => { return XRSettingsUtilities.LegacyXREnabled; }) },
-            { Configurations.OptimalRenderingPath,  new ConfigGetter(() => { return MixedRealityOptimizeUtils.IsOptimalRenderingPath(); }) },
-            { Configurations.SpatialAwarenessLayer, new ConfigGetter(() => { return HasSpatialAwarenessLayer(); }) },
+            { Configurations.LatestScriptingRuntime, new ConfigGetter(IsLatestScriptingRuntime) },
+            { Configurations.ForceTextSerialization, new ConfigGetter(IsForceTextSerialization) },
+            { Configurations.VisibleMetaFiles, new ConfigGetter(IsVisibleMetaFiles) },
+            { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
+            { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
+            { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.EnableMSBuildForUnity, new ConfigGetter(() => { return PackageManifestUpdater.IsMSBuildForUnityEnabled(); }, BuildTarget.WSAPlayer) },
+            { Configurations.EnableMSBuildForUnity, new ConfigGetter(PackageManifestUpdater.IsMSBuildForUnityEnabled, BuildTarget.WSAPlayer) },
 #endif // !UNITY_2019_3_OR_NEWER
 
             // UWP Capabilities
-            { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.SpatialPerception); }, BuildTarget.WSAPlayer) },
-            { Configurations.MicrophoneCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.Microphone); }, BuildTarget.WSAPlayer) },
-            { Configurations.InternetClientCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.InternetClient); }, BuildTarget.WSAPlayer) },
+            { Configurations.SpatialPerceptionCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.SpatialPerception), BuildTarget.WSAPlayer) },
+            { Configurations.MicrophoneCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.Microphone), BuildTarget.WSAPlayer) },
+            { Configurations.InternetClientCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.InternetClient), BuildTarget.WSAPlayer) },
 #if UNITY_2019_3_OR_NEWER
-            { Configurations.EyeTrackingCapability, new ConfigGetter(() => { return GetCapability(PlayerSettings.WSACapability.GazeInput); }, BuildTarget.WSAPlayer) },
+            { Configurations.EyeTrackingCapability, new ConfigGetter(() => GetCapability(PlayerSettings.WSACapability.GazeInput), BuildTarget.WSAPlayer) },
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
-            { Configurations.AndroidMultiThreadedRendering, 
-                new ConfigGetter(() => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; }, BuildTarget.Android) },
-            { Configurations.AndroidMinSdkVersion,
-                new ConfigGetter(() => { return PlayerSettings.Android.minSdkVersion >= MinAndroidSdk; }, BuildTarget.Android) },
+            { Configurations.AndroidMultiThreadedRendering, new ConfigGetter(() => !PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android), BuildTarget.Android) },
+            { Configurations.AndroidMinSdkVersion, new ConfigGetter(() =>  PlayerSettings.Android.minSdkVersion >= MinAndroidSdk, BuildTarget.Android) },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, new ConfigGetter(() => {
-                    float version;
-                    if (!float.TryParse(PlayerSettings.iOS.targetOSVersionString, out version)) { return false; }
-                    return version >= iOSMinOsVersion; }, BuildTarget.iOS) },
-            { Configurations.IOSArchitecture, 
-                new ConfigGetter(() => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture; }, BuildTarget.iOS) },
-            { Configurations.IOSCameraUsageDescription, 
-                new ConfigGetter(() => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); }, BuildTarget.iOS) },
+            { Configurations.IOSMinOSVersion, new ConfigGetter(() => float.TryParse(PlayerSettings.iOS.targetOSVersionString, out float version) ? version >= iOSMinOsVersion : false, BuildTarget.iOS) },
+            { Configurations.IOSArchitecture, new ConfigGetter(() => PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture, BuildTarget.iOS) },
+            { Configurations.IOSCameraUsageDescription, new ConfigGetter(() => !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription), BuildTarget.iOS) },
         };
 
         // The configure functions for each type of setting
         private static readonly Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
         {
-            { Configurations.LatestScriptingRuntime, () => { SetLatestScriptingRuntime(); } },
-            { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
-            { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
-            { Configurations.VirtualRealitySupported,  () => { XRSettingsUtilities.LegacyXREnabled = true; } },
-            { Configurations.OptimalRenderingPath,  () => { MixedRealityOptimizeUtils.SetOptimalRenderingPath(); } },
-            { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
+            { Configurations.LatestScriptingRuntime,SetLatestScriptingRuntime },
+            { Configurations.ForceTextSerialization, SetForceTextSerialization },
+            { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
+            { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
+            { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
+            { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
 #if !UNITY_2019_3_OR_NEWER
-            { Configurations.EnableMSBuildForUnity, () => { PackageManifestUpdater.EnsureMSBuildForUnity(); } },
+            { Configurations.EnableMSBuildForUnity, PackageManifestUpdater.EnsureMSBuildForUnity },
 #endif // !UNITY_2019_3_OR_NEWER
 
             // UWP Capabilities
-            { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
-            { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
-            { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
+            { Configurations.SpatialPerceptionCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true) },
+            { Configurations.MicrophoneCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true) },
+            { Configurations.InternetClientCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true) },
 #if UNITY_2019_3_OR_NEWER
-            { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
+            { Configurations.EyeTrackingCapability,  () => PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true) },
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
-            { Configurations.AndroidMultiThreadedRendering, () => { PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false); } },
-            { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
+            { Configurations.AndroidMultiThreadedRendering, () => PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false) },
+            { Configurations.AndroidMinSdkVersion, () => PlayerSettings.Android.minSdkVersion = MinAndroidSdk },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1"); } },
-            { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture); } },
-            { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription; } },
+            { Configurations.IOSMinOSVersion, () => PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString("n1") },
+            { Configurations.IOSArchitecture, () => PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture) },
+            { Configurations.IOSCameraUsageDescription, () => PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription },
         };
 
         /// <summary>

@@ -157,7 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (handMeshFilter == null &&
+            bool newMesh = handMeshFilter == null;
+
+            if (newMesh &&
                 CoreServices.InputSystem?.InputSystemProfile != null &&
                 CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile != null &&
                 CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab != null)
@@ -185,12 +187,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 mesh.vertices = eventData.InputData.vertices;
                 mesh.normals = eventData.InputData.normals;
-                mesh.triangles = eventData.InputData.triangles;
                 lastHandMeshVertices = eventData.InputData.vertices;
 
-                if (eventData.InputData.uvs != null && eventData.InputData.uvs.Length > 0)
-                {
-                    mesh.uv = eventData.InputData.uvs;
+                if (newMesh || meshChanged)
+                {                    
+                    mesh.triangles = eventData.InputData.triangles;
+
+                    if (eventData.InputData.uvs?.Length > 0)
+                    {
+                        mesh.uv = eventData.InputData.uvs;
+                    }
                 }
 
                 if (meshChanged)

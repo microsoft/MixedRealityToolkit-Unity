@@ -10,8 +10,6 @@ Add the `ManipulationHandler` script component to a GameObject. Make sure to als
 
 To make the object respond to near articulated hand input, add the `NearInteractionGrabbable` script as well.
 
-If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
-
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
 ## Inspector properties
