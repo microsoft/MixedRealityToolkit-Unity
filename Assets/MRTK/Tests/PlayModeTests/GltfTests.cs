@@ -15,8 +15,11 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using NUnit.Framework;
 using System.Collections;
 using System.IO;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -24,7 +27,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class GltfTests
     {
         private const string AvocadoCustomAttrGuid = "fea29429b97dbb14b97820f56c74060a";
+        private AsyncCoroutineRunner asyncCoroutineRunner;
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+            asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
+        }
 
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+            GameObject.Destroy(asyncCoroutineRunner.gameObject);
+        }
+        
         private IEnumerator WaitForTask(Task task)
         {
             while (!task.IsCompleted) { yield return null; }
@@ -32,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
+        #region Tests
         /// <summary>
         /// Performs basic check that a glTF loads and contains data
         /// </summary>
@@ -82,7 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int temperature = gltfObject.accessors[temperatureIdx].count;
             Assert.AreEqual(100, temperature);
         }
-
+        #endregion
+        
     }
 }
 #endif
