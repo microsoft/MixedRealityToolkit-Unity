@@ -30,7 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ForceTextSerialization,
             VisibleMetaFiles,
             VirtualRealitySupported,
-            SinglePassInstancing,
+            [Obsolete("SinglePassInstancing is obsolete, use OptimalRenderingPath instead")]
+            SinglePassInstancing = 5,
+            OptimalRenderingPath = 5, // using the same value of SinglePassInstancing as a replacement
             SpatialAwarenessLayer,
             EnableMSBuildForUnity,
 
@@ -100,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, new ConfigGetter(IsForceTextSerialization) },
             { Configurations.VisibleMetaFiles, new ConfigGetter(IsVisibleMetaFiles) },
             { Configurations.VirtualRealitySupported, new ConfigGetter(() => XRSettingsUtilities.LegacyXREnabled) },
-            { Configurations.SinglePassInstancing, new ConfigGetter(MixedRealityOptimizeUtils.IsSinglePassInstanced) },
+            { Configurations.OptimalRenderingPath, new ConfigGetter(MixedRealityOptimizeUtils.IsOptimalRenderingPath) },
             { Configurations.SpatialAwarenessLayer, new ConfigGetter(HasSpatialAwarenessLayer) },
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, new ConfigGetter(PackageManifestUpdater.IsMSBuildForUnityEnabled, BuildTarget.WSAPlayer) },
@@ -131,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
             { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
-            { Configurations.SinglePassInstancing, MixedRealityOptimizeUtils.SetSinglePassInstanced },
+            { Configurations.OptimalRenderingPath, MixedRealityOptimizeUtils.SetOptimalRenderingPath },
             { Configurations.SpatialAwarenessLayer,  SetSpatialAwarenessLayer },
 #if !UNITY_2019_3_OR_NEWER
             { Configurations.EnableMSBuildForUnity, PackageManifestUpdater.EnsureMSBuildForUnity },
