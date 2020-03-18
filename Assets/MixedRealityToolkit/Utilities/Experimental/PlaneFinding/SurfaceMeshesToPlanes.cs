@@ -2,29 +2,25 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-#if !UNITY_EDITOR && UNITY_WSA
-using System.Threading;
-using System.Threading.Tasks;
-#endif
+//#if !UNITY_EDITOR && UNITY_WSA
+//using System.Threading;
+//using System.Threading.Tasks;
+//#endif
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 {
-
-    
     /// <summary>
     /// SurfaceMeshesToPlanes will find and create planes based on the meshes returned by the SpatialMappingManager's Observer.
     /// </summary>
     public class SurfaceMeshesToPlanes:MonoBehaviour
     {
-        [Tooltip("Currently active planes found within the Spatial Mapping Mesh.")]
-        public Dictionary<SpatialAwarenessSurfaceTypes, List<GameObject>> ActivePlanes;
-
         [Tooltip("Object used for creating and rendering Surface Planes.")]
         public GameObject SurfacePlanePrefab;
 
@@ -82,6 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         public event EventHandler MakePlanesComplete;
 
         /// <summary>
+        /// Holds list of active planes and corresponding types
+        /// </summary>
+        private List<PlaneWithType> ActivePlanes;
+
+        /// <summary>
         /// Empty game object used to contain all planes created by the SurfaceToPlanes class.
         /// </summary>
         private GameObject planesParent;
@@ -102,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private void Start()
         {
             //makingPlanes = false;
-            ActivePlanes = new Dictionary<SpatialAwarenessSurfaceTypes, List<GameObject>>();
+            ActivePlanes = new List<PlaneWithType>();
             planesParent = new GameObject("SurfacePlanes");
             planesParent.transform.position = Vector3.zero;
             planesParent.transform.rotation = Quaternion.identity;
@@ -122,9 +123,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
             List<GameObject> typePlanes = new List<GameObject>();
 
-            foreach (var type in planeTypes)
+            foreach (PlaneWithType planeWithType in ActivePlanes)
             {
-                typePlanes.AddRange(ActivePlanes[type]);
+                if ((planeTypes & planeWithType.Type) == planeWithType.Type)
+                {
+                    typePlanes.Add(planeWithType.Plane);
+                }
             }
 
             return typePlanes;
@@ -190,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             {
                 handler(this, EventArgs.Empty);
             }
-            // Create planes
-            //ClassifyAndCreatePlanes(planes);
         }
 
         /// <summary>
@@ -210,12 +212,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private void DestroyPreviousPlanes()
         {
             // Remove any previously existing planes, as they may no longer be valid.
-            foreach (var goList in ActivePlanes.Values)
+            for (int index = 0; index < ActivePlanes.Count; index++)
             {
-                foreach (var go in goList)
-                {
-                    Destroy(go);
-                }
+                Destroy(ActivePlanes[index].Plane);
             }
         }
 
@@ -258,28 +257,37 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             {
                 BoundedPlane boundedPlane = planes[index];
                 GameObject destinationPlane;
-
-                // Instantiate a primitive object, which will have the same bounds as our BoundedPlane object.
+                // Instantiate a SurfacePlane object, which will have the same bounds as our BoundedPlane object.
                 destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //SetPlaneVisibility(destinationPlane, boundedPlane);
                 SetPlaneGeometry(destinationPlane, boundedPlane);
+
                 destinationPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
 
                 destinationPlane.transform.parent = planesParent.transform;
-                destinationPlane.layer = 31;                
+                destinationPlane.layer = 31;
 
-                SpatialAwarenessSurfaceTypes planeType = GetPlaneType(boundedPlane, FloorYPosition, CeilingYPosition);
+                var planeWithType = new PlaneWithType();
+                planeWithType.Plane = destinationPlane;
+                planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
+                ActivePlanes.Add(planeWithType);
+            }
 
-                if (ActivePlanes.ContainsKey(planeType))
-                    ActivePlanes[planeType].Add(destinationPlane);
-                else
-                    ActivePlanes[planeType] = new List<GameObject>() { destinationPlane };
+            Debug.Log("Finished making planes.");
+
+            // We are done creating planes, trigger an event.
+            EventHandler handler = MakePlanesComplete;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
             }
         }
 
+        
         /// <summary>
         /// Classifies the surface as a floor, wall, ceiling, table, etc.
         /// </summary>
-        private SpatialAwarenessSurfaceTypes GetPlaneType(BoundedPlane plane, float floorYPosition, float ceilingYPosition)
+        private SpatialAwarenessSurfaceTypes GetPlaneType(BoundedPlane plane, GameObject gameObject)
         {
             SpatialAwarenessSurfaceTypes PlaneType;
             var SurfaceNormal = plane.Plane.normal;
@@ -291,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 // If we have a horizontal surface with a normal pointing up, classify it as a floor.
                 PlaneType = SpatialAwarenessSurfaceTypes.Floor;
 
-                if (gameObject.transform.position.y > (floorYPosition + FloorBuffer))
+                if (gameObject.transform.position.y > (FloorYPosition + FloorBuffer))
                 {
                     // If the plane is too high to be considered part of the floor, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
@@ -302,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 // If we have a horizontal surface with a normal pointing down, classify it as a ceiling.
                 PlaneType = SpatialAwarenessSurfaceTypes.Ceiling;
 
-                if (gameObject.transform.position.y < (ceilingYPosition - CeilingBuffer))
+                if (gameObject.transform.position.y < (CeilingYPosition - CeilingBuffer))
                 {
                     // If the plane is not high enough to be considered part of the ceiling, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
@@ -330,5 +338,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         //{
         //    surfacePlane.IsVisible = ((drawPlanesMask & surfacePlane.PlaneType) == surfacePlane.PlaneType);
         //}
+    }
+
+    struct PlaneWithType
+    {
+        public GameObject Plane;
+        public SpatialAwarenessSurfaceTypes Type;
     }
 }
