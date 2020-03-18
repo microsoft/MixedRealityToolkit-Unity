@@ -9,12 +9,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Describes an Input Event that has a source id.
     /// </summary>
-    public class InputEventData : BaseInputEventData
+    public class InputEventData : BaseInputEventData, IMixedRealityEventPropagationData
     {
         /// <summary>
         /// Handedness of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource"/>.
         /// </summary>
         public Handedness Handedness { get; private set; } = Handedness.None;
+
+        /// <inheritdoc />
+        public virtual EventPropagation Propagation { get; set; } = EventPropagation.BubblesUp | EventPropagation.TricklesDown;
+
+        /// <inheritdoc />
+        public PropagationPhase Phase { get; set; }
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }

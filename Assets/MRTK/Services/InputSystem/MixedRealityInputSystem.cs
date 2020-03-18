@@ -584,10 +584,59 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If event was not handled by modal, pass it on to the current focused object
             if (focusedObject != null)
             {
-                ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                // Handling propagation
+                var eventPropagationData = baseInputEventData as IMixedRealityEventPropagationData;
+                if (eventPropagationData != null)
+                {
+                    PropagateEvent<T>(focusedObject, baseInputEventData, eventHandler);
+                }
+                // Events with no propagation configuration
+                else
+                {
+                    ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                }
             }
             return modalEventHandled;
         }
+
+        /// <summary>
+        /// Propagates an event down and up the target object hierarchy if the event supports propagation.
+        /// Propagation is not halting in case of event data already used. Handlers are expected to check use of event.
+        /// </summary>
+        private void PropagateEvent<T>(GameObject targetObject, BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
+        {
+            if (!(baseInputEventData is IMixedRealityEventPropagationData eventPropagationData))
+            {
+                return;
+            }
+
+            var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
+
+            // Trickles Down
+            if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
+            {
+                for (int i = targetHierarchy.Length - 1; i > 0; i--)
+                {
+                    eventPropagationData.Phase = PropagationPhase.TrickeDown;
+                    ExecuteEvents.Execute(targetHierarchy[i].gameObject, baseInputEventData, eventHandler);
+                }
+            }
+
+            // Target - event should always reach target
+            eventPropagationData.Phase = PropagationPhase.Target;
+            ExecuteEvents.Execute(targetObject, baseInputEventData, eventHandler);
+
+            // Bubbles Up
+            eventPropagationData.Phase = PropagationPhase.BubbleUp;
+            if (eventPropagationData.Propagation.HasFlag(EventPropagation.BubblesUp))
+            {
+                for (int i = 1; i < targetHierarchy.Length; i++)
+                {
+                    ExecuteEvents.Execute(targetHierarchy[i].gameObject, baseInputEventData, eventHandler);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
