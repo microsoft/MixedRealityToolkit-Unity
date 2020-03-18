@@ -14,8 +14,6 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Schema;
 using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using NUnit.Framework;
 using System.Collections;
-using System.IO;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
