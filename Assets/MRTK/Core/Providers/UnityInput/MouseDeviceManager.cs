@@ -156,9 +156,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            if (!IsEnabled)
+            {
+                return;
+            }
+
             base.Update();
 
-            if (UInput.mousePresent && Controller == null) { Enable(); }
+            if (UInput.mousePresent && Controller == null) 
+            { 
+                Enable(); 
+            }
 
             Controller?.Update();
         }

@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
     {
         private readonly List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
+        /// <inheritdoc />
         public override void Reset()
         {
             base.Reset();

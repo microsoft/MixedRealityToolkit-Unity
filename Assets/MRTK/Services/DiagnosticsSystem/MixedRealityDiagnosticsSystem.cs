@@ -18,19 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
-        /// <param name="profile">The configuration profile for the service.</param>
-        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public MixedRealityDiagnosticsSystem(
-            IMixedRealityServiceRegistrar registrar,
-            MixedRealityDiagnosticsProfile profile) : this(profile)
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
         public MixedRealityDiagnosticsSystem(
             MixedRealityDiagnosticsProfile profile) : base(profile)
@@ -75,10 +62,17 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (!Application.isPlaying) { return; }
+            if (!Application.isPlaying) 
+            { 
+                return; 
+            }
 
             MixedRealityDiagnosticsProfile profile = ConfigurationProfile as MixedRealityDiagnosticsProfile;
-            if (profile == null) { return; }
+            if (profile == null) 
+            {
+                Debug.LogError($"Failed to initialize Diagnostics System as {typeof(MixedRealityDiagnosticsProfile).Name} profile provided was null");
+                return;
+            }
 
             eventData = new DiagnosticsEventData(EventSystem.current);
 
@@ -98,19 +92,30 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         }
 
         /// <inheritdoc />
+        public override void Enable()
+        {
+            base.Enable();
+            diagnosticVisualizationParent.SetActive(true);
+        }
+
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            base.Disable();
+            diagnosticVisualizationParent.SetActive(false);
+        }
+
+        /// <inheritdoc />
         public override void Destroy()
         {
             if (diagnosticVisualizationParent != null)
             {
-                if (Application.isEditor)
-                {
-                    Object.DestroyImmediate(diagnosticVisualizationParent);
-                }
-                else
+                if (!Application.isEditor)
                 {
                     diagnosticVisualizationParent.transform.DetachChildren();
-                    Object.Destroy(diagnosticVisualizationParent);
                 }
+
+                GameObjectExtensions.DestroyGameObject(diagnosticVisualizationParent);
 
                 diagnosticVisualizationParent = null;
             }
@@ -140,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public bool ShowDiagnostics
         {
-            get { return showDiagnostics; }
+            get => showDiagnostics;
 
             set
             {
@@ -163,11 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public bool ShowProfiler
         {
-            get
-            {
-                return showProfiler;
-            }
-
+            get => showProfiler;
             set
             {
                 if (value != showProfiler)
@@ -209,11 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public bool ShowMemoryStats
         {
-            get
-            {
-                return showMemoryStats;
-            }
-
+            get => showMemoryStats;
             set
             {
                 if (value != showMemoryStats)
@@ -232,11 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <inheritdoc />
         public float FrameSampleRate
         {
-            get
-            {
-                return frameSampleRate;
-            }
-
+            get => frameSampleRate;
             set
             {
                 if (!Mathf.Approximately(frameSampleRate, value))
@@ -294,8 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         public TextAnchor WindowAnchor
         {
-            get { return windowAnchor; }
-
+            get => windowAnchor;
             set
             {
                 if (value != windowAnchor)
@@ -317,8 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         public Vector2 WindowOffset
         {
-            get { return windowOffset; }
-
+            get => windowOffset;
             set
             {
                 if (value != windowOffset)
@@ -340,8 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         public float WindowScale
         {
-            get { return windowScale; }
-
+            get => windowScale;
             set
             {
                 if (value != windowScale)
@@ -363,8 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         public float WindowFollowSpeed
         {
-            get { return windowFollowSpeed; }
-
+            get => windowFollowSpeed;
             set
             {
                 if (value != windowFollowSpeed)
@@ -402,5 +391,22 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 }
             }
         }
+
+        #region Obsolete
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public MixedRealityDiagnosticsSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityDiagnosticsProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+        #endregion
     }
 }

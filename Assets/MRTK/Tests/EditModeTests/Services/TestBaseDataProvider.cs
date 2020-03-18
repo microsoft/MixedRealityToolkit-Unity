@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
@@ -16,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
             BaseMixedRealityProfile profile = null)
         : base(service, name, priority, profile) { }
 
-        public bool IsEnabled { get; private set; }
         public bool IsInitialized { get; private set; }
 
         public override void Initialize()
@@ -31,25 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Services
             base.Reset();
             Debug.Log("TestDataProvider Reset");
             IsInitialized = false;
-        }
-
-        public override void Enable()
-        {
-            base.Enable();
-
-            IsEnabled = true;
-        }
-
-        public override void Disable()
-        {
-            base.Disable();
-
-            IsEnabled = false;
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
         }
     }
 }
