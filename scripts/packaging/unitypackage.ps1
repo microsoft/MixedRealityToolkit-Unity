@@ -12,11 +12,11 @@
 
     - Examples
 
-    This contains all of the content under MixedRealityToolkit.Examples
+    This contains all of the content under MRTK/Examples
 
     Note that these packages are intended to mirror the NuGet packages
     described in Assets/MixedReality.Toolkit.Foundation.nuspec and
-    Assets/MixedRealityToolkit.Examples/MixedReality.Toolkit.Examples.nuspec.
+    Assets/MRTK/Examples/MixedReality.Toolkit.Examples.nuspec.
 
     Defaults to assuming that the current working directory of the script is in the root
     directory of the repo.
@@ -78,24 +78,19 @@ if ( $Verbose ) { $VerbosePreference = 'Continue' }
 # These paths are project-root relative.
 $packages = @{
     "Foundation" = @(
-        "Assets\MixedRealityToolkit",
-        "Assets\MixedRealityToolkit.Providers",
-        "Assets\MixedRealityToolkit.SDK",
-        "Assets\MixedRealityToolkit.Services"
+        "Assets\MRTK\Core",
+        "Assets\MRTK\Providers",
+        "Assets\MRTK\SDK",
+        "Assets\MRTK\Services"
     );
     "Extensions" = @(
-        "Assets\MixedRealityToolkit.Extensions"
+        "Assets\MRTK\Extensions"
     );
     "Examples" = @(
-        "Assets\MixedRealityToolkit.Examples"
+        "Assets\MRTK\Examples"
     );
     "Tools" = @(
-        "Assets\MixedRealityToolkit.Tools"
-    );
-    # NOTE: This is a temporary package to facilitate experimental Unity AR support while we
-    # invest in better packaging solution
-    "Providers.UnityAR" = @(
-        "Assets\MixedRealityToolkit.Staging"
+        "Assets\MRTK\Tools"
     );
 }
 
@@ -108,6 +103,24 @@ function GetPackageVersion() {
         Foreach-Object { if ( $_ -match "^(\d+\.\d+\.\d+)$" ) { [version]$matches[1] } } | 
         Sort-Object -Descending |
         Select-Object -First 1
+}
+
+function CleanPackageManifest() {
+    <#
+    .SYNOPSIS
+        Ensures that the package manifest does not contain packages that trigger adding dependencies on
+        optional features by default.
+    #>
+
+    $fileName = $RepoDirectory + "\Packages\manifest.json"
+    (Get-Content $fileName) | ForEach-Object {
+        if ($_ -notmatch ("arfoundation|arsubsystems|xr.management|legacyinputhelpers")) {
+            $line = $_
+        }
+        else {
+            $line = ""
+        }
+    $line } | Set-Content $fileName  
 }
 
 # Beginning of the .unitypackage script main section
@@ -139,7 +152,7 @@ if (-not $UnityDirectory) {
 
 $unityEditor = Get-ChildItem $UnityDirectory -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
 if (-not $unityEditor) {
-    throw "Unable to find the unity editor executable in $UnityDirectory"
+    throw "Unable to find the Unity editor executable in $UnityDirectory"
 }
 Write-Verbose $unityEditor;
 
@@ -161,6 +174,9 @@ if (-not $LogDirectory) {
 $OutputDirectory = Resolve-Path $OutputDirectory
 $LogDirectory = Resolve-Path $LogDirectory
 $RepoDirectory = Resolve-Path $RepoDirectory
+
+Write-Verbose "Cleaning package manifest (removing AR and XR references)"
+CleanPackageManifest
 
 foreach ($entry in $packages.GetEnumerator()) {
     $packageName = $entry.Name;

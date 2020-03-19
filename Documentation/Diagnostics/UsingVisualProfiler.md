@@ -14,7 +14,7 @@ While developing an application, focus on multiple parts of the scene as the Vis
 
 ## Visual profiler interface
 
-![Visual Profiler Interface](../../Documentation/Images/Diagnostics/VisualProfiler.png)
+![Visual Profiler Interface](../Images/Diagnostics/VisualProfiler.png)
 
 The Visual Profiler interface includes the following components:
 
@@ -32,6 +32,9 @@ The specific platform and hardware configuration will play a significant role in
 - Microsoft HoloLens: 60
 - Windows Mixed Reality Ultra: 90
 
+> [!NOTE]
+> Due to [frame rate throttling on HoloLens when default MRC is active](https://docs.microsoft.com/windows/mixed-reality/mixed-reality-capture-for-developers#what-to-expect-when-mrc-is-enabled-on-hololens), the visual profiler hides itself while videos and photos are captured. This setting can be overridden in the diagnostics system profile.
+
 ### Frame time
 
 To the right of the frame rate is the frame time, in milliseconds, spent on the CPU. To achieve the target frame rates mentioned previously, an application can spend the following amount of time per frame:
@@ -45,7 +48,7 @@ GPU time is planned to be added in a future release.
 
 The frame graph provides a graphical display of the application frame rate history.
 
-![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
+![Visual Profiler Frame Graph](../Images/Diagnostics/VisualProfilerMissedFrames.png)
 
 When using the application, look for missed frames which indicate that the application is not hitting its target frame rate and may need optimization work.
 
@@ -53,7 +56,7 @@ When using the application, look for missed frames which indicate that the appli
 
 The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption.
 
-![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
+![Visual Profiler Frame Graph](../Images/Diagnostics/VisualProfilerMemory.png)
 
 When using the application, look for total memory usage. Key indicators include nearing the memory limit and rapid changes in usage.
 

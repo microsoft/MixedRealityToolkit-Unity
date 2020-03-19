@@ -56,10 +56,10 @@ You can configure the number of rows using `Rows` property of the Grid Object Co
 
 **3. Adjust the backplate size**
 
-Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be 0.032 * [Number of the buttons + 1]. For example, if you have 3 x 2 buttons, the width of the backplate is 0.032 * 4 and the height is 0.032 * 3. You can directly put this expression into the Unity's field.  
+Adjust the size of the `Quad` under `Backplate` object. The width and height of the backplate should be `0.032 * [Number of the buttons + 1]`. For example, if you have 3 x 2 buttons, the width of the backplate is `0.032 * 4` and the height is `0.032 * 3`. You can directly put this expression into the Unity's field.  
 <img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png" width="450">
 
-*Default size of the HoloLens 2 button is 3.2x3.2 cm (0.032m)
+- Default size of the HoloLens 2 button is 3.2x3.2 cm (0.032m)
 
 ## See also
 

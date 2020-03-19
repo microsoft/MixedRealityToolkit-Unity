@@ -92,6 +92,12 @@ If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lowe
 > [!NOTE]
 > To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the [*Render Depth Buffer* utility](../MixedRealityConfigurationGuide.md#editor-utilities) under the *Editor Settings* in the MRTK Configuration profile.
 
+### Optimize Mesh Data
+
+The [Optimize Mesh Data](https://docs.unity3d.com/ScriptReference/PlayerSettings-stripUnusedMeshComponents.html) settings tries to remove unused vertex attributes within your application. The setting performs this by running over every shader pass in every material that is on every mesh in the build. This is good for game data size and runtime performance but can drastically hinder build times.
+
+It is recommended to disable this setting during development and re-enable during "Master" build creation. The setting can be found under **Edit** > **Project Settings** > **Player** > **Other Settings** > **Optimize Mesh Data**.
+
 ## General recommendations
 
 Performance can be an ambiguous and constantly changing challenge for mixed reality developers and the spectrum of knowledge to rationalize performance is vast. There are some general recommendations for understanding how to approach performance for an application though.
@@ -166,11 +172,11 @@ If estimating the rough performance tradeoff between one shader and another, it 
 
 Unity Standard shader statistics example
 
-![Unity Standard Shader Statistics](../../Documentation/Images/Performance/UnityStandardShader-Stats.png)
+![Unity Standard Shader Statistics](../../Documentation/Images/Performance/UnityStandardShader-Stats.PNG)
 
 MRTK Standard shader statistics example
 
-![MRTK Standard Shader Statistics](../../Documentation/Images/Performance/MRTKStandardShader-Stats.png)
+![MRTK Standard Shader Statistics](../../Documentation/Images/Performance/MRTKStandardShader-Stats.PNG)
 
 ## See also
 
@@ -193,3 +199,8 @@ MRTK Standard shader statistics example
 
 - [Performance Guidelines](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-guidelines/)
 - [Performance Tools](https://developer.oculus.com/documentation/pcsdk/latest/concepts/dg-performance-tools/)
+
+### Mesh optimization
+
+- [Optimize 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/optimize-models#performance-targets)
+- [Best practices for converting and optimizing real-time 3D models](https://docs.microsoft.com/en-us/dynamics365/mixed-reality/import-tool/best-practices)

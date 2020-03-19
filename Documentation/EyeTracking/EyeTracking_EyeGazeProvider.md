@@ -1,11 +1,11 @@
 # Accessing eye tracking data in your Unity script
 
 The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)).
-To access eye tracking data in your MonoBehaviour scripts is easy! Simply use *MixedRealityToolkit.InputSystem.EyeGazeProvider*.
+To access eye tracking data in your MonoBehaviour scripts is easy! Simply use *CoreServices.InputSystem.EyeGazeProvider*.
 
-## MixedRealityToolkit.InputSystem.EyeGazeProvider
+## CoreServices.InputSystem.EyeGazeProvider
 
-While the *MixedRealityToolkit.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for eye tracking input are the following:
+While the *CoreServices.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for eye tracking input are the following:
 
 - **UseEyeTracking**:
 True if eye tracking hardware is available and the user has given permission to use eye tracking in the app.
@@ -32,7 +32,7 @@ This will return the *head* gaze direction if 'IsEyeGazeValid' is false.
 Information about the currently gazed at target.
 Again, if 'IsEyeGazeValid' is false, this will be based on the user's *head* gaze.
 
-## Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider
+## Examples for using CoreServices.InputSystem.EyeGazeProvider
 
 Here is an example from the [FollowEyeGaze.cs](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze):
 
@@ -40,7 +40,7 @@ Here is an example from the [FollowEyeGaze.cs](xref:Microsoft.MixedReality.Toolk
 
 ```c#
 // Show the object at the hit position of the user's eye gaze ray with the target.
-gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.HitPosition;
+gameObject.transform.position = CoreServices.InputSystem.EyeGazeProvider.HitPosition;
 ```
 
 - Showing a visual asset at a fixed distance from where the user is currently looking:
@@ -48,8 +48,8 @@ gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.
 ```c#
 // If no target is hit, show the object at a default distance along the gaze ray.
 gameObject.transform.position =
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin +
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+CoreServices.InputSystem.EyeGazeProvider.GazeOrigin +
+CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 ```
 
 ---
