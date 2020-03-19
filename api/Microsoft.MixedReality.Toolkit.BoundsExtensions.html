@@ -1789,6 +1789,56 @@ of an invalid bounds instance is the zero vector.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetScaleToFitInside_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetScaleToFitInside*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetScaleToFitInside_Bounds_Bounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetScaleToFitInside(Bounds,Bounds)">GetScaleToFitInside(Bounds, Bounds)</h4>
+  <div class="markdown level1 summary"><p>Calculates how much scale is required for this Bounds to fit inside another bounds without stretching.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float GetScaleToFitInside(this Bounds bounds, Bounds containerBounds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">bounds</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Bounds</span></td>
+        <td><span class="parametername">containerBounds</span></td>
+        <td><p>The bounds of the container we're trying to fit this object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><p>A single scale factor that can be applied to this object to fit inside the container.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetScaleToMatchBounds_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetScaleToMatchBounds*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetScaleToMatchBounds_Bounds_Bounds_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetScaleToMatchBounds(Bounds,Bounds,Vector3)">GetScaleToMatchBounds(Bounds, Bounds, Vector3)</h4>
   <div class="markdown level1 summary"><p>Calculates how much scale is required for this Bounds to match another Bounds.</p>
