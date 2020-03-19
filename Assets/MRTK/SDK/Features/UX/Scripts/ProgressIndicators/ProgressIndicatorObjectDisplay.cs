@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc/>
-        public async Task AwaitTransition()
+        public async Task AwaitTransitionAsync()
         {
             while (isActiveAndEnabled)
             {

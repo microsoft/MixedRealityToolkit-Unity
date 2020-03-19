@@ -216,6 +216,8 @@
       href: README_SystemKeyboard.md
     - name: Tooltips
       href: README_Tooltip.md
+    - name: Progress Indicator
+      href: README_ProgressIndicator.md
     - name: Solvers
       href: README_Solver.md
       items:

@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             // If the indicator is opening or closing, wait for that to finish before trying to open / close it
             // Otherwise the indicator will display an error and take no action
-            await indicator.AwaitTransition();
+            await indicator.AwaitTransitionAsync();
 
             switch (indicator.State)
             {
