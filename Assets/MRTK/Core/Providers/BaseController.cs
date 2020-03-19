@@ -180,10 +180,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (ControllerHandedness)
             {
                 case Handedness.Left:
-                    AssignControllerMappings(DefaultLeftHandedInteractions);
+                    AssignControllerMappings(DefaultLeftHandedInteractions ?? DefaultInteractions);
                     break;
                 case Handedness.Right:
-                    AssignControllerMappings(DefaultRightHandedInteractions);
+                    AssignControllerMappings(DefaultRightHandedInteractions ?? DefaultInteractions);
                     break;
                 default:
                     AssignControllerMappings(DefaultInteractions);
