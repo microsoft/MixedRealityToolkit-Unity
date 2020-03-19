@@ -67,6 +67,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
         }
 
+        /// <summary>
+        /// Fires a global input click event with first default input source and for "Select" input action type. 
+        /// If testExec is not null, the function will execute in between the input down and input up raised events.
+        /// The testExec function parameter is useful for executing tests and asserts in between raised events.
+        /// </summary>
+        public static IEnumerator ExecuteGlobalClick(Func<IEnumerator> testExec = null)
+        {
+            var selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Select").FirstOrDefault();
+            var defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
+
+            yield return ExecuteGlobalClick(defaultInputSource, selectAction, testExec);
+        }
+
     }
 }
 #endif

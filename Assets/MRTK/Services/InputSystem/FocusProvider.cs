@@ -575,7 +575,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+            CoreServices.InputSystem?.GazeProvider?.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;

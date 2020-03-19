@@ -10,6 +10,8 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
@@ -18,7 +20,10 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class DisableEnableInputSystemTest
+    /// <summary>
+    /// Test suite to validate out-of-box input system can be disabled and enabled correctly
+    /// </summary>
+    public class DisableEnableInputSystemTest
     {
         [SetUp]
         public void SetUp()
@@ -35,19 +40,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         [UnityTest]
         public IEnumerator DisableEnableInputSystem()
         {
-            yield return null;
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = 3.0f * Vector3.forward;
+
+            bool wasClicked = false;
+            var interactable = cube.AddComponent<Interactable>();
+            interactable.IsGlobal = true;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             TestContext.Out.WriteLine("Disable the input system");
             CoreServices.InputSystem.Disable();
 
-            yield return new WaitForSeconds(2);
+            yield return TestInputUtilities.ExecuteGlobalClick(() =>
+            {
+                Assert.IsTrue(wasClicked == false, "Input system should be disabled but Interactable was clicked");
+                return null;
+            });
+
+            GameObject.Destroy(cube);
+
+            yield return new WaitForSeconds(1);
 
             TestContext.Out.WriteLine("Enable the input system");
             CoreServices.InputSystem.Enable();
 
-            TestContext.Out.WriteLine("Display a test hand");
-            TestHand rightHand = new TestHand(Handedness.Right);
+            TestContext.Out.WriteLine("Display the test hand");
+            var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(-0.3f, -0.1f, 0.5f));
+
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            yield return rightHand.Hide();
         }
     }
 }
