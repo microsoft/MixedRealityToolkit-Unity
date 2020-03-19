@@ -4,16 +4,26 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// Demo class for IProgressIndicator examples
+    /// </summary>
     public class ProgressIndicatorDemo : MonoBehaviour
     {
-        [SerializeField]
+        [SerializeField, Header("Indicators")]
         private GameObject progressIndicatorLoadingBarGo = null;
         [SerializeField]
         private GameObject progressIndicatorRotatingObjectGo = null;
         [SerializeField]
         private GameObject progressIndicatorRotatingOrbsGo = null;
 
+        [SerializeField, Header("Editor Keyboard Controls")]
+        private KeyCode toggleBarKey = KeyCode.Alpha1;
         [SerializeField]
+        private KeyCode toggleRotatingKey = KeyCode.Alpha2;
+        [SerializeField]
+        private KeyCode toggleOrbsKey = KeyCode.Alpha3;
+
+        [SerializeField, Header("Settings")]
         private string[] loadingMessages = new string[] { 
             "First Loading Message",
             "Loading Message 1", 
@@ -28,16 +38,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private IProgressIndicator progressIndicatorRotatingObject;
         private IProgressIndicator progressIndicatorRotatingOrbs;
 
+        /// <summary>
+        /// Target method for demo button
+        /// </summary>
         public void OnClickBar()
         {
             HandleButtonClick(progressIndicatorLoadingBar);
         }
 
+        /// <summary>
+        /// Target method for demo button
+        /// </summary>
         public void OnClickRotating()
         {
             HandleButtonClick(progressIndicatorRotatingObject);
         }
 
+        /// <summary>
+        /// Target method for demo button
+        /// </summary>
         public void OnClickOrbs()
         {
             HandleButtonClick(progressIndicatorRotatingOrbs);
@@ -45,6 +64,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private async void HandleButtonClick(IProgressIndicator indicator)
         {
+            // If the indicator is opening or closing, wait for that to finish before trying to open / close it
+            // Otherwise the indicator will display an error and take no action
             await indicator.AwaitTransition();
 
             switch (indicator.State)
@@ -68,17 +89,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
+            if (UnityEngine.Input.GetKeyDown(toggleBarKey))
             {
                 HandleButtonClick(progressIndicatorLoadingBar);
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
+            if (UnityEngine.Input.GetKeyDown(toggleRotatingKey))
             {
                 HandleButtonClick(progressIndicatorRotatingObject);
             }
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
+            if (UnityEngine.Input.GetKeyDown(toggleOrbsKey))
             {
                 HandleButtonClick(progressIndicatorRotatingOrbs);
             }
