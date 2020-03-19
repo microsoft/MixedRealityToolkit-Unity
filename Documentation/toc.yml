@@ -237,6 +237,8 @@
       href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
     - name: Pulse Shader
       href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
+    - name: Dock Control
+      href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
 - name: Contributing
   items:
   - name: Contributing Overview
