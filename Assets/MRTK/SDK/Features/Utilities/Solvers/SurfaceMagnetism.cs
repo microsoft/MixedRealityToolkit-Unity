@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case OrientationMode.Blended:
                     return Quaternion.Slerp(trackedReferenceRotation, surfaceReferenceRotation, orientationBlend);
                 case OrientationMode.TrackedOrigin:
-                    return Quaternion.LookRotation(direction, Vector3.up); ;
+                    return Quaternion.LookRotation(direction, Vector3.up);
                 default:
                     return Quaternion.identity;
             }
