@@ -79,6 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             Assert.IsTrue(objectManipulator != null || manipulationHandler != null,
                 "A Dockable object must have either an ObjectManipulator or a ManipulationHandler component.");
+
+            Assert.IsNotNull(gameObject.GetComponent<Collider>(), "A Dockable object must have a Collider component.");
         }
 
         /// <summary>
@@ -299,6 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private static bool AboutTheSameSize(float scale1, float scale2)
         {
+            Assert.AreNotEqual(0.0f, scale2, "Cannot compare scales with an object that has scale zero.");
             return Mathf.Abs(scale1 / scale2 - 1.0f) < scaleTolerance;
         }
 

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// <seealso cref="Dock"/>
     /// <seealso cref="Dockable"/>
     [AddComponentMenu("Scripts/MRTK/Experimental/Dock/DockPosition")]
+    [RequireComponent(typeof(Collider), typeof(Rigidbody))]
     public class DockPosition : MonoBehaviour
     {
         /// <summary>
@@ -48,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Ensure there's a trigger collider for this position
             // The shape can be customized, but this adds a box as default.
             var collider = gameObject.GetComponent<Collider>();
-            if (gameObject.GetComponent<Collider>() == null)
+            if (collider == null)
             {
                 collider = gameObject.AddComponent<BoxCollider>();
             }
@@ -57,15 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             // Ensure this collider can be used as a trigger by having
             // a RigidBody attached to it.
-            var rigidBody = gameObject.GetComponent<Rigidbody>();
-            if (gameObject.GetComponent<Rigidbody>() == null)
-            {
-                rigidBody = gameObject.AddComponent<Rigidbody>();
-            }
-
-            rigidBody.useGravity = false;
-            rigidBody.freezeRotation = true;
-            rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+            var rigidBody = gameObject.EnsureComponent<Rigidbody>();
+            rigidBody.isKinematic = true;
         }
 
         /// <summary>
