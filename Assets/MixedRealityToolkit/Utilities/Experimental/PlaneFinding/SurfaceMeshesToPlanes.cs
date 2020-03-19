@@ -16,6 +16,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 {
+    struct PlaneWithType
+    {
+        public GameObject Plane;
+        public SpatialAwarenessSurfaceTypes Type;
+    }
+
     /// <summary>
     /// SurfaceMeshesToPlanes will find and create planes based on the meshes returned by the SpatialMappingManager's Observer.
     /// </summary>
@@ -102,7 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         // GameObject initialization.
         private void Start()
         {
-            //makingPlanes = false;
             ActivePlanes = new List<PlaneWithType>();
             planesParent = new GameObject("SurfacePlanes");
             planesParent.transform.position = Vector3.zero;
@@ -134,6 +139,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             return typePlanes;
         }
 
+        /// <summary>
+        /// Runs background task to create new planes based on data from mesh observers
+        /// </summary>
         public void MakePlanes()
         {
             tokenSource = new CancellationTokenSource();
@@ -141,14 +149,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         }
 
         /// <summary>
-        /// Iterator block, analyzes surface meshes to find planes and create new 3D cubes to represent each plane.
+        /// Task to analyze surface meshes to find planes and create new 3D cubes to represent each plane.
         /// </summary>
         /// <returns>Yield result.</returns>
         private async Task MakePlanes(System.Threading.CancellationToken cancellationToken)
         {
             await new WaitForUpdate();
 
-            // Get the latest Mesh data from the Spatial Mapping Manager.
             List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
             List<MeshFilter> filters = new List<MeshFilter>();
 
@@ -157,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             {
                 GameObject parentObject = spatialAwarenessSystem.SpatialAwarenessObjectParent;
 
-                // Loop over each observer
+                // Get mesh filters from SpatialAwareness Mesh Observer
                 foreach (MeshFilter filter in parentObject.GetComponentsInChildren<MeshFilter>())
                 {
                     filters.Add(filter);
@@ -197,79 +204,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         }
 
         /// <summary>
-        /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
+        /// Create game objects to represent bounded planes in scene
         /// </summary>
-        private void SetPlaneGeometry(GameObject gameObject, BoundedPlane plane)
-        {
-            var PlaneThickness = 0.01f;
-            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
-            gameObject.transform.position = plane.Bounds.Center;
-            gameObject.transform.rotation = plane.Bounds.Rotation;
-            Vector3 extents = plane.Bounds.Extents * 2;
-            gameObject.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
-        }
-
-        private void DestroyPreviousPlanes()
-        {
-            // Remove any previously existing planes, as they may no longer be valid.
-            for (int index = 0; index < ActivePlanes.Count; index++)
-            {
-                Destroy(ActivePlanes[index].Plane);
-            }
-        }
-
-
         private void ClassifyAndCreatePlanes(BoundedPlane[] planes)
-        {
-            float maxFloorArea = 0.0f;
-            float maxCeilingArea = 0.0f;
-            FloorYPosition = 0.0f;
-            CeilingYPosition = 0.0f;
-            float upNormalThreshold = UpNormalThreshold;
-
-           
-            // Find the floor and ceiling.
-            // We classify the floor as the maximum horizontal surface below the user's head.
-            // We classify the ceiling as the maximum horizontal surface above the user's head.
-            for (int i = 0; i < planes.Length; i++)
-            {
-                BoundedPlane boundedPlane = planes[i];
-                if (boundedPlane.Bounds.Center.y < 0 && boundedPlane.Plane.normal.y >= upNormalThreshold)
-                {
-                    maxFloorArea = Mathf.Max(maxFloorArea, boundedPlane.Area);
-                    if (maxFloorArea == boundedPlane.Area)
-                    {
-                        FloorYPosition = boundedPlane.Bounds.Center.y;
-                    }
-                }
-                else if (boundedPlane.Bounds.Center.y > 0 && boundedPlane.Plane.normal.y <= -(upNormalThreshold))
-                {
-                    maxCeilingArea = Mathf.Max(maxCeilingArea, boundedPlane.Area);
-                    if (maxCeilingArea == boundedPlane.Area)
-                    {
-                        CeilingYPosition = boundedPlane.Bounds.Center.y;
-                    }
-                }
-            }
+        {       
+            SetFloorAndCeilingPositions(planes);
 
             // Create SurfacePlane objects to represent each plane found in the Spatial Mapping mesh.
             for (int index = 0; index < planes.Length; index++)
             {
                 BoundedPlane boundedPlane = planes[index];
-                GameObject destinationPlane;
-                // Instantiate a SurfacePlane object, which will have the same bounds as our BoundedPlane object.
-                destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                //SetPlaneVisibility(destinationPlane, boundedPlane);
+                
+                // Instantiate a cube, which will have the same bounds as our BoundedPlane object.
+                GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 SetPlaneGeometry(destinationPlane, boundedPlane);
 
                 destinationPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-
                 destinationPlane.transform.parent = planesParent.transform;
-                destinationPlane.layer = 31;
+                destinationPlane.layer = 31; // Set to spatial mapping layer
 
                 var planeWithType = new PlaneWithType();
                 planeWithType.Plane = destinationPlane;
                 planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
+                SetPlaneVisibility(planeWithType);
+
                 ActivePlanes.Add(planeWithType);
             }
 
@@ -280,6 +238,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             if (handler != null)
             {
                 handler(this, EventArgs.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Create game objects to represent bounded planes in scene
+        /// </summary>
+        private void SetFloorAndCeilingPositions(BoundedPlane[] planes) {
+            FloorYPosition = 0.0f;
+            CeilingYPosition = 0.0f;
+            float maxFloorArea = 0.0f;
+            float maxCeilingArea = 0.0f;
+
+            // Find the floor and ceiling.
+            // We classify the floor as the maximum horizontal surface below the user's head.
+            // We classify the ceiling as the maximum horizontal surface above the user's head.
+            for (int i = 0; i < planes.Length; i++)
+            {
+                BoundedPlane boundedPlane = planes[i];
+                if (boundedPlane.Bounds.Center.y < 0 && boundedPlane.Plane.normal.y >= UpNormalThreshold)
+                {
+                    maxFloorArea = Mathf.Max(maxFloorArea, boundedPlane.Area);
+                    if (maxFloorArea == boundedPlane.Area)
+                    {
+                        FloorYPosition = boundedPlane.Bounds.Center.y;
+                    }
+                }
+                else if (boundedPlane.Bounds.Center.y > 0 && boundedPlane.Plane.normal.y <= -(UpNormalThreshold))
+                {
+                    maxCeilingArea = Mathf.Max(maxCeilingArea, boundedPlane.Area);
+                    if (maxCeilingArea == boundedPlane.Area)
+                    {
+                        CeilingYPosition = boundedPlane.Bounds.Center.y;
+                    }
+                }
             }
         }
 
@@ -330,19 +322,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             return PlaneType;
         }
 
-        ///// <summary>
-        ///// Sets visibility of planes based on their type.
-        ///// </summary>
-        ///// <param name="surfacePlane"></param>
-        //private void SetPlaneVisibility(SurfacePlane surfacePlane)
-        //{
-        //    surfacePlane.IsVisible = ((drawPlanesMask & surfacePlane.PlaneType) == surfacePlane.PlaneType);
-        //}
-    }
+        /// <summary>
+        /// Destroys all game objects under parent
+        /// </summary>
+        private void DestroyPreviousPlanes()
+        {
+            // Remove any previously existing planes, as they may no longer be valid.
+            for (int index = 0; index < ActivePlanes.Count; index++)
+            {
+                Destroy(ActivePlanes[index].Plane);
+            }
+        }
 
-    struct PlaneWithType
-    {
-        public GameObject Plane;
-        public SpatialAwarenessSurfaceTypes Type;
+        /// <summary>
+        /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
+        /// </summary>
+        private void SetPlaneGeometry(GameObject gameObject, BoundedPlane plane)
+        {
+            var PlaneThickness = 0.01f;
+            // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
+            gameObject.transform.position = plane.Bounds.Center;
+            gameObject.transform.rotation = plane.Bounds.Rotation;
+            Vector3 extents = plane.Bounds.Extents * 2;
+            gameObject.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
+        }
+
+        /// <summary>
+        /// Sets visibility of planes based on their type.
+        /// </summary>
+        /// <param name="surfacePlane"></param>
+        private void SetPlaneVisibility(PlaneWithType pt)
+        {
+           pt.Plane.SetActive((drawPlanesMask & pt.Type) == pt.Type);
+        }
     }
 }
