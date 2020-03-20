@@ -9,11 +9,6 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using System.Threading;
 using System.Threading.Tasks;
 
-//#if !UNITY_EDITOR && UNITY_WSA
-//using System.Threading;
-//using System.Threading.Tasks;
-//#endif
-
 namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 {
     struct PlaneWithType
@@ -27,8 +22,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
     /// </summary>
     public class SurfaceMeshesToPlanes:MonoBehaviour
     {
-        [Tooltip("Object used for creating and rendering Surface Planes.")]
-        public GameObject SurfacePlanePrefab;
+        [Tooltip("Empty game object used to contain all planes created by the SurfaceToPlanes class")]
+        public GameObject PlanesParent;
+
+        [Tooltip("The physics layer for planes to be set to")]
+        public int PhysicsLayer = 31;
+
+        [Tooltip("Material used to render planes")]
+        [Range(0.0f, 1.0f)]
+        public Material DefaultMaterial;
 
         [Tooltip("Minimum area required for a plane to be created.")]
         public float MinArea = 0.025f;
@@ -44,6 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         [Tooltip("Buffer to use when determining if a horizontal plane near the ceiling should be considered part of the ceiling.")]
         [Range(0.0f, 1.0f)]
         public float CeilingBuffer = 0.1f;
+
+        [Tooltip("Thickness of rendered plane objects")]
+        [Range(0.0f, 1.0f)]
+        public float PlaneThickness = 0.01f;
 
         /// <summary>
         /// Determines which plane types should be rendered.
@@ -89,11 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private List<PlaneWithType> ActivePlanes;
 
         /// <summary>
-        /// Empty game object used to contain all planes created by the SurfaceToPlanes class.
-        /// </summary>
-        private GameObject planesParent;
-
-        /// <summary>
         /// Used to align planes with gravity so that they appear more level.
         /// </summary>
         private float snapToGravityThreshold = 5.0f;
@@ -101,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// <summary>
         /// Indicates if SurfaceToPlanes is currently creating planes based on the Spatial Mapping Mesh.
         /// </summary>
-        //private bool makingPlanes = false;
+        private bool makingPlanes = false;
 
         private CancellationTokenSource tokenSource;
 
@@ -109,13 +110,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private void Start()
         {
             ActivePlanes = new List<PlaneWithType>();
-            planesParent = new GameObject("SurfacePlanes");
-            planesParent.transform.position = Vector3.zero;
-            planesParent.transform.rotation = Quaternion.identity;
+
+            if (PlanesParent == null)
+                PlanesParent = new GameObject("SurfaceMeshesToPlanes");
+            PlanesParent.transform.position = Vector3.zero;
+            PlanesParent.transform.rotation = Quaternion.identity;
         }
 
         private void OnDestroy()
         {
+            UnityEngine.Object.Destroy(PlanesParent);
             tokenSource?.Cancel();
         }
 
@@ -144,8 +148,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// </summary>
         public void MakePlanes()
         {
-            tokenSource = new CancellationTokenSource();
-            var x = MakePlanes(tokenSource.Token).ConfigureAwait(true);
+            if (!makingPlanes)
+            {
+                makingPlanes = true;
+                tokenSource = new CancellationTokenSource();
+                var x = MakePlanes(tokenSource.Token).ConfigureAwait(true);
+            }
         }
 
         /// <summary>
@@ -201,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             {
                 handler(this, EventArgs.Empty);
             }
+            makingPlanes = false;
         }
 
         /// <summary>
@@ -217,11 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 
                 // Instantiate a cube, which will have the same bounds as our BoundedPlane object.
                 GameObject destinationPlane = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                SetPlaneGeometry(destinationPlane, boundedPlane);
-
-                destinationPlane.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                destinationPlane.transform.parent = planesParent.transform;
-                destinationPlane.layer = 31; // Set to spatial mapping layer
+                ConfigurePlaneGameObject(destinationPlane, boundedPlane);
 
                 var planeWithType = new PlaneWithType();
                 planeWithType.Plane = destinationPlane;
@@ -231,14 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 ActivePlanes.Add(planeWithType);
             }
 
-            Debug.Log("Finished making planes.");
-
-            // We are done creating planes, trigger an event.
-            EventHandler handler = MakePlanesComplete;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            Debug.Log("Finished creating planes.");
         }
 
         /// <summary>
@@ -337,14 +335,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// <summary>
         /// Updates the plane geometry to match the bounded plane found by SurfaceMeshesToPlanes.
         /// </summary>
-        private void SetPlaneGeometry(GameObject gameObject, BoundedPlane plane)
+        private void ConfigurePlaneGameObject(GameObject gameObject, BoundedPlane plane)
         {
-            var PlaneThickness = 0.01f;
             // Set the SurfacePlane object to have the same extents as the BoundingPlane object.
             gameObject.transform.position = plane.Bounds.Center;
             gameObject.transform.rotation = plane.Bounds.Rotation;
             Vector3 extents = plane.Bounds.Extents * 2;
             gameObject.transform.localScale = new Vector3(extents.x, extents.y, PlaneThickness);
+
+            var renderer = gameObject.GetComponent<Renderer>();
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            if (DefaultMaterial != null)
+                renderer.material = DefaultMaterial;
+
+            gameObject.transform.parent = PlanesParent.transform;
+            gameObject.layer = PhysicsLayer;
         }
 
         /// <summary>
