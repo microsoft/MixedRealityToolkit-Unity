@@ -82,10 +82,11 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="accessing-eye-tracking-data-in-your-unity-script">Accessing eye tracking data in your Unity script</h1>
 
-<p>The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see <a href="EyeTracking_BasicSetup.html">Basic MRTK setup to use eye tracking</a>).
-To access eye tracking data in your MonoBehaviour scripts is easy! Simply use <em>CoreServices.InputSystem.EyeGazeProvider</em>.</p>
-<h2 id="coreservicesinputsystemeyegazeprovider">CoreServices.InputSystem.EyeGazeProvider</h2>
-<p>While the <em>CoreServices.InputSystem.EyeGazeProvider</em> provides several helpful variables, the key ones for eye tracking input are the following:</p>
+<p>This article assumes one has understanding for setting up eye tracking in an MRTK scene (see <a href="EyeTracking_BasicSetup.html">Basic MRTK setup to use eye tracking</a>).
+Accessing eye tracking data in a MonoBehaviour script is easy! Simply use <em>CoreServices.InputSystem.EyeGazeProvider</em>.</p>
+<h2 id="imixedrealityeyegazeprovider">IMixedRealityEyeGazeProvider</h2>
+<p>Eye tracking configuration in MRTK is configured via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html"><code>IMixedRealityEyeGazeProvider</code></a> interface. Using <a href="EyeTracking_EyeGazeProvider.html">CoreServices.InputSystem.EyeGazeProvider</a> provides the default gaze provider implementation registered in the toolkit at runtime.
+Useful properties of the <code>EyeGazeProvider</code> is outlined below.</p>
 <ul>
 <li><p><strong>IsEyeTrackingEnabled</strong>:
 True if user has selected to use eye tracking for gaze.</p>
@@ -113,7 +114,7 @@ This will return the <em>head</em> gaze direction if 'IsEyeGazeValid' is false.<
 </li>
 <li><p><strong>HitInfo</strong>, <strong>HitPosition</strong>, <strong>HitNormal</strong>, etc.:
 Information about the currently gazed at target.
-Again, if 'IsEyeGazeValid' is false, this will be based on the user's <em>head</em> gaze.</p>
+Again, if <code>IsEyeGazeValid</code> is false, this will be based on the user's <em>head</em> gaze.</p>
 </li>
 </ul>
 <h2 id="examples-for-using-coreservicesinputsystemeyegazeprovider">Examples for using CoreServices.InputSystem.EyeGazeProvider</h2>
@@ -132,8 +133,13 @@ gameObject.transform.position =
 CoreServices.InputSystem.EyeGazeProvider.GazeOrigin +
 CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 </code></pre>
-<hr>
-<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="EyeTracking_Main.html">MRTK Eye Tracking Overview</a></li>
+<li><a href="EyeTracking_BasicSetup.html">MRTK Eye Tracking setup</a></li>
+<li><a href="EyeTracking_IsUserCalibrated.html">MRTK Eye Tracking Calibration</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/eye-tracking">HoloLens 2 Eye Tracking Documentation</a></li>
+</ul>
 </article>
           </div>
           

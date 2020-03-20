@@ -83,8 +83,8 @@
 <h1 id="eye-calibration">Eye calibration</h1>
 
 <p><img src="../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg" alt="Screenshot from eye calibration notification"></p>
-<h2 id="to-be-or-not-to-be-eye-calibrated">To be or not to be eye calibrated</h2>
-<p>If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
+<h2 id="overview">Overview</h2>
+<p>If eye tracking is a fundamental part of your app experience, one may wish to ensure that the user's eye calibration is valid.
 The main reason for it to be invalid is that the user has chosen to skip the eye tracking calibration when putting on the device.</p>
 <p>This page covers the following:</p>
 <ul>
@@ -97,8 +97,8 @@ The main reason for it to be invalid is that the user has chosen to skip the eye
 </li>
 </ul>
 <h3 id="how-to-detect-the-eye-calibration-state">How to detect the eye calibration state</h3>
-<p>The <a href="EyeTracking_EyeGazeProvider.html">CoreServices.InputSystem.EyeGazeProvider</a> provides a <code>bool?</code> property called <code>IsEyeGazeValid</code>.
-It returns null if no information from the eye tracker is available yet.
+<p>Eye tracking configuration in MRTK is configured via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html"><code>IMixedRealityEyeGazeProvider</code></a> interface.</p>
+<p>Using <a href="EyeTracking_EyeGazeProvider.html">CoreServices.InputSystem.EyeGazeProvider</a> provides the default gaze provider implementation registered in the toolkit at runtime. <code>IMixedRealityEyeGazeProvider.IsEyeGazeValid</code> returns a <code>bool?</code> which is null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.</p>
 <h3 id="sample-eye-calibration-notification---step-by-step">Sample eye calibration notification - step-by-step</h3>
 <ol>
@@ -115,8 +115,8 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
 </li>
 <li><p>Attached to the <em><em>EyeCalibrationChecker</em> game object</em> is the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker.html">EyeCalibrationChecker</a> script which exposes two Unity Events:</p>
 <ul>
-<li>OnEyeCalibrationDetected()</li>
-<li>OnNoEyeCalibrationDetected()</li>
+<li><code>OnEyeCalibrationDetected()</code></li>
+<li><code>OnNoEyeCalibrationDetected()</code></li>
 </ul>
 </li>
 <li><p>These events will only trigger if the calibration status changes. Hence, if a user chooses to dismiss the notification, the notification will not show up again until</p>
@@ -125,7 +125,11 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
 <li>A valid user has been detected and then a new uncalibrated user has put the device on</li>
 </ul>
 </li>
-<li><p>For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a <code>bool editorTestUserIsCalibrated</code> flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.</p>
+<li><p>For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a <code>bool editorTestUserIsCalibrated</code> flag. For example, when running in the Unity Editor, one can test:</p>
+<ol>
+<li>Whether the notification automatically pops up once the calibration status changes from true to false</li>
+<li>Whether it automatically dismisses the notification again once the status changes from false to true.</li>
+</ol>
 </li>
 </ul>
 </li>
@@ -157,8 +161,13 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
       }
    }
 </code></pre>
-<hr>
-<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="EyeTracking_Main.html">MRTK Eye Tracking Overview</a></li>
+<li><a href="EyeTracking_BasicSetup.html">MRTK Eye Tracking setup</a></li>
+<li><a href="EyeTracking_EyeGazeProvider.html">MRTK Eye Tracking via Code</a></li>
+<li><a href="https://docs.microsoft.com/windows/mixed-reality/eye-tracking">HoloLens 2 Eye Tracking Documentation</a></li>
+</ul>
 </article>
           </div>
           
