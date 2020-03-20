@@ -91,13 +91,10 @@ If you are new to eye tracking on HoloLens 2 and to how eye tracking is set up i
 We will go into detail on how to address each of them further below.</p>
 <ol>
 <li>An <em>'Eye Gaze Data Provider'</em> must be added to the input system. This provides eye tracking data from the platform.</li>
-<li>The GazeProvider must have its <em>'Use Eye Tracking'</em> property set to true. Note that true is the default value (so no special
-action is required unless you have actively unchecked this property.)</li>
 <li>The <em>'GazeInput'</em> capability must be enabled in the application manifest.
 <strong>Currently this is only available in Visual Studio and through the MRTK build tool</strong></li>
 <li>The HoloLens <strong>must</strong> be eye calibrated for the current user. Check out our <a href="EyeTracking_IsUserCalibrated.html">sample for detecting whether a user is eye calibrated or not</a>.</li>
 </ol>
-<p><strong>IMPORTANT:</strong> If any of the above requirements are not met, the application will automatically fall back to head-based gaze tracking.</p>
 <h3 id="a-note-on-the-gazeinput-capability">A note on the GazeInput capability</h3>
 <p>The MRTK-provided build tooling (i.e. Mixed Reality Toolkit -&gt; Utilities -&gt; Build Window)
 can automatically enable the GazeInput capability for you. In order to do this,
@@ -127,11 +124,6 @@ You can simply select <em>DefaultMixedRealityToolkitConfigurationProfile</em> an
 </li>
 </ul>
 <p><img src="../Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg" alt="MRTK"></p>
-<h3 id="enabling-eye-tracking-in-the-gazeprovider">Enabling eye tracking in the GazeProvider</h3>
-<p>In HoloLens v1, head gaze was used as primary pointing technique.
-While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'UseEyeTracking'</em> checkbox as shown in the screenshot below.</p>
-<p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png" alt="MRTK"></p>
-<p><strong>NOTE:</strong> Developers can toggle between eye tracking and head tracking in code by changing the <em>'UseEyeTracking'</em> property of <em>'GazeProvider'</em>.</p>
 <h3 id="simulating-eye-tracking-in-the-unity-editor">Simulating eye tracking in the Unity Editor</h3>
 <p>You can simulate eye tracking input in the Unity Editor to ensure that events are correctly triggered before deploying the app to your HoloLens 2.
 The eye gaze signal is simulated by simply using the camera's location as eye gaze origin and the camera's forward vector as eye gaze direction.
@@ -154,9 +146,19 @@ We do recommend to hide the default head gaze cursor that is attached to the MRT
 <li>Clone the <em>'DefaultMixedRealityInputPointerProfile'</em> to make changes to it.</li>
 <li>At the top of the <em>'Pointer Settings'</em>, you should assign an invisible cursor prefab to the <em>'GazeCursor'</em>. If you downloaded the MRTK Examples folder, you can simply reference the included <em>'EyeGazeCursor'</em> prefab.</li>
 </ul>
-<p><img src="../Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg" alt="MRTK"></p>
 </li>
 </ol>
+<h3 id="enabling-eye-based-gaze-in-the-gaze-provider">Enabling eye-based gaze in the gaze provider</h3>
+<p>In HoloLens v1, head gaze was used as primary pointing technique.
+While head gaze is still available via the <em>GazeProvider</em> in MRTK which is attached to your <a href="https://docs.unity3d.com/ScriptReference/Camera.html">Camera</a>, you can check to use eye gaze instead by ticking the <em>'IsEyeTrackingEnabled'</em> checkbox in the gaze settings of the input pointer profile.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Developers can toggle between eye-based gaze and head-based gaze in code by changing the <em>'IsEyeTrackingEnabled'</em> property of <em>'GazeProvider'</em>.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If any of the eye tracking requirements are not met, the application will automatically fall back to head-based gaze.</p>
+</div>
 <h3 id="accessing-eye-gaze-data">Accessing eye gaze data</h3>
 <p>Now that your scene is set up to use eye tracking, let's take a look at how to access it in your scripts:
 <a href="EyeTracking_EyeGazeProvider.html">Accessing eye tracking data via EyeGazeProvider</a> and <a href="EyeTracking_TargetSelection.html">eye-supported target selections</a>.</p>

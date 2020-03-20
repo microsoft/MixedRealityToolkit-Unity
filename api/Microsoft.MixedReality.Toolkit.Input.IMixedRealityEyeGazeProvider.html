@@ -173,14 +173,14 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeGazeValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeGazeValid*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeGazeValid" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeGazeValid">IsEyeGazeValid</h4>
-  <div class="markdown level1 summary"><p>Whether eye gaze is valid. It may be invalid due to timeout or lack of tracking hardware or permissions.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingDataValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingDataValid*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingDataValid" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingDataValid">IsEyeTrackingDataValid</h4>
+  <div class="markdown level1 summary"><p>Whether eye tracking data is available. It may be unavailable due to timeout or lack of tracking hardware or permissions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IsEyeGazeValid { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">bool IsEyeTrackingDataValid { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,6 +193,89 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingEnabled">IsEyeTrackingEnabled</h4>
+  <div class="markdown level1 summary"><p>If true, eye-based tracking will be used when available.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsEyeTrackingEnabled { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingEnabled_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The usage of eye-based tracking depends on having the Gaze Input permission set
+and user approved, along with proper device eye calibration. This will fallback to head-based
+gaze when eye-based tracking is not available.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingEnabledAndValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingEnabledAndValid*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_IsEyeTrackingEnabledAndValid" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.IsEyeTrackingEnabledAndValid">IsEyeTrackingEnabledAndValid</h4>
+  <div class="markdown level1 summary"><p>Whether eye tracking data is currently been used for gaze rather then head pose. Eye Tracking must be both enabled and have valid data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IsEyeTrackingEnabledAndValid { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_LatestEyeGaze_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.LatestEyeGaze*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_LatestEyeGaze" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.LatestEyeGaze">LatestEyeGaze</h4>
+  <div class="markdown level1 summary"><p>The most recent eye tracking ray</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Ray LatestEyeGaze { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Ray</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -223,37 +306,6 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UseEyeTracking*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.UseEyeTracking">UseEyeTracking</h4>
-  <div class="markdown level1 summary"><p>If true, eye-based tracking will be used when available.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool UseEyeTracking { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeProvider_UseEyeTracking_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The usage of eye-based tracking depends on having the Gaze Input permission set
-and user approved, along with proper device eye calibration. This will fallback to head-based
-gaze when eye-based tracking is not available.</p>
-</div>
   <h3 id="methods">Methods
   </h3>
   
