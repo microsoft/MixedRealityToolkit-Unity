@@ -71,5 +71,9 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
    }
 ```
 
----
-[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+## See also
+
+- [MRTK Eye Tracking Overview](EyeTracking_Main.md)
+- [MRTK Eye Tracking setup](EyeTracking_BasicSetup.md)
+- [MRTK Eye Tracking via Code](EyeTracking_EyeGazeProvider.md)
+- [HoloLens 2 Eye Tracking Documentation](https://docs.microsoft.com/windows/mixed-reality/eye-tracking)

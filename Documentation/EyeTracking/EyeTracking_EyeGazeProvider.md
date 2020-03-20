@@ -52,5 +52,7 @@ CoreServices.InputSystem.EyeGazeProvider.GazeOrigin +
 CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 ```
 
----
-[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+## See also
+- [MRTK Eye Tracking Overview](EyeTracking_Main.md)
+- [MRTK Eye Tracking setup](EyeTracking_BasicSetup.md)
+
