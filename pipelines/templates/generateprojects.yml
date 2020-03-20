@@ -1,9 +1,11 @@
 # [Template] Run a Unity script that generates MSBuild projects.
+parameters:
+  UnityVersion: ""
 
 steps:
 - powershell: |
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
-   $editor = Get-ChildItem ${Env:$(Unity2018Version)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   $editor = Get-ChildItem ${Env:${{ parameters.UnityVersion }}} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    
    $outDir = "$(Build.ArtifactStagingDirectory)\build"
    $logFile = New-Item -Path "$outDir\build\projectgeneration_log.log" -ItemType File -Force

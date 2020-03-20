@@ -5,7 +5,7 @@ The Spatial Awareness system is an extensible system for providing applications 
 This article describes how to create [custom data providers](../Architecture/SystemsExtensionsProviders.md), also called Spatial Observers, for the Spatial Awareness system. The example code shown here is from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) class implementation which is [useful for loading 3D mesh data in-editor](SpatialObjectMeshObserver.md).
 
 > [!NOTE]
-> The complete source code used in this example can be found in the [MixedRealityToolkit.Providers\ObjectMeshObserver folder](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Providers/ObjectMeshObserver).
+> The complete source code used in this example can be found in the `Assets/MRTK/Providers/ObjectMeshObserver` folder.
 
 ## Namespace and folder structure
 
@@ -41,11 +41,11 @@ Where the *ContosoSpatialAwareness* folder contains the implementation of the da
 
 If a spatial awareness system data provider is being submitted to the [Mixed Reality Toolkit repository](https://github.com/Microsoft/MixedRealityToolkit-Unity), the namespace **must** begin with Microsoft.MixedReality.Toolkit (ex: *Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver*)
 
- and the code should be located in a folder beneath MixedRealityToolkit.Providers (ex: *MixedRealityToolkit.Providers\ObjectMeshObserver*).
+ and the code should be located in a folder beneath MRTK/Providers (ex: *MRTK/Providers/ObjectMeshObserver*).
 
 **Folder structure**
 
-All code should be located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\ObjectMeshObserver).
+All code should be located in a folder beneath MRTK/Providers (ex: MRTK/Providers/ObjectMeshObserver).
 
 ## Define the spatial data object
 
@@ -174,7 +174,7 @@ private void SendMeshObjects()
 ```
 
 > [!NOTE]
-> The [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) does not raise `OnObservationUpdated` events since the 3D model is only loaded once. The implementation in the [`WindowsMixedRealitySpatialMeshObserver` file](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealitySpatialMeshObserver.cs) provides an example of raising an `OnObservationUpdated` event for an observed mesh.
+> The [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) class does not raise `OnObservationUpdated` events since the 3D model is only loaded once. The implementation in the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class provides an example of raising an `OnObservationUpdated` event for an observed mesh.
 
 ## Create the profile and inspector
 

@@ -1,9 +1,7 @@
 # Build for PR validation.
 
 variables:
-  Unity2018Version: Unity2018.4.6f1
-  Unity2019Version: Unity2019.2.0f1
-  MRTKVersion: 2.4.0
+- template: config/settings.yml
 
 jobs:
 - job: PRValidation
@@ -32,4 +30,6 @@ jobs:
       # the set of changed files, so that we can save some time. There's no need to
       # check unchanged files for code style/doc style violations.
       scopedValidation: true
+      UnityVersion: $(Unity2018Version)
+
   - template: templates/end.yml
