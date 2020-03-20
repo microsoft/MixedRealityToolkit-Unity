@@ -216,6 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
             var invScale = config.HandleSize / visualSize.x;
+            handle.transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
             if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
             {
@@ -279,10 +280,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         internal override bool IsVisible(Transform handle)
         {
             CardinalAxisType axisType = GetAxisType(handle);
-            return
-                (axisType == CardinalAxisType.X && config.ShowRotationHandleForX) ||
+            return IsActive && 
+                ((axisType == CardinalAxisType.X && config.ShowRotationHandleForX) ||
                 (axisType == CardinalAxisType.Y && config.ShowRotationHandleForY) ||
-                (axisType == CardinalAxisType.Z && config.ShowRotationHandleForZ);
+                (axisType == CardinalAxisType.Z && config.ShowRotationHandleForZ));
         }
 
         internal override HandleType GetHandleType()
@@ -304,9 +305,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         #endregion BoundsControlHandlerBase
 
         #region IProximityScaleObjectProvider 
-        public override bool IsActive()
+        public override bool IsActive
         {
-            return config.ShowRotationHandleForX || config.ShowRotationHandleForY || config.ShowRotationHandleForZ;
+            get
+            {
+                return (config.ShowRotationHandleForX || config.ShowRotationHandleForY || config.ShowRotationHandleForZ) && base.IsActive;
+            }
         }
 
         #endregion IProximityScaleObjectProvider

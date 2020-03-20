@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal override bool IsVisible(Transform handle)
         {
-            return config.ShowScaleHandles;
+            return IsActive;
         }
 
         internal override HandleType GetHandleType()
@@ -232,9 +232,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         #endregion BoundsControlHandlerBase
 
         #region IProximityScaleObjectProvider 
-        public override bool IsActive()
+        public override bool IsActive
         {
-            return config.ShowScaleHandles;
+            get
+            {
+                return config.ShowScaleHandles && base.IsActive;
+            }
         }
         #endregion IProximityScaleObjectProvider
     }

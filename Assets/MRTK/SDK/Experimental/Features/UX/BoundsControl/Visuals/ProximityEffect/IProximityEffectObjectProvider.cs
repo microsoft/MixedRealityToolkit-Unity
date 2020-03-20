@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Returns true if the provider has any visible objects
         /// </summary>
-        bool IsActive();
+        bool IsActive { get; set; }
 
         /// <summary>
         /// Base Material is applied to any proximity scaled object whenever in medium or far/no proximity mode

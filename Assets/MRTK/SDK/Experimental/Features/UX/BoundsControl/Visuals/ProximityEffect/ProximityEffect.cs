@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     foreach (var item in keyValuePair.Value)
                     {
                         // If object can't be visible, skip calculations
-                        if (!keyValuePair.Key.IsActive())
+                        if (!keyValuePair.Key.IsActive)
                         {
                             continue;
                         }
@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             foreach (var keyValuePair in registeredObjects)
             {
-                if (keyValuePair.Key.IsActive())
+                if (keyValuePair.Key.IsActive)
                 {
                     return true;
                 }

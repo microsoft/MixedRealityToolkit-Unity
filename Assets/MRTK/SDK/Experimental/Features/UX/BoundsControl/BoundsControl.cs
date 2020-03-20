@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿no// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
@@ -126,16 +126,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 if (activation != value)
                 {
                     activation = value;
+                    SetActivationFlags();
                     ResetVisuals();
                 }
             }
         }
 
         [Header("Visuals")]
-
-        
-
-        
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -356,6 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private ProximityEffect proximityEffect;
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
+        public bool WireframeOnly { get => wireframeOnly; }
         private bool wireframeOnly = false;
 
         // Pointer that is being used to manipulate the bounds control
@@ -552,6 +550,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             Flatten(flattenAxis);
             CreateRig();
             CaptureInitialState();
+            SetActivationFlags();
+        }
+
+        private void SetActivationFlags()
+        {
+            wireframeOnly = false;
 
             if (activation == BoundsControlActivationType.ActivateByProximityAndPointer ||
                 activation == BoundsControlActivationType.ActivateByProximity ||
@@ -566,8 +570,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             else if (activation == BoundsControlActivationType.ActivateManually)
             {
-                // Activate to create handles etc. then deactivate. 
-                Active = true;
                 Active = false;
             }
         }
@@ -1170,9 +1172,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
             bool isVisible = (active == true && wireframeOnly == false);
             // Set corner visibility
-            scaleHandles.ResetHandleVisibility(isVisible);
+            scaleHandles.IsActive = isVisible;
             // Set rotation handle visibility
-            rotationHandles.ResetHandleVisibility(isVisible);
+            rotationHandles.IsActive = isVisible;
             rotationHandles.FlattenHandles(ref flattenedHandles);
         }
 
@@ -1186,7 +1188,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             links.ResetVisibility(active);
             links.Flatten(ref flattenedHandles);
             bool isVisible = (active == true && wireframeOnly == false);
-            rotationHandles.ResetHandleVisibility(isVisible);
+            rotationHandles.IsActive = isVisible;
             rotationHandles.FlattenHandles(ref flattenedHandles);
             scaleHandles.UpdateFlattenMode(flattenAxis != FlattenModeType.DoNotFlatten);
             boxDisplay.UpdateFlattenAxis(flattenAxis);

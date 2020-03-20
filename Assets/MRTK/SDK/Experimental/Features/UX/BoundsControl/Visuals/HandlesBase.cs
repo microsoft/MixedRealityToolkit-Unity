@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     HandlesIgnoreConfigCollider(true);
                     break;
                 case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
-                    //TODO
+                    ResetHandles();
                     break;
             }
         }
@@ -84,14 +84,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected abstract void UpdateColliderBounds(Transform handle, Vector3 visualSize);
         protected abstract void RecreateVisuals();
 
-        internal void ResetHandleVisibility(bool isVisible)
+        private void ResetHandles()
         {
             if (handles != null)
             {
                 for (int i = 0; i < handles.Count; ++i)
                 {
-                    handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    bool isVisible = IsVisible(handles[i]);
+                    handles[i].gameObject.SetActive(isVisible);
+                    if (isVisible)
+                    {
+                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    }
                 }
             }
             highlightedHandle = null;
@@ -207,7 +211,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         //}
 
         #region IProximityScaleObjectProvider 
-        public abstract bool IsActive();
+
+        private bool isActive = true;
+        public virtual bool IsActive
+        {
+            get => isActive;
+            set
+            {
+                if (isActive != value)
+                {
+                    isActive = value;
+                    ResetHandles();
+                }
+            }
+        }
 
         public void ForEachProximityObject(Action<Transform> action)
         {
