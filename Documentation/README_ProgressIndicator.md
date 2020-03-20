@@ -1,13 +1,13 @@
 # Progress Indicators
 ## Example scene
 
-You can find examples of how to use progress indicators in the `ProgressIndicatorExamples` scene. This scene demonstrates each of the progress indicator prefabs included in the SDK.
+Examples of how to use progress indicators can be found in the `ProgressIndicatorExamples` scene. This scene demonstrates each of the progress indicator prefabs included in the SDK.
 
-<img src="../Documentation/Images/ProgressIndicator/MRTK_ProgressIndicator_Examples.png">
+<img src="Images/ProgressIndicator/MRTK_ProgressIndicator_Examples.png">
 
 ## Example: Open, update & close a progress indicator
 
-Progress indicators implement the `IProgressIndicator` interface. You can retrieve this interface from a GameObject using `GetComponent`.
+Progress indicators implement the [`IProgressIndicator`](xref:Microsoft.MixedReality.Toolkit.UI.IProgressIndicator) interface. This interface can be retrieved from a GameObject using `GetComponent`.
 
 ```c#
 [SerializedField]
@@ -20,7 +20,7 @@ private void Start()
 }
 ```
 
-The `IProgressIndicator.OpenAsnyc()` and `IProgressIndicator.CloseAsync()` methods return `Tasks.` We recommend you await these `Tasks` in an aync method.
+The `IProgressIndicator.OpenAsnyc()` and `IProgressIndicator.CloseAsync()` methods return `Tasks.` We recommend awaiting these `Tasks` in an aync method.
 
 Set the indicator's `Progress` property to a value from 0-1 to update its displayed progress. Set its `Message` property to update its displayed message. Different implementations may display this content in different ways.
 ```c#
@@ -43,7 +43,7 @@ private async void OpenProgressIndicator()
 
 ## Indicator states
 
-An indicator's `State` property determines which operations are valid. If you call an invalid method the indicator will typically report an error and take no action.
+An indicator's `State` property determines which operations are valid. Calling an invalid method will typically cause the indicator to report an error and take no action.
 
 State | Valid Operations
 --- | ---
@@ -52,7 +52,7 @@ State | Valid Operations
 `ProgressIndicatorState.Closing` | `AwaitTransitionAsync()`
 `ProgressIndicatorState.Closed` | `OpenAsync()`
 
-You can use `AwaitTransitionAsync()` to be sure an indicator is fully opened or closed before using it.
+`AwaitTransitionAsync()` can be used to be sure an indicator is fully opened or closed before using it.
 ```c#
 private async void ToggleIndicator(IProgressIndicator indicator)
 {
