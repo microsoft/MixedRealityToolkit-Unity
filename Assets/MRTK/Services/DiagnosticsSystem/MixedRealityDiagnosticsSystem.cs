@@ -95,14 +95,22 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         public override void Enable()
         {
             base.Enable();
-            diagnosticVisualizationParent.SetActive(true);
+
+            if (diagnosticVisualizationParent != null) 
+            {
+                diagnosticVisualizationParent.SetActive(true);
+            }
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
             base.Disable();
-            diagnosticVisualizationParent.SetActive(false);
+
+            if (diagnosticVisualizationParent != null)
+            {
+                diagnosticVisualizationParent.SetActive(false);
+            }
         }
 
         /// <inheritdoc />

@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.SpatialAwarenessSystem
             // Check for Spatial Awareness System
             var spatialAwarenessSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessSystem>();
             var dataProviderAccess = spatialAwarenessSystem as IMixedRealityDataProviderAccess;
+            spatialAwarenessSystem.Disable();
 
             Assert.IsNotNull(dataProviderAccess);
             Assert.IsEmpty(dataProviderAccess.GetDataProviders());
