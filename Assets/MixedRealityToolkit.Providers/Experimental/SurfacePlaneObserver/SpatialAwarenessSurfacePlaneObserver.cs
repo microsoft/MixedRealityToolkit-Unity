@@ -1,13 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Experimental;
-using System;
-using System.Collections;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Concurrent;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
@@ -17,10 +11,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
     "Spatial Awareness Surface Plane Observer",
     "Experimental/Profiles/DefaultSurfacePlaneObserverProfile.asset",
     "MixedRealityToolkit.SDK")]
-    public class SpatialAwarenessSurfacePlaneObserver : BaseSpatialObserver
+    public class SpatialAwarenessSurfacePlaneObserver :
+        BaseSurfacePlaneObserver,
+        IMixedRealityCapabilityCheck
     {
 
         private SurfaceMeshesToPlanes meshesToPlanes;
+        private GameObject ScriptContainer;
      
         /// <summary>
         /// Constructor.
@@ -33,73 +30,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
             string name = null,
             uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
-        {
-            ReadProfile();
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
+        { }
 
         public override void Enable()
         {
             base.Enable();
 
-            var go = new GameObject();
-            GameObject.Instantiate(go);
-            meshesToPlanes = go.AddComponent<SurfaceMeshesToPlanes>();
+            ScriptContainer = new GameObject();
+            ScriptContainer.name = "SurfaceMeshesToPlanes";
+            meshesToPlanes = ScriptContainer.AddComponent<SurfaceMeshesToPlanes>();
+            ConfigureMeshesToPlanes(meshesToPlanes);
+
             meshesToPlanes.MakePlanesComplete += SurfaceMeshesToPlanes_MakePlanesComplete;
-            
             meshesToPlanes.MakePlanes();
         }
 
-        public override void Update()
+        public override void Disable()
         {
-            base.Update();
+            base.Disable();
+            Object.Destroy(ScriptContainer);
         }
 
-        // TODO: Read configuration from profile
-        private void ReadProfile()
+        private void ConfigureMeshesToPlanes(SurfaceMeshesToPlanes meshesToPlanes)
         {
-            // TODO: ensure profile is correct type
+            meshesToPlanes.PlanesParent = ScriptContainer;
+            meshesToPlanes.PhysicsLayer = PhysicsLayer;
+            meshesToPlanes.DefaultMaterial = DefaultMaterial;
+            meshesToPlanes.drawPlanesMask = SurfaceTypes;
+            meshesToPlanes.PlaneThickness = PlaneThickness;
         }
 
         private void SurfaceMeshesToPlanes_MakePlanesComplete(object source, System.EventArgs args)
         {
-            SetPlaneColors(SpatialAwarenessSurfaceTypes.Ceiling);
-            SetPlaneColors(SpatialAwarenessSurfaceTypes.Floor);
-            SetPlaneColors(SpatialAwarenessSurfaceTypes.Wall);
-            SetPlaneColors(SpatialAwarenessSurfaceTypes.Platform);
+            // TODO: Emit Observation Added Events
         }
 
-        private void SetPlaneColors(SpatialAwarenessSurfaceTypes type)
+        public bool CheckCapability(MixedRealityCapability capability)
         {
-            var planes = meshesToPlanes.GetActivePlanes(type);
-
-            foreach (var plane in planes)
-            {
-                var renderer = plane.GetComponent<Renderer>();
-
-                switch (type)
-                {
-                    case SpatialAwarenessSurfaceTypes.Ceiling:
-                        renderer.material.color = Color.blue;
-                        break;
-                    case SpatialAwarenessSurfaceTypes.Floor:
-                        renderer.material.color = Color.green;
-                        break;
-                    case SpatialAwarenessSurfaceTypes.Wall:
-                        renderer.material.color = Color.red;
-                        break;
-                    case SpatialAwarenessSurfaceTypes.Platform:
-                        renderer.material.color = Color.magenta;
-                        break;
-                    default:
-                        break;
-                }
-                
-            }
+            // TODO: Verify this is the correct capability
+            return capability == MixedRealityCapability.SpatialAwarenessMesh;
         }
     }
 

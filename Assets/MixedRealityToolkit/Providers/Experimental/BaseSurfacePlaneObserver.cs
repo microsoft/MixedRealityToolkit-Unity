@@ -9,33 +9,44 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
 {
     public abstract class BaseSurfacePlaneObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessSurfacePlaneObserver
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
         public BaseSurfacePlaneObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
-            uint priority = 10,
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : base(spatialAwarenessSystem, name, priority, profile)
-        { }
+        {
+            ReadProfile();
+        }
 
-        public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
         public int PhysicsLayer { get; set; }
+        public Material DefaultMaterial { get; set; }
+        public SpatialAwarenessSurfaceTypes SurfaceTypes { get; set; }
+        public float PlaneThickness { get; set; }
 
-        protected virtual void ReadProfile()
+        private void ReadProfile()
         {
             if (ConfigurationProfile == null)
             {
-                Debug.LogError($"{Name} requires a configuration profile to run properly.");
                 return;
             }
 
             SpatialAwarenessSurfacePlaneObserverProfile profile = ConfigurationProfile as SpatialAwarenessSurfacePlaneObserverProfile;
             if (profile == null)
             {
-                Debug.LogError($"{Name}'s configuration profile must be a MixedRealitySpatialAwarenessMeshObserverProfile.");
+                Debug.LogError("Spatial Awareness Surface Plane Observer's configuration profile must be a SpatialAwarenessSurfacePlaneObserverProfile.");
                 return;
             }
 
-            //SurfaceTypes = profile.SurfaceTypes;
             PhysicsLayer = profile.PhysicsLayer;
+            DefaultMaterial = profile.DefaultMaterial;
+            SurfaceTypes = profile.SurfaceTypes;
+            PlaneThickness = profile.PlaneThickness;
         }
     }
 }
