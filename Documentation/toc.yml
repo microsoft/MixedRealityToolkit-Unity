@@ -94,7 +94,15 @@
     - name: Controllers
       href: Input/Controllers.md
     - name: Eyes
-      href: EyeTracking/EyeTracking_Main.md
+      items:
+      - name: Overview
+        href: EyeTracking/EyeTracking_Main.md
+      - name: Getting Started
+        href: EyeTracking/EyeTracking_BasicSetup.md
+      - name: Access Data via Code
+        href: EyeTracking/EyeTracking_EyeGazeProvider.md
+      - name: Validate Tracking Calibration
+        href: EyeTracking/EyeTracking_IsUserCalibrated.md
     - name: Gaze
       href: Input/Gaze.md
     - name: Gestures

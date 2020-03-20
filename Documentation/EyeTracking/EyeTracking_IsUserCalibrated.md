@@ -2,9 +2,9 @@
 
 ![Screenshot from eye calibration notification](../Images/EyeTracking/mrtk_et_calibration_notification_example.jpg)
 
-## To be or not to be eye calibrated
+## Overview
 
-If eye tracking is a fundamental part of your app experience, you may wish to ensure that the user's eye calibration is valid.
+If eye tracking is a fundamental part of your app experience, one may wish to ensure that the user's eye calibration is valid.
 The main reason for it to be invalid is that the user has chosen to skip the eye tracking calibration when putting on the device.
 
 This page covers the following:
@@ -16,8 +16,9 @@ This page covers the following:
 
 ### How to detect the eye calibration state
 
-The [CoreServices.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides a `bool?` property called `IsEyeGazeValid`.
-It returns null if no information from the eye tracker is available yet.
+Eye tracking configuration in MRTK is configured via the [`IMixedRealityEyeGazeProvider`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider) interface. 
+
+Using [CoreServices.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides the default gaze provider implementation registered in the toolkit at runtime. `IMixedRealityEyeGazeProvider.IsEyeGazeValid` returns a `bool?` which is null if no information from the eye tracker is available yet.
 Once data has been received, it will either return true or false to indicate that the user's eye tracking calibration is valid or invalid.
 
 ### Sample eye calibration notification - step-by-step
@@ -33,14 +34,16 @@ This includes slowly increasing its size and opacity on activation.
 Once the notification is dismissed, it will slowly decrease its size and fade out.
 
    - Attached to the *_EyeCalibrationChecker_ game object* is the [EyeCalibrationChecker](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeCalibrationChecker) script which exposes two Unity Events:
-      - OnEyeCalibrationDetected()
-      - OnNoEyeCalibrationDetected()
+      - `OnEyeCalibrationDetected()`
+      - `OnNoEyeCalibrationDetected()`
 
    - These events will only trigger if the calibration status changes. Hence, if a user chooses to dismiss the notification, the notification will not show up again until
       - The app gets restarted
       - A valid user has been detected and then a new uncalibrated user has put the device on
 
-   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a `bool editorTestUserIsCalibrated` flag. For example, when the app is running in the Unity Editor you can test, whether the notification automatically pops up once the calibration status changes from true to false and whether it automatically dismisses the notification again once the status changes from false to true.
+   - For testing whether the animations and events are triggered correctly, the EyeCalibrationChecker script possesses a `bool editorTestUserIsCalibrated` flag. For example, when running in the Unity Editor, one can test:
+      1. Whether the notification automatically pops up once the calibration status changes from true to false
+      1. Whether it automatically dismisses the notification again once the status changes from false to true.
 
 ```c#
     private bool? prevCalibrationStatus = null;
@@ -71,5 +74,9 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
    }
 ```
 
----
-[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+## See also
+
+- [MRTK Eye Tracking Overview](EyeTracking_Main.md)
+- [MRTK Eye Tracking setup](EyeTracking_BasicSetup.md)
+- [MRTK Eye Tracking via Code](EyeTracking_EyeGazeProvider.md)
+- [HoloLens 2 Eye Tracking Documentation](https://docs.microsoft.com/windows/mixed-reality/eye-tracking)
