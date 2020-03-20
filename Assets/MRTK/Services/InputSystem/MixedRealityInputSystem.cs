@@ -18,19 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
-        /// <param name="profile">The configuration profile for the service.</param>
-        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public MixedRealityInputSystem(
-            IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : this(profile)
-        {
-            Registrar = registrar;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
         public MixedRealityInputSystem(
             MixedRealityInputSystemProfile profile) : base(profile)
@@ -83,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
         /// <inheritdoc />
-        public bool IsInputEnabled => disabledRefCount <= 0;
+        public bool IsInputEnabled => IsEnabled && disabledRefCount <= 0;
 
         private int disabledRefCount;
         private bool isInputModuleAdded = false;
@@ -377,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            if (disabledRefCount > 0)
+            if (!IsInputEnabled)
             {
                 return;
             }
@@ -417,6 +404,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandleFocusChangedEvents(FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> eventHandler)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             Debug.Assert(focusEventData != null);
 
             DispatchEventToGlobalListeners(focusEventData, eventHandler);
@@ -455,6 +447,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandleFocusEvent(GameObject eventTarget, FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusHandler> eventHandler)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             Debug.Assert(focusEventData != null);
 
             DispatchEventToGlobalListeners(focusEventData, eventHandler);
@@ -469,7 +466,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandlePointerEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IMixedRealityPointerHandler
         {
-            if (disabledRefCount > 0)
+            if (!IsInputEnabled)
             {
                 return;
             }
@@ -673,7 +670,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="inputHandler">The input handler to push</param>
         public void PushModalInputHandler(GameObject inputHandler)
         {
-            modalInputStack.Push(inputHandler);
+            if (inputHandler != null)
+            {
+                modalInputStack.Push(inputHandler);
+            }
         }
 
         /// <summary>
@@ -707,7 +707,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="inputHandler">The input handler to push</param>
         public void PushFallbackInputHandler(GameObject inputHandler)
         {
-            fallbackInputStack.Push(inputHandler);
+            if (inputHandler != null)
+            {
+                fallbackInputStack.Push(inputHandler);
+            }
         }
 
         /// <summary>
@@ -759,10 +762,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            if (DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); }
+            if (DetectedInputSources.Contains(source)) 
+            { 
+                Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); 
+            }
 
             DetectedInputSources.Add(source);
 
@@ -787,6 +798,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
@@ -820,6 +836,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, IMixedRealityController controller, TrackingState state)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourceTrackingEventData.Initialize(source, controller, state);
 
@@ -837,6 +858,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector2 position)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourceVector2EventData.Initialize(source, controller, position);
 
@@ -854,6 +880,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector3 position)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourcePositionEventData.Initialize(source, controller, position);
 
@@ -871,6 +902,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceRotationChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourceRotationEventData.Initialize(source, controller, rotation);
 
@@ -888,6 +924,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, MixedRealityPose position)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             sourcePoseEventData.Initialize(source, controller, position);
 
@@ -911,6 +952,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
             HandleFocusChangedEvents(focusEventData, OnPreFocusChangedHandler);
@@ -926,6 +972,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
             HandleFocusChangedEvents(focusEventData, OnFocusChangedHandler);
@@ -941,6 +992,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             focusEventData.Initialize(pointer);
 
             HandleFocusEvent(focusedObject, focusEventData, OnFocusEnterEventHandler);
@@ -956,6 +1012,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             focusEventData.Initialize(pointer);
 
             HandleFocusEvent(unfocusedObject, focusEventData, OnFocusExitEventHandler);
@@ -984,6 +1045,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Only lock the object if there is a grabbable above in the hierarchy
             Transform currentObject = null;
             GameObject currentGameObject = pointer.Result?.Details.Object;
@@ -1025,6 +1091,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
             HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
@@ -1044,6 +1115,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource, count);
 
@@ -1072,6 +1148,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
             HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
@@ -1116,6 +1197,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, true);
 
             // Create input event
@@ -1165,6 +1251,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, false);
 
             // Create input event
@@ -1195,6 +1286,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, inputValue);
 
             // Create input event
@@ -1218,6 +1314,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, inputPosition);
 
             // Create input event
@@ -1237,6 +1338,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, position);
 
             // Create input event
@@ -1260,6 +1366,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseRotationInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, rotation);
 
             // Create input event
@@ -1283,6 +1394,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePoseInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             inputAction = ProcessRules(inputAction, inputData);
 
             // Create input event
@@ -1327,6 +1443,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
 
@@ -1350,6 +1471,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, true);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureUpdated);
@@ -1365,6 +1491,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(vector2InputEventData, OnGestureVector2PositionUpdated);
@@ -1380,6 +1511,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(positionInputEventData, OnGesturePositionUpdated);
@@ -1395,6 +1531,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(rotationInputEventData, OnGestureRotationUpdated);
@@ -1410,6 +1551,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(poseInputEventData, OnGesturePoseUpdated);
@@ -1444,6 +1590,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
 
@@ -1467,6 +1618,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(vector2InputEventData, OnGestureVector2PositionCompleted);
@@ -1482,6 +1638,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(positionInputEventData, OnGesturePositionCompleted);
@@ -1497,6 +1658,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(rotationInputEventData, OnGestureRotationCompleted);
@@ -1512,6 +1678,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, inputData);
             poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
             HandleEvent(poseInputEventData, OnGesturePoseCompleted);
@@ -1527,6 +1698,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             action = ProcessRules(action, false);
             inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
             HandleEvent(inputEventData, OnGestureCanceled);
@@ -1566,6 +1742,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
 
@@ -1596,6 +1777,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
 
@@ -1613,6 +1799,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
@@ -1630,6 +1821,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
@@ -1647,6 +1843,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
@@ -1668,6 +1869,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void RaiseHandJointsUpdated(IMixedRealityInputSource source, Handedness handedness, IDictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             jointPoseInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, jointPoses);
 
@@ -1685,6 +1891,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void RaiseHandMeshUpdated(IMixedRealityInputSource source, Handedness handedness, HandMeshInfo handMeshInfo)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             handMeshInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, handMeshInfo);
 
@@ -1702,6 +1913,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
@@ -1720,6 +1936,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseOnTouchCompleted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
@@ -1738,6 +1959,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseOnTouchUpdated(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
+            if (!IsInputEnabled)
+            {
+                return;
+            }
+
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
@@ -1837,5 +2063,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion Rules
+
+        #region Obsolete
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public MixedRealityInputSystem(
+            IMixedRealityServiceRegistrar registrar,
+            MixedRealityInputSystemProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+
+        #endregion
     }
 }

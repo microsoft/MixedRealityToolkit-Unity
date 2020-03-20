@@ -157,18 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
-            // Todo: this condition shouldn't be here.
-            // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
-            // event handler registration to live over tests and cause next tests to fail.
-            // Exact reason requires investigation.
-            if (Application.isPlaying)
-            {
-                BaseEventSystem.enableDanglingHandlerDiagnostics = true;
-            }
-
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-
 
             MixedRealityToolkit.Instance.ActiveProfile = configuration;
             Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
