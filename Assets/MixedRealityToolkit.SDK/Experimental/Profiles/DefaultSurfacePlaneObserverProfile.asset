@@ -9,13 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 07ed996c6459d8e479451479bc676f88, type: 3}
   m_Name: DefaultSurfacePlaneObserverProfile
-  m_EditorClassIdentifier: Microsoft.MixedReality.Toolkit:Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness:SpatialAwarenessSurfacePlaneObserverProfile
+  m_EditorClassIdentifier: 
   isCustomProfile: 1
   startupBehavior: 0
   isStationaryObserver: 0
   observationExtents: {x: 3, y: 3, z: 3}
   observerVolumeType: 1
   updateInterval: 3.5
+  updateOnceOnLoad: 0
+  autoUpdate: 0
   physicsLayer: 31
+  surfaceTypes: 30
+  defaultMaterial: {fileID: 0}
+  firstUpdateDelay: 1
+  planeThickness: 0.01

@@ -12,6 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
     {
        
         private SerializedProperty physicsLayer;
+        private SerializedProperty surfaceTypes;
+        private SerializedProperty defaultMaterial;
+        private SerializedProperty firstUpdateDelay;
+        private SerializedProperty planeThickness;
 
         private const string ProfileTitle = "Surface Plane Observer Settings";
         private const string ProfileDescription = "Settings for plane finder used on Hololens 1";
@@ -21,6 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
             base.OnEnable();
 
             physicsLayer = serializedObject.FindProperty("physicsLayer");
+            surfaceTypes = serializedObject.FindProperty("surfaceTypes");
+            defaultMaterial = serializedObject.FindProperty("defaultMaterial");
+            firstUpdateDelay = serializedObject.FindProperty("firstUpdateDelay");
+            planeThickness = serializedObject.FindProperty("planeThickness");
         }
 
         public override void OnInspectorGUI()
@@ -33,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness
                 serializedObject.Update();
 
                 EditorGUILayout.PropertyField(physicsLayer);
+                EditorGUILayout.PropertyField(surfaceTypes);
+                EditorGUILayout.PropertyField(defaultMaterial);
+                EditorGUILayout.PropertyField(firstUpdateDelay);
+                EditorGUILayout.PropertyField(planeThickness);
 
                 serializedObject.ApplyModifiedProperties();
             }
