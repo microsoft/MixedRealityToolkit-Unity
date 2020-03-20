@@ -16,7 +16,13 @@ Finally, we also describe how to set up a fresh scene with the core components t
 
 3. [Accessing eye tracking data via Code](EyeTracking_BasicSetup.md)
 
+4. [Validate eye tracking calibration on device](EyeTracking_IsUserCalibrated.md)
+
+EyeTracking/EyeTracking_IsUserCalibrated.md
+
 ## See also
 
 - [MRTK Eye Tracking setup](EyeTracking_BasicSetup.md)
 - [MRTK Eye Tracking via Code](EyeTracking_EyeGazeProvider.md)
+- [MRTK Eye Tracking Calibration](EyeTracking_IsUserCalibrated.md)
+- [HoloLens 2 Eye Tracking Documentation](https://docs.microsoft.com/windows/mixed-reality/eye-tracking) 

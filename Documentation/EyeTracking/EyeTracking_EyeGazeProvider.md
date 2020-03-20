@@ -1,11 +1,12 @@
 # Accessing eye tracking data in your Unity script
 
-The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)).
-To access eye tracking data in your MonoBehaviour scripts is easy! Simply use *CoreServices.InputSystem.EyeGazeProvider*.
+This article assumes one has understanding for setting up eye tracking in an MRTK scene (see [Basic MRTK setup to use eye tracking](EyeTracking_BasicSetup.md)).
+Accessing eye tracking data in a MonoBehaviour script is easy! Simply use *CoreServices.InputSystem.EyeGazeProvider*.
 
-## CoreServices.InputSystem.EyeGazeProvider
+## IMixedRealityEyeGazeProvider
 
-While the *CoreServices.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for eye tracking input are the following:
+Eye tracking configuration in MRTK is configured via the [`IMixedRealityEyeGazeProvider`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider) interface. Using [CoreServices.InputSystem.EyeGazeProvider](EyeTracking_EyeGazeProvider.md) provides the default gaze provider implementation registered in the toolkit at runtime.
+Useful properties of the `EyeGazeProvider` is outlined below.
 
 - **UseEyeTracking**:
 True if eye tracking hardware is available and the user has given permission to use eye tracking in the app.
@@ -30,7 +31,7 @@ This will return the *head* gaze direction if 'IsEyeGazeValid' is false.
 
 - **HitInfo**, **HitPosition**, **HitNormal**, etc.:
 Information about the currently gazed at target.
-Again, if 'IsEyeGazeValid' is false, this will be based on the user's *head* gaze.
+Again, if `IsEyeGazeValid` is false, this will be based on the user's *head* gaze.
 
 ## Examples for using CoreServices.InputSystem.EyeGazeProvider
 
@@ -53,6 +54,8 @@ CoreServices.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDista
 ```
 
 ## See also
+
 - [MRTK Eye Tracking Overview](EyeTracking_Main.md)
 - [MRTK Eye Tracking setup](EyeTracking_BasicSetup.md)
-
+- [MRTK Eye Tracking Calibration](EyeTracking_IsUserCalibrated.md)
+- [HoloLens 2 Eye Tracking Documentation](https://docs.microsoft.com/windows/mixed-reality/eye-tracking)
