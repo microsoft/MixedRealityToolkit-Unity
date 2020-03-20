@@ -130,6 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
+        /// If true then camera forward direction is used to simulate eye tracking data.    
+        /// </summary>
+        public bool SimulateEyePosition { get; set; }
+
+        /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
         public bool UserInputEnabled { get; set; } = true;
@@ -200,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     return (HandSimulationMode != HandSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
-                    return InputSimulationProfile.SimulateEyePosition;
+                    return SimulateEyePosition;
             }
 
             return false;
@@ -212,6 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Initialize();
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
+            SimulateEyePosition = InputSimulationProfile.SimulateEyePosition;
         }
 
         /// <inheritdoc />
@@ -298,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (profile.SimulateEyePosition)
+            if (SimulateEyePosition)
             {
                 // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
                 Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);

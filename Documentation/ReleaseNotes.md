@@ -2,6 +2,7 @@
 
 - [What's new](#whats-new-in-240)
 - [Known issues](#known-issues-in-240)
+- [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#updating-230-to-240)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
@@ -50,6 +51,14 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
 This version of MRTK adds three new methods to the `WindowsApiChecker` class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+
+### Breaking changes in 2.4.0
+
+**Eye gaze setup change**
+
+This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
+
+For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
 
 ### Known issues in 2.4.0
 
