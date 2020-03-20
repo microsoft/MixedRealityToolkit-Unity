@@ -77,12 +77,10 @@ We do recommend to hide the default head gaze cursor that is attached to the MRT
 ### Enabling eye-based gaze in the gaze provider
 
 In HoloLens v1, head gaze was used as primary pointing technique.
-While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'UseEyeTracking'_ checkbox in the gaze settings of the input pointer profile as shown in the screenshot below.
-
-![MRTK](../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
+While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'IsEyeTrackingEnabled'_ checkbox in the gaze settings of the input pointer profile.
 
 >[!NOTE]
->Developers can toggle between eye-based gaze and head-based gaze in code by changing the _'UseEyeTracking'_ property of _'GazeProvider'_.  
+>Developers can toggle between eye-based gaze and head-based gaze in code by changing the _'IsEyeTrackingEnabled'_ property of _'GazeProvider'_.  
 
 >[!IMPORTANT]
 >If any of the eye tracking requirements are not met, the application will automatically fall back to head-based gaze.

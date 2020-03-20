@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
                 // Current implementation implements both provider types in one concrete class.
                 EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                EyeGazeProvider.UseEyeTracking = pointerProfile.UseEyeTracking;
+                EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
             }
             else
             {

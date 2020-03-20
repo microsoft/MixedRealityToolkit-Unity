@@ -81,14 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { enabled = value; }
         }
 
-        [FormerlySerializedAs("preferEyeTracking")]
-        private bool useEyeTracking;
+        [FormerlySerializedAs("useEyeTracking")]
+        private bool isEyeTrackingEnabled;
 
         /// <inheritdoc />
-        public bool UseEyeTracking
+        public bool IsEyeTrackingEnabled
         {
-            get { return useEyeTracking; }
-            set { useEyeTracking = value; }
+            get { return isEyeTrackingEnabled; }
+            set { isEyeTrackingEnabled = value; }
         }
 
         /// <inheritdoc />
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 lastHeadPosition = Vector3.zero;
 
         /// <inheritdoc />
-        public bool IsGazeInputEyeBased => IsEyeTrackingAvailable && UseEyeTracking;
+        public bool IsEyeTrackingEnabledAndValid => IsEyeTrackingDataValid && IsEyeTrackingEnabled;
 
         /// <inheritdoc />
         public DateTime Timestamp { get; private set; }
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newGazeOrigin = Vector3.zero;
                 Vector3 newGazeNormal = Vector3.zero;
 
-                if (gazeProvider.IsGazeInputEyeBased)
+                if (gazeProvider.IsEyeTrackingEnabledAndValid)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
                     newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
@@ -557,7 +557,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
         /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
         /// </summary>
-        public bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
+        public bool IsEyeTrackingDataValid => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
         /// <summary>
         /// Boolean to check whether the user went through the eye tracking calibration. 

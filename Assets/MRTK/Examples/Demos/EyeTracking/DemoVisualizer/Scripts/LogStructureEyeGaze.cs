@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             // Eye gaze hit position
             Vector3? eyeHitPos = null;
-            if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsGazeInputEyeBased)
+            if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsEyeTrackingEnabledAndValid)
                 eyeHitPos = EyeTrackingProvider.HitPosition;
 
             object[] data = new object[]
@@ -64,13 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 0,
 
                 // Smoothed eye gaze signal 
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeOrigin.x : 0,
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeOrigin.y : 0,
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeOrigin.z : 0,
-
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeDirection.x : 0,
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeDirection.y : 0,
-                EyeTrackingProvider.IsGazeInputEyeBased ? EyeTrackingProvider.GazeDirection.z : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.x : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.y : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.z : 0,
+                                    
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.x : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.y : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.z : 0,
 
                 (eyeHitPos != null) ? eyeHitPos.Value.x : float.NaN,
                 (eyeHitPos != null) ? eyeHitPos.Value.y : float.NaN,

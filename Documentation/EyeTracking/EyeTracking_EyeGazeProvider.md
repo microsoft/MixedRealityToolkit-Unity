@@ -7,7 +7,7 @@ To access eye tracking data in your MonoBehaviour scripts is easy! Simply use *C
 
 While the *CoreServices.InputSystem.EyeGazeProvider* provides several helpful variables, the key ones for eye tracking input are the following:
 
-- **UseEyeTracking**:
+- **IsEyeTrackingEnabled**:
 True if user has selected to use eye tracking for gaze.
 
 - **IsEyeCalibrationValid**:
@@ -15,10 +15,10 @@ Indicates whether the user's eye tracking calibration is valid or not.
 It returns 'null', if the value has not yet received data from the eye tracking system.
 It may be invalid, because the user skipped the eye tracking calibration.
 
-- **IsGazeInputEyeBased**:
+- **IsEyeTrackingEnabledAndValid**:
 Indicates whether the current eye tracking data is currently been used for gaze.
 
-- **IsEyeTrackingAvailable**:
+- **IsEyeTrackingDataValid**:
 True if eye tracking data is available.
 It may be unavailable due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.
 Check out our [Missing eye calibration notification sample](EyeTracking_IsUserCalibrated.md) that explains how to detect whether a user is eye calibrated and to show an appropriate notification.
