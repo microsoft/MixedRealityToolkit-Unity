@@ -81,15 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { enabled = value; }
         }
 
-        [FormerlySerializedAs("useEyeTracking")]
-        private bool isEyeTrackingEnabled;
-
         /// <inheritdoc />
-        public bool IsEyeTrackingEnabled
-        {
-            get { return isEyeTrackingEnabled; }
-            set { isEyeTrackingEnabled = value; }
-        }
+        public bool IsEyeTrackingEnabled { get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
