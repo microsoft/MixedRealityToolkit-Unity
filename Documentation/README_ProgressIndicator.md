@@ -20,7 +20,7 @@ private void Start()
 }
 ```
 
-The `IProgressIndicator.OpenAsnyc()` and `IProgressIndicator.CloseAsync()` methods return `Tasks.` We recommend awaiting these `Tasks` in an aync method.
+The `IProgressIndicator.OpenAsnyc()` and `IProgressIndicator.CloseAsync()` methods return [Tasks](xref:System.Threading.Tasks.Task). We recommend awaiting these Tasks in an aync method.
 
 Set the indicator's `Progress` property to a value from 0-1 to update its displayed progress. Set its `Message` property to update its displayed message. Different implementations may display this content in different ways.
 ```c#
