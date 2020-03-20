@@ -80,8 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// <summary>
         /// Delegate which is called when the MakePlanesCompleted event is triggered.
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="args"></param>
         public delegate void EventHandler(object source, EventArgs args);
 
         /// <summary>
@@ -355,7 +353,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// <summary>
         /// Sets visibility of planes based on their type.
         /// </summary>
-        /// <param name="surfacePlane"></param>
         private void SetPlaneVisibility(PlaneWithType pt)
         {
            pt.Plane.SetActive((drawPlanesMask & pt.Type) == pt.Type);
