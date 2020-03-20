@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Determines which plane types should be rendered.
-        /// </summarydrawPlanesMask
+        /// </summary>
         [HideInInspector]
         public SpatialAwarenessSurfaceTypes drawPlanesMask =
             (SpatialAwarenessSurfaceTypes.Wall | SpatialAwarenessSurfaceTypes.Floor | SpatialAwarenessSurfaceTypes.Ceiling | SpatialAwarenessSurfaceTypes.Platform);
