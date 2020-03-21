@@ -247,6 +247,8 @@
       href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
     - name: Dock Control
       href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
+    - name: Mixed Reality Keyboard Helpers
+      href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
 - name: Contributing
   items:
   - name: Contributing Overview
