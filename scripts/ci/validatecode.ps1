@@ -174,31 +174,31 @@ $HardcodedPathExceptions = @{
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHub.unity" = @(
-        'Path: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'Path: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
+        'value: Assets/MRTK/Examples/Experimental/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity'
     );
     # This exception should be deleted once https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6448 is resolved
     "MRTKExamplesHubMainMenu.unity" = @(
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slate/SlateExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
-        'value: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slate/SlateExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/ClippingExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/Slider/Scenes/SliderExample.unity'
+        'value: Assets/MRTK/Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity'
+        'value: Assets/MRTK/Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity'
+        'value: Assets/MRTK/Examples/Demos/StandardShader/Scenes/MaterialGallery.unity'
     );
 }
 
 <#
 .SYNOPSIS
-    Checks if the line contains a hardcoded path i.e. "Assets/MixedRealityToolkit.Examples"
+    Checks if the line contains a hardcoded path i.e. "Assets/MRTK/Examples"
     Hardcoded paths are generally not allowed, except in certain cases such as:
 
     - Tests cases (tests are not run by consumers of the toolkit)
