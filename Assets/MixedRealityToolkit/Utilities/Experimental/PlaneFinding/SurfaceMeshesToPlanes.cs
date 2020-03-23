@@ -315,7 +315,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
                 SetPlaneVisibility(planeWithType);
 
-                activePlanes.Add(planeWithType);
+                if ((destroyPlanesMask & planeWithType.Type) == planeWithType.Type)
+                {
+                    DestroyImmediate(destinationPlane);
+                }
+                else
+                {
+                    activePlanes.Add(planeWithType);
+                }
             }
 
             Debug.Log("Finished creating planes.");
