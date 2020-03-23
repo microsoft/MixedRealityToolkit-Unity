@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Material used to render planes
-        /// </summary
+        /// </summary>
         public Material DefaultMaterial
         {
             get => defaultMaterial;
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Minimum area required for a plane to be created.
-        /// </summary
+        /// </summary>
         public float MinArea
         {
             get => minArea;
@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Threshold for acceptable normals (the closer to 1, the stricter the standard). Used when determining plane type.
-        /// </summary
+        /// </summary>
         public float UpNormalThreshold
         {
             get => upNormalThreshold;
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Buffer to use when determining if a horizontal plane near the floor should be considered part of the floor.
-        /// </summary
+        /// </summary>
         public float FloorBuffer
         {
             get => floorBuffer;
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Buffer to use when determining if a horizontal plane near the ceiling should be considered part of the ceiling.
-        /// </summary
+        /// </summary>
         public float CeilingBuffer
         {
             get => ceilingBuffer;
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Thickness of rendered plane objects
-        /// </summary
+        /// </summary>
         public float PlaneThickness
         {
             get => planeThickness;
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
 
         /// <summary>
         /// Determines which plane types should be rendered
-        /// </summary
+        /// </summary>
         public SpatialAwarenessSurfaceTypes DrawPlanesMask
         {
             get => drawPlanesMask;
