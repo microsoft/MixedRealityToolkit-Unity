@@ -30,8 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
-        private const string DefaultHoloLens2Profile = "Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset";
-        private const string BoundaryOnlyProfile = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Core/TestProfiles/BoundaryOnly.asset";
+        private const string DefaultHoloLens2ProfileGuid = "7e7c962b9eb9dfa44993d5b2f2576752";
+        private static readonly string DefaultHoloLens2ProfilePath = AssetDatabase.GUIDToAssetPath(DefaultHoloLens2ProfileGuid);
+
+        private const string BoundaryOnlyProfileGuid = "1945e1d0f0513ea4da45f9296a206ab3";
+        private static readonly string BoundaryOnlyProfilePath = AssetDatabase.GUIDToAssetPath(BoundaryOnlyProfileGuid);
 
         /// <summary>
         /// Test to verify that switching profiles results in appropriate service counts.
@@ -51,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Switch to profile 2
-            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2Profile);
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2ProfilePath);
             ChangeProfile(profile2);
             yield return null;
 
@@ -79,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             IMixedRealityBoundarySystem boundarySystem1 = CoreServices.BoundarySystem;
             yield return null;
 
-            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(BoundaryOnlyProfile);
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(BoundaryOnlyProfilePath);
 
             // Switch to profile 2
             ChangeProfile(profile2);
@@ -113,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeTest(profile1);
 
             // Switch between the profiles a few times.
-            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2Profile);
+            MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(DefaultHoloLens2ProfilePath);
             ChangeProfile(profile2);
             yield return null;
             ChangeProfile(profile1);
@@ -158,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityToolkit.Instance.ActiveProfile = newProfile;
         }
 
-        private MixedRealityToolkitConfigurationProfile LoadTestProfile(string file)
+        private MixedRealityToolkitConfigurationProfile LoadTestProfile(string assetPath)
         {
-            return AssetDatabase.LoadAssetAtPath<MixedRealityToolkitConfigurationProfile>(file);
+            return AssetDatabase.LoadAssetAtPath<MixedRealityToolkitConfigurationProfile>(assetPath);
         }
     }
 }
