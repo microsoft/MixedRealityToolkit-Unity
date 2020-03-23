@@ -22,60 +22,140 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
     /// </summary>
     public class SurfaceMeshesToPlanes:MonoBehaviour
     {
+        #region Public properties
+        [SerializeField]
         [Tooltip("Empty game object used to contain all planes created by the SurfaceToPlanes class")]
-        public GameObject PlanesParent;
-
-        [Tooltip("The physics layer for planes to be set to")]
-        public int PhysicsLayer = 31;
-
-        [Tooltip("Material used to render planes")]
-        [Range(0.0f, 1.0f)]
-        public Material DefaultMaterial;
-
-        [Tooltip("Minimum area required for a plane to be created.")]
-        public float MinArea = 0.025f;
-
-        [Tooltip("Threshold for acceptable normals (the closer to 1, the stricter the standard). Used when determining plane type.")]
-        [Range(0.0f, 1.0f)]
-        public float UpNormalThreshold = 0.9f;
-
-        [Tooltip("Buffer to use when determining if a horizontal plane near the floor should be considered part of the floor.")]
-        [Range(0.0f, 1.0f)]
-        public float FloorBuffer = 0.1f;
-
-        [Tooltip("Buffer to use when determining if a horizontal plane near the ceiling should be considered part of the ceiling.")]
-        [Range(0.0f, 1.0f)]
-        public float CeilingBuffer = 0.1f;
-
-        [Tooltip("Thickness of rendered plane objects")]
-        [Range(0.0f, 1.0f)]
-        public float PlaneThickness = 0.01f;
+        private GameObject planesParent;
 
         /// <summary>
-        /// Determines which plane types should be rendered.
+        /// Empty game object used to contain all planes created by the SurfaceToPlanes class
         /// </summary>
+        public GameObject PlanesParent
+        {
+            get => planesParent;
+            set => planesParent = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The physics layer for planes to be set to")]
+        private int physicsLayer;
+        
+        /// <summary>
+        /// The physics layer for planes to be set to
+        /// </summary>
+        public int PhysicsLayer
+        {
+            get => physicsLayer;
+            set => physicsLayer = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Material used to render planes")]
+        private Material defaultMaterial;
+
+        /// <summary>
+        /// Material used to render planes
+        /// </summary
+        public Material DefaultMaterial
+        {
+            get => defaultMaterial;
+            set => defaultMaterial = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Minimum area required for a plane to be created.")]
+        private float minArea = 0.025f;
+
+        /// <summary>
+        /// Minimum area required for a plane to be created.
+        /// </summary
+        public float MinArea
+        {
+            get => minArea;
+            set => minArea = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Threshold for acceptable normals (the closer to 1, the stricter the standard). Used when determining plane type.")]
+        [Range(0.0f, 1.0f)]
+        private float upNormalThreshold = 0.9f;
+
+        /// <summary>
+        /// Threshold for acceptable normals (the closer to 1, the stricter the standard). Used when determining plane type.
+        /// </summary
+        public float UpNormalThreshold
+        {
+            get => upNormalThreshold;
+            set => upNormalThreshold = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Buffer to use when determining if a horizontal plane near the floor should be considered part of the floor.")]
+        [Range(0.0f, 1.0f)]
+        private float floorBuffer = 0.1f;
+
+        /// <summary>
+        /// Buffer to use when determining if a horizontal plane near the floor should be considered part of the floor.
+        /// </summary
+        public float FloorBuffer
+        {
+            get => floorBuffer;
+            set => floorBuffer = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Buffer to use when determining if a horizontal plane near the ceiling should be considered part of the ceiling.")]
+        [Range(0.0f, 1.0f)]
+        private float ceilingBuffer = 0.1f;
+
+        /// <summary>
+        /// Buffer to use when determining if a horizontal plane near the ceiling should be considered part of the ceiling.
+        /// </summary
+        public float CeilingBuffer
+        {
+            get => ceilingBuffer;
+            set => ceilingBuffer = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Thickness of rendered plane objects")]
+        [Range(0.0f, 1.0f)]
+        private float planeThickness = 0.01f;
+
+        /// <summary>
+        /// Thickness of rendered plane objects
+        /// </summary
+        public float PlaneThickness
+        {
+            get => planeThickness;
+            set => planeThickness = value;
+        }
+
         [HideInInspector]
-        public SpatialAwarenessSurfaceTypes drawPlanesMask =
+        private SpatialAwarenessSurfaceTypes drawPlanesMask =
             (SpatialAwarenessSurfaceTypes.Wall | SpatialAwarenessSurfaceTypes.Floor | SpatialAwarenessSurfaceTypes.Ceiling | SpatialAwarenessSurfaceTypes.Platform);
+
+        /// <summary>
+        /// Determines which plane types should be rendered
+        /// </summary
+        public SpatialAwarenessSurfaceTypes DrawPlanesMask
+        {
+            get => drawPlanesMask;
+            set => drawPlanesMask = value;
+        }
+
+        [HideInInspector]
+        private SpatialAwarenessSurfaceTypes destroyPlanesMask = SpatialAwarenessSurfaceTypes.Unknown;
 
         /// <summary>
         /// Determines which plane types should be discarded.
         /// Use this when the spatial mapping mesh is a better fit for the surface (ex: round tables).
         /// </summary>
-        [HideInInspector]
-        public SpatialAwarenessSurfaceTypes destroyPlanesMask = SpatialAwarenessSurfaceTypes.Unknown;
-
-        /// <summary>
-        /// Floor y value, which corresponds to the maximum horizontal area found below the user's head position.
-        /// This value is reset by SurfaceMeshesToPlanes when the max floor plane has been found.
-        /// </summary>
-        public float FloorYPosition { get; private set; }
-
-        /// <summary>
-        /// Ceiling y value, which corresponds to the maximum horizontal area found above the user's head position.
-        /// This value is reset by SurfaceMeshesToPlanes when the max ceiling plane has been found.
-        /// </summary>
-        public float CeilingYPosition { get; private set; }
+        public SpatialAwarenessSurfaceTypes DestroyPlanesMask
+        {
+            get => destroyPlanesMask;
+            set => destroyPlanesMask = value;
+        }
 
         /// <summary>
         /// Delegate which is called when the MakePlanesCompleted event is triggered.
@@ -87,39 +167,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// </summary>
         public event EventHandler MakePlanesComplete;
 
-        /// <summary>
-        /// Holds list of active planes and corresponding types
-        /// </summary>
-        private List<PlaneWithType> ActivePlanes;
+        #endregion
 
-        /// <summary>
-        /// Used to align planes with gravity so that they appear more level.
-        /// </summary>
+        #region Private Properties
+
+        private float floorYPosition;
+        private float ceilingYPosition;
+        private List<PlaneWithType> activePlanes;
         private float snapToGravityThreshold = 5.0f;
-
-        /// <summary>
-        /// Indicates if SurfaceToPlanes is currently creating planes based on the Spatial Mapping Mesh.
-        /// </summary>
         private bool makingPlanes = false;
-
         private CancellationTokenSource tokenSource;
 
-        // GameObject initialization.
-        private void Start()
-        {
-            ActivePlanes = new List<PlaneWithType>();
+        #endregion
 
-            if (PlanesParent == null)
-                PlanesParent = new GameObject("SurfaceMeshesToPlanes");
-            PlanesParent.transform.position = Vector3.zero;
-            PlanesParent.transform.rotation = Quaternion.identity;
-        }
-
-        private void OnDestroy()
-        {
-            UnityEngine.Object.Destroy(PlanesParent);
-            tokenSource?.Cancel();
-        }
+        #region Public Methods
 
         /// <summary>
         /// Gets all active planes of the specified type(s).
@@ -130,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
             List<GameObject> typePlanes = new List<GameObject>();
 
-            foreach (PlaneWithType planeWithType in ActivePlanes)
+            foreach (PlaneWithType planeWithType in activePlanes)
             {
                 if ((planeTypes & planeWithType.Type) == planeWithType.Type)
                 {
@@ -152,6 +213,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 tokenSource = new CancellationTokenSource();
                 var x = MakePlanes(tokenSource.Token).ConfigureAwait(true);
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        // GameObject initialization.
+        private void Start()
+        {
+            activePlanes = new List<PlaneWithType>();
+
+            if (planesParent == null)
+                planesParent = new GameObject("SurfaceMeshesToPlanes");
+            planesParent.transform.position = Vector3.zero;
+            planesParent.transform.rotation = Quaternion.identity;
+
+            MakePlanes();
+        }
+
+        private void OnDestroy()
+        {
+            UnityEngine.Object.Destroy(PlanesParent);
+            tokenSource?.Cancel();
         }
 
         /// <summary>
@@ -198,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
             await new WaitForUpdate();
 
             DestroyPreviousPlanes();
-            ActivePlanes.Clear();
+            activePlanes.Clear();
             ClassifyAndCreatePlanes(planes);
 
             // We are done creating planes, trigger an event.
@@ -231,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 planeWithType.Type = GetPlaneType(boundedPlane, destinationPlane);
                 SetPlaneVisibility(planeWithType);
 
-                ActivePlanes.Add(planeWithType);
+                activePlanes.Add(planeWithType);
             }
 
             Debug.Log("Finished creating planes.");
@@ -241,8 +325,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         /// Create game objects to represent bounded planes in scene
         /// </summary>
         private void SetFloorAndCeilingPositions(BoundedPlane[] planes) {
-            FloorYPosition = 0.0f;
-            CeilingYPosition = 0.0f;
+            floorYPosition = 0.0f;
+            ceilingYPosition = 0.0f;
             float maxFloorArea = 0.0f;
             float maxCeilingArea = 0.0f;
 
@@ -257,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                     maxFloorArea = Mathf.Max(maxFloorArea, boundedPlane.Area);
                     if (maxFloorArea == boundedPlane.Area)
                     {
-                        FloorYPosition = boundedPlane.Bounds.Center.y;
+                        floorYPosition = boundedPlane.Bounds.Center.y;
                     }
                 }
                 else if (boundedPlane.Bounds.Center.y > 0 && boundedPlane.Plane.normal.y <= -(UpNormalThreshold))
@@ -265,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                     maxCeilingArea = Mathf.Max(maxCeilingArea, boundedPlane.Area);
                     if (maxCeilingArea == boundedPlane.Area)
                     {
-                        CeilingYPosition = boundedPlane.Bounds.Center.y;
+                        ceilingYPosition = boundedPlane.Bounds.Center.y;
                     }
                 }
             }
@@ -287,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 // If we have a horizontal surface with a normal pointing up, classify it as a floor.
                 PlaneType = SpatialAwarenessSurfaceTypes.Floor;
 
-                if (gameObject.transform.position.y > (FloorYPosition + FloorBuffer))
+                if (gameObject.transform.position.y > (floorYPosition + FloorBuffer))
                 {
                     // If the plane is too high to be considered part of the floor, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
@@ -298,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
                 // If we have a horizontal surface with a normal pointing down, classify it as a ceiling.
                 PlaneType = SpatialAwarenessSurfaceTypes.Ceiling;
 
-                if (gameObject.transform.position.y < (CeilingYPosition - CeilingBuffer))
+                if (gameObject.transform.position.y < (ceilingYPosition - CeilingBuffer))
                 {
                     // If the plane is not high enough to be considered part of the ceiling, classify it as a table.
                     PlaneType = SpatialAwarenessSurfaceTypes.Platform;
@@ -324,9 +408,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         private void DestroyPreviousPlanes()
         {
             // Remove any previously existing planes, as they may no longer be valid.
-            for (int index = 0; index < ActivePlanes.Count; index++)
+            for (int index = 0; index < activePlanes.Count; index++)
             {
-                Destroy(ActivePlanes[index].Plane);
+                Destroy(activePlanes[index].Plane);
             }
         }
 
@@ -357,5 +441,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Experimental
         {
            pt.Plane.SetActive((drawPlanesMask & pt.Type) == pt.Type);
         }
+        #endregion
     }
 }
