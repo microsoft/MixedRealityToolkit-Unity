@@ -24,28 +24,15 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             Scale = scale;
         }
 
-        #region IMixedRealityService Implementation
-
-        private BoundaryEventData boundaryEventData = null;
-
-        /// <inheritdoc/>
-        public override string Name { get; protected set; } = "Mixed Reality Boundary System";
-
-        /// <inheritdoc/>
-        public override void Initialize()
+        /// <summary>
+        /// Reads the contents of the boundary visualization profile.
+        /// </summary>
+        protected void ReadProfile()
         {
-            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
-
             MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
             if (profile == null) { return; }
 
-            boundaryEventData = new BoundaryEventData(EventSystem.current);
-
             BoundaryHeight = profile.BoundaryHeight;
-
-            SetTrackingSpace();
-            CalculateBoundaryBounds();
-
             ShowFloor = profile.ShowFloor;
             FloorPhysicsLayer = profile.FloorPhysicsLayer;
             ShowPlayArea = profile.ShowPlayArea;
@@ -56,6 +43,26 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             BoundaryWallsPhysicsLayer = profile.BoundaryWallsPhysicsLayer;
             ShowBoundaryCeiling = profile.ShowBoundaryCeiling;
             CeilingPhysicsLayer = profile.CeilingPhysicsLayer;
+        }
+
+        #region IMixedRealityService Implementation
+
+        private BoundaryEventData boundaryEventData = null;
+
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Boundary System";
+
+        /// <inheritdoc/>
+        public override void Initialize()
+        {
+            ReadProfile();
+
+            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
+
+            boundaryEventData = new BoundaryEventData(EventSystem.current);
+
+            SetTrackingSpace();
+            CalculateBoundaryBounds();
 
             if (ShowFloor)
             {

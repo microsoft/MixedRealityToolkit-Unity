@@ -82,6 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             IMixedRealityBoundarySystem boundarySystem1 = CoreServices.BoundarySystem;
             yield return null;
 
+            float height1 = boundarySystem1.BoundaryHeight;
+            int floorPhysics1 = boundarySystem1.FloorPhysicsLayer;
+            bool showTracked1 = boundarySystem1.ShowTrackedArea;
+            bool showCeiling1 = boundarySystem1.ShowBoundaryCeiling;
+
             MixedRealityToolkitConfigurationProfile profile2 = LoadTestProfile(BoundaryOnlyProfilePath);
 
             // Switch to profile 2
@@ -97,10 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Check service settings to ensure it has properly reset
-            Assert.IsTrue(boundarySystem1.BoundaryHeight != boundarySystem2.BoundaryHeight);
-            Assert.IsTrue(boundarySystem1.FloorPhysicsLayer != boundarySystem2.FloorPhysicsLayer);
-            Assert.IsTrue(boundarySystem1.ShowTrackedArea != boundarySystem2.ShowTrackedArea);
-            Assert.IsTrue(boundarySystem1.ShowBoundaryCeiling != boundarySystem2.ShowBoundaryCeiling);
+            Assert.IsTrue(height1 != boundarySystem2.BoundaryHeight);
+            Assert.IsTrue(floorPhysics1 != boundarySystem2.FloorPhysicsLayer);
+            Assert.IsTrue(showTracked1 != boundarySystem2.ShowTrackedArea);
+            Assert.IsTrue(showCeiling1 != boundarySystem2.ShowBoundaryCeiling);
         }
 
         /// <summary>

@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
     public class MixedRealityBoundarySystem : BaseBoundarySystem
     {
-
-
         /// <summary>
         /// Constructor.
         /// </summary>
