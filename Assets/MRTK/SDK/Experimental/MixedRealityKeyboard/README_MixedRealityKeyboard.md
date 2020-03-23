@@ -3,7 +3,7 @@
 MRTK provides several experimental helper components to assist with launching and reading text from the [System Keyboard](../../../../../Documentation/README_SystemKeyboard.md). 
 
 ## MixedRealityKeyboard
-[`MixedRealityKeyboard`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard) is a component that provides methods for launching and closing a system keyboard as well as reading text entered by the keyboard.  
+[`MixedRealityKeyboard`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard) is a component that provides methods for launching and closing a system keyboard, as well as interacting with text entered by the keyboard.  
 
 ### How to Use
 1. Attach the [`MixedRealityKeyboard`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard) component to any object.
@@ -15,3 +15,5 @@ The [`TMP_KeyboardInputField`](xref:Microsoft.MixedReality.Toolkit.Experimental.
 ### How to use
 1. Create an input field for either UnityUI or TextMeshPro.
 2. Add the corresponding [`TMP_KeyboardInputField`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField) or [`UI_KeyboardInputField`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField) component to the input field game object.
+
+For an example of how the to use TMP_KeyboardInputField and UI_KeyboardInputField, see "Assets\MRTK\Examples\Experimental\MixedRealityKeyboard\Scenes\MixedRealityKeyboardExample.unity"
