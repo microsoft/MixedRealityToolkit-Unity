@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// Base class explicitly launching Windows Mixed Reality's system keyboard for InputField and TMP_InputField
-    /// To be attached to the same GameObject with either of the components
+    /// To be attached to the same GameObject with either of the components.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class KeyboardInputFieldBase<T> : MixedRealityKeyboardBase
