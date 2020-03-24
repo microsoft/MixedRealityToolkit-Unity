@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.WindowsMixedReality;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 #if WINDOWS_UWP
@@ -70,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): UpdateController");
+
             base.UpdateController(inputDevice);
 
             UpdateHandData(inputDevice);
@@ -83,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -91,6 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateHandData(InputDevice inputDevice)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): UpdateHandData");
+
 #if WINDOWS_UWP && WMR_ENABLED
             XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
 
@@ -139,6 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 
                 handDefinition?.UpdateHandJoints(unityJointPoses);
             }
+
+            Profiler.EndSample(); // UpdateHandData
         }
 
         /// <summary>
@@ -153,6 +162,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <returns>The current Unity finger bone converted into an MRTK joint.</returns>
         private TrackedHandJoint ConvertToTrackedHandJoint(HandFinger finger, int index)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): ConvertToTrackedHandJoint");
+
             switch (finger)
             {
                 case HandFinger.Thumb: return (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1;
@@ -162,6 +173,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case HandFinger.Pinky: return TrackedHandJoint.PinkyMetacarpal + index;
                 default: return TrackedHandJoint.None;
             }
+
+            Profiler.EndSample(); // ConvertToTrackedHandJoint
         }
 
         #endregion Update data functions

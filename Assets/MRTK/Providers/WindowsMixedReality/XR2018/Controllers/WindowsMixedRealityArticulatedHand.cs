@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 
 #if UNITY_WSA
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
 using System;
@@ -204,6 +205,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private TrackedHandJoint ConvertHandJointKindToTrackedHandJoint(HandJointKind handJointKind)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulated Hand (XR2018): ConvertHandJointKindToTrackedHandJoint");
+
             switch (handJointKind)
             {
                 case HandJointKind.Palm: return TrackedHandJoint.Palm;
@@ -241,6 +244,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 default: return TrackedHandJoint.None;
             }
+
+            Profiler.EndSample(); // ConvertHandJointKindToTrackedHandJoint
         }
 
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -73,6 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateContoller");
+
             base.UpdateController(interactionSourceState);
 
             for (int i = 0; i < Interactions?.Length; i++)
@@ -95,6 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -103,6 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateTouchpadData");
+
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TouchpadTouch:
@@ -159,6 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateTouchpadData
         }
 
         /// <summary>
@@ -167,6 +176,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateThumbstickData");
+
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.ThumbStickPress:
@@ -203,6 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateTouchpadData
         }
 
         /// <summary>
@@ -211,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateMenuData");
+
             // Update the interaction data source
             interactionMapping.BoolData = interactionSourceState.menuPressed;
 
@@ -227,6 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
+
+            Profiler.EndSample(); // UpdateMenuData
         }
 
         #endregion Update data functions
