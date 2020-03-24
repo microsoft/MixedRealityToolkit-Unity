@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void OnPointerDown(MixedRealityPointerEventData eventData) { }
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
-        public void OnPointerClicked(MixedRealityPointerEventData eventData) => ShowKeyboard();
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) => ShowKeyboard(Text);
 
         #endregion
 
