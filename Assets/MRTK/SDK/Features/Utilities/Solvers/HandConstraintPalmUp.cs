@@ -192,12 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                                 eyegazeProvider = Camera.main.GetComponent<GazeProvider>();
                             }
 
-                            if (eyegazeProvider != null &&
-                            (eyegazeProvider.IsEyeCalibrationValid.HasValue &&
-                            eyegazeProvider.IsEyeCalibrationValid.Value))
+                            if (eyegazeProvider != null)
                             {
-                                Ray eyeRay = new Ray(CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
-                                    CoreServices.InputSystem.EyeGazeProvider.GazeDirection);
+                                Ray eyeRay = new Ray(eyegazeProvider.GazeOrigin,
+                                    eyegazeProvider.GazeDirection);
 
                                 // Generate the hand plane that we're using to generate a distance value.
                                 // This is done by using the index knuckle, pinky knuckle, and wrist
@@ -231,7 +229,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                                     }
                                 }
 
-                                return false;
+                                if (!eyegazeProvider.IsEyeCalibrationValid.HasValue
+                                    || (eyegazeProvider.IsEyeCalibrationValid.HasValue && !eyegazeProvider.IsEyeCalibrationValid.Value))
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
