@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Serialization;
@@ -119,6 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => gazeProximityThreshold = value;
         }
 
+        private GazeProvider eyegazeProvider;
 
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
@@ -185,47 +185,54 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             }
                         }
 
-                        if (useGazeActivation &&
-                            CoreServices.InputSystem.EyeGazeProvider != null &&
-                            (CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid.HasValue &&
-                            CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid.Value))
+                        if (useGazeActivation)
                         {
-                            Ray eyeRay = new Ray(CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
-                                CoreServices.InputSystem.EyeGazeProvider.GazeDirection);
-
-                            // Generate the hand plane that we're using to generate a distance value.
-                            // This is done by using the index knuckle, pinky knuckle, and wrist
-                            MixedRealityPose indexKnuckle;
-                            MixedRealityPose pinkyKnuckle;
-                            MixedRealityPose wrist;
-
-                            if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
-                                jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
-                                jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist ))
+                            if (eyegazeProvider == null)
                             {
-                                Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                                float distanceToActivationPoint;
-
-                                if (handPlane.Raycast(eyeRay, out distanceToActivationPoint))
-                                {
-                                    // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
-                                    Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
-
-                                    // Now that we know the dist to the plane, create a vector at that point
-                                    Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToActivationPoint;
-                                    Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
-                                    Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
-
-                                    float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
-
-                                    if (gazePosDistToActivationPosition < gazeProximityThreshold)
-                                    {
-                                        return true;
-                                    }
-                                }
+                                eyegazeProvider = Camera.main.GetComponent<GazeProvider>();
                             }
 
-                            return false;
+                            if (eyegazeProvider != null &&
+                            (eyegazeProvider.IsEyeCalibrationValid.HasValue &&
+                            eyegazeProvider.IsEyeCalibrationValid.Value))
+                            {
+                                Ray eyeRay = new Ray(CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
+                                    CoreServices.InputSystem.EyeGazeProvider.GazeDirection);
+
+                                // Generate the hand plane that we're using to generate a distance value.
+                                // This is done by using the index knuckle, pinky knuckle, and wrist
+                                MixedRealityPose indexKnuckle;
+                                MixedRealityPose pinkyKnuckle;
+                                MixedRealityPose wrist;
+
+                                if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
+                                    jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
+                                    jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
+                                {
+                                    Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
+                                    float distanceToActivationPoint;
+
+                                    if (handPlane.Raycast(eyeRay, out distanceToActivationPoint))
+                                    {
+                                        // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
+                                        Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
+
+                                        // Now that we know the dist to the plane, create a vector at that point
+                                        Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToActivationPoint;
+                                        Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                                        Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
+
+                                        float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
+
+                                        if (gazePosDistToActivationPosition < gazeProximityThreshold)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+
+                                return false;
+                            }
                         }
                     }
 
