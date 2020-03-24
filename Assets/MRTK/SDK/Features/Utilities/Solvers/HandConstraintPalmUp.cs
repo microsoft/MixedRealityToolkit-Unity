@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
@@ -90,6 +92,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => followHandCameraFacingThresholdAngle = value;
         }
 
+        [SerializeField]
+        [Tooltip("With this active, solver will activate the UI after the palm threshold has been met and the user gazes at the activation point")]
+        private bool useGazeActivation = false;
+
+        /// <summary> 
+        /// With this active, solver will activate after the palm threshold has been met and the user gazes at the activation point
+        /// </summary>
+        public bool UseGazeActivation
+        {
+            get => useGazeActivation;
+            set => useGazeActivation = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The distance between the planar intersection of the eye gaze ray and the activation transform")]
+        [Range(0.0f, 1.0f)]
+        private float gazeProximityThreshold = 1.0f;
+
+        /// <summary>
+        /// The distance between the planar intersection of the eye gaze ray and the activation transform
+        /// </summary>
+        public float GazeProximityThreshold
+        {
+            get => gazeProximityThreshold;
+            set => gazeProximityThreshold = value;
+        }
+
+
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
@@ -137,21 +167,69 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     palmFacingThresholdMet = palmCameraAngle < facingCameraTrackingThreshold;
 
                     // If using hybrid hand rotation, we proceed with additional checks
-                    if (followHandUntilFacingCamera && palmFacingThresholdMet)
+                    if (palmFacingThresholdMet)
                     {
-                        // If we are above the threshold angle, keep the menu mapped to the tracked object
-                        if (palmCameraAngle > followHandCameraFacingThresholdAngle)
+                        if (followHandUntilFacingCamera)
                         {
-                            RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
-                            OffsetBehavior = SolverOffsetBehavior.TrackedObjectRotation;
+                            // If we are above the threshold angle, keep the menu mapped to the tracked object
+                            if (palmCameraAngle > followHandCameraFacingThresholdAngle)
+                            {
+                                RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
+                                OffsetBehavior = SolverOffsetBehavior.TrackedObjectRotation;
+                            }
+                            // If we are within the threshold angle, we snap to follow the camera
+                            else
+                            {
+                                RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
+                                OffsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
+                            }
                         }
-                        // If we are within the threshold angle, we snap to follow the camera
-                        else
+
+                        if (useGazeActivation &&
+                            CoreServices.InputSystem.EyeGazeProvider != null &&
+                            (CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid.HasValue &&
+                            CoreServices.InputSystem.EyeGazeProvider.IsEyeCalibrationValid.Value))
                         {
-                            RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
-                            OffsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
+                            Ray eyeRay = new Ray(CoreServices.InputSystem.EyeGazeProvider.GazeOrigin,
+                                CoreServices.InputSystem.EyeGazeProvider.GazeDirection);
+
+                            // Generate the hand plane that we're using to generate a distance value.
+                            // This is done by using the index knuckle, pinky knuckle, and wrist
+                            MixedRealityPose indexKnuckle;
+                            MixedRealityPose pinkyKnuckle;
+                            MixedRealityPose wrist;
+
+                            if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
+                                jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
+                                jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist ))
+                            {
+                                Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
+                                float distanceToActivationPoint;
+
+                                if (handPlane.Raycast(eyeRay, out distanceToActivationPoint))
+                                {
+                                    // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
+                                    Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
+
+                                    // Now that we know the dist to the plane, create a vector at that point
+                                    Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToActivationPoint;
+                                    Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                                    Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
+
+                                    float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
+
+                                    if (gazePosDistToActivationPosition < gazeProximityThreshold)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+
+                            return false;
                         }
                     }
+
+                    return palmFacingThresholdMet;
                 }
                 else
                 {
