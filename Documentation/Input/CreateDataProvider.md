@@ -6,7 +6,7 @@ a custom input data provider may be required.
 This article describes how to create custom data providers, also called device managers, for the input system. The example code shown here is
 from the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager).
 
-> The complete code used in this example can be found in the MixedRealityToolkit.Providers\WindowsMixedReality folder.
+> The complete code used in this example can be found in the MRTK/Providers/WindowsMixedReality folder.
 
 ## Namespace and folder structure
 
@@ -16,7 +16,7 @@ new data providers to the MRTK will vary on a case-by-case basis and will be com
 > [!Important]
 > If an input system data provider is being submitted to the [Mixed Reality Toolkit repository](https://github.com/Microsoft/MixedRealityToolkit-Unity), the
 namespace **must** begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.WindowsMixedReality) and the code should be
-located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\WindowsMixedReality).
+located in a folder beneath MRTK/Providers (ex: MRTK/Providers/WindowsMixedReality).
 
 ### Namespace
 
@@ -102,7 +102,7 @@ The next step is to add the logic for managing the input devices, including any 
 
  The example of the `WindowsMixedRealityDeviceManager` defines and implements the following controller classes.
 
-> The source code for each of these classes can be found in the MixedRealityToolkit.Providers\WindowsMixedReality folder.
+> The source code for each of these classes can be found in the MRTK/Providers/WindowsMixedReality folder.
 
 - WindowsMixedRealityArticulatedHand.cs
 - WindowsMixedRealityController.cs
@@ -128,7 +128,7 @@ Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.I
 
 The next step is to define the set of interaction mappings supported by the controller. For devices that receive their data via Unity's Input class, the [controller mapping tool](../Tools/ControllerMappingTool.md) is a helpful resource to confirm the correct axis and button mappings to assign to interactions.
 
-The following example is abbreviated from the `GenericOpenVRController` class, located in the MixedRealityToolkit.Providers\OpenVR folder.
+The following example is abbreviated from the `GenericOpenVRController` class, located in the MRTK/Providers/OpenVR folder.
 
 ```c#
 public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
@@ -177,7 +177,7 @@ In the Mixed Reality Toolkit, data providers are configured using [profiles](../
 Data providers with additional configuration options (ex: [InputSimulationService](../InputSimulation/InputSimulationService.md)) should create a profile and inspector to allow
 customers to modify the behavior to best suit the needs of the application.
 
-> The complete code for the example in this section can be found in the MixedRealityToolkit.Services\InputSimulation folder.
+> The complete code for the example in this section can be found in the MRTK.Services/InputSimulation folder.
 
 ### Define the profile
 
@@ -232,7 +232,7 @@ the file will be located in the ContosoInput\Editor folder. This assembly defini
 
 Once created, the data provider can be registered with the input system and be used in the application.
 
-![Registered input system data providers](../Images/Input/RegisteredServiceProviders.png)
+![Registered input system data providers](../Images/Input/RegisteredServiceProviders.PNG)
 
 ## Packaging and distribution
 
