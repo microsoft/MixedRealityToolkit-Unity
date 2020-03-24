@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
@@ -351,6 +352,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
+            Profiler.BeginSample("MRTK Gaze Provider: Update");
+
             if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
@@ -363,10 +366,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
             }
+
+            Profiler.EndSample(); // Update
         }
 
         private void LateUpdate()
         {
+            Profiler.BeginSample("MRTK Gaze Provider: LateUpdate");
+
             // Update head velocity.
             Vector3 headPosition = GazeOrigin;
             Vector3 headDelta = headPosition - lastHeadPosition;
@@ -401,6 +408,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
                 Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
             }
+
+            Profiler.EndSample(); // LateUpdate
         }
 
         /// <inheritdoc />
@@ -466,6 +475,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private IMixedRealityPointer InitializeGazePointer()
         {
+            Profiler.BeginSample("MRTK Gaze Provider: InitializeGazePointer");
+
             if (gazeTransform == null)
             {
                 gazeTransform = CameraCache.Main.transform;
@@ -483,26 +494,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 SetGazeCursor(cursor);
             }
 
+            Profiler.EndSample(); // InitializeGazePointer
+
             return gazePointer;
         }
 
         private async void RaiseSourceDetected()
         {
+            Profiler.BeginSample("MRTK Gaze Provider: RaiseSourceDetected");
+
             await EnsureInputSystemValid();
 
             if (this == null)
             {
                 // We've been destroyed during the await.
+                Profiler.EndSample(); // RaiseSourceDetected - early exit
                 return;
             }
 
             CoreServices.InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+
+            Profiler.EndSample(); // RaiseSourceDetected
         }
 
         /// <inheritdoc />
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
+            Profiler.BeginSample("MRTK Gaze Provider: UpdateGazeInfoFromHit");
+
             HitInfo = raycastHit;
             if (raycastHit.transform != null)
             {
@@ -519,6 +539,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 HitPosition = Vector3.zero;
                 HitNormal = Vector3.zero;
             }
+
+            Profiler.EndSample(); // UpdateGazeInfoFromHit
         }
 
         /// <summary>
