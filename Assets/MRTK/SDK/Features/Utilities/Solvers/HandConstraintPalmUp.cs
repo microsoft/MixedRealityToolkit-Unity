@@ -119,8 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => gazeProximityThreshold = value;
         }
 
-        private GazeProvider eyegazeProvider;
-
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
@@ -188,15 +186,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                         if (useGazeActivation)
                         {
-                            if (eyegazeProvider == null)
-                            {
-                                eyegazeProvider = Camera.main.GetComponent<GazeProvider>();
-                            }
+                            var eyegazeProvider = CoreServices.InputSystem.EyeGazeProvider;
 
                             if (eyegazeProvider != null)
-                            {
-                                Ray eyeRay = new Ray(eyegazeProvider.GazeOrigin,
-                                    eyegazeProvider.GazeDirection);
+                            { 
+                                Ray eyeRay = new Ray(eyegazeProvider.GazeOrigin, eyegazeProvider.GazeDirection);
 
                                 // Generate the hand plane that we're using to generate a distance value.
                                 // This is done by using the index knuckle, pinky knuckle, and wrist
@@ -209,24 +203,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                                     jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
                                 {
                                     Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                                    float distanceToActivationPoint;
+                                    float distanceToHandPlane;
 
-                                    if (handPlane.Raycast(eyeRay, out distanceToActivationPoint))
+                                    if (handPlane.Raycast(eyeRay, out distanceToHandPlane))
                                     {
                                         // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
                                         Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
 
                                         // Now that we know the dist to the plane, create a vector at that point
-                                        Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToActivationPoint;
+                                        Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToHandPlane;
                                         Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
                                         Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
 
                                         float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
 
-                                        if (gazePosDistToActivationPosition < gazeProximityThreshold)
-                                        {
-                                            return true;
-                                        }
+                                        return (gazePosDistToActivationPosition < gazeProximityThreshold);
                                     }
                                 }
 
@@ -234,10 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                                     || (eyegazeProvider.IsEyeCalibrationValid.HasValue && !eyegazeProvider.IsEyeCalibrationValid.Value))
                                 {
                                     return true;
-                                }
-                                else
-                                {
-                                    return false;
                                 }
                             }
                         }
