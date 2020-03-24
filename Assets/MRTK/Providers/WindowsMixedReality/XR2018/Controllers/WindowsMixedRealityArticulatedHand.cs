@@ -95,6 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulate Hand (XR2018): UpdateController");
+
             base.UpdateController(interactionSourceState);
 
             UpdateHandData(interactionSourceState);
@@ -108,6 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -124,6 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 return;
             }
+
+            Profiler.BeginSample("MRTK Windows Mixed Reality Articulate Hand: UpdateHandData");
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
@@ -164,6 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateHandData
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 
@@ -205,8 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private TrackedHandJoint ConvertHandJointKindToTrackedHandJoint(HandJointKind handJointKind)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulated Hand (XR2018): ConvertHandJointKindToTrackedHandJoint");
-
             switch (handJointKind)
             {
                 case HandJointKind.Palm: return TrackedHandJoint.Palm;
@@ -244,8 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 default: return TrackedHandJoint.None;
             }
-
-            Profiler.EndSample(); // ConvertHandJointKindToTrackedHandJoint
         }
 
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
