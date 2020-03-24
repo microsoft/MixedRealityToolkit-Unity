@@ -119,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => gazeProximityThreshold = value;
         }
 
+        private bool eyeGazeActivationAlreadyTriggered = false;
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
@@ -184,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             }
                         }
 
-                        if (useGazeActivation)
+                        if (useGazeActivation && !eyeGazeActivationAlreadyTriggered)
                         {
                             var gazeProvider = (GazeProvider) CoreServices.InputSystem.EyeGazeProvider;
 
@@ -217,12 +218,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                                         float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
 
-                                        return (gazePosDistToActivationPosition < gazeProximityThreshold);
+                                        eyeGazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeProximityThreshold);
+                                        
+                                        return eyeGazeActivationAlreadyTriggered;
                                     }
                                 }
                             }
                         }
                     }
+
+                    eyeGazeActivationAlreadyTriggered = palmFacingThresholdMet ? eyeGazeActivationAlreadyTriggered : false;
 
                     return palmFacingThresholdMet;
                 }
@@ -230,7 +235,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 {
                     Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
                 }
-
+                
+                eyeGazeActivationAlreadyTriggered = palmFacingThresholdMet ? eyeGazeActivationAlreadyTriggered : false;
                 return palmFacingThresholdMet;
             }
 
