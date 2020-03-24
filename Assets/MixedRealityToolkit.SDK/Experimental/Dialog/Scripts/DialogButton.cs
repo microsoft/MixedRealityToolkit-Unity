@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// event handler that runs when button is clicked.
         /// Dismisses the parent dialog.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">Caller GameObject</param>
         public void OnButtonClicked(GameObject obj)
         {
             if (parentDialog != null)
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Setter Method to set the Text at the top of the Dialog.
         /// </summary>
-        /// <param name="title"></param>
+        /// <param name="title">Title of the button</param>
         public void SetTitle(string title)
         {
             if (ButtonText)

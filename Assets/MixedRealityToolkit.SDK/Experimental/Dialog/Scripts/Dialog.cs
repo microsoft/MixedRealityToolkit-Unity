@@ -131,8 +131,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Instantiates a dialog and passes it a result
         /// </summary>
-        /// <param name="dialogPrefab"></param>
-        /// <param name="result"></param>
+        /// <param name="dialogPrefab">Dialog prefab</param>
+        /// <param name="result">DialogResult class object which contains information such as title and description text</param>
         public static Dialog Open(GameObject dialogPrefab, DialogResult result)
         {
             GameObject dialogGo = GameObject.Instantiate(dialogPrefab) as GameObject;
@@ -145,11 +145,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <summary>
         /// Instantiates a dialog and passes a generated result
         /// </summary>
-        /// <param name="dialogPrefab"></param>
-        /// <param name="buttons"></param>
-        /// <param name="title"></param>
-        /// <param name="message"></param>
-        /// <param name="variable"></param>
+        /// <param name="dialogPrefab">Dialog prefab</param>
+        /// <param name="buttons">button configuration type which is defined in DialogButtonType enum</param>
+        /// <param name="title">Title text of the dialog</param>
+        /// <param name="message">Description text of the dialog</param>
+        /// <param name="variable">Object with additional variable</param>
         public static Dialog Open(GameObject dialogPrefab, DialogButtonType buttons, string title, string message, bool placeForNearInteraction, System.Object variable = null)
         {
             GameObject dialogGameObject = GameObject.Instantiate(dialogPrefab) as GameObject;
