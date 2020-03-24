@@ -81,20 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { enabled = value; }
         }
 
-        [SerializeField]
-        [Tooltip("If true, eye-based tracking will be used when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
-        [Help("When enabling eye tracking, please follow the instructions at "
-               + "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_BasicSetup.html#eye-tracking-requirements "
-               + "to set up 'Gaze Input' capabilities through Visual Studio.", "", false)]
-        [FormerlySerializedAs("preferEyeTracking")]
-        private bool useEyeTracking = true;
-
         /// <inheritdoc />
-        public bool UseEyeTracking
-        {
-            get { return useEyeTracking; }
-            set { useEyeTracking = value; }
-        }
+        public bool IsEyeTrackingEnabled { get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -157,12 +145,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 lastHeadPosition = Vector3.zero;
 
         /// <inheritdoc />
-        public bool IsEyeGazeValid => IsEyeTrackingAvailable && UseEyeTracking;
+        public bool IsEyeTrackingEnabledAndValid => IsEyeTrackingDataValid && IsEyeTrackingEnabled;
 
         /// <inheritdoc />
         public DateTime Timestamp { get; private set; }
 
         private Ray latestEyeGaze = default(Ray);
+        /// <summary>
+        /// The most recent eye tracking ray
+        /// </summary>
+        public Ray LatestEyeGaze 
+        { 
+            get => latestEyeGaze;
+            private set { latestEyeGaze = value; } 
+        }
+
         private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
         private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
@@ -225,11 +222,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 newGazeOrigin = Vector3.zero;
                 Vector3 newGazeNormal = Vector3.zero;
 
-                if (gazeProvider.useEyeTracking && gazeProvider.IsEyeTrackingAvailable)
+                if (gazeProvider.IsEyeTrackingEnabledAndValid)
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
-                    newGazeOrigin = gazeProvider.latestEyeGaze.origin;
-                    newGazeNormal = gazeProvider.latestEyeGaze.direction;
+                    newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
+                    newGazeNormal = gazeProvider.LatestEyeGaze.direction;
                 }
                 else
                 {
@@ -539,7 +536,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
-            latestEyeGaze = eyeRay;
+            LatestEyeGaze = eyeRay;
             latestEyeTrackingUpdate = DateTime.UtcNow;
             Timestamp = timestamp;
         }
@@ -553,7 +550,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
         /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
         /// </summary>
-        private bool IsEyeTrackingAvailable => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
+        public bool IsEyeTrackingDataValid => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
 
         /// <summary>
         /// Boolean to check whether the user went through the eye tracking calibration. 

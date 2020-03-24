@@ -10560,7 +10560,7 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
-  useEyeTracking: 1
+  useEyeTracking: 0
 --- !u!114 &2124803462
 MonoBehaviour:
   m_ObjectHideFlags: 0

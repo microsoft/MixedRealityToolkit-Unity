@@ -61,6 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// Blend between tracked transform and the surface normal orientation
             /// </summary>
             Blended = 3,
+            
+            /// <summary>
+            /// Face toward this object's position
+            /// </summary>
+            TrackedOrigin = 4,
         }
         #endregion
 
@@ -402,6 +407,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     return surfaceReferenceRotation;
                 case OrientationMode.Blended:
                     return Quaternion.Slerp(trackedReferenceRotation, surfaceReferenceRotation, orientationBlend);
+                case OrientationMode.TrackedOrigin:
+                    return Quaternion.LookRotation(direction, Vector3.up);
                 default:
                     return Quaternion.identity;
             }
