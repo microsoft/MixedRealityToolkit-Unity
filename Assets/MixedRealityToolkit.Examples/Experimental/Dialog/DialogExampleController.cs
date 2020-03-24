@@ -30,6 +30,18 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         }
 
         [SerializeField]
+        [Tooltip("Assign DialogMediume_192x128.prefab")]
+        private GameObject dialogPrefabMedium;
+        /// <summary>
+        /// Medium Dialog example prefab to display
+        /// </summary>
+        public GameObject DialogPrefabMedium
+        {
+            get => dialogPrefabMedium;
+            set => dialogPrefabMedium = value;
+        }
+
+        [SerializeField]
         [Tooltip("Assign DialogSmall_192x96.prefab")]
         private GameObject dialogPrefabSmall;
         /// <summary>
@@ -46,7 +58,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogLarge()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Near", "This is an example of a large dialog with only one button, placed at near interaction range", true);
+            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Far", "This is an example of a large dialog with only one button, placed at near interaction range", false);
         }
 
         /// <summary>
@@ -54,7 +66,27 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenChoiceDialogLarge()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Large, Far", "This is an example of a large dialog with a choice message for the user, placed at far interaction range", false);
+            Dialog myDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Large, Near", "This is an example of a large dialog with a choice message for the user, placed at far interaction range", true);
+            if (myDialog != null)
+            {
+                myDialog.OnClosed += OnClosedDialogEvent;
+            }
+        }
+
+        /// <summary>
+        /// Opens confirmation dialog example
+        /// </summary>
+        public void OpenConfirmationDialogMedium()
+        {
+            Dialog confDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "This is an example of a medium dialog with only one button, placed at near interaction range", true);
+        }
+
+        /// <summary>
+        /// Opens choice dialog example
+        /// </summary>
+        public void OpenChoiceDialogMedium()
+        {
+            Dialog myDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Medium, Far", "This is an example of a medium dialog with a choice message for the user, placed at far interaction range", false);
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
@@ -66,7 +98,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogSmall()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabSmall, DialogButtonType.OK, "Confirmation Dialog, Small, Near", "This is an example of a dialog with only one button, placed at near interaction range", true);
+            Dialog confDialog = Dialog.Open(DialogPrefabSmall, DialogButtonType.OK, "Confirmation Dialog, Small, Far", "This is an example of a small dialog with only one button, placed at near interaction range", false);
         }
 
         /// <summary>
@@ -74,7 +106,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenChoiceDialogSmall()
         {
-            Dialog myDialog = Dialog.Open(DialogPrefabSmall, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Small, Far", "This is an example of a dialog with a choice message for the user, placed at far interaction range", false);
+            Dialog myDialog = Dialog.Open(DialogPrefabSmall, DialogButtonType.Yes | DialogButtonType.No, "Choice Dialog, Small, Near", "This is an example of a small dialog with a choice message for the user, placed at far interaction range", true);
             if (myDialog != null)
             {
                 myDialog.OnClosed += OnClosedDialogEvent;
