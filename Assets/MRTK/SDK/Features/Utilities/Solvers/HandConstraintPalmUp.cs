@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Serialization;
@@ -270,18 +271,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                         var gazeActivated = eyeGazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeProximityThreshold);
 
-                        if (targetWorldLocked)
-                        {
-                            eyeGazeActivationAlreadyTriggered = false;
-                            targetWorldLocked = false;
-                        }
-
                         return gazeActivated;
                     }
                 }
             }
 
             return false;
+        }
+
+        public void StartWorldLockReattachCheckCorotine()
+        {
+            StartCoroutine(WorldLockedReattachCheck());
+        }
+
+        private IEnumerator WorldLockedReattachCheck()
+        {
+            while (targetWorldLocked && useGazeActivation)
+            {
+                MixedRealityPose palmPose;
+                var jointedHand = GetController(SolverHandler.CurrentTrackedHandedness) as IMixedRealityHand;
+                if (jointedHand != null)
+                {
+                    if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+                    {
+                        float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+                        if (IsPalmFacingUpwards(jointedHand, palmPose, palmCameraAngle) &&
+                            IsUserGazingAtActivationPoint(jointedHand))
+                        {
+                            eyeGazeActivationAlreadyTriggered = false;
+                            targetWorldLocked = false;
+                            SolverHandler.UpdateSolvers = true;
+                        }
+                    }
+                }
+
+                yield return null;
+            }
         }
     }
 }
