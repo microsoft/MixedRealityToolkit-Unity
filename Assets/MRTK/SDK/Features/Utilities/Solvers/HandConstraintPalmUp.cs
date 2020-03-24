@@ -279,11 +279,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
+        /// <summary>
+        /// Coroutine function called by the ManipulationHandler of the attached object whenever the object is done 
+        /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
+        /// reattach to the hand.
+        /// </summary>
         public void StartWorldLockReattachCheckCorotine()
         {
             StartCoroutine(WorldLockedReattachCheck());
         }
 
+        /// <summary>
+        /// Coroutine function that's invoked when the attached object becomes world-locked. It uses the 
+        /// logical checks invoked during IsValidController to determine whether the menu should reattach
+        /// to the hand or not.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator WorldLockedReattachCheck()
         {
             while (targetWorldLocked && useGazeActivation)
