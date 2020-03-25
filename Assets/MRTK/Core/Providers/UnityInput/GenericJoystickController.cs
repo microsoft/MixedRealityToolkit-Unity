@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -77,6 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateController");
+
             if (Interactions == null)
             {
                 Debug.LogError($"No interaction configuration for {GetType().Name}");
@@ -106,6 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -117,6 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </remarks>
         protected void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateButtonData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
             // Update the interaction data source
@@ -151,6 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
+
+            Profiler.EndSample(); // UpdateButtonData
         }
 
         /// <summary>
@@ -161,6 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </remarks>
         protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateSingleAxisData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
             var singleAxisValue = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
@@ -195,6 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }
             }
+
+            Profiler.EndSample(); // UpdateSingleAxisData
         }
 
         /// <summary>
@@ -202,6 +215,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         protected void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateDualAxisData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
             dualAxisPosition.x = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
@@ -216,6 +231,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
             }
+
+            Profiler.EndSample(); // UpdateDualAxisData
         }
 
         /// <summary>
@@ -223,6 +240,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         protected void UpdatePoseData(MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdatePoseData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
             if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
@@ -241,6 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             else
             {
                 Debug.LogWarning("Unhandled Interaction");
+                Profiler.EndSample(); // UpdatePoseData - unhandled
                 return;
             }
 
@@ -250,6 +270,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
+
+            Profiler.EndSample(); // UpdatePoseData
         }
     }
 }

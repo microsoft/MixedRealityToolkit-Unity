@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -56,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] UnityTouchDeviceManager.Update");
+
             base.Update();
 
             // Ensure that touch up and source lost events are at least one frame apart.
@@ -89,6 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         break;
                 }
             }
+
+            Profiler.EndSample(); // Update
         }
 
         /// <inheritdoc />
@@ -114,6 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private void AddTouchController(Touch touch, Ray ray)
         {
+            Profiler.BeginSample("[MRTK] UnityTouchDeviceManager.AddTouchController");
+
             UnityTouchController controller;
 
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
@@ -146,14 +153,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             controller.TouchData = touch;
             controller.StartTouch();
+
+            Profiler.EndSample(); // AddTouchController
         }
 
         private void UpdateTouchData(Touch touch, Ray ray)
         {
+            Profiler.BeginSample("[MRTK] UnityTouchDeviceManager.UpdateTouchData");
+
             UnityTouchController controller;
 
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
+                Profiler.EndSample(); // UpdateTouchData - no touches
                 return;
             }
 
@@ -161,14 +173,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             var pointer = (IMixedRealityTouchPointer)controller.InputSource.Pointers[0];
             controller.ScreenPointRay = pointer.TouchRay = ray;
             controller.Update();
+
+            Profiler.EndSample(); // UpdateTouchData
         }
 
         private void RemoveTouchController(Touch touch)
         {
+            Profiler.BeginSample("[MRTK] UnityTouchDeviceManager.RemoveTouchController");
+
             UnityTouchController controller;
 
             if (!ActiveTouches.TryGetValue(touch.fingerId, out controller))
             {
+                Profiler.EndSample(); // RemoveTouchController - no touches
                 return;
             }
 
@@ -180,6 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             touchesToRemove.Add(controller);
             // Remove from the active collection
             ActiveTouches.Remove(touch.fingerId);
+
+            Profiler.EndSample(); // RemoveTouchController
         }
     }
 }

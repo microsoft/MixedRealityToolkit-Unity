@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -53,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (!UInput.mousePresent) { return; }
 
+            Profiler.BeginSample("[MRTK] MouseController.Update");
+
             if (mouseDeviceManager == null)
             {
                 mouseDeviceManager = CoreServices.GetInputSystemDataProvider<IMixedRealityMouseDeviceManager>();
@@ -64,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 UInput.mousePosition.x > Screen.width ||
                 UInput.mousePosition.y > Screen.height)
             {
+                Profiler.EndSample(); // Update - not in window
                 return;
             }
 
@@ -144,6 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     }
                 }
             }
+
+            Profiler.EndSample(); // Update
         }
     }
 }
