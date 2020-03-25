@@ -192,7 +192,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
                 }
 
-                eyeGazeActivationAlreadyTriggered = palmFacingThresholdMet ? eyeGazeActivationAlreadyTriggered : false;
                 return palmFacingThresholdMet;
             }
 
