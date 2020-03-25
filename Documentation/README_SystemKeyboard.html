@@ -83,7 +83,7 @@
 <h1 id="system-keyboard">System keyboard</h1>
 
 <p><img src="Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png" alt="System keyboard"></p>
-<p>A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup><a href="https://docs.microsoft.com/windows/mixed-reality/gaze">1</a></sup>.</p>
+<p>A Unity application can invoke the system keyboard at any time. Note that the system keyboard will behave according to the target platform's capabilities, for example the keyboard on HoloLens 2 would support direct hand interactions, while the keyboard on HoloLens (1st gen) would support GGV<sup><a href="https://docs.microsoft.com/windows/mixed-reality/gaze">1</a></sup>. Additionally, the system keyboard will not show up when performing <a href="Tools/HolographicRemoting.html">Unity Remoting</a> from the editor to a HoloLens.</p>
 <h2 id="how-to-invoke-the-system-keyboard">How to invoke the system keyboard</h2>
 <pre><code class="lang-c#">public TouchScreenKeyboard keyboard;
 
@@ -110,6 +110,10 @@ private void Update()
 </code></pre>
 <h2 id="system-keyboard-example">System keyboard example</h2>
 <p>You can see a simple example of how to bring up system keyboard in <code>MixedRealityKeyboard.cs</code> (Assets/MRTK/SDK/Experimental/Features/UX/MixedRealityKeyboard.cs)</p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.html">Mixed Reality Keyboard Helper Classes</a></li>
+</ul>
 </article>
           </div>
           

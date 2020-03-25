@@ -163,7 +163,11 @@
 <p>The <code>MixedRealityToolkit.Generated</code> contains customer generated files and remains unchanged.</p>
 </div>
 <p><strong>WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()</strong></p>
-<p>This version of MRTK adds three new methods to the <code>WindowsApiChecker</code> class: <code>IsMethodAvailable</code>, <code>IsPropertyAvailable</code> and <code>IsTypeAvailable</code>. These methods allow for checking for feature support on Windows 10 and are prefered over using the <code>UniversalApiContractV#_IsAvailable</code> properties.</p>
+<p>This version of MRTK adds three new methods to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker.html"><code>WindowsApiChecker</code></a> class: <code>IsMethodAvailable</code>, <code>IsPropertyAvailable</code> and <code>IsTypeAvailable</code>. These methods allow for checking for feature support on Windows 10 and are prefered over using the <code>UniversalApiContractV#_IsAvailable</code> properties.</p>
+<p><strong>Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)</strong></p>
+<img src="https://user-images.githubusercontent.com/168492/77582981-86e07800-6e9d-11ea-86e5-bf2c0840296c.png" width="300">
+<p>We have introduced two helper components, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.html"><code>UI_KeyboardInputField</code></a> and <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField.html"><code>TMP_KeyboardInputField</code></a> that can be added to text input fields in Unity UI to enable the HoloLens 2 and Windows Mixed Reality Keyboard to show up when the fields are clicked.</p>
+<p>For more information, see - <a href="../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.html">Mixed Reality Keyboard Helpers</a>.</p>
 <h3 id="breaking-changes-in-240">Breaking changes in 2.4.0</h3>
 <p><strong>Eye gaze setup change</strong></p>
 <p>This version of MRTK modifies the steps required for eye gaze setup. The <em>'IsEyeTrackingEnabled'</em> checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.</p>

@@ -118,6 +118,10 @@ This component also adds a Collider and a Rigidbody, if they're not already pres
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.HandInteractionHint.html">HandInteractionHint</a></h4>
       <section><p>This class provides wrapper functionality for triggering animations and fades for the hand rig.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardInputFieldBase-1.html">KeyboardInputFieldBase&lt;T&gt;</a></h4>
+      <section><p>Base class explicitly launching Windows Mixed Reality's system keyboard for InputField and TMP_InputField
+To be attached to the same GameObject with either of the components.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.KeyboardKeyFunc.html">KeyboardKeyFunc</a></h4>
       <section><p>Represents a key on the keyboard that has a function.</p>
 </section>
@@ -129,7 +133,15 @@ Put it on the TMP_InputField and assign the NonNativeKeyboard.prefab</p>
       <section><p>Represents a key on the keyboard that has a string value for input.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboard.html">MixedRealityKeyboard</a></h4>
-      <section><p>Class that can launch and hide a system keyboard specifically for HoloLens 2.</p>
+      <section><p>Class that can launch and hide a system keyboard specifically for Windows Mixed Reality
+devices (HoloLens 2, Windows Mixed Reality).</p>
+<p>Implements a workaround for UWP TouchScreenKeyboard bug which prevents
+UWP keyboard from showing up again after it is closed.
+Unity bug tracking the issue <a href="https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3">https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3</a></p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.MixedRealityKeyboardBase.html">MixedRealityKeyboardBase</a></h4>
+      <section><p>Base class for objects that wish to launch and hide a system keyboard specifically for Windows Mixed Reality
+devices (HoloLens 2, Windows Mixed Reality).</p>
 <p>Implements a workaround for UWP TouchScreenKeyboard bug which prevents
 UWP keyboard from showing up again after it is closed.
 Unity bug tracking the issue <a href="https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3">https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3</a></p>
@@ -163,6 +175,12 @@ GameObject is the object the fired the scroll.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.SymbolKeyboard.html">SymbolKeyboard</a></h4>
       <section><p>This class switches back and forth between two symbol boards that otherwise do not fit on the keyboard entirely</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField.html">TMP_KeyboardInputField</a></h4>
+      <section><p>A component that can be added to TMP_InputField to make them work with Windows Mixed Reality's system keyboard</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField.html">UI_KeyboardInputField</a></h4>
+      <section><p>A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Experimental.UI.UICollection.html">UICollection</a></h4>
       <section><p>This component represents and ordered collection of UI elements. You
