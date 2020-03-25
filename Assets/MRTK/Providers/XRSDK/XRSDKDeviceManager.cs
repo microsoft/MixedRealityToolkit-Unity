@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
@@ -47,10 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <inheritdoc/>
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] XRSDKDeviceManager.Update");
+
             base.Update();
 
             if (XRSDKSubsystemHelpers.InputSubsystem == null || !XRSDKSubsystemHelpers.InputSubsystem.running)
             {
+                Profiler.EndSample(); // Update - early exit
                 return;
             }
 
@@ -93,6 +97,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
             lastInputDevices.Clear();
             lastInputDevices.AddRange(inputDevices);
+
+            Profiler.EndSample(); // Update
         }
 
         #region Controller Utilities
@@ -104,11 +110,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <returns>The controller reference.</returns>
         protected virtual GenericXRSDKController GetOrAddController(InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] XRSDKDeviceManager.GetOrAddController");
+
             // If a device is already registered with the ID provided, just return it.
             if (ActiveControllers.ContainsKey(inputDevice))
             {
                 var controller = ActiveControllers[inputDevice];
                 Debug.Assert(controller != null);
+
+                Profiler.EndSample(); // GetOrAddController - already registered
                 return controller;
             }
 
@@ -140,6 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             {
                 // Controller failed to be set up correctly.
                 Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                Profiler.EndSample(); // GetOrAddController - failed
+
                 // Return null so we don't raise the source detected.
                 return null;
             }
@@ -150,6 +163,9 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
             }
 
             ActiveControllers.Add(inputDevice, detectedController);
+
+            Profiler.EndSample(); // GetOrAddController
+
             return detectedController;
         }
 
@@ -159,6 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <param name="inputDevice">The InputDevice from XR SDK.</param>
         protected virtual void RemoveController(InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] XRSDKDeviceManager.RemoveController");
+
             GenericXRSDKController controller = GetOrAddController(inputDevice);
 
             if (controller != null)
@@ -173,6 +191,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
 
                 ActiveControllers.Remove(inputDevice);
             }
+
+            Profiler.EndSample(); // RemoveController
         }
 
         /// <summary>
