@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -112,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float gazeProximityThreshold = .005f;
 
         /// <summary>
-        /// The distance between the planar intersection of the eye gaze ray and the activation transform
+        /// The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance
         /// </summary>
         public float GazeProximityThreshold
         {
@@ -123,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool targetWorldLocked = false;
 
         /// <summary>
-        /// Is the current solver object world-locked? If so, don't compute whether it's a valid controller.
+        /// Refects whether the current solver object is world-locked or not
         /// </summary>
         public bool TargetWorldLocked
         {
@@ -233,18 +232,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Checks to see if the user is currently gazing at the activation point
+        /// Checks to see if the user is currently gazing at the activation point; it first attempts to do so 
+        /// using eyegaze, and then falls back to head-based gaze if eyegaze isn't available for use.
         /// </summary>
         /// <param name="jointedHand"></param>
         /// <returns></returns>
         private bool IsUserGazingAtActivationPoint(IMixedRealityHand jointedHand)
         {
-            var gazeProvider = (GazeProvider)CoreServices.InputSystem.EyeGazeProvider;
+            Ray gazeRay;
 
-            if (gazeProvider != null)
+            if (InputRayUtils.TryGetRay(InputSourceType.Eyes, Handedness.Any, out gazeRay) || InputRayUtils.TryGetRay(InputSourceType.Head, Handedness.Any, out gazeRay))
             {
-                Ray eyeRay = new Ray(gazeProvider.GazeOrigin, gazeProvider.GazeDirection);
-
                 // Generate the hand plane that we're using to generate a distance value.
                 // This is done by using the index knuckle, pinky knuckle, and wrist
                 MixedRealityPose indexKnuckle;
@@ -258,13 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
                     float distanceToHandPlane;
 
-                    if (handPlane.Raycast(eyeRay, out distanceToHandPlane))
+                    if (handPlane.Raycast(gazeRay, out distanceToHandPlane))
                     {
                         // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
                         Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
 
                         // Now that we know the dist to the plane, create a vector at that point
-                        Vector3 gazePosOnPlane = eyeRay.origin + eyeRay.direction.normalized * distanceToHandPlane;
+                        Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
                         Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
                         Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
 

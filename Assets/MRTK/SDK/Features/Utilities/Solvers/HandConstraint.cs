@@ -536,6 +536,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return controller.ControllerHandedness != Handedness.None;
         }
 
+        /// <summary>
+        /// Returns the first detected controller in the input system that matches the passed-in handedness
+        /// </summary>
+        /// <param name="handedness"></param>
+        /// <returns></returns>
         protected static IMixedRealityController GetController(Handedness handedness)
         {
             foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
