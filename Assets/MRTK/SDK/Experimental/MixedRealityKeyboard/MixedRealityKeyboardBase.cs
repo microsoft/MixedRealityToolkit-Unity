@@ -3,36 +3,30 @@
 
 using UnityEngine;
 using UnityEngine.Events;
-
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
 using Windows.UI.ViewManagement;
+using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Class that can launch and hide a system keyboard specifically for HoloLens 2.
+    /// Base class for objects that wish to launch and hide a system keyboard specifically for Windows Mixed Reality
+    /// devices (HoloLens 2, Windows Mixed Reality).
     /// 
     /// Implements a workaround for UWP TouchScreenKeyboard bug which prevents
     /// UWP keyboard from showing up again after it is closed.
     /// Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/SDK/MixedRealityKeyboard")]
-    public class MixedRealityKeyboard : MonoBehaviour
+    public abstract class MixedRealityKeyboardBase : MonoBehaviour
     {
+        #region Properties
+
         /// <summary>
         /// Returns true if the keyboard is currently open.
         /// </summary>
-        public bool Visible { get { return state == KeyboardState.Showing; } }
-
-        /// <summary>
-        /// Returns the committed text.
-        /// </summary>
-        public string Text
-        {
-            get;
-            private set;
-        } = string.Empty;
+        public bool Visible => state == KeyboardState.Showing;
 
         /// <summary>
         /// Returns the index of the caret within the text.
@@ -51,8 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnShowKeyboard
         {
-            get { return onShowKeyboard; }
-            set { onShowKeyboard = value; }
+            get => onShowKeyboard;
+            set => onShowKeyboard = value;
         }
 
         [SerializeField, Tooltip("Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)")]
@@ -63,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnCommitText
         {
-            get { return onCommitText; }
-            set { onCommitText = value; }
+            get => onCommitText;
+            set => onCommitText = value;
         }
 
         [SerializeField, Tooltip("Event which triggers when the keyboard is hidden.")]
@@ -75,9 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public UnityEvent OnHideKeyboard
         {
-            get { return onHideKeyboard; }
-            set { onHideKeyboard = value; }
+            get => onHideKeyboard;
+            set => onHideKeyboard = value;
         }
+
+        #endregion properties
+
+        #region Private enums
 
         private enum KeyboardState
         {
@@ -86,28 +84,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Showing,
         }
 
-        private KeyboardState State
-        {
-            get
-            {
-                return state;
-            }
+        #endregion Private enums
 
-            set
-            {
-                if (state != value)
-                {
-                    state = value;
-                }
-            }
-        }
+        #region Private fields
 
         private KeyboardState state = KeyboardState.Hidden;
-        private TouchScreenKeyboard keyboard;
-#if !UNITY_EDITOR && UNITY_WSA
+
+#if WINDOWS_UWP
         private InputPane inputPane = null;
-#endif //!UNITY_EDITOR && UNITY_WSA
+
+        private TouchScreenKeyboard keyboard = null;
+
+        private Coroutine stateUpdate;
+#endif
+
         private bool multiLine = false;
+
+        #endregion Private fields
 
         #region MonoBehaviour Implementation
 
@@ -116,47 +109,70 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         protected virtual void Start()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+ #if WINDOWS_UWP
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
                 inputPane = InputPane.GetForCurrentView();
                 inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
                 inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
             }, false);
-#endif //!UNITY_EDITOR && UNITY_WSA
+#endif
         }
 
-        /// <summary>
-        /// Updates the keyboard based on current keyboard state.
-        /// </summary>
-        protected virtual void Update()
+#if WINDOWS_UWP
+        private IEnumerator UpdateState()
         {
-            switch (State)
+            while (true)
             {
-                case KeyboardState.Showing:
-                    {
-                        UpdateText();
-                    }
-                    break;
-
-                case KeyboardState.Hiding:
-                    {
-                        if (onHideKeyboard != null)
+                switch (state)
+                {
+                    case KeyboardState.Showing:
                         {
-                            onHideKeyboard.Invoke();
+                            UpdateText();
                         }
+                        break;
 
-                        State = KeyboardState.Hidden;
-                    }
-                    break;
+                    case KeyboardState.Hiding:
+                        {
+                            onHideKeyboard?.Invoke();
+                        }
+                        break;
+                }
 
-                case KeyboardState.Hidden:
-                default:
-                    break;
+                yield return null;
             }
         }
+#endif
 
-        #endregion MonoBehaviour Implementation
+        private void OnDisable()
+        {
+            HideKeyboard();
+        }
+
+#endregion MonoBehaviour Implementation
+
+        public abstract string Text { get; protected set; }
+
+        /// <summary>
+        /// Closes the keyboard for user interaction.
+        /// </summary>
+        public void HideKeyboard()
+        {
+            if (state != KeyboardState.Hidden)
+            {
+                state = KeyboardState.Hidden;
+            }
+
+#if WINDOWS_UWP
+            UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
+
+            if (stateUpdate != null)
+            {
+                StopCoroutine(stateUpdate);
+                stateUpdate = null;
+            }
+#endif
+        }
 
         /// <summary>
         /// Opens the keyboard for user interaction.
@@ -165,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="multiLine">True, if the return key should signal a newline rather than a commit.</param>
         public virtual void ShowKeyboard(string text = "", bool multiLine = false)
         {
-            this.Text = text;
+            Text = text;
             this.multiLine = multiLine;
 
             // 2019/08/14: We show the keyboard even when the keyboard is already visible because on HoloLens 1
@@ -176,39 +192,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             //    return;
             //}
 
-            State = KeyboardState.Showing;
+            state = KeyboardState.Showing;
 
+#if WINDOWS_UWP
             if (keyboard != null)
             {
                 keyboard.text = Text;
-#if !UNITY_EDITOR && UNITY_WSA
                 UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryShow(), false);
-#endif
             }
             else
             {
                 keyboard = TouchScreenKeyboard.Open(Text, TouchScreenKeyboardType.Default, false, this.multiLine, false, false);
             }
 
-            if (onShowKeyboard != null)
-            {
-                onShowKeyboard.Invoke();
-            }
-        }
+            onShowKeyboard?.Invoke();
 
-        /// <summary>
-        /// Closes the keyboard for user interaction.
-        /// </summary>
-        public virtual void HideKeyboard()
-        {
-            if (State != KeyboardState.Hidden)
+            if (stateUpdate == null)
             {
-                State = KeyboardState.Hiding;
+                stateUpdate = StartCoroutine(UpdateState());
             }
-
-#if !UNITY_EDITOR && UNITY_WSA
-            UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
-#endif //!UNITY_EDITOR && UNITY_WSA
+#endif
         }
 
         /// <summary>
@@ -218,13 +221,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             Text = string.Empty;
             CaretIndex = 0;
-
+#if WINDOWS_UWP
             if (keyboard != null)
             {
-                keyboard.text = Text;
+                keyboard.text = string.Empty;
             }
+#endif
         }
 
+#if WINDOWS_UWP
         private void UpdateText()
         {
             if (keyboard != null)
@@ -285,10 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     if (UnityEngine.Input.GetKeyDown(KeyCode.Return))
                     {
-                        if (onCommitText != null)
-                        {
-                            onCommitText.Invoke();
-                        }
+                        onCommitText?.Invoke();
 
                         HideKeyboard();
                     }
@@ -296,26 +298,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        private bool IsPreviewCaretAtEnd()
-        {
-            return CaretIndex == Text.Length;
-        }
+        private bool IsPreviewCaretAtEnd() => CaretIndex == Text.Length;
 
-        private void MovePreviewCaretToEnd()
-        {
-            CaretIndex = Text.Length;
-        }
+        private void MovePreviewCaretToEnd() => CaretIndex = Text.Length;
 
         private void OnKeyboardHiding()
         {
-            if (State != KeyboardState.Hidden)
+            if (state != KeyboardState.Hidden)
             {
-                State = KeyboardState.Hiding;
+                state = KeyboardState.Hiding;
             }
         }
 
-        private void OnKeyboardShowing()
-        {
-        }
+        private void OnKeyboardShowing() { }
+#endif
     }
 }
