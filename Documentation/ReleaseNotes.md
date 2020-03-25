@@ -48,9 +48,11 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 > [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
+
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
-This version of MRTK adds three new methods to the `WindowsApiChecker` class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+This version of MRTK adds three new methods to the [`WindowsApiChecker`](xref:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker) class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+
 
 **Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)**
 
