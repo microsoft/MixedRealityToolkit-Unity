@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulateHand.UpdateController");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulatedHand.UpdateController");
 
             base.UpdateController(interactionSourceState);
 
