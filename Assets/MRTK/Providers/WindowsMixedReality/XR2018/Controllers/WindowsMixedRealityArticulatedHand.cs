@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return;
             }
 
-            Profiler.BeginSample("[MRTK] Windows Mixed Reality Articulate Hand: UpdateHandData");
+            Profiler.BeginSample("[MRTK] Windows Mixed Reality Articulated Hand: UpdateHandData");
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
