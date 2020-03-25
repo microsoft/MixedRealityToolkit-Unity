@@ -536,7 +536,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("MRTK Focus Provider: Update");
+            Profiler.BeginSample("[MRTK] FocusProvider.Update");
 
             if (!IsSetupValid) { return; }
 
@@ -554,7 +554,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void UpdateGazeProvider()
         {
-            Profiler.BeginSample("MRTK Focus Provider: UpdateGazeProvider");
+            Profiler.BeginSample("[MRTK] FocusProvider.UpdateGazeProvider");
 
             // The gaze hit result may be populated from previous raycasts this frame, only recompute
             // another raycast if it's not populated
@@ -730,7 +730,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool RegisterPointer(IMixedRealityPointer pointer)
         {
-            Profiler.BeginSample("MRTK Focus Provider: RegisterPointer");
+            Profiler.BeginSample("[MRTK] FocusProvider.RegisterPointer");
 
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
@@ -750,7 +750,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void RegisterPointers(IMixedRealityInputSource inputSource)
         {
-            Profiler.BeginSample("MRTK Focus Provider: RegisterPointers");
+            Profiler.BeginSample("[MRTK] FocusProvider.RegisterPointers");
 
             // If our input source does not have any pointers, then skip.
             if (inputSource.Pointers == null)
@@ -802,7 +802,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool UnregisterPointer(IMixedRealityPointer pointer)
         {
-            Profiler.BeginSample("MRTK Focus Provider: UnregisterPointer");
+            Profiler.BeginSample("[MRTK] FocusProvider.UnregisterPointer");
 
             Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
@@ -902,7 +902,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdatePointers()
         {
-            Profiler.BeginSample("MRTK Focus Provider: UpdatePointers");
+            Profiler.BeginSample("[MRTK] FocusProvider.UpdatePointers");
 
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
             if (profile == null) { return; }
@@ -955,7 +955,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void UpdatePointer(PointerData pointerData)
         {
-            Profiler.BeginSample("MRTK Focus Provider: UpdatePointer");
+            Profiler.BeginSample("[MRTK] FocusProvider.UpdatePointer");
 
             // Call the pointer's OnPreSceneQuery function
             // This will give it a chance to prepare itself for raycasts
@@ -1104,7 +1104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void ReconcilePointers()
         {
-            Profiler.BeginSample("MRTK Focus Provider: ReconcilePointers");
+            Profiler.BeginSample("[MRTK] FocusProvider.ReconcilePointers");
 
             var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
             NumFarPointersActive = 0;
@@ -1161,7 +1161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
-            Profiler.BeginSample("MRTK Focus Provider: QueryScene");
+            Profiler.BeginSample("[MRTK] FocusProvider.QueryScene");
 
             float rayStartDistance = 0;
             MixedRealityRaycastHit hitInfo;
@@ -1275,7 +1275,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void RaycastGraphics(IMixedRealityPointer pointer, PointerEventData graphicEventData, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
-            Profiler.BeginSample("MRTK Focus Provider: RaycastGraphics");
+            Profiler.BeginSample("[MRTK] FocusProvider.RaycastGraphics");
 
             Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
             Debug.Assert(UIRaycastCamera.nearClipPlane == 0, "Near plane must be zero for raycast distances to be correct");
@@ -1324,7 +1324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private bool RaycastGraphicsStep(PointerEventData graphicEventData, RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastResult uiRaycastResult)
         {
-            Profiler.BeginSample("MRTK Focus Provider: RaycastGraphicsStep");
+            Profiler.BeginSample("[MRTK] FocusProvider.RaycastGraphicsStep");
 
             Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
 
@@ -1351,7 +1351,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void UpdateFocusedObjects()
         {
-            Profiler.BeginSample("MRTK Focus Provider: UpdateFocusedObjects");
+            Profiler.BeginSample("[MRTK] FocusProvider.UpdateFocusedObjects");
 
             Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
             Debug.Assert(pendingOverallFocusExitSet.Count == 0);
@@ -1453,7 +1453,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            Profiler.BeginSample("MRTK Focus Provider: OnSourceDetected");
+            Profiler.BeginSample("[MRTK] FocusProvider.OnSourceDetected");
 
             RegisterPointers(eventData.InputSource);
 
@@ -1463,7 +1463,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            Profiler.BeginSample("MRTK Focus Provider: OnSourceLost");
+            Profiler.BeginSample("[MRTK] FocusProvider.OnSourceLost");
 
             // If the input source does not have pointers, then skip.
             if (eventData.InputSource.Pointers == null) { return; }

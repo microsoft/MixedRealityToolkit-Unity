@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using UnityEngine.Profiling;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -43,23 +44,31 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.Update");
+
             base.Update();
 
             foreach (var provider in dataProviders)
             {
                 provider.Update();
             }
+
+            Profiler.EndSample(); // Update
         }
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.LateUpdate");
+
             base.LateUpdate();
 
             foreach (var provider in dataProviders)
             {
                 provider.LateUpdate();
             }
+
+            Profiler.EndSample(); // LateUpdate
         }
 
         /// <summary>

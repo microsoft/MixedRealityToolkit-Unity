@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdateController");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateController");
 
             UpdateSourceData(interactionSourceState);
             UpdateVelocity(interactionSourceState);
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         public void UpdateVelocity(InteractionSourceState interactionSourceState)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdateVelocity");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");
 
             Vector3 newVelocity;
             if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateSourceData(InteractionSourceState interactionSourceState)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdateSourceData");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSourceData");
 
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdatePointerData");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdatePointerData");
 
             if (interactionSourceState.source.supportsPointing)
             {
@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdateSpatialGrip");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSpatialGrip");
 
             switch (interactionMapping.AxisType)
             {
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XR2018): UpdateTriggerData");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateTriggerData");
 
             switch (interactionMapping.InputType)
             {

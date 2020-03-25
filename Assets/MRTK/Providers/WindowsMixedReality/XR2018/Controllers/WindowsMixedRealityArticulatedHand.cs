@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulate Hand (XR2018): UpdateController");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulateHand.UpdateController");
 
             base.UpdateController(interactionSourceState);
 
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 return;
             }
 
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulate Hand: UpdateHandData");
+            Profiler.BeginSample("[MRTK] Windows Mixed Reality Articulate Hand: UpdateHandData");
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);

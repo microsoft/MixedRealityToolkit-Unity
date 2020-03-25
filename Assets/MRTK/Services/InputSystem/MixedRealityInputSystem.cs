@@ -761,7 +761,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
-            Profiler.BeginSample("MRTK Input System: RaiseSourceDetected");
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
 
             // Create input event
             sourceStateEventData.Initialize(source, controller);
@@ -793,7 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
-            Profiler.BeginSample("MRTK Input System: RaiseSourceLost");
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
 
             // Create input event
             sourceStateEventData.Initialize(source, controller);

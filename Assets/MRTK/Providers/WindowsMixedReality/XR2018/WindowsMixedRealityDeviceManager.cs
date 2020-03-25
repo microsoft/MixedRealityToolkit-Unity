@@ -385,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void GetOrAddController(InteractionSourceState interactionSourceState)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Device Manager (XR2018): GetOrAddController");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
 
             // If this is a new detected controller, raise source detected event with input system
             // check needs to be here because GetOrAddController adds it to the activeControllers Dictionary
@@ -421,7 +421,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc/>
         public override void Update()
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Device Manager (XR2018): Update");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.Update");
 
             base.Update();
 
@@ -900,7 +900,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </remarks>
         private void UpdateInteractionManagerReading()
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Device Manager (XR2018): UpdateInteractionManagerReading");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.UpdateInteractionManagerReading");
 
             int newSourceStateCount = InteractionManager.numSourceStates;
             // If there isn't enough space in the cache to hold the results, we should grow it so that it can, but also

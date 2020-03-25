@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// </summary>
         protected override void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            Profiler.BeginSample("MRTK Base Windows Mixed Reality Source (XRSDK): UpdatePoseData");
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdatePoseData");
 
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 

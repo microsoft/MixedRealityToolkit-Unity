@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): UpdateController");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityXRSDKArticulatdHand.UpdateController");
 
             base.UpdateController(inputDevice);
 
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateHandData(InputDevice inputDevice)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): UpdateHandData");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityXRSDKArticulatdHand.UpdateHandData");
 
 #if WINDOWS_UWP && WMR_ENABLED
             XRSDKSubsystemHelpers.InputSubsystem?.GetCurrentSourceStates(states);
@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <returns>The current Unity finger bone converted into an MRTK joint.</returns>
         private TrackedHandJoint ConvertToTrackedHandJoint(HandFinger finger, int index)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Articulatd Hand (XRSDK): ConvertToTrackedHandJoint");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityXRSDKArticulatdHand.ConvertToTrackedHandJoint");
 
             switch (finger)
             {

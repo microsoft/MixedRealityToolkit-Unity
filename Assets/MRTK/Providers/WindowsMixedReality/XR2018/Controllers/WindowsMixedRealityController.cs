@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateContoller");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateContoller");
 
             base.UpdateController(interactionSourceState);
 
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateTouchpadData");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateTouchpadData");
 
             switch (interactionMapping.InputType)
             {
@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateThumbstickData");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateThumbstickData");
 
             switch (interactionMapping.InputType)
             {
@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("MRTK Windows Mixed Reality Controller (XR2018): UpdateMenuData");
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateMenuData");
 
             // Update the interaction data source
             interactionMapping.BoolData = interactionSourceState.menuPressed;

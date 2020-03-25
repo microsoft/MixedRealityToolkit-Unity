@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            Profiler.BeginSample("MRTK Gaze Provider: Update");
+            Profiler.BeginSample("[MRTK] GazeProvider.Update");
 
             if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void LateUpdate()
         {
-            Profiler.BeginSample("MRTK Gaze Provider: LateUpdate");
+            Profiler.BeginSample("[MRTK] GazeProvider.LateUpdate");
 
             // Update head velocity.
             Vector3 headPosition = GazeOrigin;
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private IMixedRealityPointer InitializeGazePointer()
         {
-            Profiler.BeginSample("MRTK Gaze Provider: InitializeGazePointer");
+            Profiler.BeginSample("[MRTK] GazeProvider.InitializeGazePointer");
 
             if (gazeTransform == null)
             {
@@ -501,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private async void RaiseSourceDetected()
         {
-            Profiler.BeginSample("MRTK Gaze Provider: RaiseSourceDetected");
+            Profiler.BeginSample("[MRTK] GazeProvider.RaiseSourceDetected");
 
             await EnsureInputSystemValid();
 
@@ -521,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
-            Profiler.BeginSample("MRTK Gaze Provider: UpdateGazeInfoFromHit");
+            Profiler.BeginSample("[MRTK] GazeProvider.UpdateGazeInfoFromHit");
 
             HitInfo = raycastHit;
             if (raycastHit.transform != null)
