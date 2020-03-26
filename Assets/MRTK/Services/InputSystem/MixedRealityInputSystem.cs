@@ -277,13 +277,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
-                // Current implementation implements both provider types in one concrete class.
+                // Current default implementation implements both provider types in one concrete class.
                 EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
+                if (EyeGazeProvider != null)
+                {
+                    EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
+                }
             }
             else
             {
-                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                Debug.LogError("The input system is missing the required GazeProviderType!");
                 return;
             }
         }
@@ -442,7 +445,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
                     // We'll ignore when this happens.
                     ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
-
                 }
                 catch (Exception)
                 {
