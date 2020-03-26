@@ -1,0 +1,19 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Gltf",
+        "Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.Shared"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WSA"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

@@ -33,15 +33,15 @@ Each Pointer entry is defined by the following set of data:
 
 - *Pointer Prefab* - This prefab asset will be instantiated when a controller matching the specified controller type and handedness starts being tracked.
 
-It is possible to have multiple pointers associated with a controller. For example, in the [default HoloLens 2 profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2InputSystemProfile.asset)
+It is possible to have multiple pointers associated with a controller. For example, in `DefaultHoloLens2InputSystemProfile` (Assets/MRTK/SDK/Profiles/HoloLens2/)
 the articulated hand controller is associated with the *PokePointer*, *GrabPointer*, and the *DefaultControllerPointer* (i.e hand rays).
 
 > [!NOTE]
-> MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. A new custom prefab can be built as long as it contains one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
+> MRTK provides a set of pointer prefabs in *Assets/MRTK/SDK/Features/UX/Prefabs/Pointers*. A new custom prefab can be built as long as it contains one of the pointer scripts in *Assets/MRTK/SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
 
 ### Default pointer classes
 
-The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers* contains one of the pointer components attached.
+The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MRTK/SDK/Features/UX/Prefabs/Pointers* contains one of the pointer components attached.
 
 ![MRTK Default Pointers](../Images/Input/Pointers/MRTK_Pointers.png)
 
@@ -49,11 +49,15 @@ The following classes are the out-of-box MRTK pointers available and defined in 
 
 ##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer)
 
- *LinePointer*, a base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
+ *LinePointer*, a base pointer class, draws a line from the source of the input (i.e. the controller) in the pointer direction and supports a single ray cast in this direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
 
 For motion controllers like in Oculus, Vive, and Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Line.png" width="400">
+
+##### [`CurvePointer`](xref:Microsoft.MixedReality.Toolkit.Input.CurvePointer)
+
+*CurvePointer* extends the *LinePointer* class by allowing for multi-step ray casts along a curve. This base pointer class is useful for curved instances such as teleportation pointers where the line consistently bends into a parabola.
 
 ##### [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer)
 
@@ -97,15 +101,19 @@ Useful Poke Pointer properties:
 
 The *[SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)* uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction, which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
 
+<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
 - *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
+    > [!NOTE]
+    > The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
+- *Ignore Colliders Not in FOV* - Whether to ignore colliders that may be near the pointer, but not actually in the visual FOV.
+This can prevent accidental grabs, and will allow hand rays to turn on when you may be near
+a grabbable but cannot see it. The *Visual FOV* is defined via a cone instead of the the typical frustum for performance reasons. This cone is centered and oriented the same as the camera's frustum with a radius equal to half display height(or vertical FOV).
 
-> [!NOTE]
-> The Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
-
-<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
+<img src="../../Documentation/Images/Input/Pointers/SpherePointer_VisualFOV.png" width="200">
 
 #### Teleport pointers
 
@@ -242,7 +250,7 @@ private void OnDisable()
 }
 ```
 
-The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PrimaryPointer/PrimaryPointerExample.unity) shows how to use the [`PrimaryPointerChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler) for events to respond to a new primary pointer.
+The `PrimaryPointerExample` (Assets/MRTK/Examples/Demos/Input/Scenes/PrimaryPointer) scene shows how to use the [`PrimaryPointerChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler) for events to respond to a new primary pointer.
 
 <img src="../../Documentation/Images/Pointers/PrimaryPointerExample.png" style="max-width:100%;">
 
@@ -260,7 +268,7 @@ private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEve
 }
 ```
 
-The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
+The `PointerResultExample` scene (Assets/MRTK/Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 

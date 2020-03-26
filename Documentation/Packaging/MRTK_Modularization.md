@@ -4,18 +4,18 @@ One of the great new features of Mixed Reality Toolkit v2 is improved componenti
 
 ## Minimized dependencies
 
-MRTK v2 was intentionally developed to be modular and to minimize dependencies between system services 
+MRTK v2 was intentionally developed to be modular and to minimize dependencies between system services
 (ex: spatial awareness).
 
 Due to the nature of some system services (ex: input and teleportation), a small number of dependencies exist.
 
-While it is expected that services will need one or more data provider components, there are no direct links 
+While it is expected that services will need one or more data provider components, there are no direct links
 between them. The same is true for SDK features (ex: User Interface components).
 
 ## Component communication
 
-To ensure that there are no direct links between components, MRTK v2 utilizes interfaces to communicate between 
-services, data providers and application code. These interfaces are defined in and all communication is routed 
+To ensure that there are no direct links between components, MRTK v2 utilizes interfaces to communicate between
+services, data providers and application code. These interfaces are defined in and all communication is routed
 through the Mixed Reality Toolkit core component.
 
 ![Using the spatial awareness system via interfaces](../../Documentation/Images/Packaging/AccessingViaInterfaces.png)
@@ -26,12 +26,12 @@ At this moment, the MRTK is imported as a single foundation package (ignoring fo
 
 It is possible to uncheck arbitrary items during the import of the Foundation package. However, it's not recommended to do this at an early stage in development as it might break functionality. After having figured out the final feature set of an app, pruning unneeded providers and services can be done on the following folders:
 
-- MixedRealityToolkit.Services
-- MixedRealityToolkit.Providers
-- MixedRealityToolkit.SDK\Features
+- MRTK/Services
+- MRTK/Providers
+- MRTK/SDK/Features
 
 > [!NOTE]
-> MRTK v2 **_requires_** the contents of the Assets\MixedRealityToolkit folder.
+> MRTK v2.x **_requires_** the contents of the Assets/MRTK/Core folder.
 
 ## Upcoming features
 
