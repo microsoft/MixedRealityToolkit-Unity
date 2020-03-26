@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -312,6 +313,8 @@ namespace Microsoft.MixedReality.Toolkit
             out IMixedRealityServiceRegistrar registrar,
             string name = null)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityServiceRegistry.TryGetServiceInternal");
+
             // Assume failed and return null unless proven otherwise
             serviceInstance = null;
             registrar = null;
@@ -321,6 +324,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (FindEntry(registry[interfaceType], interfaceType, name, out serviceInstance, out registrar))
                 {
+                    Profiler.EndSample(); // TryGetServiceInternal - found entry
                     return true;
                 }
             }
@@ -332,10 +336,12 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (FindEntry(list, interfaceType, name, out serviceInstance, out registrar))
                 {
+                    Profiler.EndSample(); // TryGetServiceInternal - found entry
                     return true;
                 }
             }
 
+            Profiler.EndSample(); // TryGetServiceInternal
             return false;
         }
 
@@ -354,6 +360,9 @@ namespace Microsoft.MixedReality.Toolkit
             out IMixedRealityService serviceInstance, 
             out IMixedRealityServiceRegistrar registrar)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityServiceRegistry.FindEntry");
+
+            // Assume failed and return null unless proven otherwise
             serviceInstance = null;
             registrar = null;
 
@@ -364,10 +373,13 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     serviceInstance = svc;
                     registrar = serviceList[i].Value;
+
+                    Profiler.EndSample(); // FindEntry - found
                     return true;
                 }
             }
 
+            Profiler.EndSample(); // FindEntry
             return false;
         }
 

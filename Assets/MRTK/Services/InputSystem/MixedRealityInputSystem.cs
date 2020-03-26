@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -760,6 +761,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
@@ -776,6 +779,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
+
+            Profiler.EndSample(); // RaiseSourceDetected
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceDetectedEventHandler =
@@ -788,6 +793,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
@@ -805,6 +812,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
 
             FocusProvider?.OnSourceLost(sourceStateEventData);
+
+            Profiler.EndSample(); // RaiseSourceLost
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =

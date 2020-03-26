@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -187,6 +188,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RequestPointers");
+
             using (RequestPointersPerfMarker.Auto())
             {
                 var returnPointers = new List<IMixedRealityPointer>();
@@ -234,6 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
+                Profiler.EndSample(); // RequestPointers
+
                 return returnPointers.Count == 0 ? null : returnPointers.ToArray();
             }
         }
@@ -244,6 +249,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RecyclePointers");
+
             if (inputSource != null)
             {
                 CleanActivePointers();
@@ -283,6 +290,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
+
+            Profiler.EndSample(); // RecyclePointers
         }
 
         /// <summary>
@@ -293,6 +302,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         private IMixedRealityPointer CreatePointer(in PointerOption option)
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CreatePointer");
+
             var pointerObject = Object.Instantiate(option.PointerPrefab);
             MixedRealityPlayspace.AddChild(pointerObject.transform);
             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
@@ -302,6 +313,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 GameObjectExtensions.DestroyGameObject(pointerObject);
             }
+
+            Profiler.EndSample(); // CreatePointer
 
             return pointer;
         }
@@ -313,6 +326,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void CleanActivePointers()
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CleanActivePointers");
+
             var removal = new List<IMixedRealityPointer>();
 
             var enumerator = activePointersToConfig.GetEnumerator();
@@ -329,6 +344,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 activePointersToConfig.Remove(removal[i]);
             }
+
+            Profiler.EndSample(); // CleanActivePointers
         }
 
         /// <summary>

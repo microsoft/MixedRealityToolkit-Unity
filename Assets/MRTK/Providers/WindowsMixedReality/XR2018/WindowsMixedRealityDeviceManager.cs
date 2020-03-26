@@ -11,6 +11,7 @@ using UnityEngine;
 #if UNITY_WSA
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
@@ -384,6 +385,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void GetOrAddController(InteractionSourceState interactionSourceState)
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
+
             // If this is a new detected controller, raise source detected event with input system
             // check needs to be here because GetOrAddController adds it to the activeControllers Dictionary
             // this could be cleaned up because that's not clear
@@ -410,13 +413,16 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                     controller.UpdateController(interactionSourceState);
                 }
-
             }
+
+            Profiler.EndSample(); // GetOrAddController
         }
 
         /// <inheritdoc/>
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.Update");
+
             base.Update();
 
             UpdateInteractionManagerReading();
@@ -434,6 +440,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             LastInteractionManagerStateReading = interactionManagerStates;
+
+            Profiler.EndSample(); // Update
         }
 
         private void RegisterGestureEvents()
@@ -892,6 +900,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </remarks>
         private void UpdateInteractionManagerReading()
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.UpdateInteractionManagerReading");
+
             int newSourceStateCount = InteractionManager.numSourceStates;
             // If there isn't enough space in the cache to hold the results, we should grow it so that it can, but also
             // grow it in a way that is unlikely to require re-allocations each time.
@@ -919,6 +929,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionManagerStates);
             }
+
+            Profiler.EndSample(); // UpdateInteractionManagerReading
         }
 
         #endregion Private Methods

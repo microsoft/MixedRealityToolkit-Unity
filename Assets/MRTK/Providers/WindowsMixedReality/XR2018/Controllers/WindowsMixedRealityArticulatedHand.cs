@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 
 #if UNITY_WSA
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
 using System;
@@ -94,6 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulatedHand.UpdateController");
+
             base.UpdateController(interactionSourceState);
 
             UpdateHandData(interactionSourceState);
@@ -107,6 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -123,6 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 return;
             }
+
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulatedHand.UpdateHandData");
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
             IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
@@ -163,6 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateHandData
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 

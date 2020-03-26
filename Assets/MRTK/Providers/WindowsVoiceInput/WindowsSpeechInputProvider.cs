@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using System;
+using UnityEngine.Profiling;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
@@ -177,6 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] WindowsSpeechInputProvider.Update");
+
             if (keywordRecognizer != null && keywordRecognizer.IsRunning)
             {
                 for (int i = 0; i < Commands.Length; i++)
@@ -187,6 +190,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                     }
                 }
             }
+
+            Profiler.EndSample();
         }
 
         /// <inheritdoc />
@@ -219,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)
         {
+            Profiler.BeginSample("[MRTK] WindowsSpeechInputProvider.OnPhraseRecognized");
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             for (int i = 0; i < Commands?.Length; i++)
@@ -229,6 +236,8 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // OnPhraseRecognized
         }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }

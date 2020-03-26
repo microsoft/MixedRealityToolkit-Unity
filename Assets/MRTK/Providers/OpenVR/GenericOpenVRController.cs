@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
@@ -149,6 +150,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("[MRTK] GenericOpenVRController.UpdateController");
+
             InputTracking.GetNodeStates(nodeStates);
 
             for (int i = 0; i < nodeStates.Count; i++)
@@ -163,6 +166,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
 
             base.UpdateController();
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -170,6 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// </summary>
         protected void UpdateControllerData(XRNodeState state)
         {
+            Profiler.BeginSample("[MRTK] GenericOpenVRController.UpdateControllerData");
+
             var lastState = TrackingState;
 
             LastControllerPose = CurrentControllerPose;
@@ -219,6 +226,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
                 }
             }
+
+            Profiler.EndSample(); // UpdateControllerData
         }
 
         #region Controller model functions
