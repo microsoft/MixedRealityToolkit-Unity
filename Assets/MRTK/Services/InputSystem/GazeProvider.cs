@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 using UnityEngine.Profiling;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class GazeProvider :
         InputSystemGlobalHandlerListener,
         IMixedRealityGazeProvider,
+        IMixedRealityGazeProviderWithOverride,
         IMixedRealityEyeGazeProvider,
         IMixedRealityInputHandler
     {
@@ -144,6 +144,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool delayInitialization = true;
         private Vector3 lastHeadPosition = Vector3.zero;
 
+        private Vector3? overrideHeadPosition = null;
+        private Vector3? overrideHeadForward = null;
+
         #region InternalGazePointer Class
 
         private class InternalGazePointer : GenericPointer
@@ -200,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <inheritdoc />
             public override void OnPreSceneQuery()
             {
-                Vector3 newGazeOrigin = Vector3.zero;
-                Vector3 newGazeNormal = Vector3.zero;
+                Vector3 newGazeOrigin;
+                Vector3 newGazeNormal;
 
                 if (gazeProvider.IsEyeTrackingEnabledAndValid)
                 {
@@ -212,8 +215,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 else
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
-                    newGazeOrigin = gazeTransform.position;
-                    newGazeNormal = gazeTransform.forward;
+
+                    if (gazeProvider.overrideHeadPosition.HasValue && gazeProvider.overrideHeadForward.HasValue)
+                    {
+                        newGazeOrigin = gazeProvider.overrideHeadPosition.Value;
+                        newGazeNormal = gazeProvider.overrideHeadForward.Value;
+                        // Reset values in case the override source is removed
+                        gazeProvider.overrideHeadPosition = null;
+                        gazeProvider.overrideHeadForward = null;
+                    }
+                    else
+                    {
+                        newGazeOrigin = gazeTransform.position;
+                        newGazeNormal = gazeTransform.forward;
+                    }
 
                     // Update gaze info from stabilizer
                     if (stabilizer != null)
@@ -576,5 +591,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #endregion IMixedRealityEyeGazeProvider Implementation
+
+        #region IMixedRealityGazeProviderWithOverride Implementation
+
+        /// <inheritdoc />
+        public void OverrideHeadGaze(Vector3 position, Vector3 forward)
+        {
+            overrideHeadPosition = position;
+            overrideHeadForward = forward;
+        }
+
+        #endregion IMixedRealityGazeProviderWithOverride Implementation
     }
 }
