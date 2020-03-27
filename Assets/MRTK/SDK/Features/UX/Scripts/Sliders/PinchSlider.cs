@@ -231,6 +231,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion  
 
         #region Unity methods
+
+        private void OnEnable()
+        {
+            // Register for bubble up events
+            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this, false);
+        }
         public void Start()
         {
             if (thumbRoot == null)

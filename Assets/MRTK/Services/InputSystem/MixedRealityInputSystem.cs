@@ -83,6 +83,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
+        public struct EventPropagationHandlerEntry
+        {
+            public Type handlerType;
+            public IEventSystemHandler handler;
+            public bool isTrickleDown;
+
+            public EventPropagationHandlerEntry(Type handlerType, IEventSystemHandler handler, bool isTrickeDown)
+            {
+                this.handlerType = handlerType;
+                this.handler = handler;
+                this.isTrickleDown = isTrickeDown;
+            }
+        }
+
+        /// <summary>
+        /// List of all event handlers grouped by object that are registered to this Event propagation.
+        /// </summary>
+        public Dictionary<GameObject, List<EventPropagationHandlerEntry>> EventPropagationHandlersByObject { get; } = new Dictionary<GameObject, List<EventPropagationHandlerEntry>>();
+
         /// <inheritdoc />
         public bool IsInputEnabled => disabledRefCount <= 0;
 
@@ -611,32 +630,95 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
+            List<EventPropagationHandlerEntry> handlers;
 
             // Trickles Down
             if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
             {
+                eventPropagationData.Phase = PropagationPhase.TrickeDown;
+
                 for (int i = targetHierarchy.Length - 1; i > 0; i--)
                 {
-                    eventPropagationData.Phase = PropagationPhase.TrickeDown;
-                    ExecuteEvents.Execute(targetHierarchy[i].gameObject, baseInputEventData, eventHandler);
+                    if(eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
+                    {
+                        break;
+                    }
+                    if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
+                    {
+                        continue;
+                    }
+
+                    // Hieranchy object have propagation handlers
+                    if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
+                    {
+                        foreach (var handler in handlers)
+                        {
+                            if (eventPropagationData.Status.HasFlag(LifeStatus.ImmediatePropagationStopped))
+                            {
+                                break;
+                            }
+                            if (handler.handlerType == typeof(T) && handler.isTrickleDown == true)
+                            {
+                                // Type checked on registration
+                                eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                            }
+                        }
+                    }                   
                 }
             }
 
-            // Target - event should always reach target
-            eventPropagationData.Phase = PropagationPhase.Target;
-            ExecuteEvents.Execute(targetObject, baseInputEventData, eventHandler);
+            // Target - event should always reach target unless PreventDefault was called on the event
+            if (!eventPropagationData.Status.HasFlag(LifeStatus.DefaultPrevented))
+            {
+                eventPropagationData.Phase = PropagationPhase.Target;
+
+                var targetHandlers = targetObject.GetComponents<T>();
+                foreach (var targetHandler in targetHandlers)
+                {
+                    if (eventPropagationData.Status.HasFlag(LifeStatus.ImmediatePropagationStopped))
+                    {
+                        break;
+                    }
+
+                    eventHandler.Invoke((T)targetHandler, baseInputEventData);
+                }
+            }
 
             // Bubbles Up
-            eventPropagationData.Phase = PropagationPhase.BubbleUp;
             if (eventPropagationData.Propagation.HasFlag(EventPropagation.BubblesUp))
             {
+                eventPropagationData.Phase = PropagationPhase.BubbleUp;
+
                 for (int i = 1; i < targetHierarchy.Length; i++)
                 {
-                    ExecuteEvents.Execute(targetHierarchy[i].gameObject, baseInputEventData, eventHandler);
+                    if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
+                    {
+                        break;
+                    }
+                    if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
+                    {
+                        continue;
+                    }
+
+                    // Hieranchy object have propagation handlers
+                    if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
+                    {
+                        foreach (var handler in handlers)
+                        {
+                            if (eventPropagationData.Status.HasFlag(LifeStatus.ImmediatePropagationStopped))
+                            {
+                                break;
+                            }
+                            if (handler.handlerType == typeof(T) && handler.isTrickleDown == false)
+                            {
+                                // Type checked on registration
+                                eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                            }
+                        }
+                    }
                 }
             }
         }
-
 
         /// <summary>
         /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
@@ -656,6 +738,93 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Unregister(listener);
         }
+
+        //private void UnregisterPropagationHandler(Type handlerType, IEventSystemHandler handler)
+        //{
+        //    if (eventExecutionDepth == 0)
+        //    {
+        //        RemovePropagationHandlerFromMap(handlerType, handler);
+        //    }
+        //    //else
+        //    //{
+        //    //    postponedActions.Add(Tuple.Create(Action.Remove, handlerType, handler));
+        //    //}
+        //}
+
+        /// <summary>
+        /// Default is bubble up
+        /// </summary>
+        public virtual void RegisterPropagationHandler<T>(IEventSystemHandler handler, bool isTrickleDown = false) where T : IEventSystemHandler
+        {
+            var castedHandler = (T)handler;
+            if (castedHandler == null)
+            {
+                return;
+            }
+
+            // TODO register queue
+            // TODO check need for register all interfaces
+            AddPropagationHandlerToMap<T>(castedHandler, isTrickleDown);
+        }
+
+        private void AddPropagationHandlerToMap<T>(IEventSystemHandler handler, bool isTrickleDown) where T : IEventSystemHandler
+        {
+            var component = (Component)handler;
+            if (component == null)
+            {
+                return;
+            }
+
+            var gameObject = component.gameObject;
+            var type = typeof(T);
+
+            List<EventPropagationHandlerEntry> handlers;
+            if (!EventPropagationHandlersByObject.TryGetValue(gameObject, out handlers))
+            {
+                handlers = new List<EventPropagationHandlerEntry> { new EventPropagationHandlerEntry(type, handler, isTrickleDown) };
+                EventPropagationHandlersByObject.Add(gameObject, handlers);
+                return;
+            }
+
+            bool handlerExists = false;
+            for (int i = handlers.Count - 1; i >= 0; i--)
+            {
+                // TODO IsEquivalent()
+                if (handlers[i].handler == handler && handlers[i].handlerType == type && handlers[i].isTrickleDown == isTrickleDown)
+                {
+                    handlerExists = true;
+                    break;
+                }
+            }
+
+            if (!handlerExists)
+            {
+                handlers.Add(new EventPropagationHandlerEntry(type, handler, isTrickleDown));
+            }
+        }
+
+        /// <inheritdoc />
+        //private void RemovePropagationHandlerFromMap(Type handlerType, IEventSystemHandler handler)
+        //{
+        //    List<EventHandlerEntry> handlers;
+        //    if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
+        //    {
+        //        return;
+        //    }
+
+        //    for (int i = handlers.Count - 1; i >= 0; i--)
+        //    {
+        //        if (handlers[i].handler == handler)
+        //        {
+        //            handlers.RemoveAt(i);
+        //        }
+        //    }
+
+        //    if (handlers.Count == 0)
+        //    {
+        //        EventHandlersByType.Remove(handlerType);
+        //    }
+        //}
 
         #endregion IMixedRealityEventSystem Implementation
 
@@ -1763,16 +1932,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 var casted = ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(eventData);
                 handler.OnTouchStarted(casted);
+                Debug.Log("Hellooooooooooooo");
             };
+        private delegate void PropCallback(IEventSystemHandler handler, BaseEventData eventData);
 
         /// <inheritdoc />
         public void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+            //Foo( delegate { return x; } );
+            //PropCallback pc = delegate (IEventSystemHandler handler, BaseEventData eventData)
+            //{
+            //    var casted = ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(eventData);
 
+            //    var castedHandler = (IMixedRealityTouchHandler)handler;
+            //    if (castedHandler != null)
+            //    {
+            //        castedHandler.OnTouchStarted(casted);
+            //    }
+            //};
+            //TryHandle(handTrackingInputEventData, OnTouchStartedEventHandler);
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handTrackingInputEventData, OnTouchStartedEventHandler);
+        }
+
+        void TryHandle<T>(BaseEventData baseEventData, ExecuteEvents.EventFunction<T> eventHandler)
+        {
+            GameObject cube = new GameObject(); // this comes from register
+            //var pb = cube.AddComponent<UI.PressableButton>(); // this comes from register
+            //cube.name = "PRINCESINHA";
+           // var cube1InteractableTouchHandler = (IMixedRealityTouchHandler)pb; // this comes from register
+
+            //if (cube1InteractableTouchHandler is T)
+            //{
+            //    eventHandler.Invoke((T)cube1InteractableTouchHandler, baseEventData);
+                
+            //    //d(cube1InteractableTouchHandler, baseEventData);
+            //}
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTouchHandler> OnTouchCompletedEventHandler =

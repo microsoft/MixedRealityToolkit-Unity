@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -119,9 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         void ClearFallbackInputStack();
 
+        /// <summary>
+        /// Interface that register handlers into event propagation subscription for specific propagation phase
+        /// </summary>
+        void RegisterPropagationHandler<T>(IEventSystemHandler handler, bool isTrickleDown = false) where T : IEventSystemHandler;
+
         #region Input Events
 
-        #region Input Source Events
+            #region Input Source Events
 
         /// <summary>
         /// Generates a new unique input source id.<para/>
