@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
@@ -942,8 +943,12 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void UpdateAllServices()
         {
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.UpdateAllServices");
+
             // Update all systems
             ExecuteOnAllServicesInOrder(service => service.Update());
+
+            Profiler.EndSample(); // UpdateAllServices
         }
 
         private void LateUpdateAllServices()
@@ -954,8 +959,12 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Mixed Reality Toolkit is not initialized, stop.
             if (!IsInitialized) { return; }
 
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.LateUpdateAllServices");
+
             // Update all systems
             ExecuteOnAllServicesInOrder(service => service.LateUpdate());
+
+            Profiler.EndSample(); // LateUpdateAllServices
         }
 
         private void DisableAllServices()
@@ -1012,16 +1021,28 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            return ExecuteOnServiceCollection(
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesInOrder");
+
+            bool result = ExecuteOnServiceCollection(
                 execute,
                 MixedRealityServiceRegistry.GetAllServices());
-        }
+
+            Profiler.EndSample(); // ExecuteOnAllServicesInOrder
+
+            return result
+       }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            return ExecuteOnServiceCollection(
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServiceReverseOrder");
+
+            bool result = ExecuteOnServiceCollection(
                 execute,
                 MixedRealityServiceRegistry.GetAllServices().Reverse());
+
+            Profiler.EndSample(); // ExecuteOnAllServiceReverseOrder
+            
+            return result
         }
 
         private bool ExecuteOnServiceCollection(
@@ -1033,14 +1054,12 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
-            try
-            {
-                foreach (IMixedRealityService service in services)
-                {
-                    execute(service);
-                }
-            }
-            catch (InvalidOperationException)
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnServiceCollection");
+
+            var services = MixedRealityServiceRegistry.GetAllServices();
+            int length = services.Count;
+
+            for (int i = length - 1; i >= 0; i--)
             {
                 // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
                 // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
@@ -1048,6 +1067,8 @@ namespace Microsoft.MixedReality.Toolkit
                 // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
                 // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             }
+
+            Profiler.EndSample(); // ExecuteOnServiceCollection
 
             return true;
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -61,6 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] UnityJoystickManager.Update");
+
             base.Update();
 
             deviceRefreshTimer += Time.unscaledDeltaTime;
@@ -75,6 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 controller.Value?.UpdateController();
             }
+
+            Profiler.EndSample(); // Update
         }
 
         /// <inheritdoc />
@@ -98,16 +103,28 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc/>
         public override IMixedRealityController[] GetActiveControllers()
         {
-            return ActiveControllers.Values.ToArray<IMixedRealityController>();
+            Profiler.BeginSample("[MRTK] UnityJoystickManager.GetActiveControllers");
+
+            IMixedRealityController[] controllers = ActiveControllers.Values.ToArray<IMixedRealityController>();
+
+            Profiler.EndSample(); // GetActiveControllers
+
+            return controllers;
         }
 
         private void RefreshDevices()
         {
+            Profiler.BeginSample("[MRTK] UnityJoystickManager.RefreshDevices");
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             var joystickNames = UInput.GetJoystickNames();
 
-            if (joystickNames.Length <= 0) { return; }
+            if (joystickNames.Length <= 0)
+            {
+                Profiler.EndSample(); // RefreshDevices - no devices
+                return;
+            }
 
             if (lastDeviceList != null && joystickNames.Length == lastDeviceList.Length)
             {
@@ -148,6 +165,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
 
             lastDeviceList = joystickNames;
+
+            Profiler.EndSample(); // RefreshDevices
         }
 
         /// <summary>
@@ -157,12 +176,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <returns>A new controller reference.</returns>
         protected virtual GenericJoystickController GetOrAddController(string joystickName)
         {
+            Profiler.BeginSample("[MRTK] UnityJoystickManager.GetOrAddController");
+
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
             if (ActiveControllers.ContainsKey(joystickName))
             {
                 var controller = ActiveControllers[joystickName];
                 Debug.Assert(controller != null);
+                
+                Profiler.EndSample(); // GetOrAddController - already registered
+                
                 return controller;
             }
 
@@ -171,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             switch (GetCurrentControllerType(joystickName))
             {
                 default:
+                    Profiler.EndSample(); // GetOrAddController - unknown type
                     return null;
                 case SupportedControllerType.GenericUnity:
                     controllerType = typeof(GenericJoystickController);
@@ -187,11 +212,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 // Controller failed to be setup correctly.
                 Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                Profiler.EndSample(); // GetOrAddController - failure
+
                 // Return null so we don't raise the source detected.
                 return null;
             }
 
             ActiveControllers.Add(joystickName, detectedController);
+
+            Profiler.EndSample(); // GetOrAddController
+
             return detectedController;
         }
 

@@ -52,6 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateController");
+
             if (Interactions == null)
             {
                 Debug.LogError($"No interaction configuration for {GetType().Name}");
@@ -118,6 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateController
         }
 
         /// <summary>
@@ -128,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </remarks>
         protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateButtonDatafs");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
             if (interactionMapping.InputType == DeviceInputType.TriggerTouch
@@ -158,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         buttonUsage = CommonUsages.secondary2DAxisClick;
                         break;
                     default:
+                        Profiler.EndSample(); // UpdateButtonData - non button
                         return;
                 }
 
@@ -180,6 +187,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
+
+            Profiler.EndSample(); // UpdateButtonData
         }
 
         /// <summary>
@@ -190,6 +199,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </remarks>
         protected virtual void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateSingleAxisData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
             // Update the interaction data source
@@ -227,6 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     }
                     break;
                 default:
+                    Profiler.EndSample(); // UpdateSingleAxisData - non single axis
                     return;
             }
 
@@ -236,6 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
             }
+
+            Profiler.EndSample(); // UpdateSingleAxisData
         }
 
         /// <summary>
@@ -243,6 +257,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         protected virtual void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateDualAxisData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
             InputFeatureUsage<Vector2> axisUsage;
@@ -257,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     axisUsage = CommonUsages.primary2DAxis;
                     break;
                 default:
+                    Profiler.EndSample(); // UpdateDualAxisData - non dual axis
                     return;
             }
 
@@ -272,6 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
             }
+
+            Profiler.EndSample(); // UpdateDualAxisData
         }
 
         /// <summary>
@@ -279,6 +298,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </summary>
         protected virtual void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdatePoseData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
             // Update the interaction data source
@@ -295,6 +316,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                     }
                     break;
             }
+
+            Profiler.EndSample(); // UpdatePoseData
         }
     }
 }

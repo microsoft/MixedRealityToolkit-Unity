@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
@@ -103,6 +104,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
+            Profiler.BeginSample("[MRTK] UnityTouchController.Update");
+
             if (isNewController)
             {
                 isNewController = false;
@@ -114,7 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 isHolding = true;
             }
 
-            if (!isTouched) { return; }
+            if (!isTouched) 
+            {
+                Profiler.EndSample(); // Update - not touched
+                return;
+            }
 
             Lifetime += Time.deltaTime;
 
@@ -158,6 +165,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // Send dragged event, to inform manipulation handlers.
                 inputSystem.RaisePointerDragged(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
             }
+
+            Profiler.EndSample(); // Update
         }
 
         /// <summary>
@@ -171,6 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 return;
             }
+
+            Profiler.BeginSample("[MRTK] UnityTouchController.EndTouch");
 
             if (TouchData.phase == TouchPhase.Ended)
             {
@@ -227,6 +238,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             isTouched = false;
             Interactions[1].PoseData = MixedRealityPose.ZeroIdentity;
             Interactions[0].Vector2Data = Vector2.zero;
+
+            Profiler.EndSample(); // EndTouch
         }
     }
 }

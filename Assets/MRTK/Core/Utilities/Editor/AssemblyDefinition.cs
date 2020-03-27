@@ -205,14 +205,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             FileInfo file = new FileInfo(fileName);
-            bool readOnly = file.IsReadOnly;
+
+            bool readOnly = (file.Exists) ? file.IsReadOnly : false;
             if (readOnly)
             {
                 file.IsReadOnly = false;
             }
 
             Debug.Log($"Saving {fileName}");
-            File.WriteAllText(fileName, JsonUtility.ToJson(this, true));
+            using (StreamWriter writer = new StreamWriter(fileName, false))
+            {
+                writer.Write(JsonUtility.ToJson(this, true));
+            }
 
             if (readOnly)
             {

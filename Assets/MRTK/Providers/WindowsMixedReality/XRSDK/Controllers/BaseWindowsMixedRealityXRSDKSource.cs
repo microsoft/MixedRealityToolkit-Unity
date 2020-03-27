@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.XRSDK.Input;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 #if WMR_ENABLED
@@ -34,6 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// </summary>
         protected override void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdatePoseData");
+
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
             base.UpdatePoseData(interactionMapping, inputDevice);
@@ -62,8 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     }
                     break;
                 default:
+                    Profiler.EndSample(); // UpdatePoseData
                     return;
             }
+
+            Profiler.EndSample(); // UpdatePoseData
         }
 #endif // WMR_ENABLED
     }

@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
-                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
 #else
 #if UNITY_ANDROID
                 RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Stereo rendering path");

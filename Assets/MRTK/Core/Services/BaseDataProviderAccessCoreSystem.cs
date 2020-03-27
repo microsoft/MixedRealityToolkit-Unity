@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using UnityEngine.Profiling;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -76,6 +77,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.Update");
+
             base.Update();
 
             try
@@ -100,11 +103,15 @@ namespace Microsoft.MixedReality.Toolkit
                 // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
                 // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             }
+
+            Profiler.EndSample(); // Update
         }
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
+            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.LateUpdate");
+
             base.LateUpdate();
 
             try
@@ -129,6 +136,8 @@ namespace Microsoft.MixedReality.Toolkit
                 // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
                 // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
             }
+
+            Profiler.EndSample(); // LateUpdate
         }
 
         /// <inheritdoc />
