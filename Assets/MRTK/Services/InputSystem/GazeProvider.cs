@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
 
-                    if (gazeProvider.overrideHeadPosition.HasValue && gazeProvider.overrideHeadForward.HasValue)
+                    if (gazeProvider.UseOverride && gazeProvider.overrideHeadPosition.HasValue && gazeProvider.overrideHeadForward.HasValue)
                     {
                         newGazeOrigin = gazeProvider.overrideHeadPosition.Value;
                         newGazeNormal = gazeProvider.overrideHeadForward.Value;
@@ -593,6 +593,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion IMixedRealityEyeGazeProvider Implementation
 
         #region IMixedRealityGazeProviderWithOverride Implementation
+
+        /// <inheritdoc />
+        public bool UseOverride { get; set; }
 
         /// <inheritdoc />
         public void OverrideHeadGaze(Vector3 position, Vector3 forward)

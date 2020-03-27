@@ -283,6 +283,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
                 }
+
+                if (GazeProvider is IMixedRealityGazeProviderWithOverride gazeProviderWithOverride)
+                {
+                    gazeProviderWithOverride.UseOverride = pointerProfile.UseGazeOverride;
+                }
             }
             else
             {

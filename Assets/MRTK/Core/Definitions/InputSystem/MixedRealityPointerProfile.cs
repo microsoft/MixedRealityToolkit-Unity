@@ -72,6 +72,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("If true, platform-specific gaze override is used, when available. Otherwise, the center of the camera frame is used by default.")]
+        private bool useGazeOverride = true;
+
+        /// <summary>
+        /// If true, platform-specific gaze override is used, when available. Otherwise, the center of the camera frame is used by default.
+        /// </summary>
+        public bool UseGazeOverride => useGazeOverride;
+
+        [SerializeField]
         [Tooltip("If true, eye-based tracking will be used as gaze input when available. Requires the 'Gaze Input' permission and device eye calibration to have been run.")]
         private bool isEyeTrackingEnabled = false;
 
