@@ -1932,44 +1932,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 var casted = ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(eventData);
                 handler.OnTouchStarted(casted);
-                Debug.Log("Hellooooooooooooo");
             };
-        private delegate void PropCallback(IEventSystemHandler handler, BaseEventData eventData);
 
         /// <inheritdoc />
         public void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
             // Create input event
             handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
-            //Foo( delegate { return x; } );
-            //PropCallback pc = delegate (IEventSystemHandler handler, BaseEventData eventData)
-            //{
-            //    var casted = ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(eventData);
-
-            //    var castedHandler = (IMixedRealityTouchHandler)handler;
-            //    if (castedHandler != null)
-            //    {
-            //        castedHandler.OnTouchStarted(casted);
-            //    }
-            //};
-            //TryHandle(handTrackingInputEventData, OnTouchStartedEventHandler);
-            // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(handTrackingInputEventData, OnTouchStartedEventHandler);
-        }
-
-        void TryHandle<T>(BaseEventData baseEventData, ExecuteEvents.EventFunction<T> eventHandler)
-        {
-            GameObject cube = new GameObject(); // this comes from register
-            //var pb = cube.AddComponent<UI.PressableButton>(); // this comes from register
-            //cube.name = "PRINCESINHA";
-           // var cube1InteractableTouchHandler = (IMixedRealityTouchHandler)pb; // this comes from register
-
-            //if (cube1InteractableTouchHandler is T)
-            //{
-            //    eventHandler.Invoke((T)cube1InteractableTouchHandler, baseEventData);
-                
-            //    //d(cube1InteractableTouchHandler, baseEventData);
-            //}
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTouchHandler> OnTouchCompletedEventHandler =
@@ -1978,7 +1948,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var casted = ExecuteEvents.ValidateEventData<HandTrackingInputEventData>(eventData);
                 handler.OnTouchCompleted(casted);
             };
-
 
         /// <inheritdoc />
         public void RaiseOnTouchCompleted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
