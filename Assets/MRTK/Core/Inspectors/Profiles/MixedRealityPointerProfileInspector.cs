@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
-        private SerializedProperty useGazeOverride;
+        private SerializedProperty useHeadGazeOverride;
         private SerializedProperty isEyeTrackingEnabled;
         private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
-            useGazeOverride = serializedObject.FindProperty("useGazeOverride");
+            useHeadGazeOverride = serializedObject.FindProperty("useHeadGazeOverride");
             isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(gazeCursorPrefab);
                     EditorGUILayout.PropertyField(gazeProviderType);
-                    EditorGUILayout.PropertyField(useGazeOverride);
+                    EditorGUILayout.PropertyField(useHeadGazeOverride);
                     EditorGUILayout.PropertyField(isEyeTrackingEnabled);
                     EditorGUILayout.Space();
 

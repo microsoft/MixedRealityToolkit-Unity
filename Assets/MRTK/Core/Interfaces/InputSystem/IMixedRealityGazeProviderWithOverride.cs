@@ -11,9 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityGazeProviderWithOverride
     {
         /// <summary>
-        /// If true, platform-specific gaze override is used, when available. Otherwise, the center of the camera frame is used by default.
+        /// If true, platform-specific head gaze override is used, when available. Otherwise, the center of the camera frame is used by default.
         /// </summary>
-        bool UseOverride { get; set; }
+        bool UseHeadGazeOverride { get; set; }
 
         /// <summary>
         /// Allows head gaze to be overridden, typically by platform-specific values.

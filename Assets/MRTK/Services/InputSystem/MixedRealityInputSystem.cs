@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (GazeProvider is IMixedRealityGazeProviderWithOverride gazeProviderWithOverride)
                 {
-                    gazeProviderWithOverride.UseOverride = pointerProfile.UseGazeOverride;
+                    gazeProviderWithOverride.UseHeadGazeOverride = pointerProfile.UseHeadGazeOverride;
                 }
             }
             else
