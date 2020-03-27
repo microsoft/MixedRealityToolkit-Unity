@@ -75,15 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Maximum head velocity threshold")]
         private float maxHeadVelocityThreshold = 2f;
 
+        #region IMixedRealityGazeProvider Implementation
+
         /// <inheritdoc />
         public bool Enabled
         {
             get { return enabled; }
             set { enabled = value; }
         }
-
-        /// <inheritdoc />
-        public bool IsEyeTrackingEnabled { get; set; }
 
         /// <inheritdoc />
         public IMixedRealityInputSource GazeInputSource
@@ -139,30 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public GameObject GameObjectReference => gameObject;
 
+        #endregion IMixedRealityGazeProvider Implementation
+
         private float lastHitDistance = 2.0f;
-
         private bool delayInitialization = true;
-
         private Vector3 lastHeadPosition = Vector3.zero;
-
-        /// <inheritdoc />
-        public bool IsEyeTrackingEnabledAndValid => IsEyeTrackingDataValid && IsEyeTrackingEnabled;
-
-        /// <inheritdoc />
-        public DateTime Timestamp { get; private set; }
-
-        private Ray latestEyeGaze = default(Ray);
-        /// <summary>
-        /// The most recent eye tracking ray
-        /// </summary>
-        public Ray LatestEyeGaze 
-        { 
-            get => latestEyeGaze;
-            private set { latestEyeGaze = value; } 
-        }
-
-        private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
-        private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
         #region InternalGazePointer Class
 
@@ -556,6 +536,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GazePointer.BaseCursor.Pointer = GazePointer;
         }
 
+        #endregion Utilities
+
+        #region IMixedRealityEyeGazeProvider Implementation
+
+        private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
+        private static readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
+
+        /// <inheritdoc />
+        public bool IsEyeTrackingEnabledAndValid => IsEyeTrackingDataValid && IsEyeTrackingEnabled;
+
+        /// <inheritdoc />
+        public bool IsEyeTrackingDataValid => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
+
+        /// <inheritdoc />
+        public bool? IsEyeCalibrationValid { get; private set; } = null;
+
+        /// <inheritdoc />
+        public Ray LatestEyeGaze { get; private set; } = default(Ray);
+
+        /// <inheritdoc />
+        public bool IsEyeTrackingEnabled { get; set; }
+
+        /// <inheritdoc />
+        public DateTime Timestamp { get; private set; }
+
+        /// <inheritdoc />
         public void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp)
         {
             LatestEyeGaze = eyeRay;
@@ -563,22 +569,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Timestamp = timestamp;
         }
 
+        /// <inheritdoc />
         public void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated)
         {
-            this.IsEyeCalibrationValid = userIsEyeCalibrated;
+            IsEyeCalibrationValid = userIsEyeCalibrated;
         }
 
-        /// <summary>
-        /// Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
-        /// new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.
-        /// </summary>
-        public bool IsEyeTrackingDataValid => (DateTime.UtcNow - latestEyeTrackingUpdate).TotalSeconds <= maxEyeTrackingTimeoutInSeconds;
-
-        /// <summary>
-        /// Boolean to check whether the user went through the eye tracking calibration. 
-        /// Initially the parameter will return null until it has received valid information from the eye tracking system.
-        /// </summary>
-        public bool? IsEyeCalibrationValid { get; private set; } = null;
-        #endregion Utilities
+        #endregion IMixedRealityEyeGazeProvider Implementation
     }
 }
