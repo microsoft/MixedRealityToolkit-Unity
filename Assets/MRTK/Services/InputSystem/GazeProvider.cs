@@ -124,10 +124,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 HitNormal { get; private set; }
 
         /// <inheritdoc />
-        public Vector3 GazeOrigin => gazePointer != null ? gazePointer.Rays[0].Origin : Vector3.zero;
+        public Vector3 GazeOrigin => GazePointer != null ? GazePointer.Rays[0].Origin : Vector3.zero;
 
         /// <inheritdoc />
-        public Vector3 GazeDirection => GazePointer.Rays[0].Direction;
+        public Vector3 GazeDirection => GazePointer != null ? GazePointer.Rays[0].Direction : Vector3.forward;
 
         /// <inheritdoc />
         public Vector3 HeadVelocity { get; private set; }
