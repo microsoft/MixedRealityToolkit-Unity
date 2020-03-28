@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
