@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -139,6 +140,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void OnPreSceneQuery()
         {
+            Profiler.BeginSample("[MRTK] PokePointer.OnPreSceneQuery");
+
             if (Rays == null)
             {
                 Rays = new RayStep[1];
@@ -187,10 +190,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             closestProximityTouchable = newClosestTouchable;
 
             visuals.SetActive(IsActive);
+
+            Profiler.EndSample(); // OnPreSceneQuery
         }
 
         private bool FindClosestTouchableForLayerMask(LayerMask layerMask, out BaseNearInteractionTouchable closest, out float closestDistance, out Vector3 closestNormal)
         {
+            Profiler.BeginSample("[MRTK] PokePointer.FindClosestTouchableForLayerMask");
+
             closest = null;
             closestDistance = float.PositiveInfinity;
             closestNormal = Vector3.zero;
@@ -239,16 +246,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            Profiler.EndSample(); // FindClosestTouchableForLayerMask
             return closest != null;
         }
 
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
+            Profiler.BeginSample("[MRTK] PokePointer.OnPostSceneQuery");
+
             base.OnPostSceneQuery();
 
             if (!IsActive)
             {
+                Profiler.EndSample(); // OnPostSceneQuery - early exit
                 return;
             }
 
@@ -301,6 +312,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             PreviousPosition = Position;
+
+            Profiler.EndSample(); // OnPostSceneQuery
         }
 
         /// <inheritdoc />
