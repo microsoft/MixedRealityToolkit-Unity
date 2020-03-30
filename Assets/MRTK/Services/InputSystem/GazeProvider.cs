@@ -592,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IMixedRealityEyeGazeProvider Implementation
 
-        #region IMixedRealityGazeProviderWithOverride Implementation
+        #region IMixedRealityGazeProviderHeadOverride Implementation
 
         /// <inheritdoc />
         public bool UseHeadGazeOverride { get; set; }
@@ -604,6 +604,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             overrideHeadForward = forward;
         }
 
-        #endregion IMixedRealityGazeProviderWithOverride Implementation
+        #endregion IMixedRealityGazeProviderHeadOverride Implementation
     }
 }
