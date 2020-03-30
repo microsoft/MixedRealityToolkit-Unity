@@ -887,20 +887,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>Pointer Data if the pointing source is registered.</returns>
         private bool TryGetPointerData(IMixedRealityPointer pointer, out PointerData data)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.TryGetPointerData");
-
             foreach (var pointerData in pointers)
             {
                 if (pointerData.Pointer.PointerId == pointer.PointerId)
                 {
                     data = pointerData;
-                    Profiler.EndSample(); // TryGetPointerData - success
                     return true;
                 }
             }
 
             data = null;
-            Profiler.EndSample(); // TryGetPointerData
             return false;
         }
 
