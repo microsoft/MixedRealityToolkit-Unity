@@ -103,7 +103,7 @@ in the <em>Pointer</em> section of the input system profile:</p>
 <p><img src="../Images/Input/GazeConfigurationEntrypoint.png" alt="Gaze Configuration Entrypoint"></p>
 <p>Like other sources of input, the gaze provider interacts with objects in the scene
 through use of a pointer <a href="../Architecture/InputSystem/ControllersPointersAndFocus.html">(see this document for information on pointers)</a>.
-In the case of the gaze provider, its pointer is an implemented via <code>InternalGazePointer</code>
+In the case of the gaze provider, its pointer is implemented via <code>InternalGazePointer</code>
 and is not configured through a profile.</p>
 <p>It is possible to replace the stock GazeProvider with an alternate implementation by changing
 <em>Gaze Provider Type</em> to reference a different class that implements
@@ -111,6 +111,8 @@ and is not configured through a profile.</p>
 and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a>.
 It's generally recommended to use the stock GazeProvider (and filing issues in when finding
 bugs) as re-implementing the GazeProvider is non-trivial.</p>
+<h3 id="alternative-platform-provided-gaze-poses">Alternative platform-provided gaze poses</h3>
+<p>By default, the MRTK GazeProvider uses the center of the camera's frame as the gaze origin. Some platforms, like Windows Mixed Reality on HoloLens 2, provide an alternatively defined gaze pose. This is managed via the <code>Use Head Gaze Override</code> setting in the gaze settings. When enabled, the alternative gaze override will be used. When disabled, the default frame center origin will be used. Specifically, for HoloLens 2, the gaze angle will be raised several degrees to account for user comfort in using their head for targeting.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="how-get-the-current-gaze-target">How get the current gaze target</h3>
 <p>This sample shows how to get the current game object that is targeted by the user gaze.</p>

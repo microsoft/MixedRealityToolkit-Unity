@@ -97,6 +97,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProviderHeadOverride.html">IMixedRealityGazeProviderHeadOverride</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProvider.html">IMixedRealityGazeProvider</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html">IMixedRealityInputHandler</a></div>
@@ -113,7 +114,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GazeProvider : InputSystemGlobalHandlerListener, IMixedRealityEyeGazeProvider, IMixedRealityGazeProvider, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class GazeProvider : InputSystemGlobalHandlerListener, IMixedRealityGazeProviderHeadOverride, IMixedRealityEyeGazeProvider, IMixedRealityGazeProvider, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -487,8 +488,7 @@ If no object is currently being hit, this will use the last hit distance.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeCalibrationValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeCalibrationValid*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeCalibrationValid" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeCalibrationValid">IsEyeCalibrationValid</h4>
-  <div class="markdown level1 summary"><p>Boolean to check whether the user went through the eye tracking calibration.
-Initially the parameter will return null until it has received valid information from the eye tracking system.</p>
+  <div class="markdown level1 summary"><p>Whether the user is eye calibrated. It returns 'null', if the value has not yet received data from the eye tracking system.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -514,8 +514,7 @@ Initially the parameter will return null until it has received valid information
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeTrackingDataValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeTrackingDataValid*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_IsEyeTrackingDataValid" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.IsEyeTrackingDataValid">IsEyeTrackingDataValid</h4>
-  <div class="markdown level1 summary"><p>Ensure that we work with recent Eye Tracking data. Return false if we haven't received any
-new Eye Tracking data for more than 'maxETTimeoutInSeconds' seconds.</p>
+  <div class="markdown level1 summary"><p>Whether eye tracking data is available. It may be unavailable due to timeout or lack of tracking hardware or permissions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -646,6 +645,32 @@ gaze when eye-based tracking is not available.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UseHeadGazeOverride_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UseHeadGazeOverride*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UseHeadGazeOverride" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UseHeadGazeOverride">UseHeadGazeOverride</h4>
+  <div class="markdown level1 summary"><p>If true, platform-specific head gaze override is used, when available. Otherwise, the center of the camera frame is used by default.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseHeadGazeOverride { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -728,6 +753,39 @@ gaze when eye-based tracking is not available.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_OverrideHeadGaze_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.OverrideHeadGaze*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_OverrideHeadGaze_Vector3_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.OverrideHeadGaze(Vector3,Vector3)">OverrideHeadGaze(Vector3, Vector3)</h4>
+  <div class="markdown level1 summary"><p>Allows head gaze to be overridden, typically by platform-specific values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void OverrideHeadGaze(Vector3 position, Vector3 forward)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">forward</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_RegisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.RegisterHandlers*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_RegisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.RegisterHandlers">RegisterHandlers()</h4>
   <div class="markdown level1 summary"><p>Overload this method to specify, which global events component wants to listen to.
@@ -798,7 +856,8 @@ Use UnregisterHandler API of InputSystem</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeGaze_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeGaze*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeGaze_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_Ray_DateTime_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeGaze(Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider,Ray,DateTime)">UpdateEyeGaze(IMixedRealityEyeGazeDataProvider, Ray, DateTime)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tells the eye gaze provider that eye gaze has updated.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -817,7 +876,8 @@ Use UnregisterHandler API of InputSystem</p>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a></td>
         <td><span class="parametername">provider</span></td>
-        <td></td>
+        <td><p>The provider raising the event.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Ray</span></td>
@@ -831,11 +891,15 @@ Use UnregisterHandler API of InputSystem</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeGaze_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_Ray_DateTime__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a> interface, not by application code.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeTrackingStatus_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeTrackingStatus*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GazeProvider_UpdateEyeTrackingStatus_Microsoft_MixedReality_Toolkit_Input_IMixedRealityEyeGazeDataProvider_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.GazeProvider.UpdateEyeTrackingStatus(Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider,System.Boolean)">UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tells the eye gaze provider about the eye tracking status (e.g., whether the user is calibrated);</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -854,12 +918,14 @@ Use UnregisterHandler API of InputSystem</p>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeDataProvider.html">IMixedRealityEyeGazeDataProvider</a></td>
         <td><span class="parametername">provider</span></td>
-        <td></td>
+        <td><p>The provider raising the event.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">userIsEyeCalibrated</span></td>
-        <td></td>
+        <td><p>Boolean whether the user is eye calibrated or not.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -896,6 +962,9 @@ Use UnregisterHandler API of InputSystem</p>
 to separately update the gaze info even if gaze isn't used for focus.</p>
 </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityGazeProviderHeadOverride.html">IMixedRealityGazeProviderHeadOverride</a>
+  </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityEyeGazeProvider.html">IMixedRealityEyeGazeProvider</a>
   </div>
