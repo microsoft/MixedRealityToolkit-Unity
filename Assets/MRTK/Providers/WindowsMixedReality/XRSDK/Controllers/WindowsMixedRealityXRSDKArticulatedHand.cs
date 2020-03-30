@@ -162,8 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <returns>The current Unity finger bone converted into an MRTK joint.</returns>
         private TrackedHandJoint ConvertToTrackedHandJoint(HandFinger finger, int index)
         {
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityXRSDKArticulatdHand.ConvertToTrackedHandJoint");
-
             switch (finger)
             {
                 case HandFinger.Thumb: return (index == 0) ? TrackedHandJoint.Wrist : TrackedHandJoint.ThumbMetacarpalJoint + index - 1;
@@ -173,8 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 case HandFinger.Pinky: return TrackedHandJoint.PinkyMetacarpal + index;
                 default: return TrackedHandJoint.None;
             }
-
-            Profiler.EndSample(); // ConvertToTrackedHandJoint
         }
 
         #endregion Update data functions
