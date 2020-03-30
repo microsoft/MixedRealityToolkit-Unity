@@ -1138,14 +1138,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             if (gazePointer != null)
             {
+                bool wasGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
+
                 gazePointerStateMachine.UpdateState(
                     NumNearPointersActive,
                     NumFarPointersActive,
                     numFarPointersWithoutCursorActive,
                     CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
 
-                // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                gazePointer.IsInteractionEnabled = gazePointerStateMachine.IsGazePointerActive;
+                bool isGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
+
+                if (wasGazePointerActive != isGazePointerActive)
+                {
+                    // The gaze cursor's visibility is controlled by IsInteractionEnabled
+                    gazePointer.IsInteractionEnabled = isGazePointerActive;
+                }
             }
 
             Profiler.EndSample(); // ReconcilePointers
