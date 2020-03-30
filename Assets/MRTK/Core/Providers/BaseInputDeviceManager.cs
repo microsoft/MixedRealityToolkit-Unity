@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The input system configuration profile in use in the application.
         /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
+        protected MixedRealityInputSystemProfile InputSystemProfile => Service?.InputSystemProfile;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();

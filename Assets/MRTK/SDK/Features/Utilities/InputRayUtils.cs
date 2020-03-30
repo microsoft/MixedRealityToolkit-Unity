@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray> representing the position and direction of the user's eyes.
+        /// Gets the ray representing the position and direction of the user's eyes.
         /// </summary>
         /// <param name="ray">The ray being returned</param>
         /// <returns>
