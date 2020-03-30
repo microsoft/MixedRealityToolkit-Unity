@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.Update();
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            if (mixedRealityGazeProviderWithOverride != null)
+            if (mixedRealityGazeProviderWithOverride != null && mixedRealityGazeProviderWithOverride.UseHeadGazeOverride)
             {
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)

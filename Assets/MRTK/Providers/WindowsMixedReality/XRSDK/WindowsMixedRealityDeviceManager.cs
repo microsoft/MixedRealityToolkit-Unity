@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         public override void Update()
         {
             // Override gaze before base.Update() updates the controllers
-            if (mixedRealityGazeProviderWithOverride != null)
+            if (mixedRealityGazeProviderWithOverride != null && mixedRealityGazeProviderWithOverride.UseHeadGazeOverride)
             {
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)
