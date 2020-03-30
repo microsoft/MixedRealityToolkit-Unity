@@ -11,8 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class ToggleGazeSource : MonoBehaviour
     {
-        private IMixedRealityGazeProviderWithOverride GazeProvider => gazeProvider ?? (gazeProvider = CoreServices.InputSystem?.GazeProvider as IMixedRealityGazeProviderWithOverride);
-        private IMixedRealityGazeProviderWithOverride gazeProvider = null;
+        private IMixedRealityGazeProviderHeadOverride GazeProvider => gazeProvider ?? (gazeProvider = CoreServices.InputSystem?.GazeProvider as IMixedRealityGazeProviderHeadOverride);
+        private IMixedRealityGazeProviderHeadOverride gazeProvider = null;
 
         /// <summary>
         /// Toggles the value of IMixedRealityGazeProviderWithOverride's UseHeadGazeOverride.

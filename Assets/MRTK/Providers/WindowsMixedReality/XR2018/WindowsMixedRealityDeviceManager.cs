@@ -323,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         #region IMixedRealityDeviceManager Interface
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-        private IMixedRealityGazeProviderWithOverride mixedRealityGazeProviderWithOverride = null;
+        private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
         /// <inheritdoc/>
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 WindowsMixedRealityUtilities.UtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
             }
 
-            mixedRealityGazeProviderWithOverride = Service?.GazeProvider as IMixedRealityGazeProviderWithOverride;
+            mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
             if (InputSystemProfile.GesturesProfile != null)
@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             base.Update();
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            if (mixedRealityGazeProviderWithOverride != null && mixedRealityGazeProviderWithOverride.UseHeadGazeOverride)
+            if (mixedRealityGazeProviderHeadOverride != null && mixedRealityGazeProviderHeadOverride.UseHeadGazeOverride)
             {
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)
@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     HeadPose head = pointerPose.Head;
                     if (head != null)
                     {
-                        mixedRealityGazeProviderWithOverride.OverrideHeadGaze(head.Position.ToUnityVector3(), head.ForwardDirection.ToUnityVector3());
+                        mixedRealityGazeProviderHeadOverride.OverrideHeadGaze(head.Position.ToUnityVector3(), head.ForwardDirection.ToUnityVector3());
                     }
                 }
             }

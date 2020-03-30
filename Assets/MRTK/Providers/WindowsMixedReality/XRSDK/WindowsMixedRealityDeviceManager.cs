@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         #region IMixedRealityDeviceManager Interface
 
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-        private IMixedRealityGazeProviderWithOverride mixedRealityGazeProviderWithOverride = null;
+        private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
 
         /// <inheritdoc />
         public override void Enable()
@@ -61,14 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                 WindowsMixedRealityUtilities.UtilitiesProvider = new XRSDKWindowsMixedRealityUtilitiesProvider();
             }
 
-            mixedRealityGazeProviderWithOverride = Service?.GazeProvider as IMixedRealityGazeProviderWithOverride;
+            mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
         }
 
         /// <inheritdoc />
         public override void Update()
         {
             // Override gaze before base.Update() updates the controllers
-            if (mixedRealityGazeProviderWithOverride != null && mixedRealityGazeProviderWithOverride.UseHeadGazeOverride)
+            if (mixedRealityGazeProviderHeadOverride != null && mixedRealityGazeProviderHeadOverride.UseHeadGazeOverride)
             {
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
                     HeadPose head = pointerPose.Head;
                     if (head != null)
                     {
-                        mixedRealityGazeProviderWithOverride.OverrideHeadGaze(head.Position.ToUnityVector3(), head.ForwardDirection.ToUnityVector3());
+                        mixedRealityGazeProviderHeadOverride.OverrideHeadGaze(head.Position.ToUnityVector3(), head.ForwardDirection.ToUnityVector3());
                     }
                 }
             }
