@@ -119,12 +119,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("The distance between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance")]
+        [Tooltip("The distance between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance. This is used if eye gaze isn't available for the user")]
         [Range(0.0f, .1f)]
         private float headGazeProximityThreshold = .02f;
 
         /// <summary>
         /// The distance threshold calculated between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance
+        /// This is used if eye gaze isn't available for the user
         /// </summary>
         public float HeadGazeProximityThreshold
         {
@@ -290,6 +291,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             StartCoroutine(WorldLockedReattachCheck());
         }
 
+        /// <summary>
+        /// This function attenpts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
+        /// On a success, it then calls GenerateActivationPoint to try to generate a hand-based activation point that the user
+        /// needs to gaze at to activate the constrained object.
+        /// On a failure, it assigns them to be default values and then returns false
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <param name="handPlane"></param>
+        /// <param name="activationPoint"></param>
+        /// <returns></returns>
         private bool GenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
         {
             // Generate the hand plane that we're using to generate a distance value.
@@ -303,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
             {
                 handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                activationPoint = handPlane.ClosestPointOnPlane(CalculateActivationPointBasedOnCurrentSafeZone(jointedHand));
+                activationPoint = handPlane.ClosestPointOnPlane(GenerateActivationPoint(jointedHand));
                 return true;
             }
             else // Otherwise, set the activation point and plane to default values and return false
@@ -314,7 +325,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private Vector3 CalculateActivationPointBasedOnCurrentSafeZone(IMixedRealityHand jointedHand)
+        /// <summary>
+        /// This function attempts to generate an activation point based on what the currently-selected safe zone is.
+        /// The activation point is a Vector3 that represents the "Center" point of the area that a user needs to gaze at to
+        /// activate the attached 
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <returns></returns>
+        private Vector3 GenerateActivationPoint(IMixedRealityHand jointedHand)
         {
             MixedRealityPose referenceJoint1;
             MixedRealityPose referenceJoint2;
