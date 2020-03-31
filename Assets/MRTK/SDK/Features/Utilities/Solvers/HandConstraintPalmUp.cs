@@ -108,15 +108,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("The distance between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance")]
         [Range(0.0f, .1f)]
-        private float gazeProximityThreshold = .005f;
-
+        private float eyeGazeProximityThreshold = .005f;
         /// <summary>
         /// The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance
         /// </summary>
-        public float GazeProximityThreshold
+        public float EyeGazeProximityThreshold
         {
-            get => gazeProximityThreshold;
-            set => gazeProximityThreshold = value;
+            get => eyeGazeProximityThreshold;
+            set => eyeGazeProximityThreshold = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The distance between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance")]
+        [Range(0.0f, .1f)]
+        private float headGazeProximityThreshold = .02f;
+
+        /// <summary>
+        /// The distance threshold calculated between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance
+        /// </summary>
+        public float HeadGazeProximityThreshold
+        {
+            get => eyeGazeProximityThreshold;
+            set => eyeGazeProximityThreshold = value;
         }
 
         private bool targetWorldLocked = false;
@@ -130,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => targetWorldLocked = value;
         }
 
-        private bool eyeGazeActivationAlreadyTriggered = false;
+        private bool gazeActivationAlreadyTriggered = false;
 
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
@@ -156,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 {
                     float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
 
-                    palmFacingThresholdMet = IsPalmFacingUpwards(jointedHand, palmPose, palmCameraAngle);
+                    palmFacingThresholdMet = IsPalmMeetingThresholdRequirements(jointedHand, palmPose, palmCameraAngle);
 
                     // If using hybrid hand rotation, we proceed with additional checks
                     if (palmFacingThresholdMet)
@@ -177,13 +190,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             }
                         }
 
-                        if (useGazeActivation && (!eyeGazeActivationAlreadyTriggered || targetWorldLocked))
+                        if (useGazeActivation && (!gazeActivationAlreadyTriggered || targetWorldLocked))
                         {
-                            return IsUserGazingAtActivationPoint(jointedHand);
+                            return IsUserGazeMeetingThresholdRequirements(jointedHand);
                         }
                     }
 
-                    eyeGazeActivationAlreadyTriggered = palmFacingThresholdMet ? eyeGazeActivationAlreadyTriggered : false;
+                    gazeActivationAlreadyTriggered = palmFacingThresholdMet ? gazeActivationAlreadyTriggered : false;
 
                     return palmFacingThresholdMet;
                 }
@@ -199,13 +212,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Checks to see if the palm is currently facing the user
+        /// Checks to see if the palm is currently facing the user; and if required, is it currently flat
         /// </summary>
         /// <param name="jointedHand"></param>
         /// <param name="palmPose"></param>
         /// <param name="palmCameraAngle"></param>
         /// <returns></returns>
-        private bool IsPalmFacingUpwards(IMixedRealityHand jointedHand, MixedRealityPose palmPose, float palmCameraAngle)
+        private bool IsPalmMeetingThresholdRequirements(IMixedRealityHand jointedHand, MixedRealityPose palmPose, float palmCameraAngle)
         {
             if (requireFlatHand)
             {
@@ -236,11 +249,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         /// <param name="jointedHand"></param>
         /// <returns></returns>
-        private bool IsUserGazingAtActivationPoint(IMixedRealityHand jointedHand)
+        private bool IsUserGazeMeetingThresholdRequirements(IMixedRealityHand jointedHand)
         {
             Ray gazeRay;
 
-            if (InputRayUtils.TryGetRay(InputSourceType.Eyes, Handedness.Any, out gazeRay) || InputRayUtils.TryGetRay(InputSourceType.Head, Handedness.Any, out gazeRay))
+            bool usedEyeGaze = InputRayUtils.TryGetRay(InputSourceType.Eyes, Handedness.Any, out gazeRay);
+
+            if (usedEyeGaze || InputRayUtils.TryGetRay(InputSourceType.Head, Handedness.Any, out gazeRay))
             {
                 // Generate the hand plane that we're using to generate a distance value.
                 // This is done by using the index knuckle, pinky knuckle, and wrist
@@ -266,9 +281,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
 
                         float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
+                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
 
-                        var gazeActivated = eyeGazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeProximityThreshold);
-
+                        var gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
                         return gazeActivated;
                     }
                 }
@@ -304,10 +319,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
                     {
                         float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
-                        if (IsPalmFacingUpwards(jointedHand, palmPose, palmCameraAngle) &&
-                            IsUserGazingAtActivationPoint(jointedHand))
+                        if (IsPalmMeetingThresholdRequirements(jointedHand, palmPose, palmCameraAngle) &&
+                            IsUserGazeMeetingThresholdRequirements(jointedHand))
                         {
-                            eyeGazeActivationAlreadyTriggered = false;
+                            gazeActivationAlreadyTriggered = false;
                             targetWorldLocked = false;
                             SolverHandler.UpdateSolvers = true;
                         }
