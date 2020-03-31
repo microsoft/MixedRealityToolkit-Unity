@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
 {
@@ -24,14 +25,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityRaycaster.RaycastSimplePhysicsStep");
+
             Debug.Assert(maxDistance > 0, "Length must be longer than zero!");
             Debug.Assert(step.Direction != Vector3.zero, "Invalid step direction!");
 
-            return prioritizedLayerMasks.Length == 1
+            bool result = prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
                 ? UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
                 // Raycast across all layers and prioritize
                 : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.RaycastAll(step.Origin, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+
+            Profiler.EndSample(); // RaycastSimplePhysicsStep
+
+            return result;
         }
 
         /// <summary>
@@ -40,6 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, bool focusIndividualCompoundCollider, out Vector3[] points, out Vector3[] normals, out bool[] hits)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityRaycaster.RaycastBoxPhysicsStep");
+
             if (Application.isEditor && DebugEnabled)
             {
                 Debug.DrawLine(step.Origin, step.Origin + step.Direction * 10.0f, Color.green);
@@ -98,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 }
             }
 
+            Profiler.EndSample(); // RaycastBoxPhysicsStep
             return hitSomething;
         }
 
@@ -116,11 +126,16 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
-            return prioritizedLayerMasks.Length == 1
+            Profiler.BeginSample("[MRTK] MixedRealityRaycaster.RaycastSpherePhysicsStep");
+
+            bool result = prioritizedLayerMasks.Length == 1
                 // If there is only one priority, don't prioritize
                 ? UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
                 // Raycast across all layers and prioritize
                 : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+
+            Profiler.EndSample(); // RaycastSpherePhysicsStep
+            return result;
         }
 
         /// <summary>
@@ -130,10 +145,13 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>The minimum distance hit within the first layer that has hits.</returns>
         public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, bool focusIndividualCompoundCollider, out RaycastHit raycastHit)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityRaycaster.TryGetPrioritizedPhysicsHit");
+
             raycastHit = default(RaycastHit);
 
             if (hits.Length == 0)
             {
+                Profiler.EndSample(); // TryGetPrioritizedPhysicsHit - no hits
                 return false;
             }
 
@@ -156,9 +174,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 if (minHit != null)
                 {
                     raycastHit = minHit.Value;
+                    Profiler.EndSample(); // TryGetPrioritizedPhysicstHit - success
                     return true;
                 }
             }
+
+            Profiler.EndSample(); // TryGetPrioritizedPhysicsHit
 
             return false;
         }
@@ -169,16 +190,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <returns>Whether the ray step intersects the ray step.</returns>
         public static bool RaycastPlanePhysicsStep(RayStep step, Plane plane, out Vector3 hitPoint)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityRaycaster.RaycastPlanePhysicsStep");
+
             if (plane.Raycast(step, out float intersectDistance))
             {
                 if (intersectDistance <= step.Length)
                 {
                     hitPoint = ((Ray)step).GetPoint(intersectDistance);
+                    Profiler.EndSample(); // RaycastPlanePhysicsStep - success
                     return true;
                 }
             }
 
             hitPoint = Vector3.zero;
+            Profiler.EndSample(); // RaycastPlanePhysicsStep
             return false;
         }
     }

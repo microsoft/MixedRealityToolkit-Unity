@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -39,23 +40,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
+            Profiler.BeginSample("[MRTK] DefaultRaycastProvider.Raycast");
+
             bool result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
             hitInfo = new MixedRealityRaycastHit(result, physicsHit);
+
+            Profiler.EndSample(); // Raycast
             return result;
         }
 
         /// <inheritdoc />
         public bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
+            Profiler.BeginSample("[MRTK] DefaultRaycastProvider.SphereCast");
+
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
             hitInfo = new MixedRealityRaycastHit(result, physicsHit);
+
+            Profiler.EndSample(); // SphereCast
             return result;
         }
 
         /// <inheritdoc />
         public RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
         {
-            return eventSystem.Raycast(pointerEventData, layerMasks);
+            Profiler.BeginSample("[MRTK] DefaultRaycastProvider.GraphicsRaycast");
+
+            RaycastResult result = eventSystem.Raycast(pointerEventData, layerMasks);
+
+            Profiler.EndSample(); // GraphicsRaycast
+            return result;
         }
     }
 }
