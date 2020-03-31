@@ -128,8 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         public float HeadGazeProximityThreshold
         {
-            get => eyeGazeProximityThreshold;
-            set => eyeGazeProximityThreshold = value;
+            get => headGazeProximityThreshold;
+            set => headGazeProximityThreshold = value;
         }
 
         private bool targetWorldLocked = false;
