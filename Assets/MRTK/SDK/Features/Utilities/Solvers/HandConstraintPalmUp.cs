@@ -257,37 +257,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             if (usedEyeGaze || InputRayUtils.TryGetRay(InputSourceType.Head, Handedness.Any, out gazeRay))
             {
-                // Generate the hand plane that we're using to generate a distance value.
-                // This is done by using the index knuckle, pinky knuckle, and wrist
-                MixedRealityPose indexKnuckle;
-                MixedRealityPose pinkyKnuckle;
-                MixedRealityPose wrist;
+                // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
+                Vector3 activationPoint;
+                Plane handPlane;
+                float distanceToHandPlane;
 
-                if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
-                    jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
-                    jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
+                // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
+                if (GenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
+                    handPlane.Raycast(gazeRay, out distanceToHandPlane))
                 {
-                    Plane handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                    float distanceToHandPlane;
-
-                    if (handPlane.Raycast(gazeRay, out distanceToHandPlane))
-                    {
-                        // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
-                        Vector3 activationPoint = Vector3.Lerp(pinkyKnuckle.Position, wrist.Position, .5f);
-
                         // Now that we know the dist to the plane, create a vector at that point
                         Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
                         Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
-                        Vector3 activationPointPlanePos = handPlane.ClosestPointOnPlane(activationPoint);
-
-                        float gazePosDistToActivationPosition = (activationPointPlanePos - PlanePos).sqrMagnitude;
+                        float gazePosDistToActivationPosition = (activationPoint - PlanePos).sqrMagnitude;
                         float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
+                        bool gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
 
-                        var gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
                         return gazeActivated;
                     }
                 }
-            }
 
             return false;
         }
@@ -300,6 +288,67 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public void StartWorldLockReattachCheckCorotine()
         {
             StartCoroutine(WorldLockedReattachCheck());
+        }
+
+        private bool GenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
+        {
+            // Generate the hand plane that we're using to generate a distance value.
+            // This is done by using the index knuckle, pinky knuckle, and wrist
+            MixedRealityPose indexKnuckle;
+            MixedRealityPose pinkyKnuckle;
+            MixedRealityPose wrist;
+
+            if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
+                jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
+                jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
+            {
+                handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
+                activationPoint = handPlane.ClosestPointOnPlane(CalculateActivationPointBasedOnCurrentSafeZone(jointedHand));
+                return true;
+            }
+            else // Otherwise, set the activation point and plane to default values and return false
+            {
+                handPlane = new Plane();
+                activationPoint = Vector3.zero;
+                return false;
+            }
+        }
+
+        private Vector3 CalculateActivationPointBasedOnCurrentSafeZone(IMixedRealityHand jointedHand)
+        {
+            MixedRealityPose referenceJoint1;
+            MixedRealityPose referenceJoint2;
+
+            switch (SafeZone)
+            {
+                case SolverSafeZone.AboveFingerTips:
+                    if (!jointedHand.TryGetJoint(TrackedHandJoint.MiddleTip, out referenceJoint1) ||
+                        !jointedHand.TryGetJoint(TrackedHandJoint.RingTip, out referenceJoint2))
+                    { 
+                        return Vector3.zero;
+                    }
+                    break;
+                case SolverSafeZone.BelowWrist:
+                    return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJoint1) ? referenceJoint1.Position : Vector3.zero;
+
+                case SolverSafeZone.RadialSide:
+                    if (!jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out referenceJoint1) ||
+                        !jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out referenceJoint2))
+                    {
+                        return Vector3.zero;
+                    }
+                    break;
+                case SolverSafeZone.UlnarSide:
+                default:
+                    if (!jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out referenceJoint1) ||
+                        !jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out referenceJoint2))
+                    {
+                        return Vector3.zero;
+                    }
+                    break;                       
+            }
+
+            return Vector3.Lerp(referenceJoint1.Position, referenceJoint2.Position, .5f);
         }
 
         /// <summary>
