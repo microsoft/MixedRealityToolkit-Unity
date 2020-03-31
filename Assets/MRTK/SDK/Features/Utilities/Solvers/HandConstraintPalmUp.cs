@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJoint1) ? referenceJoint1.Position : Vector3.zero;
 
                 case SolverSafeZone.RadialSide:
-                    if (!jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out referenceJoint1) ||
+                    if (!jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJoint1) ||
                         !jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out referenceJoint2))
                     {
                         return Vector3.zero;
@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case SolverSafeZone.UlnarSide:
                 default:
                     if (!jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out referenceJoint1) ||
-                        !jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out referenceJoint2))
+                        !jointedHand.TryGetJoint(TrackedHandJoint.ThumbProximalJoint, out referenceJoint2))
                     {
                         return Vector3.zero;
                     }
