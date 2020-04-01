@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		public string DefaultLobbyName => defaultLobbyName;
 		public string DefaultRoomName => defaultRoomName;
 		public SubscriptionModeEnum DefaultSubscriptionMode => defaultSubscriptionMode;
-		public IEnumerable<int> DefaultSubscriptionTypes => defaultSubscriptionTypes;
+		public IEnumerable<short> DefaultSubscriptionTypes => defaultSubscriptionTypes;
 
 		[SerializeField, Tooltip("If true, the service will connect once enabled.")]
 		private bool autoConnectOnStartup = false;
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		[SerializeField, Tooltip("The subscription mode to be used if none is specified when connecting.")]
 		private SubscriptionModeEnum defaultSubscriptionMode = SubscriptionModeEnum.Default;
 		[SerializeField, Tooltip("Data types to be used if default subscription mode is set to manual.")]
-		private int[] defaultSubscriptionTypes = new int[0];
+		private short[] defaultSubscriptionTypes = new short[0];
 
 #if UNITY_EDITOR
 		[CustomEditor(typeof(SharingServiceProfile))]

@@ -1,4 +1,4 @@
-# Sharing Servie : App Roles
+# Sharing Service : App Roles
 
 ## When to use app roles
 

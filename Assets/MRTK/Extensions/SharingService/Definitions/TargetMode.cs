@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
-    public enum SendMode
+    public enum TargetMode
     {
         /// <summary>
         /// By default, everyone will receive the data including the sender.
@@ -14,6 +14,6 @@
         /// <summary>
         /// The Targets array will be used. Subscription settings will apply.
         /// </summary>
-        ManualTargets,
+        Manual,
     }
 }

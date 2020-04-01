@@ -7,14 +7,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// <summary>
         /// The type of the data.
         /// </summary>
-        public int Type;
+        public short Type;
         /// <summary>
         /// The device ID of the data's sender.
         /// </summary>
         public short Sender;
         /// <summary>
-        /// Serialized data.
+        /// Serialized data. May be null.
         /// </summary>
-        public Byte[] Data;
+        public byte[] Data;
     }
 }

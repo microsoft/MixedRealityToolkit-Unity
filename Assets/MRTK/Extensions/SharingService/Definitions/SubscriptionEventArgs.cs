@@ -5,6 +5,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
     public struct SubscriptionEventArgs
     {
         public SubscriptionModeEnum Mode;
-        public IEnumerable<int> Types;
+        public IEnumerable<short> Types;
     }
 }

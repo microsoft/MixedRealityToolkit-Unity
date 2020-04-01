@@ -59,7 +59,9 @@ SendDataArgs has several options to control how and to whom data is sent.
 
 ## Type
 
-Sending and receiving raw bytes isn't very useful. In most cases apps will send and receive serialized data. Use `SendDataArgs.Type` when sending to help receivers route and identify the data's type.
+Sending and receiving raw bytes isn't very useful. In most cases apps will send and receive serialized data.
+
+Use `SendDataArgs.Type` to help receivers identify the data's type and handle it appropriately.
 
 **Important:** Data types are not moderated by the service so it's up to your app to keep them straight. Collisions between data types will cause data errors.
 ```c#
@@ -172,7 +174,7 @@ TargetMode | Description | Overrides Subscriptions
 --- | --- | ---
 **Default** | All devices including the sender will receive data. | No
 **SkipSender** | All devices except sender will receive the data. | No
-**ManualTargets** | All devices in `SendDataArgs.Targets` will receive data. | No
+**Manual** | All devices in `SendDataArgs.Targets` will receive data. | No
 
 ## DeliveryMode
 

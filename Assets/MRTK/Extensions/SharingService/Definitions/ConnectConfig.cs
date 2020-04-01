@@ -6,6 +6,6 @@
         public string LobbyName;
         public string RoomName;
         public SubscriptionModeEnum SubscriptionMode;
-        public int[] SubscriptionTypes;
+        public short[] SubscriptionTypes;
     }
 }

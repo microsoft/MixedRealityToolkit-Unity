@@ -17,7 +17,7 @@
         /// <summary>
         /// Who will receive the data.
         /// </summary>
-        public SendMode SendMode;
+        public TargetMode TargetMode;
         /// <summary>
         /// If not null, data will be sent to the specified device IDs.
         /// This overrides SkipSender.
