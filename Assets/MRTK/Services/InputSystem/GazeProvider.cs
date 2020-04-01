@@ -27,6 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float MovementThreshold = 0.01f;
 
         [SerializeField]
+        [Tooltip("If true, the gaze cursor will stay locked on the object when the pointer's focus is locked, otherwise it will continue following the head's direction")]
+        private bool lockCursorWhenFocusLocked = false;
+
+        [SerializeField]
         [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
         private bool setCursorInvisibleWhenFocusLocked = false;
 
@@ -495,6 +499,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             Profiler.EndSample(); // InitializeGazePointer
+
+            // Initialize gaze pointer to not lock on focus
+            gazePointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
 
             return gazePointer;
         }

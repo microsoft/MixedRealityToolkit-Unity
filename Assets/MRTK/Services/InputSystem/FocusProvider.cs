@@ -341,9 +341,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (hitResult.hitObject != CurrentPointerTarget)
                 {
                     Pointer.OnPreCurrentPointerTargetChange();
-
-                    // Set to default:
-                    Pointer.IsTargetPositionLockedOnFocusLock = true;
                 }
 
                 PreviousPointerTarget = CurrentPointerTarget;
