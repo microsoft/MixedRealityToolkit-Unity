@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
         public const int MaxRaycastHitCount = 32;
         public const int MaxSphereCastHitCount = 32;
-        private static readonly RaycastHit[] RaycastHits= new RaycastHit[MaxRaycastHitCount];
+        private static readonly RaycastHit[] RaycastHits = new RaycastHit[MaxRaycastHitCount];
         private static readonly RaycastHit[] SphereCastHits = new RaycastHit[MaxSphereCastHitCount];
 
         /// <summary>
