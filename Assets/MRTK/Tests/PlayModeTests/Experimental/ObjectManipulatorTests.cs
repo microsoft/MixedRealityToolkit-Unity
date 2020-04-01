@@ -727,6 +727,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// This test is set up to test using the Gestures input simulation mode as this is
         /// where we observed issues with this.
         /// If the head rotates, without moving the hand, the grabbed object should not move.
+        /// Additionally, the gaze cursor should stay in the center of the screen by default
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorRotateHeadGGV()
@@ -753,6 +754,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
 
+            // Track the gaze cursor
+            IMixedRealityInputSystem inputSystem = PlayModeTestUtilities.GetInputSystem();
+            IMixedRealityCursor gazeCursor = inputSystem.GazeProvider.GazeCursor;
+
             // Grab cube
             yield return hand.Show(originalHandPosition);
 
@@ -772,6 +777,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
                 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
                 yield return hand.Move(correction, numHandSteps);
                 yield return null;
+
+                // Ensure that the gaze cursor is aligned with the center of the camera
+                TestUtilities.AssertAboutEqual(CameraCache.Main.transform.forward, gazeCursor.Position.normalized, "gaze cursor has shifted position", 0.01f);
 
                 // Test Object hasn't moved
                 TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head", 0.01f);
@@ -850,12 +858,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
-        
+
         /// <summary>
         /// This test first moves the hand a set amount along the x-axis, records its x position, then moves
         /// it the same amount along the y-axis and records its y position. Given no constraints on manipulation,
         /// we expect these values to be the same.
         /// This test was added as a change to pointer behaviour made GGV manipulation along the y-axis sluggish.
+        /// Additionally, the gaze cursor should not fix onto the object by default
         /// </summary>
         [UnityTest]
         public IEnumerator ObjectManipulatorMoveYAxisGGV()
@@ -866,6 +875,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var iss = PlayModeTestUtilities.GetInputSimulationService();
             var oldHandSimMode = iss.HandSimulationMode;
             iss.HandSimulationMode = HandSimulationMode.Gestures;
+
+            // Track the gaze cursor
+            IMixedRealityInputSystem inputSystem = PlayModeTestUtilities.GetInputSystem();
+            IMixedRealityCursor gazeCursor = inputSystem.GazeProvider.GazeCursor;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -887,8 +900,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
 
+            // Ensure that the gaze cursor is aligned with the center of the camera
+            TestUtilities.AssertAboutEqual(CameraCache.Main.transform.forward, gazeCursor.Position.normalized, "gaze cursor has shifted position", 0.01f);
+
             yield return hand.Move(Vector3.right * moveBy, numHandSteps);
             yield return null;
+
+            // Ensure that the gaze cursor is aligned with the center of the camera
+            TestUtilities.AssertAboutEqual(CameraCache.Main.transform.forward, gazeCursor.Position.normalized, "gaze cursor has shifted position", 0.01f);
 
             xPos = testObject.transform.position.x;
 
@@ -896,6 +915,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return null;
 
             yPos = testObject.transform.position.y;
+
+            // Ensure that the gaze cursor is aligned with the center of the camera
+            TestUtilities.AssertAboutEqual(CameraCache.Main.transform.forward, gazeCursor.Position.normalized, "gaze cursor has shifted position", 0.01f);
 
             Assert.AreEqual(xPos, yPos, 0.02f);
 

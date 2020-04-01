@@ -500,7 +500,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Profiler.EndSample(); // InitializeGazePointer
 
-            // Initialize gaze pointer to not lock on focus
+            // Initialize gaze pointer
             gazePointer.IsTargetPositionLockedOnFocusLock = lockCursorWhenFocusLocked;
 
             return gazePointer;
