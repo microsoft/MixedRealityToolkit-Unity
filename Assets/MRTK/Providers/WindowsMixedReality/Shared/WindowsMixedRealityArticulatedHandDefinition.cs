@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 #if WINDOWS_UWP
 using Windows.Perception.People;
@@ -81,6 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         /// <param name="sourceState">The current hand state.</param>
         public void UpdateHandMesh(SpatialInteractionSourceState sourceState)
         {
+            Profiler.BeginSample("[MRTK] WMRArticulatedHandDefinition.UpdateHandMesh");
+
             MixedRealityHandTrackingProfile handTrackingProfile = null;
             MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
             if (inputSystemProfile != null)
@@ -177,6 +180,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                     }
                 }
             }
+
+            Profiler.EndSample(); // UpdateHandMesh
         }
 #endif // WINDOWS_UWP
     }
