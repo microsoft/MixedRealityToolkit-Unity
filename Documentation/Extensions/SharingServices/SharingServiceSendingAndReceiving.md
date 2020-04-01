@@ -6,6 +6,8 @@ Once the service has connected, data can be sent via `ISharingService.SendData(S
 
 By default data will be sent to all connected devices, including the device that sent it.
 
+Here's how to send one byte of data:
+
 ```c#
 private void Update()
 {
@@ -30,7 +32,7 @@ private void Update()
 
 ## Receiving
 
-To receive data, subscribe to the `ISharingService.OnReceiveData` event.
+To receive this data, subscribe to the `ISharingService.OnReceiveData` event.
 
 By default data will be received by all connected devices.
 
@@ -52,16 +54,35 @@ private void OnReceiveData(DataEventArgs e)
 ___
 ## Delivery options
 
-SendDataArgs has several options to control how and to whom data is sent.
-- [Type](SharingServiceSendingAndReceiving.md#type)
+`SendDataArgs` has several options to control how and to whom data is sent.
 - [TargetMode](SharingServiceSendingAndReceiving.md#targetmode)
 - [DeliveryMode](SharingServiceSendingAndReceiving.md#deliverymode)
+- [Type](SharingServiceSendingAndReceiving.md#type)
+
+## TargetMode
+
+`SendDataArgs.TargetMode` lets you specify which devices will receive sent data. Currently there are no options that let you override [data subscriptions.](SharingServiceDataSubscriptions.md)
+
+TargetMode | Description | Overrides Subscriptions
+--- | --- | ---
+**Default** | All devices including the sender will receive data. | No
+**SkipSender** | All devices except sender will receive the data. | No
+**Manual** | All devices in `SendDataArgs.Targets` will receive data. | No
+
+## DeliveryMode
+
+`SendDataArgs.DeliveryMode` lets you specify how important data is and whether it should arrive in the order sent. These options mirror the delivery options available in Photon.
+
+DeliveryMode | Guaranteed Arrival | Arrives In Sequence
+--- | --- | ---
+**Unreliable** (Default) | No | Yes
+**Reliable** | Yes | Yes
+**UnreliableUnsequenced** | No | No
+**ReliableUnsequenced** | Yes | No
 
 ## Type
 
-Sending and receiving raw bytes isn't very useful. In most cases apps will send and receive serialized data.
-
-Use `SendDataArgs.Type` to help receivers identify the data's type and handle it appropriately.
+Sending and receiving raw bytes isn't very useful. In most cases apps will send and receive serialized data. Use `SendDataArgs.Type` to help receivers identify the data's type and handle it appropriately.
 
 **Important:** Data types are not moderated by the service so it's up to your app to keep them straight. Collisions between data types will cause data errors.
 ```c#
@@ -163,26 +184,85 @@ private T Deserialize<T>(byte[] bytes)
     return data;
 }
 ```
+### Type Usage: Messages & Routing
 
-Keep in mind that data type is not intrinsically tied to the literal type being serialized. For instance, data type could be used purely to route data to subsystems, after which the first byte in the data array could be used to identify the data's type.
+`SendDataArgs.Type` is not intrinsically tied to a literal type being serialized. For instance, the type could be used to send a contentless message:
 
-## TargetMode
+```c#
+// Define our message type
+private const short messageTypeBork = 99;
 
-`SendDataArgs.TargetMode` lets you specify which devices will receive sent data. Currently there are no options that let you override [data subscriptions.](SharingServiceDataSubscriptions.md)
+private void Update()
+{
+    MixedRealityServiceRegistry.TryGetService<ISharingService>(out ISharingService service);
 
-TargetMode | Description | Overrides Subscriptions
---- | --- | ---
-**Default** | All devices including the sender will receive data. | No
-**SkipSender** | All devices except sender will receive the data. | No
-**Manual** | All devices in `SendDataArgs.Targets` will receive data. | No
+    if (UnityEngine.Input.GetKeyDown(KeyCode.S))
+    {
+        service.SendData(new SendDataArgs()
+        {
+            Type = dataTypeComplexTypeA,
+            // Do not set Data array - null value is acceptable
+        });
+    }
+}
 
-## DeliveryMode
+private void OnReceiveData(DataEventArgs e)
+{
+    switch (e.Type)
+    {
+        case messageTypeBork:
+            Debug.Log("Bork");
+            break;
+    }
+}
+```
 
-`SendDataArgs.DeliveryMode` lets you specify how important data is and whether it should arrive in the order sent. These options mirror the delivery options available in Photon.
+The type could also be used to route raw bytes to a system which then extracts data using the first byte of the array. Here's a contrived example:
+```c#
+public class Router
+{
+    // Define our system type
+    private const short systemTypeBork = 99;
+    
+    public void SendIntToBork()
+    {
+        List<byte> data = new List<byte>() { Bork.DataTypeInt64 };
+        data.AddRange(BitConverter.GetBytes(100));
+        service.SendData(new SendDataArgs()
+        {
+            Type = systemTypeBork,
+            Data = data.ToArray();
+        });
+    }
 
-DeliveryMode | Guaranteed Arrival | Arrives In Sequence
---- | --- | ---
-**Unreliable** (Default) | No | Yes
-**Reliable** | Yes | Yes
-**UnreliableUnsequenced** | No | No
-**ReliableUnsequenced** | Yes | No
+    private void OnReceiveData(DataEventArgs e)
+    {
+        switch (e.Type)
+        {
+            case systemTypeBork:
+                Bork.ReceiveData(e.Data);
+                break;
+        }
+    }
+}
+
+public class Bork
+{
+    // Define our data type
+    public const byte DataTypeInt64 = 100;
+
+    public void ReceiveData(byte[] data)
+    {
+        switch (data[0])
+        {
+            case DataTypeInt64:
+                int value = BitConverter.ToInt64(data, 1);
+                Debug.Log(value); // Output: 100
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+```

@@ -1,8 +1,11 @@
 # Sharing Service : Pinging Devices
 
-Once your app is running and the service is connected you can test your connection via `ISharingService.PingDevice(short deviceID)`:
+Pinging other connected devices or Unity editor instances is a quick way to test that everything has been configured correctly. Use `ISharingService.PingDevice(short deviceID)` to send pings.
+
 ```c#
-public class PingScript : MonoBehaviour
+// Ping script for a project using the default sharing service config profile.
+// On startup the service will automatically connect all devices using the profile to the a default lobby / room.
+public class PingTestScript : MonoBehaviour
 {
     private void Start()
     {
@@ -38,6 +41,6 @@ public class PingScript : MonoBehaviour
     }
 }
 ```
-If [service inspectors](../..\MixedRealityConfigurationGuide.md#service-inspectors) are enabled you can also ping connected devices from within the Unity editor:
+If [service inspectors](../..\MixedRealityConfigurationGuide.md#service-inspectors) are enabled you can also ping connected devices using the service's inspector:
 
 ![In-Editor Ping Test](../../Images/SharingSystem/InEditorPingTest.gif)
