@@ -14,13 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// </summary>
         Client = 1,
         /// <summary>
-        /// The app is considered a server. This should be used for dedicated server setups.
+        /// The app is considered a host.
         /// </summary>
-        Server = 2,
+        Host = 2,
         /// <summary>
-        /// The app is considered both host and server.
-        /// In Photon this is equivalent to Master Client.
+        /// The app is considered a server. This should be used for dedicated-server analogue setups.
         /// </summary>
-        Host = Client | Server,
+        Server = 3,
     }
 }
