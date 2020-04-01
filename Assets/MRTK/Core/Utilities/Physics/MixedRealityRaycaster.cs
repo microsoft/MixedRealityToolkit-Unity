@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         /// <remarks>Sorts all hit objects first by layerMask, then by distance.</remarks>
         /// <returns>The minimum distance hit within the first layer that has hits.</returns>
-        public static bool TryGetPrioritizedPhysicsHit(
+        private static bool TryGetPrioritizedPhysicsHit(
             RaycastHit[] hits,
             int hitCount,
             LayerMask[] priorityLayers,
