@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
         private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
@@ -185,8 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
-            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RequestPointers");
-
             using (RequestPointersPerfMarker.Auto())
             {
                 var returnPointers = new List<IMixedRealityPointer>();
@@ -233,8 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
                 }
-
-                Profiler.EndSample(); // RequestPointers
 
                 return returnPointers.Count == 0 ? null : returnPointers.ToArray();
             }
