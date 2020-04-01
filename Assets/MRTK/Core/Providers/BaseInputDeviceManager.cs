@@ -91,10 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private static PointerEqualityComparer defaultComparer;
 
-            internal static PointerEqualityComparer Default
-            {
-                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
-            }
+            internal static PointerEqualityComparer Default => defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
 
             /// <summary>
             /// Check that references equals for two pointers
@@ -105,8 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// Unity objects have unique equals comparison and to check keys in a dictionary, 
-            /// we want the hascode match to be Unity's unique InstanceID to compare objects
+            /// Unity objects have unique equals comparison and to check keys in a dictionary,
+            /// we want the hash code match to be Unity's unique InstanceID to compare objects.
             /// </summary>
             public int GetHashCode(IMixedRealityPointer pointer)
             {
@@ -124,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion
@@ -320,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// This class tracks pointers that have been requested and thus are considered "active" gameobjects in the scene. 
+        /// This class tracks pointers that have been requested and thus are considered "active" GameObjects in the scene. 
         /// As GameObjects, these pointers may be destroyed and thus their entry becomes "null" although the managed object is not destroyed
         /// This helper loops through all dictionary entries and checks if it is null, if so it is removed
         /// </summary>
