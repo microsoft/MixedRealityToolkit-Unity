@@ -39,13 +39,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 Debug.Assert(maxDistance > 0, "Length must be longer than zero!");
                 Debug.Assert(step.Direction != Vector3.zero, "Invalid step direction!");
 
-                int hitCount = UnityEngine.Physics.RaycastNonAlloc(
-                    step.Origin,
-                    step.Direction,
-                    RaycastHits,
-                    maxDistance,
-                    (prioritizedLayerMasks.Length == 1) ? (int)prioritizedLayerMasks[0] : UnityEngine.Physics.AllLayers);
-                return TryGetPrioritizedPhysicsHit(RaycastHits, hitCount, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+                bool result = false;
+                if (prioritizedLayerMasks.Length == 1)
+                {
+                    // If there is only one priority, don't prioritize
+                    result = UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0]);
+                }
+                else
+                {
+                    // Raycast across all layers and prioritize
+                    int hitCount = UnityEngine.Physics.RaycastNonAlloc(step.Origin, step.Direction, RaycastHits, maxDistance, UnityEngine.Physics.AllLayers);
+                    result = TryGetPrioritizedPhysicsHit(RaycastHits, hitCount, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+                }
+
+                return result;
             }
         }
 
@@ -140,14 +147,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         {
             using (RaycastSpherePhysicsStepPerfMarker.Auto())
             {
-                int hitCount = UnityEngine.Physics.SphereCastNonAlloc(
-                    step.Origin,
-                    radius,
-                    step.Direction,
-                    SphereCastHits,
-                    maxDistance,
-                    (prioritizedLayerMasks.Length == 1) ? (int)prioritizedLayerMasks[0] : UnityEngine.Physics.AllLayers);
-                return TryGetPrioritizedPhysicsHit(SphereCastHits, hitCount, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+                bool result = false;
+                if (prioritizedLayerMasks.Length == 1)
+                {
+                    // If there is only one priority, don't prioritize
+                    result = UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0]);
+                }
+                else
+                {
+                    // Raycast across all layers and prioritize
+                    int hitCount = UnityEngine.Physics.SphereCastNonAlloc(step.Origin, radius, step.Direction, SphereCastHits, maxDistance, UnityEngine.Physics.AllLayers);
+                    result = TryGetPrioritizedPhysicsHit(SphereCastHits, hitCount, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+                }
+
+                return result;
             }
         }
 
