@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// <summary>
         /// The sharing app's role as defined by the service.
         /// </summary>
-        AppRoleEnum AppRole { get; }
+        AppRole AppRole { get; }
 
         /// <summary>
         /// Name of joined lobby. Will be null until a lobby has been joined;
@@ -108,28 +108,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Sets the subscription mode as well as manual subscription types.
         /// If subscription mode is ALL then subscription types are ignored.
         /// </summary>
-        void SetLocalSubscriptionMode(SubscriptionModeEnum mode, IEnumerable<int> types = null);
+        void SetLocalSubscriptionMode(SubscriptionModeEnum mode, IEnumerable<short> types = null);
 
         /// <summary>
         /// Returns true if local device is subscribed to this state type, or if subscription type is set to ALL
         /// </summary>
-        bool IsLocalDeviceSubscribedToType(int type);
+        bool IsLocalDeviceSubscribedToType(short type);
 
         /// <summary>
         /// Returns true if device is subscribed to this state type, or if subscription type is set to ALL
         /// </summary>
-        bool IsDeviceSubscribedToType(short deviceID, int type);
-
-        /// <summary>
-        /// Sends a message to target deviceID which results in an OnDevicePinged event.
-        /// </summary>
-        void PingDevice(short deviceID);
+        bool IsDeviceSubscribedToType(short deviceID, short type);
 
         /// <summary>
         /// Used to change subscriptions after mode has been set to manual.
         /// If subscription is not manual, an error will be logged and no action will be taken.
         /// </summary>
-        void SetLocalSubscription(int dataType, bool subscribed);
+        void SetLocalSubscription(short dataType, bool subscribed);
+
+        /// <summary>
+        /// Sends a message to target deviceID which results in an OnDevicePinged event.
+        /// </summary>
+        void PingDevice(short deviceID);
     }
 
     public delegate void ConnectionEvent(ConnectEventArgs e);

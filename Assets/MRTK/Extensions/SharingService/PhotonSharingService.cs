@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public ConnectStatus Status { get; private set; } = ConnectStatus.NotConnected;
         /// <inheritdoc />
-        public AppRoleEnum AppRole { get; private set; } = AppRoleEnum.None;
+        public AppRole AppRole { get; private set; } = AppRole.None;
         /// <inheritdoc />
         public SubscriptionModeEnum LocalSubscriptionMode { get; private set; } = SubscriptionModeEnum.Default;
         /// <inheritdoc />
@@ -121,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         // Connection
         private Task connectTask;
         private CancellationTokenSource connectTokenSource;
-        private AppRoleEnum currentRequestedRole = AppRoleEnum.None;
+        private AppRole currentRequestedRole = AppRole.None;
 
         // Subscriptions
-        private List<int> localSubscriptionTypes = new List<int>();
-        private Dictionary<string, HashSet<int>> subscribedTypes = new Dictionary<string, HashSet<int>>();
+        private List<short> localSubscriptionTypes = new List<short>();
+        private Dictionary<string, HashSet<short>> subscribedTypes = new Dictionary<string, HashSet<short>>();
         private Dictionary<string, SubscriptionModeEnum> subscriptionModes = new Dictionary<string, SubscriptionModeEnum>();
         private object[] eventDataReceiveSubscriptionMode = new object[3];
 
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             {
                 LobbyName = string.Empty,
                 RoomName = string.Empty,
-                RequestedRole = AppRoleEnum.None,
+                RequestedRole = AppRole.None,
                 SubscriptionMode = SubscriptionModeEnum.Default,
                 SubscriptionTypes = null,
             });
@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
-        public void SetLocalSubscriptionMode(SubscriptionModeEnum subscriptionMode, IEnumerable<int> subscriptionTypes = null)
+        public void SetLocalSubscriptionMode(SubscriptionModeEnum subscriptionMode, IEnumerable<short> subscriptionTypes = null)
         {
             if (!Application.isPlaying)
             {
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
-        public bool IsLocalDeviceSubscribedToType(int type)
+        public bool IsLocalDeviceSubscribedToType(short type)
         {
             if (!CheckConnectionAndPlayMode("check local subscriptions", ConnectStatus.Connected))
             {
@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
-        public bool IsDeviceSubscribedToType(short deviceID, int type)
+        public bool IsDeviceSubscribedToType(short deviceID, short type)
         {
             if (!deviceIdToUserIDLookup.TryGetValue(deviceID, out string userID))
             {
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
-        public void SetLocalSubscription(int dataType, bool subscribed)
+        public void SetLocalSubscription(short dataType, bool subscribed)
         {
             if (!Application.isPlaying)
             {
@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
             nextDeviceID = 1;
             localDeviceID = -1;
-            currentRequestedRole = AppRoleEnum.None;
+            currentRequestedRole = AppRole.None;
 
 #if PHOTON_UNITY_NETWORKING
             PhotonNetwork.AddCallbackTarget(this);
@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             return true;
         }
 
-        private bool IsPhotonPlayerSubscribedToType(string userID, int type)
+        private bool IsPhotonPlayerSubscribedToType(string userID, short type)
         {
             SubscriptionModeEnum modeForPlayer = SubscriptionModeEnum.All;
             // If we don't have a subscription entry for this player then they're subscribed by default
@@ -539,7 +539,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     return true;
 
                 case SubscriptionModeEnum.Manual:
-                    if (subscribedTypes.TryGetValue(userID, out HashSet<int> subscriptions))
+                    if (subscribedTypes.TryGetValue(userID, out HashSet<short> subscriptions))
                     {
                         return subscriptions.Contains(type);
                     }

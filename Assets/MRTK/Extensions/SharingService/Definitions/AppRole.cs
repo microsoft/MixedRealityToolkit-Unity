@@ -3,7 +3,7 @@
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
     [Serializable]
-    public enum AppRoleEnum : byte
+    public enum AppRole : byte
     {
         /// <summary>
         /// The sharing app's role has not yet been defined.

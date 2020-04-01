@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 	{
 		public bool AutoConnectOnStartup => autoConnectOnStartup;
 		public float ConnectAttemptTimeout => connectAttemptTimeout;
-		public AppRoleEnum DefaultRequestedRole => defaultRequestedRole;
+		public AppRole DefaultRequestedRole => defaultRequestedRole;
 		public string DefaultLobbyName => defaultLobbyName;
 		public string DefaultRoomName => defaultRoomName;
 		public SubscriptionModeEnum DefaultSubscriptionMode => defaultSubscriptionMode;
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		[SerializeField, Tooltip("How long to wait before giving up on a connect request.")]
 		private float connectAttemptTimeout = 10f;
 		[SerializeField, Tooltip("The app role to be used if none is specified when connecting.")]
-		private AppRoleEnum defaultRequestedRole = AppRoleEnum.None;
+		private AppRole defaultRequestedRole = AppRole.None;
 		[SerializeField, Tooltip("The lobby name to be used if none is specified when connecting.")]
 		private string defaultLobbyName = "MRTKLobby";
 		[SerializeField, Tooltip("The room name to be used if none is specified when connecting.")]

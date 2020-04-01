@@ -5,7 +5,7 @@
         /// <summary>
         /// Used by consumers of the service to idenfity the type of data being sent.
         /// </summary>
-        public int Type;
+        public short Type;
         /// <summary>
         /// Binary data being sent. Null values are permitted.
         /// </summary>

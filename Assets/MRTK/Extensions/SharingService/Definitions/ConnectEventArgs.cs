@@ -3,7 +3,7 @@
     public struct ConnectEventArgs
     {
         public ConnectStatus Status;
-        public AppRoleEnum AppRole;
+        public AppRole AppRole;
         public string Message;
     }
 }

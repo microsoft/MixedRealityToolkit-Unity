@@ -2,7 +2,7 @@
 {
     public struct ConnectConfig
     {
-        public AppRoleEnum RequestedRole;
+        public AppRole RequestedRole;
         public string LobbyName;
         public string RoomName;
         public SubscriptionModeEnum SubscriptionMode;
