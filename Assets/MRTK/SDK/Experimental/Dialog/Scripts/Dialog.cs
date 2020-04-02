@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// the title and message have been set.
         /// Perform here any operations that you'd like
         /// Lays out the buttons on the dialog
-        /// Eg using an ObjectCollection
+        /// E.g. using an ObjectCollection
         /// </summary>
         protected abstract void FinalizeLayout();
 
