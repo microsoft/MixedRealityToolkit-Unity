@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         [SerializeField]
         [Tooltip("Title text of the dialog")]
         private TextMeshPro titleText = null;
+
         /// <summary>
         /// Title text of the dialog
         /// </summary>
@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         [SerializeField]
         [Tooltip("Description text of the dialog")]
         private TextMeshPro descriptionText = null;
+
         /// <summary>
         /// Description text of the dialog
         /// </summary>
@@ -43,10 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         }
 
         /// <inheritdoc />
-        protected override void FinalizeLayout()
-        {
-        }
+        protected override void FinalizeLayout() { }
 
+        /// <inheritdoc />
         protected override void GenerateButtons()
         {
             //Get List of ButtonTypes that should be created on Dialog
@@ -132,8 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>
         public void DismissDialog()
         {
-            state = DialogState.InputReceived;
+            State = DialogState.InputReceived;
         }
-
     }
 }

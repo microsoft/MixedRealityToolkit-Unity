@@ -2,14 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 {
     /// <summary>
-    /// Enum describing the style (caption) of button on a Dialog.
+    /// The style (caption) of button on a Dialog.
     /// </summary>
     [Flags]
     public enum DialogButtonType

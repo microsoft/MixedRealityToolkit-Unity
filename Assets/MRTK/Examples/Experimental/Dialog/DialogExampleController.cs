@@ -1,15 +1,10 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Experimental.Dialog;
+using UnityEngine;
 
-namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
+namespace Microsoft.MixedReality.Examples.Experimental.Dialog
 {
     /// <summary>
     /// This class is used as an example controller to show how to instantiate and launch two different kind of Dialog.
@@ -20,6 +15,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         [SerializeField]
         [Tooltip("Assign DialogLarge_192x192.prefab")]
         private GameObject dialogPrefabLarge;
+
         /// <summary>
         /// Large Dialog example prefab to display
         /// </summary>
@@ -32,6 +28,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         [SerializeField]
         [Tooltip("Assign DialogMediume_192x128.prefab")]
         private GameObject dialogPrefabMedium;
+
         /// <summary>
         /// Medium Dialog example prefab to display
         /// </summary>
@@ -44,6 +41,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         [SerializeField]
         [Tooltip("Assign DialogSmall_192x96.prefab")]
         private GameObject dialogPrefabSmall;
+
         /// <summary>
         /// Small Dialog example prefab to display
         /// </summary>
@@ -58,7 +56,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogLarge()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Far", "This is an example of a large dialog with only one button, placed at near interaction range", false);
+            Dialog.Open(DialogPrefabLarge, DialogButtonType.OK, "Confirmation Dialog, Large, Far", "This is an example of a large dialog with only one button, placed at near interaction range", false);
         }
 
         /// <summary>
@@ -78,7 +76,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogMedium()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "This is an example of a medium dialog with only one button, placed at near interaction range", true);
+            Dialog.Open(DialogPrefabMedium, DialogButtonType.OK, "Confirmation Dialog, Medium, Near", "This is an example of a medium dialog with only one button, placed at near interaction range", true);
         }
 
         /// <summary>
@@ -98,7 +96,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         /// </summary>
         public void OpenConfirmationDialogSmall()
         {
-            Dialog confDialog = Dialog.Open(DialogPrefabSmall, DialogButtonType.OK, "Confirmation Dialog, Small, Far", "This is an example of a small dialog with only one button, placed at near interaction range", false);
+            Dialog.Open(DialogPrefabSmall, DialogButtonType.OK, "Confirmation Dialog, Small, Far", "This is an example of a small dialog with only one button, placed at near interaction range", false);
         }
 
         /// <summary>
@@ -117,7 +115,7 @@ namespace Microsoft.MixedReality.Examples.Experimental.DialogTest
         {
             if (obj.Result == DialogButtonType.Yes)
             {
-                Debug.Log(obj.Result);       
+                Debug.Log(obj.Result);
             }
         }
     }

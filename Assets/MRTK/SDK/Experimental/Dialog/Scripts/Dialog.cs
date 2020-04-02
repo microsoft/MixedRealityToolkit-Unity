@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
@@ -12,14 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     public abstract class Dialog : MonoBehaviour
     {
         /// <summary>
-        /// It's used to keep track of the current state in which the Dialog is
+        /// The current state of the Dialog.
         /// </summary>
-        protected DialogState state = DialogState.Uninitialized;
-        public DialogState State
-        {
-            get => state;
-            set => state = value;
-        }
+        public DialogState State { get; set; } = DialogState.Uninitialized;
 
         /// <summary>
         /// Called after user has clicked a button and the dialog has finished closing
@@ -45,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 
         /// <summary>
         /// Opens dialog, waits for input, then closes
-        /// </summary>        
+        /// </summary>
         protected IEnumerator RunDialogOverTime()
         {
             // Create buttons and set up message
@@ -68,14 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             yield return StartCoroutine(CloseDialog());
             State = DialogState.Closed;
             // Callback
-            if (OnClosed != null)
-            {
-                OnClosed(result);
-            }
+            OnClosed?.Invoke(result);
             // Wait a moment to give scripts a chance to respond
             yield return null;
             // Destroy ourselves
-            GameObject.Destroy(gameObject);
+            Destroy(gameObject);
             yield break;
         }
 
@@ -116,13 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// the title and message have been set.
         /// Perform here any operations that you'd like
         /// Lays out the buttons on the dialog
-        /// Eg using an ObjectCollection                        
+        /// Eg using an ObjectCollection
         /// </summary>
         protected abstract void FinalizeLayout();
 
         /// <summary>
         /// Set the title and message using the result
-        /// Eg using TextMesh components 
+        /// E.g. using TextMesh components 
         /// </summary>
         protected abstract void SetTitleAndMessage();
 
