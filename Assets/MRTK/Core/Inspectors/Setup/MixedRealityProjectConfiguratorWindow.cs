@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.ForceTextSerialization, true },
             { MRConfig.VisibleMetaFiles, true },
             { MRConfig.VirtualRealitySupported, true },
-            { MRConfig.SinglePassInstancing, true },
+            { MRConfig.OptimalRenderingPath, true },
             { MRConfig.SpatialAwarenessLayer, true },
             // Issue #7239: Disable MSBuild for Unity on Unity 2019.3 and newer while the cause of the loop is investigated
 #if !UNITY_2019_3_OR_NEWER
@@ -175,9 +175,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
-                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path (legacy XR API)");
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path (legacy XR API)");
 #else
-                RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
+#if UNITY_ANDROID
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Stereo rendering path");
+#else
+                RenderToggle(MRConfig.OptimalRenderingPath, "Set Single Pass Instanced rendering path");
+#endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
                 EditorGUILayout.Space();

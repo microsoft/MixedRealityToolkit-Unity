@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -124,6 +125,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
+            Profiler.BeginSample("[MRTK] SpherePointer.OnPreSceneQuery");
+
             if (Rays == null)
             {
                 Rays = new RayStep[1];
@@ -153,6 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
+
+            Profiler.EndSample(); // OnPreSceneQuery
         }
 
         /// <summary>
@@ -162,6 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool TryGetNearGraspPoint(out Vector3 result)
         {
+            Profiler.BeginSample("[MRTK] SpherePointer.TryGetNearGraspPoint");
+
             // If controller is of kind IMixedRealityHand, return average of index and thumb
             if (Controller != null && Controller is IMixedRealityHand)
             {
@@ -173,6 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (thumb != null)
                     {
                         result = 0.5f * (index.Position + thumb.Position);
+                        Profiler.EndSample(); // TryGetNearGraspPoint - success
                         return true;
                     }
                 }
@@ -180,16 +188,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 result = Position;
+                Profiler.EndSample(); // TryGetNearGraspPoint - success
                 return true;
             }
 
             result = Vector3.zero;
+            Profiler.EndSample(); // TryGetNearGraspPoint
             return false;
         }
 
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
+            Profiler.BeginSample("[MRTK] SpherePointer.TryGetDistanceToNearestSurface");
+
             var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
@@ -197,17 +209,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     distance = focusDetails.RayDistance;
+                    Profiler.EndSample(); // TryGetDistanceToNearestSurface - success
                     return true;
                 }
             }
 
             distance = 0.0f;
+            Profiler.EndSample(); // TryGetDistanceToNearestSurface
             return false;
         }
 
         /// <inheritdoc />
         public bool TryGetNormalToNearestSurface(out Vector3 normal)
         {
+            Profiler.BeginSample("[MRTK] SpherePointer.TryGetNormalToNearestSurface");
+
             var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
@@ -215,11 +231,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     normal = focusDetails.Normal;
+                    Profiler.EndSample(); // TryGetNormalToNearestSurface - success
                     return true;
                 }
             }
 
             normal = Vector3.forward;
+            Profiler.EndSample(); // TryGetNormalToNearestSurface
             return false;
         }
 
@@ -268,6 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
             {
+                Profiler.BeginSample("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
+
                 grabbable = null;
                 numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
                     pointerPosition,
@@ -302,9 +322,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (grabbable != null)
                     {
+                        Profiler.EndSample(); // TryUpdateQueryBufferForLayerMask
                         return true;
                     }
                 }
+
+                Profiler.EndSample(); // TryUpdateQueryBufferForLayerMask
                 return false;
             }
 

@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_WSA
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -57,6 +58,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateController");
+
             UpdateSourceData(interactionSourceState);
             UpdateVelocity(interactionSourceState);
 
@@ -88,10 +91,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             LastSourceStateReading = interactionSourceState;
+
+            Profiler.EndSample(); // UpdateController
         }
 
         public void UpdateVelocity(InteractionSourceState interactionSourceState)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");
+
             Vector3 newVelocity;
             if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
             {
@@ -102,6 +109,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 AngularVelocity = newAngularVelocity;
             }
+
+            Profiler.EndSample(); // UpdateVelocity
         }
 
         /// <summary>
@@ -110,6 +119,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateSourceData(InteractionSourceState interactionSourceState)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSourceData");
+
             var lastState = TrackingState;
             var sourceKind = interactionSourceState.source.kind;
 
@@ -171,6 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentSourceRotation);
                 }
             }
+
+            Profiler.EndSample(); // UpdateSourceData
         }
 
         /// <summary>
@@ -179,6 +192,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdatePointerData");
+
             if (interactionSourceState.source.supportsPointing)
             {
                 interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
@@ -199,6 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 // Raise input system event if it's enabled
                 CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
             }
+
+            Profiler.EndSample(); // UpdatePointerData
         }
 
         /// <summary>
@@ -207,6 +224,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSpatialGrip");
+
             switch (interactionMapping.AxisType)
             {
                 case AxisType.SixDof:
@@ -228,6 +247,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
                 break;
             }
+
+            Profiler.EndSample(); // UpdateSpatialGrip
         }
 
         /// <summary>
@@ -236,6 +257,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateTriggerData");
+
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TriggerPress:
@@ -314,6 +337,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     break;
                 }
             }
+
+            Profiler.EndSample(); // UpdateTriggerData
         }
 
         /// <summary>

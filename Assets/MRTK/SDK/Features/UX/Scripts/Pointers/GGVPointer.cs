@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private MixedRealityInputAction poseAction = MixedRealityInputAction.None;
 
-        private GazeProvider gazeProvider;
+        private IMixedRealityGazeProvider gazeProvider;
         private Vector3 sourcePosition;
         private bool isSelectPressed;
         private Handedness lastControllerHandedness;
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
-            gazeProvider = CoreServices.InputSystem.GazeProvider as GazeProvider;
+            gazeProvider = CoreServices.InputSystem.GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {

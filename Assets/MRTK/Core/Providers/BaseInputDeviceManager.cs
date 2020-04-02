@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -38,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The input system configuration profile in use in the application.
         /// </summary>
-        protected MixedRealityInputSystemProfile InputSystemProfile => Service != null ? Service.InputSystemProfile : null;
+        protected MixedRealityInputSystemProfile InputSystemProfile => Service?.InputSystemProfile;
 
         /// <inheritdoc />
         public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
@@ -90,10 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private static PointerEqualityComparer defaultComparer;
 
-            internal static PointerEqualityComparer Default
-            {
-                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
-            }
+            internal static PointerEqualityComparer Default => defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
 
             /// <summary>
             /// Check that references equals for two pointers
@@ -104,8 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// Unity objects have unique equals comparison and to check keys in a dictionary, 
-            /// we want the hascode match to be Unity's unique InstanceID to compare objects
+            /// Unity objects have unique equals comparison and to check keys in a dictionary,
+            /// we want the hash code match to be Unity's unique InstanceID to compare objects.
             /// </summary>
             public int GetHashCode(IMixedRealityPointer pointer)
             {
@@ -120,10 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion
@@ -244,6 +242,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RecyclePointers");
+
             if (inputSource != null)
             {
                 CleanActivePointers();
@@ -283,6 +283,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
+
+            Profiler.EndSample(); // RecyclePointers
         }
 
         /// <summary>
@@ -293,6 +295,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         private IMixedRealityPointer CreatePointer(in PointerOption option)
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CreatePointer");
+
             var pointerObject = Object.Instantiate(option.PointerPrefab);
             MixedRealityPlayspace.AddChild(pointerObject.transform);
             var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
@@ -303,16 +307,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GameObjectExtensions.DestroyGameObject(pointerObject);
             }
 
+            Profiler.EndSample(); // CreatePointer
+
             return pointer;
         }
 
         /// <summary>
-        /// This class tracks pointers that have been requested and thus are considered "active" gameobjects in the scene. 
+        /// This class tracks pointers that have been requested and thus are considered "active" GameObjects in the scene. 
         /// As GameObjects, these pointers may be destroyed and thus their entry becomes "null" although the managed object is not destroyed
         /// This helper loops through all dictionary entries and checks if it is null, if so it is removed
         /// </summary>
         private void CleanActivePointers()
         {
+            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CleanActivePointers");
+
             var removal = new List<IMixedRealityPointer>();
 
             var enumerator = activePointersToConfig.GetEnumerator();
@@ -329,6 +337,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 activePointersToConfig.Remove(removal[i]);
             }
+
+            Profiler.EndSample(); // CleanActivePointers
         }
 
         /// <summary>

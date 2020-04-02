@@ -17,6 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
+#if UNITY_ANDROID
+        const string RenderingMode = "Single Pass Stereo";
+#else
+        const string RenderingMode = "Single Pass Instanced";
+#endif
+
 
         public MixedRealityEditorSettings()
         {
@@ -98,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
             }
 
-            if (!MixedRealityOptimizeUtils.IsSinglePassInstanced())
+            if (!MixedRealityOptimizeUtils.IsOptimalRenderingPath())
             {
-                Debug.LogWarning("XR stereo rendering mode not set to <b>Single Pass Instanced</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                Debug.LogWarning($"XR stereo rendering mode not set to <b>{RenderingMode}</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
             }
 
             // If targeting Windows Mixed Reality platform

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
@@ -937,8 +938,12 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void UpdateAllServices()
         {
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.UpdateAllServices");
+
             // Update all systems
             ExecuteOnAllServicesInOrder(service => service.Update());
+
+            Profiler.EndSample(); // UpdateAllServices
         }
 
         private void LateUpdateAllServices()
@@ -949,8 +954,12 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Mixed Reality Toolkit is not initialized, stop.
             if (!IsInitialized) { return; }
 
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.LateUpdateAllServices");
+
             // Update all systems
             ExecuteOnAllServicesInOrder(service => service.LateUpdate());
+
+            Profiler.EndSample(); // LateUpdateAllServices
         }
 
         private void DisableAllServices()
@@ -1012,12 +1021,16 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesInOrder");
+
             var services = MixedRealityServiceRegistry.GetAllServices();
             int length = services.Count;
             for (int i = 0; i < length; i++)
             {
                 execute(services[i]);
             }
+
+            Profiler.EndSample(); // ExecuteOnAllServicesInOrder
 
             return true;
         }
@@ -1029,6 +1042,8 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
 
+            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesReverseOrder");
+
             var services = MixedRealityServiceRegistry.GetAllServices();
             int length = services.Count;
 
@@ -1036,6 +1051,8 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 execute(services[i]);
             }
+
+            Profiler.EndSample(); // ExecuteOnAllServicesReverseOrder
 
             return true;
         }

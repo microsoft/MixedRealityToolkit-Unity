@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -403,7 +404,21 @@ namespace Microsoft.MixedReality.Toolkit
         {
             Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
             Vector3 szB = bounds.size;
+            Assert.IsTrue(szB.x != 0 && szB.y != 0 && szB.z != 0, "The bounds of the object must not be zero.");
             return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
+        }
+
+        /// <summary>
+        /// Calculates how much scale is required for this Bounds to fit inside another bounds without stretching.
+        /// </summary>
+        /// <param name="containerBounds">The bounds of the container we're trying to fit this object.</param>
+        /// <returns>A single scale factor that can be applied to this object to fit inside the container.</returns>
+        public static float GetScaleToFitInside(this Bounds bounds, Bounds containerBounds)
+        {
+            var objectSize = bounds.size;
+            var containerSize = containerBounds.size;
+            Assert.IsTrue(objectSize.x != 0 && objectSize.y != 0 && objectSize.z != 0, "The bounds of the container must not be zero.");
+            return Mathf.Min(containerSize.x / objectSize.x, containerSize.y / objectSize.y, containerSize.z / objectSize.z);
         }
 
         /// <summary>

@@ -11,13 +11,20 @@ using UnityEngine;
 #if UNITY_WSA
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 using WsaGestureSettings = UnityEngine.XR.WSA.Input.GestureSettings;
 #endif // UNITY_WSA
 
 #if WINDOWS_UWP
-using WindowsInputSpatial = global::Windows.UI.Input.Spatial;
-#endif // WINDOWS_UWP
+using Windows.Perception;
+using Windows.Perception.People;
+using Windows.UI.Input.Spatial;
+#elif UNITY_WSA && DOTNETWINRT_PRESENT
+using Microsoft.Windows.Perception;
+using Microsoft.Windows.Perception.People;
+using Microsoft.Windows.UI.Input.Spatial;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
@@ -74,10 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     case MixedRealityCapability.ArticulatedHand:
                     case MixedRealityCapability.GGVHand:
-                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Hand);
+                        return SpatialInteractionManager.IsSourceKindSupported(SpatialInteractionSourceKind.Hand);
 
                     case MixedRealityCapability.MotionController:
-                        return WindowsInputSpatial.SpatialInteractionManager.IsSourceKindSupported(WindowsInputSpatial.SpatialInteractionSourceKind.Controller);
+                        return SpatialInteractionManager.IsSourceKindSupported(SpatialInteractionSourceKind.Controller);
                 }
 #endif // WINDOWS_UWP
             }
@@ -90,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
                 else
                 {
-                    // Windows Mixed Reality Immersive devices support motion controllers
+                    // Windows Mixed Reality immersive devices support motion controllers
                     return (capability == MixedRealityCapability.MotionController);
                 }
             }
@@ -315,6 +322,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region IMixedRealityDeviceManager Interface
 
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+        private IMixedRealityGazeProviderHeadOverride mixedRealityGazeProviderHeadOverride = null;
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
         /// <inheritdoc/>
         public override void Enable()
         {
@@ -327,6 +338,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 WindowsMixedRealityUtilities.UtilitiesProvider = new WindowsMixedRealityUtilitiesProvider();
             }
+
+            mixedRealityGazeProviderHeadOverride = Service?.GazeProvider as IMixedRealityGazeProviderHeadOverride;
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
             if (InputSystemProfile.GesturesProfile != null)
@@ -384,6 +397,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void GetOrAddController(InteractionSourceState interactionSourceState)
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
+
             // If this is a new detected controller, raise source detected event with input system
             // check needs to be here because GetOrAddController adds it to the activeControllers Dictionary
             // this could be cleaned up because that's not clear
@@ -410,14 +425,32 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                     controller.UpdateController(interactionSourceState);
                 }
-
             }
+
+            Profiler.EndSample(); // GetOrAddController
         }
 
         /// <inheritdoc/>
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.Update");
+
             base.Update();
+
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+            if (mixedRealityGazeProviderHeadOverride != null && mixedRealityGazeProviderHeadOverride.UseHeadGazeOverride)
+            {
+                SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (pointerPose != null)
+                {
+                    HeadPose head = pointerPose.Head;
+                    if (head != null)
+                    {
+                        mixedRealityGazeProviderHeadOverride.OverrideHeadGaze(head.Position.ToUnityVector3(), head.ForwardDirection.ToUnityVector3());
+                    }
+                }
+            }
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
             UpdateInteractionManagerReading();
 
@@ -434,6 +467,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             LastInteractionManagerStateReading = interactionManagerStates;
+
+            Profiler.EndSample(); // Update
         }
 
         private void RegisterGestureEvents()
@@ -892,6 +927,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// </remarks>
         private void UpdateInteractionManagerReading()
         {
+            Profiler.BeginSample("[MRTK] WindowsMixedRealityDeviceManager.UpdateInteractionManagerReading");
+
             int newSourceStateCount = InteractionManager.numSourceStates;
             // If there isn't enough space in the cache to hold the results, we should grow it so that it can, but also
             // grow it in a way that is unlikely to require re-allocations each time.
@@ -919,6 +956,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 numInteractionManagerStates = InteractionManager.GetCurrentReading(interactionManagerStates);
             }
+
+            Profiler.EndSample(); // UpdateInteractionManagerReading
         }
 
         #endregion Private Methods

@@ -7,6 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -63,11 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <inheritdoc />
         protected override GenericJoystickController GetOrAddController(string joystickName)
         {
+            Profiler.BeginSample("[MRTK] OpenVRDeviceManager.GetOrAddController");
+
             // If a device is already registered with the ID provided, just return it.
             if (ActiveControllers.ContainsKey(joystickName))
             {
                 var controller = ActiveControllers[joystickName];
                 Debug.Assert(controller != null);
+
+                Profiler.EndSample(); // GetOrAddController - already registered
                 return controller;
             }
 
@@ -110,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
                     break;
                 default:
+                    Profiler.EndSample(); // GetOrAddController - not OpenVR controller type
                     return null;
             }
 
@@ -123,6 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             {
                 // Controller failed to be set up correctly.
                 Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                Profiler.EndSample(); // GetOrAddController - failure
+
                 // Return null so we don't raise the source detected.
                 return null;
             }
@@ -133,12 +142,17 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
 
             ActiveControllers.Add(joystickName, detectedController);
+
+            Profiler.EndSample(); // GetOrAddController
+
             return detectedController;
         }
 
         /// <inheritdoc />
         protected override void RemoveController(string joystickName)
         {
+            Profiler.BeginSample("[MRTK] OpenVRDeviceManager.RemoveController");
+
             var controller = GetOrAddController(joystickName);
 
             if (controller != null)
@@ -153,6 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
 
             base.RemoveController(joystickName);
+
+            Profiler.EndSample(); // RemoveController
         }
 
         /// <inheritdoc />

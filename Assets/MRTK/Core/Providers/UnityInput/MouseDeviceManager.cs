@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -156,11 +157,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
+            Profiler.BeginSample("[MRTK] MouseDeviceManager.Update");
+
             base.Update();
 
             if (UInput.mousePresent && Controller == null) { Enable(); }
 
             Controller?.Update();
+
+            Profiler.EndSample(); // Update
         }
 
         /// <inheritdoc />

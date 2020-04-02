@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -276,12 +277,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
                 GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
-                // Current implementation implements both provider types in one concrete class.
+                // Current default implementation implements both provider types in one concrete class.
                 EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+                if (EyeGazeProvider != null)
+                {
+                    EyeGazeProvider.IsEyeTrackingEnabled = pointerProfile.IsEyeTrackingEnabled;
+                }
+
+                if (GazeProvider is IMixedRealityGazeProviderHeadOverride gazeProviderHeadOverride)
+                {
+                    gazeProviderHeadOverride.UseHeadGazeOverride = pointerProfile.UseHeadGazeOverride;
+                }
             }
             else
             {
-                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                Debug.LogError("The input system is missing the required GazeProviderType!");
                 return;
             }
         }
@@ -440,7 +450,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
                     // We'll ignore when this happens.
                     ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
-
                 }
                 catch (Exception)
                 {
@@ -759,6 +768,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
@@ -775,6 +786,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
+
+            Profiler.EndSample(); // RaiseSourceDetected
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceDetectedEventHandler =
@@ -787,6 +800,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
+            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
+
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
@@ -804,6 +819,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
 
             FocusProvider?.OnSourceLost(sourceStateEventData);
+
+            Profiler.EndSample(); // RaiseSourceLost
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =
