@@ -2080,7 +2080,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     velocityState = VelocityState.Calculating;
                 }
 
-                //Release the pointer            
+                //Release the pointer
                 currentPointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
 
                 ResetState();
