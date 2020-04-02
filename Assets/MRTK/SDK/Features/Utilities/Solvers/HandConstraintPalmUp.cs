@@ -133,17 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => headGazeProximityThreshold = value;
         }
 
-        private bool targetWorldLocked = false;
-
-        /// <summary>
-        /// Refects whether the current solver object is world-locked or not
-        /// </summary>
-        public bool TargetWorldLocked
-        {
-            get => targetWorldLocked;
-            set => targetWorldLocked = value;
-        }
-
         private bool gazeActivationAlreadyTriggered = false;
 
         /// <summary>
@@ -191,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             }
                         }
 
-                        if (useGazeActivation && (!gazeActivationAlreadyTriggered || targetWorldLocked))
+                        if (useGazeActivation && (!gazeActivationAlreadyTriggered || !SolverHandler.UpdateSolvers))
                         {
                             return IsUserGazeMeetingThresholdRequirements(jointedHand);
                         }
@@ -272,8 +261,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 {
                         // Now that we know the dist to the plane, create a vector at that point
                         Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
-                        Vector3 PlanePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
-                        float gazePosDistToActivationPosition = (activationPoint - PlanePos).sqrMagnitude;
+                        Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                        float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
                         float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
                         bool gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
 
@@ -337,39 +326,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns></returns>
         private Vector3 GenerateActivationPoint(IMixedRealityHand jointedHand)
         {
-            MixedRealityPose referenceJoint1;
-            MixedRealityPose referenceJoint2;
+            TrackedHandJoint referenceJoint1;
+            TrackedHandJoint referenceJoint2;
+            MixedRealityPose referenceJointPose1;
+            MixedRealityPose referenceJointPose2;
 
             switch (SafeZone)
             {
                 case SolverSafeZone.AboveFingerTips:
-                    if (!jointedHand.TryGetJoint(TrackedHandJoint.MiddleTip, out referenceJoint1) ||
-                        !jointedHand.TryGetJoint(TrackedHandJoint.RingTip, out referenceJoint2))
-                    { 
-                        return Vector3.zero;
-                    }
+                    referenceJoint1 = TrackedHandJoint.MiddleTip;
+                    referenceJoint2 = TrackedHandJoint.RingTip;
                     break;
                 case SolverSafeZone.BelowWrist:
-                    return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJoint1) ? referenceJoint1.Position : Vector3.zero;
+                    return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJointPose1) ? referenceJointPose1.Position : Vector3.zero;
 
                 case SolverSafeZone.RadialSide:
-                    if (!jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out referenceJoint1) ||
-                        !jointedHand.TryGetJoint(TrackedHandJoint.ThumbProximalJoint, out referenceJoint2))
-                    {
-                        return Vector3.zero;
-                    }
+                    referenceJoint1 = TrackedHandJoint.IndexKnuckle;
+                    referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
                     break;
                 case SolverSafeZone.UlnarSide:
                 default:
-                    if (!jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJoint1) ||
-                        !jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out referenceJoint2))
-                    {
-                        return Vector3.zero;
-                    }
-                    break;                       
+                    referenceJoint1 = TrackedHandJoint.IndexKnuckle;
+                    referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                    break;
             }
 
-            return Vector3.Lerp(referenceJoint1.Position, referenceJoint2.Position, .5f);
+
+            if (!jointedHand.TryGetJoint(referenceJoint1, out referenceJointPose1) ||
+                !jointedHand.TryGetJoint(referenceJoint2, out referenceJointPose2))
+            {
+                return Vector3.zero;
+            }
+
+
+            return Vector3.Lerp(referenceJointPose1.Position, referenceJointPose2.Position, .5f);
         }
 
         /// <summary>
@@ -380,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns></returns>
         private IEnumerator WorldLockedReattachCheck()
         {
-            while (targetWorldLocked && useGazeActivation)
+            while (!SolverHandler.UpdateSolvers && useGazeActivation)
             {
                 MixedRealityPose palmPose;
                 var jointedHand = GetController(SolverHandler.CurrentTrackedHandedness) as IMixedRealityHand;
@@ -393,7 +383,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                             IsUserGazeMeetingThresholdRequirements(jointedHand))
                         {
                             gazeActivationAlreadyTriggered = false;
-                            targetWorldLocked = false;
                             SolverHandler.UpdateSolvers = true;
                         }
                     }
