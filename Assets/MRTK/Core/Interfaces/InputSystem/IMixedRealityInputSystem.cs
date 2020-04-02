@@ -121,13 +121,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         void ClearFallbackInputStack();
 
         /// <summary>
-        /// Interface that register handlers into event propagation subscription for specific propagation phase
+        /// Interface for subscribing handlers to a specific phase of the event propagation
         /// </summary>
-        void RegisterPropagationHandler<T>(IEventSystemHandler handler, bool isTrickleDown = false) where T : IEventSystemHandler;
+        void RegisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase = PropagationPhase.BubbleUp) where T : IEventSystemHandler;
+
+        /// <summary>
+        /// Interface for unsubscribing handlers to a specific phase of the event propagation 
+        /// </summary>
+        void UnregisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase) where T : IEventSystemHandler;
 
         #region Input Events
 
-            #region Input Source Events
+        #region Input Source Events
 
         /// <summary>
         /// Generates a new unique input source id.<para/>

@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             
             // Subscribing to bubble up propagation phase
-            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this, false);
+            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnDisable()
@@ -612,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 DropController();
             }
 
-            //CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, false);
+            CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, PropagationPhase.BubbleUp);
         }
 
         private void Update()

@@ -12,21 +12,20 @@ namespace Microsoft.MixedReality.Toolkit
     [System.Flags]
     public enum EventPropagation // Mainly used to build Paths
     {
-        None = 0,
-        BubblesUp = 1, // Target up to root
-        TricklesDown = 2, // Root down to target
-        Cancellable = 4, // ?
+        None = 0 << 0,
+        BubblesUp = 1 << 0, // Target up to root
+        TricklesDown = 1 << 1 // Root down to target
     }
 
     /// <summary>
-    /// Phase of event propagation through a hierarchy of elements
+    /// Current phase of event propagation through a hierarchy of elements
     /// </summary>
     public enum PropagationPhase
     {
         None,
-        Target,
-        TrickeDown,
-        BubbleUp,
+        Target, // Event being handled by target object
+        TrickleDown, // Propagating from root object down to target object
+        BubbleUp // Propagating from target object up to target root object
     }
 
     /// <summary>
@@ -35,10 +34,10 @@ namespace Microsoft.MixedReality.Toolkit
     [System.Flags]
     public enum LifeStatus
     {
-        None = 0,
-        PropagationStopped = 1,
-        ImmediatePropagationStopped = 2,
-        DefaultPrevented = 4,
+        None = 0 << 0,
+        PropagationStopped = 1 << 0,
+        PropagationStoppedImmediately = 1 << 1,
+        DefaultPrevented = 1 << 2,
     }
 
     /// <summary>

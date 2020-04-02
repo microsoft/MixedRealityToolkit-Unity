@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void StopPropagationImmediately()
         {
-            Status |= LifeStatus.ImmediatePropagationStopped;
+            Status |= LifeStatus.PropagationStoppedImmediately;
         }
 
         /// <inheritdoc />

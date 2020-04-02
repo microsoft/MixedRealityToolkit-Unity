@@ -1244,7 +1244,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             //Subcribing to pointer events bubbling up from handlers
-            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this, false);
+            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnDisable()
@@ -1255,7 +1255,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 DropController();
             }
-            //CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, false);
+            CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, PropagationPhase.BubbleUp);
         }
 
         private void Update()
