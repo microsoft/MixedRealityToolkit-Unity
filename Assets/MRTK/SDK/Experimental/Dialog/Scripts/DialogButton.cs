@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using TMPro;
 using UnityEngine;
 
@@ -18,15 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             set => buttonText = value;
         }
 
-        private DialogShell parentDialog;
         /// <summary>
         /// A reference to the Dialog that this button is on.
         /// </summary>
-        public DialogShell ParentDialog
-        {
-            get => parentDialog;
-            set => parentDialog = value;            
-        }
+        public DialogShell ParentDialog { get; set; }
 
         /// <summary>
         /// The type description of the button
@@ -34,21 +30,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         public DialogButtonType ButtonTypeEnum;
 
         /// <summary>
-        /// event handler that runs when button is clicked.
+        /// Event handler that runs when button is clicked.
         /// Dismisses the parent dialog.
         /// </summary>
         /// <param name="obj">Caller GameObject</param>
         public void OnButtonClicked(GameObject obj)
         {
-            if (parentDialog != null)
+            if (ParentDialog != null)
             {
-                parentDialog.Result.Result = ButtonTypeEnum;
-                parentDialog.DismissDialog();
+                ParentDialog.Result.Result = ButtonTypeEnum;
+                ParentDialog.DismissDialog();
             }
         }
 
         /// <summary>
-        /// Setter Method to set the Text at the top of the Dialog.
+        /// Setter method to set the text at the top of the Dialog.
         /// </summary>
         /// <param name="title">Title of the button</param>
         public void SetTitle(string title)
