@@ -7654,30 +7654,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Examples.Experimental.DialogTest.DialogExampleController.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Examples.Experimental.DialogTest.DialogExampleController.html",
-          "hash": "VI4VS/8RIoZhwC6sSE922A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Examples.Experimental.DialogTest.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Examples.Experimental.DialogTest.html",
-          "hash": "OYdqstfZgYioPGJodSAa/A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.AnimationCurveExtensions.yml",
       "output": {
         ".html": {
@@ -10786,6 +10762,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest.DialogExampleController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest.DialogExampleController.html",
+          "hash": "DrX1QEq+jJpUW+hB51bRMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest.html",
+          "hash": "sF+vmsM+YrQyPp5N0lMS5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu.UpdateSliderTrackLine.yml",
       "output": {
         ".html": {
@@ -10946,7 +10946,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.Dialog.html",
-          "hash": "tPAJb/dtwmtaRtS+ZkSAjA=="
+          "hash": "1UadXJFH9gUcEcBgWBqHSQ=="
         }
       },
       "is_incremental": false,
@@ -10958,7 +10958,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButton.html",
-          "hash": "jx4Obk/V7WvFVQKUjL53VQ=="
+          "hash": "kkTDk8ZvinjiMjco9fp32g=="
         }
       },
       "is_incremental": false,
@@ -10970,7 +10970,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButtonType.html",
-          "hash": "+sFgSVcqhcrWkjLQLEbmbA=="
+          "hash": "uN7o6M0Ha14VWHFjL2T8cA=="
         }
       },
       "is_incremental": false,
@@ -10994,7 +10994,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogShell.html",
-          "hash": "Lnzk23bPtkcqJhV9DytptA=="
+          "hash": "4u1D4H1syp+LjryLIyTc1g=="
         }
       },
       "is_incremental": false,
@@ -11006,7 +11006,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogState.html",
-          "hash": "nl8mdUHygmZdctiT/fD/5g=="
+          "hash": "vvA+/BIYasvYye0D1IrUfw=="
         }
       },
       "is_incremental": false,
@@ -11018,7 +11018,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.html",
-          "hash": "PS2R2rXNlbF9X+CSeE6+gA=="
+          "hash": "Y7rnK0cYIor/thYNNSFqNA=="
         }
       },
       "is_incremental": false,
@@ -26750,7 +26750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "pahRcmotUsgREikZqtapTw=="
+          "hash": "uCDj6HofVDcT9LBbhK25pw=="
         }
       },
       "is_incremental": false,
@@ -26762,7 +26762,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "H/oZZ6k2rCRIEPv9kgk67w=="
+          "hash": "weSQ/cOy6JsTQTIsnY4ADw=="
         }
       },
       "is_incremental": false,
@@ -26802,11 +26802,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 156,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -26815,15 +26814,16 @@
           "total_file_count": 1591,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 156,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
