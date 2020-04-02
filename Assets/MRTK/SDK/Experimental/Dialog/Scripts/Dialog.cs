@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
@@ -31,8 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         protected DialogResult result;
         /// <summary>
         /// Can be used to monitor result instead of events
-        /// </summary>        
-        public DialogResult Result => result;        
+        /// </summary>
+        public DialogResult Result => result;
 
         protected void Launch(DialogResult newResult)
         {

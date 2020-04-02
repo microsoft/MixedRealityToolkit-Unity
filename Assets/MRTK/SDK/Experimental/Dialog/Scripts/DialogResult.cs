@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         public string Title
         {
             get => title;
-            set => title = value;            
+            set => title = value;
         }
 
         /// <summary>
@@ -36,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         public string Message
         {
             get => message;
-            set => message = value;            
+            set => message = value;
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         public DialogButtonType Buttons
         {
             get => buttons;
-            set => buttons = value;            
+            set => buttons = value;
         }
 
         /// <summary>

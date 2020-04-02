@@ -1,7 +1,5 @@
-﻿//
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-//
 
 using System;
 using System.Collections;
@@ -19,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
     public class DialogShell : Dialog
     {
         private GameObject[] twoButtonSet;
-
 
         [SerializeField]
         [Tooltip("Title text of the dialog")]
@@ -55,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             //Get List of ButtonTypes that should be created on Dialog
             List<DialogButtonType> buttonTypes = new List<DialogButtonType>();
             foreach (DialogButtonType buttonType in Enum.GetValues(typeof(DialogButtonType)))
-            {                
+            {
                 // If this button type flag is set
                 if (buttonType != DialogButtonType.None && result.Buttons.HasFlag(buttonType))
                 {
@@ -76,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
             {
                 // If we have two buttons then do step 1, else 0
                 int step = buttonTypes.Count >= 2 ? 1 : 0;
-                for (int i = 0; i < buttonTypes.Count && i<2; ++i)
+                for (int i = 0; i < buttonTypes.Count && i < 2; ++i)
                 {
                     twoButtonSet[i] = buttonsOnDialog[i + step].gameObject;
                     buttonsOnDialog[i + step].SetTitle(buttonTypes[i].ToString());
@@ -119,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// </summary>
         protected override void SetTitleAndMessage()
         {
-            if(titleText != null)
+            if (titleText != null)
             {
                 titleText.text = Result.Title;
             }
