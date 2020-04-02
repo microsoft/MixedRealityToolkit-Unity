@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Experimental.Dialog;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Examples.Experimental.Dialog
+namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.DialogTest
 {
     /// <summary>
     /// This class is used as an example controller to show how to instantiate and launch two different kind of Dialog.
