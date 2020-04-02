@@ -26,8 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private const float MovementThreshold = 0.01f;
 
+        /// <summary>
+        /// Used on Gaze Pointer initialization. To make the object lock/not lock when focus locked durign runtime, use the IsTargetPositionLockedOnFocusLock 
+        /// attribute of <see cref="GazePointer.IsTargetPositionLockedOnFocusLock"/>
+        /// </summary>
         [SerializeField]
-        [Tooltip("If true, the gaze cursor will stay locked on the object when the pointer's focus is locked, otherwise it will continue following the head's direction")]
+        [Tooltip("If true, initializes the gaze cursor to stay locked on the object when the cursor's focus is locked, otherwise it will continue following the head's direction")]
         private bool lockCursorWhenFocusLocked = true;
 
         [SerializeField]
