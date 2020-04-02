@@ -15,6 +15,8 @@ Before submitting a pull request, make sure to:
 
 1. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
+Currently playmode tests are meant to be run in Unity 2018.4.1f1 and may fail in other versions of Unity
+
 ## Running tests
 
 ### Unity editor
