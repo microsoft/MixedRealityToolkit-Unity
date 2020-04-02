@@ -197,7 +197,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         }
                     }
 
-                    gazeActivationAlreadyTriggered = palmFacingThresholdMet ? gazeActivationAlreadyTriggered : false;
+                    if (!palmFacingThresholdMet)
+                    {
+                        gazeActivationAlreadyTriggered = false;
+                    }
 
                     return palmFacingThresholdMet;
                 }
