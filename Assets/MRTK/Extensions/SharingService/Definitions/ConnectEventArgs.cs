@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
-    public struct ConnectEventArgs
+    public struct StatusEventArgs
     {
         public ConnectStatus Status;
         public AppRole AppRole;

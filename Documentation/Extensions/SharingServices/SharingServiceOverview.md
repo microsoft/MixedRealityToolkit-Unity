@@ -17,4 +17,5 @@ The default implementation of the sharing service uses Photon's PUN 2. Without t
 - [Sending and Receiving Data](SharingServiceSendingAndReceiving.md)
 - [Using Data Subscriptions](SharingServiceDataSubscriptions.md)
 - [Using App Roles](SharingServiceAppRoles.md)
+- [Matchmaking](SharingServiceMatchmaking.md)
 - [Profile Options](SharingServiceProfileOptions.md)

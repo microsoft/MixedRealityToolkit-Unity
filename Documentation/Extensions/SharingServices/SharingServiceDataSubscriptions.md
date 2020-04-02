@@ -1,7 +1,5 @@
 # Sharing Service : Data Subscriptions
 
-[Back to overview](SharingServiceOverview.md)
-
 Some devices may only care about a small subset of the data being sent by other devices. Senders can sepcify which devices receive which data using device IDs, but a responsible choice can require detailed knowledge of another connected device's needs. Data subscriptions puts the decision in the device's hands.
 
 By default a device's subscription mode is set to `SubscriptionModeEnum.All`, which means it will receive all data types. This setting can be changed to `SubscriptionModeEnum.Manual` via `ISharingService.SetLocalSubscriptionMode`:

@@ -2,10 +2,9 @@
 {
     public struct ConnectConfig
     {
+        public RoomConfig RoomConfig;
         public AppRole RequestedRole;
-        public string LobbyName;
-        public string RoomName;
-        public SubscriptionModeEnum SubscriptionMode;
+        public SubscriptionMode SubscriptionMode;
         public short[] SubscriptionTypes;
     }
 }

@@ -1,9 +1,13 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #if PHOTON_UNITY_NETWORKING
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using System.Linq;
 #else
-// When Photon is not present some fields and events cause 'never used' warnings.
+// When PHOTON_UNITY_NETWORKING is not defined some fields and events cause 'never used' warnings.
 #pragma warning disable CS0067
 #pragma warning disable CS0414
 #endif
@@ -12,8 +16,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using System.Collections;
-using System;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 {
@@ -26,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         IConnectionCallbacks,
         IMatchmakingCallbacks,
         IInRoomCallbacks,
+        ILobbyCallbacks,
         IOnEventCallback,
 #endif
         ISharingService,
@@ -39,11 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         #region Public events
 
         /// <inheritdoc />
-        public event ConnectionEvent OnConnect;
+        public event StatusEvent OnStatusChange;
         /// <inheritdoc />
-        public event ConnectionEvent OnDisconnect;
-        /// <inheritdoc />
-        public event ConnectionEvent OnAppRoleSelected;
+        public event StatusEvent OnAppRoleSelected;
         /// <inheritdoc />
         public event SubscriptionEvent OnLocalSubscriptionModeChange;
         /// <inheritdoc />
@@ -64,11 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public AppRole AppRole { get; private set; } = AppRole.None;
         /// <inheritdoc />
-        public SubscriptionModeEnum LocalSubscriptionMode { get; private set; } = SubscriptionModeEnum.Default;
+        public SubscriptionMode LocalSubscriptionMode { get; private set; } = SubscriptionMode.Default;
         /// <inheritdoc />
         public string LobbyName { get; private set; }
         /// <inheritdoc />
         public string RoomName { get; private set; }
+        /// <inheritdoc />        /// <inheritdoc />
+        public IEnumerable<RoomInfo> AvailableRooms => availableRooms;
+        /// <inheritdoc />
+        public int NumAvailableRooms => availableRooms.Count;
 
         #endregion
 
@@ -84,12 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 #if PHOTON_UNITY_NETWORKING
             get
             {
-                foreach (Player player in PhotonNetwork.PlayerList)
+                foreach (Player player in playersInRoom)
                 {
-                    if (userIDToDeviceIDLookup.TryGetValue(player.UserId, out short deviceID))
-                    {
-                        yield return deviceID;
-                    }
+                    yield return (short)player.ActorNumber;
                 }
             }
 #else
@@ -100,17 +102,31 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 #endif
         }
         /// <inheritdoc />
-        public int NumConnectedDevices => userIDToDeviceIDLookup.Count;
-
+        public int NumConnectedDevices
+        {
+            get
+            {
+#if PHOTON_UNITY_NETWORKING
+                return playersInRoom.Count;
+#else
+                return 0;
+#endif
+            }
+        }
         #endregion
 
-        #region Private data type definitions
+        #region Private constants
 
         private const byte setSubscriptionEvent = 1;
-        private const byte sendDataEvent = 2;
-        private const byte pingDeviceEvent = 3;
-        private const byte requestAddDeviceEvent = 4;
-        private const byte requestRemoveDeviceEvent = 5;
+        private const byte requestAppRoleEvent = 2;
+        private const byte receiveAppRoleEvent = 3;
+        private const byte sendDataEvent = 4;
+        private const byte pingDeviceEvent = 5;
+
+        private const int delayWhileConnectingToMaster = 500;
+        private const int delayWhileConnectingToLobby = 5000;
+        private const int delayWhileWaitingForResult = 100;
+        private const int delayWhileExitingRoom = 100;
 
         #endregion
 
@@ -120,27 +136,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         private SharingServiceProfile sharingServiceProfile;
 
         // Connection
-        private Task connectTask;
         private CancellationTokenSource connectTokenSource;
-        private AppRole currentRequestedRole = AppRole.None;
+        private string lastRoomJoined = string.Empty;
+        private bool awaitingAppRoleRequest = false;
 
         // Subscriptions
         private List<short> localSubscriptionTypes = new List<short>();
-        private Dictionary<string, HashSet<short>> subscribedTypes = new Dictionary<string, HashSet<short>>();
-        private Dictionary<string, SubscriptionModeEnum> subscriptionModes = new Dictionary<string, SubscriptionModeEnum>();
+        private Dictionary<short, HashSet<short>> subscribedTypes = new Dictionary<short, HashSet<short>>();
+        private Dictionary<short, SubscriptionMode> subscriptionModes = new Dictionary<short, SubscriptionMode>();
         private object[] eventDataReceiveSubscriptionMode = new object[3];
 
         // Data
         private object[] eventDataReceiveData = new object[3];
         private List<int> targetActors = new List<int>();
 
+        // Matchmaking
+        private HashSet<RoomInfo> availableRooms = new HashSet<RoomInfo>();
+        private RoomConnectResult roomConnectResult = RoomConnectResult.Waiting;
+
         // Devices
-        private Queue<UnhandledLocalEvent> unhandledLocalEvents = new Queue<UnhandledLocalEvent>();
-        private Queue<UnhandledRemoteEvent> unhandledRemoteEvents = new Queue<UnhandledRemoteEvent>();
-        private Dictionary<string, short> userIDToDeviceIDLookup = new Dictionary<string, short>();
-        private Dictionary<short, string> deviceIdToUserIDLookup = new Dictionary<short, string>();
+        private Dictionary<short, AppRole> deviceIDToAppRole = new Dictionary<short, AppRole>();
         private object[] requestDeviceActionData = new object[4];
-        private short nextDeviceID = 1;
         private short localDeviceID = -1;
 
         #endregion
@@ -148,6 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         #region Photon private fields
 
 #if PHOTON_UNITY_NETWORKING
+        private List<Player> playersInRoom = new List<Player>();
         // Cached event / send options for frequent events
         private RaiseEventOptions sendDataEventOptions = new RaiseEventOptions()
         {
@@ -156,6 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         };
 
         private SendOptions sendDataSendOptions = new SendOptions();
+        // We define one typed lobby on initialization.
+        TypedLobby typedLobby;
+
+        private const int rejoinRoomError = 32749;
 #endif
 
         #endregion
@@ -163,35 +184,109 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         #region Public methods
 
         /// <inheritdoc />
-        public void Connect()
+        public Task<bool> FastConnect()
         {
-            ConnectCustom(new ConnectConfig()
+            ConnectConfig config = new ConnectConfig()
             {
-                LobbyName = string.Empty,
-                RoomName = string.Empty,
+                RoomConfig = default(RoomConfig),
                 RequestedRole = AppRole.None,
-                SubscriptionMode = SubscriptionModeEnum.Default,
+                SubscriptionMode = SubscriptionMode.Default,
                 SubscriptionTypes = null,
-            });
+            };
+
+            return FastConnect(config);
         }
 
         /// <inheritdoc />
-        public void ConnectCustom(ConnectConfig config)
+        public Task<bool> FastConnect(ConnectConfig config)
         {
-            if (!CheckConnectionAndPlayMode("connect", ConnectStatus.NotConnected))
+#if PHOTON_UNITY_NETWORKING
+            if (connectTokenSource != null)
+            {
+                connectTokenSource.Cancel();
+            }
+
+            connectTokenSource = new CancellationTokenSource();
+            return ConnectInternal(config, ConnectStatus.FullyConnected, connectTokenSource.Token);
+#else
+            return Task.Run<bool>(() => { return true; });
+#endif
+        }
+
+        /// <inheritdoc />
+        public Task<bool> JoinLobby()
+        {
+#if PHOTON_UNITY_NETWORKING
+            if (connectTokenSource != null)
+            {
+                connectTokenSource.Cancel();
+            }
+
+            ConnectConfig config = new ConnectConfig()
+            {
+                RoomConfig = default(RoomConfig),
+                RequestedRole = AppRole.None,
+                SubscriptionMode = SubscriptionMode.Default,
+                SubscriptionTypes = null,
+            };
+
+            connectTokenSource = new CancellationTokenSource();
+            return ConnectInternal(config, ConnectStatus.ConnectedToLobby, connectTokenSource.Token);
+#else
+            return Task.Run<bool>(() => { return true; });
+#endif
+        }
+
+        /// <inheritdoc />
+        public Task<bool> JoinRoom(string roomName = null)
+        {
+#if PHOTON_UNITY_NETWORKING
+            if (connectTokenSource != null)
+            {
+                connectTokenSource.Cancel();
+            }
+
+            RoomConfig roomConfig = sharingServiceProfile.DefaultRoomConfig;
+            if (roomName != null)
+            {
+                roomConfig.Name = roomName;
+            }
+
+            ConnectConfig config = new ConnectConfig()
+            {
+                RoomConfig = roomConfig,
+                RequestedRole = AppRole.None,
+                SubscriptionMode = SubscriptionMode.Default,
+                SubscriptionTypes = null,
+            };
+
+            connectTokenSource = new CancellationTokenSource();
+            return ConnectInternal(config, ConnectStatus.FullyConnected, connectTokenSource.Token);
+#else
+            return Task.Run<bool>(() => { return true; });
+#endif
+        }
+
+        /// <inheritdoc />
+        public void LeaveRoom()
+        {
+            if (!CheckConnectionAndPlayMode("leave room", ConnectStatus.FullyConnected))
             {
                 return;
             }
+
 #if PHOTON_UNITY_NETWORKING
-            connectTokenSource = new CancellationTokenSource();
-            connectTask = ConnectInternalAsync(config, connectTokenSource.Token);
+            if (PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.LeaveRoom(true);
+            }
 #endif
         }
 
         /// <inheritdoc />
         public void Disconnect()
         {
-            if (!CheckConnectionAndPlayMode("disconnect", ConnectStatus.Connected | ConnectStatus.Connecting))
+            if (!CheckConnectionAndPlayMode("disconnect", ConnectStatus.FullyConnected | ConnectStatus.ConnectedToLobby | ConnectStatus.ConnectedToServer))
             {
                 return;
             }
@@ -210,7 +305,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public void SendData(SendDataArgs args)
         {
-            if (!CheckConnectionAndPlayMode("send data", ConnectStatus.Connected))
+            if (!CheckConnectionAndPlayMode("send data", ConnectStatus.FullyConnected))
             {
                 return;
             }
@@ -234,7 +329,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
-        public void SetLocalSubscriptionMode(SubscriptionModeEnum subscriptionMode, IEnumerable<short> subscriptionTypes = null)
+        public void SetLocalSubscriptionMode(SubscriptionMode subscriptionMode, IEnumerable<short> subscriptionTypes = null)
         {
             if (!Application.isPlaying)
             {
@@ -242,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 return;
             }
 
-            if (Status != ConnectStatus.Connected)
+            if (Status != ConnectStatus.FullyConnected)
             {
                 // We can set the local subscription mode, but we can't send anything yet.
                 LocalSubscriptionMode = subscriptionMode;
@@ -257,20 +352,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
             // Otherwise, we can update everyone's subscriptions with a buffered RPC call.
             // This ensures that everyone will know what everyone else is subscribed to when they connect.
-            List<int> subscriptionTypesList = new List<int>();
+            List<short> subscriptionTypesList = new List<short>();
             switch (subscriptionMode)
             {
-                case SubscriptionModeEnum.All:
+                case SubscriptionMode.All:
                 default:
                     break;
 
-                case SubscriptionModeEnum.Manual:
+                case SubscriptionMode.Manual:
                     if (subscriptionTypes == null)
                     {
                         Debug.LogError("Subscription types cannot be null when subscription is manual");
                     }
 
-                    foreach (int type in subscriptionTypes)
+                    foreach (short type in subscriptionTypes)
                     {
                         subscriptionTypesList.Add(type);
                     }
@@ -286,7 +381,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 #if PHOTON_UNITY_NETWORKING
             eventDataReceiveSubscriptionMode[0] = subscriptionMode;
             eventDataReceiveSubscriptionMode[1] = subscriptionTypesList.ToArray();
-            eventDataReceiveSubscriptionMode[2] = PhotonNetwork.LocalPlayer.UserId;
+            eventDataReceiveSubscriptionMode[2] = (short)PhotonNetwork.LocalPlayer.ActorNumber;
 
             RaiseEventOptions subscriptionEventOptions = new RaiseEventOptions()
             {
@@ -306,28 +401,41 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public bool IsLocalDeviceSubscribedToType(short type)
         {
-            if (!CheckConnectionAndPlayMode("check local subscriptions", ConnectStatus.Connected))
+            if (!CheckConnectionAndPlayMode("check local subscriptions", ConnectStatus.FullyConnected))
             {
                 return false;
             }
 
-#if PHOTON_UNITY_NETWORKING
-            return IsPhotonPlayerSubscribedToType(PhotonNetwork.LocalPlayer.UserId, type);
-#else
-            return true;
-#endif
+            return IsDeviceSubscribedToType(localDeviceID, type);
         }
 
         /// <inheritdoc />
         public bool IsDeviceSubscribedToType(short deviceID, short type)
         {
-            if (!deviceIdToUserIDLookup.TryGetValue(deviceID, out string userID))
+            SubscriptionMode modeForPlayer = SubscriptionMode.All;
+            // If we don't have a subscription entry for this player then they're subscribed by default
+            if (!subscriptionModes.TryGetValue(deviceID, out modeForPlayer))
             {
-                Debug.LogError("Device ID " + deviceID + " not recognized.");
-                return false;
+                return true;
             }
 
-            return IsPhotonPlayerSubscribedToType(userID, type);
+            switch (modeForPlayer)
+            {
+                case SubscriptionMode.All:
+                default:
+                    return true;
+
+                case SubscriptionMode.Manual:
+                    if (subscribedTypes.TryGetValue(deviceID, out HashSet<short> subscriptions))
+                    {
+                        return subscriptions.Contains(type);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Warning: Subscription type is set to manual but no types are defined for user " + deviceID);
+                        return true;
+                    }
+            }
         }
 
         /// <inheritdoc />
@@ -345,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     Debug.LogError("Can't set local subscription when mode is not set to manual.");
                     return;
 
-                case SubscriptionModeEnum.Manual:
+                case SubscriptionMode.Manual:
                     break;
             }
 
@@ -371,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 #if PHOTON_UNITY_NETWORKING
                 eventDataReceiveSubscriptionMode[0] = LocalSubscriptionMode;
                 eventDataReceiveSubscriptionMode[1] = localSubscriptionTypes.ToArray();
-                eventDataReceiveSubscriptionMode[2] = PhotonNetwork.LocalPlayer.UserId;
+                eventDataReceiveSubscriptionMode[2] = (short)PhotonNetwork.LocalPlayer.ActorNumber;
 
                 RaiseEventOptions subscriptionEventOptions = new RaiseEventOptions()
                 {
@@ -392,18 +500,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public void PingDevice(short deviceID)
         {
-            // Find the user id associated with this device ID
-            if (!deviceIdToUserIDLookup.TryGetValue(deviceID, out string userID))
-            {
-                Debug.LogError("Device ID " + deviceID + " not recognized.");
-                return;
-            }
-
 #if PHOTON_UNITY_NETWORKING
             Player targetPlayer = null;
             foreach (Player player in PhotonNetwork.PlayerListOthers)
             {
-                if (player.UserId == userID)
+                if (player.ActorNumber == deviceID)
                 {
                     targetPlayer = player;
                     break;
@@ -432,6 +533,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         }
 
         /// <inheritdoc />
+        public bool ValidateRoomConfig(RoomConfig config, out string error)
+        {
+            error = string.Empty;
+
+            if (string.IsNullOrEmpty(config.Name))
+            {
+                error = "Room name cannot be empty";
+                return false;
+            }
+
+            if (config.MaxDevices < 1)
+            {
+                error = "Max players must be greater than zero";
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <inheritdoc />
         public override void Initialize()
         {
             if (!Application.isPlaying)
@@ -439,12 +560,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 return;
             }
 
-            nextDeviceID = 1;
             localDeviceID = -1;
-            currentRequestedRole = AppRole.None;
 
 #if PHOTON_UNITY_NETWORKING
             PhotonNetwork.AddCallbackTarget(this);
+            typedLobby = new TypedLobby(sharingServiceProfile.LobbyName, LobbyType.Default);
 #endif
         }
 
@@ -458,32 +578,30 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
             if (sharingServiceProfile.AutoConnectOnStartup && Status == ConnectStatus.NotConnected)
             {
-                Connect();
+                FastConnect();
             }
         }
 
         /// <inheritdoc />
         public override void Update()
         {
-            // Monitor our connect task, if it exists.
-            if (connectTask != null)
+            // Check for connect status updates
+            ConnectStatus newStatus = CheckStatusInternal();
+            if (Status != newStatus)
             {
-                if (connectTask.IsCompleted)
+                Status = newStatus;
+                OnStatusChange?.Invoke(new StatusEventArgs()
                 {
-                    switch (connectTask.Status)
-                    {
-                        case TaskStatus.Faulted:
-                            Debug.LogError("Error when attempting to connect to sharing service.");
-                            Debug.LogException(connectTask.Exception);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    connectTask = null;
-                }
+                    AppRole = this.AppRole,
+                    Status = this.Status,
+                });
             }
+
+#if PHOTON_UNITY_NETWORKING
+            // Cache this since it uses Linq
+            playersInRoom.Clear();
+            playersInRoom.AddRange(PhotonNetwork.PlayerList);
+#endif
         }
 
         /// <inheritdoc />
@@ -496,11 +614,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
 #if PHOTON_UNITY_NETWORKING
             PhotonNetwork.RemoveCallbackTarget(this);
-#endif
-            if (Status != ConnectStatus.NotConnected)
+            if (PhotonNetwork.IsConnected)
             {
-                Disconnect();
+                PhotonNetwork.Disconnect();
             }
+#endif
         }
 
         #endregion
@@ -524,37 +642,51 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             return true;
         }
 
-        private bool IsPhotonPlayerSubscribedToType(string userID, short type)
+        private ConnectStatus CheckStatusInternal()
         {
-            SubscriptionModeEnum modeForPlayer = SubscriptionModeEnum.All;
-            // If we don't have a subscription entry for this player then they're subscribed by default
-            if (!subscriptionModes.TryGetValue(userID, out modeForPlayer))
-            {
-                return true;
-            }
+            RoomName = string.Empty;
+            LobbyName = string.Empty;
 
-            switch (modeForPlayer)
+#if PHOTON_UNITY_NETWORKING
+            switch (PhotonNetwork.NetworkClientState)
             {
-                case SubscriptionModeEnum.All:
+                case ClientState.ConnectingToNameServer:
+                case ClientState.Authenticating:
+                case ClientState.ConnectingToMasterServer:
+                    return ConnectStatus.AttemptingToConnect;
+
+                case ClientState.ConnectedToMasterServer:
+                case ClientState.JoiningLobby:
+                    return ConnectStatus.ConnectedToServer;
+
+                case ClientState.JoinedLobby:
+                case ClientState.ConnectingToGameServer:
+                case ClientState.ConnectedToGameServer:
+                case ClientState.Joining:
+                    LobbyName = PhotonNetwork.CurrentLobby.Name;
+                    return ConnectStatus.ConnectedToLobby;
+
+                case ClientState.Joined:
+                    LobbyName = PhotonNetwork.CurrentLobby.Name;
+                    RoomName = PhotonNetwork.CurrentRoom.Name;
+                    return ConnectStatus.FullyConnected;
+
+                case ClientState.PeerCreated:
+                case ClientState.Disconnected:
+                case ClientState.Disconnecting:
+                case ClientState.DisconnectingFromGameServer:
+                case ClientState.DisconnectingFromMasterServer:
                 default:
-                    return true;
-
-                case SubscriptionModeEnum.Manual:
-                    if (subscribedTypes.TryGetValue(userID, out HashSet<short> subscriptions))
-                    {
-                        return subscriptions.Contains(type);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Warning: Subscription type is set to manual but no types are defined for user " + userID);
-                        return true;
-                    }
+                    return ConnectStatus.NotConnected;
             }
+#else
+            return ConnectStatus.NotConnected;
+#endif
         }
 
         #endregion
 
-        #region photon private methods
+        #region Photon private methods
 
 #if PHOTON_UNITY_NETWORKING
 
@@ -570,7 +702,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                         // Everyone who is subscribed receives the data including sender.
                         foreach (Player player in PhotonNetwork.PlayerList)
                         {
-                            if (!IsPhotonPlayerSubscribedToType(player.UserId, args.Type))
+                            if (!IsDeviceSubscribedToType((short)player.ActorNumber, args.Type))
                                 continue;
 
                             targetActors.Add(player.ActorNumber);
@@ -583,7 +715,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                         // Everyone except the local player who is subscribed receives the data including sender.
                         foreach (Player player in PhotonNetwork.PlayerList)
                         {
-                            if (!IsPhotonPlayerSubscribedToType(player.UserId, args.Type) || player.IsLocal)
+                            if (!IsDeviceSubscribedToType((short)player.ActorNumber, args.Type) || player.IsLocal)
                                 continue;
 
                             targetActors.Add(player.ActorNumber);
@@ -601,16 +733,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                         for (int i = 0; i < args.Targets.Length; i++)
                         {
-                            if (!deviceIdToUserIDLookup.TryGetValue(args.Targets[i], out string userID))
-                            {
-                                Debug.LogError("Couldn't find accompanying user ID for manual target " + args.Targets[i]);
-                                continue;
-                            }
-
                             bool foundPlayer = false;
                             foreach (Player player in PhotonNetwork.PlayerList)
                             {
-                                if (player.UserId == userID)
+                                if (player.ActorNumber == args.Targets[i])
                                 {
                                     foundPlayer = true;
                                     targetActors.Add(player.ActorNumber);
@@ -620,7 +746,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                             if (!foundPlayer)
                             {
-                                Debug.LogError("Couldn't find accompanying player for user ID " + userID + "(via manual target " + args.Targets[i] + ")");
+                                Debug.LogError("Couldn't find accompanying player for user ID " + args.Targets[i] + "(via manual target " + args.Targets[i] + ")");
                             }
                         }
                     }
@@ -628,25 +754,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             }
         }
 
-        private void ReceiveSubscriptionMode(SubscriptionModeEnum newSubscriptionMode, short[] newSubscriptionTypes, string userID)
+        private void ReceiveSubscriptionMode(SubscriptionMode newSubscriptionMode, short[] newSubscriptionTypes, short deviceID)
         {
-            subscriptionModes[userID] = newSubscriptionMode;
+            subscriptionModes[deviceID] = newSubscriptionMode;
 
             HashSet<short> stateTypes;
-            if (!subscribedTypes.TryGetValue(userID, out stateTypes))
+            if (!subscribedTypes.TryGetValue(deviceID, out stateTypes))
             {
                 stateTypes = new HashSet<short>();
-                subscribedTypes.Add(userID, stateTypes);
+                subscribedTypes.Add(deviceID, stateTypes);
             }
 
             stateTypes.Clear();
             switch (newSubscriptionMode)
             {
-                case SubscriptionModeEnum.All:
+                case SubscriptionMode.All:
                 default:
                     break;
 
-                case SubscriptionModeEnum.Manual:
+                case SubscriptionMode.Manual:
                     if (newSubscriptionTypes == null)
                     {
                         Debug.LogError("Subscription types cannot be null when subscription is manual");
@@ -665,7 +791,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     break;
             }
 
-            if (userID == PhotonNetwork.LocalPlayer.UserId)
+            if (deviceID == localDeviceID)
             {
                 LocalSubscriptionMode = newSubscriptionMode;
                 localSubscriptionTypes.Clear();
@@ -678,440 +804,462 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 });
             }
         }
-
-        private async Task ConnectInternalAsync(ConnectConfig config, CancellationToken token)
+        
+        private void ReceiveAppRoleRequest(short deviceID, AppRole requestedRole)
         {
-            string lobbyName = string.IsNullOrEmpty(config.LobbyName) ? sharingServiceProfile.DefaultLobbyName : config.LobbyName;
-            string roomName = string.IsNullOrEmpty(config.RoomName) ? sharingServiceProfile.DefaultRoomName : config.RoomName;
-            currentRequestedRole = (config.RequestedRole == AppRole.None) ? sharingServiceProfile.DefaultRequestedRole : config.RequestedRole;
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.LogError("Only the master client should deal with app role requests.");
+                return;
+            }
 
-            // If we've set the subscription mode before connecting, use that instead of our default subscription mode
-            SubscriptionModeEnum currentSubscriptionMode = (LocalSubscriptionMode == SubscriptionModeEnum.Default) ? sharingServiceProfile.DefaultSubscriptionMode : LocalSubscriptionMode;
-            IEnumerable<short> currentSubscriptionTypes = (LocalSubscriptionMode != SubscriptionModeEnum.Manual) ? sharingServiceProfile.DefaultSubscriptionTypes : localSubscriptionTypes;
+            AppRole result = AppRole.None;
 
-            // If the config specifies a subscription mode, use that instead of our current subscription mode
-            SubscriptionModeEnum subscriptionMode = (config.SubscriptionMode == SubscriptionModeEnum.Default) ? currentSubscriptionMode : config.SubscriptionMode;
-            IEnumerable<short> subscriptionTypes = (config.SubscriptionMode != SubscriptionModeEnum.Manual) ? currentSubscriptionTypes : config.SubscriptionTypes;
+            // Find our target player
+            Player targetPlayer = PhotonNetwork.PlayerList.Where(p => p.ActorNumber == deviceID).First();
+            if (targetPlayer == null)
+            {
+                Debug.LogError("Couldn't find target player " + deviceID + " to set app role - player may have disconnected.");
+                return;
+            }
+
+            switch (requestedRole)
+            {
+                case AppRole.None:
+                case AppRole.Client:
+                    {   // Assign default role based on MasterClient status
+                        result = targetPlayer.IsMasterClient ? AppRole.Host : AppRole.Client;
+                    }
+                    break;
+
+                case AppRole.Host:
+                    {   // Request master client role
+                        if (!targetPlayer.IsMasterClient)
+                        {   // If it doesn't happen this is not considered a failure.
+                            if (PhotonNetwork.SetMasterClient(targetPlayer))
+                            {
+                                result = AppRole.Host;
+                            }
+                            else
+                            {
+                                result = AppRole.Client;
+                            }
+                        }
+                        else
+                        {
+                            result = AppRole.Host;
+                        }
+                    }
+                    break;
+
+                case AppRole.Server:
+                    {   // This is more complicated
+                        // We have to ensure that nobody else has taken this role yet
+                        bool alreadyOccupied = false;
+                        foreach (KeyValuePair<short, AppRole> role in deviceIDToAppRole)
+                        {
+                            if (role.Value == AppRole.Server && role.Key != deviceID)
+                            {
+                                Debug.LogError("Can't set app role to server, " + role.Key + " has already taken this role.");
+                                alreadyOccupied = true;
+                                break;
+                            }
+                        }
+
+                        if (!alreadyOccupied)
+                        {
+                            if (!targetPlayer.IsMasterClient)
+                            {
+                                if (!PhotonNetwork.SetMasterClient(targetPlayer))
+                                {
+                                    Debug.LogError("Couldn't transfer master client to server role.");
+                                    break;
+                                }
+                                else
+                                {
+                                    result = AppRole.Server;
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            RaiseEventOptions appRoleOptions = new RaiseEventOptions()
+            {
+                CachingOption = EventCaching.AddToRoomCache,                        // Everyone needs to know if someone else requested this role
+                Receivers = ReceiverGroup.All,                                      // Send to everyone
+            };
+
+            SendOptions appRoleSendOptions = new SendOptions()
+            {
+                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,       // App role events are crucial and must be in sequence
+            };
+
+            Debug.Log("Raising app role result in master client..." + deviceID + " " + result);
+            PhotonNetwork.RaiseEvent(receiveAppRoleEvent, new object[] { deviceID, result }, appRoleOptions, appRoleSendOptions);
+        }
+
+        private void ReceiveAppRoleResult(short deviceID, AppRole result)
+        {
+            deviceIDToAppRole[deviceID] = result;
+
+            Debug.Log("Received app role result " + result + " for user ID " + deviceID);
+
+            // If this was the local player making the request, set our reqested app role to none.
+            if (deviceID == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                Debug.Log("Received app role result for local player " + result);
+                awaitingAppRoleRequest = false;
+
+                if (result != AppRole)
+                {
+                    AppRole = result;
+                    OnAppRoleSelected?.Invoke(new StatusEventArgs()
+                    {
+                        AppRole = this.AppRole,
+                        Status = this.Status,
+                    });
+                }
+            }
+        }
+
+        private async Task<bool> ConnectInternal(ConnectConfig config, ConnectStatus targetStatus, CancellationToken token)
+        {
+            if (!Application.isPlaying)
+            {
+                Debug.LogError("This can only be called during play mode.");
+                return false;
+            }
 
             float timeAttemptStarted = Time.realtimeSinceStartup;
+            bool result = false;
 
-            Status = ConnectStatus.Connecting;
-            AppRole = AppRole.None;
-            LobbyName = string.Empty;
-            RoomName = string.Empty;
+            switch (targetStatus)
+            {
+                case ConnectStatus.ConnectedToServer:
+                    {
+                        result = await ConnectToServerInternal(token, timeAttemptStarted);
+                    }
+                    break;
+
+                case ConnectStatus.ConnectedToLobby:
+                    {
+                        result = await ConnectToServerInternal(token, timeAttemptStarted) &&
+                            await ConnectToLobbyInternal(token, timeAttemptStarted);
+                    }
+                    break;
+
+                case ConnectStatus.FullyConnected:
+                    {
+                        // Figure out what our config means
+                        RoomConfig roomConfig = config.RoomConfig.IsEmpty ? sharingServiceProfile.DefaultRoomConfig : config.RoomConfig;
+                        AppRole requestedAppRole = (config.RequestedRole == AppRole.None) ? sharingServiceProfile.DefaultRequestedRole : config.RequestedRole;
+
+                        if (!ValidateRoomConfig(roomConfig, out string error))
+                        {
+                            Debug.LogError("Room config is invalid: " + error);
+                            return false;
+                        }
+
+                        // If we've set the subscription mode before connecting, use that instead of our default subscription mode
+                        SubscriptionMode currentSubscriptionMode = (LocalSubscriptionMode == SubscriptionMode.Default) ? sharingServiceProfile.DefaultSubscriptionMode : LocalSubscriptionMode;
+                        IEnumerable<short> currentSubscriptionTypes = (LocalSubscriptionMode != SubscriptionMode.Manual) ? sharingServiceProfile.DefaultSubscriptionTypes : localSubscriptionTypes;
+
+                        // If the config specifies a subscription mode, use that instead of our current subscription mode
+                        SubscriptionMode subscriptionMode = (config.SubscriptionMode == SubscriptionMode.Default) ? currentSubscriptionMode : config.SubscriptionMode;
+                        IEnumerable<short> subscriptionTypes = (config.SubscriptionMode != SubscriptionMode.Manual) ? currentSubscriptionTypes : config.SubscriptionTypes;
+
+                        result = await ConnectToServerInternal(token, timeAttemptStarted) &&
+                            await ConnectToLobbyInternal(token, timeAttemptStarted) &&
+                            await ConnectToRoomInternal(roomConfig, token, timeAttemptStarted) &&
+                            await RequestAppRoleInternal(requestedAppRole, token, timeAttemptStarted);
+
+                        if (result)
+                        {
+                            // We're ready to set our subscription mode now
+                            SetLocalSubscriptionMode(subscriptionMode, subscriptionTypes);
+                        }
+                        else
+                        {
+                            Debug.LogError("There was a problem connecting to the room.");
+                            return false;
+                        }
+                    }
+                    break;
+
+                default:
+                    {
+                        Debug.LogError(targetStatus + " is not a valid target status.");
+                        return false;
+                    }
+            }
+
+            if (!result)
+            {
+                // Something went wrong. If we've joined a room, disconnect from it now.
+                // We won't fully disconnect from the server or lobby because no error warrants that.
+                if (PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.LeaveRoom();
+                    await Task.Delay(delayWhileExitingRoom);
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ConnectToServerInternal(CancellationToken token, float timeAttemptStarted)
+        {
+            if (PhotonNetwork.IsConnectedAndReady)
+            {   // Already connected!
+                return true;
+            }
 
             if (!PhotonNetwork.ConnectUsingSettings())
             {
                 Debug.LogError("Couldn't connect using photon settings.");
-                Status = ConnectStatus.NotConnected;
-                return;
+                return false;
             }
-
-            TypedLobby typedLobby = new TypedLobby(lobbyName, LobbyType.Default);
-            RoomOptions roomOptions = new RoomOptions();
-            roomOptions.PublishUserId = true;
 
             while (!PhotonNetwork.IsConnectedAndReady)
             {
-                await Task.Delay(500);
+                await Task.Delay(delayWhileConnectingToMaster);
 
                 if (token.IsCancellationRequested)
-                {
+                {   // Callbacks will reset our status
                     PhotonNetwork.Disconnect();
-                    return;
+                    return false;
                 }
 
                 if (Time.realtimeSinceStartup > timeAttemptStarted + sharingServiceProfile.ConnectAttemptTimeout)
-                {
-                    Debug.Log("Connect attempt timed out.");
+                {   // Callbacks will reset our status
+                    Debug.Log("Connect attempt timed out after " + (Time.realtimeSinceStartup - timeAttemptStarted) + " seconds.");
                     PhotonNetwork.Disconnect();
-                    return;
+                    return false;
                 }
+            }
+
+            return true;
+        }
+
+        private async Task<bool> ConnectToLobbyInternal(CancellationToken token, float timeAttemptStarted)
+        {
+            if (PhotonNetwork.InLobby)
+            {   // We're already here!
+                return true;
             }
 
             do
             {
                 if (token.IsCancellationRequested)
                 {
-                    PhotonNetwork.Disconnect();
-                    return;
+                    return false;
                 }
 
-                Debug.Log("Trying to join lobby");
-                if (!PhotonNetwork.JoinLobby(typedLobby))
+                if (!PhotonNetwork.IsConnected)
+                {   // We disconnected while attempting to join
+                    return false;
+                }
+
+                if (PhotonNetwork.IsConnectedAndReady)
                 {
-                    Debug.LogError("Couldn't join lobby " + lobbyName + ". Trying again in a few seconds...");
-                    await Task.Delay(5000);
+                    if (!PhotonNetwork.JoinLobby(typedLobby))
+                    {
+                        Debug.LogWarning("Couldn't join lobby " + sharingServiceProfile.LobbyName + ". Trying again in a few seconds...");
+                        await Task.Delay(delayWhileConnectingToLobby);
+                    }
+
+                    if (Time.realtimeSinceStartup > timeAttemptStarted + sharingServiceProfile.ConnectAttemptTimeout)
+                    {
+                        Debug.Log("Connect attempt timed out after " + (Time.realtimeSinceStartup - timeAttemptStarted) + " seconds.");
+                        PhotonNetwork.Disconnect();
+                        return false;
+                    }
                 }
 
-                if (Time.realtimeSinceStartup > timeAttemptStarted + sharingServiceProfile.ConnectAttemptTimeout)
-                {
-                    Debug.Log("Connect attempt timed out.");
-                    PhotonNetwork.Disconnect();
-                    return;
-                }
-
-                await Task.Delay(1000);
+                await Task.Delay(delayWhileWaitingForResult);
             }
             while (!PhotonNetwork.InLobby);
 
-            do
+            return true;
+        }
+
+        private async Task<bool> ConnectToRoomInternal(RoomConfig roomConfig, CancellationToken token, float timeAttemptStarted)
+        {
+            if (PhotonNetwork.InRoom)
+            {
+                if (PhotonNetwork.CurrentRoom.Name == roomConfig.Name)
+                {   // We're already here!
+                    return true;
+                }
+                else
+                {   // Leave this room before proceeding
+                    Debug.Log("Currently in room " + PhotonNetwork.CurrentRoom.Name + " - leaving before attempting to join new room " + roomConfig.Name);
+                    PhotonNetwork.LeaveRoom();
+                    await Task.Delay(delayWhileExitingRoom);
+                }
+            }
+
+            // Create our room options
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.CleanupCacheOnLeave = true;
+            roomOptions.MaxPlayers = roomConfig.MaxDevices;
+            roomOptions.EmptyRoomTtl = roomConfig.ExpireTime;
+            roomOptions.IsVisible = roomConfig.VisibleInLobby;
+            roomOptions.PlayerTtl = int.MaxValue; // Allow players to remain inactive indefinitely when disconnected
+            roomOptions.CustomRoomPropertiesForLobby = roomConfig.LobbyProps;
+
+            if (roomConfig.RoomProps.Length > 0)
+            {
+                ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+                foreach (RoomProp prop in roomConfig.RoomProps)
+                    properties[prop.Key] = prop.Value;
+
+                roomOptions.CustomRoomProperties = properties;
+            }
+
+            // Try to join the room and see what happens
+            roomConnectResult = RoomConnectResult.Waiting;
+            PhotonNetwork.JoinOrCreateRoom(roomConfig.Name, roomOptions, typedLobby);
+
+            // Wait for our room callbacks to set this result
+            while (roomConnectResult == RoomConnectResult.Waiting)
             {
                 if (token.IsCancellationRequested)
                 {
-                    PhotonNetwork.Disconnect();
-                    return;
+                    return false;
                 }
 
-                Debug.Log("Trying to create or join room");
-                if (!PhotonNetwork.JoinOrCreateRoom(lobbyName, roomOptions, typedLobby))
+                if (!PhotonNetwork.IsConnected)
+                {   // We disconnected while attempting to join
+                    return false;
+                }
+
+                await Task.Delay(delayWhileWaitingForResult);
+            }
+
+            // See what happened with our initial attempt
+            switch (roomConnectResult)
+            {
+                case RoomConnectResult.Succeeded:
+                    Debug.Log("Successfully joined room " + roomConfig.Name);
+                    return true;
+
+                case RoomConnectResult.Failed:
+                default:
+                    return false;
+
+                case RoomConnectResult.FailedShouldRejoin:
+                    Debug.Log("Failed to join room because we should rejoin. Will attempt again.");
+                    // We just have to rejoin the room instead of attempting to create it
+                    break;
+            }
+
+            // If we've already joined a room once this session, it's possible that it still exists
+            // Try to re-join it isntead of using join or create - this will preserve our device ID
+            roomConnectResult = RoomConnectResult.Waiting;
+            PhotonNetwork.RejoinRoom(roomConfig.Name);
+
+            // Wait for our room callbacks to set this result
+            while (roomConnectResult == RoomConnectResult.Waiting)
+            {
+                if (token.IsCancellationRequested)
                 {
-                    Debug.LogError("Couldn't connect to room " + roomName + ". Trying again in a few seconds...");
-                    await Task.Delay(5000);
+                    return false;
+                }
+
+                if (!PhotonNetwork.IsConnected)
+                {   // We disconnected while attempting to join
+                    return false;
+                }
+
+                await Task.Delay(delayWhileWaitingForResult);
+            }
+
+            // See what happened with our initial attempt
+            switch (roomConnectResult)
+            {
+                case RoomConnectResult.Succeeded:
+                    Debug.Log("Successfully joined room " + roomConfig.Name);
+                    return true;
+
+                case RoomConnectResult.FailedShouldRejoin:
+                    Debug.LogError("Attempted to rejoin existing room " + roomConfig.Name + " but something went wrong. Aborting connect attempt.");
+                    return false;
+
+                case RoomConnectResult.Failed:
+                default:
+                    return false;
+            }
+        }
+
+        private async Task<bool> RequestAppRoleInternal(AppRole requestedAppRole, CancellationToken token, float timeAttemptStarted)
+        {
+            // Send this request to master client via server.
+            RaiseEventOptions appRoleOptions = new RaiseEventOptions()
+            {
+                CachingOption = EventCaching.DoNotCache,                        // No one else needs to know about requests
+                Receivers = ReceiverGroup.MasterClient,                         // Let the master client sort this out
+            };
+
+            SendOptions appRoleSendOptions = new SendOptions()
+            {
+                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,   // App role events are important and must be in sequence                
+            };
+
+            awaitingAppRoleRequest = true;
+            PhotonNetwork.RaiseEvent(requestAppRoleEvent, new object[] { (short)PhotonNetwork.LocalPlayer.ActorNumber, requestedAppRole }, appRoleOptions, appRoleSendOptions);
+
+            // Wait for a response
+            // Once a response is received, it will be set to none
+            while (awaitingAppRoleRequest)
+            {
+                Debug.Log("Waiting for role requested on connect...");
+
+                if (token.IsCancellationRequested)
+                {
+                    Debug.Log("Cancelled...");
+                    return false;
+                }
+
+                if (!PhotonNetwork.IsConnected)
+                {   // We disconnected while attempting to join
+                    return false;
                 }
 
                 if (Time.realtimeSinceStartup > timeAttemptStarted + sharingServiceProfile.ConnectAttemptTimeout)
-                {
-                    Debug.Log("Connect attempt timed out.");
+                {   // Callbacks will reset our status
+                    Debug.Log("Connect attempt timed out after " + (Time.realtimeSinceStartup - timeAttemptStarted) + " seconds.");
                     PhotonNetwork.Disconnect();
-                    return;
+                    return false;
                 }
 
-                await Task.Delay(1000);
-            }
-            while (!PhotonNetwork.InRoom);
-
-            if (currentRequestedRole != AppRole.None)
-            {
-                AppRole = currentRequestedRole;
-            }
-            else
-            {
-                AppRole = PhotonNetwork.IsMasterClient ? AppRole.Host : AppRole.Client;
+                await Task.Delay(delayWhileWaitingForResult);
             }
 
-            Status = ConnectStatus.Connected;
-            LobbyName = lobbyName;
-            RoomName = roomName;
-
-            Debug.Log("Connected with app role " + AppRole);
-
-            OnAppRoleSelected?.Invoke(new ConnectEventArgs()
+            // If our app role is still none, something went wrong.
+            if (AppRole == AppRole.None)
             {
-                AppRole = this.AppRole,
-                Status = this.Status
-            });
-
-            OnConnect?.Invoke(new ConnectEventArgs()
-            {
-                AppRole = this.AppRole,
-                Status = this.Status
-            });
-
-            // Set out subscription mode now that we're connected
-            SetLocalSubscriptionMode(subscriptionMode, subscriptionTypes);
-
-            // If we have any unhandled device events, deal with those now
-            while (unhandledLocalEvents.Count > 0)
-            {
-                UnhandledLocalEvent e = unhandledLocalEvents.Dequeue();
-                Debug.Log("Handling device event " + e.Player.UserId + " " + e.Type);
-
-                switch (e.Type)
-                {
-                    case UnhandledLocalEvent.TypeEnum.Enter:
-                        HandlePlayerEnter(e.Player);
-                        break;
-
-                    case UnhandledLocalEvent.TypeEnum.Leave:
-                        HandlePlayerLeave(e.Player);
-                        break;
-                }
+                Debug.LogError("Couldn't obtain requested app role " + requestedAppRole);
+                return false;
             }
 
-            while (unhandledRemoteEvents.Count > 0)
-            {
-                UnhandledRemoteEvent e = unhandledRemoteEvents.Dequeue();
-                Debug.Log("Handling device event " + e.UserID + " " + e.Type);
-                switch (e.Type)
-                {
-                    case UnhandledRemoteEvent.TypeEnum.Add:
-                        HandleAddDevice(e.UserID, e.DeviceName, e.DeviceID, e.DeviceProperties);
-                        break;
-
-                    case UnhandledRemoteEvent.TypeEnum.Remove:
-                        HandleRemoveDevice(e.UserID, e.DeviceName, e.DeviceID, e.DeviceProperties);
-                        break;
-                }
-            }
-        }
-
-        private void HandlePlayerEnter(Player player)
-        {
-            Debug.Log("HandlePlayerEnter: " + player.UserId);
-
-            switch (AppRole)
-            {
-                case AppRole.None:
-                    // Deal with this when we're connected
-                    Debug.Log("(Adding as unhandled event, we'll deal with this later.)");
-                    unhandledLocalEvents.Enqueue(new UnhandledLocalEvent()
-                    {
-                        Player = player,
-                        Type = UnhandledLocalEvent.TypeEnum.Enter
-                    });
-                    return;
-
-                case AppRole.Client:
-                    // Let the server handle this
-                    return;
-
-                default:
-                    break;
-            }
-
-            if (string.IsNullOrEmpty(player.UserId))
-            {
-                Debug.LogError("User id is empty - set RoomOptions.PublishUserID to true");
-                return;
-            }
-
-            short deviceID = -1;
-            // If it's the same player joining again, there's no need to generate a new ID
-            if (!userIDToDeviceIDLookup.TryGetValue(player.UserId, out deviceID))
-            {   // Otherwise, generate a new ID and add it to the lookup
-                deviceID = nextDeviceID;
-                nextDeviceID++;
-            }
-
-            Dictionary<string, string> deviceProperties = new Dictionary<string, string>();
-            foreach (DictionaryEntry entry in player.CustomProperties)
-                deviceProperties.Add(entry.Key.ToString(), entry.Value.ToString());
-
-            Debug.Log("Device " + deviceID + " has connected.");
-
-            requestDeviceActionData[0] = player.UserId;
-            requestDeviceActionData[1] = string.IsNullOrEmpty(player.NickName) ? "Device " + deviceID : player.NickName;
-            requestDeviceActionData[2] = deviceID;
-            requestDeviceActionData[3] = deviceProperties;
-
-            RaiseEventOptions eventOptions = new RaiseEventOptions()
-            {
-                Receivers = ReceiverGroup.All,                          // Let everyone know, including ourselves
-                CachingOption = EventCaching.AddToRoomCacheGlobal,      // Device add / remove calls do not need to be cached
-            };
-
-            SendOptions sendOptions = new SendOptions()
-            {
-                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,
-            };
-
-            // Let everyone else know that a device has been added
-            // This will invoke OnDeviceConnected for everyone including server
-            PhotonNetwork.RaiseEvent(requestAddDeviceEvent, requestDeviceActionData, eventOptions, sendOptions);
-        }
-
-        private void HandlePlayerLeave(Player player)
-        {
-            Debug.Log("HandlePlayerLeave: " + player.UserId);
-
-            switch (AppRole)
-            {
-                case AppRole.None:
-                    Debug.Log("(Adding as unhandled event, we'll deal with this later.)");
-                    // Deal with this when we're connected
-                    unhandledLocalEvents.Enqueue(new UnhandledLocalEvent()
-                    {
-                        Player = player,
-                        Type = UnhandledLocalEvent.TypeEnum.Leave
-                    });
-                    return;
-
-                case AppRole.Client:
-                    // Let the server handle this
-                    return;
-
-                default:
-                    break;
-            }
-
-            if (string.IsNullOrEmpty(player.UserId))
-            {
-                Debug.LogError("User id is empty - set RoomOptions.PublishUserID to true");
-                return;
-            }
-
-            short deviceID = -1;
-            if (!userIDToDeviceIDLookup.TryGetValue(player.UserId, out deviceID))
-            {
-                Debug.LogError("User id has no associated device ID - this should never happen!");
-                return;
-            }
-
-            Dictionary<string, string> deviceProperties = new Dictionary<string, string>();
-            foreach (DictionaryEntry entry in player.CustomProperties)
-                deviceProperties.Add(entry.Key.ToString(), entry.Value.ToString());
-
-            Debug.Log("Device " + deviceID + " has disconnected.");
-
-            requestDeviceActionData[0] = player.UserId;
-            requestDeviceActionData[1] = string.IsNullOrEmpty(player.NickName) ? "Device " + deviceID : player.NickName;
-            requestDeviceActionData[2] = deviceID;
-            requestDeviceActionData[3] = deviceProperties;
-
-            RaiseEventOptions eventOptions = new RaiseEventOptions()
-            {
-                Receivers = ReceiverGroup.All,                          // Let everyone know, including ourselves
-                CachingOption = EventCaching.AddToRoomCacheGlobal,      // Device add / remove calls do not need to be cached
-            };
-
-            SendOptions sendOptions = new SendOptions()
-            {
-                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,
-            };
-
-            // Let everyone else know that a device has been removed
-            // This will invoke OnDeviceDisconnected for everyone including server
-            PhotonNetwork.RaiseEvent(requestRemoveDeviceEvent, requestDeviceActionData, eventOptions, sendOptions);
-        }
-
-        private void RequestAddDevice(string userID, string deviceName, short deviceID, Dictionary<string, string> deviceProperties)
-        {
-            switch (AppRole)
-            {
-                case AppRole.None:
-                    unhandledRemoteEvents.Enqueue(new UnhandledRemoteEvent()
-                    {
-                        Type = UnhandledRemoteEvent.TypeEnum.Add,
-                        UserID = userID,
-                        DeviceName = deviceName,
-                        DeviceID = deviceID,
-                        DeviceProperties = deviceProperties
-                    });
-                    return;
-
-                default:
-                    break;
-            }
-
-            HandleAddDevice(userID, deviceName, deviceID, deviceProperties);
-        }
-
-        private void RequestRemoveDevice(string userID, string deviceName, short deviceID, Dictionary<string, string> deviceProperties)
-        {
-            switch (AppRole)
-            {
-                case AppRole.None:
-                    unhandledRemoteEvents.Enqueue(new UnhandledRemoteEvent()
-                    {
-                        Type = UnhandledRemoteEvent.TypeEnum.Remove,
-                        UserID = userID,
-                        DeviceName = deviceName,
-                        DeviceID = deviceID,
-                        DeviceProperties = deviceProperties
-                    });
-                    return;
-
-                default:
-                    break;
-            }
-
-            HandleRemoveDevice(userID, deviceName, deviceID, deviceProperties);
-        }
-
-        private void HandleAddDevice(string userID, string deviceName, short deviceID, Dictionary<string, string> deviceProperties)
-        {
-            Debug.Log("Added device: " + userID + ", " + deviceID);
-            userIDToDeviceIDLookup.Add(userID, deviceID);
-            deviceIdToUserIDLookup.Add(deviceID, userID);
-            bool isLocalDevice = (PhotonNetwork.LocalPlayer.UserId == userID);
-
-            if (isLocalDevice)
-            {   // We've been connected
-                localDeviceID = deviceID;
-            }
-
-            OnDeviceConnected?.Invoke(new DeviceEventArgs()
-            {
-                DeviceID = deviceID,
-                DeviceName = deviceName,
-                IsLocalDevice = isLocalDevice,
-                Properties = deviceProperties
-            });
-        }
-
-        private void HandleRemoveDevice(string userID, string deviceName, short deviceID, Dictionary<string, string> deviceProperties)
-        {
-            Debug.Log("removed device: " + userID + ", " + deviceID);
-            userIDToDeviceIDLookup.Remove(userID);
-            deviceIdToUserIDLookup.Remove(deviceID);
-            bool isLocalDevice = (PhotonNetwork.LocalPlayer.UserId == userID);
-
-            if (isLocalDevice)
-            {   // We've been disconnected
-                localDeviceID = -1;
-            }
-
-            OnDeviceDisconnected?.Invoke(new DeviceEventArgs()
-            {
-                DeviceID = deviceID,
-                DeviceName = deviceName,
-                IsLocalDevice = isLocalDevice,
-                Properties = deviceProperties
-            });
+            // Otherwise, everything went great!
+            return true;
         }
 
 #endif
 
-#endregion
+        #endregion
 
         #region Photon callbacks (used)
 
 #if PHOTON_UNITY_NETWORKING
-        void IConnectionCallbacks.OnDisconnected(DisconnectCause cause)
-        {
-            // Reset everything to do with our connection
-            AppRole = AppRole.None;
-            Status = ConnectStatus.NotConnected;
-            LobbyName = string.Empty;
-            RoomName = string.Empty;
-            LocalSubscriptionMode = SubscriptionModeEnum.Default;
-            localSubscriptionTypes.Clear();
-            currentRequestedRole = AppRole.None;
 
-            Debug.Log("Disconnected from sharing service.");
-
-            OnDisconnect?.Invoke(new ConnectEventArgs()
-            {
-                Status = this.Status,
-                AppRole = AppRole.None,
-                Message = cause.ToString()
-            });
-        }
-
-        void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
-        {
-            if (currentRequestedRole != AppRole.None)
-            {
-                // The current requested role is set, so master client changes will have no effect.
-                return;
-            }
-
-            AppRole newAppRole = (newMasterClient.UserId == PhotonNetwork.LocalPlayer.UserId) ? AppRole.Host : AppRole.Client;
-
-            if (AppRole != newAppRole)
-            {
-                AppRole = newAppRole;
-                Debug.Log((object)("App role changed in sharing service: " + AppRole));
-
-                OnAppRoleSelected?.Invoke(new ConnectEventArgs()
-                {
-                    AppRole = this.AppRole,
-                    Status = this.Status,
-                });
-            }
-        }
-
+        // This is where all of our internal events are routed.
         void IOnEventCallback.OnEvent(EventData photonEvent)
         {
             switch (photonEvent.Code)
@@ -1119,7 +1267,21 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 case setSubscriptionEvent:
                     {
                         object[] data = (object[])photonEvent.CustomData;
-                        ReceiveSubscriptionMode((SubscriptionModeEnum)data[0], (short[])data[1], (string)data[2]);
+                        ReceiveSubscriptionMode((SubscriptionMode)data[0], (short[])data[1], (short)data[2]);
+                    }
+                    break;
+
+                case requestAppRoleEvent:
+                    {
+                        object[] data = (object[])photonEvent.CustomData;
+                        ReceiveAppRoleRequest((short)data[0], (AppRole)data[1]);
+                    }
+                    break;
+
+                case receiveAppRoleEvent:
+                    {
+                        object[] data = (object[])photonEvent.CustomData;
+                        ReceiveAppRoleResult((short)data[0], (AppRole)data[1]);
                     }
                     break;
 
@@ -1130,7 +1292,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                         {
                             Type = (short)data[0],
                             Data = (byte[])data[1],
-                            Sender =(short)data[2],
+                            Sender = (short)data[2],
                         });
                     }
                     break;
@@ -1141,43 +1303,145 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     }
                     break;
 
-                case requestAddDeviceEvent:
-                    {
-                        object[] data = (object[])photonEvent.CustomData;
-                        RequestAddDevice((string)data[0], (string)data[1], (short)data[2], (Dictionary<string, string>)data[3]);
-                    }
-                    break;
-
-                case requestRemoveDeviceEvent:
-                    {
-                        object[] data = (object[])photonEvent.CustomData;
-                        RequestRemoveDevice((string)data[0], (string)data[1], (short)data[2], (Dictionary<string,string>)data[3]);
-                    }
-                    break;
-
                 default:
                     break;
             }
         }
 
+        void IConnectionCallbacks.OnDisconnected(DisconnectCause cause)
+        {
+            // Reset everything to do with our connection
+            AppRole = AppRole.None;
+            LocalSubscriptionMode = SubscriptionMode.Default;
+            localSubscriptionTypes.Clear();
+            deviceIDToAppRole.Clear();
+            awaitingAppRoleRequest = false;
+
+            Debug.Log("Disconnected from sharing service.");
+        }
+
+        void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
+        {
+            // Let the new master client handle broadcasting app role results
+            if (newMasterClient != PhotonNetwork.LocalPlayer)
+            {
+                return;
+            }
+
+            RaiseEventOptions appRoleOptions = new RaiseEventOptions()
+            {
+                CachingOption = EventCaching.AddToRoomCache,                        // Everyone needs to know if someone else requested this role
+                Receivers = ReceiverGroup.Others,                                   // Send to everyone except us
+            };
+
+            SendOptions appRoleSendOptions = new SendOptions()
+            {
+                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,       // App role events are crucial and must be in sequence
+            };
+
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if (!deviceIDToAppRole.TryGetValue((short)player.ActorNumber, out AppRole currentRole))
+                    continue;
+
+                AppRole newAppRole = currentRole;
+
+                switch (currentRole)
+                {
+                    case AppRole.Server:
+                        // Don't do anything with servers
+                        continue;
+
+                    case AppRole.Host:
+                    case AppRole.Client:
+                        newAppRole = player.IsMasterClient ? AppRole.Host : AppRole.Client;
+                        break;
+
+                    case AppRole.None:
+                        break;
+                }
+
+                if (currentRole != newAppRole)
+                {
+                    PhotonNetwork.RaiseEvent(receiveAppRoleEvent, new object[] { (short)player.ActorNumber, newAppRole }, appRoleOptions, appRoleSendOptions);
+                }
+            }
+        }
+
         void IMatchmakingCallbacks.OnJoinedRoom()
         {
-            HandlePlayerEnter(PhotonNetwork.LocalPlayer);
+            playersInRoom.Clear();
+            playersInRoom.AddRange(PhotonNetwork.PlayerList);
+            // Store this so we can rejoin if we're disconnected
+            lastRoomJoined = PhotonNetwork.CurrentRoom.Name;
+            localDeviceID = (short)PhotonNetwork.LocalPlayer.ActorNumber;
+            roomConnectResult = RoomConnectResult.Succeeded;
         }
 
         void IMatchmakingCallbacks.OnLeftRoom()
         {
-            HandlePlayerLeave(PhotonNetwork.LocalPlayer);
+            playersInRoom.Clear();
+            playersInRoom.AddRange(PhotonNetwork.PlayerList);
+            localDeviceID = -1;
         }
 
         void IInRoomCallbacks.OnPlayerEnteredRoom(Player newPlayer)
         {
-            HandlePlayerEnter(newPlayer);
+            if (newPlayer.ActorNumber >= short.MaxValue)
+            {
+                Debug.LogWarning("Actor number exceeds available device ID values. This is highly unusual.");
+            }
+
+            playersInRoom.Clear();
+            playersInRoom.AddRange(PhotonNetwork.PlayerList);
         }
 
         void IInRoomCallbacks.OnPlayerLeftRoom(Player otherPlayer)
         {
-            HandlePlayerLeave(otherPlayer);
+            playersInRoom.Clear();
+            playersInRoom.AddRange(PhotonNetwork.PlayerList);
+        }
+
+        void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message) 
+        {
+            Debug.LogError("Failed to create room: " + message);
+            roomConnectResult = RoomConnectResult.Failed;
+        }
+
+        void IMatchmakingCallbacks.OnJoinRoomFailed(short returnCode, string message)
+        {
+            switch (returnCode)
+            {
+                case rejoinRoomError:
+                    roomConnectResult = RoomConnectResult.FailedShouldRejoin;
+                    break;
+
+                default:
+                    Debug.LogError("Failed to join room: " + message);
+                    roomConnectResult = RoomConnectResult.Failed;
+                    break;
+            }
+        }
+
+        void ILobbyCallbacks.OnRoomListUpdate(List<global::Photon.Realtime.RoomInfo> roomList)
+        {
+            availableRooms.Clear();
+
+            foreach (var roomInfoPhoton in roomList)
+            {
+                availableRooms.Add(new RoomInfo()
+                {
+                    Name = roomInfoPhoton.Name,
+                    IsOpen = roomInfoPhoton.IsOpen,
+                    MaxDevices = roomInfoPhoton.MaxPlayers,
+                    NumDevices = (short)roomInfoPhoton.PlayerCount,
+                });
+            }
+        }
+
+        void ILobbyCallbacks.OnLeftLobby()
+        {
+            availableRooms.Clear();
         }
 #endif
 
@@ -1204,49 +1468,25 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         void IMatchmakingCallbacks.OnCreatedRoom() { }
 
-        void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message) { }
-
-        void IMatchmakingCallbacks.OnJoinRoomFailed(short returnCode, string message) { }
-
         void IMatchmakingCallbacks.OnJoinRandomFailed(short returnCode, string message) { }
+
+        void ILobbyCallbacks.OnJoinedLobby() { }
+
+        void ILobbyCallbacks.OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics) { }
 #endif
 
         #endregion
 
-        #region Helper classes
+        #region Helper structs, classes, enums
 
-        /// <summary>
-        /// Used to store device connections obtained before OnAppConnect has been called.
-        /// </summary>
-        private class UnhandledLocalEvent
+        private enum RoomConnectResult
         {
-            public enum TypeEnum
-            {
-                Leave,
-                Enter,
-            }
-
-            public TypeEnum Type = TypeEnum.Enter;
-#if PHOTON_UNITY_NETWORKING
-            public Player Player = null;
-#endif
+            Waiting,
+            Succeeded,
+            FailedShouldRejoin,
+            Failed,
         }
 
-        private class UnhandledRemoteEvent
-        {
-            public enum TypeEnum
-            {
-                Add,
-                Remove,
-            }
-
-            public TypeEnum Type = TypeEnum.Add;
-            public string UserID = string.Empty;
-            public string DeviceName = string.Empty;
-            public short DeviceID = -1;
-            public Dictionary<string, string> DeviceProperties = null;
-        }
-
-#endregion
+        #endregion
     }
 }

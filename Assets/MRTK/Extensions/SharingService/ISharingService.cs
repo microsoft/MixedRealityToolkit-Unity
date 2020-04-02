@@ -1,4 +1,8 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
@@ -45,22 +49,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         int NumConnectedDevices { get; }
 
         /// <summary>
-        /// Invoked when the service has connected.
+        /// Names of all available rooms. Populated once service has connected to a lobby and have called FindRooms once.
         /// </summary>
-        event ConnectionEvent OnConnect;
+        IEnumerable<RoomInfo> AvailableRooms { get; }
+
+        /// <summary>
+        /// Number of available rooms in lobby.
+        /// </summary>
+        int NumAvailableRooms { get; }
+
+        /// <summary>
+        /// Invoked when the service's connection status has changed.
+        /// This happens when the service:
+        /// - connects/disconnects to/from server
+        /// - connects/disconnects to/from lobby
+        /// - connects/disconnects to/from room
+        /// </summary>
+        event StatusEvent OnStatusChange;
 
         /// <summary>
         /// Invoked when the sharing service's AppRole changes.
+        /// This is guaranteed to be invoked once when the device connects to a room.
         /// </summary>
-        event ConnectionEvent OnAppRoleSelected;
-
-        /// <summary>
-        /// Invoked when the service disconnects.
-        /// </summary>
-        event ConnectionEvent OnDisconnect;
+        event StatusEvent OnAppRoleSelected;
 
         /// <summary>
         /// Invoked when subscription mode changes.
+        /// This is guaranteed to be invoked once when the device connects to a room.
         /// </summary>
         event SubscriptionEvent OnLocalSubscriptionModeChange;
 
@@ -70,29 +85,47 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         event DataEvent OnReceiveData;
 
         /// <summary>
-        /// Invoked when a device has connected, including our own.
+        /// Invoked when a device has connected to our room, including our own.
         /// </summary>
         event DeviceEvent OnDeviceConnected;
 
         /// <summary>
-        /// Invoked when a device has disconnected, including our own.
+        /// Invoked when a device has disconnected from our room, including our own.
         /// </summary>
         event DeviceEvent OnDeviceDisconnected;
 
         /// <summary>
-        /// Invoked when another device calls PingDevice for this device.
+        /// Invoked when another device in our room calls PingDevice for this device.
         /// </summary>
         event PingEvent OnLocalDevicePinged;
 
         /// <summary>
-        /// Connect to the service using default configuration from profile.
+        /// Invoked when a SearchForRooms request has been completed.
         /// </summary>
-        void Connect();
+        //event RoomEvent OnRoomsPopulated;
 
         /// <summary>
-        /// Connect to the service using custom configuration.
+        /// Quick way to connect directly to a room and circumvent matchmaking.
+        /// The serivice will attempt to connect to the lobby and room specified in the config file.
         /// </summary>
-        void ConnectCustom(ConnectConfig config);
+        Task<bool> FastConnect();
+
+        /// <summary>
+        /// Quick way to connect directly to a room and circumvent matchmaking.
+        /// The service will attempt to connect to the lobby and room specified in the config argument.
+        /// </summary>
+        Task<bool> FastConnect(ConnectConfig config);
+
+        /// <summary>
+        /// Connects to server and joins the lobby specified in the service profile.
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> JoinLobby();
+
+        /// <summary>
+        /// Joins a room with the supplied name. Joins the default room if roomName is null.
+        /// </summary>
+        Task<bool> JoinRoom(string roomName = null);
 
         /// <summary>
         /// Disconnects from the service.
@@ -100,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         void Disconnect();
 
         /// <summary>
-        /// Sends data to anyone connected to the service.
+        /// Sends data to any devices connected to the same room.
         /// </summary>
         void SendData(SendDataArgs args);
 
@@ -108,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Sets the subscription mode as well as manual subscription types.
         /// If subscription mode is ALL then subscription types are ignored.
         /// </summary>
-        void SetLocalSubscriptionMode(SubscriptionModeEnum mode, IEnumerable<short> types = null);
+        void SetLocalSubscriptionMode(SubscriptionMode mode, IEnumerable<short> types = null);
 
         /// <summary>
         /// Returns true if local device is subscribed to this state type, or if subscription type is set to ALL
@@ -132,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         void PingDevice(short deviceID);
     }
 
-    public delegate void ConnectionEvent(ConnectEventArgs e);
+    public delegate void StatusEvent(StatusEventArgs e);
     public delegate void DataEvent(DataEventArgs e);
     public delegate void SubscriptionEvent(SubscriptionEventArgs e);
     public delegate void DeviceEvent(DeviceEventArgs e);

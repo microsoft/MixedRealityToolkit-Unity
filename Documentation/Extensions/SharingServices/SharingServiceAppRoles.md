@@ -12,7 +12,7 @@ For instance, if a shared app consists of multiple IOT devices connected to a si
 
 By default a device's app role is chosen by the service. In the Photon implementation of the service, `AppRole.Host` corresponds to a player's *Master Client* property, while `AppHost.Client` corresponds to a standard client. If a device assigned the `AppRole.Host` role is disconnected, another device will be assigned that role. (Other implementations may assign or re-assign these roles differenly.)
 
-`AppRole.Server` must be explicitly requested on connect. If that device disconnects, that role will not be re-assigned to another device. This is useful for dedicated-server analogues like the PC / IOT example discussed earlier.
+`AppRole.Server` must be explicitly requested on connect. If the server device disconnects, that role will not be re-assigned to another device. This is useful for dedicated-server analogues like the PC / IOT example discussed earlier.
 
 AppRole | Photon Equivalent | Service assigns automatically | Can change when device disconnects | More than one permitted
 --- | --- | --- | --- | ---

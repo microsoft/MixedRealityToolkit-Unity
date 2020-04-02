@@ -14,9 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		public bool AutoConnectOnStartup => autoConnectOnStartup;
 		public float ConnectAttemptTimeout => connectAttemptTimeout;
 		public AppRole DefaultRequestedRole => defaultRequestedRole;
-		public string DefaultLobbyName => defaultLobbyName;
-		public string DefaultRoomName => defaultRoomName;
-		public SubscriptionModeEnum DefaultSubscriptionMode => defaultSubscriptionMode;
+		public string LobbyName => lobbyName;
+		public RoomConfig DefaultRoomConfig => defaultRoomConfig;
+		public SubscriptionMode DefaultSubscriptionMode => defaultSubscriptionMode;
 		public IEnumerable<short> DefaultSubscriptionTypes => defaultSubscriptionTypes;
 
 		[SerializeField, Tooltip("If true, the service will connect once enabled.")]
@@ -25,14 +25,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		private float connectAttemptTimeout = 10f;
 		[SerializeField, Tooltip("The app role to be used if none is specified when connecting.")]
 		private AppRole defaultRequestedRole = AppRole.None;
-		[SerializeField, Tooltip("The lobby name to be used if none is specified when connecting.")]
-		private string defaultLobbyName = "MRTKLobby";
-		[SerializeField, Tooltip("The room name to be used if none is specified when connecting.")]
-		private string defaultRoomName = "MRTKRoom";
 		[SerializeField, Tooltip("The subscription mode to be used if none is specified when connecting.")]
-		private SubscriptionModeEnum defaultSubscriptionMode = SubscriptionModeEnum.Default;
+		private SubscriptionMode defaultSubscriptionMode = SubscriptionMode.Default;
 		[SerializeField, Tooltip("Data types to be used if default subscription mode is set to manual.")]
 		private short[] defaultSubscriptionTypes = new short[0];
+		[SerializeField, Tooltip("The lobby name to be used when connecting.")]
+		private string lobbyName = "MRTKLobby";
+		[SerializeField, Tooltip("The room properties to be used if none is specified when connecting.")]
+		private RoomConfig defaultRoomConfig = new RoomConfig();
 
 #if UNITY_EDITOR
 		[CustomEditor(typeof(SharingServiceProfile))]

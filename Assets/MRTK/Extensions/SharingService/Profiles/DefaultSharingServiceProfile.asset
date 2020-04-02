@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: DefaultSharingServiceProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  autoConnectOnStartup: 1
+  autoConnectOnStartup: 0
   connectAttemptTimeout: 10
   defaultRequestedRole: 0
-  defaultLobbyName: MRTKLobby
-  defaultRoomName: MRTKRoom
   defaultSubscriptionMode: 0
   defaultSubscriptionTypes: 
+  lobbyName: MRTKLobby
+  defaultRoomConfig:
+    Name: MRTKRoom2
+    MaxDevices: 4
+    ExpireTime: 10000
+    VisibleInLobby: 1
+    RoomProps: []
+    LobbyProps: []
