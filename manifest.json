@@ -7654,6 +7654,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Examples.Experimental.DialogTest.DialogExampleController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Examples.Experimental.DialogTest.DialogExampleController.html",
+          "hash": "VI4VS/8RIoZhwC6sSE922A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Examples.Experimental.DialogTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Examples.Experimental.DialogTest.html",
+          "hash": "OYdqstfZgYioPGJodSAa/A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.AnimationCurveExtensions.yml",
       "output": {
         ".html": {
@@ -10911,6 +10935,90 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Diagnostics.html",
           "hash": "LMLY3Ymx6F8+ej2lShmwTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.Dialog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.Dialog.html",
+          "hash": "tPAJb/dtwmtaRtS+ZkSAjA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButton.html",
+          "hash": "jx4Obk/V7WvFVQKUjL53VQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButtonType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogButtonType.html",
+          "hash": "+sFgSVcqhcrWkjLQLEbmbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogResult.html",
+          "hash": "K4127Y9hcyRNMJk3HfyIYg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogShell.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogShell.html",
+          "hash": "Lnzk23bPtkcqJhV9DytptA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.DialogState.html",
+          "hash": "nl8mdUHygmZdctiT/fD/5g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Dialog.html",
+          "hash": "PS2R2rXNlbF9X+CSeE6+gA=="
         }
       },
       "is_incremental": false,
@@ -26642,7 +26750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "0ccV/BtloVAM1G5VehEArw=="
+          "hash": "pahRcmotUsgREikZqtapTw=="
         }
       },
       "is_incremental": false,
@@ -26654,7 +26762,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "weSQ/cOy6JsTQTIsnY4ADw=="
+          "hash": "H/oZZ6k2rCRIEPv9kgk67w=="
         }
       },
       "is_incremental": false,
@@ -26701,16 +26809,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1591,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 156,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1582,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
