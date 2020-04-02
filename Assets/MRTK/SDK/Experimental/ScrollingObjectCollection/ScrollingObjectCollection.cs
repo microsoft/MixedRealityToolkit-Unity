@@ -2094,13 +2094,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             oldIsTargetPositionLockedOnFocusLock = currentPointer.IsTargetPositionLockedOnFocusLock;
 
             //Quick check for the global listener to bail if the object is not in the list
-            if (eventData.Pointer?.Result?.CurrentPointerTarget == null
-                || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
+            if (currentPointer?.Result?.CurrentPointerTarget == null
+                || !ContainsNode(currentPointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
             {
                 return;
             }
 
-            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            if (!(currentPointer is IMixedRealityNearPointer) && currentPointer.Controller.IsRotationAvailable)
             {
                 currentPointer.IsTargetPositionLockedOnFocusLock = false;
             }
