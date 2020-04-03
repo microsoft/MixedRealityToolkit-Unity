@@ -17,11 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// <summary>
         /// The number of devices currently in a room.
         /// </summary>
-        public short NumDevices;
+        public byte NumDevices;
         /// <summary>
         /// The max number of devices that can enter the room.
         /// </summary>
-        public short MaxDevices;
+        public byte MaxDevices;
         /// <summary>
         /// True if this room can be joined.
         /// </summary>

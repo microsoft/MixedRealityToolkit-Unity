@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
     /// <summary>
     /// This enum matches Photon's delivery mode values.

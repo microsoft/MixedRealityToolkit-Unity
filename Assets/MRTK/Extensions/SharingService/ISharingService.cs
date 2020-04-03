@@ -34,17 +34,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         bool LocalDeviceConnected { get; }
 
         /// <summary>
-        /// The ID of our local device. Set once connected.
+        /// The info for our local device. Set once connected to room.
         /// </summary>
-        short LocalDeviceID { get; }
+        DeviceInfo LocalDevice { get; }
 
         /// <summary>
-        /// IDs of all connected devices, including local device.
+        /// Info for all devices connected to room, including local device.
         /// </summary>
-        IEnumerable<short> ConnectedDevices { get; }
+        IEnumerable<DeviceInfo> ConnectedDevices { get; }
 
         /// <summary>
-        /// Number of connected devices, including local device.
+        /// Number of devices connected to room, including local device.
         /// </summary>
         int NumConnectedDevices { get; }
 
@@ -121,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// </summary>
         /// <returns></returns>
         Task<bool> JoinLobby();
-
+        
         /// <summary>
-        /// Joins a room with the supplied name. Joins the default room if roomName is null.
+        /// Joins a room with the supplied name.
         /// </summary>
-        Task<bool> JoinRoom(string roomName = null);
+        Task<bool> JoinRoom(ConnectConfig config);
 
         /// <summary>
         /// Disconnects from the service.
@@ -168,6 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
     public delegate void StatusEvent(StatusEventArgs e);
     public delegate void DataEvent(DataEventArgs e);
     public delegate void SubscriptionEvent(SubscriptionEventArgs e);
-    public delegate void DeviceEvent(DeviceEventArgs e);
+    public delegate void DeviceEvent(DeviceInfo e);
     public delegate void PingEvent();
 }

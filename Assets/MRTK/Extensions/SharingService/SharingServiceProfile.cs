@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -11,7 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 	[CreateAssetMenu(fileName = "SharingServiceProfile", menuName = "MixedRealityToolkit/SharingService Configuration Profile")]
 	public class SharingServiceProfile : BaseMixedRealityProfile
 	{
-		public bool AutoConnectOnStartup => autoConnectOnStartup;
+		public static string PhotonPackageWarningMessage = "The default implementation of the sharing service uses Photon's PUN 2. Without this package installed, the service will not function. See that package's documentation for details on how to set up and configure your Photon account.";
+
+		public bool FastConnectOnStartup => fastConnectOnStartup;
 		public float ConnectAttemptTimeout => connectAttemptTimeout;
 		public AppRole DefaultRequestedRole => defaultRequestedRole;
 		public string LobbyName => lobbyName;
@@ -19,8 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		public SubscriptionMode DefaultSubscriptionMode => defaultSubscriptionMode;
 		public IEnumerable<short> DefaultSubscriptionTypes => defaultSubscriptionTypes;
 
-		[SerializeField, Tooltip("If true, the service will connect once enabled.")]
-		private bool autoConnectOnStartup = false;
+		[SerializeField, Tooltip("If true, the service will connect to the default room and lobby once enabled.")]
+		private bool fastConnectOnStartup = false;
 		[SerializeField, Tooltip("How long to wait before giving up on a connect request.")]
 		private float connectAttemptTimeout = 10f;
 		[SerializeField, Tooltip("The app role to be used if none is specified when connecting.")]
@@ -47,6 +52,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 				{
 					return;
 				}
+
+#if !PHOTON_UNITY_NETWORKING
+				EditorGUILayout.HelpBox(SharingServiceProfile.PhotonPackageWarningMessage, MessageType.Warning);
+				if (GUILayout.Button("Download the required Photon package here"))
+				{
+					Application.OpenURL("https://assetstore.unity.com/packages/tools/network/pun-2-free-119922");
+				}
+#endif
 
 				base.OnInspectorGUI();
 			}

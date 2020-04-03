@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
 using UnityEngine;
@@ -10,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 	[MixedRealityServiceInspector(typeof(ISharingService))]
 	public class SharingServiceInspector : BaseMixedRealityServiceInspector
 	{
+#if PHOTON_UNITY_NETWORKING
 		private struct ButtonPress
 		{
 			public GUIContent Content;
@@ -18,20 +22,44 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 		}
 
 		private ButtonPress[] buttons;
+#endif
 
 		public override void DrawInspectorGUI(object target)
 		{
-			PhotonSharingService service = (PhotonSharingService)target;
+#if !PHOTON_UNITY_NETWORKING
+			EditorGUILayout.HelpBox(SharingServiceProfile.PhotonPackageWarningMessage, MessageType.Warning);
+			if (GUILayout.Button("Download the required Photon package here"))
+			{
+				Application.OpenURL("https://assetstore.unity.com/packages/tools/network/pun-2-free-119922");
+			}
+#else
 
+			PhotonSharingService service = (PhotonSharingService)target;
+			SharingServiceProfile profile = service.ConfigurationProfile as SharingServiceProfile;
 			if (buttons == null)
 			{
 				buttons = new ButtonPress[]
 				{
-					new ButtonPress() { Content = new GUIContent("Fast Connect"), Condition = ConnectStatus.NotConnected, Action = ()=> { service.FastConnect(); } },
-					new ButtonPress() { Content = new GUIContent("Join Lobby"), Condition = ConnectStatus.NotConnected | ConnectStatus.ConnectedToServer, Action = ()=> { service.JoinLobby(); } },
-					new ButtonPress() { Content = new GUIContent("Join Default Room"), Condition = ConnectStatus.ConnectedToLobby, Action = ()=> service.JoinRoom() },
-					new ButtonPress() { Content = new GUIContent("Leave Current Room"), Condition = ConnectStatus.FullyConnected, Action = ()=> service.LeaveRoom() },
-					new ButtonPress() { Content = new GUIContent("Disconnect"), Condition = ConnectStatus.ConnectedToLobby | ConnectStatus.ConnectedToServer | ConnectStatus.FullyConnected, Action = ()=> service.Disconnect() },
+					new ButtonPress() { 
+						Content = new GUIContent("Fast Connect"),
+						Condition = ConnectStatus.NotConnected,
+						Action = ()=> { service.FastConnect(); } },
+					new ButtonPress() { 
+						Content = new GUIContent("Join Lobby"), 
+						Condition = ConnectStatus.NotConnected | ConnectStatus.ConnectedToServer,
+						Action = ()=> { service.JoinLobby(); } },
+					new ButtonPress() {
+						Content = new GUIContent("Join Default Room"),
+						Condition = ConnectStatus.ConnectedToLobby,
+						Action = ()=> { service.JoinRoom(new ConnectConfig () { RoomConfig = profile.DefaultRoomConfig }); } },
+					new ButtonPress() { 
+						Content = new GUIContent("Leave Current Room"),
+						Condition = ConnectStatus.FullyConnected,
+						Action = ()=> service.LeaveRoom() },
+					new ButtonPress() {
+						Content = new GUIContent("Disconnect"),
+						Condition = ConnectStatus.ConnectedToLobby | ConnectStatus.ConnectedToServer | ConnectStatus.FullyConnected,
+						Action = ()=> service.Disconnect() },
 				};
 			}
 
@@ -71,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 						{
 							if (GUILayout.Button("Join " + room.Name))
 							{
-								service.JoinRoom(room.Name);
+								service.JoinRoom(new ConnectConfig(room));
 							}
 						}
 					}
@@ -88,16 +116,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 				}
 				else
 				{
-					foreach (short deviceID in service.ConnectedDevices)
+					foreach (DeviceInfo device in service.ConnectedDevices)
 					{
-						bool isLocalDevice = (deviceID == service.LocalDeviceID);
-						GUI.color = isLocalDevice ? Color.Lerp(Color.green, Color.white, 0.5f) : Color.white;
-						EditorGUILayout.IntField(isLocalDevice ? "Device (Local)" : "Device", deviceID);
+						GUI.color = device.IsLocalDevice ? Color.Lerp(Color.green, Color.white, 0.5f) : Color.white;
+						EditorGUILayout.IntField(device.IsLocalDevice ? "Device (Local)" : "Device", device.ID);
 					}
 				}
 			}
 
 			GUI.color = Color.white;
+#endif
 		}
 
 	}
