@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         Task<bool> JoinLobby();
         
         /// <summary>
-        /// Joins a room with the supplied name.
+        /// Joins a room based on supplied configuration.
         /// </summary>
         Task<bool> JoinRoom(ConnectConfig config);
 

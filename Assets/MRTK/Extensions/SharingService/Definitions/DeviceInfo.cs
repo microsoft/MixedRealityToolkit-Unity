@@ -14,14 +14,17 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// The ID of the device.
         /// </summary>
         public short ID;
+
         /// <summary>
         /// The name of the device.
         /// </summary>
         public string Name;
+
         /// <summary>
         /// True if this is the local device.
         /// </summary>
         public bool IsLocalDevice;
+
         /// <summary>
         /// Set of custom properties describing the device.
         /// </summary>

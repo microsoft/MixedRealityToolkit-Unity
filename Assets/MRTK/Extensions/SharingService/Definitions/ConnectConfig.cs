@@ -42,18 +42,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Configuration of the target room.
         /// </summary>
         public RoomConfig RoomConfig;
+
         /// <summary>
         /// Which room join steps to use.
         /// </summary>
         public RoomJoinMode RoomJoinMode;
+
         /// <summary>
         /// This device's desired app role.
         /// </summary>
         public AppRole RequestedRole;
+
         /// <summary>
         /// This device's desired subscription mode.
         /// </summary>
         public SubscriptionMode SubscriptionMode;
+
         /// <summary>
         /// Subscription data types. Must not be null if SubscriptionMode is set to Manual.
         /// </summary>
