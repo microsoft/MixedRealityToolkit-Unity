@@ -1175,6 +1175,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// A generalized testing functionality for the HandConstraintPalmUp script that takes in a safezone and target handedness configuration
+        /// and then tests it (using those configurations to generate a target test hand placement for activation)
+        /// </summary>
+        /// <param name="safeZone"></param>
+        /// <param name="targetHand"></param>
+        /// <returns></returns>
         private IEnumerator TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone safeZone, Handedness targetHand)
         {
             // Instantiate our test GameObject with solver.
