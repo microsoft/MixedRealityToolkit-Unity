@@ -4,9 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -384,42 +384,49 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityEventSystem Implementation
 
+        private static readonly ProfilerMarker HandleEventPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.HandleEvent");
+
         /// <inheritdoc />
         public override void HandleEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler)
         {
-            if (disabledRefCount > 0)
+            using (HandleEventPerfMarker.Auto())
             {
-                return;
-            }
+                if (disabledRefCount > 0)
+                {
+                    return;
+                }
 
-            Debug.Assert(eventData != null);
-            Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
+                Debug.Assert(eventData != null);
+                Debug.Assert(!(eventData is MixedRealityPointerEventData), "HandleEvent called with a pointer event. All events raised by pointer should call HandlePointerEvent");
 
-            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
+                var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
+                DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
 
-            if (baseInputEventData.used)
-            {
-                // All global listeners get a chance to see the event,
-                // but if any of them marked it used,
-                // we stop the event from going any further.
-                return;
-            }
+                if (baseInputEventData.used)
+                {
+                    // All global listeners get a chance to see the event,
+                    // but if any of them marked it used,
+                    // we stop the event from going any further.
+                    return;
+                }
 
-            if (baseInputEventData.InputSource.Pointers == null) { Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback."); }
+                if (baseInputEventData.InputSource.Pointers == null) { Debug.LogError($"InputSource {baseInputEventData.InputSource.SourceName} doesn't have any registered pointers! Input Sources without pointers should use the GazeProvider's pointer as a default fallback."); }
 
-            var modalEventHandled = false;
-            // Get the focused object for each pointer of the event source
-            for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length && !baseInputEventData.used; i++)
-            {
-                modalEventHandled = DispatchEventToObjectFocusedByPointer(baseInputEventData.InputSource.Pointers[i], baseInputEventData, modalEventHandled, eventHandler);
-            }
+                var modalEventHandled = false;
+                // Get the focused object for each pointer of the event source
+                for (int i = 0; i < baseInputEventData.InputSource.Pointers.Length && !baseInputEventData.used; i++)
+                {
+                    modalEventHandled = DispatchEventToObjectFocusedByPointer(baseInputEventData.InputSource.Pointers[i], baseInputEventData, modalEventHandled, eventHandler);
+                }
 
-            if (!baseInputEventData.used)
-            {
-                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                if (!baseInputEventData.used)
+                {
+                    DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                }
             }
         }
+
+        private static readonly ProfilerMarker HandleFocusChangedEventsPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.HandleFocusChangedEvents");
 
         /// <summary>
         /// Handles focus changed events
@@ -427,36 +434,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandleFocusChangedEvents(FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> eventHandler)
         {
-            Debug.Assert(focusEventData != null);
-
-            DispatchEventToGlobalListeners(focusEventData, eventHandler);
-
-            // Raise Focus Events on the old and new focused objects.
-            if (focusEventData.OldFocusedObject != null)
+            using (HandleFocusChangedEventsPerfMarker.Auto())
             {
-                ExecuteEvents.ExecuteHierarchy(focusEventData.OldFocusedObject, focusEventData, eventHandler);
-            }
+                Debug.Assert(focusEventData != null);
 
-            if (focusEventData.NewFocusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(focusEventData.NewFocusedObject, focusEventData, eventHandler);
-            }
+                DispatchEventToGlobalListeners(focusEventData, eventHandler);
 
-            // Raise Focus Events on the pointers cursor if it has one.
-            if (focusEventData.Pointer != null && focusEventData.Pointer.BaseCursor != null)
-            {
-                try
+                // Raise Focus Events on the old and new focused objects.
+                if (focusEventData.OldFocusedObject != null)
                 {
-                    // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                    // We'll ignore when this happens.
-                    ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
+                    ExecuteEvents.ExecuteHierarchy(focusEventData.OldFocusedObject, focusEventData, eventHandler);
                 }
-                catch (Exception)
+
+                if (focusEventData.NewFocusedObject != null)
                 {
-                    // ignored.
+                    ExecuteEvents.ExecuteHierarchy(focusEventData.NewFocusedObject, focusEventData, eventHandler);
+                }
+
+                // Raise Focus Events on the pointers cursor if it has one.
+                if (focusEventData.Pointer != null && focusEventData.Pointer.BaseCursor != null)
+                {
+                    try
+                    {
+                        // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                        // We'll ignore when this happens.
+                        ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
+                    }
+                    catch (Exception)
+                    {
+                        // ignored.
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker HandleFocusEventPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.HandleFocusEvent");
 
         /// <summary>
         /// Handles focus enter and exit
@@ -464,12 +476,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandleFocusEvent(GameObject eventTarget, FocusEventData focusEventData, ExecuteEvents.EventFunction<IMixedRealityFocusHandler> eventHandler)
         {
-            Debug.Assert(focusEventData != null);
+            using (HandleFocusEventPerfMarker.Auto())
+            {
+                Debug.Assert(focusEventData != null);
 
-            DispatchEventToGlobalListeners(focusEventData, eventHandler);
+                DispatchEventToGlobalListeners(focusEventData, eventHandler);
 
-            ExecuteEvents.ExecuteHierarchy(eventTarget, focusEventData, eventHandler);
+                ExecuteEvents.ExecuteHierarchy(eventTarget, focusEventData, eventHandler);
+            }
         }
+
+        private static readonly ProfilerMarker HandlePointerEventPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.HandlePointerEvent");
 
         /// <summary>
         /// Handles a pointer event
@@ -478,32 +495,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void HandlePointerEvent<T>(BaseEventData eventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IMixedRealityPointerHandler
         {
-            if (disabledRefCount > 0)
+            using (HandlePointerEventPerfMarker.Auto())
             {
-                return;
-            }
+                if (disabledRefCount > 0)
+                {
+                    return;
+                }
 
-            Debug.Assert(eventData != null);
-            var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
-            DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
+                Debug.Assert(eventData != null);
+                var baseInputEventData = ExecuteEvents.ValidateEventData<BaseInputEventData>(eventData);
+                DispatchEventToGlobalListeners(baseInputEventData, eventHandler);
 
-            if (baseInputEventData.used)
-            {
-                // All global listeners get a chance to see the event,
-                // but if any of them marked it used,
-                // we stop the event from going any further.
-                return;
-            }
+                if (baseInputEventData.used)
+                {
+                    // All global listeners get a chance to see the event,
+                    // but if any of them marked it used,
+                    // we stop the event from going any further.
+                    return;
+                }
 
-            Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
+                Debug.Assert(pointerEventData.Pointer != null, "Trying to dispatch event on pointer but pointerEventData is null");
 
-            DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
+                DispatchEventToObjectFocusedByPointer(pointerEventData.Pointer, baseInputEventData, false, eventHandler);
 
-            if (!baseInputEventData.used)
-            {
-                DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                if (!baseInputEventData.used)
+                {
+                    DispatchEventToFallbackHandlers(baseInputEventData, eventHandler);
+                }
             }
         }
+
+        private static readonly ProfilerMarker DispatchEventToGlobalListenersPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.DispatchEventToGlobalListeners");
 
         /// <summary>
         /// Dispatch an input event to all global event listeners
@@ -511,12 +533,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void DispatchEventToGlobalListeners<T>(BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            Debug.Assert(baseInputEventData != null);
-            Debug.Assert(!baseInputEventData.used);
-            if (baseInputEventData.InputSource == null) { Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}"); }
+            using (DispatchEventToGlobalListenersPerfMarker.Auto())
+            {
+                Debug.Assert(baseInputEventData != null);
+                Debug.Assert(!baseInputEventData.used);
+                if (baseInputEventData.InputSource == null) { Debug.Assert(baseInputEventData.InputSource != null, $"Failed to find an input source for {baseInputEventData}"); }
 
-            // Send the event to global listeners
-            base.HandleEvent(baseInputEventData, eventHandler);
+                // Send the event to global listeners
+                base.HandleEvent(baseInputEventData, eventHandler);
+            }
         }
 
         /// <summary>
@@ -524,22 +549,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void DispatchEventToGlobalListeners<T>(FocusEventData focusEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            Debug.Assert(focusEventData != null);
-            Debug.Assert(!focusEventData.used);
+            using (DispatchEventToGlobalListenersPerfMarker.Auto())
+            {
+                Debug.Assert(focusEventData != null);
+                Debug.Assert(!focusEventData.used);
 
-            // Send the event to global listeners
-            base.HandleEvent(focusEventData, eventHandler);
+                // Send the event to global listeners
+                base.HandleEvent(focusEventData, eventHandler);
+            }
         }
+
+        private static readonly ProfilerMarker DispatchEventToFallbackHandlersPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.DispatchEventToFallbackHandlers");
 
         private void DispatchEventToFallbackHandlers<T>(BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            // If event was not handled by the focused object, pass it on to any fallback handlers
-            if (!baseInputEventData.used && fallbackInputStack.Count > 0)
+            using (DispatchEventToFallbackHandlersPerfMarker.Auto())
             {
-                GameObject fallbackInput = fallbackInputStack.Peek();
-                ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler);
+                // If event was not handled by the focused object, pass it on to any fallback handlers
+                if (!baseInputEventData.used && fallbackInputStack.Count > 0)
+                {
+                    GameObject fallbackInput = fallbackInputStack.Peek();
+                    ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler);
+                }
             }
         }
+
+        private static readonly ProfilerMarker DispatchEventToObjectFocusedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.DispatchEventToObjectFocusedByPointer");
 
         /// <summary>
         /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
@@ -549,44 +584,47 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool DispatchEventToObjectFocusedByPointer<T>(IMixedRealityPointer mixedRealityPointer, BaseInputEventData baseInputEventData,
             bool modalEventHandled, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            GameObject focusedObject = FocusProvider?.GetFocusedObject(mixedRealityPointer);
-
-            // Handle modal input if one exists
-            if (modalInputStack.Count > 0 && !modalEventHandled)
+            using (DispatchEventToObjectFocusedPerfMarker.Auto())
             {
-                GameObject modalInput = modalInputStack.Peek();
+                GameObject focusedObject = FocusProvider?.GetFocusedObject(mixedRealityPointer);
 
-                if (modalInput != null)
+                // Handle modal input if one exists
+                if (modalInputStack.Count > 0 && !modalEventHandled)
                 {
-                    // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
-                    if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                    GameObject modalInput = modalInputStack.Peek();
+
+                    if (modalInput != null)
                     {
-                        if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                        // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                        if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                         {
-                            return true;
+                            if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                            {
+                                return true;
+                            }
+                        }
+                        // Otherwise, just invoke the event on the modal handler itself
+                        else
+                        {
+                            if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                            {
+                                return true;
+                            }
                         }
                     }
-                    // Otherwise, just invoke the event on the modal handler itself
                     else
                     {
-                        if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
-                        {
-                            return true;
-                        }
+                        Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
                     }
                 }
-                else
-                {
-                    Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
-                }
-            }
 
-            // If event was not handled by modal, pass it on to the current focused object
-            if (focusedObject != null)
-            {
-                ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                // If event was not handled by modal, pass it on to the current focused object
+                if (focusedObject != null)
+                {
+                    ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                }
+                return modalEventHandled;
             }
-            return modalEventHandled;
         }
 
         /// <summary>
@@ -765,29 +803,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Input Source State Events
 
+        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
+
         /// <inheritdoc />
         public void RaiseSourceDetected(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceDetected");
-
-            // Create input event
-            sourceStateEventData.Initialize(source, controller);
-
-            if (DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); }
-
-            DetectedInputSources.Add(source);
-
-            if (controller != null)
+            using (RaiseSourceDetectedPerfMarker.Auto())
             {
-                DetectedControllers.Add(controller);
+                // Create input event
+                sourceStateEventData.Initialize(source, controller);
+
+                if (DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} has already been registered with the Input Manager!"); }
+
+                DetectedInputSources.Add(source);
+
+                if (controller != null)
+                {
+                    DetectedControllers.Add(controller);
+                }
+
+                FocusProvider?.OnSourceDetected(sourceStateEventData);
+
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
             }
-
-            FocusProvider?.OnSourceDetected(sourceStateEventData);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceStateEventData, OnSourceDetectedEventHandler);
-
-            Profiler.EndSample(); // RaiseSourceDetected
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceDetectedEventHandler =
@@ -797,30 +836,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnSourceDetected(casted);
             };
 
+        private static readonly ProfilerMarker RaiseSourceLostPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
-
-            // Create input event
-            sourceStateEventData.Initialize(source, controller);
-
-            if (!DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} was never registered with the Input Manager!"); }
-
-            DetectedInputSources.Remove(source);
-
-            if (controller != null)
+            using (RaiseSourceLostPerfMarker.Auto())
             {
-                DetectedControllers.Remove(controller);
+                // Create input event
+                sourceStateEventData.Initialize(source, controller);
+
+                if (!DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} was never registered with the Input Manager!"); }
+
+                DetectedInputSources.Remove(source);
+
+                if (controller != null)
+                {
+                    DetectedControllers.Remove(controller);
+                }
+
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                // Events have to be handled before FocusProvider.OnSourceLost since they won't be passed on without a focused object
+                HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
+
+                FocusProvider?.OnSourceLost(sourceStateEventData);
             }
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            // Events have to be handled before FocusProvider.OnSourceLost since they won't be passed on without a focused object
-            HandleEvent(sourceStateEventData, OnSourceLostEventHandler);
-
-            FocusProvider?.OnSourceLost(sourceStateEventData);
-
-            Profiler.EndSample(); // RaiseSourceLost
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourceStateHandler> OnSourceLostEventHandler =
