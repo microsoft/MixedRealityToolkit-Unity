@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             var buttons = GetComponentsInChildren<Button>();
             foreach (var button in buttons)
             {
-                var ni = button.gameObject.AddComponent<NearInteractionTouchableUnityUI>();
+                var ni = button.gameObject.EnsureComponent<NearInteractionTouchableUnityUI>();
                 ni.EventsToReceive = TouchableEventType.Pointer;
                 button.onClick.AddListener(PlayClick);
             }
