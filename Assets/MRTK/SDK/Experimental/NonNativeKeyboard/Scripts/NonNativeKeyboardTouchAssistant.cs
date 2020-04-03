@@ -7,11 +7,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     public class NonNativeKeyboardTouchAssistant : MonoBehaviour
     {
-#pragma warning disable 0649
-        [SerializeField]
-        private AudioClip _clickSound;
-#pragma warning restore 0649
-
+        [SerializeField] 
+        private AudioClip _clickSound = null;
 
         private AudioSource _clickSoundPlayer;
 
