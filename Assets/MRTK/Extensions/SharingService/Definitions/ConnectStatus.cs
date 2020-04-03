@@ -5,7 +5,9 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
-
+    /// <summary>
+    /// Enum describing the status of a device's connection.
+    /// </summary>
     [Serializable]
     public enum ConnectStatus : byte
     {

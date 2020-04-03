@@ -3,6 +3,9 @@
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
+    /// <summary>
+    /// Mode describing which devices should receive data.
+    /// </summary>
     public enum TargetMode
     {
         /// <summary>
@@ -10,10 +13,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Subscription settings will apply.
         /// </summary>
         Default,
+
         /// <summary>
         /// Everyone except sender will receive the data. Subscription settings will apply.
         /// </summary>
         SkipSender,
+
         /// <summary>
         /// The Targets array will be used. Subscription settings will apply.
         /// </summary>

@@ -5,6 +5,9 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 {
+    /// <summary>
+    /// Enum describing the role of a device.
+    /// </summary>
     [Serializable]
     public enum AppRole : byte
     {
