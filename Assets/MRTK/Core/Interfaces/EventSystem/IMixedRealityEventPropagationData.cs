@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Direction of event propagation through a hierarchy of elements
     /// </summary>
     [System.Flags]
-    public enum EventPropagation // Mainly used to build Paths
+    public enum EventPropagation // Mainly used to build propagation paths in the event dispatcher
     {
         None = 0 << 0,
         BubblesUp = 1 << 0, // Target up to root
@@ -66,14 +66,13 @@ namespace Microsoft.MixedReality.Toolkit
         void PreventDefault();
 
         /// <summary>
-        /// Stop propagation through hierarnchy elements. Does not prevent event to be handled by target.
+        /// Stop propagation through hierarchy elements. Does not prevent event to be handled by target.
         /// </summary>
         void StopPropagation();
 
         /// <summary>
-        /// Stop any other CallBackss registered. 
-        /// At this point, stopping propagation imeddiately does not make sense for MRTK.
-        /// MRTK Input distacher is based on calling Events with Unity's ExecuteEvents.Execute, calling all callbacks on target object.
+        /// Stop propagation through hierarchy elements and to any other handlers on the current target object.
+        /// Does not prevent event to be handled by target.
         /// </summary> 
         void StopPropagationImmediately();
 

@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
 
-        public struct EventPropagationHandlerEntry
+        public class EventPropagationHandlerEntry
         {
             public Type handlerType;
             public IEventSystemHandler handler;
@@ -107,6 +107,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// List of all event handlers grouped by game object that are subscribing to at least one of the event propagation phases.
         /// </summary>
         public Dictionary<GameObject, List<EventPropagationHandlerEntry>> EventPropagationHandlersByObject { get; } = new Dictionary<GameObject, List<EventPropagationHandlerEntry>>();
+
+        // Tracks the number of HandleEvent calls in flight - while HandleEvent is happening,
+        // set of registered propagation listeners isn't safe to modify because doing so would cause an
+        // update on a collection that is being iterated over. 
+        private int propagationExecutionDepth = 0;
+
+        private enum PostponedAction
+        {
+            Add,
+            Remove
+        }
+
+        // Propagation handlers added/removed during event dispatching.
+        private List<Tuple<PostponedAction, Type, IEventSystemHandler, PropagationPhase>> postponedActions = new List<Tuple<PostponedAction, Type, IEventSystemHandler, PropagationPhase>>();
 
         /// <inheritdoc />
         public bool IsInputEnabled => disabledRefCount <= 0;
@@ -638,6 +652,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
             List<EventPropagationHandlerEntry> handlers;
 
+            propagationExecutionDepth++;
+
             // Trickles Down
             if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
             {
@@ -665,8 +681,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                             if (handler.handlerType == typeof(T) && handler.phase.HasFlag(PropagationPhase.TrickleDown))
                             {
-                                // Type checked on registration
-                                eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                                try
+                                {
+                                    eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.LogException(ex);
+                                }                     
                             }
                         }
                     }                   
@@ -686,7 +709,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     }
 
-                    eventHandler.Invoke((T)targetHandler, baseInputEventData);
+                    // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                    try
+                    {
+                        eventHandler.Invoke((T)targetHandler, baseInputEventData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
                 }
             }
 
@@ -717,13 +748,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                             if (handler.handlerType == typeof(T) && handler.phase.HasFlag(PropagationPhase.BubbleUp))
                             {
-                                // Type checked on registration
-                                eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                                try
+                                {
+                                    eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.LogException(ex);
+                                }
                             }
                         }
                     }
                 }
             }
+
+            propagationExecutionDepth--;
+            ProcessPostponedActions();
         }
 
         /// <summary>
@@ -753,9 +794,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return;
             }
-
-            // TODO register queue + check need for register all interfaces
-            AddPropagationHandlerToMap<T>(castedHandler, phase);
+            if (propagationExecutionDepth == 0)
+            {
+                AddPropagationHandlerToMap(typeof(T), castedHandler, phase);
+            }
+            else // Protection for runtime modification on list of propagation handlers
+            {
+                postponedActions.Add(Tuple.Create(PostponedAction.Add, typeof(T), handler, phase));
+            }
         }
 
         /// <inheritdoc />
@@ -766,11 +812,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return;
             }
-
-            RemovePropagationHandlerFromMap<T>(castedHandler, phase);
+            if (propagationExecutionDepth == 0)
+            {
+                RemovePropagationHandlerFromMap(typeof(T), castedHandler, phase);
+            }
+            else // Protection for runtime modification on list of propagation handlers
+            {
+                postponedActions.Add(Tuple.Create(PostponedAction.Remove, typeof(T), handler, phase));
+            }
         }
 
-        private void AddPropagationHandlerToMap<T>(IEventSystemHandler handler, PropagationPhase phase) where T : IEventSystemHandler
+        private void AddPropagationHandlerToMap(Type type, IEventSystemHandler handler, PropagationPhase phase)
         {
             var component = (Component)handler;
             if (component == null)
@@ -779,7 +831,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             var gameObject = component.gameObject;
-            var type = typeof(T);
 
             List<EventPropagationHandlerEntry> handlers;
             if (!EventPropagationHandlersByObject.TryGetValue(gameObject, out handlers))
@@ -807,7 +858,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void RemovePropagationHandlerFromMap<T>(IEventSystemHandler handler, PropagationPhase phase) where T : IEventSystemHandler
+        private void RemovePropagationHandlerFromMap(Type type, IEventSystemHandler handler, PropagationPhase phase)
         {
             var component = (Component)handler;
             if (component == null)
@@ -816,7 +867,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             var gameObject = component.gameObject;
-            var type = typeof(T);
 
             List<EventPropagationHandlerEntry> handlers;
             if (!EventPropagationHandlersByObject.TryGetValue(gameObject, out handlers))
@@ -845,6 +895,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
                 }
             }    
+        }
+
+        private void ProcessPostponedActions()
+        {
+            if (propagationExecutionDepth == 0 && postponedActions.Count > 0)
+            {
+                foreach (var handler in postponedActions)
+                {
+                    if (handler.Item1 == PostponedAction.Add)
+                    {
+                        AddPropagationHandlerToMap(handler.Item2, handler.Item3, handler.Item4);
+                    }
+                    else if (handler.Item1 == PostponedAction.Remove)
+                    {
+                        RemovePropagationHandlerFromMap(handler.Item2, handler.Item3, handler.Item4);
+                    }
+                }
+
+                postponedActions.Clear();
+            }
         }
 
         #endregion IMixedRealityEventSystem Implementation
