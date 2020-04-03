@@ -2,9 +2,9 @@
 
 ## Sending
 
-Once the service has connected, data can be sent via `ISharingService.SendData(SendDataArgs args)`.
+Once your device has joined a room, data can be sent to other devices via `ISharingService.SendData(SendDataArgs args)`.
 
-By default data will be sent to all connected devices, including the device that sent it.
+By default data will be sent to all devices in the room, including the device that sent it.
 
 Here's how to send one byte of data:
 
@@ -34,7 +34,7 @@ private void Update()
 
 To receive this data, subscribe to the `ISharingService.OnReceiveData` event.
 
-By default data will be received by all connected devices.
+By default data will be received by all devices in the room.
 
 ```c#
 private void Start()

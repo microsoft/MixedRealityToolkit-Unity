@@ -59,6 +59,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         int NumAvailableRooms { get; }
 
         /// <summary>
+        /// Number of pings received. Reset on exit room.
+        /// </summary>
+        int NumTimesPinged { get; }
+
+        /// <summary>
+        /// Real-time since startup of the last ping received.
+        /// </summary>
+        float TimeLastPinged { get; }
+
+        /// <summary>
         /// Invoked when the service's connection status has changed.
         /// This happens when the service:
         /// - connects/disconnects to/from server
@@ -98,11 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Invoked when another device in our room calls PingDevice for this device.
         /// </summary>
         event PingEvent OnLocalDevicePinged;
-
-        /// <summary>
-        /// Invoked when a SearchForRooms request has been completed.
-        /// </summary>
-        //event RoomEvent OnRoomsPopulated;
 
         /// <summary>
         /// Quick way to connect directly to a room and circumvent matchmaking.

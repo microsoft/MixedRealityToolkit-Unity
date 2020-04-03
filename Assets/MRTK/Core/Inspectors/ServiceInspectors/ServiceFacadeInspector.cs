@@ -40,7 +40,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private Color proHeaderColor = new Color32(56, 56, 56, 255);
         private Color defaultHeaderColor = new Color32(194, 194, 194, 255);
 
+#if UNITY_2019_1_OR_NEWER
+        private const int headerYOffet = -6;
+        private const int headerXOffset = 44;
+#else
+        private const int headerYOffet = 0;
         private const int headerXOffset = 48;
+#endif
 
         protected override void OnHeaderGUI()
         {
@@ -49,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             // Draw a rect over the top of the existing header label
             var labelRect = EditorGUILayout.GetControlRect(false, 0f);
             labelRect.height = EditorGUIUtility.singleLineHeight;
-            labelRect.y -= labelRect.height;
+            labelRect.y -= labelRect.height - headerYOffet;
             labelRect.x = headerXOffset;
             labelRect.xMax -= labelRect.x * 2f;
 
@@ -100,6 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 EditorGUILayout.HelpBox("No inspector has been defined for this service type.", MessageType.Info);
             }
 
+        }
+
+        public override bool RequiresConstantRepaint()
+        {
+            return true;
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 # Sharing Service : Pinging Devices
 
-Pinging other connected devices or Unity editor instances is a quick way to test that everything has been configured correctly. Use `ISharingService.PingDevice(short deviceID)` to send pings.
+Pinging other connected devices or Unity editor instances is a quick way to test that everything has been configured correctly.
+Use `ISharingService.PingDevice(short deviceID)` to send pings.
 
 ```c#
 // Ping script for a project using the default sharing service config profile.
@@ -18,16 +19,16 @@ public class PingTestScript : MonoBehaviour
     {
         MixedRealityServiceRegistry.TryGetService<ISharingService>(out ISharingService service);
         // Wait for service to connect
-        if (service.Status != ConnectStatus.Connected)
+        if (service.Status != ConnectStatus.FullyConnected)
         {
             return;
         }
 
         if (UnityEngine.Input.GetKeyDown(KeyCode.P))
         {
-            foreach (short deviceID in service.ConnectedDevices)
+            foreach (DeviceInfo device in service.ConnectedDevices)
             {   // Skip our own device
-                if (deviceID != service.LocalDeviceID)
+                if (!device.IsLocalDevice)
                 {
                     service.PingDevice(deviceID);
                 }
@@ -41,6 +42,6 @@ public class PingTestScript : MonoBehaviour
     }
 }
 ```
-If [service inspectors](../..\MixedRealityConfigurationGuide.md#service-inspectors) are enabled you can also ping connected devices using the service's inspector:
+If [service inspectors](../..\MixedRealityConfigurationGuide.md#service-inspectors) are enabled you can also ping connected devices using the service's inspector.
 
-![In-Editor Ping Test](../../Images/SharingSystem/InEditorPingTest.gif)
+![In-Editor Ping Test](../../Images/SharingServices/PhotonSharingServiceEditorPing.png)

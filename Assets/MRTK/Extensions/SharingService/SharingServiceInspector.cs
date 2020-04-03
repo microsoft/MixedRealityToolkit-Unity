@@ -22,6 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 		}
 
 		private ButtonPress[] buttons;
+		private float pingDisplayTime = 3;
+		private Color pingDisplayColor = Color.green;
 #endif
 
 		public override void DrawInspectorGUI(object target)
@@ -36,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 
 			PhotonSharingService service = (PhotonSharingService)target;
 			SharingServiceProfile profile = service.ConfigurationProfile as SharingServiceProfile;
+
 			if (buttons == null)
 			{
 				buttons = new ButtonPress[]
@@ -66,8 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 			EditorGUILayout.EnumPopup("Connect Status", service.Status);
 			EditorGUILayout.EnumPopup("App Role", service.AppRole);
 			EditorGUILayout.EnumPopup("Subscription Mode", service.LocalSubscriptionMode);
-			EditorGUILayout.LabelField("Lobby Name: " + service.LobbyName);
-			EditorGUILayout.LabelField("Room Name: " + service.RoomName);
+			EditorGUILayout.LabelField("Lobby Name: " + (string.IsNullOrEmpty (service.LobbyName) ? "(None)" : service.LobbyName));
+			EditorGUILayout.LabelField("Room Name: " + (string.IsNullOrEmpty(service.RoomName) ? "(None)" : service.RoomName));
 
 			if (!Application.isPlaying)
 				return;
@@ -106,25 +109,43 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 				}
 			}
 
+			GUI.color = GUI.backgroundColor;
 			EditorGUILayout.Space();
 			EditorGUILayout.LabelField("Connected Devices", EditorStyles.boldLabel);
-			using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+			using (new EditorGUI.DisabledScope((ConnectStatus.FullyConnected & service.Status) == 0))
 			{
-				if (service.NumConnectedDevices == 0)
+				using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
 				{
-					EditorGUILayout.LabelField("(None)");
-				}
-				else
-				{
-					foreach (DeviceInfo device in service.ConnectedDevices)
+					if (service.NumConnectedDevices == 0)
 					{
-						GUI.color = device.IsLocalDevice ? Color.Lerp(Color.green, Color.white, 0.5f) : Color.white;
-						EditorGUILayout.IntField(device.IsLocalDevice ? "Device (Local)" : "Device", device.ID);
+						EditorGUILayout.LabelField("(None)");
+					}
+					else
+					{
+						foreach (DeviceInfo device in service.ConnectedDevices)
+						{
+							using (new EditorGUILayout.HorizontalScope())
+							{
+								EditorGUILayout.IntField(device.IsLocalDevice ? "Device (Local)" : "Device", device.ID);
+
+								if (GUILayout.Button("Ping"))
+								{
+									service.PingDevice(device.ID);
+								}
+							}
+						}
 					}
 				}
 			}
 
-			GUI.color = Color.white;
+			EditorGUILayout.Space();
+			EditorGUILayout.LabelField("Pings", EditorStyles.boldLabel);
+			EditorGUILayout.IntField("Num Times Pinged", service.NumTimesPinged);
+			float timeSincePinged = Time.realtimeSinceStartup - service.TimeLastPinged;
+			float normalizedPing = Mathf.Clamp01(timeSincePinged / pingDisplayTime);
+			GUI.color = Color.Lerp(pingDisplayColor, GUI.backgroundColor, normalizedPing);
+			EditorGUILayout.FloatField("Time Last Pinged", service.TimeLastPinged);
+			GUI.color = GUI.backgroundColor;
 #endif
 		}
 

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
                 Name = room.Name
             };
             // Join or re-join this room, don't create the room.
-            RoomJoinMode = RoomJoinMode.JoinForceRejoin;
+            RoomJoinMode = RoomJoinMode.JoinRejoin;
             // The rest of the config will be pulled from the service's profile.
         }
 
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
                 Name = roomName
             };
             // Join or re-join this room, don't create the room.
-            RoomJoinMode = RoomJoinMode.JoinForceRejoin;
+            RoomJoinMode = RoomJoinMode.JoinRejoin;
             // The rest of the config will be pulled from the service's profile.
         }
 

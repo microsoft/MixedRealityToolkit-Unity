@@ -98,6 +98,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 #endif
             }
         }
+        /// <inheritdoc />
+        public int NumTimesPinged { get; private set; }
+        /// <inheritdoc />
+        public float TimeLastPinged { get; private set; }
         #endregion
 
         #region Private constants
@@ -462,27 +466,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public void PingDevice(short deviceID)
         {
-#if PHOTON_UNITY_NETWORKING
-            Player targetPlayer = null;
-            foreach (Player player in PhotonNetwork.PlayerListOthers)
-            {
-                if (player.ActorNumber == deviceID)
-                {
-                    targetPlayer = player;
-                    break;
-                }
-            }
-
-            if (targetPlayer == null)
-            {
-                Debug.LogError("Couldn't ping deviceID " + deviceID + " - no accompanying player found.");
-                return;
-            }
-
+#if PHOTON_UNITY_NETWORKING          
             RaiseEventOptions pingDeviceOptions = new RaiseEventOptions()
             {
                 CachingOption = EventCaching.DoNotCache,                            // Ping events don't need to be cached
-                TargetActors = new int[] { targetPlayer.ActorNumber }               // Only send to single target
+                TargetActors = new int[] { deviceID }                               // Only send to single target
             };
 
             SendOptions pingDeviceSendOptions = new SendOptions()
@@ -523,6 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             }
 
             localDevice.ID = -1;
+            TimeLastPinged = 0;
 
 #if PHOTON_UNITY_NETWORKING
             PhotonNetwork.AddCallbackTarget(this);
@@ -1396,6 +1385,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                 case pingDeviceEvent:
                     {
+                        NumTimesPinged++;
+                        TimeLastPinged = Time.realtimeSinceStartup;
                         OnLocalDevicePinged?.Invoke();
                     }
                     break;
@@ -1477,6 +1468,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         {
             CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList);
             localDevice.ID = -1;
+            NumTimesPinged = 0;
+            TimeLastPinged = 0;
         }
 
         void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message)
