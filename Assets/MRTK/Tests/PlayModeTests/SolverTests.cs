@@ -753,7 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls
+        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls8
         /// instead of OnPointerClicked.
         /// </summary>
         [UnityTest]
@@ -1210,6 +1210,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.SetRotation(handRotation);
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
+            var delta = new Vector3(0.5f, 0.5f, 0f);
+            yield return hand.Move(delta, 5);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
             // Ensure Activation occured by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
@@ -1241,7 +1245,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     return Vector3.up * .05f;
 
                 case HandConstraint.SolverSafeZone.AboveFingerTips:
-                    return Vector3.down * .05f;
+                    return Vector3.down * .06f;
 
                 default:
                 case HandConstraint.SolverSafeZone.UlnarSide:
