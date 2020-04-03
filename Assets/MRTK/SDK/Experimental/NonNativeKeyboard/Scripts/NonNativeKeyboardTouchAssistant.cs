@@ -2,15 +2,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// Adds touch events to the NonNativeKeyboard buttons (and a tap sound)
+    /// </summary>
     public class NonNativeKeyboardTouchAssistant : MonoBehaviour
     {
         [SerializeField] 
-        private AudioClip _clickSound = null;
+        private AudioClip clickSound = null;
 
-        private AudioSource _clickSoundPlayer;
+        private AudioSource clickSoundPlayer;
 
         private void Start()
         {
@@ -24,10 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void EnableTouch()
         {
-            _clickSoundPlayer = gameObject.AddComponent<AudioSource>();
-            _clickSoundPlayer.playOnAwake = false;
-            _clickSoundPlayer.spatialize = true;
-            _clickSoundPlayer.clip = _clickSound;
+            clickSoundPlayer = gameObject.AddComponent<AudioSource>();
+            clickSoundPlayer.playOnAwake = false;
+            clickSoundPlayer.spatialize = true;
+            clickSoundPlayer.clip = clickSound;
             var buttons = GetComponentsInChildren<Button>();
             foreach (var button in buttons)
             {
@@ -39,9 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void PlayClick()
         {
-            if (_clickSound != null)
+            if (clickSound != null)
             {
-                _clickSoundPlayer.Play();
+                clickSoundPlayer.Play();
             }
         }
     }
