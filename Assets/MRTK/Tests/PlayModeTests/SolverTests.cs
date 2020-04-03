@@ -1138,10 +1138,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     }
 
                 case HandConstraint.SolverSafeZone.BelowWrist:
-                    return Vector3.up * -.02f;
+                    return Vector3.up * .05f;
 
                 case HandConstraint.SolverSafeZone.AboveFingerTips:
-                    return Vector3.up * .05f;
+                    return Vector3.down * .05f;
 
                 default:
                 case HandConstraint.SolverSafeZone.UlnarSide:
