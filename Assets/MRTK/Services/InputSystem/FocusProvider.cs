@@ -5,9 +5,9 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Profiling;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -533,61 +533,63 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Destroy();
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] FocusProvider.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.Update");
+            using (UpdatePerfMarker.Auto())
+            {
+                if (!IsSetupValid) { return; }
 
-            if (!IsSetupValid) { return; }
+                UpdatePointers();
+                UpdateGazeProvider();
+                UpdateFocusedObjects();
 
-            UpdatePointers();
-            UpdateGazeProvider();
-            UpdateFocusedObjects();
-
-            PrimaryPointer = primaryPointerSelector?.Update();
-
-            Profiler.EndSample(); // Update
+                PrimaryPointer = primaryPointerSelector?.Update();
+            }
         }
+
+        private static readonly ProfilerMarker UpdateGazeProviderPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdateGazeProvider");
 
         /// <summary>
         /// Updates the gaze raycast provider even in scenarios where gaze isn't used for focus
         /// </summary>
         private void UpdateGazeProvider()
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.UpdateGazeProvider");
-
-            // The gaze hit result may be populated from previous raycasts this frame, only recompute
-            // another raycast if it's not populated
-            if (gazeHitResult == null)
+            using (UpdateGazeProviderPerfMarker.Auto())
             {
-                if (gazeProviderPointingData?.Pointer != null)
+                // The gaze hit result may be populated from previous raycasts this frame, only recompute
+                // another raycast if it's not populated
+                if (gazeHitResult == null)
                 {
-                    // get 3d hit
-                    hitResult3d.Clear();
-                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                    LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-                    QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
-                        hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
+                    if (gazeProviderPointingData?.Pointer != null)
+                    {
+                        // get 3d hit
+                        hitResult3d.Clear();
+                        var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                        LayerMask[] prioritizedLayerMasks = (gazeProviderPointingData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                        QueryScene(gazeProviderPointingData.Pointer, raycastProvider, prioritizedLayerMasks,
+                            hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                    // get ui hit
-                    hitResultUi.Clear();
-                    RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        // get ui hit
+                        hitResultUi.Clear();
+                        RaycastGraphics(gazeProviderPointingData.Pointer, gazeProviderPointingData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
 
-                    // set gaze hit according to distance and prioritization layer mask
-                    gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                        // set gaze hit according to distance and prioritization layer mask
+                        gazeHitResult = GetPrioritizedHitResult(hitResult3d, hitResultUi, prioritizedLayerMasks);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
-                {
-                    return;
-                }
+
+                CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+
+                // Zero out value after every use to ensure the hit result is updated every frame.
+                gazeHitResult = null;
             }
-
-            CoreServices.InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
-
-            // Zero out value after every use to ensure the hit result is updated every frame.
-            gazeHitResult = null;
-
-            Profiler.EndSample(); // UpdateGazeProvider
         }
 
         #endregion IMixedRealityService Implementation
@@ -727,125 +729,128 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return TryGetPointerData(pointer, out pointerData);
         }
 
+        private static readonly ProfilerMarker RegisterPointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RegisterPointer");
+
         /// <inheritdoc />
         public bool RegisterPointer(IMixedRealityPointer pointer)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.RegisterPointer");
-
-            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-
-            if (IsPointerRegistered(pointer)) { return false; }
-
-            pointers.Add(new PointerData(pointer));
-
-            if (primaryPointerSelector != null)
+            using (RegisterPointerPerfMarker.Auto())
             {
-                primaryPointerSelector.RegisterPointer(pointer);
+                Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
+
+                if (IsPointerRegistered(pointer)) { return false; }
+
+                pointers.Add(new PointerData(pointer));
+
+                if (primaryPointerSelector != null)
+                {
+                    primaryPointerSelector.RegisterPointer(pointer);
+                }
+
+                return true;
             }
-
-            Profiler.EndSample(); // RegisterPointer
-
-            return true;
         }
+
+        private static readonly ProfilerMarker RegisterPointersPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RegisterPointers");
 
         private void RegisterPointers(IMixedRealityInputSource inputSource)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.RegisterPointers");
-
-            // If our input source does not have any pointers, then skip.
-            if (inputSource.Pointers == null)
+            using (RegisterPointersPerfMarker.Auto())
             {
-                return;
-            }
-
-            IMixedRealityPointerMediator mediator = null;
-
-            var mediatorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
-            if (mediatorType != null)
-            {
-                try
+                // If our input source does not have any pointers, then skip.
+                if (inputSource.Pointers == null)
                 {
-                    // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
-                    mediator = Activator.CreateInstance(mediatorType, this) as IMixedRealityPointerMediator;
+                    return;
                 }
-                catch (MissingMethodException)
+
+                IMixedRealityPointerMediator mediator = null;
+
+                var mediatorType = CoreServices.InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
+                if (mediatorType != null)
                 {
-                    // We are using custom mediator not provided by MRTK, instantiate with empty constructor
-                    mediator = Activator.CreateInstance(mediatorType) as IMixedRealityPointerMediator;
+                    try
+                    {
+                        // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
+                        mediator = Activator.CreateInstance(mediatorType, this) as IMixedRealityPointerMediator;
+                    }
+                    catch (MissingMethodException)
+                    {
+                        // We are using custom mediator not provided by MRTK, instantiate with empty constructor
+                        mediator = Activator.CreateInstance(mediatorType) as IMixedRealityPointerMediator;
+                    }
+                }
+
+                if (mediator != null)
+                {
+                    mediator.RegisterPointers(inputSource.Pointers);
+
+                    if (!pointerMediators.ContainsKey(inputSource.SourceId))
+                    {
+                        pointerMediators.Add(inputSource.SourceId, mediator);
+                    }
+                }
+
+                for (int i = 0; i < inputSource.Pointers.Length; i++)
+                {
+                    RegisterPointer(inputSource.Pointers[i]);
+
+                    // Special Registration for Gaze
+                    if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
+                    {
+                        gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
+                    }
                 }
             }
-
-            if (mediator != null)
-            {
-                mediator.RegisterPointers(inputSource.Pointers);
-
-                if (!pointerMediators.ContainsKey(inputSource.SourceId))
-                {
-                    pointerMediators.Add(inputSource.SourceId, mediator);
-                }
-            }
-
-            for (int i = 0; i < inputSource.Pointers.Length; i++)
-            {
-                RegisterPointer(inputSource.Pointers[i]);
-
-                // Special Registration for Gaze
-                if (inputSource.SourceId == CoreServices.InputSystem.GazeProvider.GazeInputSource.SourceId && gazeProviderPointingData == null)
-                {
-                    gazeProviderPointingData = new PointerData(inputSource.Pointers[i]);
-                }
-            }
-
-            Profiler.EndSample(); // RegisterPointers
         }
+
+        private static readonly ProfilerMarker UnregisterPointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UnregisterPointer");
 
         /// <inheritdoc />
         public bool UnregisterPointer(IMixedRealityPointer pointer)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.UnregisterPointer");
-
-            Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
-
-            PointerData pointerData;
-            if (!TryGetPointerData(pointer, out pointerData)) { return false; }
-
-            // Raise focus events if needed.
-            if (pointerData.CurrentPointerTarget != null)
+            using (UnregisterPointerPerfMarker.Auto())
             {
-                GameObject unfocusedObject = pointerData.CurrentPointerTarget;
-                bool objectIsStillFocusedByOtherPointer = false;
+                Debug.Assert(pointer.PointerId != 0, $"{pointer} does not have a valid pointer id!");
 
-                foreach (var otherPointer in pointers)
+                PointerData pointerData;
+                if (!TryGetPointerData(pointer, out pointerData)) { return false; }
+
+                // Raise focus events if needed.
+                if (pointerData.CurrentPointerTarget != null)
                 {
-                    if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
+                    GameObject unfocusedObject = pointerData.CurrentPointerTarget;
+                    bool objectIsStillFocusedByOtherPointer = false;
+
+                    foreach (var otherPointer in pointers)
                     {
-                        objectIsStillFocusedByOtherPointer = true;
-                        break;
+                        if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
+                        {
+                            objectIsStillFocusedByOtherPointer = true;
+                            break;
+                        }
                     }
+
+                    CoreServices.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+
+                    if (!objectIsStillFocusedByOtherPointer)
+                    {
+                        // Policy: only raise focus exit if no other pointers are still focusing the object
+                        CoreServices.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    }
+
+                    CoreServices.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
                 }
 
-                CoreServices.InputSystem?.RaisePreFocusChanged(pointer, unfocusedObject, null);
+                pointers.Remove(pointerData);
 
-                if (!objectIsStillFocusedByOtherPointer)
+                if (primaryPointerSelector != null)
                 {
-                    // Policy: only raise focus exit if no other pointers are still focusing the object
-                    CoreServices.InputSystem?.RaiseFocusExit(pointer, unfocusedObject);
+                    primaryPointerSelector.UnregisterPointer(pointer);
+                    PrimaryPointer = primaryPointerSelector.Update();
                 }
 
-                CoreServices.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
+                return true;
             }
-
-            pointers.Remove(pointerData);
-
-            if (primaryPointerSelector != null)
-            {
-                primaryPointerSelector.UnregisterPointer(pointer);
-                PrimaryPointer = primaryPointerSelector.Update();
-            }
-
-            Profiler.EndSample(); // UnregisterPointer
-
-            return true;
         }
 
         /// <inheritdoc />
@@ -900,157 +905,159 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
+        private static readonly ProfilerMarker UpdatePointersPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdatePointers");
+
         private void UpdatePointers()
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.UpdatePointers");
-
-            MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
-            if (profile == null) { return; }
-
-            ReconcilePointers();
-
-            foreach (var pointerMediator in pointerMediators)
+            using (UpdatePointersPerfMarker.Auto())
             {
-                pointerMediator.Value.UpdatePointers();
-            }
+                MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+                if (profile == null) { return; }
 
-#if UNITY_EDITOR
-            int pointerCount = 0;
-#endif
-            foreach (var pointerData in pointers)
-            {
-                UpdatePointer(pointerData);
+                ReconcilePointers();
 
-#if UNITY_EDITOR
-                var pointerProfile = profile.PointerProfile;
-                if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
+                foreach (var pointerMediator in pointerMediators)
                 {
-                    MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
-
-                    Color rayColor;
-                    if ((pointerProfile.DebugDrawPointingRayColors != null) && (pointerProfile.DebugDrawPointingRayColors.Length > 0))
-                    {
-                        rayColor = pointerProfile.DebugDrawPointingRayColors[pointerCount++ % pointerProfile.DebugDrawPointingRayColors.Length];
-                    }
-                    else
-                    {
-                        rayColor = Color.green;
-                    }
-
-                    if (!pointerData.Pointer.IsActive)
-                    {
-                        // Only draw pointers that are currently active, but make sure to 
-                        // increment color even if pointer is disabled so that the color for e.g. the 
-                        // sphere pointer or the poke pointer remains consistent.
-                        continue;
-                    }
-
-                    Debug.DrawRay(pointerData.StartPoint, (pointerData.Details.Point - pointerData.StartPoint), rayColor);
+                    pointerMediator.Value.UpdatePointers();
                 }
-#endif
-            }
 
-            Profiler.EndSample(); // UpdatePointers
+#if UNITY_EDITOR
+                int pointerCount = 0;
+#endif
+                foreach (var pointerData in pointers)
+                {
+                    UpdatePointer(pointerData);
+
+#if UNITY_EDITOR
+                    var pointerProfile = profile.PointerProfile;
+                    if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
+                    {
+                        MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
+
+                        Color rayColor;
+                        if ((pointerProfile.DebugDrawPointingRayColors != null) && (pointerProfile.DebugDrawPointingRayColors.Length > 0))
+                        {
+                            rayColor = pointerProfile.DebugDrawPointingRayColors[pointerCount++ % pointerProfile.DebugDrawPointingRayColors.Length];
+                        }
+                        else
+                        {
+                            rayColor = Color.green;
+                        }
+
+                        if (!pointerData.Pointer.IsActive)
+                        {
+                            // Only draw pointers that are currently active, but make sure to 
+                            // increment color even if pointer is disabled so that the color for e.g. the 
+                            // sphere pointer or the poke pointer remains consistent.
+                            continue;
+                        }
+
+                        Debug.DrawRay(pointerData.StartPoint, (pointerData.Details.Point - pointerData.StartPoint), rayColor);
+                    }
+#endif
+                }
+            }
         }
+
+        private static readonly ProfilerMarker UpdatePointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdatPointer");
 
         private void UpdatePointer(PointerData pointerData)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.UpdatePointer");
-
-            // Call the pointer's OnPreSceneQuery function
-            // This will give it a chance to prepare itself for raycasts
-            // e.g., by building its Rays array
-            pointerData.Pointer.OnPreSceneQuery();
-
-            // If pointer interaction isn't enabled, clear its result object and return
-            if (!pointerData.Pointer.IsInteractionEnabled)
+            using (UpdatePointerPerfMarker.Auto())
             {
-                // Don't clear the previous focused object since we still want to trigger FocusExit events
-                pointerData.ResetFocusedObjects(false);
-            }
-            else
-            {
-                LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+                // Call the pointer's OnPreSceneQuery function
+                // This will give it a chance to prepare itself for raycasts
+                // e.g., by building its Rays array
+                pointerData.Pointer.OnPreSceneQuery();
 
-                if (pointerData.IsCurrentPointerTargetInvalid)
+                // If pointer interaction isn't enabled, clear its result object and return
+                if (!pointerData.Pointer.IsInteractionEnabled)
                 {
-                    pointerData.Pointer.IsFocusLocked = false;
-                }
-
-                // If the pointer is locked, keep the focused object the same.
-                // This will ensure that we execute events on those objects
-                // even if the pointer isn't pointing at them.
-                if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.IsTargetPositionLockedOnFocusLock)
-                {
-                    pointerData.UpdateFocusLockedHit();
-
-                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-                    if (EventSystem.current != null)
-                    {
-                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                        hitResultUi.Clear();
-                        RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
-                    }
+                    // Don't clear the previous focused object since we still want to trigger FocusExit events
+                    pointerData.ResetFocusedObjects(false);
                 }
                 else
                 {
-                    // Perform raycast to determine focused object
-                    var raycastProvider = CoreServices.InputSystem.RaycastProvider;
-                    hitResult3d.Clear();
-                    QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
+                    LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
 
-                    int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
-                    if (hitResult3dLayer == 0)
+                    if (pointerData.IsCurrentPointerTargetInvalid)
                     {
-                        // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
-                        // (if it's not highest priority it's possible the UI raycast could produce a higher-priority hit that is further than the physics hit,
-                        // and we'd lose that hit if the pointer were truncated)
-                        TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
+                        pointerData.Pointer.IsFocusLocked = false;
                     }
 
-                    PointerHitResult hit = hitResult3d;
-                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
-                    if (EventSystem.current != null)
+                    // If the pointer is locked, keep the focused object the same.
+                    // This will ensure that we execute events on those objects
+                    // even if the pointer isn't pointing at them.
+                    if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.IsTargetPositionLockedOnFocusLock)
                     {
-                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
-                        hitResultUi.Clear();
-                        RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        pointerData.UpdateFocusLockedHit();
 
-                        hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
+                        // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                        if (EventSystem.current != null)
+                        {
+                            // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                            hitResultUi.Clear();
+                            RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                        }
                     }
-
-                    if (hit != hitResult3d || hitResult3dLayer > 0)
+                    else
                     {
-                        // Truncate if we didn't already for this hit
-                        TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
+                        // Perform raycast to determine focused object
+                        var raycastProvider = CoreServices.InputSystem.RaycastProvider;
+                        hitResult3d.Clear();
+                        QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
+
+                        int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
+                        if (hitResult3dLayer == 0)
+                        {
+                            // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast
+                            // (if it's not highest priority it's possible the UI raycast could produce a higher-priority hit that is further than the physics hit,
+                            // and we'd lose that hit if the pointer were truncated)
+                            TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
+                        }
+
+                        PointerHitResult hit = hitResult3d;
+                        // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                        if (EventSystem.current != null)
+                        {
+                            // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                            hitResultUi.Clear();
+                            RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+
+                            hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
+                        }
+
+                        if (hit != hitResult3d || hitResult3dLayer > 0)
+                        {
+                            // Truncate if we didn't already for this hit
+                            TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
+                        }
+
+                        // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
+                        if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.Result?.CurrentPointerTarget != null)
+                        {
+                            hit.hitObject = pointerData.Pointer.Result.CurrentPointerTarget;
+                        }
+
+                        // Apply the hit result only now so changes in the current target are detected only once per frame.
+                        pointerData.UpdateHit(hit);
+
+                        // set gaze hit result - make sure to include unity ui hits
+                        if (gazeProviderPointingData?.Pointer != null && pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                        {
+                            gazeHitResult = hit;
+                        }
+
+                        // Set the pointer's result last
+                        pointerData.Pointer.Result = pointerData;
                     }
-
-                    // Make sure to keep focus on the previous object if focus is locked (no target position lock here).
-                    if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.Result?.CurrentPointerTarget != null)
-                    {
-                        hit.hitObject = pointerData.Pointer.Result.CurrentPointerTarget;
-                    }
-
-                    // Apply the hit result only now so changes in the current target are detected only once per frame.
-                    pointerData.UpdateHit(hit);
-
-                    // set gaze hit result - make sure to include unity ui hits
-                    if (gazeProviderPointingData?.Pointer != null && pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
-                    {
-                        gazeHitResult = hit;
-                    }
-
-                    // Set the pointer's result last
-                    pointerData.Pointer.Result = pointerData;
                 }
+
+                // Call the pointer's OnPostSceneQuery function.
+                // This will give it a chance to respond to raycast results
+                // e.g., by updating its appearance.
+                pointerData.Pointer.OnPostSceneQuery();
             }
-
-            // Call the pointer's OnPostSceneQuery function.
-            // This will give it a chance to respond to raycast results
-            // e.g., by updating its appearance.
-            pointerData.Pointer.OnPostSceneQuery();
-
-            Profiler.EndSample(); // UpdatePointer
         }
 
         private void TruncatePointerRayToHit(IMixedRealityPointer pointer, PointerHitResult hit)
@@ -1099,63 +1106,64 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return (hit1.hitObject != null) ? hit1 : hit2;
         }
 
+        private static readonly ProfilerMarker ReconcilePointersPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.ReconcilePointers");
+
         /// <summary>
         /// Disable inactive pointers to unclutter the way for active ones.
         /// </summary>
         private void ReconcilePointers()
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.ReconcilePointers");
-
-            var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
-            NumFarPointersActive = 0;
-            NumNearPointersActive = 0;
-            int numFarPointersWithoutCursorActive = 0;
-
-            foreach (var pointerData in pointers)
+            using (ReconcilePointersPerfMarker.Auto())
             {
-                if (pointerData.Pointer is IMixedRealityNearPointer)
+                var gazePointer = gazeProviderPointingData?.Pointer as GenericPointer;
+                NumFarPointersActive = 0;
+                NumNearPointersActive = 0;
+                int numFarPointersWithoutCursorActive = 0;
+
+                foreach (var pointerData in pointers)
                 {
-                    if (pointerData.Pointer.IsInteractionEnabled)
+                    if (pointerData.Pointer is IMixedRealityNearPointer)
                     {
-                        NumNearPointersActive++;
+                        if (pointerData.Pointer.IsInteractionEnabled)
+                        {
+                            NumNearPointersActive++;
+                        }
+                    }
+                    else if (
+                        // pointerData.Pointer.BaseCursor == null means this is a GGV Pointer
+                        pointerData.Pointer.BaseCursor != null
+                        && !(pointerData.Pointer == gazePointer)
+                        && pointerData.Pointer.IsInteractionEnabled)
+                    {
+                        // We ignore the currentGazePointer here because for cases like HoloLens 1
+                        // hand input or the gamepad, we want to show the cursor still.
+                        NumFarPointersActive++;
+                    }
+                    else if (pointerData.Pointer.BaseCursor == null
+                        && pointerData.Pointer.IsInteractionEnabled)
+                    {
+                        numFarPointersWithoutCursorActive++;
                     }
                 }
-                else if (
-                    // pointerData.Pointer.BaseCursor == null means this is a GGV Pointer
-                    pointerData.Pointer.BaseCursor != null
-                    && !(pointerData.Pointer == gazePointer)
-                    && pointerData.Pointer.IsInteractionEnabled)
+                if (gazePointer != null)
                 {
-                    // We ignore the currentGazePointer here because for cases like HoloLens 1
-                    // hand input or the gamepad, we want to show the cursor still.
-                    NumFarPointersActive++;
-                }
-                else if (pointerData.Pointer.BaseCursor == null
-                    && pointerData.Pointer.IsInteractionEnabled)
-                {
-                    numFarPointersWithoutCursorActive++;
-                }
-            }
-            if (gazePointer != null)
-            {
-                bool wasGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
+                    bool wasGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
 
-                gazePointerStateMachine.UpdateState(
-                    NumNearPointersActive,
-                    NumFarPointersActive,
-                    numFarPointersWithoutCursorActive,
-                    CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
+                    gazePointerStateMachine.UpdateState(
+                        NumNearPointersActive,
+                        NumFarPointersActive,
+                        numFarPointersWithoutCursorActive,
+                        CoreServices.InputSystem.EyeGazeProvider.IsEyeTrackingEnabledAndValid);
 
-                bool isGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
+                    bool isGazePointerActive = gazePointerStateMachine.IsGazePointerActive;
 
-                if (wasGazePointerActive != isGazePointerActive)
-                {
-                    // The gaze cursor's visibility is controlled by IsInteractionEnabled
-                    gazePointer.IsInteractionEnabled = isGazePointerActive;
+                    if (wasGazePointerActive != isGazePointerActive)
+                    {
+                        // The gaze cursor's visibility is controlled by IsInteractionEnabled
+                        gazePointer.IsInteractionEnabled = isGazePointerActive;
+                    }
                 }
             }
-
-            Profiler.EndSample(); // ReconcilePointers
         }
 
         #region Physics Raycasting
@@ -1163,349 +1171,355 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Colliders used to store sphere overlap results
         private static Collider[] colliders = null;
 
+        private static readonly ProfilerMarker QueryScenePerfMarker = new ProfilerMarker("[MRTK] FocusProvider.QueryScene");
+
         /// <summary>
         /// Perform a scene query to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.QueryScene");
-
-            float rayStartDistance = 0;
-            MixedRealityRaycastHit hitInfo;
-            RayStep[] pointerRays = pointer.Rays;
-
-            if (pointerRays == null)
+            using (QueryScenePerfMarker.Auto())
             {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
+                float rayStartDistance = 0;
+                MixedRealityRaycastHit hitInfo;
+                RayStep[] pointerRays = pointer.Rays;
 
-            if (pointerRays.Length <= 0)
-            {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
-                return;
-            }
-
-            // Perform query for each step in the pointing source
-            for (int i = 0; i < pointerRays.Length; i++)
-            {
-                switch (pointer.SceneQueryType)
+                if (pointerRays == null)
                 {
-                    case SceneQueryType.SimpleRaycast:
-                        if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                        {
-                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                            return;
-                        }
-                        break;
-                    case SceneQueryType.BoxRaycast:
-                        Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
-                        break;
-                    case SceneQueryType.SphereCast:
-                        if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
-                        {
-                            hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
-                            return;
-                        }
-                        break;
-                    case SceneQueryType.SphereOverlap:
-                        // Set up our results array
-                        if (colliders == null)
-                        {
-                            colliders = new Collider[maxQuerySceneResults];
-                        }
-                        else if (colliders.Length != maxQuerySceneResults)
-                        {
-                            Array.Resize<Collider>(ref colliders, maxQuerySceneResults);
-                        }
-
-                        int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, ~UnityEngine.Physics.IgnoreRaycastLayer);
-
-                        if (numColliders > 0)
-                        {
-                            if (numColliders >= maxQuerySceneResults)
-                            {
-                                Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
-                            }
-
-                            Vector3 testPoint = pointer.Rays[i].Origin;
-                            GameObject closest = null;
-                            float closestDistance = Mathf.Infinity;
-                            Vector3 objectHitPoint = testPoint;
-
-                            for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
-                            {
-                                Collider collider = colliders[colliderIndex];
-                                // Policy: in order for an collider to be near interactable it must have
-                                // a NearInteractionGrabbable component on it.
-                                // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
-                                //        but there may be other pointers using the same query type which have different semantics.
-                                if (collider.GetComponent<NearInteractionGrabbable>() == null)
-                                {
-                                    continue;
-                                }
-                                // From https://docs.unity3d.com/ScriptReference/Collider.ClosestPoint.html
-                                // If location is in the collider the closestPoint will be inside.
-                                Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
-                                float distance = (testPoint - closestPointToCollider).sqrMagnitude;
-                                if (distance < closestDistance)
-                                {
-                                    closestDistance = distance;
-                                    closest = collider.gameObject;
-                                    objectHitPoint = closestPointToCollider;
-                                }
-                            }
-                            if (closest != null)
-                            {
-                                hit.Set(closest, objectHitPoint, Vector3.zero, pointer.Rays[i], 0, closestDistance);
-                                return;
-                            }
-                        }
-                        break;
-                    default:
-                        Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
-                        break;
+                    Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
+                    return;
                 }
 
-                rayStartDistance += pointer.Rays[i].Length;
-            }
+                if (pointerRays.Length <= 0)
+                {
+                    Debug.LogError($"No valid rays for {pointer.PointerName} pointer");
+                    return;
+                }
 
-            Profiler.EndSample(); // QueryScene
+                // Perform query for each step in the pointing source
+                for (int i = 0; i < pointerRays.Length; i++)
+                {
+                    switch (pointer.SceneQueryType)
+                    {
+                        case SceneQueryType.SimpleRaycast:
+                            if (raycastProvider.Raycast(pointerRays[i], prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                            {
+                                hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
+                                return;
+                            }
+                            break;
+                        case SceneQueryType.BoxRaycast:
+                            Debug.LogWarning("Box Raycasting Mode not supported for pointers.");
+                            break;
+                        case SceneQueryType.SphereCast:
+                            if (raycastProvider.SphereCast(pointerRays[i], pointer.SphereCastRadius, prioritizedLayerMasks, focusIndividualCompoundCollider, out hitInfo))
+                            {
+                                hit.Set(hitInfo, pointerRays[i], i, rayStartDistance + hitInfo.distance, focusIndividualCompoundCollider);
+                                return;
+                            }
+                            break;
+                        case SceneQueryType.SphereOverlap:
+                            // Set up our results array
+                            if (colliders == null)
+                            {
+                                colliders = new Collider[maxQuerySceneResults];
+                            }
+                            else if (colliders.Length != maxQuerySceneResults)
+                            {
+                                Array.Resize<Collider>(ref colliders, maxQuerySceneResults);
+                            }
+
+                            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, ~UnityEngine.Physics.IgnoreRaycastLayer);
+
+                            if (numColliders > 0)
+                            {
+                                if (numColliders >= maxQuerySceneResults)
+                                {
+                                    Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
+                                }
+
+                                Vector3 testPoint = pointer.Rays[i].Origin;
+                                GameObject closest = null;
+                                float closestDistance = Mathf.Infinity;
+                                Vector3 objectHitPoint = testPoint;
+
+                                for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
+                                {
+                                    Collider collider = colliders[colliderIndex];
+                                    // Policy: in order for an collider to be near interactable it must have
+                                    // a NearInteractionGrabbable component on it.
+                                    // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
+                                    //        but there may be other pointers using the same query type which have different semantics.
+                                    if (collider.GetComponent<NearInteractionGrabbable>() == null)
+                                    {
+                                        continue;
+                                    }
+                                    // From https://docs.unity3d.com/ScriptReference/Collider.ClosestPoint.html
+                                    // If location is in the collider the closestPoint will be inside.
+                                    Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
+                                    float distance = (testPoint - closestPointToCollider).sqrMagnitude;
+                                    if (distance < closestDistance)
+                                    {
+                                        closestDistance = distance;
+                                        closest = collider.gameObject;
+                                        objectHitPoint = closestPointToCollider;
+                                    }
+                                }
+                                if (closest != null)
+                                {
+                                    hit.Set(closest, objectHitPoint, Vector3.zero, pointer.Rays[i], 0, closestDistance);
+                                    return;
+                                }
+                            }
+                            break;
+                        default:
+                            Debug.LogError($"Invalid raycast mode {pointer.SceneQueryType} for {pointer.PointerName} pointer.");
+                            break;
+                    }
+
+                    rayStartDistance += pointer.Rays[i].Length;
+                }
+            }
         }
 
         #endregion Physics Raycasting
 
         #region uGUI Graphics Raycasting
 
+        private static readonly ProfilerMarker RaycastGraphicsPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RaycastGraphics");
+
         /// <summary>
         /// Perform a Unity Graphics Raycast to determine which uGUI element is currently being pointed at, if any.
         /// </summary>
         private void RaycastGraphics(IMixedRealityPointer pointer, PointerEventData graphicEventData, LayerMask[] prioritizedLayerMasks, PointerHitResult hit)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.RaycastGraphics");
-
-            Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
-            Debug.Assert(UIRaycastCamera.nearClipPlane == 0, "Near plane must be zero for raycast distances to be correct");
-
-            RaycastResult raycastResult = default(RaycastResult);
-
-            if (pointer.Rays == null || pointer.Rays.Length <= 0)
+            using (RaycastGraphicsPerfMarker.Auto())
             {
-                Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
-                return;
-            }
+                Debug.Assert(UIRaycastCamera != null, "Missing UIRaycastCamera!");
+                Debug.Assert(UIRaycastCamera.nearClipPlane == 0, "Near plane must be zero for raycast distances to be correct");
 
-            // Cast rays for every step until we score a hit
-            float totalDistance = 0.0f;
-            for (int i = 0; i < pointer.Rays.Length; i++)
-            {
-                if (RaycastGraphicsStep(graphicEventData, pointer.Rays[i], prioritizedLayerMasks, out raycastResult))
+                RaycastResult raycastResult = default(RaycastResult);
+
+                if (pointer.Rays == null || pointer.Rays.Length <= 0)
                 {
-                    if (raycastResult.isValid &&
-                        raycastResult.distance < pointer.Rays[i].Length &&
-                        raycastResult.module != null &&
-                        raycastResult.module.eventCamera == UIRaycastCamera)
-                    {
-                        totalDistance += raycastResult.distance;
-
-                        newUiRaycastPosition.x = raycastResult.screenPosition.x;
-                        newUiRaycastPosition.y = raycastResult.screenPosition.y;
-                        newUiRaycastPosition.z = raycastResult.distance;
-
-                        Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
-                        Vector3 normal = -raycastResult.gameObject.transform.forward;
-
-                        hit.Set(raycastResult, worldPos, normal, pointer.Rays[i], i, totalDistance);
-                        return;
-                    }
+                    Debug.LogError($"No valid rays for {pointer.PointerName} pointer.");
+                    return;
                 }
 
-                totalDistance += pointer.Rays[i].Length;
-            }
+                // Cast rays for every step until we score a hit
+                float totalDistance = 0.0f;
+                for (int i = 0; i < pointer.Rays.Length; i++)
+                {
+                    if (RaycastGraphicsStep(graphicEventData, pointer.Rays[i], prioritizedLayerMasks, out raycastResult))
+                    {
+                        if (raycastResult.isValid &&
+                            raycastResult.distance < pointer.Rays[i].Length &&
+                            raycastResult.module != null &&
+                            raycastResult.module.eventCamera == UIRaycastCamera)
+                        {
+                            totalDistance += raycastResult.distance;
 
-            Profiler.EndSample(); // RaycastGraphics
+                            newUiRaycastPosition.x = raycastResult.screenPosition.x;
+                            newUiRaycastPosition.y = raycastResult.screenPosition.y;
+                            newUiRaycastPosition.z = raycastResult.distance;
+
+                            Vector3 worldPos = UIRaycastCamera.ScreenToWorldPoint(newUiRaycastPosition);
+                            Vector3 normal = -raycastResult.gameObject.transform.forward;
+
+                            hit.Set(raycastResult, worldPos, normal, pointer.Rays[i], i, totalDistance);
+                            return;
+                        }
+                    }
+
+                    totalDistance += pointer.Rays[i].Length;
+                }
+            }
         }
+
+        private static readonly ProfilerMarker RaycastGraphicsStepPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.RaycastGraphicsStep");
 
         /// <summary>
         /// Raycasts a single graphic <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>
         /// </summary>
         private bool RaycastGraphicsStep(PointerEventData graphicEventData, RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastResult uiRaycastResult)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.RaycastGraphicsStep");
+            using (RaycastGraphicsStepPerfMarker.Auto())
+            {
+                Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
 
-            Debug.Assert(step.Direction != Vector3.zero, "RayStep Direction is Invalid.");
+                // Move the uiRaycast camera to the current pointer's position.
+                UIRaycastCamera.transform.position = step.Origin;
+                UIRaycastCamera.transform.rotation = Quaternion.LookRotation(step.Direction, Vector3.up);
 
-            // Move the uiRaycast camera to the current pointer's position.
-            UIRaycastCamera.transform.position = step.Origin;
-            UIRaycastCamera.transform.rotation = Quaternion.LookRotation(step.Direction, Vector3.up);
+                // We always raycast from the center of the camera.
+                graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
 
-            // We always raycast from the center of the camera.
-            graphicEventData.position = new Vector2(UIRaycastCamera.pixelWidth * 0.5f, UIRaycastCamera.pixelHeight * 0.5f);
+                // Graphics raycast
+                uiRaycastResult = CoreServices.InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
+                graphicEventData.pointerCurrentRaycast = uiRaycastResult;
 
-            // Graphics raycast
-            uiRaycastResult = CoreServices.InputSystem.RaycastProvider.GraphicsRaycast(EventSystem.current, graphicEventData, prioritizedLayerMasks);
-            graphicEventData.pointerCurrentRaycast = uiRaycastResult;
-
-            Profiler.EndSample(); // RaycastGraphicsStep
-
-            return (uiRaycastCamera.gameObject != null);
+                return (uiRaycastCamera.gameObject != null);
+            }
         }
 
         #endregion uGUI Graphics Raycasting
+
+        private static readonly ProfilerMarker UpdateFocusedObjectsPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdateFocusedObjects");
 
         /// <summary>
         /// Raises the Focus Events to the Input Manger if needed.
         /// </summary>
         private void UpdateFocusedObjects()
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.UpdateFocusedObjects");
-
-            Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
-            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
-            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
-
-            // NOTE: We compute the set of events to send before sending the first event
-            //       just in case someone responds to the event by adding/removing a
-            //       pointer which would change the structures we're iterating over.
-
-            foreach (var pointer in pointers)
+            using (UpdateFocusedObjectsPerfMarker.Auto())
             {
-                if (pointer.PreviousPointerTarget != pointer.CurrentPointerTarget)
+                Debug.Assert(pendingPointerSpecificFocusChange.Count == 0);
+                Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+                Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
+
+                // NOTE: We compute the set of events to send before sending the first event
+                //       just in case someone responds to the event by adding/removing a
+                //       pointer which would change the structures we're iterating over.
+
+                foreach (var pointer in pointers)
                 {
-                    pendingPointerSpecificFocusChange.Add(pointer);
-
-                    // Initially, we assume all pointer-specific focus changes will
-                    // also result in an overall focus change...
-
-                    if (pointer.PreviousPointerTarget != null)
+                    if (pointer.PreviousPointerTarget != pointer.CurrentPointerTarget)
                     {
-                        int numExits;
-                        if (pendingOverallFocusExitSet.TryGetValue(pointer.PreviousPointerTarget, out numExits))
+                        pendingPointerSpecificFocusChange.Add(pointer);
+
+                        // Initially, we assume all pointer-specific focus changes will
+                        // also result in an overall focus change...
+
+                        if (pointer.PreviousPointerTarget != null)
                         {
-                            pendingOverallFocusExitSet[pointer.PreviousPointerTarget] = numExits + 1;
+                            int numExits;
+                            if (pendingOverallFocusExitSet.TryGetValue(pointer.PreviousPointerTarget, out numExits))
+                            {
+                                pendingOverallFocusExitSet[pointer.PreviousPointerTarget] = numExits + 1;
+                            }
+                            else
+                            {
+                                pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget, 1);
+                            }
+                        }
+
+                        if (pointer.CurrentPointerTarget != null)
+                        {
+                            pendingOverallFocusEnterSet.Add(pointer.CurrentPointerTarget);
+                        }
+                    }
+                }
+
+                // Early out if there have been no focus changes
+                if (pendingPointerSpecificFocusChange.Count == 0)
+                {
+                    return;
+                }
+
+                // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
+
+                foreach (var pointer in pointers)
+                {
+                    if (pointer.CurrentPointerTarget != null)
+                    {
+                        pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
+                    }
+                    pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
+                }
+
+                // Now we raise the events:
+                for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
+                {
+                    PointerData change = pendingPointerSpecificFocusChange[iChange];
+                    GameObject pendingUnfocusObject = change.PreviousPointerTarget;
+                    GameObject pendingFocusObject = change.CurrentPointerTarget;
+
+                    CoreServices.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+
+                    int numExits;
+                    if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
+                    {
+                        if (numExits > 1)
+                        {
+                            pendingOverallFocusExitSet[pendingUnfocusObject] = numExits - 1;
                         }
                         else
                         {
-                            pendingOverallFocusExitSet.Add(pointer.PreviousPointerTarget, 1);
+                            CoreServices.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
+                            pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
                         }
                     }
 
-                    if (pointer.CurrentPointerTarget != null)
+                    if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
                     {
-                        pendingOverallFocusEnterSet.Add(pointer.CurrentPointerTarget);
+                        CoreServices.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
+                        pendingOverallFocusEnterSet.Remove(pendingFocusObject);
                     }
-                }
-            }
 
-            // Early out if there have been no focus changes
-            if (pendingPointerSpecificFocusChange.Count == 0)
-            {
-                return;
-            }
-
-            // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
-
-            foreach (var pointer in pointers)
-            {
-                if (pointer.CurrentPointerTarget != null)
-                {
-                    pendingOverallFocusExitSet.Remove(pointer.CurrentPointerTarget);
-                }
-                pendingOverallFocusEnterSet.Remove(pointer.PreviousPointerTarget);
-            }
-
-            // Now we raise the events:
-            for (int iChange = 0; iChange < pendingPointerSpecificFocusChange.Count; iChange++)
-            {
-                PointerData change = pendingPointerSpecificFocusChange[iChange];
-                GameObject pendingUnfocusObject = change.PreviousPointerTarget;
-                GameObject pendingFocusObject = change.CurrentPointerTarget;
-
-                CoreServices.InputSystem.RaisePreFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
-
-                int numExits;
-                if (pendingUnfocusObject != null && pendingOverallFocusExitSet.TryGetValue(pendingUnfocusObject, out numExits))
-                {
-                    if (numExits > 1)
-                    {
-                        pendingOverallFocusExitSet[pendingUnfocusObject] = numExits - 1;
-                    }
-                    else
-                    {
-                        CoreServices.InputSystem.RaiseFocusExit(change.Pointer, pendingUnfocusObject);
-                        pendingOverallFocusExitSet.Remove(pendingUnfocusObject);
-                    }
+                    CoreServices.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
                 }
 
-                if (pendingOverallFocusEnterSet.Contains(pendingFocusObject))
-                {
-                    CoreServices.InputSystem.RaiseFocusEnter(change.Pointer, pendingFocusObject);
-                    pendingOverallFocusEnterSet.Remove(pendingFocusObject);
-                }
-
-                CoreServices.InputSystem.RaiseFocusChanged(change.Pointer, pendingUnfocusObject, pendingFocusObject);
+                Debug.Assert(pendingOverallFocusExitSet.Count == 0);
+                Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
+                pendingPointerSpecificFocusChange.Clear();
             }
-
-            Debug.Assert(pendingOverallFocusExitSet.Count == 0);
-            Debug.Assert(pendingOverallFocusEnterSet.Count == 0);
-            pendingPointerSpecificFocusChange.Clear();
-
-            Profiler.EndSample(); // UpdateFocuedObjects
         }
 
         #endregion Utilities
 
         #region ISourceState Implementation
 
+        private static readonly ProfilerMarker OnSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.OnSourceDetected");
+
         /// <inheritdoc />
         public void OnSourceDetected(SourceStateEventData eventData)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.OnSourceDetected");
-
-            RegisterPointers(eventData.InputSource);
-
-            Profiler.EndSample(); // OnSourceDetected
+            using (OnSourceDetectedPerfMarker.Auto())
+            {
+                RegisterPointers(eventData.InputSource);
+            }
         }
+
+        private static readonly ProfilerMarker OnSourceLostdPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.OnSourceLost");
 
         /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            Profiler.BeginSample("[MRTK] FocusProvider.OnSourceLost");
-
-            // If the input source does not have pointers, then skip.
-            if (eventData.InputSource.Pointers == null) { return; }
-
-            // Let the pointer behavior know that the pointer has been lost
-            IMixedRealityPointerMediator mediator;
-            if (pointerMediators.TryGetValue(eventData.SourceId, out mediator))
+            using (OnSourceLostdPerfMarker.Auto())
             {
-                mediator.UnregisterPointers(eventData.InputSource.Pointers);
-            }
+                // If the input source does not have pointers, then skip.
+                if (eventData.InputSource.Pointers == null) { return; }
 
-            pointerMediators.Remove(eventData.SourceId);
-
-            for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
-            {
-                // Special unregistration for Gaze
-                if (gazeProviderPointingData?.Pointer != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                // Let the pointer behavior know that the pointer has been lost
+                IMixedRealityPointerMediator mediator;
+                if (pointerMediators.TryGetValue(eventData.SourceId, out mediator))
                 {
-                    // If the source lost is the gaze input source, then reset it.
-                    if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
-                    {
-                        gazeProviderPointingData.ResetFocusedObjects();
-                        gazeProviderPointingData = null;
-                    }
-                    // Otherwise, don't unregister the gaze pointer, since the gaze input source is still active.
-                    else
-                    {
-                        continue;
-                    }
+                    mediator.UnregisterPointers(eventData.InputSource.Pointers);
                 }
 
-                UnregisterPointer(eventData.InputSource.Pointers[i]);
-            }
+                pointerMediators.Remove(eventData.SourceId);
 
-            Profiler.EndSample(); // OnSourceLost
+                for (var i = 0; i < eventData.InputSource.Pointers.Length; i++)
+                {
+                    // Special unregistration for Gaze
+                    if (gazeProviderPointingData?.Pointer != null && eventData.InputSource.Pointers[i].PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    {
+                        // If the source lost is the gaze input source, then reset it.
+                        if (eventData.InputSource.SourceId == CoreServices.InputSystem.GazeProvider?.GazeInputSource.SourceId)
+                        {
+                            gazeProviderPointingData.ResetFocusedObjects();
+                            gazeProviderPointingData = null;
+                        }
+                        // Otherwise, don't unregister the gaze pointer, since the gaze input source is still active.
+                        else
+                        {
+                            continue;
+                        }
+                    }
+
+                    UnregisterPointer(eventData.InputSource.Pointers[i]);
+                }
+            }
         }
 
 
