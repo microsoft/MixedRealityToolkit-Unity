@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityPhysics = UnityEngine.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -345,66 +345,68 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] GazePointer.Update");
+
         private void Update()
         {
-            Profiler.BeginSample("[MRTK] GazeProvider.Update");
-
-            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
+            using (UpdatePerfMarker.Auto())
             {
-                Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
-            }
+                if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
+                {
+                    Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
+                }
 
-            // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
-            // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
-                gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
-            {
-                GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
+                // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
+                // but don't touch the visibility when not active or not flagged.
+                if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
+                    gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
+                {
+                    GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
+                }
             }
-
-            Profiler.EndSample(); // Update
         }
+
+        private static readonly ProfilerMarker LateUpdatePerfMarker = new ProfilerMarker("[MRTK] GazePointer.LateUpdate");
 
         private void LateUpdate()
         {
-            Profiler.BeginSample("[MRTK] GazeProvider.LateUpdate");
-
-            // Update head velocity.
-            Vector3 headPosition = GazeOrigin;
-            Vector3 headDelta = headPosition - lastHeadPosition;
-
-            if (headDelta.sqrMagnitude < MovementThreshold * MovementThreshold)
+            using (LateUpdatePerfMarker.Auto())
             {
-                headDelta = Vector3.zero;
-            }
+                // Update head velocity.
+                Vector3 headPosition = GazeOrigin;
+                Vector3 headDelta = headPosition - lastHeadPosition;
 
-            if (Time.fixedDeltaTime > 0)
-            {
-                float velocityAdjustmentRate = 3f * Time.fixedDeltaTime;
-                HeadVelocity = HeadVelocity * (1f - velocityAdjustmentRate) + headDelta * velocityAdjustmentRate / Time.fixedDeltaTime;
-
-                if (HeadVelocity.sqrMagnitude < VelocityThreshold * VelocityThreshold)
+                if (headDelta.sqrMagnitude < MovementThreshold * MovementThreshold)
                 {
-                    HeadVelocity = Vector3.zero;
+                    headDelta = Vector3.zero;
+                }
+
+                if (Time.fixedDeltaTime > 0)
+                {
+                    float velocityAdjustmentRate = 3f * Time.fixedDeltaTime;
+                    HeadVelocity = HeadVelocity * (1f - velocityAdjustmentRate) + headDelta * velocityAdjustmentRate / Time.fixedDeltaTime;
+
+                    if (HeadVelocity.sqrMagnitude < VelocityThreshold * VelocityThreshold)
+                    {
+                        HeadVelocity = Vector3.zero;
+                    }
+                }
+
+                // Update Head Movement Direction
+                float multiplier = Mathf.Clamp01(Mathf.InverseLerp(minHeadVelocityThreshold, maxHeadVelocityThreshold, HeadVelocity.magnitude));
+
+                Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
+                lastHeadPosition = headPosition;
+                float directionAdjustmentRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
+
+                HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
+
+                if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
+                {
+                    Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
+                    Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
                 }
             }
-
-            // Update Head Movement Direction
-            float multiplier = Mathf.Clamp01(Mathf.InverseLerp(minHeadVelocityThreshold, maxHeadVelocityThreshold, HeadVelocity.magnitude));
-
-            Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
-            lastHeadPosition = headPosition;
-            float directionAdjustmentRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);
-
-            HeadMovementDirection = Vector3.Slerp(HeadMovementDirection, newHeadMoveDirection, directionAdjustmentRate);
-
-            if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
-            {
-                Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadMovementDirection * 10f, Color.Lerp(Color.red, Color.green, multiplier));
-                Debug.DrawLine(lastHeadPosition, lastHeadPosition + HeadVelocity, Color.yellow);
-            }
-
-            Profiler.EndSample(); // LateUpdate
         }
 
         /// <inheritdoc />
@@ -468,74 +470,75 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Utilities
 
+        private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazePointer.InitializeGazePointer");
+
         private IMixedRealityPointer InitializeGazePointer()
         {
-            Profiler.BeginSample("[MRTK] GazeProvider.InitializeGazePointer");
-
-            if (gazeTransform == null)
+            using (InitializeGazePointerPerfMarker.Auto())
             {
-                gazeTransform = CameraCache.Main.transform;
+                if (gazeTransform == null)
+                {
+                    gazeTransform = CameraCache.Main.transform;
+                }
+
+                Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
+
+                gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
+
+                if ((GazeCursor == null) &&
+                    (GazeCursorPrefab != null))
+                {
+                    GameObject cursor = Instantiate(GazeCursorPrefab);
+                    MixedRealityPlayspace.AddChild(cursor.transform);
+                    SetGazeCursor(cursor);
+                }
+
+                return gazePointer;
             }
-
-            Debug.Assert(gazeTransform != null, "No gaze transform to raycast from!");
-
-            gazePointer = new InternalGazePointer(this, "Gaze Pointer", null, raycastLayerMasks, maxGazeCollisionDistance, gazeTransform, stabilizer);
-
-            if ((GazeCursor == null) &&
-                (GazeCursorPrefab != null))
-            {
-                GameObject cursor = Instantiate(GazeCursorPrefab);
-                MixedRealityPlayspace.AddChild(cursor.transform);
-                SetGazeCursor(cursor);
-            }
-
-            Profiler.EndSample(); // InitializeGazePointer
-
-            return gazePointer;
         }
+
+        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazePointer.RaiseSourceDetectec");
 
         private async void RaiseSourceDetected()
         {
-            Profiler.BeginSample("[MRTK] GazeProvider.RaiseSourceDetected");
-
-            await EnsureInputSystemValid();
-
-            if (this == null)
+            using (RaiseSourceDetectedPerfMarker.Auto())
             {
-                // We've been destroyed during the await.
-                Profiler.EndSample(); // RaiseSourceDetected - early exit
-                return;
+                await EnsureInputSystemValid();
+
+                if (this == null)
+                {
+                    // We've been destroyed during the await.
+                    return;
+                }
+
+                CoreServices.InputSystem?.RaiseSourceDetected(GazeInputSource);
+                GazePointer.BaseCursor?.SetVisibility(true);
             }
-
-            CoreServices.InputSystem?.RaiseSourceDetected(GazeInputSource);
-            GazePointer.BaseCursor?.SetVisibility(true);
-
-            Profiler.EndSample(); // RaiseSourceDetected
         }
 
-        /// <inheritdoc />
+        private static readonly ProfilerMarker UpdateGazeInfoFromHitPerfMarker = new ProfilerMarker("[MRTK] GazePointer.UpdateGazeInfoFromHit");
+
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
-            Profiler.BeginSample("[MRTK] GazeProvider.UpdateGazeInfoFromHit");
-
-            HitInfo = raycastHit;
-            if (raycastHit.transform != null)
+            using (UpdateGazeInfoFromHitPerfMarker.Auto())
             {
-                GazeTarget = raycastHit.transform.gameObject;
-                var ray = GazePointer.Rays[0];
-                var lhd = (raycastHit.point - ray.Origin).magnitude;
-                lastHitDistance = lhd;
-                HitPosition = ray.Origin + lhd * ray.Direction;
-                HitNormal = raycastHit.normal;
+                HitInfo = raycastHit;
+                if (raycastHit.transform != null)
+                {
+                    GazeTarget = raycastHit.transform.gameObject;
+                    var ray = GazePointer.Rays[0];
+                    var lhd = (raycastHit.point - ray.Origin).magnitude;
+                    lastHitDistance = lhd;
+                    HitPosition = ray.Origin + lhd * ray.Direction;
+                    HitNormal = raycastHit.normal;
+                }
+                else
+                {
+                    GazeTarget = null;
+                    HitPosition = Vector3.zero;
+                    HitNormal = Vector3.zero;
+                }
             }
-            else
-            {
-                GazeTarget = null;
-                HitPosition = Vector3.zero;
-                HitNormal = Vector3.zero;
-            }
-
-            Profiler.EndSample(); // UpdateGazeInfoFromHit
         }
 
         /// <summary>

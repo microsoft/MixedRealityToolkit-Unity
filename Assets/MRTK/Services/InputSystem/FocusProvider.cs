@@ -1480,12 +1480,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker OnSourceLostdPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.OnSourceLost");
+        private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.OnSourceLost");
 
         /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
-            using (OnSourceLostdPerfMarker.Auto())
+            using (OnSourceLostPerfMarker.Auto())
             {
                 // If the input source does not have pointers, then skip.
                 if (eventData.InputSource.Pointers == null) { return; }
