@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("The distance between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance")]
         [Range(0.0f, .2f)]
-        private float eyeGazeProximityThreshold = .005f;
+        private float eyeGazeProximityThreshold = .015f;
         /// <summary>
         /// The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance
         /// </summary>
