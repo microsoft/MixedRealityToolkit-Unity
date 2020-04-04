@@ -12,12 +12,14 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
@@ -309,6 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
+            handConstraintSolver.UseGazeActivation = false;
 
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
             Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
@@ -349,6 +352,144 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(handConstraintSolver.OffsetBehavior, HandConstraint.SolverOffsetBehavior.TrackedObjectRotation);
 
             yield return rightHand.Hide();
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+        }
+        
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the Ulnar safe zone
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverActivationUlnar()
+        {
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.UlnarSide, Handedness.Left);
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.UlnarSide, Handedness.Right);
+        }
+
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the Radial safe zone
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverActivationRadial()
+        {
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.RadialSide, Handedness.Left);
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.RadialSide, Handedness.Right);
+        }
+
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the BelowWrist safe zone
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverActivationBelowWrist()
+        {
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.BelowWrist, Handedness.Left);
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.BelowWrist, Handedness.Right);
+        }
+
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the activation methods work as intended for the AboveFingerTips safe zone
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverActivationAboveFingerTips()
+        {
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.AboveFingerTips, Handedness.Left);
+            yield return TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone.AboveFingerTips, Handedness.Right);
+        }
+
+        /// <summary>
+        /// Test the HandConstraintPalm up to make sure the FollowHandUntilFacingCamera behavior works as expected
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestHandConstraintPalmUpSolverReattach()
+        {
+
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            var manipHandler = testObjects.target.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObjects.target.transform;
+            manipHandler.SmoothingActive = false;
+
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObjects.target.AddComponent<NearInteractionGrabbable>();
+
+
+            var boxCollider = testObjects.target.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(10f, 10f, 10f);
+
+            var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
+            handConstraintSolver.FollowHandUntilFacingCamera = true;
+            handConstraintSolver.UseGazeActivation = true;
+
+            // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
+            Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
+
+            var cameraTransform = CameraCache.Main.transform;
+
+            // Place hand 1 meter in front of user, 50 cm below eye level
+            var handTestPos = cameraTransform.position + cameraTransform.forward + DetermineHandOriginPositionOffset(HandConstraint.SolverSafeZone.UlnarSide, Handedness.Left);
+
+            var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
+
+            // Generate hand rotation with hand palm facing camera
+            var handRotation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
+
+            // Add a right hand.
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handTestPos);
+            yield return leftHand.SetRotation(handRotation);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return rightHand.MoveTo(testObjects.target.transform.position, 5);
+            
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            testObjects.handler.UpdateSolvers = false;
+            
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+ 
+            var delta = new Vector3(0.5f, 0.5f, 0f);
+            yield return rightHand.Move(delta, 5);
+            
+
+            // Grab the menu position to compare it later on
+            Vector3 menuPosition = testObjects.target.transform.position;
+            Vector3 movedLeftHand = handTestPos - Vector3.right;
+
+            // Move the left hand so it doesn't immediately snap
+            yield return leftHand.MoveTo(movedLeftHand, 5);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            handConstraintSolver.StartWorldLockReattachCheckCorotine();
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Before the right hand opens, make sure that the transform of the attached menu is farther than it would if attached
+            Assert.IsTrue((testObjects.target.transform.position - movedLeftHand).sqrMagnitude > .1f);
+            
+            // Then move the left hand back to the point of activation
+            yield return leftHand.MoveTo(handTestPos, 5);
+            yield return leftHand.SetRotation(handRotation);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Then move the hand back and see if the attached menu follows
+            Assert.IsTrue(testObjects.handler.UpdateSolvers, "Did not properly reattach; UpdateSolver has not been updated to true");
+
+            yield return rightHand.Hide();
+            yield return leftHand.Hide();
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
         }
@@ -612,7 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls
+        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls8
         /// instead of OnPointerClicked.
         /// </summary>
         [UnityTest]
@@ -1031,6 +1172,98 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             for (int i = 0; i < frames; i++)
             {
                 yield return null;
+            }
+        }
+
+        /// <summary>
+        /// A generalized testing functionality for the HandConstraintPalmUp script that takes in a safezone and target handedness configuration
+        /// and then tests it (using those configurations to generate a target test hand placement for activation)
+        /// </summary>
+        /// <param name="safeZone"></param>
+        /// <param name="targetHand"></param>
+        /// <returns></returns>
+        private IEnumerator TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone safeZone, Handedness targetHand)
+        {
+            // Instantiate our test GameObject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            var handConstraintSolver = (HandConstraintPalmUp) testObjects.solver;
+            handConstraintSolver.FollowHandUntilFacingCamera = true;
+            handConstraintSolver.UseGazeActivation = true;
+
+            // First test the Ulnar safe zone
+            handConstraintSolver.SafeZone = safeZone;
+
+            // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
+            Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
+
+            var cameraTransform = CameraCache.Main.transform;
+            // Place hand 1 meter in front of user, and near the activation zone
+            var handTestPos = cameraTransform.position + cameraTransform.forward + DetermineHandOriginPositionOffset(safeZone, targetHand);
+
+            // Generate hand rotation with hand palm facing camera
+            var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
+            var handRotation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
+
+            // Add a hand based on the passed in handedness.
+            var hand = new TestHand(targetHand);
+            yield return hand.Show(handTestPos);
+            yield return hand.SetRotation(handRotation);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            var delta = new Vector3(0.5f, 0.5f, 0f);
+            yield return hand.Move(delta, 5);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Ensure Activation occured by making sure the testObjects position isn't still Vector3.zero
+            Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
+
+            yield return hand.Hide();
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+        }
+
+        /// <summary>
+        /// Based on the type of handconstraint solver safe zone and handedness, returns the offset that the tested hand should apply initially.
+        /// </summary>
+        /// <param name="safeZone"></param>
+        /// <param name="targetHand"></param>
+        /// <returns></returns>
+        private Vector3 DetermineHandOriginPositionOffset(HandConstraint.SolverSafeZone safeZone, Handedness targetHand)
+        {
+            switch(safeZone)
+            {   
+                case HandConstraint.SolverSafeZone.RadialSide:
+                    if (targetHand == Handedness.Left)
+                    {
+                        return Vector3.left * .03f;
+                    }
+                    else
+                    {
+                        return Vector3.right * .03f;
+                    }
+
+                case HandConstraint.SolverSafeZone.BelowWrist:
+                    return Vector3.up * .05f;
+
+                case HandConstraint.SolverSafeZone.AboveFingerTips:
+                    return Vector3.down * .06f;
+
+                default:
+                case HandConstraint.SolverSafeZone.UlnarSide:
+                    if (targetHand == Handedness.Left)
+                    {
+                        return Vector3.right * .03f;
+                    }
+                    else
+                    {
+                        return Vector3.left * .03f;
+                    }
             }
         }
 

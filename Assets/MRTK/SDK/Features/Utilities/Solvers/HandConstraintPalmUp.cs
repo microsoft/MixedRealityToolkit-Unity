@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
@@ -90,6 +92,49 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set => followHandCameraFacingThresholdAngle = value;
         }
 
+        [SerializeField]
+        [Tooltip("With this active, solver will activate the UI after the palm threshold has been met and the user gazes at the activation point")]
+        private bool useGazeActivation = false;
+
+        /// <summary> 
+        /// With this active, solver will activate after the palm threshold has been met and the user gazes at the activation point
+        /// </summary>
+        public bool UseGazeActivation
+        {
+            get => useGazeActivation;
+            set => useGazeActivation = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The distance between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance")]
+        [Range(0.0f, .2f)]
+        private float eyeGazeProximityThreshold = .015f;
+        /// <summary>
+        /// The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance
+        /// </summary>
+        public float EyeGazeProximityThreshold
+        {
+            get => eyeGazeProximityThreshold;
+            set => eyeGazeProximityThreshold = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The distance between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance. This is used if eye gaze isn't available for the user")]
+        [Range(0.0f, .2f)]
+        private float headGazeProximityThreshold = .05f;
+
+        /// <summary>
+        /// The distance threshold calculated between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance
+        /// This is used if eye gaze isn't available for the user
+        /// </summary>
+        public float HeadGazeProximityThreshold
+        {
+            get => headGazeProximityThreshold;
+            set => headGazeProximityThreshold = value;
+        }
+
+        private bool gazeActivationAlreadyTriggered = false;
+
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
@@ -114,44 +159,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 {
                     float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
 
-                    if (requireFlatHand)
-                    {
-                        // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
-                        MixedRealityPose indexTipPose, ringTipPose;
-
-                        if (jointedHand.TryGetJoint(TrackedHandJoint.IndexTip, out indexTipPose) &&
-                            jointedHand.TryGetJoint(TrackedHandJoint.RingTip, out ringTipPose))
-                        {
-                            var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position,
-                                                           ringTipPose.Position - indexTipPose.Position).normalized;
-                            handNormal *= (jointedHand.ControllerHandedness == Handedness.Right) ? 1.0f : -1.0f;
-
-                            if (Vector3.Angle(palmPose.Up, handNormal) > flatHandThreshold)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-
-                    // Check if the palm angle meets the prescribed threshold
-                    palmFacingThresholdMet = palmCameraAngle < facingCameraTrackingThreshold;
+                    palmFacingThresholdMet = IsPalmMeetingThresholdRequirements(jointedHand, palmPose, palmCameraAngle);
 
                     // If using hybrid hand rotation, we proceed with additional checks
-                    if (followHandUntilFacingCamera && palmFacingThresholdMet)
+                    if (palmFacingThresholdMet)
                     {
-                        // If we are above the threshold angle, keep the menu mapped to the tracked object
-                        if (palmCameraAngle > followHandCameraFacingThresholdAngle)
+                        if (followHandUntilFacingCamera)
                         {
-                            RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
-                            OffsetBehavior = SolverOffsetBehavior.TrackedObjectRotation;
+                            // If we are above the threshold angle, keep the menu mapped to the tracked object
+                            if (palmCameraAngle > followHandCameraFacingThresholdAngle)
+                            {
+                                RotationBehavior = SolverRotationBehavior.LookAtTrackedObject;
+                                OffsetBehavior = SolverOffsetBehavior.TrackedObjectRotation;
+                            }
+                            // If we are within the threshold angle, we snap to follow the camera
+                            else
+                            {
+                                RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
+                                OffsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
+                            }
                         }
-                        // If we are within the threshold angle, we snap to follow the camera
-                        else
+
+                        if (useGazeActivation && (!gazeActivationAlreadyTriggered || !SolverHandler.UpdateSolvers))
                         {
-                            RotationBehavior = SolverRotationBehavior.LookAtMainCamera;
-                            OffsetBehavior = SolverOffsetBehavior.LookAtCameraRotation;
+                            return IsUserGazeMeetingThresholdRequirements(jointedHand);
                         }
                     }
+
+                    if (!palmFacingThresholdMet)
+                    {
+                        gazeActivationAlreadyTriggered = false;
+                    }
+
+                    return palmFacingThresholdMet;
                 }
                 else
                 {
@@ -162,6 +202,194 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Checks to see if the palm is currently facing the user; and if required, is it currently flat
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <param name="palmPose"></param>
+        /// <param name="palmCameraAngle"></param>
+        /// <returns></returns>
+        private bool IsPalmMeetingThresholdRequirements(IMixedRealityHand jointedHand, MixedRealityPose palmPose, float palmCameraAngle)
+        {
+            if (requireFlatHand)
+            {
+                // Check if the triangle's normal formed from the palm, to index, to ring finger tip roughly matches the palm normal.
+                MixedRealityPose indexTipPose, ringTipPose;
+
+                if (jointedHand.TryGetJoint(TrackedHandJoint.IndexTip, out indexTipPose) &&
+                    jointedHand.TryGetJoint(TrackedHandJoint.RingTip, out ringTipPose))
+                {
+                    var handNormal = Vector3.Cross(indexTipPose.Position - palmPose.Position,
+                                                   ringTipPose.Position - indexTipPose.Position).normalized;
+                    handNormal *= (jointedHand.ControllerHandedness == Handedness.Right) ? 1.0f : -1.0f;
+
+                    if (Vector3.Angle(palmPose.Up, handNormal) > flatHandThreshold)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // Check if the palm angle meets the prescribed threshold
+            return palmCameraAngle < facingCameraTrackingThreshold;
+        }
+
+        /// <summary>
+        /// Checks to see if the user is currently gazing at the activation point; it first attempts to do so 
+        /// using eyegaze, and then falls back to head-based gaze if eyegaze isn't available for use.
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <returns></returns>
+        private bool IsUserGazeMeetingThresholdRequirements(IMixedRealityHand jointedHand)
+        {
+            Ray gazeRay;
+
+            bool usedEyeGaze = InputRayUtils.TryGetRay(InputSourceType.Eyes, Handedness.Any, out gazeRay);
+
+            if (usedEyeGaze || InputRayUtils.TryGetRay(InputSourceType.Head, Handedness.Any, out gazeRay))
+            {
+                // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
+                Vector3 activationPoint;
+                Plane handPlane;
+                float distanceToHandPlane;
+
+                // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
+                if (GenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
+                    handPlane.Raycast(gazeRay, out distanceToHandPlane))
+                {
+                        // Now that we know the dist to the plane, create a vector at that point
+                        Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
+                        Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
+                        float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
+                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
+                        bool gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
+
+                        return gazeActivated;
+                    }
+                }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Coroutine function called by the ManipulationHandler of the attached object whenever the object is done 
+        /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
+        /// reattach to the hand.
+        /// </summary>
+        public void StartWorldLockReattachCheckCorotine()
+        {
+            StartCoroutine(WorldLockedReattachCheck());
+        }
+
+        /// <summary>
+        /// This function attenpts to generate a hand plane based on the wrist, index knuckle and pinky knuckle joints present in the hand.
+        /// On a success, it then calls GenerateActivationPoint to try to generate a hand-based activation point that the user
+        /// needs to gaze at to activate the constrained object.
+        /// On a failure, it assigns them to be default values and then returns false
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <param name="handPlane"></param>
+        /// <param name="activationPoint"></param>
+        /// <returns></returns>
+        private bool GenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
+        {
+            // Generate the hand plane that we're using to generate a distance value.
+            // This is done by using the index knuckle, pinky knuckle, and wrist
+            MixedRealityPose indexKnuckle;
+            MixedRealityPose pinkyKnuckle;
+            MixedRealityPose wrist;
+
+            if (jointedHand.TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnuckle) &&
+                jointedHand.TryGetJoint(TrackedHandJoint.PinkyKnuckle, out pinkyKnuckle) &&
+                jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
+            {
+                handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
+                activationPoint = handPlane.ClosestPointOnPlane(GenerateActivationPoint(jointedHand));
+                return true;
+            }
+            else // Otherwise, set the activation point and plane to default values and return false
+            {
+                handPlane = new Plane();
+                activationPoint = Vector3.zero;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// This function attempts to generate an activation point based on what the currently-selected safe zone is.
+        /// The activation point is a Vector3 that represents the "Center" point of the area that a user needs to gaze at to
+        /// activate the attached 
+        /// </summary>
+        /// <param name="jointedHand"></param>
+        /// <returns></returns>
+        private Vector3 GenerateActivationPoint(IMixedRealityHand jointedHand)
+        {
+            TrackedHandJoint referenceJoint1;
+            TrackedHandJoint referenceJoint2;
+            MixedRealityPose referenceJointPose1;
+            MixedRealityPose referenceJointPose2;
+
+            switch (SafeZone)
+            {
+                case SolverSafeZone.AboveFingerTips:
+                    referenceJoint1 = TrackedHandJoint.MiddleTip;
+                    referenceJoint2 = TrackedHandJoint.RingTip;
+                    break;
+                case SolverSafeZone.BelowWrist:
+                    return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJointPose1) ? referenceJointPose1.Position : Vector3.zero;
+
+                case SolverSafeZone.RadialSide:
+                    referenceJoint1 = TrackedHandJoint.IndexKnuckle;
+                    referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                    break;
+                case SolverSafeZone.UlnarSide:
+                default:
+                    referenceJoint1 = TrackedHandJoint.IndexKnuckle;
+                    referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
+                    break;
+            }
+
+
+            if (!jointedHand.TryGetJoint(referenceJoint1, out referenceJointPose1) ||
+                !jointedHand.TryGetJoint(referenceJoint2, out referenceJointPose2))
+            {
+                return Vector3.zero;
+            }
+
+
+            return Vector3.Lerp(referenceJointPose1.Position, referenceJointPose2.Position, .5f);
+        }
+
+        /// <summary>
+        /// Coroutine function that's invoked when the attached object becomes world-locked. It uses the 
+        /// logical checks invoked during IsValidController to determine whether the menu should reattach
+        /// to the hand or not.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator WorldLockedReattachCheck()
+        {
+            while (!SolverHandler.UpdateSolvers && useGazeActivation)
+            {
+                MixedRealityPose palmPose;
+                var jointedHand = GetController(SolverHandler.CurrentTrackedHandedness) as IMixedRealityHand;
+                if (jointedHand != null)
+                {
+                    if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+                    {
+                        float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
+                        if (IsPalmMeetingThresholdRequirements(jointedHand, palmPose, palmCameraAngle) &&
+                            IsUserGazeMeetingThresholdRequirements(jointedHand))
+                        {
+                            gazeActivationAlreadyTriggered = false;
+                            SolverHandler.UpdateSolvers = true;
+                        }
+                    }
+                }
+
+                yield return null;
+            }
         }
     }
 }
