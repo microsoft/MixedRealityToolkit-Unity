@@ -1996,29 +1996,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Rules
 
+        private static readonly ProfilerMarker ProcessRulesInternalPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.ProcessRules_Internal");
+
         private static MixedRealityInputAction ProcessRules_Internal<T1, T2>(MixedRealityInputAction inputAction, T1[] inputActionRules, T2 criteria) where T1 : struct, IInputActionRule<T2>
         {
-            for (int i = 0; i < inputActionRules.Length; i++)
+            using (ProcessRulesInternalPerfMarker.Auto())
             {
-                if (inputActionRules[i].BaseAction == inputAction && inputActionRules[i].Criteria.Equals(criteria))
+                for (int i = 0; i < inputActionRules.Length; i++)
                 {
-                    if (inputActionRules[i].RuleAction == inputAction)
+                    if (inputActionRules[i].BaseAction == inputAction && inputActionRules[i].Criteria.Equals(criteria))
                     {
-                        Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                        return inputAction;
-                    }
+                        if (inputActionRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
 
-                    if (inputActionRules[i].BaseAction.AxisConstraint != inputActionRules[i].RuleAction.AxisConstraint)
-                    {
-                        Debug.LogError("Input Action Rule doesn't have the same Axis Constraint as the Base Action!");
-                        return inputAction;
-                    }
+                        if (inputActionRules[i].BaseAction.AxisConstraint != inputActionRules[i].RuleAction.AxisConstraint)
+                        {
+                            Debug.LogError("Input Action Rule doesn't have the same Axis Constraint as the Base Action!");
+                            return inputAction;
+                        }
 
-                    return inputActionRules[i].RuleAction;
+                        return inputActionRules[i].RuleAction;
+                    }
                 }
-            }
 
-            return inputAction;
+                return inputAction;
+            }
         }
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, bool criteria)
