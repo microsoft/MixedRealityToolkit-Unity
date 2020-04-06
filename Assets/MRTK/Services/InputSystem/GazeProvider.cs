@@ -509,6 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetectec");
 
+        /// <inheritdoc />
         private async void RaiseSourceDetected()
         {
             using (RaiseSourceDetectedPerfMarker.Auto())
