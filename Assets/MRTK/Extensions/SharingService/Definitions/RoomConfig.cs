@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// <summary>
         /// Set of custom properties that are visible to devices that have joined the room.
         /// </summary>
-        [Tooltip("Set of custom properties that are visible to devices that have joined the room.")]
+        [Tooltip("Set of custom properties that are visible to devices that have joined the room, unless specified in LobbyProps.")]
         public RoomProp[] RoomProps;
 
         /// <summary>

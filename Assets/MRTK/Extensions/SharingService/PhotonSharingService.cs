@@ -55,6 +55,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public event DeviceEvent OnDeviceDisconnected;
         /// <inheritdoc />
+        public event DeviceEvent OnDeviceUpdated;
+        /// <inheritdoc />
         public event PingEvent OnLocalDevicePinged;
 
         #endregion
@@ -70,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public string LobbyName { get; private set; }
         /// <inheritdoc />
-        public string RoomName { get; private set; }
+        public RoomInfo CurrentRoom { get; private set; }
         /// <inheritdoc />        /// <inheritdoc />
         public IEnumerable<RoomInfo> AvailableRooms => availableRooms;
         /// <inheritdoc />
@@ -109,8 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         private const byte setSubscriptionEvent = 1;
         private const byte requestAppRoleEvent = 2;
         private const byte receiveAppRoleEvent = 3;
-        private const byte sendDataEvent = 4;
-        private const byte pingDeviceEvent = 5;
+        private const byte receiveDeviceTypeEvent = 4;
+        private const byte sendDataEvent = 5;
+        private const byte pingDeviceEvent = 6;
         private const int delayWhileConnectingToMaster = 500;
         private const int delayWhileConnectingToLobby = 5000;
         private const int delayWhileWaitingForResult = 100;
@@ -133,21 +136,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         private List<short> localSubscriptionTypes = new List<short>();
         private Dictionary<short, HashSet<short>> subscribedTypes = new Dictionary<short, HashSet<short>>();
         private Dictionary<short, SubscriptionMode> subscriptionModes = new Dictionary<short, SubscriptionMode>();
-        private object[] eventDataReceiveSubscriptionMode = new object[3];
-
-        // Data
-        private object[] eventDataReceiveData = new object[3];
-        private List<int> targetActors = new List<int>();
 
         // Matchmaking
-        private HashSet<RoomInfo> availableRooms = new HashSet<RoomInfo>();
+        private List<RoomInfo> availableRooms = new List<RoomInfo>();
         private RoomConnectResult roomConnectResult = RoomConnectResult.Waiting;
 
         // Devices
         private Dictionary<short, DeviceInfo> connectedDevices = new Dictionary<short, DeviceInfo>();
         private Dictionary<short, AppRole> deviceIDToAppRole = new Dictionary<short, AppRole>();
-        private object[] requestDeviceActionData = new object[4];
+        private Dictionary<short, DeviceTypeEnum> deviceIDToDeviceType = new Dictionary<short, DeviceTypeEnum>();
         private DeviceInfo localDevice;
+        private IDeviceTypeFinder deviceTypeFinder;
+
+        // Event Data
+        private object[] eventDataReceiveData = new object[3];
+        private object[] eventDataReceiveSubscriptionMode = new object[3];
+        private object[] requestDeviceActionData = new object[4];
+        private List<int> targetActors = new List<int>();
 
         #endregion
 
@@ -513,6 +518,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             localDevice.ID = -1;
             TimeLastPinged = 0;
 
+            try
+            {
+                deviceTypeFinder = (IDeviceTypeFinder)Activator.CreateInstance(sharingServiceProfile.DeviceTypeFinder.Type);
+                if (deviceTypeFinder == null)
+                {
+                    Debug.LogError("Couldn't create instance of device type finder. This service will not function without one.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error when creating instance of device type finder.");
+                Debug.LogException(e);
+            }
+
 #if PHOTON_UNITY_NETWORKING
             PhotonNetwork.AddCallbackTarget(this);
             typedLobby = new TypedLobby(sharingServiceProfile.LobbyName, LobbyType.Default);
@@ -595,7 +614,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         private ConnectStatus CheckStatusInternal()
         {
-            RoomName = string.Empty;
+            CurrentRoom = RoomInfo.Empty;
             LobbyName = string.Empty;
 
 #if PHOTON_UNITY_NETWORKING
@@ -619,7 +638,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                 case ClientState.Joined:
                     LobbyName = PhotonNetwork.CurrentLobby.Name;
-                    RoomName = PhotonNetwork.CurrentRoom.Name;
+                    CurrentRoom = CreateRoomInfoFromPhotonRoomInfo(PhotonNetwork.CurrentRoom);
                     return ConnectStatus.FullyConnected;
 
                 case ClientState.PeerCreated:
@@ -853,6 +872,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         private void ReceiveAppRoleResult(short deviceID, AppRole result)
         {
             deviceIDToAppRole[deviceID] = result;
+            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, deviceID);
+            OnDeviceUpdated?.Invoke(info);
 
             // If this was the local player making the request, set our reqested app role to none.
             if (deviceID == PhotonNetwork.LocalPlayer.ActorNumber)
@@ -869,6 +890,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     });
                 }
             }
+        }
+
+        private void ReceiveDeviceType(short deviceID, DeviceTypeEnum deviceType)
+        {
+            deviceIDToDeviceType[deviceID] = deviceType;
+            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, deviceID);
+            OnDeviceUpdated?.Invoke(info);
         }
 
         private async Task<bool> ConnectInternal(ConnectConfig config, ConnectStatus targetStatus, CancellationToken token)
@@ -910,15 +938,23 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                         SubscriptionMode subscriptionMode = (config.SubscriptionMode == SubscriptionMode.Default) ? currentSubscriptionMode : config.SubscriptionMode;
                         IEnumerable<short> subscriptionTypes = (config.SubscriptionMode != SubscriptionMode.Manual) ? currentSubscriptionTypes : config.SubscriptionTypes;
 
+                        // Get our device type (this will include editor and config settings)
+                        DeviceTypeEnum deviceType = GetDeviceType(config.RequestedDeviceType);
+
+                        // Set photon's nickname using our requested name
+                        string deviceName = string.IsNullOrEmpty(config.RequestedName) ? sharingServiceProfile.DefaultRequestedName : config.RequestedName;
+                        PhotonNetwork.LocalPlayer.NickName = deviceName;
+
                         result = await ConnectToServer(token, timeAttemptStarted) &&
                             await ConnectToLobby(token, timeAttemptStarted) &&
-                            await ConnectToRoom(config.RoomJoinMode, roomConfig, token, timeAttemptStarted) &&
+                            await ConnectToRoom(config.RoomJoinMode, deviceType, roomConfig, token, timeAttemptStarted) &&
                             await RequestAppRole(requestedAppRole, token, timeAttemptStarted);
 
                         if (result)
                         {
                             // We're ready to set our subscription mode now
                             SetLocalSubscriptionMode(subscriptionMode, subscriptionTypes);
+                            SetLocalDeviceType(deviceType);
                         }
                         else
                         {
@@ -949,6 +985,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             }
 
             return true;
+        }
+
+        private void SetLocalDeviceType(DeviceTypeEnum deviceType)
+        {
+            // Send this request to master client via server.
+            RaiseEventOptions deviceTypeOptions = new RaiseEventOptions()
+            {
+                CachingOption = EventCaching.DoNotCache,
+                Receivers = ReceiverGroup.All,
+            };
+
+            SendOptions appRoleSendOptions = new SendOptions()
+            {
+                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,          
+            };
+
+            awaitingAppRoleRequest = true;
+            PhotonNetwork.RaiseEvent(receiveDeviceTypeEvent, new object[] { (short)PhotonNetwork.LocalPlayer.ActorNumber, deviceType }, deviceTypeOptions, appRoleSendOptions);
         }
 
         private async Task<bool> ConnectToServer(CancellationToken token, float timeAttemptStarted)
@@ -1027,7 +1081,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             return true;
         }
 
-        private async Task<bool> ConnectToRoom(RoomJoinMode joinMode, RoomConfig roomConfig, CancellationToken token, float timeAttemptStarted)
+        private async Task<bool> ConnectToRoom(RoomJoinMode joinMode, DeviceTypeEnum deviceType, RoomConfig roomConfig, CancellationToken token, float timeAttemptStarted)
         {
             Debug.Log("Connect to room with join mode " + joinMode);
 
@@ -1286,6 +1340,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             return true;
         }
 
+        private DeviceTypeEnum GetDeviceType(DeviceTypeEnum requestedDeviceType)
+        {
+            // Start by getting our ACTUAL device type
+            DeviceTypeEnum deviceType = deviceTypeFinder.GetDeviceType();
+#if UNITY_EDITOR
+            // If this is the editor and we've specified a different device type, use that instead
+            deviceType = (sharingServiceProfile.EditorRequestedDeviceType == DeviceTypeEnum.None) ? deviceType : sharingServiceProfile.EditorRequestedDeviceType;
+#endif
+            // If we've requested a specific device type when connecting, override both settings and use that instead
+            deviceType = (requestedDeviceType == DeviceTypeEnum.None) ? deviceType : requestedDeviceType;
+            return deviceType;
+        }
+
         private DeviceInfo CreateDeviceInfoFromPlayers(Player[] playerList, int deviceToReturn = -1)
         {
             connectedDevices.Clear();
@@ -1310,14 +1377,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 }
                 catch (InvalidCastException e)
                 {
-                    Debug.LogError("Invalid property type in device properties,");
+                    Debug.LogError("Invalid property type in device properties");
                 }
+
+                short deviceID = (short)player.ActorNumber;
+                deviceIDToDeviceType.TryGetValue(deviceID, out DeviceTypeEnum deviceType);
+                deviceIDToAppRole.TryGetValue(deviceID, out AppRole appRole);
 
                 DeviceInfo device = new DeviceInfo()
                 {
-                    ID = (short)player.ActorNumber,
+                    ID = deviceID,
                     Name = player.NickName,
                     IsLocalDevice = player.IsLocal,
+                    DeviceType = deviceType,
+                    AppRole = appRole,
                     Props = props.ToArray(),
                 };
 
@@ -1328,6 +1401,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                 if (player.IsLocal)
                 {
+                    Debug.Log("Setting local device");
                     localDevice = device;
                 }
 
@@ -1335,6 +1409,37 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             }
 
             return returnDevice;
+        }
+
+        private RoomInfo CreateRoomInfoFromPhotonRoomInfo(global::Photon.Realtime.RoomInfo roomInfoPhoton)
+        {
+            List<RoomProp> roomProps = new List<RoomProp>();
+            foreach (var customProp in roomInfoPhoton.CustomProperties)
+            {
+                try
+                {
+                    roomProps.Add(new RoomProp()
+                    {
+                        Key = (string)customProp.Key,
+                        Value = (string)customProp.Value
+                    });
+                }
+                catch (InvalidCastException e)
+                {
+                    Debug.LogError("Invalid property type in room properties");
+                }
+            }
+
+            RoomInfo roomInfo = new RoomInfo()
+            {
+                Name = roomInfoPhoton.Name,
+                IsOpen = roomInfoPhoton.IsOpen,
+                MaxDevices = roomInfoPhoton.MaxPlayers,
+                NumDevices = (byte)roomInfoPhoton.PlayerCount,
+                RoomProps = roomProps,
+            };
+
+            return roomInfo;
         }
 
 #endif
@@ -1371,6 +1476,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     }
                     break;
 
+                case receiveDeviceTypeEvent:
+                    {
+                        object[] data = (object[])photonEvent.CustomData;
+                        ReceiveDeviceType((short)data[0], (DeviceTypeEnum)data[1]);
+                    }
+                    break;
+
                 case sendDataEvent:
                     {
                         object[] data = (object[])photonEvent.CustomData;
@@ -1403,6 +1515,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             LocalSubscriptionMode = SubscriptionMode.Default;
             localSubscriptionTypes.Clear();
             deviceIDToAppRole.Clear();
+            deviceIDToDeviceType.Clear();
             awaitingAppRoleRequest = false;
 
             Debug.Log("Disconnected from sharing service.");
@@ -1518,24 +1631,28 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
             foreach (var roomInfoPhoton in roomList)
             {
-                availableRooms.Add(new RoomInfo()
-                {
-                    Name = roomInfoPhoton.Name,
-                    IsOpen = roomInfoPhoton.IsOpen,
-                    MaxDevices = roomInfoPhoton.MaxPlayers,
-                    NumDevices = (byte)roomInfoPhoton.PlayerCount,
-                });
+                RoomInfo roomInfo = CreateRoomInfoFromPhotonRoomInfo(roomInfoPhoton);
+                availableRooms.Add(roomInfo);
             }
         }
 
         void IInRoomCallbacks.OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged) 
-        { 
-        
+        {
+            RoomInfo roomInfo = CreateRoomInfoFromPhotonRoomInfo(PhotonNetwork.CurrentRoom);
+            for (int i = 0; i < availableRooms.Count; i++)
+            {
+                if (availableRooms[i].Name == roomInfo.Name)
+                {
+                    availableRooms[i] = roomInfo;
+                    break;
+                }
+            }
         }
 
         void IInRoomCallbacks.OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps) 
         {
-        
+            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, targetPlayer.ActorNumber);
+            OnDeviceUpdated?.Invoke(info);
         }
 
         void ILobbyCallbacks.OnLeftLobby()

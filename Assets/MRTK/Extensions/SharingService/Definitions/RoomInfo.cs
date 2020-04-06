@@ -10,6 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
     /// </summary>
     public struct RoomInfo
     {
+        public static RoomInfo Empty => empty;
+        private static RoomInfo empty = new RoomInfo();
+
         /// <summary>
         /// The name of the room.
         /// </summary>
@@ -31,12 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         public bool IsOpen;
 
         /// <summary>
-        /// Set of custom properties that are visible in the lobby.
-        /// </summary>
-        public IEnumerable<string> LobbyProps;
-
-        /// <summary>
-        /// Set of custom properties that are visible in the room. Will be empty until room is joined.
+        /// Set of custom properties that are visible in the room.
+        /// Will be empty until room is joined unless properties are included in LobbyProps on create.
         /// </summary>
         public IEnumerable<RoomProp> RoomProps;
     }

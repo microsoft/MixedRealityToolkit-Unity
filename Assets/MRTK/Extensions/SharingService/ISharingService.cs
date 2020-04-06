@@ -24,9 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         string LobbyName { get; }
 
         /// <summary>
-        /// Name of joined room. Will be null until a room has been joined.
+        /// Info for joined room. Will be empty until a room has been joined.
         /// </summary>
-        string RoomName { get; }
+        RoomInfo CurrentRoom { get; }
 
         /// <summary>
         /// True if our local device has connected to the service.
@@ -103,6 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// Invoked when a device has disconnected from our room, including our own.
         /// </summary>
         event DeviceEvent OnDeviceDisconnected;
+
+        /// <summary>
+        /// Invoked when the properties of a device changes, including our own.
+        /// </summary>
+        event DeviceEvent OnDeviceUpdated;
 
         /// <summary>
         /// Invoked when another device in our room calls PingDevice for this device.

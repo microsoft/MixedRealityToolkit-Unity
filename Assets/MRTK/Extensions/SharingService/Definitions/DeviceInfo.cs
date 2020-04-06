@@ -26,6 +26,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         public bool IsLocalDevice;
 
         /// <summary>
+        /// The role of the device.
+        /// </summary>
+        public AppRole AppRole;
+
+        /// <summary>
+        /// The type of device connecting.
+        /// </summary>
+        public DeviceTypeEnum DeviceType;
+
+        /// <summary>
         /// Set of custom properties describing the device.
         /// </summary>
         public IEnumerable<DeviceProp> Props;

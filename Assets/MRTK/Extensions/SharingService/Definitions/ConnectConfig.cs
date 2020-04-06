@@ -54,6 +54,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         public AppRole RequestedRole;
 
         /// <summary>
+        /// This device's desired type. If None, value will be set automatically.
+        /// </summary>
+        public DeviceTypeEnum RequestedDeviceType;
+
+        /// <summary>
+        /// This device's desired name. If empty, value will be pulled from profile.
+        /// </summary>
+        public string RequestedName;
+
+        /// <summary>
         /// This device's desired subscription mode.
         /// </summary>
         public SubscriptionMode SubscriptionMode;
