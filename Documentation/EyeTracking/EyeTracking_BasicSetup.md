@@ -26,7 +26,7 @@ you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx B
 This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
 **Note that this tooling is NOT active when using Unity's built-in Build Window** (i.e. File -> Build Settings).
 
-When using Unity's build window, the capability will need to manually added after the Unity build, as follows:
+When using Unity's build window, the capability will need to be manually added after the Unity build, as follows:
 1. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
 2. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_.
 
