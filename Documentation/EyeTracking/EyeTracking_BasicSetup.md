@@ -100,7 +100,7 @@ Now that your scene is set up to use eye tracking, let's take a look at how to a
 
 ### Testing your Unity app on a HoloLens 2
 
-Building your app with eye tracking should be similar to how you would compile other HoloLens 2 MRTK apps. Be sure that you have enabled the *'Gaze Input'* capability as described above in the section *A note on the GazeInput capability*.
+Building your app with eye tracking should be similar to how you would compile other HoloLens 2 MRTK apps. Be sure that you have enabled the *'Gaze Input'* capability as described above in the section [*A note on the GazeInput capability*](#a-note-on-the-gazeinput-capability).
 
 #### Eye calibration
 
