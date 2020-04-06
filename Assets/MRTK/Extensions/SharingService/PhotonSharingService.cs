@@ -1458,18 +1458,20 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         void IMatchmakingCallbacks.OnJoinedRoom()
         {
-            CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList);
+            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
             // Store this so we can rejoin if we're disconnected
             lastRoomJoined = PhotonNetwork.CurrentRoom.Name;
             roomConnectResult = RoomConnectResult.Succeeded;
+            OnDeviceConnected?.Invoke(info);
         }
 
         void IMatchmakingCallbacks.OnLeftRoom()
         {
-            CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList);
+            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
             localDevice.ID = -1;
             NumTimesPinged = 0;
             TimeLastPinged = 0;
+            OnDeviceDisconnected?.Invoke(info);
         }
 
         void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message)
