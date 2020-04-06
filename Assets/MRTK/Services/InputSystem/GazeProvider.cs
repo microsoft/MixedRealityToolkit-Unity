@@ -200,56 +200,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputSourceParent = gazeInputSource;
             }
 
+            private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] InternalGazePointer.OnPreSceneQuery");
+
             /// <inheritdoc />
             public override void OnPreSceneQuery()
             {
-                Vector3 newGazeOrigin;
-                Vector3 newGazeNormal;
-
-                if (gazeProvider.IsEyeTrackingEnabledAndValid)
+                using (OnPreSceneQueryPerfMarker.Auto())
                 {
-                    gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
-                    newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
-                    newGazeNormal = gazeProvider.LatestEyeGaze.direction;
-                }
-                else
-                {
-                    gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
+                    Vector3 newGazeOrigin;
+                    Vector3 newGazeNormal;
 
-                    if (gazeProvider.UseHeadGazeOverride && gazeProvider.overrideHeadPosition.HasValue && gazeProvider.overrideHeadForward.HasValue)
+                    if (gazeProvider.IsEyeTrackingEnabledAndValid)
                     {
-                        newGazeOrigin = gazeProvider.overrideHeadPosition.Value;
-                        newGazeNormal = gazeProvider.overrideHeadForward.Value;
-                        // Reset values in case the override source is removed
-                        gazeProvider.overrideHeadPosition = null;
-                        gazeProvider.overrideHeadForward = null;
+                        gazeProvider.gazeInputSource.SourceType = InputSourceType.Eyes;
+                        newGazeOrigin = gazeProvider.LatestEyeGaze.origin;
+                        newGazeNormal = gazeProvider.LatestEyeGaze.direction;
                     }
                     else
                     {
-                        newGazeOrigin = gazeTransform.position;
-                        newGazeNormal = gazeTransform.forward;
+                        gazeProvider.gazeInputSource.SourceType = InputSourceType.Head;
+
+                        if (gazeProvider.UseHeadGazeOverride && gazeProvider.overrideHeadPosition.HasValue && gazeProvider.overrideHeadForward.HasValue)
+                        {
+                            newGazeOrigin = gazeProvider.overrideHeadPosition.Value;
+                            newGazeNormal = gazeProvider.overrideHeadForward.Value;
+                            // Reset values in case the override source is removed
+                            gazeProvider.overrideHeadPosition = null;
+                            gazeProvider.overrideHeadForward = null;
+                        }
+                        else
+                        {
+                            newGazeOrigin = gazeTransform.position;
+                            newGazeNormal = gazeTransform.forward;
+                        }
+
+                        // Update gaze info from stabilizer
+                        if (stabilizer != null)
+                        {
+                            stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
+                            newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
+                            newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
+                        }
                     }
 
-                    // Update gaze info from stabilizer
-                    if (stabilizer != null)
-                    {
-                        stabilizer.UpdateStability(gazeTransform.localPosition, gazeTransform.localRotation * Vector3.forward);
-                        newGazeOrigin = gazeTransform.parent.TransformPoint(stabilizer.StablePosition);
-                        newGazeNormal = gazeTransform.parent.TransformDirection(stabilizer.StableRay.direction);
-                    }
+                    Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
+                    Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
+
+                    gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
                 }
-
-                Vector3 endPoint = newGazeOrigin + (newGazeNormal * pointerExtent);
-                Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
-
-                gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
             }
+
+            private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] InternalGazePointer.OnPostSceneQuery");
 
             public override void OnPostSceneQuery()
             {
-                if (isDown)
+                using (OnPostSceneQueryPerfMarker.Auto())
                 {
-                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    if (isDown)
+                    {
+                        CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
+                    }
                 }
             }
 
@@ -345,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] GazePointer.Update");
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] GazeProvider.Update");
 
         private void Update()
         {
@@ -366,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker LateUpdatePerfMarker = new ProfilerMarker("[MRTK] GazePointer.LateUpdate");
+        private static readonly ProfilerMarker LateUpdatePerfMarker = new ProfilerMarker("[MRTK] GazeProvider.LateUpdate");
 
         private void LateUpdate()
         {
@@ -470,7 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Utilities
 
-        private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazePointer.InitializeGazePointer");
+        private static readonly ProfilerMarker InitializeGazePointerPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.InitializeGazePointer");
 
         private IMixedRealityPointer InitializeGazePointer()
         {
@@ -497,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazePointer.RaiseSourceDetectec");
+        private static readonly ProfilerMarker RaiseSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] GazeProvider.RaiseSourceDetectec");
 
         private async void RaiseSourceDetected()
         {
@@ -516,28 +526,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker UpdateGazeInfoFromHitPerfMarker = new ProfilerMarker("[MRTK] GazePointer.UpdateGazeInfoFromHit");
-
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
-            using (UpdateGazeInfoFromHitPerfMarker.Auto())
+            HitInfo = raycastHit;
+            if (raycastHit.transform != null)
             {
-                HitInfo = raycastHit;
-                if (raycastHit.transform != null)
-                {
-                    GazeTarget = raycastHit.transform.gameObject;
-                    var ray = GazePointer.Rays[0];
-                    var lhd = (raycastHit.point - ray.Origin).magnitude;
-                    lastHitDistance = lhd;
-                    HitPosition = ray.Origin + lhd * ray.Direction;
-                    HitNormal = raycastHit.normal;
-                }
-                else
-                {
-                    GazeTarget = null;
-                    HitPosition = Vector3.zero;
-                    HitNormal = Vector3.zero;
-                }
+                GazeTarget = raycastHit.transform.gameObject;
+                var ray = GazePointer.Rays[0];
+                var lhd = (raycastHit.point - ray.Origin).magnitude;
+                lastHitDistance = lhd;
+                HitPosition = ray.Origin + lhd * ray.Direction;
+                HitNormal = raycastHit.normal;
+            }
+            else
+            {
+                GazeTarget = null;
+                HitPosition = Vector3.zero;
+                HitNormal = Vector3.zero;
             }
         }
 
