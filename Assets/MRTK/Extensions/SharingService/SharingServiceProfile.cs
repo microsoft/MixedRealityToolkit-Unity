@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
 		[SerializeField, Tooltip("The lobby name to be used when connecting."), Header("Room & Lobby Settings")]
 		private string lobbyName = "MRTKLobby";
 		[SerializeField, Tooltip("The room properties to be used if none is specified when connecting.")]
-		private RoomConfig defaultRoomConfig = new RoomConfig();
+		private RoomConfig defaultRoomConfig = RoomConfig.Default;
 
 		[SerializeField, Tooltip("Class used to determine what kind of device you're connecting with."), Implements(typeof(IDeviceTypeFinder), TypeGrouping.ByNamespaceFlat), Header("Classes")]
 		private SystemType deviceTypeFinder = new SystemType(typeof(DefaultDeviceTypeFinder));

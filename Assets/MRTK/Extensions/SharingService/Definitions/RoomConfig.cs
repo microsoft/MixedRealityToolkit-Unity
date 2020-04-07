@@ -22,8 +22,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
                     Name = "MRTKRoom",
                     MaxDevices = 4,
                     ExpireTime = 10000,
+                    DeviceExpireTime = 10000,
                     VisibleInLobby = true,
-                    RoomProps = new RoomProp[0]
+                    RoomProps = new RoomProp[0],
+                    LobbyProps = new string[0],
                 };
             } 
         }
@@ -49,6 +51,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         /// </summary>
         [Tooltip("How long the room will persist after the last device leaves, in millisenconds.")]
         public int ExpireTime;
+
+        /// <summary>
+        /// How long a device will persist after it leaves, in millisenconds.
+        /// If you plan on letting devices rejoin after being disconnected, this should be a long number.
+        /// </summary>
+        [Tooltip("How long a device will persist after it leaves, in millisenconds.")]
+        public int DeviceExpireTime;
 
         /// <summary>
         /// If true, the room will be listed in available rooms by the service.

@@ -39,14 +39,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         DeviceInfo LocalDevice { get; }
 
         /// <summary>
-        /// Info for all devices connected to room, including local device.
+        /// Info for all devices present in the room, including local device.
+        /// Some devices may not be connected - check ConnectStatus.
         /// </summary>
-        IEnumerable<DeviceInfo> ConnectedDevices { get; }
+        IEnumerable<DeviceInfo> AvailableDevices { get; }
 
         /// <summary>
-        /// Number of devices connected to room, including local device.
+        /// Number of devices present in the room, including local device.
         /// </summary>
-        int NumConnectedDevices { get; }
+        int NumAvailableDevices { get; }
 
         /// <summary>
         /// Names of all available rooms. Populated once service has connected to a lobby and have called FindRooms once.

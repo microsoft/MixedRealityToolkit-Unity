@@ -36,6 +36,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing
         public DeviceTypeEnum DeviceType;
 
         /// <summary>
+        /// The connection state of the device.
+        /// </summary>
+        public DeviceConnectionState ConnectionState;
+
+        /// <summary>
         /// Set of custom properties describing the device.
         /// </summary>
         public IEnumerable<DeviceProp> Props;

@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 			EditorGUILayout.EnumPopup("App Role", service.AppRole);
 			EditorGUILayout.EnumPopup("Subscription Mode", service.LocalSubscriptionMode);
 			EditorGUILayout.LabelField("Lobby Name: " + (string.IsNullOrEmpty (service.LobbyName) ? "(None)" : service.LobbyName));
-			EditorGUILayout.LabelField("Room Name: " + (string.IsNullOrEmpty(service.RoomName) ? "(None)" : service.RoomName));
+			EditorGUILayout.LabelField("Room Name: " + (string.IsNullOrEmpty(service.CurrentRoom.Name) ? "(None)" : service.CurrentRoom.Name));
 
 			if (!Application.isPlaying)
 				return;
@@ -116,21 +116,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Editor
 			{
 				using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
 				{
-					if (service.NumConnectedDevices == 0)
+					if (service.NumAvailableDevices == 0)
 					{
 						EditorGUILayout.LabelField("(None)");
 					}
 					else
 					{
-						foreach (DeviceInfo device in service.ConnectedDevices)
+						foreach (DeviceInfo device in service.AvailableDevices)
 						{
-							using (new EditorGUILayout.HorizontalScope())
+							using (new EditorGUI.DisabledScope(device.ConnectionState == DeviceConnectionState.NotConnected))
 							{
-								EditorGUILayout.IntField(device.IsLocalDevice ? "Device (Local)" : "Device", device.ID);
-
-								if (GUILayout.Button("Ping"))
+								using (new EditorGUILayout.HorizontalScope())
 								{
-									service.PingDevice(device.ID);
+									EditorGUILayout.IntField(device.IsLocalDevice ? (device.Name + " (Local)") : device.Name, device.ID);
+									EditorGUILayout.EnumPopup(device.ConnectionState);
+									if (GUILayout.Button("Ping"))
+									{
+										service.PingDevice(device.ID);
+									}
 								}
 							}
 						}

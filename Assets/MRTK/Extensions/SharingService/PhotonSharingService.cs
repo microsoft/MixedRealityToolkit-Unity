@@ -87,9 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         /// <inheritdoc />
         public bool LocalDeviceConnected { get { return localDevice.ID >= 0; } }
         /// <inheritdoc />
-        public IEnumerable<DeviceInfo> ConnectedDevices => connectedDevices.Values;
+        public IEnumerable<DeviceInfo> AvailableDevices => availableDevices.Values;
         /// <inheritdoc />
-        public int NumConnectedDevices
+        public int NumAvailableDevices
         {
             get
             {
@@ -142,9 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         private RoomConnectResult roomConnectResult = RoomConnectResult.Waiting;
 
         // Devices
-        private Dictionary<short, DeviceInfo> connectedDevices = new Dictionary<short, DeviceInfo>();
+        private Dictionary<short, DeviceInfo> availableDevices = new Dictionary<short, DeviceInfo>();
         private Dictionary<short, AppRole> deviceIDToAppRole = new Dictionary<short, AppRole>();
         private Dictionary<short, DeviceTypeEnum> deviceIDToDeviceType = new Dictionary<short, DeviceTypeEnum>();
+        private HashSet<short> announcedDevices = new HashSet<short>();
         private DeviceInfo localDevice;
         private IDeviceTypeFinder deviceTypeFinder;
 
@@ -899,6 +900,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             OnDeviceUpdated?.Invoke(info);
         }
 
+        private void SetLocalDeviceType(DeviceTypeEnum deviceType)
+        {
+            // Send this request to master client via server.
+            RaiseEventOptions deviceTypeOptions = new RaiseEventOptions()
+            {
+                CachingOption = EventCaching.DoNotCache,
+                Receivers = ReceiverGroup.All,
+            };
+
+            SendOptions appRoleSendOptions = new SendOptions()
+            {
+                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,
+            };
+
+            awaitingAppRoleRequest = true;
+            PhotonNetwork.RaiseEvent(receiveDeviceTypeEvent, new object[] { (short)PhotonNetwork.LocalPlayer.ActorNumber, deviceType }, deviceTypeOptions, appRoleSendOptions);
+        }
+
         private async Task<bool> ConnectInternal(ConnectConfig config, ConnectStatus targetStatus, CancellationToken token)
         {
             if (!Application.isPlaying)
@@ -977,32 +996,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 // We won't fully disconnect from the server or lobby because no error warrants that.
                 if (PhotonNetwork.InRoom)
                 {
-                    PhotonNetwork.LeaveRoom();
+                    PhotonNetwork.LeaveRoom(true);
                     await Task.Delay(delayWhileExitingRoom);
                 }
 
                 return false;
             }
 
+            // At this point, we need to send on connect events for all players who were present before us
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if (!announcedDevices.Contains((short)player.ActorNumber))
+                {
+                    DeviceInfo info = CreateDeviceInfoFromPlayer(player);
+                    OnDeviceConnected?.Invoke(info);
+                }
+            }
+
             return true;
-        }
-
-        private void SetLocalDeviceType(DeviceTypeEnum deviceType)
-        {
-            // Send this request to master client via server.
-            RaiseEventOptions deviceTypeOptions = new RaiseEventOptions()
-            {
-                CachingOption = EventCaching.DoNotCache,
-                Receivers = ReceiverGroup.All,
-            };
-
-            SendOptions appRoleSendOptions = new SendOptions()
-            {
-                DeliveryMode = ExitGames.Client.Photon.DeliveryMode.Reliable,          
-            };
-
-            awaitingAppRoleRequest = true;
-            PhotonNetwork.RaiseEvent(receiveDeviceTypeEvent, new object[] { (short)PhotonNetwork.LocalPlayer.ActorNumber, deviceType }, deviceTypeOptions, appRoleSendOptions);
         }
 
         private async Task<bool> ConnectToServer(CancellationToken token, float timeAttemptStarted)
@@ -1094,7 +1105,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                 else
                 {   // Leave this room before proceeding
                     Debug.Log("Currently in room " + PhotonNetwork.CurrentRoom.Name + " - leaving before attempting to join new room " + roomConfig.Name);
-                    PhotonNetwork.LeaveRoom();
+                    PhotonNetwork.LeaveRoom(true);
                     await Task.Delay(delayWhileExitingRoom);
                 }
             }
@@ -1241,7 +1252,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             roomOptions.MaxPlayers = roomConfig.MaxDevices;
             roomOptions.EmptyRoomTtl = roomConfig.ExpireTime;
             roomOptions.IsVisible = roomConfig.VisibleInLobby;
-            roomOptions.PlayerTtl = int.MaxValue; // Allow players to remain inactive indefinitely when disconnected
+            roomOptions.PlayerTtl = roomConfig.DeviceExpireTime;
             roomOptions.CustomRoomPropertiesForLobby = roomConfig.LobbyProps;
 
             if (roomConfig.RoomProps.Length > 0)
@@ -1355,44 +1366,14 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         private DeviceInfo CreateDeviceInfoFromPlayers(Player[] playerList, int deviceToReturn = -1)
         {
-            connectedDevices.Clear();
+            availableDevices.Clear();
 
             DeviceInfo returnDevice = default(DeviceInfo);
 
             for (int i = 0; i < playerList.Length; i++)
             {
                 Player player = playerList[i];
-
-                List<DeviceProp> props = new List<DeviceProp>();
-                try
-                {
-                    foreach (var entry in player.CustomProperties)
-                    {
-                        props.Add(new DeviceProp()
-                        {
-                            Key = (string)entry.Key,
-                            Value = (string)entry.Value
-                        });
-                    }
-                }
-                catch (InvalidCastException e)
-                {
-                    Debug.LogError("Invalid property type in device properties");
-                }
-
-                short deviceID = (short)player.ActorNumber;
-                deviceIDToDeviceType.TryGetValue(deviceID, out DeviceTypeEnum deviceType);
-                deviceIDToAppRole.TryGetValue(deviceID, out AppRole appRole);
-
-                DeviceInfo device = new DeviceInfo()
-                {
-                    ID = deviceID,
-                    Name = player.NickName,
-                    IsLocalDevice = player.IsLocal,
-                    DeviceType = deviceType,
-                    AppRole = appRole,
-                    Props = props.ToArray(),
-                };
+                DeviceInfo device = CreateDeviceInfoFromPlayer(player);
 
                 if (deviceToReturn == player.ActorNumber)
                 {
@@ -1405,10 +1386,48 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     localDevice = device;
                 }
 
-                connectedDevices.Add(device.ID, device);
+                availableDevices.Add(device.ID, device);
             }
 
             return returnDevice;
+        }
+
+        private DeviceInfo CreateDeviceInfoFromPlayer(Player player)
+        {
+            List<DeviceProp> props = new List<DeviceProp>();
+
+            try
+            {
+                foreach (var entry in player.CustomProperties)
+                {
+                    props.Add(new DeviceProp()
+                    {
+                        Key = (string)entry.Key,
+                        Value = (string)entry.Value
+                    });
+                }
+            }
+            catch (InvalidCastException e)
+            {
+                Debug.LogError("Invalid property type in device properties");
+            }
+
+            short deviceID = (short)player.ActorNumber;
+            deviceIDToDeviceType.TryGetValue(deviceID, out DeviceTypeEnum deviceType);
+            deviceIDToAppRole.TryGetValue(deviceID, out AppRole appRole);
+
+            DeviceInfo device = new DeviceInfo()
+            {
+                ID = deviceID,
+                Name = player.NickName,
+                IsLocalDevice = player.IsLocal,
+                DeviceType = deviceType,
+                AppRole = appRole,
+                ConnectionState = player.IsInactive ? DeviceConnectionState.NotConnected : DeviceConnectionState.Connected,
+                Props = props.ToArray(),
+            };
+
+            return device;
         }
 
         private RoomInfo CreateRoomInfoFromPhotonRoomInfo(global::Photon.Realtime.RoomInfo roomInfoPhoton)
@@ -1571,20 +1590,32 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         void IMatchmakingCallbacks.OnJoinedRoom()
         {
+            Debug.Log("OnJoinedRoom " + PhotonNetwork.LocalPlayer.ActorNumber);
+
             DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
             // Store this so we can rejoin if we're disconnected
             lastRoomJoined = PhotonNetwork.CurrentRoom.Name;
             roomConnectResult = RoomConnectResult.Succeeded;
-            OnDeviceConnected?.Invoke(info);
+
+            if (announcedDevices.Add(info.ID))
+            {
+                OnDeviceConnected?.Invoke(info);
+            }
         }
 
         void IMatchmakingCallbacks.OnLeftRoom()
         {
+            Debug.Log("OnLeftRoom " + PhotonNetwork.LocalPlayer.ActorNumber);
+
             DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
             localDevice.ID = -1;
             NumTimesPinged = 0;
             TimeLastPinged = 0;
-            OnDeviceDisconnected?.Invoke(info);
+
+            if (announcedDevices.Remove(info.ID))
+            {
+                OnDeviceDisconnected?.Invoke(info);
+            }
         }
 
         void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message)
@@ -1610,19 +1641,29 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         void IInRoomCallbacks.OnPlayerEnteredRoom(Player newPlayer)
         {
+            Debug.Log("OnPlayerEnteredRoom " + newPlayer.ActorNumber);
+
             if (newPlayer.ActorNumber >= short.MaxValue)
             {
                 Debug.LogWarning("Actor number exceeds available device ID values. This is highly unusual.");
             }
 
             DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, newPlayer.ActorNumber);
-            OnDeviceConnected?.Invoke(info);
+            if (announcedDevices.Add(info.ID))
+            {
+                OnDeviceConnected?.Invoke(info);
+            }
         }
 
         void IInRoomCallbacks.OnPlayerLeftRoom(Player otherPlayer)
         {
+            Debug.Log("OnPlayerLeftRoom " + otherPlayer.ActorNumber);
+
             DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, otherPlayer.ActorNumber);
-            OnDeviceDisconnected?.Invoke(info);
+            if (announcedDevices.Remove(info.ID))
+            {
+                OnDeviceDisconnected?.Invoke(info);
+            }
         }
 
         void ILobbyCallbacks.OnRoomListUpdate(List<global::Photon.Realtime.RoomInfo> roomList)
