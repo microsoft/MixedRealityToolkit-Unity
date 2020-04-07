@@ -129,7 +129,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
-                    GameObject.Destroy(gameObject);
+                    //Delete the MixedRealityToolkit and MixedRealityPlayspace gameobjects are managed by the ShutdownMixedRealityToolkit() function
+                    if (gameObject != MixedRealityToolkit.Instance && gameObject.transform != MixedRealityPlayspace.Transform)
+                        GameObject.Destroy(gameObject);
                 }
             }
             //Delete the MixedRealityToolkit and MixedRealityPlayspace after other objects to allow handlers to get cleaned up
