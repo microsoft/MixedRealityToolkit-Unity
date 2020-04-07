@@ -92,7 +92,7 @@ We will go into detail on how to address each of them further below.</p>
 <ol>
 <li>An <em>'Eye Gaze Data Provider'</em> must be added to the input system. This provides eye tracking data from the platform.</li>
 <li>The <em>'GazeInput'</em> capability must be enabled in the application manifest.
-<strong>Currently this is only available in Visual Studio and through the MRTK build tool</strong></li>
+<strong>This capability can be set in Unity 2019, but in Unity 2018 and earlier this capability is only available in Visual Studio and through the MRTK build tool</strong></li>
 <li>The HoloLens <strong>must</strong> be eye calibrated for the current user. Check out our <a href="EyeTracking_IsUserCalibrated.html">sample for detecting whether a user is eye calibrated or not</a>.</li>
 </ol>
 <h3 id="a-note-on-the-gazeinput-capability">A note on the GazeInput capability</h3>
@@ -101,15 +101,15 @@ can automatically enable the GazeInput capability for you. In order to do this,
 you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx Build Options' tab:</p>
 <p><img src="../Images/EyeTracking/mrtk_et_buildsetup.png" alt="MRTK Build Tools"></p>
 <p>This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
-<strong>Note that this tooling is NOT active when using Unity's built-in Build Window</strong> (i.e. File -&gt; Build Settings).</p>
-<p>When using Unity's build window, the capability will need to be manually added after the Unity build, as follows:</p>
+<strong>Prior to Unity 2019, this tooling is NOT active when using Unity's built-in Build Window</strong> (i.e. File -&gt; Build Settings).</p>
+<p>Prior to Unity 2019, when using Unity's build window, the capability will need to be manually added after the Unity build, as follows:</p>
 <ol>
 <li>Open your compiled Visual Studio project and then open the <em>'Package.appxmanifest'</em> in your solution.</li>
-<li>Make sure to tick the <em>'GazeInput'</em> checkbox under <em>Capabilities</em>.</li>
+<li>Make sure to tick the <em>'GazeInput'</em> checkbox under <em>Capabilities</em>. If you don't see a <em>'GazeInput'</em> capability, check that your system meets the <a href="../GettingStartedWithTheMRTK.html#prerequisites">prerequisites for using MRTK</a> (in particular the Windows SDK version).</li>
 </ol>
 <p><em>Please note:</em>
 You only have to do this if you build into a new build folder.
-This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, the appxmanifest should stay untouched.</p>
+This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, you will not need to reapply your changes.</p>
 <h2 id="setting-up-eye-tracking-step-by-step">Setting up eye tracking step-by-step</h2>
 <h3 id="setting-up-the-scene">Setting up the scene</h3>
 <p>Set up the <em>MixedRealityToolkit</em> by simply clicking <em>'Mixed Reality Toolkit -&gt; Configure…'</em> in the menu bar.</p>
