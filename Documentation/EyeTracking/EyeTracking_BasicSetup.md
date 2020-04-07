@@ -12,7 +12,7 @@ We will go into detail on how to address each of them further below.
 
 1. An _'Eye Gaze Data Provider'_ must be added to the input system. This provides eye tracking data from the platform.
 2. The _'GazeInput'_ capability must be enabled in the application manifest.
-   **Currently this is only available in Visual Studio and through the MRTK build tool**
+   **This capability can be set in Unity 2019, but in Unity 2018 and earlier this capability is only available in Visual Studio and through the MRTK build tool**
 3. The HoloLens **must** be eye calibrated for the current user. Check out our [sample for detecting whether a user is eye calibrated or not](EyeTracking_IsUserCalibrated.md).
 
 ### A note on the GazeInput capability
@@ -24,9 +24,9 @@ you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx B
 ![MRTK Build Tools](../Images/EyeTracking/mrtk_et_buildsetup.png)
 
 This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
-**Note that this tooling is NOT active when using Unity's built-in Build Window** (i.e. File -> Build Settings).
+**Prior to Unity 2019, this tooling is NOT active when using Unity's built-in Build Window** (i.e. File -> Build Settings).
 
-When using Unity's build window, the capability will need to be manually added after the Unity build, as follows:
+Prior to Unity 2019, when using Unity's build window, the capability will need to be manually added after the Unity build, as follows:
 1. Open your compiled Visual Studio project and then open the _'Package.appxmanifest'_ in your solution.
 2. Make sure to tick the _'GazeInput'_ checkbox under _Capabilities_. If you don't see a _'GazeInput'_ capability, check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md#prerequisites) (in particular the Windows SDK version).
 
