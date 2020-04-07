@@ -32,7 +32,7 @@ Prior to Unity 2019, when using Unity's build window, the capability will need t
 
 _Please note:_
 You only have to do this if you build into a new build folder.
-This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, the appxmanifest should stay untouched.
+This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, you will not need to reapply your changes.
 
 ## Setting up eye tracking step-by-step
 
