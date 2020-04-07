@@ -1317,8 +1317,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
             // Once a response is received, it will be set to none
             while (awaitingAppRoleRequest)
             {
-                Debug.Log("Waiting for role requested on connect...");
-
                 if (token.IsCancellationRequested)
                 {
                     Debug.Log("Cancelled...");
@@ -1382,7 +1380,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
                 if (player.IsLocal)
                 {
-                    Debug.Log("Setting local device");
                     localDevice = device;
                 }
 
@@ -1543,15 +1540,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
         void IInRoomCallbacks.OnMasterClientSwitched(Player newMasterClient)
         {
             // Let the new master client handle broadcasting app role results
-            if (newMasterClient != PhotonNetwork.LocalPlayer)
+            if (newMasterClient.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
             {
+                Debug.Log("We are not the master client, so don't bother proceeding.");
                 return;
             }
 
             RaiseEventOptions appRoleOptions = new RaiseEventOptions()
             {
                 CachingOption = EventCaching.AddToRoomCache,                        // Everyone needs to know if someone else requested this role
-                Receivers = ReceiverGroup.Others,                                   // Send to everyone except us
+                Receivers = ReceiverGroup.All,                                      // Send to everyone, including us - we may be a new master client
             };
 
             SendOptions appRoleSendOptions = new SendOptions()
@@ -1590,32 +1588,34 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
 
         void IMatchmakingCallbacks.OnJoinedRoom()
         {
-            Debug.Log("OnJoinedRoom " + PhotonNetwork.LocalPlayer.ActorNumber);
-
-            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
+            CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList);
             // Store this so we can rejoin if we're disconnected
             lastRoomJoined = PhotonNetwork.CurrentRoom.Name;
             roomConnectResult = RoomConnectResult.Succeeded;
 
-            if (announcedDevices.Add(info.ID))
+            if (announcedDevices.Add(localDevice.ID))
             {
-                OnDeviceConnected?.Invoke(info);
-            }
+                OnDeviceConnected?.Invoke(localDevice);
+            } 
         }
 
         void IMatchmakingCallbacks.OnLeftRoom()
         {
-            Debug.Log("OnLeftRoom " + PhotonNetwork.LocalPlayer.ActorNumber);
+            // By the time this has happened, local player's actor number has already been set to -1
+            // So store our local device info to send the event with a correct device ID later
+            DeviceInfo info = localDevice;
 
-            DeviceInfo info = CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer.ActorNumber);
+            CreateDeviceInfoFromPlayers(PhotonNetwork.PlayerList);
+            if (announcedDevices.Remove(localDevice.ID))
+            {
+                OnDeviceDisconnected?.Invoke(localDevice);
+            }
+
+            // Now reset local device ID
             localDevice.ID = -1;
             NumTimesPinged = 0;
             TimeLastPinged = 0;
 
-            if (announcedDevices.Remove(info.ID))
-            {
-                OnDeviceDisconnected?.Invoke(info);
-            }
         }
 
         void IMatchmakingCallbacks.OnCreateRoomFailed(short returnCode, string message)
@@ -1633,7 +1633,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Sharing.Photon
                     break;
 
                 default:
-                    Debug.Log("Failed to join room: " + message);
+                    Debug.Log("Didn't join room: " + message);
                     roomConnectResult = RoomConnectResult.Failed;
                     break;
             }
