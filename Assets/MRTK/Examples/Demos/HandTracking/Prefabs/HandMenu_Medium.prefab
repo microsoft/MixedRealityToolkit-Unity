@@ -163,7 +163,7 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   safeZone: 0
-  safeZoneBuffer: 0.1
+  safeZoneBuffer: 0.13
   updateWhenOppositeHandNear: 0
   hideHandCursorsOnActivate: 1
   rotationBehavior: 2
