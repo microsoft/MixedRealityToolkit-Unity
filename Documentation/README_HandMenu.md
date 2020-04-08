@@ -34,10 +34,20 @@ Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.Mi
 
 * **Activation Events**: Currently the [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) triggers four activation events. These events can be used in many different combinations to create unique [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behaviors, please see the HandBasedMenuExample scene under `MRTK/Examples/Demos/HandTracking/Scenes/` for examples of these behaviors.
 
-    * *OnHandActivate*: triggers when a hand satisfies the IsHandActive method
+    * *OnHandActivate*: triggers when a hand satisfies the IsHandActive method.
     * *OnHandDeactivate*: triggers when the IsHandActive method is no longer satisfied.
     * *OnFirstHandDetected*: occurs when the hand tracking state changes from no hands in view, to the first hand in view.
     * *OnLastHandLost*: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
+
+* **Solver Activation/Deactivation Logic**: Currently the recommendation for activating and deactivating [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) logic is to do so through the use of the SolverHandler's UpdateSolver value, rather than by disabling/enabling the object. This can be seen in the example scene through the editor-based hooks triggered after the attached menu's ManipulationHandler "OnManipulationStarted/Ended" events.
+
+    * *Stopping the hand-constraint logic*: When trying to set the hand constrained object to stop (as well as not run the activation/deactivation logic), set UpdateSolver to False rather than disabling HandConstraintPalmUp. 
+         * If you want to enable the gaze-based (or even non-gaze-based) Reattach logic, this is then followed by calling the HandConstraintPalmUp.StartWorldLockReattachCheckCorotine() function. This will trigger a coroutine that then continues to check if the "IsValidController" criteria is met and will set UpdateSolver to True once it is (or the object is disabled) 
+    	
+	 * *Starting the hand-constraint logic*: When trying to set the hand constrained object to start following your hand again (based on whether it meets the activation criteria), set the SolverHandler's UpdateSolver to true. 
+
+
+* **Reattach Logic**: Currently the [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is able to automatically reattach the target object to the tracked point, regardless of whether the SolverHandler's UpdateSolver is True or not. This is done through calling the HandConstraintPalmUp's StartWorldLockReattachCheckCorotine() function, after it's been world-locked (which in this case, is effectively setting the SolverHandler's UpdateSolver to False). 
 
 ## See also
 
