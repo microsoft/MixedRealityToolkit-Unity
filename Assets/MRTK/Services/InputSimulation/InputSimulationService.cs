@@ -158,6 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool wasFocused;
         private bool wasCursorLocked;
 
+        /// <summary>
+        /// Cached selectAction used to allow the user to select objects without needing the hands to be up when in gestures mode
+        /// </summary>
+        private MixedRealityInputAction selectAction;
+
         #region BaseInputDeviceManager Implementation
 
         /// <summary>
@@ -218,6 +223,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
             SimulateEyePosition = InputSimulationProfile.SimulateEyePosition;
+
+            var inputActions = InputSystemProfile.InputActionsProfile.InputActions;
+            selectAction = new MixedRealityInputAction();
+            for (int i = 0; i < inputActions.Length; i++)
+            {
+                if (inputActions[i].Description.Equals("select", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    selectAction = inputActions[i];
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -301,6 +316,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (cameraControl != null && CameraCache.Main)
                 {
                     cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
+                }
+
+                //Allow for the user to select with left click if we are in the gestures mode via the gaze provider input source
+                if (HandSimulationMode == HandSimulationMode.Gestures)
+                {
+                    if (UnityEngine.Input.GetMouseButtonDown(0))
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputDown(
+                            CoreServices.InputSystem.GazeProvider.GazeInputSource,
+                            Handedness.Right,
+                            selectAction
+                            );
+                    }
+                    if (UnityEngine.Input.GetMouseButtonUp(0))
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputUp(
+                            CoreServices.InputSystem.GazeProvider.GazeInputSource,
+                            Handedness.Right,
+                            selectAction
+                            );
+                    }
                 }
             }
 
