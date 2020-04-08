@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -50,7 +51,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
         /// </remarks>
+        [Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] GrabLayerMasks => grabLayerMasks;
+
+        public override LayerMask[] PrioritizedLayerMasksOverride
+        {
+            get => grabLayerMasks;
+          set => grabLayerMasks = value;
+        }
 
         [SerializeField]
         [Tooltip("Specify whether queries for grabbable objects hit triggers.")]
@@ -118,7 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            PrioritizedLayerMasksOverride = GrabLayerMasks;
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius);
             queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius);
         }
@@ -139,17 +146,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
 
-                for (int i = 0; i < GrabLayerMasks.Length; i++)
+                for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                 {
-                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(GrabLayerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
                 }
 
-                for (int i = 0; i < GrabLayerMasks.Length; i++)
+                for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                 {
-                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(GrabLayerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
