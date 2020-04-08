@@ -336,59 +336,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Pointer = pointer;
             }
 
+            private static readonly ProfilerMarker UpdateHitPerfMarker = new ProfilerMarker("[MRTK] PointerData.UpdateHit");
+
             public void UpdateHit(PointerHitResult hitResult)
             {
-                if (hitResult.hitObject != CurrentPointerTarget)
+                using (UpdateHitPerfMarker.Auto())
                 {
-                    Pointer.OnPreCurrentPointerTargetChange();
-                }
-
-                PreviousPointerTarget = CurrentPointerTarget;
-
-                focusDetails.Object = hitResult.hitObject;
-                focusDetails.LastRaycastHit = hitResult.raycastHit;
-                focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
-
-                if (hitResult.rayStepIndex >= 0)
-                {
-                    RayStepIndex = hitResult.rayStepIndex;
-                    StartPoint = hitResult.ray.Origin;
-
-                    focusDetails.RayDistance = hitResult.rayDistance;
-                    focusDetails.Point = hitResult.hitPointOnObject;
-                    focusDetails.Normal = hitResult.hitNormalOnObject;
-                }
-                else
-                {
-                    // If we don't have a valid ray cast, use the whole pointer ray.
-                    RayStep firstStep = Pointer.Rays[0];
-                    RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
-                    RayStepIndex = 0;
-
-                    StartPoint = firstStep.Origin;
-
-                    float rayDist = 0.0f;
-                    for (int i = 0; i < Pointer.Rays.Length; i++)
+                    if (hitResult.hitObject != CurrentPointerTarget)
                     {
-                        rayDist += Pointer.Rays[i].Length;
+                        Pointer.OnPreCurrentPointerTargetChange();
                     }
 
-                    focusDetails.RayDistance = rayDist;
-                    focusDetails.Point = finalStep.Terminus;
-                    focusDetails.Normal = -finalStep.Direction;
-                }
+                    PreviousPointerTarget = CurrentPointerTarget;
 
-                if (hitResult.hitObject != null)
-                {
-                    focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
-                }
-                else
-                {
-                    focusDetails.PointLocalSpace = Vector3.zero;
-                    focusDetails.NormalLocalSpace = Vector3.zero;
+                    focusDetails.Object = hitResult.hitObject;
+                    focusDetails.LastRaycastHit = hitResult.raycastHit;
+                    focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
+
+                    if (hitResult.rayStepIndex >= 0)
+                    {
+                        RayStepIndex = hitResult.rayStepIndex;
+                        StartPoint = hitResult.ray.Origin;
+
+                        focusDetails.RayDistance = hitResult.rayDistance;
+                        focusDetails.Point = hitResult.hitPointOnObject;
+                        focusDetails.Normal = hitResult.hitNormalOnObject;
+                    }
+                    else
+                    {
+                        // If we don't have a valid ray cast, use the whole pointer ray.
+                        RayStep firstStep = Pointer.Rays[0];
+                        RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
+                        RayStepIndex = 0;
+
+                        StartPoint = firstStep.Origin;
+
+                        float rayDist = 0.0f;
+                        for (int i = 0; i < Pointer.Rays.Length; i++)
+                        {
+                            rayDist += Pointer.Rays[i].Length;
+                        }
+
+                        focusDetails.RayDistance = rayDist;
+                        focusDetails.Point = finalStep.Terminus;
+                        focusDetails.Normal = -finalStep.Direction;
+                    }
+
+                    if (hitResult.hitObject != null)
+                    {
+                        focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
+                        focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
+                    }
+                    else
+                    {
+                        focusDetails.PointLocalSpace = Vector3.zero;
+                        focusDetails.NormalLocalSpace = Vector3.zero;
+                    }
                 }
             }
+
+            private static readonly ProfilerMarker UpdateFocusLockedHitPerfMarker = new ProfilerMarker("[MRTK] PointerData.UpdateFocusLockedHit");
 
             /// <summary>
             /// Update focus information while focus is locked. If the object is moving,
@@ -396,44 +403,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void UpdateFocusLockedHit()
             {
-                PreviousPointerTarget = focusDetails.Object;
-
-                if (focusDetails.Object != null && focusDetails.Object.transform != null)
+                using (UpdateFocusLockedHitPerfMarker.Auto())
                 {
-                    // In case the focused object is moving, we need to update the focus point based on the object's new transform.
-                    focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
-                    focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
-                    focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
-                }
+                    PreviousPointerTarget = focusDetails.Object;
 
-                StartPoint = Pointer.Rays[0].Origin;
-
-                for (int i = 0; i < Pointer.Rays.Length; i++)
-                {
-                    // TODO: figure out how reliable this is. Should focusDetails.RayDistance be updated?
-                    if (Pointer.Rays[i].Contains(focusDetails.Point))
+                    if (focusDetails.Object != null && focusDetails.Object.transform != null)
                     {
-                        RayStepIndex = i;
-                        break;
+                        // In case the focused object is moving, we need to update the focus point based on the object's new transform.
+                        focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
+                        focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
+                        focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
+                        focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
+                    }
+
+                    StartPoint = Pointer.Rays[0].Origin;
+
+                    for (int i = 0; i < Pointer.Rays.Length; i++)
+                    {
+                        // TODO: figure out how reliable this is. Should focusDetails.RayDistance be updated?
+                        if (Pointer.Rays[i].Contains(focusDetails.Point))
+                        {
+                            RayStepIndex = i;
+                            break;
+                        }
                     }
                 }
             }
 
+            private static readonly ProfilerMarker ResetFocusedObjectPerfMarker = new ProfilerMarker("[MRTK] PointerData.ResetFocusedObject");
+
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                if (CurrentPointerTarget != null)
+                using (ResetFocusedObjectPerfMarker.Auto())
                 {
-                    Pointer.OnPreCurrentPointerTargetChange();
+                    if (CurrentPointerTarget != null)
+                    {
+                        Pointer.OnPreCurrentPointerTargetChange();
+                    }
+
+                    PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
+
+                    focusDetails.Point = Details.Point;
+                    focusDetails.Normal = Details.Normal;
+                    focusDetails.NormalLocalSpace = Details.NormalLocalSpace;
+                    focusDetails.PointLocalSpace = Details.PointLocalSpace;
+                    focusDetails.Object = null;
                 }
-
-                PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
-
-                focusDetails.Point = Details.Point;
-                focusDetails.Normal = Details.Normal;
-                focusDetails.NormalLocalSpace = Details.NormalLocalSpace;
-                focusDetails.PointLocalSpace = Details.PointLocalSpace;
-                focusDetails.Object = null;
             }
 
             /// <inheritdoc />
