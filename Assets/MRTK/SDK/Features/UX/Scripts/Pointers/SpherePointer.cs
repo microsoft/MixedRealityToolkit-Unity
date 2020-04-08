@@ -118,6 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
+            PrioritizedLayerMasksOverride = GrabLayerMasks;
             queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius);
             queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius);
         }
@@ -138,19 +139,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
 
-                var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
-
-                for (int i = 0; i < layerMasks.Length; i++)
+                for (int i = 0; i < GrabLayerMasks.Length; i++)
                 {
-                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(GrabLayerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
                 }
 
-                for (int i = 0; i < layerMasks.Length; i++)
+                for (int i = 0; i < GrabLayerMasks.Length; i++)
                 {
-                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(GrabLayerMasks[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
                     {
                         break;
                     }
