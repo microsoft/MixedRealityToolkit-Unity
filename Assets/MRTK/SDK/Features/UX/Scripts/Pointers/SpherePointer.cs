@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -51,14 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
         /// </remarks>
-        [Obsolete("Use PrioritizedLayerMasksOverride instead")]
         public LayerMask[] GrabLayerMasks => grabLayerMasks;
-
-        public override LayerMask[] PrioritizedLayerMasksOverride
-        {
-            get => grabLayerMasks;
-          set => grabLayerMasks = value;
-        }
 
         [SerializeField]
         [Tooltip("Specify whether queries for grabbable objects hit triggers.")]
@@ -145,6 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
+                PrioritizedLayerMasksOverride = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
 
                 for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                 {
