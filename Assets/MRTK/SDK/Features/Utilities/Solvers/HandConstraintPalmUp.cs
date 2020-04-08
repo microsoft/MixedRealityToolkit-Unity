@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("The distance between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance")]
         [Range(0.0f, .2f)]
-        private float eyeGazeProximityThreshold = .015f;
+        private float eyeGazeProximityThreshold = .01f;
         /// <summary>
         /// The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance
         /// </summary>
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [SerializeField]
         [Tooltip("The distance between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance. This is used if eye gaze isn't available for the user")]
         [Range(0.0f, .2f)]
-        private float headGazeProximityThreshold = .05f;
+        private float headGazeProximityThreshold = .04f;
 
         /// <summary>
         /// The distance threshold calculated between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance
@@ -391,5 +391,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 yield return null;
             }
         }
+
+
+        #region MonoBehaviour Implementation
+
+        /// <summary>
+        /// When enabled, ensure that there are no outlying status changes that would prevent HandConstraintPalmUp from 
+        /// properly working (like gazeActivationAlreadyTriggered being set to true previously, or SolverHandlers.UpdateSolvers being false)
+        /// </summary>
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            gazeActivationAlreadyTriggered = false;
+            SolverHandler.UpdateSolvers = true;
+        }
+
+        #endregion MonoBehaviour Implementation
     }
 }
