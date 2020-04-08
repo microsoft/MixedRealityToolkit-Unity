@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// being manipulated by the user. This triggers a coroutine that checks to see whether the object should 
         /// reattach to the hand.
         /// </summary>
-        public void StartWorldLockReattachCheckCorotine()
+        public void StartWorldLockReattachCheckCoroutine()
         {
             StartCoroutine(WorldLockedReattachCheck());
         }

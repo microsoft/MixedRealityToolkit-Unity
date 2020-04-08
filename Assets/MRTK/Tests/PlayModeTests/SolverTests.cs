@@ -473,7 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            handConstraintSolver.StartWorldLockReattachCheckCorotine();
+            handConstraintSolver.StartWorldLockReattachCheckCoroutine();
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
