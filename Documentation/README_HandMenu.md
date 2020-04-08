@@ -22,8 +22,11 @@ For more complex menus that require longer interaction time, it is recommended t
 Backplate's `ManipulationHanlder` makes it grabbable and movable. **On Manipulation Started** event, **SolverHandler.UpdateSolvers** is deactivated to world-lock the menu. Additionally, it shows the **Close button** to allow the user to close the menu when the task is finished. **On Manipulation Ended** event, it calls **HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine** to allow the user bring the menu back to hand by raising and looking at the palm.
 <br/><img src="Images/HandMenu/MRTK_HandMenu_Example4.png" width="450">
 
+**Close** button reactivates **SolverHandler.UpdateSolvers** and hide the **MenuContent**.
+<br/><img src="Images/HandMenu/MRTK_HandMenu_Example5.png">
+
 ### HandMenu_Large_AutoWorldLock_On_HandDrop
-This example is similar to HandMenu_Large_WorldLock_On_GrabAndPull. The only difference is that the menu will be automatically world-locked on hand drop. This is done by simply not hiding the MenuContent on **OnLastHandLost()** event. 
+This example is similar to HandMenu_Large_WorldLock_On_GrabAndPull. The only difference is that the menu will be automatically world-locked on hand drop. This is done by simply not hiding the MenuContent on **OnLastHandLost()** event. Grab & pull behavior is same as HandMenu_Large_WorldLock_On_GrabAndPull example.
 
 
 ## Scripts
