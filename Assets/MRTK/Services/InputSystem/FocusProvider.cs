@@ -1226,40 +1226,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 Array.Resize<Collider>(ref colliders, maxQuerySceneResults);
                             }
 
-                            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                            Vector3 testPoint = pointer.Rays[i].Origin;
+                            Vector3 objectHitPoint = testPoint;
+                            GameObject closest = null;
+                            float closestDistance = Mathf.Infinity;
+                            int totalNumColliders = 0;
 
-                            if (numColliders > 0)
+                            // Go through each layerMask and ensure perform the appropriate OverlapSphereCalculation
+                            // Since this is usually done when a pointer passes a IsInteractionEnabled, maybe we can cache the selected colliders inside the pointer?
+                            foreach (LayerMask layerMask in prioritizedLayerMasks)
                             {
-                                if (numColliders >= maxQuerySceneResults)
+                                int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, layerMask);
+                                totalNumColliders += numColliders;
+                                if (numColliders > 0)
                                 {
-                                    Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
-                                }
-
-                                Vector3 testPoint = pointer.Rays[i].Origin;
-                                GameObject closest = null;
-                                float closestDistance = Mathf.Infinity;
-                                Vector3 objectHitPoint = testPoint;
-
-                                for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
-                                {
-                                    Collider collider = colliders[colliderIndex];
-                                    // Policy: in order for an collider to be near interactable it must have
-                                    // a NearInteractionGrabbable component on it.
-                                    // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
-                                    //        but there may be other pointers using the same query type which have different semantics.
-                                    if (collider.GetComponent<NearInteractionGrabbable>() == null)
+                                    if (totalNumColliders >= maxQuerySceneResults)
                                     {
-                                        continue;
+                                        Debug.LogWarning($"Maximum number of {totalNumColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
                                     }
-                                    // From https://docs.unity3d.com/ScriptReference/Collider.ClosestPoint.html
-                                    // If location is in the collider the closestPoint will be inside.
-                                    Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
-                                    float distance = (testPoint - closestPointToCollider).sqrMagnitude;
-                                    if (distance < closestDistance)
+                                    for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
                                     {
-                                        closestDistance = distance;
-                                        closest = collider.gameObject;
-                                        objectHitPoint = closestPointToCollider;
+                                        Collider collider = colliders[colliderIndex];
+                                        // Policy: in order for an collider to be near interactable it must have
+                                        // a NearInteractionGrabbable component on it.
+                                        // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
+                                        //        but there may be other pointers using the same query type which have different semantics.
+                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/3758 
+                                        if (collider.GetComponent<NearInteractionGrabbable>() == null)
+                                        {
+                                            continue;
+                                        }
+                                        // From https://docs.unity3d.com/ScriptReference/Collider.ClosestPoint.html
+                                        // If location is in the collider the closestPoint will be inside.
+                                        // FIXME: this implementation is heavily flawed because the distance to the closest point is always 0 when the
+                                        // point is inside the collider. This breaks cases like when 2 overlapping objects are selectable. We need to 
+                                        // address these cases with a smarter approach in the future.
+                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7629
+                                        Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
+                                        float distance = (testPoint - closestPointToCollider).sqrMagnitude;
+                                        if (distance < closestDistance)
+                                        {
+                                            closestDistance = distance;
+                                            closest = collider.gameObject;
+                                            objectHitPoint = closestPointToCollider;
+                                        }
                                     }
                                 }
                                 if (closest != null)
