@@ -1251,6 +1251,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         // a NearInteractionGrabbable component on it.
                                         // FIXME: This is assuming only the grab pointer is using SceneQueryType.SphereOverlap,
                                         //        but there may be other pointers using the same query type which have different semantics.
+                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/3758 
                                         if (collider.GetComponent<NearInteractionGrabbable>() == null)
                                         {
                                             continue;
@@ -1259,7 +1260,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         // If location is in the collider the closestPoint will be inside.
                                         // FIXME: this implementation is heavily flawed because the distance to the closest point is always 0 when the
                                         // point is inside the collider. This breaks cases like when 2 overlapping objects are selectable. We need to 
-                                        // address these cases with a smarter approach in the future
+                                        // address these cases with a smarter approach in the future.
+                                        //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7629
                                         Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
                                         float distance = (testPoint - closestPointToCollider).sqrMagnitude;
                                         if (distance < closestDistance)

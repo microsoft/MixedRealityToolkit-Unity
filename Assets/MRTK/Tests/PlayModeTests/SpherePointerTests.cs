@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Verifies that SpherePointer correctly returns IsNearObject and IsInteractionEnabled
-        /// when 
+        /// and only objects on the correct grabbable layer are in focus
         /// </summary>
         [UnityTest]
         public IEnumerator GrabLayerMasksWithOverlap()
@@ -142,10 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
-            //Initialize overlap cube
+            //Initialize overlapRect
             overlapRect.SetActive(true);
 
-            // Set layer to spatial mesh, which sphere pointer should be ignoring
+            // Set the cube's layer to spatial mesh, which sphere pointer should be ignoring
             // assumption: layer 31 is the spatial mesh layer
             cube.SetLayerRecursively(31);
             yield return null;
@@ -155,16 +155,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move hand to object, IsNearObject, IsInteractionEnabled should be true
             yield return rightHand.MoveTo(interactionEnabledPos);
             Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == overlapRect, " the overlapping rectangle was not in focus");
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
 
-            // Set cube layer back to default
-            // Set overlapRect layer to spatial mesh, which sphere pointer should be ignoring
+            // Set cube's layer back to default
+            // Set overlapRect's layer to spatial mesh, which sphere pointer should be ignoring
             // assumption: layer 31 is the spatial mesh layer
             overlapRect.SetLayerRecursively(31);
             cube.SetLayerRecursively(0);
             yield return null;
             Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == cube, " the inner cube was not in focus");
 
-            //Reinitialize the overlapRect
+            // Reinitialize the overlapRect
             overlapRect.SetLayerRecursively(0);
             overlapRect.SetActive(false);
         }
