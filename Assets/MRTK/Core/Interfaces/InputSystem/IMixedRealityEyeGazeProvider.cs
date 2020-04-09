@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="userIsEyeCalibrated">Boolean whether the user is eye calibrated or not.</param>
         /// <remarks>
         /// Note that this function is not invoked when eye tracking is lost - use IsEyeTrackingAvailable
-        /// to detect wen eye tracking is lost.
+        /// to detect when eye tracking is lost.
         /// </remarks>
         void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated);
     }
