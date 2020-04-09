@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -119,16 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Clear all fallback input handlers off the stack.
         /// </summary>
         void ClearFallbackInputStack();
-
-        /// <summary>
-        /// Interface for subscribing handlers to a specific phase of the event propagation
-        /// </summary>
-        void RegisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase = PropagationPhase.BubbleUp) where T : IEventSystemHandler;
-
-        /// <summary>
-        /// Interface for unsubscribing handlers to a specific phase of the event propagation 
-        /// </summary>
-        void UnregisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase) where T : IEventSystemHandler;
 
         #region Input Events
 

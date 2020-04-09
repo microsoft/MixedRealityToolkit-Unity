@@ -51,6 +51,12 @@ namespace Microsoft.MixedReality.Toolkit
         public static IMixedRealityInputSystem InputSystem => GetService<IMixedRealityInputSystem>();
 
         /// <summary>
+        /// Cached reference to the active instance of the input event propagation system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealityEventPropagationSystem InputPropagationSystem => (IMixedRealityEventPropagationSystem) InputSystem;
+
+        /// <summary>
         /// Cached reference to the active instance of the raycast provider.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>

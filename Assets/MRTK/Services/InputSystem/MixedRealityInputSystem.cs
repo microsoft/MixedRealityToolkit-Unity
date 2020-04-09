@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
+    public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck, IMixedRealityEventPropagationSystem
     {
         /// <summary>
         /// Constructor.
@@ -786,6 +786,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.Unregister(listener);
         }
 
+        #endregion IMixedRealityEventSystem Implementation
+
+        #region IMixedRealityEventPropagationSystem Implementation
+
         /// <inheritdoc />
         public virtual void RegisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase = PropagationPhase.BubbleUp) where T : IEventSystemHandler
         {
@@ -805,7 +809,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public virtual void UnregisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase) where T : IEventSystemHandler
+        public virtual void UnregisterPropagationHandler<T>(IEventSystemHandler handler, PropagationPhase phase = PropagationPhase.BubbleUp) where T : IEventSystemHandler
         {
             var castedHandler = (T)handler;
             if (castedHandler == null)
@@ -846,7 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (handlers[i].IsEquivalent(type, handler))
                 {
                     handlerExists = true;
-                    EventPropagationHandlerEntry entry = handlers[i];                                        
+                    EventPropagationHandlerEntry entry = handlers[i];
                     entry.phase |= phase;
                     break;
                 }
@@ -871,7 +875,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             List<EventPropagationHandlerEntry> handlers;
             if (!EventPropagationHandlersByObject.TryGetValue(gameObject, out handlers))
             {
-                return;   
+                return;
             }
 
             for (int i = handlers.Count - 1; i >= 0; i--)
@@ -891,10 +895,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EventPropagationHandlerEntry entry = handlers[i];
                         entry.phase &= ~phase;
                     }
-                    
+
                     break;
                 }
-            }    
+            }
         }
 
         private void ProcessPostponedActions()
@@ -917,7 +921,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #endregion IMixedRealityEventSystem Implementation
+        #endregion IMixedRealityEventPropagationSystem Implementation
 
         #region Input Disabled Options
 

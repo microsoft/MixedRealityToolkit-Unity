@@ -600,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             
             // Subscribing to bubble up propagation phase
-            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnDisable()
@@ -612,7 +612,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 DropController();
             }
 
-            CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, PropagationPhase.BubbleUp);
+            CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void Update()
@@ -1069,6 +1069,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            // Only events originated from interaction with corner handles should be handled. 
+            // Another approach would be checking current propagation phase and ignoring if target phase
+            // var propagationEventData = (IMixedRealityEventPropagationData) eventData;
+            // if (propagationEventData!= null && propagationEventData.Phase == PropagationPhase.Target) return;
+            if (eventData.selectedObject == gameObject)
+            {
+                return;
+            }
             if (currentPointer == null && !eventData.used)
             {
                 GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
@@ -1173,7 +1181,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         #endregion Unused Event Handlers
 
-
         #region BoundsControl Visuals Private Methods
 
         private void SetHighlighted(Transform activeHandle)
@@ -1262,6 +1269,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         #endregion BoundsControl Visuals Private Methods
-
     }
 }

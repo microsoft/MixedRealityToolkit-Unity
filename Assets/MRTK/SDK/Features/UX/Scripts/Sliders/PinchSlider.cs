@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void OnEnable()
         {
             // Register for bubble up events
-            CoreServices.InputSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
+            CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
         public void Start()
         {
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 EndInteraction();
             }
-            CoreServices.InputSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this, PropagationPhase.BubbleUp);
+            CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnValidate()
