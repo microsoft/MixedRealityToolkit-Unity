@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     return false;
                 }
 
-                //PE Header starts @ 0x3C (60). Its a 4 byte header.
+                // PE Header starts @ 0x3C (60). Its a 4 byte header.
                 fileStream.Position = 0x3C;
                 uint peHeaderPointer = binaryReader.ReadUInt32();
                 if (peHeaderPointer == 0)
@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 Directory.CreateDirectory(dirPath.Replace(sourcePath, destinationPath));
             }
 
-            //Copy all the files & Replaces any files with the same name
+            // Copy all the files & Replaces any files with the same name
             foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
             {
                 File.Copy(newPath, newPath.Replace(sourcePath, destinationPath), true);

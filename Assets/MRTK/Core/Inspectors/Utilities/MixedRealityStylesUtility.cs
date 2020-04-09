@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly GUIStyle TitleFoldoutStyle =
           new GUIStyle(EditorStyles.foldout)
           {
-              //fontStyle = FontStyle.,
               fontSize = InspectorUIUtility.TitleFontSize,
           };
 

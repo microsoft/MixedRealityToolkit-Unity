@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(pointer.IsNearObject);
             Assert.False(pointer.IsInteractionEnabled);
 
-            //Initialize overlapRect
+            // Initialize overlapRect
             overlapRect.SetActive(true);
 
             // Set the cube's layer to spatial mesh, which sphere pointer should be ignoring
