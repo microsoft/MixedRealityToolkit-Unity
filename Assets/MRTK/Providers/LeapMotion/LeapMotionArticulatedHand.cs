@@ -27,10 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <summary>
         /// Constructor for a Leap Motion Articulated Hand
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
+        /// <param name="trackingState">Tracking state for the controller</param>
+        /// <param name="controllerHandedness">Handedness of this controller (Left or Right)</param>
+        /// <param name="inputSource">The origin of user input for this controller</param>
+        /// <param name="interactions">The controller interaction map between physical inputs and the logical representation in MRTK</param>
         public LeapMotionArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null) 
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// Get the pose of the metacarpal joints from the current frame of the LeapServiceProvider because the metacarpal joints 
         /// are not included in AttachmentPointFlags.  The metacarpal joints are those located directly above the wrist.
         /// </summary>
-        /// <param name="metacarpalJoint"></param>
+        /// <param name="metacarpalJoint">A metacarpal TrackedHandJoint</param>
         /// <returns>The MixedRealityPose for the leap metacarpal joint</returns>
         private MixedRealityPose GetMetacarpals(TrackedHandJoint metacarpalJoint)
         {
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// Converts a TrackedHandJoint to a Leap AttachmentPointFlag. An AttachmentPointFlag is Leap's version of MRTK's TrackedHandJoint.
         /// </summary>
         /// <param name="joint">TrackedHandJoint to be mapped to a Leap AttachmentPointFlag</param>
-        /// <returns></returns>
+        /// <returns>Leap Motion AttachmentPointFlag pose</returns>
         private AttachmentPointFlags ConvertMRTKJointToLeapJoint(TrackedHandJoint joint)
         {
             switch (joint)
