@@ -169,14 +169,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Profiler.BeginSample("[MRTK] SpherePointer.TryGetNearGraspPoint");
 
             // If controller is of kind IMixedRealityHand, return average of index and thumb
-            if (Controller != null && Controller is IMixedRealityHand)
+            if (Controller != null && Controller is IMixedRealityHand hand)
             {
-                var hand = Controller as IMixedRealityHand;
-                hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index);
-                if (index != null)
+                if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
                 {
-                    hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb);
-                    if (thumb != null)
+                    if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
                     {
                         result = 0.5f * (index.Position + thumb.Position);
                         Profiler.EndSample(); // TryGetNearGraspPoint - success
@@ -184,7 +181,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
             }
-            else
+
+            if (Controller.IsPositionAvailable)
             {
                 result = Position;
                 Profiler.EndSample(); // TryGetNearGraspPoint - success
