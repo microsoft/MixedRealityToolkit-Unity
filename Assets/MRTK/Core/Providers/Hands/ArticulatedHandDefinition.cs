@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -98,8 +99,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="jointPoses">The new joint poses.</param>
         public void UpdateHandJoints(Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
+            Profiler.BeginSample("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
+
             unityJointPoses = jointPoses;
             CoreServices.InputSystem?.RaiseHandJointsUpdated(inputSource, handedness, unityJointPoses);
+
+            Profiler.EndSample(); // UpdateHandJoints
         }
 
         /// <summary>
@@ -108,6 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="interactionMapping">The index finger's interaction mapping.</param>
         public void UpdateCurrentIndexPose(MixedRealityInteractionMapping interactionMapping)
         {
+            Profiler.BeginSample("[MRTK] ArticulatedHandDefinition.UpdateCurrentIndexPose");
+
             if (unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out currentIndexPose))
             {
                 // Update the interaction data source
@@ -120,6 +127,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     CoreServices.InputSystem?.RaisePoseInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
                 }
             }
+
+            Profiler.EndSample(); // UpdateCurrentIndexPose
         }
     }
 }
