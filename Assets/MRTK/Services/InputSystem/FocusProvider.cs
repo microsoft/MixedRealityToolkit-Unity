@@ -1266,19 +1266,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             Vector3 objectHitPoint = testPoint;
                             GameObject closest = null;
                             float closestDistance = Mathf.Infinity;
-                            int totalNumColliders = 0;
 
                             // Go through each layerMask and ensure perform the appropriate OverlapSphereCalculation
                             // Since this is usually done when a pointer passes a IsInteractionEnabled, maybe we can cache the selected colliders inside the pointer?
                             foreach (LayerMask layerMask in prioritizedLayerMasks)
                             {
                                 int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(pointer.Rays[i].Origin, pointer.SphereCastRadius, colliders, layerMask);
-                                totalNumColliders += numColliders;
                                 if (numColliders > 0)
                                 {
-                                    if (totalNumColliders >= maxQuerySceneResults)
+                                    if (numColliders >= maxQuerySceneResults)
                                     {
-                                        Debug.LogWarning($"Maximum number of {totalNumColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
+                                        Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
                                     }
                                     for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
                                     {
