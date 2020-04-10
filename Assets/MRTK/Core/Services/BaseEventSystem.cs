@@ -433,18 +433,18 @@ namespace Microsoft.MixedReality.Toolkit
     #endregion Utilities
         // Example Event Pattern #############################################################
 
-        //public void RaiseGenericEvent(IEventSource eventSource)
-        //{
-        //    genericEventData.Initialize(eventSource);
-        //    HandleEvent(genericEventData, GenericEventHandler);
-        //}
+        // public void RaiseGenericEvent(IEventSource eventSource)
+        // {
+        //     genericEventData.Initialize(eventSource);
+        //     HandleEvent(genericEventData, GenericEventHandler);
+        // }
 
-        //private static readonly ExecuteEvents.EventFunction<IEventHandler> GenericEventHandler =
-        //    delegate (IEventHandler handler, BaseEventData eventData)
-        //    {
-        //        var casted = ExecuteEvents.ValidateEventData<GenericBaseEventData>(eventData);
-        //        handler.OnEventRaised(casted);
-        //    };
+        // private static readonly ExecuteEvents.EventFunction<IEventHandler> GenericEventHandler =
+        //     delegate (IEventHandler handler, BaseEventData eventData)
+        //     {
+        //         var casted = ExecuteEvents.ValidateEventData<GenericBaseEventData>(eventData);
+        //         handler.OnEventRaised(casted);
+        //     };
 
         // Example Event Pattern #############################################################
     }

@@ -151,8 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 {
                     await GetPowerStateAsync(targetDevice);
                 }
-
-                //Debug.LogError(response.ResponseBody);
                 return null;
             }
 

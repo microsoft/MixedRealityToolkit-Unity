@@ -54,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             object[] data = new object[]
             { 
-                //-------------------------------
                 // Cam / Head tracking
                 CameraCache.Main.transform.position.x,
                 CameraCache.Main.transform.position.y,

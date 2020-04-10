@@ -129,12 +129,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
-                    //Delete the MixedRealityToolkit and MixedRealityPlayspace gameobjects are managed by the ShutdownMixedRealityToolkit() function
+                    // Delete the MixedRealityToolkit and MixedRealityPlayspace gameobjects are managed by the ShutdownMixedRealityToolkit() function
                     if (gameObject != MixedRealityToolkit.Instance && gameObject.transform != MixedRealityPlayspace.Transform)
                         GameObject.Destroy(gameObject);
                 }
             }
-            //Delete the MixedRealityToolkit and MixedRealityPlayspace after other objects to allow handlers to get cleaned up
+            // Delete the MixedRealityToolkit and MixedRealityPlayspace after other objects to allow handlers to get cleaned up
             TestUtilities.ShutdownMixedRealityToolkit();
 
             // If we created a temporary untitled scene in edit mode to get us started, unload that now

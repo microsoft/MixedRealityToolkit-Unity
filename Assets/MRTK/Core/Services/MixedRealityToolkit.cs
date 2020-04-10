@@ -323,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             isInitializing = true;
 
-            //If the Mixed Reality Toolkit is not configured, stop.
+            // If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
                 if (!Application.isPlaying)
