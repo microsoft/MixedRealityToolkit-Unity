@@ -155,23 +155,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             using (TryGetNearGraspPointPerfMarker.Auto())
             {
-                // If controller is of kind IMixedRealityHand, return average of index and thumb
-                if (Controller != null && Controller is IMixedRealityHand hand)
+                if (Controller != null)
                 {
-                    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
+                    // If controller is of kind IMixedRealityHand, return average of index and thumb
+                    if (Controller is IMixedRealityHand hand)
                     {
-                        if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
+                        if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
                         {
-                            result = 0.5f * (index.Position + thumb.Position);
-                            return true;
+                            if (hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb) && thumb != null)
+                            {
+                                result = 0.5f * (index.Position + thumb.Position);
+                                return true;
+                            }
                         }
                     }
-                }
 
-                if (Controller.IsPositionAvailable)
-                {
-                    result = Position;
-                    return true;
+                    // If controller isn't an IMixedRealityHand or one of the required joints isn't available, check for position
+                    if (Controller.IsPositionAvailable)
+                    {
+                        result = Position;
+                        return true;
+                    }
                 }
 
                 result = Vector3.zero;
