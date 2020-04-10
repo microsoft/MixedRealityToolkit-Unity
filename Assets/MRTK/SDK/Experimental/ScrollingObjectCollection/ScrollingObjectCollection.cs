@@ -1762,12 +1762,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (indexOfItem < numItemsPrevView)
             {
-                // Its above the visible area
+                // It's above the visible area
                 itemLoc = false;
             }
             else if (indexOfItem > numItemsPostView)
             {
-                // Its below the visible area
+                // It's below the visible area
                 itemLoc = false;
             }
             return itemLoc;
