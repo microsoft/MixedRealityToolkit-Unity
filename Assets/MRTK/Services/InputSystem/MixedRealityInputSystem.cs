@@ -837,6 +837,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
         private static readonly ProfilerMarker RaiseSourceLostPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceLost");
+
         /// <inheritdoc />
         public void RaiseSourceLost(IMixedRealityInputSource source, IMixedRealityController controller = null)
         {
@@ -873,14 +874,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Input Source Pose Events
 
+        private static readonly ProfilerMarker RaiseSourceTrackingStateChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseTrackingStateChanged");
+
         /// <inheritdoc />
         public void RaiseSourceTrackingStateChanged(IMixedRealityInputSource source, IMixedRealityController controller, TrackingState state)
         {
-            // Create input event
-            sourceTrackingEventData.Initialize(source, controller, state);
+            using (RaiseSourceTrackingStateChangedPerfMarker.Auto())
+            {
+                // Create input event
+                sourceTrackingEventData.Initialize(source, controller, state);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceTrackingEventData, OnSourceTrackingChangedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourceTrackingEventData, OnSourceTrackingChangedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourceTrackingChangedEventHandler =
@@ -890,14 +896,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnSourcePoseChanged(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseSourcePositionChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourcePositionChanged");
+
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector2 position)
         {
-            // Create input event
-            sourceVector2EventData.Initialize(source, controller, position);
+            using (RaiseSourcePositionChangedPerfMarker.Auto())
+            {
+                // Create input event
+                sourceVector2EventData.Initialize(source, controller, position);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceVector2EventData, OnSourcePoseVector2ChangedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourceVector2EventData, OnSourcePoseVector2ChangedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePoseVector2ChangedEventHandler =
@@ -910,11 +921,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseSourcePositionChanged(IMixedRealityInputSource source, IMixedRealityController controller, Vector3 position)
         {
-            // Create input event
-            sourcePositionEventData.Initialize(source, controller, position);
+            using (RaiseSourcePositionChangedPerfMarker.Auto())
+            {
+                // Create input event
+                sourcePositionEventData.Initialize(source, controller, position);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourcePositionEventData, OnSourcePositionChangedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePositionChangedEventHandler =
@@ -924,14 +938,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnSourcePoseChanged(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseSourceRotationChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourceRotationChanged");
+
         /// <inheritdoc />
         public void RaiseSourceRotationChanged(IMixedRealityInputSource source, IMixedRealityController controller, Quaternion rotation)
         {
-            // Create input event
-            sourceRotationEventData.Initialize(source, controller, rotation);
+            using (RaiseSourceRotationChangedPerfMarker.Auto())
+            {
+                // Create input event
+                sourceRotationEventData.Initialize(source, controller, rotation);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourceRotationEventData, OnSourceRotationChangedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourceRotationChangedEventHandler =
@@ -941,14 +960,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnSourcePoseChanged(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseSourcePoseChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSourcePoseChanged");
+
         /// <inheritdoc />
         public void RaiseSourcePoseChanged(IMixedRealityInputSource source, IMixedRealityController controller, MixedRealityPose position)
         {
-            // Create input event
-            sourcePoseEventData.Initialize(source, controller, position);
+            using (RaiseSourcePoseChangedPerfMarker.Auto())
+            {
+                // Create input event
+                sourcePoseEventData.Initialize(source, controller, position);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(sourcePoseEventData, OnSourcePoseChangedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealitySourcePoseHandler> OnSourcePoseChangedEventHandler =
@@ -964,12 +988,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Focus Events
 
+        private static readonly ProfilerMarker RaisePreFocusChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePreFocusChanged");
+
         /// <inheritdoc />
         public void RaisePreFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
-            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+            using (RaisePreFocusChangedPerfMarker.Auto())
+            {
+                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleFocusChangedEvents(focusEventData, OnPreFocusChangedHandler);
+                HandleFocusChangedEvents(focusEventData, OnPreFocusChangedHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnPreFocusChangedHandler =
@@ -979,12 +1008,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnBeforeFocusChange(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseFocusChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseFocusChanged");
+
         /// <inheritdoc />
         public void RaiseFocusChanged(IMixedRealityPointer pointer, GameObject oldFocusedObject, GameObject newFocusedObject)
         {
-            focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
+            using (RaiseFocusChangedPerfMarker.Auto())
+            {
+                focusEventData.Initialize(pointer, oldFocusedObject, newFocusedObject);
 
-            HandleFocusChangedEvents(focusEventData, OnFocusChangedHandler);
+                HandleFocusChangedEvents(focusEventData, OnFocusChangedHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusChangedHandler> OnFocusChangedHandler =
@@ -994,12 +1028,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnFocusChanged(casted);
             };
 
+        private static readonly ProfilerMarker RaiseFocusEnterPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseFocusEnter");
+
         /// <inheritdoc />
         public void RaiseFocusEnter(IMixedRealityPointer pointer, GameObject focusedObject)
         {
-            focusEventData.Initialize(pointer);
+            using (RaiseFocusEnterPerfMarker.Auto())
+            {
+                focusEventData.Initialize(pointer);
 
-            HandleFocusEvent(focusedObject, focusEventData, OnFocusEnterEventHandler);
+                HandleFocusEvent(focusedObject, focusEventData, OnFocusEnterEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusEnterEventHandler =
@@ -1009,12 +1048,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnFocusEnter(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseFocusExitPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseFocusExit");
+
         /// <inheritdoc />
         public void RaiseFocusExit(IMixedRealityPointer pointer, GameObject unfocusedObject)
         {
-            focusEventData.Initialize(pointer);
+            using (RaiseFocusExitPerfMarker.Auto())
+            {
+                focusEventData.Initialize(pointer);
 
-            HandleFocusEvent(unfocusedObject, focusEventData, OnFocusExitEventHandler);
+                HandleFocusEvent(unfocusedObject, focusEventData, OnFocusExitEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
@@ -1037,34 +1081,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnPointerDown(casted);
             };
 
+        private static readonly ProfilerMarker RaisePointerDownPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePointerDown");
+
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            // Only lock the object if there is a grabbable above in the hierarchy
-            Transform currentObject = null;
-            GameObject currentGameObject = pointer.Result?.Details.Object;
-            if (currentGameObject != null)
+            using (RaisePointerDownPerfMarker.Auto())
             {
-                currentObject = currentGameObject.transform;
-            }
-            IMixedRealityPointerHandler ancestorPointerHandler = null;
-            while (currentObject != null && ancestorPointerHandler == null)
-            {
-                foreach (var component in currentObject.GetComponents<Component>())
+                // Only lock the object if there is a grabbable above in the hierarchy
+                Transform currentObject = null;
+                GameObject currentGameObject = pointer.Result?.Details.Object;
+                if (currentGameObject != null)
                 {
-                    if (component is IMixedRealityPointerHandler)
-                    {
-                        ancestorPointerHandler = (IMixedRealityPointerHandler)component;
-                        break;
-                    }
+                    currentObject = currentGameObject.transform;
                 }
-                currentObject = currentObject.transform.parent;
+                IMixedRealityPointerHandler ancestorPointerHandler = null;
+                while (currentObject != null && ancestorPointerHandler == null)
+                {
+                    foreach (var component in currentObject.GetComponents<Component>())
+                    {
+                        if (component is IMixedRealityPointerHandler)
+                        {
+                            ancestorPointerHandler = (IMixedRealityPointerHandler)component;
+                            break;
+                        }
+                    }
+                    currentObject = currentObject.transform.parent;
+                }
+                pointer.IsFocusLocked = ancestorPointerHandler != null;
+
+                pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+
+                HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
             }
-            pointer.IsFocusLocked = ancestorPointerHandler != null;
-
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
-
-            HandlePointerEvent(pointerEventData, OnPointerDownEventHandler);
         }
 
         #endregion Pointer Down
@@ -1078,12 +1127,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnPointerDragged(casted);
             };
 
+        private static readonly ProfilerMarker RaisePointerDraggedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePointerDragged");
+
         /// <inheritdoc />
         public void RaisePointerDragged(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+            using (RaisePointerDraggedPerfMarker.Auto())
+            {
+                pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+                HandlePointerEvent(pointerEventData, OnPointerDraggedEventHandler);
+            }
         }
 
         #endregion Pointer Dragged
@@ -1098,12 +1152,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 };
 
         /// <inheritdoc />
+        private static readonly ProfilerMarker RaisePointerClickedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePointerClicked");
+
         public void RaisePointerClicked(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, int count, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            // Create input event
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource, count);
+            using (RaisePointerClickedPerfMarker.Auto())
+            {
+                // Create input event
+                pointerEventData.Initialize(pointer, inputAction, handedness, inputSource, count);
 
-            HandleClick();
+                HandleClick();
+            }
         }
 
         private void HandleClick()
@@ -1125,14 +1184,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnPointerUp(casted);
             };
 
+        private static readonly ProfilerMarker RaisePointerUpPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePointerUp");
+
         /// <inheritdoc />
         public void RaisePointerUp(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
+            using (RaisePointerUpPerfMarker.Auto())
+            {
+                pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 
-            HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
+                HandlePointerEvent(pointerEventData, OnPointerUpEventHandler);
 
-            pointer.IsFocusLocked = false;
+                pointer.IsFocusLocked = false;
+            }
         }
 
         #endregion Pointer Up
@@ -1169,22 +1233,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             };
 
+        private static readonly ProfilerMarker RaiseOnInputDownPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseOnInputDown");
+
         /// <inheritdoc />
         public void RaiseOnInputDown(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
-            inputAction = ProcessRules(inputAction, true);
-
-            // Create input event
-            inputEventData.Initialize(source, handedness, inputAction);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+            using (RaiseOnInputDownPerfMarker.Auto())
             {
-                HandleEvent(inputEventData, OnInputDownEventHandler);
-            }
-            else
-            {
-                HandleEvent(inputEventData, OnInputDownWithActionEventHandler);
+                inputAction = ProcessRules(inputAction, true);
+
+                // Create input event
+                inputEventData.Initialize(source, handedness, inputAction);
+
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+                {
+                    HandleEvent(inputEventData, OnInputDownEventHandler);
+                }
+                else
+                {
+                    HandleEvent(inputEventData, OnInputDownWithActionEventHandler);
+                }
             }
         }
 
@@ -1218,22 +1287,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             };
 
+        private static readonly ProfilerMarker RaiseOnInputUpPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseOnInputUp");
+
         /// <inheritdoc />
         public void RaiseOnInputUp(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction)
         {
-            inputAction = ProcessRules(inputAction, false);
-
-            // Create input event
-            inputEventData.Initialize(source, handedness, inputAction);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+            using (RaiseOnInputUpPerfMarker.Auto())
             {
-                HandleEvent(inputEventData, OnInputUpEventHandler);
-            }
-            else
-            {
-                HandleEvent(inputEventData, OnInputUpWithActionEventHandler);
+                inputAction = ProcessRules(inputAction, false);
+
+                // Create input event
+                inputEventData.Initialize(source, handedness, inputAction);
+
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                if (inputEventData.MixedRealityInputAction == MixedRealityInputAction.None)
+                {
+                    HandleEvent(inputEventData, OnInputUpEventHandler);
+                }
+                else
+                {
+                    HandleEvent(inputEventData, OnInputUpWithActionEventHandler);
+                }
             }
         }
 
@@ -1248,16 +1322,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputChanged(casted);
             };
 
+        private static readonly ProfilerMarker RaiseFloatInputChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseFloatInputChanged");
+
         /// <inheritdoc />
         public void RaiseFloatInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, float inputValue)
         {
-            inputAction = ProcessRules(inputAction, inputValue);
+            using (RaiseFloatInputChangedPerfMarker.Auto())
+            {
+                inputAction = ProcessRules(inputAction, inputValue);
 
-            // Create input event
-            floatInputEventData.Initialize(source, handedness, inputAction, inputValue);
+                // Create input event
+                floatInputEventData.Initialize(source, handedness, inputAction, inputValue);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(floatInputEventData, OnFloatInputChanged);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(floatInputEventData, OnFloatInputChanged);
+            }
         }
 
         #endregion Float Input Changed
@@ -1271,16 +1350,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputChanged(casted);
             };
 
+        private static readonly ProfilerMarker RaisePositionInputChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePositionInputChanged");
+
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector2 inputPosition)
         {
-            inputAction = ProcessRules(inputAction, inputPosition);
+            using (RaisePositionInputChangedPerfMarker.Auto())
+            {
+                inputAction = ProcessRules(inputAction, inputPosition);
 
-            // Create input event
-            vector2InputEventData.Initialize(source, handedness, inputAction, inputPosition);
+                // Create input event
+                vector2InputEventData.Initialize(source, handedness, inputAction, inputPosition);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(vector2InputEventData, OnTwoDoFInputChanged);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityInputHandler<Vector3>> OnPositionInputChanged =
@@ -1293,13 +1377,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePositionInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Vector3 position)
         {
-            inputAction = ProcessRules(inputAction, position);
+            using (RaisePositionInputChangedPerfMarker.Auto())
+            {
+                inputAction = ProcessRules(inputAction, position);
 
-            // Create input event
-            positionInputEventData.Initialize(source, handedness, inputAction, position);
+                // Create input event
+                positionInputEventData.Initialize(source, handedness, inputAction, position);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnPositionInputChanged);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(positionInputEventData, OnPositionInputChanged);
+            }
         }
 
         #endregion Input Position Changed
@@ -1313,16 +1400,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputChanged(casted);
             };
 
+        private static readonly ProfilerMarker RaiseRotationInputChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseRotationInputChanged");
+
         /// <inheritdoc />
         public void RaiseRotationInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, Quaternion rotation)
         {
-            inputAction = ProcessRules(inputAction, rotation);
+            using (RaiseRotationInputChangedPerfMarker.Auto())
+            {
+                inputAction = ProcessRules(inputAction, rotation);
 
-            // Create input event
-            rotationInputEventData.Initialize(source, handedness, inputAction, rotation);
+                // Create input event
+                rotationInputEventData.Initialize(source, handedness, inputAction, rotation);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(positionInputEventData, OnRotationInputChanged);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(positionInputEventData, OnRotationInputChanged);
+            }
         }
 
         #endregion Input Rotation Changed
@@ -1336,16 +1428,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnInputChanged(casted);
             };
 
+        private static readonly ProfilerMarker RaisePoseInputChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaisePoseInputChanged");
+
         /// <inheritdoc />
         public void RaisePoseInputChanged(IMixedRealityInputSource source, Handedness handedness, MixedRealityInputAction inputAction, MixedRealityPose inputData)
         {
-            inputAction = ProcessRules(inputAction, inputData);
+            using (RaisePoseInputChangedPerfMarker.Auto())
+            {
+                inputAction = ProcessRules(inputAction, inputData);
 
-            // Create input event
-            poseInputEventData.Initialize(source, handedness, inputAction, inputData);
+                // Create input event
+                poseInputEventData.Initialize(source, handedness, inputAction, inputData);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(poseInputEventData, OnPoseInputChanged);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(poseInputEventData, OnPoseInputChanged);
+            }
         }
 
         #endregion Input Pose Changed
@@ -1380,19 +1477,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             };
 
+        private static readonly ProfilerMarker RaiseGestureStartedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseGestureStarted");
+
         /// <inheritdoc />
         public void RaiseGestureStarted(IMixedRealityController controller, MixedRealityInputAction action)
         {
-            action = ProcessRules(action, true);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            using (RaiseGestureStartedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, true);
+                inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
 
-            if (action == MixedRealityInputAction.None)
-            {
-                HandleEvent(inputEventData, OnGestureStarted);
-            }
-            else
-            {
-                HandleEvent(inputEventData, OnGestureStartedWithAction);
+                if (action == MixedRealityInputAction.None)
+                {
+                    HandleEvent(inputEventData, OnGestureStarted);
+                }
+                else
+                {
+                    HandleEvent(inputEventData, OnGestureStartedWithAction);
+                }
             }
         }
 
@@ -1402,6 +1504,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var casted = ExecuteEvents.ValidateEventData<InputEventData>(eventData);
                 handler.OnGestureUpdated(casted);
             };
+
+        private static readonly ProfilerMarker RaiseGestureUpdatedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseGestureUpdated");
 
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action)
@@ -1421,9 +1525,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
-            action = ProcessRules(action, inputData);
-            vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(vector2InputEventData, OnGestureVector2PositionUpdated);
+            using (RaiseGestureUpdatedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(vector2InputEventData, OnGestureVector2PositionUpdated);
+
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<Vector3>> OnGesturePositionUpdated =
@@ -1436,9 +1544,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
-            action = ProcessRules(action, inputData);
-            positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(positionInputEventData, OnGesturePositionUpdated);
+            using (RaiseGestureUpdatedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(positionInputEventData, OnGesturePositionUpdated);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<Quaternion>> OnGestureRotationUpdated =
@@ -1451,9 +1562,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
-            action = ProcessRules(action, inputData);
-            rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(rotationInputEventData, OnGestureRotationUpdated);
+            using (RaiseGestureUpdatedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(rotationInputEventData, OnGestureRotationUpdated);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<MixedRealityPose>> OnGesturePoseUpdated =
@@ -1466,9 +1580,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureUpdated(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
-            action = ProcessRules(action, inputData);
-            poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(poseInputEventData, OnGesturePoseUpdated);
+            using (RaiseGestureUpdatedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(poseInputEventData, OnGesturePoseUpdated);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler> OnGestureCompleted =
@@ -1497,19 +1614,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             };
 
+        private static readonly ProfilerMarker RaiseGestureCompletedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseGestureCompleted");
+
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action)
         {
-            action = ProcessRules(action, false);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+            using (RaiseGestureCompletedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, false);
+                inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
 
-            if (action == MixedRealityInputAction.None)
-            {
-                HandleEvent(inputEventData, OnGestureCompleted);
-            }
-            else
-            {
-                HandleEvent(inputEventData, OnGestureCompletedWithAction);
+                if (action == MixedRealityInputAction.None)
+                {
+                    HandleEvent(inputEventData, OnGestureCompleted);
+                }
+                else
+                {
+                    HandleEvent(inputEventData, OnGestureCompletedWithAction);
+                }
             }
         }
 
@@ -1523,9 +1645,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector2 inputData)
         {
-            action = ProcessRules(action, inputData);
-            vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(vector2InputEventData, OnGestureVector2PositionCompleted);
+            using (RaiseGestureCompletedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                vector2InputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(vector2InputEventData, OnGestureVector2PositionCompleted);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<Vector3>> OnGesturePositionCompleted =
@@ -1538,9 +1663,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Vector3 inputData)
         {
-            action = ProcessRules(action, inputData);
-            positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(positionInputEventData, OnGesturePositionCompleted);
+            using (RaiseGestureCompletedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                positionInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(positionInputEventData, OnGesturePositionCompleted);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<Quaternion>> OnGestureRotationCompleted =
@@ -1553,9 +1681,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, Quaternion inputData)
         {
-            action = ProcessRules(action, inputData);
-            rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(rotationInputEventData, OnGestureRotationCompleted);
+            using (RaiseGestureCompletedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                rotationInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(rotationInputEventData, OnGestureRotationCompleted);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler<MixedRealityPose>> OnGesturePoseCompleted =
@@ -1568,9 +1699,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaiseGestureCompleted(IMixedRealityController controller, MixedRealityInputAction action, MixedRealityPose inputData)
         {
-            action = ProcessRules(action, inputData);
-            poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
-            HandleEvent(poseInputEventData, OnGesturePoseCompleted);
+            using (RaiseGestureCompletedPerfMarker.Auto())
+            {
+                action = ProcessRules(action, inputData);
+                poseInputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action, inputData);
+                HandleEvent(poseInputEventData, OnGesturePoseCompleted);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityGestureHandler> OnGestureCanceled =
@@ -1580,12 +1714,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     handler.OnGestureCanceled(casted);
                 };
 
+        private static readonly ProfilerMarker RaiseGestureCanceledPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseGestureCanceled");
+
         /// <inheritdoc />
         public void RaiseGestureCanceled(IMixedRealityController controller, MixedRealityInputAction action)
         {
-            action = ProcessRules(action, false);
-            inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
-            HandleEvent(inputEventData, OnGestureCanceled);
+            using (RaiseGestureCanceledPerfMarker.Auto())
+            {
+                action = ProcessRules(action, false);
+                inputEventData.Initialize(controller.InputSource, controller.ControllerHandedness, action);
+                HandleEvent(inputEventData, OnGestureCanceled);
+            }
         }
 
         #endregion Gesture Events
@@ -1619,22 +1758,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             };
 
+        private static readonly ProfilerMarker RaiseSpeechCommandRecognizedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseSpeechCommandRecognized");
+
         /// <inheritdoc />
         public void RaiseSpeechCommandRecognized(IMixedRealityInputSource source, RecognitionConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, SpeechCommands command)
         {
-            // Create input event
-            speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
-
-            FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
-
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            if (command.Action == MixedRealityInputAction.None)
+            using (RaiseSpeechCommandRecognizedPerfMarker.Auto())
             {
-                HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
-            }
-            else
-            {
-                HandleEvent(speechEventData, OnSpeechKeywordRecognizedWithActionEventHandler);
+                // Create input event
+                speechEventData.Initialize(source, confidence, phraseDuration, phraseStartTime, command);
+
+                FocusProvider?.OnSpeechKeywordRecognized(speechEventData);
+
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                if (command.Action == MixedRealityInputAction.None)
+                {
+                    HandleEvent(speechEventData, OnSpeechKeywordRecognizedEventHandler);
+                }
+                else
+                {
+                    HandleEvent(speechEventData, OnSpeechKeywordRecognizedWithActionEventHandler);
+                }
             }
         }
 
@@ -1649,14 +1793,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnDictationHypothesis(casted);
             };
 
+        private static readonly ProfilerMarker RaiseDictationHypothesisPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseDictationHypothesis");
+
         /// <inheritdoc />
         public void RaiseDictationHypothesis(IMixedRealityInputSource source, string dictationHypothesis, AudioClip dictationAudioClip = null)
         {
-            // Create input event
-            dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
+            using (RaiseDictationHypothesisPerfMarker.Auto())
+            {
+                // Create input event
+                dictationEventData.Initialize(source, dictationHypothesis, dictationAudioClip);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(dictationEventData, OnDictationHypothesisEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDictationHandler> OnDictationResultEventHandler =
@@ -1666,14 +1815,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnDictationResult(casted);
             };
 
+        private static readonly ProfilerMarker RaiseDictationResultPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseDictationResult");
+
         /// <inheritdoc />
         public void RaiseDictationResult(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
-            // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
+            using (RaiseDictationResultPerfMarker.Auto())
+            {
+                // Create input event
+                dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dictationEventData, OnDictationResultEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(dictationEventData, OnDictationResultEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDictationHandler> OnDictationCompleteEventHandler =
@@ -1683,14 +1837,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnDictationComplete(casted);
             };
 
+        private static readonly ProfilerMarker RaiseDictationCompletePerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseDictationComplete");
+
         /// <inheritdoc />
         public void RaiseDictationComplete(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip)
         {
-            // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
+            using (RaiseDictationCompletePerfMarker.Auto())
+            {
+                // Create input event
+                dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(dictationEventData, OnDictationCompleteEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDictationHandler> OnDictationErrorEventHandler =
@@ -1700,14 +1859,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnDictationError(casted);
             };
 
+        private static readonly ProfilerMarker RaiseDictationErrorPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseDictationError");
+
         /// <inheritdoc />
         public void RaiseDictationError(IMixedRealityInputSource source, string dictationResult, AudioClip dictationAudioClip = null)
         {
-            // Create input event
-            dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
+            using (RaiseDictationErrorPerfMarker.Auto())
+            {
+                // Create input event
+                dictationEventData.Initialize(source, dictationResult, dictationAudioClip);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(dictationEventData, OnDictationErrorEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(dictationEventData, OnDictationErrorEventHandler);
+            }
         }
 
         #endregion Dictation Events
@@ -1722,13 +1886,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnHandJointsUpdated(casted);
             };
 
+        private static readonly ProfilerMarker RaiseHandJointsUpdatedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseHandJointsUpdated");
+
         public void RaiseHandJointsUpdated(IMixedRealityInputSource source, Handedness handedness, IDictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
-            // Create input event
-            jointPoseInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, jointPoses);
+            using (RaiseHandJointsUpdatedPerfMarker.Auto())
+            {
+                // Create input event
+                jointPoseInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, jointPoses);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(jointPoseInputEventData, OnHandJointsUpdatedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(jointPoseInputEventData, OnHandJointsUpdatedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityHandMeshHandler> OnHandMeshUpdatedEventHandler =
@@ -1739,13 +1908,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnHandMeshUpdated(casted);
             };
 
+        private static readonly ProfilerMarker RaiseHandMeshUpdatedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseHandMeshUpdated");
+
         public void RaiseHandMeshUpdated(IMixedRealityInputSource source, Handedness handedness, HandMeshInfo handMeshInfo)
         {
-            // Create input event
-            handMeshInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, handMeshInfo);
+            using (RaiseHandMeshUpdatedPerfMarker.Auto())
+            {
+                // Create input event
+                handMeshInputEventData.Initialize(source, handedness, MixedRealityInputAction.None, handMeshInfo);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(handMeshInputEventData, OnHandMeshUpdatedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(handMeshInputEventData, OnHandMeshUpdatedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTouchHandler> OnTouchStartedEventHandler =
@@ -1755,14 +1929,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 handler.OnTouchStarted(casted);
             };
 
+        private static readonly ProfilerMarker RaiseOnTouchStartedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseOnTouchStarted");
+
         /// <inheritdoc />
         public void RaiseOnTouchStarted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
-            // Create input event
-            handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+            using (RaiseOnTouchStartedPerfMarker.Auto())
+            {
+                // Create input event
+                handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(handTrackingInputEventData, OnTouchStartedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(handTrackingInputEventData, OnTouchStartedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTouchHandler> OnTouchCompletedEventHandler =
@@ -1773,14 +1952,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
 
+        private static readonly ProfilerMarker RaiseOnTouchCompletedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseOnTouchCompleted");
+
         /// <inheritdoc />
         public void RaiseOnTouchCompleted(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
-            // Create input event
-            handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+            using (RaiseOnTouchCompletedPerfMarker.Auto())
+            {
+                // Create input event
+                handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(handTrackingInputEventData, OnTouchCompletedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(handTrackingInputEventData, OnTouchCompletedEventHandler);
+            }
         }
 
         private static readonly ExecuteEvents.EventFunction<IMixedRealityTouchHandler> OnTouchUpdatedEventHandler =
@@ -1791,14 +1975,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
 
 
+        private static readonly ProfilerMarker RaiseOnTouchUpdatedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.RaiseOnTouchUpdated");
+
         /// <inheritdoc />
         public void RaiseOnTouchUpdated(IMixedRealityInputSource source, IMixedRealityController controller, Handedness handedness, Vector3 touchPoint)
         {
-            // Create input event
-            handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
+            using (RaiseOnTouchUpdatedPerfMarker.Auto())
+            {
+                // Create input event
+                handTrackingInputEventData.Initialize(source, controller, handedness, touchPoint);
 
-            // Pass handler through HandleEvent to perform modal/fallback logic
-            HandleEvent(handTrackingInputEventData, OnTouchUpdatedEventHandler);
+                // Pass handler through HandleEvent to perform modal/fallback logic
+                HandleEvent(handTrackingInputEventData, OnTouchUpdatedEventHandler);
+            }
         }
 
         #endregion Hand Events
@@ -1807,29 +1996,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Rules
 
+        private static readonly ProfilerMarker ProcessRulesInternalPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.ProcessRules_Internal");
+
         private static MixedRealityInputAction ProcessRules_Internal<T1, T2>(MixedRealityInputAction inputAction, T1[] inputActionRules, T2 criteria) where T1 : struct, IInputActionRule<T2>
         {
-            for (int i = 0; i < inputActionRules.Length; i++)
+            using (ProcessRulesInternalPerfMarker.Auto())
             {
-                if (inputActionRules[i].BaseAction == inputAction && inputActionRules[i].Criteria.Equals(criteria))
+                for (int i = 0; i < inputActionRules.Length; i++)
                 {
-                    if (inputActionRules[i].RuleAction == inputAction)
+                    if (inputActionRules[i].BaseAction == inputAction && inputActionRules[i].Criteria.Equals(criteria))
                     {
-                        Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
-                        return inputAction;
-                    }
+                        if (inputActionRules[i].RuleAction == inputAction)
+                        {
+                            Debug.LogError("Input Action Rule cannot be the same as the rule's Base Action!");
+                            return inputAction;
+                        }
 
-                    if (inputActionRules[i].BaseAction.AxisConstraint != inputActionRules[i].RuleAction.AxisConstraint)
-                    {
-                        Debug.LogError("Input Action Rule doesn't have the same Axis Constraint as the Base Action!");
-                        return inputAction;
-                    }
+                        if (inputActionRules[i].BaseAction.AxisConstraint != inputActionRules[i].RuleAction.AxisConstraint)
+                        {
+                            Debug.LogError("Input Action Rule doesn't have the same Axis Constraint as the Base Action!");
+                            return inputAction;
+                        }
 
-                    return inputActionRules[i].RuleAction;
+                        return inputActionRules[i].RuleAction;
+                    }
                 }
-            }
 
-            return inputAction;
+                return inputAction;
+            }
         }
 
         private MixedRealityInputAction ProcessRules(MixedRealityInputAction inputAction, bool criteria)

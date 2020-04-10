@@ -480,6 +480,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             get { return clipBox; }
         }
 
+        private bool oldIsTargetPositionLockedOnFocusLock;
+
         #region scroll state variables
 
         // Tracks whether an item in the list is being interacted with
@@ -2079,25 +2081,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
 
                 //Release the pointer
-                currentPointer.IsTargetPositionLockedOnFocusLock = true;
- 
-                 ResetState();
+                currentPointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
+
+                ResetState();
             }
         }
 
         ///<inheritdoc/>
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            currentPointer = eventData.Pointer;
+            oldIsTargetPositionLockedOnFocusLock = currentPointer.IsTargetPositionLockedOnFocusLock;
+
             //Quick check for the global listener to bail if the object is not in the list
-            if (eventData.Pointer?.Result?.CurrentPointerTarget == null
-                || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
+            if (currentPointer?.Result?.CurrentPointerTarget == null
+                || !ContainsNode(currentPointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
             {
                 return;
             }
 
-            currentPointer = eventData.Pointer;
-
-            currentPointer.IsTargetPositionLockedOnFocusLock = false;
+            if (!(currentPointer is IMixedRealityNearPointer) && currentPointer.Controller.IsRotationAvailable)
+            {
+                currentPointer.IsTargetPositionLockedOnFocusLock = false;
+            }
 
             pointerHitPoint = currentPointer.Result.Details.Point;
             pointerHitDistance = currentPointer.Result.Details.RayDistance;

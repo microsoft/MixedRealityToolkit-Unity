@@ -850,7 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
-        
+
         /// <summary>
         /// This test first moves the hand a set amount along the x-axis, records its x position, then moves
         /// it the same amount along the y-axis and records its y position. Given no constraints on manipulation,
@@ -1322,6 +1322,95 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             UnityEngine.Object.Destroy(cursorContextManipulationHandler);
             UnityEngine.Object.Destroy(manipulationHandler);
+        }
+
+
+        /// <summary>
+        /// TODO: This test should move into base cursor tests once object manipulator graduates
+        /// Tests that the gaze cursor stays centered lockCursorWhenFocusLocked is toggled off
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorGazeCursorFocusLock()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
+
+            // Track the gaze cursor
+            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+            IMixedRealityCursor gazeCursor = inputSystem.GazeProvider.GazeCursor;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Testing locked behavior
+            // Setting this to true is equivalent to toggling lockCursorWhenFocusLocked on
+            inputSystem.GazeProvider.GazePointer.IsTargetPositionLockedOnFocusLock = true;
+            yield return null;
+
+            // Grab cube
+            yield return hand.Show(originalHandPosition);
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Vector3 originalPosition = gazeCursor.Position;
+            int numRotations = 5;
+            for (int i = 0; i < numRotations; i++)
+            {
+                MixedRealityPlayspace.Transform.Rotate(Vector3.up, 360 / numRotations);
+                correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+                yield return hand.Move(correction, numHandSteps);
+                yield return null;
+
+                // Ensure that the gaze cursor stays fixed on its initial position
+                TestUtilities.AssertAboutEqual(originalPosition, gazeCursor.Position, "gaze cursor has shifted from its locked on position", 0.05f);
+            }
+
+            // Release cube
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            // Testing non-locking behavior
+            // Setting this to false is equivalent to toggling lockCursorWhenFocusLocked off
+            inputSystem.GazeProvider.GazePointer.IsTargetPositionLockedOnFocusLock = false;
+            yield return null;
+
+            // Grab cube
+            yield return hand.Show(originalHandPosition);
+            for (int i = 0; i < numRotations; i++)
+            {
+                MixedRealityPlayspace.Transform.Rotate(Vector3.up, 360 / numRotations);
+                correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+                yield return hand.Move(correction, numHandSteps);
+                yield return null;
+
+                Vector3 relativePosition = gazeCursor.Position - CameraCache.Main.transform.position;
+                // Ensure that the gaze cursor is aligned with the center of the camera
+                TestUtilities.AssertAboutEqual(CameraCache.Main.transform.forward, relativePosition.normalized, "gaze cursor has shifted from center position", 0.01f);
+            }
+
+            // Restore the input simulation profile
+            iss.HandSimulationMode = oldHandSimMode;
+            yield return null;
         }
     }
 }
