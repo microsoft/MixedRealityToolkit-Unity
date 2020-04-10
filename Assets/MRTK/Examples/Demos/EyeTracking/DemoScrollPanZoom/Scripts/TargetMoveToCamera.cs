@@ -99,13 +99,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (inTransition)
             {
-                //Vector3 destination; //= CameraCache.Main.transform.position + (CameraCache.Main.transform.forward * DistanceToCamera);
                 Vector3 destination = (isInNearFocusMode) ?
                     (CameraCache.Main.transform.position + (CameraCache.Main.transform.forward * DistanceToCamera))
                     : originalPosition;
 
                 Vector3 incr = (destination - gameObject.transform.position) * Time.deltaTime * speed;
-                //Debug.Log("target is moving "+ incr.magnitude);
 
                 if (Vector3.Distance(destination, transform.position) < minDistToStopTransition)
                 {

@@ -987,7 +987,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker UpdatePointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdatPointer");
+        private static readonly ProfilerMarker UpdatePointerPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdatePointer");
 
         private void UpdatePointer(PointerData pointerData)
         {

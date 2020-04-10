@@ -382,7 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             UpdateInteractionManagerReading();
 
-            //NOTE: We update the source state data, in case an app wants to query it on source detected.
+            // NOTE: We update the source state data, in case an app wants to query it on source detected.
             for (var i = 0; i < numInteractionManagerStates; i++)
             {
                 GetOrAddController(interactionManagerStates[i]);
@@ -609,7 +609,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <returns>New or Existing Controller Input Source</returns>
         private BaseWindowsMixedRealitySource GetOrAddController(InteractionSource interactionSource, bool addController = true)
         {
-            //If a device is already registered with the ID provided, just return it.
+            // If a device is already registered with the ID provided, just return it.
             if (activeControllers.ContainsKey(interactionSource.id))
             {
                 var controller = activeControllers[interactionSource.id] as BaseWindowsMixedRealitySource;
