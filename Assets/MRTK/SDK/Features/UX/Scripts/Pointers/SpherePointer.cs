@@ -11,8 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
     public class SpherePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
+        private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
+
         /// <inheritdoc />
-        public override SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SphereOverlap;
+        public override SceneQueryType SceneQueryType
+        {
+            get => raycastMode;
+            set => raycastMode = value;
+        }
 
         [SerializeField]
         [Min(0.0f)]
