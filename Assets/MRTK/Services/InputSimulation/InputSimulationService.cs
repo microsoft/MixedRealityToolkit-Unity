@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UpdateHandDevice(HandSimulationMode, Handedness.Left, HandDataLeft);
                     UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
 
-                    //HandDataGaze is only enabled if the user is simulating via mouse and keyboard
+                    // HandDataGaze is only enabled if the user is simulating via mouse and keyboard
                     if(UserInputEnabled)
                         UpdateHandDevice(HandSimulationMode.Gestures, Handedness.Any, HandDataGaze);
                     lastHandUpdateTimestamp = currentTime.Ticks;
