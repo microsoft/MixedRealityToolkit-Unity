@@ -1240,7 +1240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 {
                                     if (numColliders >= maxQuerySceneResults)
                                     {
-                                        Debug.LogWarning($"Maximum number of {totalNumColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
+                                        Debug.LogWarning($"Maximum number of {numColliders} colliders found in FocusProvider overlap query. Consider increasing the focus query buffer size in the input profile.");
                                     }
                                     for (int colliderIndex = 0; colliderIndex < numColliders; colliderIndex++)
                                     {
