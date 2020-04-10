@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -75,38 +76,48 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] SpherePointerVisual.Update");
+
         public void Update()
         {
-            TetherVisualsEnabled = false;
-            if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
+            using (UpdatePerfMarker.Auto())
             {
-                NearInteractionGrabbable grabbedObject = GetGrabbedObject();
-                if (grabbedObject != null && grabbedObject.ShowTetherWhenManipulating)
+                TetherVisualsEnabled = false;
+                if (pointer.IsFocusLocked && pointer.IsTargetPositionLockedOnFocusLock && pointer.Result != null)
                 {
-                    Vector3 graspPosition;
-                    pointer.TryGetNearGraspPoint(out graspPosition);
-                    tetherLine.FirstPoint = graspPosition;
-                    Vector3 endPoint = pointer.Result.Details.Object.transform.TransformPoint(pointer.Result.Details.PointLocalSpace);
-                    tetherLine.LastPoint = endPoint;
-                    TetherVisualsEnabled = Vector3.Distance(tetherLine.FirstPoint, tetherLine.LastPoint) > minTetherLength;
-                    tetherLine.enabled = TetherVisualsEnabled;
-                    tetherEndPoint.gameObject.SetActive(TetherVisualsEnabled);
-                    tetherEndPoint.position = endPoint;
+                    NearInteractionGrabbable grabbedObject = GetGrabbedObject();
+                    if (grabbedObject != null && grabbedObject.ShowTetherWhenManipulating)
+                    {
+                        Vector3 graspPosition;
+                        pointer.TryGetNearGraspPoint(out graspPosition);
+                        tetherLine.FirstPoint = graspPosition;
+                        Vector3 endPoint = pointer.Result.Details.Object.transform.TransformPoint(pointer.Result.Details.PointLocalSpace);
+                        tetherLine.LastPoint = endPoint;
+                        TetherVisualsEnabled = Vector3.Distance(tetherLine.FirstPoint, tetherLine.LastPoint) > minTetherLength;
+                        tetherLine.enabled = TetherVisualsEnabled;
+                        tetherEndPoint.gameObject.SetActive(TetherVisualsEnabled);
+                        tetherEndPoint.position = endPoint;
+                    }
                 }
-            }
 
-            visualsRoot.gameObject.SetActive(TetherVisualsEnabled);
+                visualsRoot.gameObject.SetActive(TetherVisualsEnabled);
+            }
         }
+
+        private static readonly ProfilerMarker GetGrabbedObjectPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.GetGrabbedObject");
 
         private NearInteractionGrabbable GetGrabbedObject()
         {
-            if (pointer.Result?.Details.Object != null)
+            using (GetGrabbedObjectPerfMarker.Auto())
             {
-                return pointer.Result.Details.Object.GetComponent<NearInteractionGrabbable>();
-            }
-            else
-            {
-                return null;
+                if (pointer.Result?.Details.Object != null)
+                {
+                    return pointer.Result.Details.Object.GetComponent<NearInteractionGrabbable>();
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }
