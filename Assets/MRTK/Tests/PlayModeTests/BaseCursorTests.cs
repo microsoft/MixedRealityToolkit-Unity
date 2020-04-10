@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            //Part two tests if precalculated angularSize matches what is returned in baseCursor.ComputeScaleWithAngularScale() at two different distances
+            // Part two tests if precalculated angularSize matches what is returned in baseCursor.ComputeScaleWithAngularScale() at two different distances
 
             // FIRST DISTANCE
             float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));
