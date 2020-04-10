@@ -47,6 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
+            EnsureProfileSettings();
+            if (controllerHandedness == Handedness.Any)
+            {
+                SetupDefaultInteractions();
+            }
         }
 
         /// Lazy-init settings based on profile.
@@ -98,14 +103,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+
         /// <summary>
         /// The GGV default interactions.
         /// </summary>
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select),
-            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
+            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select, selectAction),
+            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, holdAction),
         };
 
         /// <inheritdoc />
@@ -125,7 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
-
                 switch (Interactions[i].InputType)
                 {
                     case DeviceInputType.SpatialGrip:
@@ -137,7 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     case DeviceInputType.Select:
                         Interactions[i].BoolData = handData.IsPinching;
-
                         if (Interactions[i].Changed)
                         {
                             if (Interactions[i].BoolData)

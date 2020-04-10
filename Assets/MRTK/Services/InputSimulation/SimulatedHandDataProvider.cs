@@ -26,7 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Show a tracked hand device
         public bool IsTracked = false;
         // Activate the pinch gesture
-        public bool IsPinching { get; private set; }
+        public bool IsPinching
+        {
+            get { return gesture == ArticulatedHandPose.GestureId.Pinch; }
+        }
 
         // Position of the hand in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
@@ -57,9 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 gestureBlending = Mathf.Clamp(value, gestureBlending, 1.0f);
-
-                // Pinch is a special gesture that triggers the Select and TriggerPress input actions
-                IsPinching = (gesture == ArticulatedHandPose.GestureId.Pinch && gestureBlending > 0.9f);
             }
         }
 
@@ -177,10 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         internal SimulatedHandState HandStateLeft;
         internal SimulatedHandState HandStateRight;
+        internal SimulatedHandState HandStateGaze;
 
         // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
+        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight;
         /// <summary>
         /// Left hand is controlled by user input.
         /// </summary>
@@ -193,12 +195,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Most recent time hand control was enabled,
         private float lastSimulationLeft = -1.0e6f;
         private float lastSimulationRight = -1.0e6f;
+        private float lastSimulationGaze = -1.0e6f;
         // Last timestamp when hands were tracked
         private long lastHandTrackedTimestampLeft = 0;
         private long lastHandTrackedTimestampRight = 0;
+        private long lastHandTrackedTimestampGaze = 0;
         // Cached delegates for hand joint generation
         private SimulatedHandData.HandJointDataGenerator generatorLeft;
         private SimulatedHandData.HandJointDataGenerator generatorRight;
+        private SimulatedHandData.HandJointDataGenerator generatorGaze;
 
         private static readonly KeyBinding cancelRotationKey = KeyBinding.FromKey(KeyCode.Escape);
         private readonly MouseRotationProvider mouseRotation = new MouseRotationProvider();
@@ -209,21 +214,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandStateLeft = new SimulatedHandState(Handedness.Left);
             HandStateRight = new SimulatedHandState(Handedness.Right);
+            HandStateGaze = new SimulatedHandState(Handedness.Any);
 
             HandStateLeft.Gesture = profile.DefaultHandGesture;
             HandStateRight.Gesture = profile.DefaultHandGesture;
+            HandStateGaze.Gesture = profile.DefaultHandGesture;
         }
 
         /// <summary>
         /// Capture a snapshot of simulated hand data based on current state.
         /// </summary>
-        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, MouseDelta mouseDelta)
+        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, SimulatedHandData handDataGaze, MouseDelta mouseDelta)
         {
             SimulateUserInput(mouseDelta);
 
             HandStateLeft.Update();
             HandStateRight.Update();
-            
+            HandStateGaze.Update();
+
             bool handDataChanged = false;
 
             // Cache the generator delegates so we don't gc alloc every frame
@@ -237,8 +245,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 generatorRight = HandStateRight.FillCurrentFrame;
             }
 
+            if (generatorGaze == null)
+            {
+                generatorGaze = HandStateGaze.FillCurrentFrame;
+            }
+
             handDataChanged |= handDataLeft.Update(HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
             handDataChanged |= handDataRight.Update(HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
+            handDataChanged |= handDataGaze.Update(HandStateGaze.IsTracked, HandStateGaze.IsPinching, generatorGaze);
 
             return handDataChanged;
         }
@@ -293,12 +307,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     isSimulatingRight = false;
                 }
+                if(isSimulatingGaze)
+                    lastSimulationGaze = time;
             }
 
             mouseRotation.Update(profile.HandRotateButton, cancelRotationKey, false);
 
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
+            SimulateHandInput(ref lastHandTrackedTimestampGaze, HandStateGaze, isSimulatingGaze, false, mouseDelta, mouseRotation.IsRotating);
 
             // This line explicitly uses unscaledDeltaTime because we don't want input simulation
             // to lag when the time scale is set to a value other than 1. Input should still continue
@@ -306,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
+            HandStateGaze.GestureBlending += gestureAnimDelta;
         }
 
         /// Apply changes to one hand and update tracking
