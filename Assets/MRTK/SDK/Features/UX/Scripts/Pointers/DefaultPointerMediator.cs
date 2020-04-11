@@ -225,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void ApplyPointerBehavior(IMixedRealityPointer pointer, PointerBehavior behavior)
         {
-            using (ApplyCustomPointerBehaviorPerfMarker.Auto())
+            using (ApplyPointerBehaviorPerfMarker.Auto())
             {
                 if (behavior == PointerBehavior.Default)
                 {
