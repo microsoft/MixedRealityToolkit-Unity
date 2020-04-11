@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Update data functions
 
-        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateContoller");
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateController");
 
         /// <summary>
         /// Update the source data from the provided platform state.
