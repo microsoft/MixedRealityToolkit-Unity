@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
         }
 
-        private static readonly ProfilerMarker UpdateControllerDataPerfMarker = new ProfilerMarker("[MRTK] GernericOpenVRController.UpdateControllerData");
+        private static readonly ProfilerMarker UpdateControllerDataPerfMarker = new ProfilerMarker("[MRTK] GenericOpenVRController.UpdateControllerData");
 
         /// <summary>
         /// Update the "Controller" input from the device
