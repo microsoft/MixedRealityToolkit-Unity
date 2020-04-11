@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker ApplyCustomPointerBehaviorPerfMarker = new ProfilerMarker("[MRTK] DefaultPointerMediator.ApplyCustomPointerBehavior");
+        private static readonly ProfilerMarker ApplyPointerBehaviorPerfMarker = new ProfilerMarker("[MRTK] DefaultPointerMediator.ApplyPointerBehavior");
 
         private void ApplyPointerBehavior(IMixedRealityPointer pointer, PointerBehavior behavior)
         {
