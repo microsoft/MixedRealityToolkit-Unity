@@ -115,7 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
         private static readonly ProfilerMarker UpdateHandDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHand.UpdateHandData");
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         /// <summary>
         /// Update the hand data from the device.
