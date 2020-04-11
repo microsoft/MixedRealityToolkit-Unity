@@ -14726,7 +14726,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ManualCameraControl.html",
-          "hash": "dwS/tHRG5Ue0IfwvtA5XSA=="
+          "hash": "xj2lc1jxCgYlxaWBQtLfmg=="
         }
       },
       "is_incremental": false,
@@ -15854,7 +15854,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "hOe9ibN5F9+9yBM8jrwfHg=="
+          "hash": "6phDeDf/ksC6vepHrz3j4w=="
         }
       },
       "is_incremental": false,
@@ -26802,11 +26802,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1591,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -26822,10 +26821,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1591,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
