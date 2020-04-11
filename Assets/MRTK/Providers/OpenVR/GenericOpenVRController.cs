@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             new MixedRealityInteractionMapping(12, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
 
-        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GernericOpenVRController.UpdateController");
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericOpenVRController.UpdateController");
 
         /// <inheritdoc />
         public override void UpdateController()
