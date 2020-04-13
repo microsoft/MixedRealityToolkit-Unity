@@ -9,8 +9,8 @@ using System;
 #if UNITY_WSA
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -66,6 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Update data functions
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateController");
+
         /// <summary>
         /// Update the controller data from the provided platform state.
         /// </summary>
@@ -74,33 +76,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         {
             if (!Enabled) { return; }
 
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateContoller");
-
-            base.UpdateController(interactionSourceState);
-
-            for (int i = 0; i < Interactions?.Length; i++)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                switch (Interactions[i].InputType)
+                base.UpdateController(interactionSourceState);
+
+                for (int i = 0; i < Interactions?.Length; i++)
                 {
-                    case DeviceInputType.None:
-                        break;
-                    case DeviceInputType.ThumbStick:
-                    case DeviceInputType.ThumbStickPress:
-                        UpdateThumbstickData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.Touchpad:
-                    case DeviceInputType.TouchpadTouch:
-                    case DeviceInputType.TouchpadPress:
-                        UpdateTouchpadData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.Menu:
-                        UpdateMenuData(interactionSourceState, Interactions[i]);
-                        break;
+                    switch (Interactions[i].InputType)
+                    {
+                        case DeviceInputType.None:
+                            break;
+                        case DeviceInputType.ThumbStick:
+                        case DeviceInputType.ThumbStickPress:
+                            UpdateThumbstickData(interactionSourceState, Interactions[i]);
+                            break;
+                        case DeviceInputType.Touchpad:
+                        case DeviceInputType.TouchpadTouch:
+                        case DeviceInputType.TouchpadPress:
+                            UpdateTouchpadData(interactionSourceState, Interactions[i]);
+                            break;
+                        case DeviceInputType.Menu:
+                            UpdateMenuData(interactionSourceState, Interactions[i]);
+                            break;
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateController
         }
+
+        private static readonly ProfilerMarker UpdateTouchpadDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateTouchpadData");
 
         /// <summary>
         /// Update the touchpad input from the device.
@@ -108,67 +111,68 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateTouchpadData");
-
-            switch (interactionMapping.InputType)
+            using (UpdateTouchpadDataPerfMarker.Auto())
             {
-                case DeviceInputType.TouchpadTouch:
+                switch (interactionMapping.InputType)
                 {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.touchpadTouched;
+                    case DeviceInputType.TouchpadTouch:
+                        {
+                            // Update the interaction data source
+                            interactionMapping.BoolData = interactionSourceState.touchpadTouched;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.touchpadTouched)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionSourceState.touchpadTouched)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
                         }
-                        else
+                    case DeviceInputType.TouchpadPress:
                         {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
-                }
-                case DeviceInputType.TouchpadPress:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.touchpadPressed;
+                            // Update the interaction data source
+                            interactionMapping.BoolData = interactionSourceState.touchpadPressed;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.touchpadPressed)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionSourceState.touchpadPressed)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
                         }
-                        else
+                    case DeviceInputType.Touchpad:
                         {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
-                }
-                case DeviceInputType.Touchpad:
-                {
-                    // Update the interaction data source
-                    interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
+                            // Update the interaction data source
+                            interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
-                    }
-                    break;
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                            }
+                            break;
+                        }
                 }
             }
-
-            Profiler.EndSample(); // UpdateTouchpadData
         }
+
+        private static readonly ProfilerMarker UpdateThumbstickDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateThumbstickData");
 
         /// <summary>
         /// Update the thumbstick input from the device.
@@ -176,47 +180,48 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateThumbstickData");
-
-            switch (interactionMapping.InputType)
+            using (UpdateThumbstickDataPerfMarker.Auto())
             {
-                case DeviceInputType.ThumbStickPress:
+                switch (interactionMapping.InputType)
                 {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.thumbstickPressed)
+                    case DeviceInputType.ThumbStickPress:
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
-                }
-                case DeviceInputType.ThumbStick:
-                {
-                    // Update the interaction data source
-                    interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
+                            // Update the interaction data source
+                            interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
-                    }
-                    break;
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionSourceState.thumbstickPressed)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
+                        }
+                    case DeviceInputType.ThumbStick:
+                        {
+                            // Update the interaction data source
+                            interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
+
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                            }
+                            break;
+                        }
                 }
             }
-
-            Profiler.EndSample(); // UpdateTouchpadData
         }
+
+        private static readonly ProfilerMarker UpdateMenuDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityController.UpdateMenuData");
 
         /// <summary>
         /// Update the menu button state.
@@ -224,26 +229,25 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityController.UpdateMenuData");
-
-            // Update the interaction data source
-            interactionMapping.BoolData = interactionSourceState.menuPressed;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
+            using (UpdateMenuDataPerfMarker.Auto())
             {
-                // Raise input system event if it's enabled
-                if (interactionSourceState.menuPressed)
+                // Update the interaction data source
+                interactionMapping.BoolData = interactionSourceState.menuPressed;
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
                 {
-                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-                else
-                {
-                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    // Raise input system event if it's enabled
+                    if (interactionSourceState.menuPressed)
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
+                    else
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateMenuData
         }
 
         #endregion Update data functions

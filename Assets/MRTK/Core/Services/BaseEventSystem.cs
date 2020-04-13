@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -390,9 +391,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-    #endregion Registration helpers
+        #endregion Registration helpers
 
-    #region Utilities
+        #region Utilities
+
+        private static readonly ProfilerMarker TraverseEventSystemHandlerHierarchyPerfMarker = new ProfilerMarker("[MRTK] BaseEventSystem.TraverseEventSystemHandlerHierarchy");
 
         /// <summary>
         /// Utility function for registering parent interfaces of a given handler.
@@ -409,16 +412,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         private void TraverseEventSystemHandlerHierarchy<T>(IEventSystemHandler handler, Action<Type, IEventSystemHandler> func) where T : IEventSystemHandler
         {
-            var handlerType = typeof(T);
-
-            // Need to call on handlerType first, because GetInterfaces below will only return parent types.
-            func(handlerType, handler);
-
-            foreach (var iface in handlerType.GetInterfaces())
+            using (TraverseEventSystemHandlerHierarchyPerfMarker.Auto())
             {
-                if (!iface.Equals(eventSystemHandlerType))
+                var handlerType = typeof(T);
+
+                // Need to call on handlerType first, because GetInterfaces below will only return parent types.
+                func(handlerType, handler);
+
+                foreach (var iface in handlerType.GetInterfaces())
                 {
-                    func(iface, handler);
+                    if (!iface.Equals(eventSystemHandlerType))
+                    {
+                        func(iface, handler);
+                    }
                 }
             }
         }
@@ -431,6 +437,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
     #endregion Utilities
+
         // Example Event Pattern #############################################################
 
         // public void RaiseGenericEvent(IEventSource eventSource)
