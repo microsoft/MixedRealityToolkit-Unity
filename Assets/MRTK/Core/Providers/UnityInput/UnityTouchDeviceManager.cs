@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private List<UnityTouchController> touchesToRemove = new List<UnityTouchController>();
 
-        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] UnityTouchManager.Update");
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] UnityTouchDeviceManager.Update");
 
         /// <inheritdoc />
         public override void Update()
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             ActiveTouches.Clear();
         }
 
-        private static readonly ProfilerMarker AddTouchControllerPerfMarker = new ProfilerMarker("[MRTK] UnityTouchManager.AddTouchController");
+        private static readonly ProfilerMarker AddTouchControllerPerfMarker = new ProfilerMarker("[MRTK] UnityTouchDeviceManager.AddTouchController");
 
         private void AddTouchController(Touch touch, Ray ray)
         {
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
         }
 
-        private static readonly ProfilerMarker UpdateTouchDataPerfMarker = new ProfilerMarker("[MRTK] UnityTouchManager.UpdateTouchData");
+        private static readonly ProfilerMarker UpdateTouchDataPerfMarker = new ProfilerMarker("[MRTK] UnityTouchDeviceManager.UpdateTouchData");
 
         private void UpdateTouchData(Touch touch, Ray ray)
         {
@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
         }
 
-        private static readonly ProfilerMarker RemoveTouchControllerPerfMarker = new ProfilerMarker("[MRTK] UnityTouchManager.RemoveTouchController");
+        private static readonly ProfilerMarker RemoveTouchControllerPerfMarker = new ProfilerMarker("[MRTK] UnityTouchDeviceManager.RemoveTouchController");
 
         private void RemoveTouchController(Touch touch)
         {
