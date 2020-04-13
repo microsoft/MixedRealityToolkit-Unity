@@ -168,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                             buttonUsage = CommonUsages.secondary2DAxisClick;
                             break;
                         default:
-                            Profiler.EndSample(); // UpdateButtonData - non button
                             return;
                     }
 
@@ -243,7 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         }
                         break;
                     default:
-                        Profiler.EndSample(); // UpdateSingleAxisData - non single axis
                         return;
                 }
 
@@ -279,7 +277,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
                         axisUsage = CommonUsages.primary2DAxis;
                         break;
                     default:
-                        Profiler.EndSample(); // UpdateDualAxisData - non dual axis
                         return;
                 }
 
