@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             focusIndividualCompoundCollider = profile.FocusIndividualCompoundCollider;
         }
 
-        private readonly HashSet<PointerData> pointers = new HashSet<PointerData>();
+        private readonly Dictionary<uint, PointerData> pointers = new Dictionary<uint, PointerData>();
         private readonly HashSet<GameObject> pendingOverallFocusEnterSet = new HashSet<GameObject>();
         private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
@@ -336,59 +336,66 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Pointer = pointer;
             }
 
+            private static readonly ProfilerMarker UpdateHitPerfMarker = new ProfilerMarker("[MRTK] PointerData.UpdateHit");
+
             public void UpdateHit(PointerHitResult hitResult)
             {
-                if (hitResult.hitObject != CurrentPointerTarget)
+                using (UpdateHitPerfMarker.Auto())
                 {
-                    Pointer.OnPreCurrentPointerTargetChange();
-                }
-
-                PreviousPointerTarget = CurrentPointerTarget;
-
-                focusDetails.Object = hitResult.hitObject;
-                focusDetails.LastRaycastHit = hitResult.raycastHit;
-                focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
-
-                if (hitResult.rayStepIndex >= 0)
-                {
-                    RayStepIndex = hitResult.rayStepIndex;
-                    StartPoint = hitResult.ray.Origin;
-
-                    focusDetails.RayDistance = hitResult.rayDistance;
-                    focusDetails.Point = hitResult.hitPointOnObject;
-                    focusDetails.Normal = hitResult.hitNormalOnObject;
-                }
-                else
-                {
-                    // If we don't have a valid ray cast, use the whole pointer ray.
-                    RayStep firstStep = Pointer.Rays[0];
-                    RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
-                    RayStepIndex = 0;
-
-                    StartPoint = firstStep.Origin;
-
-                    float rayDist = 0.0f;
-                    for (int i = 0; i < Pointer.Rays.Length; i++)
+                    if (hitResult.hitObject != CurrentPointerTarget)
                     {
-                        rayDist += Pointer.Rays[i].Length;
+                        Pointer.OnPreCurrentPointerTargetChange();
                     }
 
-                    focusDetails.RayDistance = rayDist;
-                    focusDetails.Point = finalStep.Terminus;
-                    focusDetails.Normal = -finalStep.Direction;
-                }
+                    PreviousPointerTarget = CurrentPointerTarget;
 
-                if (hitResult.hitObject != null)
-                {
-                    focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
-                }
-                else
-                {
-                    focusDetails.PointLocalSpace = Vector3.zero;
-                    focusDetails.NormalLocalSpace = Vector3.zero;
+                    focusDetails.Object = hitResult.hitObject;
+                    focusDetails.LastRaycastHit = hitResult.raycastHit;
+                    focusDetails.LastGraphicsRaycastResult = hitResult.graphicsRaycastResult;
+
+                    if (hitResult.rayStepIndex >= 0)
+                    {
+                        RayStepIndex = hitResult.rayStepIndex;
+                        StartPoint = hitResult.ray.Origin;
+
+                        focusDetails.RayDistance = hitResult.rayDistance;
+                        focusDetails.Point = hitResult.hitPointOnObject;
+                        focusDetails.Normal = hitResult.hitNormalOnObject;
+                    }
+                    else
+                    {
+                        // If we don't have a valid ray cast, use the whole pointer ray.
+                        RayStep firstStep = Pointer.Rays[0];
+                        RayStep finalStep = Pointer.Rays[Pointer.Rays.Length - 1];
+                        RayStepIndex = 0;
+
+                        StartPoint = firstStep.Origin;
+
+                        float rayDist = 0.0f;
+                        for (int i = 0; i < Pointer.Rays.Length; i++)
+                        {
+                            rayDist += Pointer.Rays[i].Length;
+                        }
+
+                        focusDetails.RayDistance = rayDist;
+                        focusDetails.Point = finalStep.Terminus;
+                        focusDetails.Normal = -finalStep.Direction;
+                    }
+
+                    if (hitResult.hitObject != null)
+                    {
+                        focusDetails.PointLocalSpace = hitResult.hitObject.transform.InverseTransformPoint(focusDetails.Point);
+                        focusDetails.NormalLocalSpace = hitResult.hitObject.transform.InverseTransformDirection(focusDetails.Normal);
+                    }
+                    else
+                    {
+                        focusDetails.PointLocalSpace = Vector3.zero;
+                        focusDetails.NormalLocalSpace = Vector3.zero;
+                    }
                 }
             }
+
+            private static readonly ProfilerMarker UpdateFocusLockedHitPerfMarker = new ProfilerMarker("[MRTK] PointerData.UpdateFocusLockedHit");
 
             /// <summary>
             /// Update focus information while focus is locked. If the object is moving,
@@ -396,44 +403,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public void UpdateFocusLockedHit()
             {
-                PreviousPointerTarget = focusDetails.Object;
-
-                if (focusDetails.Object != null && focusDetails.Object.transform != null)
+                using (UpdateFocusLockedHitPerfMarker.Auto())
                 {
-                    // In case the focused object is moving, we need to update the focus point based on the object's new transform.
-                    focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
-                    focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
-                    focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
-                    focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
-                }
+                    PreviousPointerTarget = focusDetails.Object;
 
-                StartPoint = Pointer.Rays[0].Origin;
-
-                for (int i = 0; i < Pointer.Rays.Length; i++)
-                {
-                    // TODO: figure out how reliable this is. Should focusDetails.RayDistance be updated?
-                    if (Pointer.Rays[i].Contains(focusDetails.Point))
+                    if (focusDetails.Object != null && focusDetails.Object.transform != null)
                     {
-                        RayStepIndex = i;
-                        break;
+                        // In case the focused object is moving, we need to update the focus point based on the object's new transform.
+                        focusDetails.Point = focusDetails.Object.transform.TransformPoint(focusDetails.PointLocalSpace);
+                        focusDetails.Normal = focusDetails.Object.transform.TransformDirection(focusDetails.NormalLocalSpace);
+                        focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(focusDetails.Point);
+                        focusDetails.NormalLocalSpace = focusDetails.Object.transform.InverseTransformDirection(focusDetails.Normal);
+                    }
+
+                    StartPoint = Pointer.Rays[0].Origin;
+
+                    for (int i = 0; i < Pointer.Rays.Length; i++)
+                    {
+                        // TODO: figure out how reliable this is. Should focusDetails.RayDistance be updated?
+                        if (Pointer.Rays[i].Contains(focusDetails.Point))
+                        {
+                            RayStepIndex = i;
+                            break;
+                        }
                     }
                 }
             }
 
+            private static readonly ProfilerMarker ResetFocusedObjectPerfMarker = new ProfilerMarker("[MRTK] PointerData.ResetFocusedObject");
+
             public void ResetFocusedObjects(bool clearPreviousObject = true)
             {
-                if (CurrentPointerTarget != null)
+                using (ResetFocusedObjectPerfMarker.Auto())
                 {
-                    Pointer.OnPreCurrentPointerTargetChange();
+                    if (CurrentPointerTarget != null)
+                    {
+                        Pointer.OnPreCurrentPointerTargetChange();
+                    }
+
+                    PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
+
+                    focusDetails.Point = Details.Point;
+                    focusDetails.Normal = Details.Normal;
+                    focusDetails.NormalLocalSpace = Details.NormalLocalSpace;
+                    focusDetails.PointLocalSpace = Details.PointLocalSpace;
+                    focusDetails.Object = null;
                 }
-
-                PreviousPointerTarget = clearPreviousObject ? null : CurrentPointerTarget;
-
-                focusDetails.Point = Details.Point;
-                focusDetails.Normal = Details.Normal;
-                focusDetails.NormalLocalSpace = Details.NormalLocalSpace;
-                focusDetails.PointLocalSpace = Details.PointLocalSpace;
-                focusDetails.Object = null;
             }
 
             /// <inheritdoc />
@@ -593,45 +608,58 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Focus Details by IMixedRealityPointer
 
+        private static readonly ProfilerMarker GetFocusedObjectPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.GetFocusedObject");
+
         /// <inheritdoc />
         public GameObject GetFocusedObject(IMixedRealityPointer pointingSource)
         {
-            if (pointingSource == null)
+            using (GetFocusedObjectPerfMarker.Auto())
             {
-                Debug.LogError("No Pointer passed to get focused object");
-                return null;
+                if (pointingSource == null)
+                {
+                    Debug.LogError("No Pointer passed to get focused object");
+                    return null;
+                }
+
+                FocusDetails focusDetails;
+                if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
+
+                return focusDetails.Object;
             }
-
-            FocusDetails focusDetails;
-            if (!TryGetFocusDetails(pointingSource, out focusDetails)) { return null; }
-
-            return focusDetails.Object;
         }
+
+        private static readonly ProfilerMarker TryGetFocusDetailsPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.TryGetFocusDetails");
 
         /// <inheritdoc />
         public bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails)
         {
-            PointerData pointerData;
-            if (TryGetPointerData(pointer, out pointerData))
+            using (TryGetFocusDetailsPerfMarker.Auto())
             {
-                focusDetails = pointerData.Details;
-                return true;
-            }
+                PointerData pointerData;
+                if (TryGetPointerData(pointer, out pointerData))
+                {
+                    focusDetails = pointerData.Details;
+                    return true;
+                }
 
-            focusDetails = default(FocusDetails);
-            return false;
+                focusDetails = default(FocusDetails);
+                return false;
+            }
         }
+
+        private static readonly ProfilerMarker TryOverrideFocusDetailsPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.TryOverrideFocusDetails");
 
         /// <inheritdoc />
         public bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails)
         {
-            if (TryGetPointerData(pointer, out PointerData pointerData))
+            using (TryOverrideFocusDetailsPerfMarker.Auto())
             {
-                pointerData.Details = focusDetails;
-                return true;
-            }
-            else
-            {
+                if (TryGetPointerData(pointer, out PointerData pointerData))
+                {
+                    pointerData.Details = focusDetails;
+                    return true;
+                }
+
                 return false;
             }
         }
@@ -640,20 +668,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Utilities
 
+        private static readonly ProfilerMarker GenerateNewPointerIdPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.GetNewPointerId");
+
         /// <inheritdoc />
         public uint GenerateNewPointerId()
         {
-            var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
-
-            foreach (var pointerData in pointers)
+            using (GenerateNewPointerIdPerfMarker.Auto())
             {
-                if (pointerData.Pointer.PointerId == newId)
+                var newId = (uint)UnityEngine.Random.Range(1, int.MaxValue);
+
+                if (pointers.ContainsKey(newId))
                 {
                     return GenerateNewPointerId();
                 }
-            }
 
-            return newId;
+                return newId;
+            }
         }
 
         /// <summary>
@@ -737,7 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (IsPointerRegistered(pointer)) { return false; }
 
-                pointers.Add(new PointerData(pointer));
+                pointers.Add(pointer.PointerId, new PointerData(pointer));
 
                 if (primaryPointerSelector != null)
                 {
@@ -818,7 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GameObject unfocusedObject = pointerData.CurrentPointerTarget;
                     bool objectIsStillFocusedByOtherPointer = false;
 
-                    foreach (var otherPointer in pointers)
+                    foreach (var otherPointer in pointers.Values)
                     {
                         if (otherPointer.Pointer != pointer && otherPointer.CurrentPointerTarget == unfocusedObject)
                         {
@@ -838,7 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     CoreServices.InputSystem?.RaiseFocusChanged(pointer, unfocusedObject, null);
                 }
 
-                pointers.Remove(pointerData);
+                pointers.Remove(pointerData.Pointer.PointerId);
 
                 if (primaryPointerSelector != null)
                 {
@@ -854,7 +884,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer
         {
             List<T> typePointers = new List<T>();
-            foreach (var pointer in pointers)
+            foreach (var pointer in pointers.Values)
             {
                 T typePointer = pointer.Pointer as T;
                 if (typePointer != null)
@@ -881,6 +911,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             PrimaryPointerChanged -= handler;
         }
 
+        private static readonly ProfilerMarker TryGetPointerDataPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.TryGetPointerData");
+
         /// <summary>
         /// Returns the registered PointerData for the provided pointing input source.
         /// </summary>
@@ -889,17 +921,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>Pointer Data if the pointing source is registered.</returns>
         private bool TryGetPointerData(IMixedRealityPointer pointer, out PointerData data)
         {
-            foreach (var pointerData in pointers)
+            using (TryGetPointerDataPerfMarker.Auto())
             {
-                if (pointerData.Pointer.PointerId == pointer.PointerId)
+                if (pointers.TryGetValue(pointer.PointerId, out data))
                 {
-                    data = pointerData;
                     return true;
                 }
-            }
 
-            data = null;
-            return false;
+                data = null;
+                return false;
+            }
         }
 
         private static readonly ProfilerMarker UpdatePointersPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.UpdatePointers");
@@ -921,7 +952,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if UNITY_EDITOR
                 int pointerCount = 0;
 #endif
-                foreach (var pointerData in pointers)
+                foreach (var pointerData in pointers.Values)
                 {
                     UpdatePointer(pointerData);
 
@@ -1068,39 +1099,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker GetPrioritizedHitResultPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.GetPrioritizedHitResult");
+
         private PointerHitResult GetPrioritizedHitResult(PointerHitResult hit1, PointerHitResult hit2, LayerMask[] prioritizedLayerMasks)
         {
-            if (hit1.hitObject != null && hit2.hitObject != null)
+            using (GetPrioritizedHitResultPerfMarker.Auto())
             {
-                // Check layer prioritization.
-                if (prioritizedLayerMasks.Length > 1)
+                if (hit1.hitObject != null && hit2.hitObject != null)
                 {
-                    // Get the index in the prioritized layer masks
-                    int layerMaskIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-                    int layerMaskIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
-
-                    if (layerMaskIndex1 != layerMaskIndex2)
+                    // Check layer prioritization.
+                    if (prioritizedLayerMasks.Length > 1)
                     {
-                        if (layerMaskIndex1 == -1)
+                        // Get the index in the prioritized layer masks
+                        int layerMaskIndex1 = hit1.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+                        int layerMaskIndex2 = hit2.hitObject.layer.FindLayerListIndex(prioritizedLayerMasks);
+
+                        if (layerMaskIndex1 != layerMaskIndex2)
                         {
-                            return hit2;
-                        }
-                        else if (layerMaskIndex2 == -1)
-                        {
-                            return hit1;
-                        }
-                        else
-                        {
-                            return (layerMaskIndex1 < layerMaskIndex2) ? hit1 : hit2;
+                            if (layerMaskIndex1 == -1)
+                            {
+                                return hit2;
+                            }
+                            else if (layerMaskIndex2 == -1)
+                            {
+                                return hit1;
+                            }
+                            else
+                            {
+                                return (layerMaskIndex1 < layerMaskIndex2) ? hit1 : hit2;
+                            }
                         }
                     }
+
+                    // Check which hit is closer.
+                    return (hit1.rayDistance < hit2.rayDistance) ? hit1 : hit2;
                 }
 
-                // Check which hit is closer.
-                return (hit1.rayDistance < hit2.rayDistance) ? hit1 : hit2;
+                return (hit1.hitObject != null) ? hit1 : hit2;
             }
-
-            return (hit1.hitObject != null) ? hit1 : hit2;
         }
 
         private static readonly ProfilerMarker ReconcilePointersPerfMarker = new ProfilerMarker("[MRTK] FocusProvider.ReconcilePointers");
@@ -1117,7 +1153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 NumNearPointersActive = 0;
                 int numFarPointersWithoutCursorActive = 0;
 
-                foreach (var pointerData in pointers)
+                foreach (var pointerData in pointers.Values)
                 {
                     if (pointerData.Pointer is IMixedRealityNearPointer)
                     {
@@ -1386,7 +1422,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 //       just in case someone responds to the event by adding/removing a
                 //       pointer which would change the structures we're iterating over.
 
-                foreach (var pointer in pointers)
+                foreach (var pointer in pointers.Values)
                 {
                     if (pointer.PreviousPointerTarget != pointer.CurrentPointerTarget)
                     {
@@ -1423,7 +1459,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // ... but now we trim out objects whose overall focus was maintained the same by a different pointer:
 
-                foreach (var pointer in pointers)
+                foreach (var pointer in pointers.Values)
                 {
                     if (pointer.CurrentPointerTarget != null)
                     {

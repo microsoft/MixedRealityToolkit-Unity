@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -85,56 +86,65 @@ namespace Microsoft.MixedReality.Toolkit.Input
             inertia = gameObject.EnsureComponent<BezierInertia>();
         }
 
+        private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] ShellHandRayPointer.OnPostSceneQuery");
+
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
-            base.OnPostSceneQuery();
-
-            if (!LineBase.enabled) 
+            using (OnPostSceneQueryPerfMarker.Auto())
             {
-                return;
-            }
+                base.OnPostSceneQuery();
 
-            if (wasSelectPressed != IsSelectPressed)
-            {
-                wasSelectPressed = IsSelectPressed;
-
-                var currentMaterial = IsSelectPressed ? lineMaterialSelected : lineMaterialNoTarget;
-
-                for (int i = 0; i < LineRenderers.Length; i++)
+                if (!LineBase.enabled)
                 {
-                    var lineRenderer = LineRenderers[i] as MixedRealityLineRenderer;
-                    lineRenderer.LineMaterial = currentMaterial;
+                    return;
+                }
+
+                if (wasSelectPressed != IsSelectPressed)
+                {
+                    wasSelectPressed = IsSelectPressed;
+
+                    var currentMaterial = IsSelectPressed ? lineMaterialSelected : lineMaterialNoTarget;
+
+                    for (int i = 0; i < LineRenderers.Length; i++)
+                    {
+                        var lineRenderer = LineRenderers[i] as MixedRealityLineRenderer;
+                        lineRenderer.LineMaterial = currentMaterial;
+                    }
                 }
             }
         }
 
+        private static readonly ProfilerMarker PreUpdateLineRenderersPerfMarker = new ProfilerMarker("[MRTK] ShellHandRayPointer.PreUpdateLineRenderers");
+
         protected override void PreUpdateLineRenderers()
         {
-            base.PreUpdateLineRenderers();
-
-            bool isFocusedLock = IsFocusLocked && IsTargetPositionLockedOnFocusLock;
-
-            inertia.enabled = !isFocusedLock;
-
-            if (isFocusedLock)
+            using (PreUpdateLineRenderersPerfMarker.Auto())
             {
-                float distance = Result != null ? Result.Details.RayDistance : DefaultPointerExtent;
-                Vector3 startPoint = LineBase.FirstPoint;
+                base.PreUpdateLineRenderers();
 
-                // Project forward based on pointer direction to get an 'expected' position of the first control point
-                Vector3 expectedPoint = startPoint + Rotation * Vector3.forward * distance;
+                bool isFocusedLock = IsFocusLocked && IsTargetPositionLockedOnFocusLock;
 
-                // Lerp between the expected position and the expected point
-                LineBase.SetPoint(1, Vector3.Lerp(startPoint, expectedPoint, startPointLerp));
+                inertia.enabled = !isFocusedLock;
 
-                // Get our next 'expected' position by lerping between the expected point and the end point
-                // The result will be a line that starts moving in the pointer's direction then bends towards the target
-                expectedPoint = Vector3.Lerp(expectedPoint, LineBase.LastPoint, endPointLerp);
+                if (isFocusedLock)
+                {
+                    float distance = Result != null ? Result.Details.RayDistance : DefaultPointerExtent;
+                    Vector3 startPoint = LineBase.FirstPoint;
 
-                LineBase.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
+                    // Project forward based on pointer direction to get an 'expected' position of the first control point
+                    Vector3 expectedPoint = startPoint + Rotation * Vector3.forward * distance;
+
+                    // Lerp between the expected position and the expected point
+                    LineBase.SetPoint(1, Vector3.Lerp(startPoint, expectedPoint, startPointLerp));
+
+                    // Get our next 'expected' position by lerping between the expected point and the end point
+                    // The result will be a line that starts moving in the pointer's direction then bends towards the target
+                    expectedPoint = Vector3.Lerp(expectedPoint, LineBase.LastPoint, endPointLerp);
+
+                    LineBase.SetPoint(2, Vector3.Lerp(startPoint, expectedPoint, endPointLerp));
+                }
             }
         }
-
     }
 }

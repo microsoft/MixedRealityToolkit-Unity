@@ -37,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityInputSystemProfile profile) : base(profile)
         { }
 
+        private static readonly ProfilerMarker ExecuteHierarchyPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem - Calling EventSystems.ExecuteEvents.ExecuteHierarchy");
+
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Input System";
 
@@ -443,12 +445,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Raise Focus Events on the old and new focused objects.
                 if (focusEventData.OldFocusedObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(focusEventData.OldFocusedObject, focusEventData, eventHandler);
+                    using (ExecuteHierarchyPerfMarker.Auto())
+                    {
+                        ExecuteEvents.ExecuteHierarchy(focusEventData.OldFocusedObject, focusEventData, eventHandler);
+                    }
                 }
 
                 if (focusEventData.NewFocusedObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(focusEventData.NewFocusedObject, focusEventData, eventHandler);
+                    using (ExecuteHierarchyPerfMarker.Auto())
+                    {
+                        ExecuteEvents.ExecuteHierarchy(focusEventData.NewFocusedObject, focusEventData, eventHandler);
+                    }
                 }
 
                 // Raise Focus Events on the pointers cursor if it has one.
@@ -456,9 +464,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     try
                     {
-                        // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
-                        // We'll ignore when this happens.
-                        ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
+                        using (ExecuteHierarchyPerfMarker.Auto())
+                        {
+                            // When shutting down a game, we can sometime get old references to game objects that have been cleaned up.
+                            // We'll ignore when this happens.
+                            ExecuteEvents.ExecuteHierarchy(focusEventData.Pointer.BaseCursor.GameObjectReference, focusEventData, eventHandler);
+                        }
                     }
                     catch (Exception)
                     {
@@ -482,7 +493,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 DispatchEventToGlobalListeners(focusEventData, eventHandler);
 
-                ExecuteEvents.ExecuteHierarchy(eventTarget, focusEventData, eventHandler);
+                using (ExecuteHierarchyPerfMarker.Auto())
+                {
+                    ExecuteEvents.ExecuteHierarchy(eventTarget, focusEventData, eventHandler);
+                }
             }
         }
 
@@ -569,12 +583,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (!baseInputEventData.used && fallbackInputStack.Count > 0)
                 {
                     GameObject fallbackInput = fallbackInputStack.Peek();
-                    ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler);
+                    using (ExecuteHierarchyPerfMarker.Auto())
+                    {
+                        ExecuteEvents.ExecuteHierarchy(fallbackInput, baseInputEventData, eventHandler);
+                    }
                 }
             }
         }
 
         private static readonly ProfilerMarker DispatchEventToObjectFocusedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.DispatchEventToObjectFocusedByPointer");
+        private static readonly ProfilerMarker DispatchModalEventPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.DispatchEventToObjectFocusedByPointer - Modal event handling");
 
         /// <summary>
         /// Dispatch an input event to the object focused by the given IMixedRealityPointer.
@@ -588,40 +606,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 GameObject focusedObject = FocusProvider?.GetFocusedObject(mixedRealityPointer);
 
-                // Handle modal input if one exists
-                if (modalInputStack.Count > 0 && !modalEventHandled)
+                using (DispatchModalEventPerfMarker.Auto())
                 {
-                    GameObject modalInput = modalInputStack.Peek();
-
-                    if (modalInput != null)
+                    // Handle modal input if one exists
+                    if (modalInputStack.Count > 0 && !modalEventHandled)
                     {
-                        // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
-                        if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
+                        GameObject modalInput = modalInputStack.Peek();
+
+                        if (modalInput != null)
                         {
-                            if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                            // If there is a focused object in the hierarchy of the modal handler, start the event bubble there
+                            if (focusedObject != null && focusedObject.transform.IsChildOf(modalInput.transform))
                             {
-                                return true;
+                                using (ExecuteHierarchyPerfMarker.Auto())
+                                {
+                                    if (ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler) && baseInputEventData.used)
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                            // Otherwise, just invoke the event on the modal handler itself
+                            else
+                            {
+                                using (ExecuteHierarchyPerfMarker.Auto())
+                                {
+                                    if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
+                                    {
+                                        return true;
+                                    }
+                                }
                             }
                         }
-                        // Otherwise, just invoke the event on the modal handler itself
                         else
                         {
-                            if (ExecuteEvents.ExecuteHierarchy(modalInput, baseInputEventData, eventHandler) && baseInputEventData.used)
-                            {
-                                return true;
-                            }
+                            Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
                         }
-                    }
-                    else
-                    {
-                        Debug.LogError("ModalInput GameObject reference was null!\nDid this GameObject get destroyed?");
                     }
                 }
 
                 // If event was not handled by modal, pass it on to the current focused object
                 if (focusedObject != null)
                 {
-                    ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                    using (ExecuteHierarchyPerfMarker.Auto())
+                    {
+                        ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                    }
                 }
                 return modalEventHandled;
             }
