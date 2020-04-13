@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
     [InitializeOnLoad]
     static class LeapMotionConfigurationChecker
     {
-        private const string FileName = "README_BEFORE_UPDATING.txt";
+        // The presence of the LeapXRServiceProvider.cs is used to determine if the Leap Motion Core Assets are in the project.
+        private const string trackedLeapFileName = "LeapXRServiceProvider.cs";
         private static readonly string[] definitions = { "LEAPMOTIONCORE_PRESENT" };
         private static bool isLeapInProject = false;
 
@@ -25,21 +26,16 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             // Check if leap core is in the project
             isLeapInProject = ReconcileLeapMotionDefine();
 
-            if (isLeapInProject)
-            {
-                RemoveTestingFolders();
-                AddAndUpdateAsmDefs();
-                AddLeapEditorAsmDefs();
-            }
+            ConfigureLeapMotion(isLeapInProject);
         }
 
         /// <summary>
         /// Ensures that the appropriate symbolic constant is defined based on the presence of the Leap Motion Core Assets.
         /// </summary>
-        /// <returns>True if the define was added, false otherwise.</returns>
+        /// <returns>If the define was added or the define has already been added, return true</returns>
         private static bool ReconcileLeapMotionDefine()
         {
-            FileInfo[] files = FileUtilities.FindFilesInAssets(FileName);
+            FileInfo[] files = FileUtilities.FindFilesInAssets(trackedLeapFileName);
 
             if (files.Length > 0)
             {
@@ -53,6 +49,39 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
             }
         }
 
+
+        /// <summary>
+        /// Configure the Leap Motion Core assets if they are in the project.  First remove testing folders, add LeapMotion.asmdef at the
+        /// root of the core assets, and add the leap editor asmdefs.  If the core assets are not in the project, make sure the reference
+        /// in the Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef does not contain a ref to LeapMotion.
+        /// </summary>
+        /// <param name="isLeapInProject"></param>
+        private static void ConfigureLeapMotion(bool isLeapInProject)
+        {
+            FileInfo[] leapDataProviderAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef");
+
+            AssemblyDefinition leapDataProviderAsmDef = AssemblyDefinition.Load(leapDataProviderAsmDefFile[0].FullName);
+
+            List<string> references = leapDataProviderAsmDef.References.ToList();
+
+            if (isLeapInProject && !references.Contains("LeapMotion"))
+            {
+                RemoveTestingFolders();
+                AddAndUpdateAsmDefs();
+                AddLeapEditorAsmDefs();
+
+                // Refresh the database because tests were removed and 11 asmdefs were added
+                AssetDatabase.Refresh();
+            }
+            
+            if (!isLeapInProject && references.Contains("LeapMotion"))
+            {
+                references.Remove("LeapMotion");
+                leapDataProviderAsmDef.References = references.ToArray();
+                leapDataProviderAsmDef.Save(leapDataProviderAsmDefFile[0].FullName);
+            }
+        }
+
         /// <summary>
         /// The Leap Core Assets currently contain multiple folders with tests in them.  An issue has been filed in the Unity
         /// Modules repo: https://github.com/leapmotion/UnityModules/issues/1097.  The issue with the multiple test folders is when an 
@@ -62,27 +91,27 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void RemoveTestingFolders()
         {
+
             string[] pathsToDelete = new string[]
             {
                 "LeapMotion/Core/Editor/Tests/",
+                "LeapMotion/Core/Plugins/LeapCSharp/Editor/Tests/",
                 "LeapMotion/Core/Scripts/Algorithms/Editor/Tests/",
                 "LeapMotion/Core/Scripts/DataStructures/Editor/Tests/",
                 "LeapMotion/Core/Scripts/Encoding/Editor/",
-                "LeapMotion/Core/Query/Editor/",
+                "LeapMotion/Core/Scripts/Query/Editor/",
                 "LeapMotion/Core/Scripts/Utils/Editor/BitConverterNonAllocTests.cs",
                 "LeapMotion/Core/Scripts/Utils/Editor/ListAndArrayExtensionTests.cs",
                 "LeapMotion/Core/Scripts/Utils/Editor/TransformUtilTests.cs",
                 "LeapMotion/Core/Scripts/Utils/Editor/UtilsTests.cs",
-                "LeapMotion/Core/Plugins/LeapCSharp/Editor/Tests/",
-                "LeapMotion/Core/Scripts/Query/Editor/"
             };
 
-            // If one of the leap test directories exists then the rest have not been deleted
-            if (Directory.Exists(Path.Combine(Application.dataPath, pathsToDelete[0])))
-            {
-                // Find where the leap motion core assets are relative to the assets directory
-                string pathDifference = GetPathDifference();
+            // Find where the leap motion core assets are relative to the assets directory
+            string pathDifference = GetPathDifference();
 
+            // If one of the leap test directories exists then the rest have not been deleted
+            if (Directory.Exists(Path.Combine(Application.dataPath, pathDifference, pathsToDelete[0])))
+            {
                 foreach (string path in pathsToDelete)
                 {
                     // What if leap is not imported to the root of assets?
@@ -98,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         FileUtil.DeleteFileOrDirectory(fullPath + ".meta");
                     }
 
-                    if (Directory.Exists(fullPath) && !fullPath.Contains(".cs"))
+                    if (Directory.Exists(fullPath))
                     {
                         // Delete the test directories
                         FileUtil.DeleteFileOrDirectory(fullPath);
@@ -107,8 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         FileUtil.DeleteFileOrDirectory(fullPath.TrimEnd('/') + ".meta");
                     }
                 }
-
-                AssetDatabase.Refresh();
             }
         }
 
@@ -144,43 +171,17 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 // Add the newly created LeapMotion.asmdef to the references of the leap data provider asmdef
                 AssemblyDefinition leapDataProviderAsmDef = AssemblyDefinition.Load(leapDataProviderAsmDefFile[0].FullName);
 
-                leapDataProviderAsmDef.References = new string[]
-                { "Microsoft.MixedReality.Toolkit",
-                  "LeapMotion"
-                };
+                List<string> references = leapDataProviderAsmDef.References.ToList();
+                
+                if(!references.Contains("LeapMotion"))
+                {
+                    references.Add("LeapMotion");
+                }
+
+                leapDataProviderAsmDef.References = references.ToArray();
 
                 leapDataProviderAsmDef.Save(leapDataProviderAsmDefFile[0].FullName);
-
-                // A new asset (LeapMotion.asmdef) was created, refresh the asset database
-                AssetDatabase.Refresh();
             }
-        }
-
-        /// <summary>
-        /// Get the difference between the root of assets and the location of the leap core assets.  If the leap core assets 
-        /// are at the root of assets, there is no path difference.
-        /// </summary>
-        /// <returns>Returns an empty string if the leap core assets are at the root of assets, otherwise return the path difference</returns>
-        private static string GetPathDifference()
-        {
-            // The file LeapXRServiceProvider.cs is used as a location anchor instead of the LeapMotion directory
-            // to avoid a potential incorrect location return if there is a folder named LeapMotion prior to the leap 
-            // core assets import 
-            FileInfo[] leapPathLocationAnchor = FileUtilities.FindFilesInAssets(FileName);
-            string leapFilePath = leapPathLocationAnchor[0].FullName;
-
-            List<string> leapPath = leapFilePath.Split(Path.DirectorySeparatorChar).ToList();
-
-            // Remove the last 3 elements of leap path (/Core/Scripts/LeapXRService.cs) from the list to get the root of the leap core assets
-            leapPath.RemoveRange(leapPath.Count - 3, 3);
-
-            List<string> unityDataPath = Application.dataPath.Split('/').ToList();
-            unityDataPath.Add("LeapMotion");
-
-            // Get the difference between the root of assets and the root of leap core assets
-            IEnumerable<string> difference = leapPath.Except(unityDataPath);
-
-            return string.Join("/", difference);
         }
 
         /// <summary>
@@ -229,35 +230,126 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                         leapEditorAsmDef.Save(fullLeapAsmDefPath);
                     }
                 }
-
-                AssetDatabase.Refresh();
             }
         }
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Configure CSC File for Leap Motion", false, 0)]
+        /// <summary>
+        /// Get the difference between the root of assets and the location of the leap core assets.  If the leap core assets 
+        /// are at the root of assets, there is no path difference.
+        /// </summary>
+        /// <returns>Returns an empty string if the leap core assets are at the root of assets, otherwise return the path difference</returns>
+        private static string GetPathDifference()
+        {
+            // The file LeapXRServiceProvider.cs is used as a location anchor instead of the LeapMotion directory
+            // to avoid a potential incorrect location return if there is a folder named LeapMotion prior to the leap 
+            // core assets import 
+            FileInfo[] leapPathLocationAnchor = FileUtilities.FindFilesInAssets(trackedLeapFileName);
+            string leapFilePath = leapPathLocationAnchor[0].FullName;
+
+            List<string> leapPath = leapFilePath.Split(Path.DirectorySeparatorChar).ToList();
+
+            // Remove the last 3 elements of leap path (/Core/Scripts/LeapXRService.cs) from the list to get the root of the leap core assets
+            leapPath.RemoveRange(leapPath.Count - 3, 3);
+
+            List<string> unityDataPath = Application.dataPath.Split('/').ToList();
+            unityDataPath.Add("LeapMotion");
+
+            // Get the difference between the root of assets and the root of leap core assets
+            IEnumerable<string> difference = leapPath.Except(unityDataPath);
+
+            return string.Join("/", difference);
+        }
+
+        /// <summary>
+        /// Adds warnings to the nowarn line in the csc.rsp file located at the root of assets.  Warning 618 and 649 are added to the nowarn line because if
+        /// the MRTK source is from the repo, warnings are converted to errors. Warnings are not converted to errors if the MRTK source is from the unity packages.
+        /// Warning 618 and 649 are logged when the Leap Motion Core Assets are imported into the project, 618 is the obsolete warning and 649 is a null on start warning.
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure CSC File for Leap Motion", false, 0)]
         static void UpdateCSC()
         {
-            string fileName = Path.Combine(Application.dataPath, "csc.rsp");
+            // The csc file will always be in the root of assets
+            string cscFilePath = Path.Combine(Application.dataPath, "csc.rsp");
 
-            FileInfo file = new FileInfo(fileName);
+            // Each line of the csc file
+            List<string> cscFileLines = new List<string>();
 
-            bool readOnly = (file.Exists) ? file.IsReadOnly : false;
-            if (readOnly)
+            // List of the warning numbers after "-nowarn: " in the csc file
+            List<string> warningNumbers = new List<string>();
+
+            // List of new warning numbers to add to the csc file
+            List<string> warningNumbersToAdd = new List<string>()
             {
-                file.IsReadOnly = false;
+                "618",
+                "649"
+            };
+
+            using (StreamReader streamReader = new StreamReader(cscFilePath))
+            {
+                while (streamReader.Peek() > -1)
+                {
+                    string cscFileLine = streamReader.ReadLine();
+
+                    if (cscFileLine.Contains("-nowarn"))
+                    {
+                        string[] nums = cscFileLine.Split(',',':');
+                        warningNumbers = nums.ToList();
+
+                        // Remove "nowarn" from the warningNumbers list
+                        warningNumbers.Remove("-nowarn");
+
+                        foreach (string warningNumberToAdd in warningNumbersToAdd)
+                        {
+                            // Add the new warning numbers if they are not already in the file
+                            if (!warningNumbers.Contains(warningNumberToAdd))
+                            {
+                                warningNumbers.Add(warningNumberToAdd);
+                            }
+                        }
+
+                        cscFileLines.Add(string.Join(",", warningNumbers));
+                    }
+                    else
+                    {
+                        cscFileLines.Add(cscFileLine);
+                    }
+                }
             }
 
-            Debug.Log($"Saving {fileName}");
-            using (StreamWriter writer = new StreamWriter(fileName, false))
+            using (StreamWriter streamWriter = new StreamWriter(cscFilePath))
             {
-                writer.WriteLine("-warnaserror+\n-nowarn:1701,1702,618,649");
+                foreach (string cscLine in cscFileLines)
+                {
+                    if (cscLine.StartsWith("1701"))
+                    {
+                        string warningNumbersJoined = string.Join(",", warningNumbers);
+                        streamWriter.WriteLine(string.Concat("-nowarn:", warningNumbersJoined));
+                    }
+                    else
+                    {
+                        streamWriter.WriteLine(cscLine);
+                    } 
+                }
             }
 
-            if (readOnly)
-            {
-                file.IsReadOnly = true;
-            }
+            Debug.Log($"Saving {cscFilePath}");
         }
+
+#if UNITY_2018       
+        /// <summary>
+        /// Force Leap Motion integration after the Leap Motion Core Assets import.  In Unity 2018.4, the configuration checker sometimes does not update after the 
+        /// Leap Motion Core Assets import, this case only occurs if the MRTK source is from the unity packages. If the integration of leap and MRTK has not occurred, users can 
+        /// select the Configure Leap Motion menu option to force integration. 
+        /// </summary>
+        [MenuItem("Mixed Reality Toolkit/Utilities/Leap Motion/Configure Leap Motion", false, 0)]
+        static void ForceLeapMotionConfiguration()
+        {
+            // Check if leap core is in the project
+            isLeapInProject = ReconcileLeapMotionDefine();
+
+            ConfigureLeapMotion(isLeapInProject);
+        }
+#endif
     }
 }
 

@@ -7,23 +7,24 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 ## Using Leap Motion tracking in MRTK
 1. Prepare MRTK project for Leap Motion
 
-    - This step only applies if the source of MRTK is cloned from the git repo and NOT the unity packages.
+    - **This step only applies if the source of MRTK is cloned from the git repo and NOT the from the Unity packages. If the MRTK source is from the Unity packages, go to step 2.**
 
-        - Navigate to **Mixed Reality Toolkit > Utilities > Update > Configure CSC File for Leap Motion**. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Core Assets.
+    - Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion**. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked [here](https://github.com/leapmotion/UnityModules/issues/1082).
 
-    ![LeapMotionUpdateCSCFile](../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile.png)
+    ![LeapMotionUpdateCSCFile](../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png)
 
 1. Importing the Leap Motion Core Assets
-    - Install the [Leap Motion SDK](https://developer.leapmotion.com/releases/?category=orion)
-    - Download and import the [Leap Motion Core Assets](https://developer.leapmotion.com/unity#5436356)
+    - Install the [Leap Motion SDK 4.0.0](https://developer.leapmotion.com/releases/?category=orion)
+    - Download and import the [Leap Motion Core Assets 4.4.0](https://developer.leapmotion.com/unity#5436356)
     > [!NOTE]
-    > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project.
+    > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
     - If using Unity 2018.4.x
-        - Navigate to **Mixed Reality Toolkit** > **Utilities** > **Leap Motion** > **Reconcile Leap Motion Define**
-    - If using Unity 2019.3.x, no further import steps are required.
+        - Navigate to **Mixed Reality Toolkit** > **Utilities** > **Leap Motion** > **Configure Leap Motion**
+        - In Unity 2018.4, the configuration checker sometimes does not update after the Leap Motion Core Assets import, this case only occurs if the MRTK source is from the Unity packages. If the integration of leap and MRTK has not occurred, users can select Configure Leap Motion menu option to force integration. 
+    - If using Unity 2019.3.x, got to step 3.
 
 1. Adding the Leap Motion Data Provider
-    - Create a new unity scene
+    - Create a new Unity scene
     - Add MRTK to the scene by navigating to **Mixed Reality Toolkit** > **Add to Scene and Configure**
     - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
     
@@ -57,26 +58,51 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
 
 1. Close Unity
 1. Close Visual Studio, if it's open
-1. Open File Explorer and navigate to the root of the MRTK unity project
+1. Open File Explorer and navigate to the root of the MRTK Unity project
     - Delete the **UnityProjectName/Library** directory
     - Delete the **UnityProjectName/Assets/LeapMotion** directory
     - Delete the **UnityProjectName/Assets/LeapMotion.meta** file
 - Reopen Unity
 
-If errors are logged after reopening, restart unity again.
+If errors are logged after reopening, restart Unity again.
 
-Debugging
+## Common Errors
 
-1. Leap Namespace errors missing
-2. Obsolete errors 
-3. Editor errors
+### Leap Motion Obsolete Errors
 
+If the source of MRTK is from the repo and the Unity version is 2019.3.x, the following error might be in the console after the import of the Leap Motion Core Assets.
+
+```
+Assets\LeapMotion\Core\Scripts\EditorTools\LeapPreferences.cs(84,6): error CS0618: 'PreferenceItem' is obsolete: '[PreferenceItem] is deprecated. Use [SettingsProvider] instead.
+```
+
+In Unity version 2018.4.x, multiple obsolete errors might be logged.
+
+This error appears if **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion** was not selected BEFORE the Leap Motion Core Assets import.
+
+####  Solution 
+
+- Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion**, this will update the csc file to filter out Leap Motion warnings that are converted to errors in MRTK repo.
+- Close Unity
+- Reopen Unity
+
+
+### Leap Motion is in the project but MRTK does not recognize the presence
+This error can occur if the MRTK source is from the Unity packages, in Unity 2018.4, and after the Leap Motion Core Assets import.
+
+To test if MRTK recognizes the presence of the Leap Motion Core Assets, open the LeapMotionHandTrackingExample scene located in MRTK/Examples/Demos/HandTracking/ and press play.  If the Leap Motion Core Assets are recognized a green message on the informational panel in the scene will appear.  If the Core Assets are not recognized a red message will appear.
+
+If the Leap Motion Core Assets are in your project and you see a red message on the informational panel, the project needs to be configured.
+
+#### Solution
+- Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure Leap Motion**
+    - This will force Leap Motion integration if the configuration process was not started after the Leap Motion Core Assets import.
 
 ## Getting the hand joints 
 
-Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see [Hand Tracking](../Input/HandTracking.md).
+Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see [Hand Tracking](../Input/HandTracking.md#polling-joint-pose-from-handjointutils).
 
-The following is a simple example of how to retrieve the pose of the palm joint.
+The following is a simple example of how to retrieve the pose of the palm joint and adds a sphere to follow the hand joint.
 ```
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -105,13 +131,11 @@ public class HandJointsLeap : MonoBehaviour
 
 ## Leap Motion Example Scene
 
-The example scene uses the DefaultLeapMotionConfiguration profile and determines if the unity project has been configured correctly to use the Leap Motion Data Provider.
+The example scene uses the DefaultLeapMotionConfiguration profile and determines if the Unity project has been configured correctly to use the Leap Motion Data Provider.
 
 LeapMotionHandTrackingExample scene location: MRTK/Examples/Demos/HandTracking/.  
 
 ## See also
 
 * [Input Providers](../Input/InputProviders.md)
-* [Create a Data Provider](../Input/CreateDataProvider.md)
-* [Input Simulation](../InputSimulation/InputSimulationService.md)
 * [Hand Tracking](../Input/HandTracking.md)
