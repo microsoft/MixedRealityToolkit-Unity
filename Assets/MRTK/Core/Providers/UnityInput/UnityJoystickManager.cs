@@ -112,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return controllers;
             }
         }
+
         private static readonly ProfilerMarker RefreshDevicesPerfMarker = new ProfilerMarker("[MRTK] UnityJoystickManager.Update");
 
         private void RefreshDevices()
