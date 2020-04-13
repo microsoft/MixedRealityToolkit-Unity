@@ -860,24 +860,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             }
         }
 
-        private static readonly ProfilerMarker ConvertMegabytesToBytesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkitVisualProfiler.ConvertMegabytesToBytes");
-
         private static ulong ConvertMegabytesToBytes(int megabytes)
         {
-            using (ConvertMegabytesToBytesPerfMarker.Auto())
-            {
-                return ((ulong)megabytes * 1024UL) * 1024UL;
-            }
+            return ((ulong)megabytes * 1024UL) * 1024UL;
         }
-
-        private static readonly ProfilerMarker ConvertBytesToMegabytesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkitVisualProfiler.ConvertBytesToMegabytes");
 
         private static float ConvertBytesToMegabytes(ulong bytes)
         {
-            using (ConvertBytesToMegabytesPerfMarker.Auto())
-            {
-                return (bytes / 1024.0f) / 1024.0f;
-            }
+            return (bytes / 1024.0f) / 1024.0f;
         }
     }
 }
