@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -217,138 +218,208 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             }
         }
 
+        private static readonly ProfilerMarker GetObserversPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetObservers");
+
         /// <inheritdoc />
         public IReadOnlyList<IMixedRealitySpatialAwarenessObserver> GetObservers()
         {
-            return GetDataProviders() as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
+            using (GetObserversPerfMarker.Auto())
+            {
+                return GetDataProviders() as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
+            }
         }
+
+        private static readonly ProfilerMarker GetObserversTPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetObservers<T>");
 
         /// <inheritdoc />
         public IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            return GetDataProviders<T>();
+            using (GetObserversTPerfMarker.Auto())
+            {
+                return GetDataProviders<T>();
+            }
         }
+
+        private static readonly ProfilerMarker GetObserverPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetObserver");
 
         /// <inheritdoc />
         public IMixedRealitySpatialAwarenessObserver GetObserver(string name)
         {
-            return GetDataProvider(name) as IMixedRealitySpatialAwarenessObserver;
+            using (GetObserverPerfMarker.Auto())
+            {
+                return GetDataProvider(name) as IMixedRealitySpatialAwarenessObserver;
+            }
         }
+
+        private static readonly ProfilerMarker GetObserverTPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetObserver<T>");
 
         /// <inheritdoc />
         public T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver
         {
-            return GetDataProvider<T>(name);
+            using (GetObserverTPerfMarker.Auto())
+            {
+                return GetDataProvider<T>(name);
+            }
         }
 
         #region IMixedRealityDataProviderAccess Implementation
 
+        private static readonly ProfilerMarker GetDataProvidersPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetDataProviders");
+
         /// <inheritdoc />
         public override IReadOnlyList<T> GetDataProviders<T>()
         {
-            if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
+            using (GetDataProvidersPerfMarker.Auto())
             {
-                return null;
-            }
+                if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
+                {
+                    return null;
+                }
 
-            return base.GetDataProviders<T>();
+                return base.GetDataProviders<T>();
+            }
         }
+
+        private static readonly ProfilerMarker GetDataProviderPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.GetDataProvider");
 
         /// <inheritdoc />
         public override T GetDataProvider<T>(string name = null)
         {
-            if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
+            using (GetDataProviderPerfMarker.Auto())
             {
-                return default(T);
-            }
+                if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
+                {
+                    return default(T);
+                }
 
-            return base.GetDataProvider<T>(name);
+                return base.GetDataProvider<T>(name);
+            }
         }
 
         #endregion IMixedRealityDataProviderAccess Implementation
 
+        private static readonly ProfilerMarker ResumeObserversPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.ResumeObservers");
+
         /// <inheritdoc />
         public void ResumeObservers()
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (ResumeObserversPerfMarker.Auto())
             {
-                observer.Resume();
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+                {
+                    observer.Resume();
+                }
             }
         }
+
+        private static readonly ProfilerMarker ResumeObserversTPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.ResumeObservers<T>");
 
         /// <inheritdoc />
         public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (ResumeObserversTPerfMarker.Auto())
             {
-                if (observer is T)
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
                 {
-                    observer.Resume();
+                    if (observer is T)
+                    {
+                        observer.Resume();
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker ResumeObserverPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.ResumeObserver");
 
         /// <inheritdoc />
         public void ResumeObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (ResumeObserverPerfMarker.Auto())
             {
-                if (observer is T && observer.Name == name)
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
                 {
-                    observer.Resume();
-                    break;
+                    if (observer is T && observer.Name == name)
+                    {
+                        observer.Resume();
+                        break;
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker SuspendObserversPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.SuspendObservers");
 
         /// <inheritdoc />
         public void SuspendObservers()
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (SuspendObserversPerfMarker.Auto())
             {
-                observer.Suspend();
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+                {
+                    observer.Suspend();
+                }
             }
         }
+
+        private static readonly ProfilerMarker SuspendObserversTPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.SuspendObservers<T>");
 
         /// <inheritdoc />
         public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (SuspendObserversTPerfMarker.Auto())
             {
-                if (observer is T)
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
                 {
-                    observer.Suspend();
+                    if (observer is T)
+                    {
+                        observer.Suspend();
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker SuspendObserverPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.SuspendObserver");
 
         /// <inheritdoc />
         public void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (SuspendObserverPerfMarker.Auto())
             {
-                if (observer is T && observer.Name == name)
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
                 {
-                    observer.Suspend();
-                    break;
+                    if (observer is T && observer.Name == name)
+                    {
+                        observer.Suspend();
+                        break;
+                    }
                 }
             }
         }
 
+        private static readonly ProfilerMarker ClearObservationsPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.ClearObservations");
+
         /// <inheritdoc />
         public void ClearObservations()
         {
-            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            using (ClearObservationsPerfMarker.Auto())
             {
-                observer.ClearObservations();
+                foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+                {
+                    observer.ClearObservations();
+                }
             }
         }
+
+        private static readonly ProfilerMarker ClearObservationsTPerfMarker = new ProfilerMarker("[MRTK] MixedRealitySpatialAwarenessSystem.ClearObservations<T>");
 
         /// <inheritdoc />
         public void ClearObservations<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            T observer = GetObserver<T>(name);
-            observer?.ClearObservations();
+            using (ClearObservationsTPerfMarker.Auto())
+            {
+                T observer = GetObserver<T>(name);
+                observer?.ClearObservations();
+            }
         }
 
         #endregion IMixedRealitySpatialAwarenessSystem Implementation
