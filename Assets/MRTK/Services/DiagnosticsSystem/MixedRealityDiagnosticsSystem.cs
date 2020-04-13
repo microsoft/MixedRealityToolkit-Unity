@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Runtime.CompilerServices;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -275,14 +276,19 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             HandleEvent(eventData, OnDiagnosticsChanged);
         }
 
+        private static readonly ProfilerMarker OnDiagnosticsChangedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityDiagnosticsSystem.OnDiagnosticsChanged - Raise event");
+
         /// <summary>
         /// Event sent whenever the diagnostics visualization changes.
         /// </summary>
         private static readonly ExecuteEvents.EventFunction<IMixedRealityDiagnosticsHandler> OnDiagnosticsChanged =
             delegate (IMixedRealityDiagnosticsHandler handler, BaseEventData eventData)
             {
-                var diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
-                handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
+                using (OnDiagnosticsChangedPerfMarker.Auto())
+                {
+                    var diagnosticsEventsData = ExecuteEvents.ValidateEventData<DiagnosticsEventData>(eventData);
+                    handler.OnDiagnosticSettingsChanged(diagnosticsEventsData);
+                }
             };
 
         #endregion IMixedRealityEventSource
