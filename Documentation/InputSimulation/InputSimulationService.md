@@ -162,7 +162,7 @@ In addition, you can use simulated hands for GGV interaction
 1. Hold **Space** to control the right hand
 1. Click and hold **left mouse button** to interact
 1. Use your mouse to move the object
-5. Release the mouse button to stop interaction
+1. Release the mouse button to stop interaction
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
