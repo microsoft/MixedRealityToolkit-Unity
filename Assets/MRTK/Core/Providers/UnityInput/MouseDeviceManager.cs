@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -154,18 +154,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             Service?.RaiseSourceDetected(Controller.InputSource, Controller);
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MouseDeviceManager.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("[MRTK] MouseDeviceManager.Update");
+            using (UpdatePerfMarker.Auto())
+            {
+                base.Update();
 
-            base.Update();
+                if (UInput.mousePresent && Controller == null) { Enable(); }
 
-            if (UInput.mousePresent && Controller == null) { Enable(); }
-
-            Controller?.Update();
-
-            Profiler.EndSample(); // Update
+                Controller?.Update();
+            }
         }
 
         /// <inheritdoc />

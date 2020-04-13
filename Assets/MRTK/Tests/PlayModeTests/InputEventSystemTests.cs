@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.Zero(handlerBasedListener2.pointerDraggedCount, "Pointer dragged event is received by speech-handler component.");
             Assert.True(handlerBasedListener2.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly by speech-handler component.");
 
-            //checks that the appropriate speech commands were recieved
+            // Checks that the appropriate speech commands were received
             Assert.True(objectBasedListener.speechCommandsReceived.SequenceEqual(commandList.Select(x => x.Keyword)), "Speech events were not received correctly.");
 
             Object.Destroy(object1);

@@ -509,7 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (boundsProvider == null)
                 return;
 
-            //calculate best follow position for AppBar
+            // Calculate the best follow position
             Vector3 finalPosition = Vector3.zero;
             Vector3 headPosition = CameraCache.Main.transform.position;
             boundsPoints.Clear();
@@ -518,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int followingFaceIndex = helper.GetIndexOfForwardFace(headPosition);
             Vector3 faceNormal = helper.GetFaceNormal(followingFaceIndex);
 
-            //finally we have new position
+            // Finalize the new position
             finalPosition = helper.GetFaceBottomCentroid(followingFaceIndex) + (faceNormal * HoverOffsetZ);
 
             // Follow our bounding box

@@ -1237,7 +1237,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else if (activation == BoundingBoxActivationType.ActivateManually)
             {
-                //activate to create handles etc. then deactivate. 
+                // Activate to create handles etc. then deactivate. 
                 Active = true;
                 Active = false;
             }
@@ -1679,7 +1679,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
                         link.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
                     }
-                    else//X
+                    else // edgeAxes[i] == CardinalAxisType.X
                     {
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.x, wireframeEdgeRadius);
                         link.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
@@ -1921,7 +1921,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void SetMaterials()
         {
-            //ensure materials
+            // Ensure materials
             if (wireframeMaterial == null)
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
@@ -2049,7 +2049,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             bool isVisible;
 
-            //set balls visibility
+            // Set balls visibility
             if (balls != null)
             {
                 isVisible = (active == true && wireframeOnly == false);
@@ -2060,7 +2060,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            //set link visibility
+            // Set link visibility
             if (links != null)
             {
                 isVisible = active == true;
@@ -2073,14 +2073,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            //set box display visibility
+            // Set box display visibility
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(active);
                 ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
             }
 
-            //set corner visibility
+            // Set corner visibility
             if (corners != null)
             {
                 isVisible = (active == true && wireframeOnly == false && showScaleHandles == true);
@@ -2097,7 +2097,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void SetHighlighted(Transform activeHandle)
         {
-            //turn off all balls
+            // Turn off all balls
             if (balls != null)
             {
                 for (int i = 0; i < balls.Count; ++i)
@@ -2113,7 +2113,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            //turn off all corners
+            // Turn off all corners
             if (corners != null)
             {
                 for (int i = 0; i < corners.Count; ++i)
@@ -2129,7 +2129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            //update the box material to the grabbed material
+            // Update the box material to the grabbed material
             if (boxDisplay != null)
             {
                 ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
@@ -2211,7 +2211,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             links[i].localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);
                         }
-                        else//Z
+                        else // edgeAxes[i] == CardinalAxisType.Z
                         {
                             links[i].localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
                         }
@@ -2233,7 +2233,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleProximityScaling()
         {
-            //only use proximity effect if nothing is being dragged or grabbed
+            // Only use proximity effect if nothing is being dragged or grabbed
             if (currentPointer == null)
             {
                 proximityPointers.Clear();

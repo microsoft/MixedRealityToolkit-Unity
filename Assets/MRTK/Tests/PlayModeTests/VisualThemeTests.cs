@@ -299,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     new ThemePropertyValue() { Vector3 = state0Offset },
                     new ThemePropertyValue() { Vector3 = state1Offset },
                 },
-                new List<ThemePropertyValue>() //Color
+                new List<ThemePropertyValue>() // Color
                 {
                     new ThemePropertyValue() { Color = state0Color },
                     new ThemePropertyValue() { Color = state1Color },

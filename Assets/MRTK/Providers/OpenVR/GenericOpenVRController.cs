@@ -6,8 +6,8 @@ using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
@@ -145,89 +145,91 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             new MixedRealityInteractionMapping(12, "Spatial Grip", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericOpenVRController.UpdateController");
+
         /// <inheritdoc />
         public override void UpdateController()
         {
-            if (!Enabled) { return; }
-
-            Profiler.BeginSample("[MRTK] GenericOpenVRController.UpdateController");
-
-            InputTracking.GetNodeStates(nodeStates);
-
-            for (int i = 0; i < nodeStates.Count; i++)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                if (nodeStates[i].nodeType == nodeType)
+                if (!Enabled) { return; }
+
+                InputTracking.GetNodeStates(nodeStates);
+
+                for (int i = 0; i < nodeStates.Count; i++)
                 {
-                    var xrNodeState = nodeStates[i];
-                    UpdateControllerData(xrNodeState);
-                    LastXrNodeStateReading = xrNodeState;
-                    break;
+                    if (nodeStates[i].nodeType == nodeType)
+                    {
+                        var xrNodeState = nodeStates[i];
+                        UpdateControllerData(xrNodeState);
+                        LastXrNodeStateReading = xrNodeState;
+                        break;
+                    }
                 }
+
+                base.UpdateController();
             }
-
-            base.UpdateController();
-
-            Profiler.EndSample(); // UpdateController
         }
+
+        private static readonly ProfilerMarker UpdateControllerDataPerfMarker = new ProfilerMarker("[MRTK] GenericOpenVRController.UpdateControllerData");
 
         /// <summary>
         /// Update the "Controller" input from the device
         /// </summary>
         protected void UpdateControllerData(XRNodeState state)
         {
-            Profiler.BeginSample("[MRTK] GenericOpenVRController.UpdateControllerData");
-
-            var lastState = TrackingState;
-
-            LastControllerPose = CurrentControllerPose;
-
-            if (nodeType == XRNode.LeftHand || nodeType == XRNode.RightHand)
+            using (UpdateControllerDataPerfMarker.Auto())
             {
-                // The source is either a hand or a controller that supports pointing.
-                // We can now check for position and rotation.
-                IsPositionAvailable = state.TryGetPosition(out CurrentControllerPosition);
-                IsPositionApproximate = false;
+                var lastState = TrackingState;
 
-                IsRotationAvailable = state.TryGetRotation(out CurrentControllerRotation);
+                LastControllerPose = CurrentControllerPose;
 
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-            }
-            else
-            {
-                // The input source does not support tracking.
-                TrackingState = TrackingState.NotApplicable;
-            }
-
-            CurrentControllerPose.Position = CurrentControllerPosition;
-            CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-            // Raise input system events if it is enabled.
-            if (lastState != TrackingState)
-            {
-                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-            }
-
-            if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-            {
-                if (IsPositionAvailable && IsRotationAvailable)
+                if (nodeType == XRNode.LeftHand || nodeType == XRNode.RightHand)
                 {
-                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    // The source is either a hand or a controller that supports pointing.
+                    // We can now check for position and rotation.
+                    IsPositionAvailable = state.TryGetPosition(out CurrentControllerPosition);
+                    IsPositionApproximate = false;
+
+                    IsRotationAvailable = state.TryGetRotation(out CurrentControllerRotation);
+
+                    // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                    TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                    CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
+                    CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
                 }
-                else if (IsPositionAvailable && !IsRotationAvailable)
+                else
                 {
-                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    // The input source does not support tracking.
+                    TrackingState = TrackingState.NotApplicable;
                 }
-                else if (!IsPositionAvailable && IsRotationAvailable)
+
+                CurrentControllerPose.Position = CurrentControllerPosition;
+                CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+                // Raise input system events if it is enabled.
+                if (lastState != TrackingState)
                 {
-                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                }
+
+                if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
+                {
+                    if (IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    }
+                    else if (IsPositionAvailable && !IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    }
+                    else if (!IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateControllerData
         }
 
         #region Controller model functions

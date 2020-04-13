@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
@@ -46,84 +46,87 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultRightHandedInteractions => DefaultInteractions;
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateController");
+
         /// <summary>
         /// Update the controller data from XR SDK.
         /// </summary>
         public virtual void UpdateController(InputDevice inputDevice)
         {
-            if (!Enabled) { return; }
-
-            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateController");
-
-            if (Interactions == null)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                Debug.LogError($"No interaction configuration for {GetType().Name}");
-                Enabled = false;
-            }
+                if (!Enabled) { return; }
 
-            var lastState = TrackingState;
-            LastControllerPose = CurrentControllerPose;
-
-            // Check for position and rotation.
-            IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
-            IsPositionApproximate = false;
-
-            IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
-
-            // Devices are considered tracked if we receive position OR rotation data from the sensors.
-            TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-
-            CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
-            CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
-
-            CurrentControllerPose.Position = CurrentControllerPosition;
-            CurrentControllerPose.Rotation = CurrentControllerRotation;
-
-            // Raise input system events if it is enabled.
-            if (lastState != TrackingState)
-            {
-                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-            }
-
-            if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
-            {
-                if (IsPositionAvailable && IsRotationAvailable)
+                if (Interactions == null)
                 {
-                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    Debug.LogError($"No interaction configuration for {GetType().Name}");
+                    Enabled = false;
                 }
-                else if (IsPositionAvailable && !IsRotationAvailable)
+
+                var lastState = TrackingState;
+                LastControllerPose = CurrentControllerPose;
+
+                // Check for position and rotation.
+                IsPositionAvailable = inputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out CurrentControllerPosition);
+                IsPositionApproximate = false;
+
+                IsRotationAvailable = inputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out CurrentControllerRotation);
+
+                // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
+
+                CurrentControllerPosition = MixedRealityPlayspace.TransformPoint(CurrentControllerPosition);
+                CurrentControllerRotation = MixedRealityPlayspace.Rotation * CurrentControllerRotation;
+
+                CurrentControllerPose.Position = CurrentControllerPosition;
+                CurrentControllerPose.Rotation = CurrentControllerRotation;
+
+                // Raise input system events if it is enabled.
+                if (lastState != TrackingState)
                 {
-                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
                 }
-                else if (!IsPositionAvailable && IsRotationAvailable)
+
+                if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
                 {
-                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    if (IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    }
+                    else if (IsPositionAvailable && !IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    }
+                    else if (!IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    }
+                }
+
+                for (int i = 0; i < Interactions?.Length; i++)
+                {
+                    switch (Interactions[i].AxisType)
+                    {
+                        case AxisType.None:
+                            break;
+                        case AxisType.Digital:
+                            UpdateButtonData(Interactions[i], inputDevice);
+                            break;
+                        case AxisType.SingleAxis:
+                            UpdateSingleAxisData(Interactions[i], inputDevice);
+                            break;
+                        case AxisType.DualAxis:
+                            UpdateDualAxisData(Interactions[i], inputDevice);
+                            break;
+                        case AxisType.SixDof:
+                            UpdatePoseData(Interactions[i], inputDevice);
+                            break;
+                    }
                 }
             }
-
-            for (int i = 0; i < Interactions?.Length; i++)
-            {
-                switch (Interactions[i].AxisType)
-                {
-                    case AxisType.None:
-                        break;
-                    case AxisType.Digital:
-                        UpdateButtonData(Interactions[i], inputDevice);
-                        break;
-                    case AxisType.SingleAxis:
-                        UpdateSingleAxisData(Interactions[i], inputDevice);
-                        break;
-                    case AxisType.DualAxis:
-                        UpdateDualAxisData(Interactions[i], inputDevice);
-                        break;
-                    case AxisType.SixDof:
-                        UpdatePoseData(Interactions[i], inputDevice);
-                        break;
-                }
-            }
-
-            Profiler.EndSample(); // UpdateController
         }
+
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateButtonData");
 
         /// <summary>
         /// Update an interaction bool data type from a bool input
@@ -133,64 +136,64 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </remarks>
         protected virtual void UpdateButtonData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateButtonDatafs");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
-
-            if (interactionMapping.InputType == DeviceInputType.TriggerTouch
-                && inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
+            using (UpdateButtonDataPerfMarker.Auto())
             {
-                interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
-            }
-            else
-            {
-                InputFeatureUsage<bool> buttonUsage;
+                Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-                // Update the interaction data source
-                switch (interactionMapping.InputType)
+                if (interactionMapping.InputType == DeviceInputType.TriggerTouch
+                    && inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
                 {
-                    case DeviceInputType.Select:
-                        buttonUsage = CommonUsages.triggerButton;
-                        break;
-                    case DeviceInputType.TouchpadTouch:
-                        buttonUsage = CommonUsages.primary2DAxisTouch;
-                        break;
-                    case DeviceInputType.TouchpadPress:
-                        buttonUsage = CommonUsages.primary2DAxisClick;
-                        break;
-                    case DeviceInputType.Menu:
-                        buttonUsage = CommonUsages.menuButton;
-                        break;
-                    case DeviceInputType.ThumbStickPress:
-                        buttonUsage = CommonUsages.secondary2DAxisClick;
-                        break;
-                    default:
-                        Profiler.EndSample(); // UpdateButtonData - non button
-                        return;
-                }
-
-                if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
-                {
-                    interactionMapping.BoolData = buttonPressed;
-                }
-            }
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                if (interactionMapping.BoolData)
-                {
-                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    interactionMapping.BoolData = !Mathf.Approximately(triggerData, 0.0f);
                 }
                 else
                 {
-                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    InputFeatureUsage<bool> buttonUsage;
+
+                    // Update the interaction data source
+                    switch (interactionMapping.InputType)
+                    {
+                        case DeviceInputType.Select:
+                            buttonUsage = CommonUsages.triggerButton;
+                            break;
+                        case DeviceInputType.TouchpadTouch:
+                            buttonUsage = CommonUsages.primary2DAxisTouch;
+                            break;
+                        case DeviceInputType.TouchpadPress:
+                            buttonUsage = CommonUsages.primary2DAxisClick;
+                            break;
+                        case DeviceInputType.Menu:
+                            buttonUsage = CommonUsages.menuButton;
+                            break;
+                        case DeviceInputType.ThumbStickPress:
+                            buttonUsage = CommonUsages.secondary2DAxisClick;
+                            break;
+                        default:
+                            return;
+                    }
+
+                    if (inputDevice.TryGetFeatureValue(buttonUsage, out bool buttonPressed))
+                    {
+                        interactionMapping.BoolData = buttonPressed;
+                    }
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    if (interactionMapping.BoolData)
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
+                    else
+                    {
+                        CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateButtonData
         }
+
+        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateSingleAxisData");
 
         /// <summary>
         /// Update an interaction float data type from a SingleAxis (float) input
@@ -200,125 +203,124 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.Input
         /// </remarks>
         protected virtual void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateSingleAxisData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-
-            // Update the interaction data source
-            switch (interactionMapping.InputType)
+            using (UpdateSingleAxisDataPerfMarker.Auto())
             {
-                case DeviceInputType.TriggerPress:
-                    if (inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool buttonPressed))
-                    {
-                        interactionMapping.BoolData = buttonPressed;
-                    }
+                Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
 
-                    // If our bool value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionMapping.BoolData)
+                // Update the interaction data source
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.TriggerPress:
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool buttonPressed))
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            interactionMapping.BoolData = buttonPressed;
                         }
-                        else
+
+                        // If our bool value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionMapping.BoolData)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                    }
 
-                    if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float buttonData))
-                    {
-                        interactionMapping.FloatData = buttonData;
-                    }
-                    break;
-                case DeviceInputType.Trigger:
-                    if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
-                    {
-                        interactionMapping.FloatData = triggerData;
-                    }
-                    break;
-                default:
-                    Profiler.EndSample(); // UpdateSingleAxisData - non single axis
-                    return;
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.grip, out float buttonData))
+                        {
+                            interactionMapping.FloatData = buttonData;
+                        }
+                        break;
+                    case DeviceInputType.Trigger:
+                        if (inputDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerData))
+                        {
+                            interactionMapping.FloatData = triggerData;
+                        }
+                        break;
+                    default:
+                        return;
+                }
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                }
             }
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
-            }
-
-            Profiler.EndSample(); // UpdateSingleAxisData
         }
+
+        private static readonly ProfilerMarker UpdateDualAxisDataPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdateDualAxisData");
 
         /// <summary>
         /// Update the touchpad / thumbstick input from the device
         /// </summary>
         protected virtual void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdateDualAxisData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
-
-            InputFeatureUsage<Vector2> axisUsage;
-
-            // Update the interaction data source
-            switch (interactionMapping.InputType)
+            using (UpdateDualAxisDataPerfMarker.Auto())
             {
-                case DeviceInputType.ThumbStick:
-                    axisUsage = CommonUsages.secondary2DAxis;
-                    break;
-                case DeviceInputType.Touchpad:
-                    axisUsage = CommonUsages.primary2DAxis;
-                    break;
-                default:
-                    Profiler.EndSample(); // UpdateDualAxisData - non dual axis
-                    return;
-            }
+                Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-            if (inputDevice.TryGetFeatureValue(axisUsage, out Vector2 axisData))
-            {
+                InputFeatureUsage<Vector2> axisUsage;
+
                 // Update the interaction data source
-                interactionMapping.Vector2Data = axisData;
-            }
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.ThumbStick:
+                        axisUsage = CommonUsages.secondary2DAxis;
+                        break;
+                    case DeviceInputType.Touchpad:
+                        axisUsage = CommonUsages.primary2DAxis;
+                        break;
+                    default:
+                        return;
+                }
 
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
-            }
+                if (inputDevice.TryGetFeatureValue(axisUsage, out Vector2 axisData))
+                {
+                    // Update the interaction data source
+                    interactionMapping.Vector2Data = axisData;
+                }
 
-            Profiler.EndSample(); // UpdateDualAxisData
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
+                }
+            }
         }
+
+        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKController.UpdatePoseData");
 
         /// <summary>
         /// Update spatial grip data.
         /// </summary>
         protected virtual void UpdatePoseData(MixedRealityInteractionMapping interactionMapping, InputDevice inputDevice)
         {
-            Profiler.BeginSample("[MRTK] GenericXRSDKController.UpdatePoseData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
-
-            // Update the interaction data source
-            switch (interactionMapping.InputType)
+            using (UpdatePoseDataPerfMarker.Auto())
             {
-                case DeviceInputType.SpatialGrip:
-                    interactionMapping.PoseData = CurrentControllerPose;
+                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
-                    }
-                    break;
+                // Update the interaction data source
+                switch (interactionMapping.InputType)
+                {
+                    case DeviceInputType.SpatialGrip:
+                        interactionMapping.PoseData = CurrentControllerPose;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
+                        }
+                        break;
+                }
             }
-
-            Profiler.EndSample(); // UpdatePoseData
         }
     }
 }

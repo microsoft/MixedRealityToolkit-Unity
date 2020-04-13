@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
-    /// <summary> 
+    /// <summary>
     /// BoxDisplay can be used to attach a solid box visualization to a <see cref="BoundsControl"/>
     /// The box will only be rendered if a material is assigned
     /// </summary>
     public class BoxDisplay
     {
-        // Game object used to display the box. Parented to the rig root
+        // GameObject used to display the box. Parented to the rig root
         private GameObject boxDisplay;
 
         private BoxDisplayConfiguration config;
@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         {
             if (config.BoxMaterial != null)
             {
-                // this has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
+                // This has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
                 boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube); 
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void SetHighlighted()
         {
-            //update the box material to the grabbed material
+            // Update the box material to the grabbed material
             if (boxDisplay != null)
             {
                 VisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxGrabbedMaterial);
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void ResetVisibility(bool activate)
         {
-            //set box display visibility
+            // Set box display visibility
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(activate);

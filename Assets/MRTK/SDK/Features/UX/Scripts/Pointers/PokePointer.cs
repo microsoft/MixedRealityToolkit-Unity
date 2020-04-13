@@ -3,8 +3,8 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -138,265 +138,293 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override bool IsInteractionEnabled => base.IsInteractionEnabled && IsNearObject;
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnPreSceneQuery");
+
         public override void OnPreSceneQuery()
         {
-            Profiler.BeginSample("[MRTK] PokePointer.OnPreSceneQuery");
-
-            if (Rays == null)
+            using (OnPreSceneQueryPerfMarker.Auto())
             {
-                Rays = new RayStep[1];
-            }
-
-            closestNormal = Rotation * Vector3.forward;
-
-            var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
-
-            // Find closest touchable
-            BaseNearInteractionTouchable newClosestTouchable = null;
-            foreach (var layerMask in layerMasks)
-            {
-                if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
+                if (Rays == null)
                 {
-                    break;
+                    Rays = new RayStep[1];
                 }
-            }
 
-            if (newClosestTouchable != null)
-            {
-                // Build ray (poke from in front to the back of the pointer position)
-                // We make a very long ray if we are touching a touchable volume to ensure that we actually 
-                // hit the volume when we are inside of the volume, which could be very large.
-                var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
-                    maximumTouchableVolumeSize : touchableDistance;
-                Vector3 start = Position + lengthOfPointerRay * closestNormal;
-                Vector3 end = Position - lengthOfPointerRay * closestNormal;
-                Rays[0].UpdateRayStep(ref start, ref end);
+                closestNormal = Rotation * Vector3.forward;
 
-                line.SetPosition(0, Position);
-                line.SetPosition(1, end);
-            }
+                var layerMasks = PrioritizedLayerMasksOverride ?? PokeLayerMasks;
 
-            // Check if the currently touched object is still part of the new touchable.
-            if (currentTouchableObjectDown != null)
-            {
-                if (!IsObjectPartOfTouchable(currentTouchableObjectDown, newClosestTouchable))
+                // Find closest touchable
+                BaseNearInteractionTouchable newClosestTouchable = null;
+                foreach (var layerMask in layerMasks)
                 {
-                    TryRaisePokeUp();
+                    if (FindClosestTouchableForLayerMask(layerMask, out newClosestTouchable, out closestDistance, out closestNormal))
+                    {
+                        break;
+                    }
                 }
+
+                if (newClosestTouchable != null)
+                {
+                    // Build ray (poke from in front to the back of the pointer position)
+                    // We make a very long ray if we are touching a touchable volume to ensure that we actually 
+                    // hit the volume when we are inside of the volume, which could be very large.
+                    var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
+                        maximumTouchableVolumeSize : touchableDistance;
+                    Vector3 start = Position + lengthOfPointerRay * closestNormal;
+                    Vector3 end = Position - lengthOfPointerRay * closestNormal;
+                    Rays[0].UpdateRayStep(ref start, ref end);
+
+                    line.SetPosition(0, Position);
+                    line.SetPosition(1, end);
+                }
+
+                // Check if the currently touched object is still part of the new touchable.
+                if (currentTouchableObjectDown != null)
+                {
+                    if (!IsObjectPartOfTouchable(currentTouchableObjectDown, newClosestTouchable))
+                    {
+                        TryRaisePokeUp();
+                    }
+                }
+
+                // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
+                // we need to do so using the previous touchable in TryRaisePokeUp().
+                closestProximityTouchable = newClosestTouchable;
+
+                visuals.SetActive(IsActive);
             }
-
-            // Set new touchable only now: If we have to raise a poke-up event for the previous touchable object,
-            // we need to do so using the previous touchable in TryRaisePokeUp().
-            closestProximityTouchable = newClosestTouchable;
-
-            visuals.SetActive(IsActive);
-
-            Profiler.EndSample(); // OnPreSceneQuery
         }
+
+        private static readonly ProfilerMarker FindClosestTouchableForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] PokePointer.FindClosestTouchableForLayerMask");
 
         private bool FindClosestTouchableForLayerMask(LayerMask layerMask, out BaseNearInteractionTouchable closest, out float closestDistance, out Vector3 closestNormal)
         {
-            Profiler.BeginSample("[MRTK] PokePointer.FindClosestTouchableForLayerMask");
-
-            closest = null;
-            closestDistance = float.PositiveInfinity;
-            closestNormal = Vector3.zero;
-
-            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
-            if (numColliders == queryBuffer.Length)
+            using (FindClosestTouchableForLayerMaskPerfMarker.Auto())
             {
-                Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the input system settings.");
-            }
+                closest = null;
+                closestDistance = float.PositiveInfinity;
+                closestNormal = Vector3.zero;
 
-            Camera mainCam = CameraCache.Main;
-            for (int i = 0; i < numColliders; ++i)
-            {
-                var collider = queryBuffer[i];
-                var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
-                if (touchable)
+                int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
+                if (numColliders == queryBuffer.Length)
                 {
-                    if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
+                    Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the input system settings.");
+                }
+
+                Camera mainCam = CameraCache.Main;
+                for (int i = 0; i < numColliders; ++i)
+                {
+                    var collider = queryBuffer[i];
+                    var touchable = collider.GetComponent<BaseNearInteractionTouchable>();
+                    if (touchable)
                     {
-                        continue;
-                    }
-                    float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
-                    if (distance < closestDistance)
-                    {
-                        closest = touchable;
-                        closestDistance = distance;
-                        closestNormal = normal;
+                        if (IgnoreCollidersNotInFOV && !mainCam.IsInFOVCached(collider))
+                        {
+                            continue;
+                        }
+                        float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                        if (distance < closestDistance)
+                        {
+                            closest = touchable;
+                            closestDistance = distance;
+                            closestNormal = normal;
+                        }
                     }
                 }
-            }
 
-            // Unity UI does not provide an equivalent broad-phase test to Physics.OverlapSphere,
-            // so we have to use a static instances list to test all NearInteractionTouchableUnityUI
-            for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
-            {
-                NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
-                if (touchable.gameObject.IsInLayerMask(layerMask))
+                // Unity UI does not provide an equivalent broad-phase test to Physics.OverlapSphere,
+                // so we have to use a static instances list to test all NearInteractionTouchableUnityUI
+                for (int i = 0; i < NearInteractionTouchableUnityUI.Instances.Count; i++)
                 {
-                    float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
-                    if (distance <= touchableDistance && distance < closestDistance)
+                    NearInteractionTouchableUnityUI touchable = NearInteractionTouchableUnityUI.Instances[i];
+                    if (touchable.gameObject.IsInLayerMask(layerMask))
                     {
-                        closest = touchable;
-                        closestDistance = distance;
-                        closestNormal = normal;
+                        float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
+                        if (distance <= touchableDistance && distance < closestDistance)
+                        {
+                            closest = touchable;
+                            closestDistance = distance;
+                            closestNormal = normal;
+                        }
                     }
                 }
-            }
 
-            Profiler.EndSample(); // FindClosestTouchableForLayerMask
-            return closest != null;
+                return closest != null;
+            }
         }
+
+        private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnPostSceneQuery");
 
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
-            Profiler.BeginSample("[MRTK] PokePointer.OnPostSceneQuery");
-
-            base.OnPostSceneQuery();
-
-            if (!IsActive)
+            using (OnPostSceneQueryPerfMarker.Auto())
             {
-                Profiler.EndSample(); // OnPostSceneQuery - early exit
-                return;
-            }
+                base.OnPostSceneQuery();
 
-            if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
-            {
-                float distToTouchable;
-                if (closestProximityTouchable is NearInteractionTouchableVolume)
+                if (!IsActive)
                 {
-                    // Volumes can be arbitrary size, so don't rely on the length of the raycast ray
-                    // instead just have the volume itself give us the distance.
-                    distToTouchable = closestProximityTouchable.DistanceToTouchable(Position, out _);
-                }
-                else
-                {
-                    // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
-                    distToTouchable = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
+                    return;
                 }
 
-                bool newIsDown = (distToTouchable < 0.0f);
-                bool newIsUp = (distToTouchable > closestProximityTouchable.DebounceThreshold);
-
-                if (newIsDown)
+                if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
                 {
-                    TryRaisePokeDown();
-                }
-                else if (currentTouchableObjectDown != null)
-                {
-                    if (newIsUp)
+                    float distToTouchable;
+                    if (closestProximityTouchable is NearInteractionTouchableVolume)
                     {
-                        TryRaisePokeUp();
+                        // Volumes can be arbitrary size, so don't rely on the length of the raycast ray
+                        // instead just have the volume itself give us the distance.
+                        distToTouchable = closestProximityTouchable.DistanceToTouchable(Position, out _);
                     }
                     else
                     {
+                        // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
+                        distToTouchable = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
+                    }
+
+                    bool newIsDown = (distToTouchable < 0.0f);
+                    bool newIsUp = (distToTouchable > closestProximityTouchable.DebounceThreshold);
+
+                    if (newIsDown)
+                    {
                         TryRaisePokeDown();
                     }
+                    else if (currentTouchableObjectDown != null)
+                    {
+                        if (newIsUp)
+                        {
+                            TryRaisePokeUp();
+                        }
+                        else
+                        {
+                            TryRaisePokeDown();
+                        }
+                    }
                 }
-            }
 
-            if (!IsNearObject)
-            {
-                line.endColor = line.startColor = new Color(1, 1, 1, 0.25f);
-            }
-            else if (currentTouchableObjectDown == null)
-            {
-                line.endColor = line.startColor = new Color(1, 1, 1, 0.75f);
-            }
-            else
-            {
-                line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
-            }
+                if (!IsNearObject)
+                {
+                    line.endColor = line.startColor = new Color(1, 1, 1, 0.25f);
+                }
+                else if (currentTouchableObjectDown == null)
+                {
+                    line.endColor = line.startColor = new Color(1, 1, 1, 0.75f);
+                }
+                else
+                {
+                    line.endColor = line.startColor = new Color(0, 0, 1, 0.75f);
+                }
 
-            PreviousPosition = Position;
-
-            Profiler.EndSample(); // OnPostSceneQuery
+                PreviousPosition = Position;
+            }
         }
+
+        private static readonly ProfilerMarker OnPreCurrentPointerTargetChangePerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnPreCurrentPointerTargetChange");
 
         /// <inheritdoc />
         public override void OnPreCurrentPointerTargetChange()
         {
-            // We need to raise the event now, since the pointer's focused object or touchable will change
-            // after we leave this function. This will make sure the same object that received the Down event
-            // will also receive the Up event.
-            TryRaisePokeUp();
+            using (OnPreCurrentPointerTargetChangePerfMarker.Auto())
+            {
+                // We need to raise the event now, since the pointer's focused object or touchable will change
+                // after we leave this function. This will make sure the same object that received the Down event
+                // will also receive the Up event.
+                TryRaisePokeUp();
+            }
         }
+
+        private static readonly ProfilerMarker TryRaisePokeDownPerfMarker = new ProfilerMarker("[MRTK] PokePointer.TryRaisePokeDown");
 
         private void TryRaisePokeDown()
         {
-            GameObject targetObject = Result.CurrentPointerTarget;
-
-            if (currentTouchableObjectDown == null)
+            using (TryRaisePokeDownPerfMarker.Auto())
             {
-                // In order to get reliable up/down event behavior, only allow the closest touchable to be touched.
-                if (IsObjectPartOfTouchable(targetObject, closestProximityTouchable))
-                {
-                    currentTouchableObjectDown = targetObject;
+                GameObject targetObject = Result.CurrentPointerTarget;
 
-                    if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                if (currentTouchableObjectDown == null)
+                {
+                    // In order to get reliable up/down event behavior, only allow the closest touchable to be touched.
+                    if (IsObjectPartOfTouchable(targetObject, closestProximityTouchable))
                     {
-                        CoreServices.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
-                    }
-                    else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
-                    {
-                        CoreServices.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
+                        currentTouchableObjectDown = targetObject;
+
+                        if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                        {
+                            CoreServices.InputSystem?.RaisePointerDown(this, pointerAction, Handedness);
+                        }
+                        else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
+                        {
+                            CoreServices.InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
+                        }
                     }
                 }
-            }
-            else
-            {
-                RaiseTouchUpdated(targetObject, Position);
+                else
+                {
+                    RaiseTouchUpdated(targetObject, Position);
+                }
             }
         }
+
+        private static readonly ProfilerMarker TryRaisePokeUpPerfMarker = new ProfilerMarker("[MRTK] PokePointer.TryRaisePokeUp");
 
         private void TryRaisePokeUp()
         {
-            if (currentTouchableObjectDown != null)
+            using (TryRaisePokeUpPerfMarker.Auto())
             {
-                Debug.Assert(Result.CurrentPointerTarget == currentTouchableObjectDown, "PokeUp will not be raised for correct object.");
-
-                if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                if (currentTouchableObjectDown != null)
                 {
-                    CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
-                }
-                else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
-                {
-                    CoreServices.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
-                }
+                    Debug.Assert(Result.CurrentPointerTarget == currentTouchableObjectDown, "PokeUp will not be raised for correct object.");
 
-                currentTouchableObjectDown = null;
+                    if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                    {
+                        CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                        CoreServices.InputSystem?.RaisePointerUp(this, pointerAction, Handedness);
+                    }
+                    else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
+                    {
+                        CoreServices.InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
+                    }
+
+                    currentTouchableObjectDown = null;
+                }
             }
         }
+
+        private static readonly ProfilerMarker RaiseTouchUpdatedPerfMarker = new ProfilerMarker("[MRTK] PokePointer.RaiseTouchUpdated");
 
         private void RaiseTouchUpdated(GameObject targetObject, Vector3 touchPosition)
         {
-            if (currentTouchableObjectDown != null)
+            using (RaiseTouchUpdatedPerfMarker.Auto())
             {
-                Debug.Assert(Result?.CurrentPointerTarget == currentTouchableObjectDown);
+                if (currentTouchableObjectDown != null)
+                {
+                    Debug.Assert(Result?.CurrentPointerTarget == currentTouchableObjectDown);
 
-                if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
-                {
-                    CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
-                }
-                else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
-                {
-                    CoreServices.InputSystem?.RaisePointerDragged(this, pointerAction, Handedness, InputSourceParent);
+                    if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
+                    {
+                        CoreServices.InputSystem?.RaiseOnTouchUpdated(InputSourceParent, Controller, Handedness, touchPosition);
+                    }
+                    else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Pointer)
+                    {
+                        CoreServices.InputSystem?.RaisePointerDragged(this, pointerAction, Handedness, InputSourceParent);
+                    }
                 }
             }
         }
 
+        private static readonly ProfilerMarker IsObjectPartOfTouchablePerfMarker = new ProfilerMarker("[MRTK] PokePointer.IsObjectPartOfTouchable");
+
         private static bool IsObjectPartOfTouchable(GameObject targetObject, BaseNearInteractionTouchable touchable)
         {
-            return targetObject != null && touchable != null &&
-                (targetObject == touchable.gameObject ||
-                // Descendant game objects are touchable as well. In particular, this is needed to be able to send
-                // touch events to Unity UI control elements.
-                (targetObject.transform != null && touchable.gameObject.transform != null &&
-                targetObject.transform.IsChildOf(touchable.gameObject.transform)));
+            using (IsObjectPartOfTouchablePerfMarker.Auto())
+            {
+                return targetObject != null && touchable != null &&
+                    (targetObject == touchable.gameObject ||
+                    // Descendant game objects are touchable as well. In particular, this is needed to be able to send
+                    // touch events to Unity UI control elements.
+                    (targetObject.transform != null && touchable.gameObject.transform != null &&
+                    targetObject.transform.IsChildOf(touchable.gameObject.transform)));
+            }
         }
 
         /// <inheritdoc />
@@ -420,19 +448,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return true;
         }
 
+        private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnSourceLost");
+
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
         {
-            TryRaisePokeUp();
+            using (OnSourceLostPerfMarker.Auto())
+            {
+                TryRaisePokeUp();
 
-            base.OnSourceLost(eventData);
+                base.OnSourceLost(eventData);
+            }
         }
+
+        private static readonly ProfilerMarker OnSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] PokePointer.OnSourceDetected");
 
         /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
-            base.OnSourceDetected(eventData);
-            PreviousPosition = Position;
+            using (OnSourceDetectedPerfMarker.Auto())
+            {
+                base.OnSourceDetected(eventData);
+                PreviousPosition = Position;
+            }
         }
 
         /// <inheritdoc />

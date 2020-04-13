@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
         /// <inheritdoc />
         protected override void GenerateButtons()
         {
-            //Get List of ButtonTypes that should be created on Dialog
+            // Get List of ButtonTypes that should be created on Dialog
             List<DialogButtonType> buttonTypes = new List<DialogButtonType>();
             foreach (DialogButtonType buttonType in Enum.GetValues(typeof(DialogButtonType)))
             {
@@ -62,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dialog
 
             twoButtonSet = new GameObject[2];
 
-            //Find all buttons on dialog...
+            // Find all buttons on dialog...
             List<DialogButton> buttonsOnDialog = GetAllDialogButtons();
 
-            //set desired buttons active and the rest inactive
+            // Set desired buttons active and the rest inactive
             SetButtonsActiveStates(buttonsOnDialog, buttonTypes.Count);
 
-            //set titles and types
+            // Set titles and types
             if (buttonTypes.Count > 0)
             {
                 // If we have two buttons then do step 1, else 0

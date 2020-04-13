@@ -93,14 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     positionAvailableMap[id] = true;
                 }
 
-                //handPositionMap[id] = handPosition;
-
                 if (true == TryGetPointerPosition(id, out Vector3 currentGazePoint))
                 {
                     handPositionMap[id] = handPosition + (currentGazePoint - gazePointMap[id]);
                 }
-
-                //handPositionMap[eventData.SourceId] = handStartPositionMap[eventData.SourceId] + (gazePoint - gazePointMap[id]);
             }
         }
 

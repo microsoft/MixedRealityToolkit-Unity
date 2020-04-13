@@ -593,7 +593,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
             else if (activation == BoundsControlActivationType.ActivateManually)
             {
-                //activate to create handles etc. then deactivate. 
+                // Activate to create handles etc. then deactivate. 
                 Active = true;
                 Active = false;
             }
@@ -1187,16 +1187,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return;
             }
 
-            //set link visibility
+            // Set link visibility
             links.ResetVisibility(active);
             links.Flatten(ref flattenedHandles);
 
             boxDisplay.ResetVisibility(active);
 
             bool isVisible = (active == true && wireframeOnly == false);
-            //set corner visibility
+            // Set corner visibility
             scaleHandles.ResetHandleVisibility(isVisible);
-            // set rotation handle visibility
+            // Set rotation handle visibility
             rotationHandles.ResetHandleVisibility(isVisible);
             rotationHandles.FlattenHandles(ref flattenedHandles);
         }

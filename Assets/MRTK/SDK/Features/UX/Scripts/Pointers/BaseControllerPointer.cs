@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using System.Collections;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -61,6 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool isCursorInstantiatedFromPrefab = false;
 
+        private static readonly ProfilerMarker SetCursorPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.SetCursor");
+
         /// <summary>
         /// Set a new cursor for this <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer"/>
         /// </summary>
@@ -68,11 +71,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="newCursor">The new cursor</param>
         public virtual void SetCursor(GameObject newCursor = null)
         {
-            if (cursorInstance != null)
-            {
-                DestroyCursorInstance();
-                cursorInstance = newCursor;
-            }
+            using (SetCursorPerfMarker.Auto())
+            { 
+                if (cursorInstance != null)
+                {
+                    DestroyCursorInstance();
+                    cursorInstance = newCursor;
+                }
 
             if (cursorInstance == null && cursorPrefab != null)
             {
@@ -80,38 +85,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 isCursorInstantiatedFromPrefab = true;
             }
 
-            if (cursorInstance != null)
-            {
-                cursorInstance.name = $"{Handedness}_{name}_Cursor";
-
-                BaseCursor oldC = BaseCursor as BaseCursor;
-                if (oldC != null && enabled)
+                if (cursorInstance != null)
                 {
-                    oldC.VisibleSourcesCount--;
-                }
+                    cursorInstance.name = $"{Handedness}_{name}_Cursor";
 
-                BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
-
-                BaseCursor newC = BaseCursor as BaseCursor;
-                if (newC != null && enabled)
-                {
-                    newC.VisibleSourcesCount++;
-                }
-
-                if (BaseCursor != null)
-                {
-                    BaseCursor.DefaultCursorDistance = DefaultPointerExtent;
-                    BaseCursor.Pointer = this;
-                    BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
-
-                    if (disableCursorOnStart)
+                    BaseCursor oldC = BaseCursor as BaseCursor;
+                    if (oldC != null && enabled)
                     {
-                        BaseCursor.SetVisibility(false);
+                        oldC.VisibleSourcesCount--;
                     }
-                }
-                else
-                {
-                    Debug.LogError($"No IMixedRealityCursor component found on {cursorInstance.name}");
+
+                    BaseCursor = cursorInstance.GetComponent<IMixedRealityCursor>();
+
+                    BaseCursor newC = BaseCursor as BaseCursor;
+                    if (newC != null && enabled)
+                    {
+                        newC.VisibleSourcesCount++;
+                    }
+
+                    if (BaseCursor != null)
+                    {
+                        BaseCursor.DefaultCursorDistance = DefaultPointerExtent;
+                        BaseCursor.Pointer = this;
+                        BaseCursor.SetVisibilityOnSourceDetected = setCursorVisibilityOnSourceDetected;
+
+                        if (disableCursorOnStart)
+                        {
+                            BaseCursor.SetVisibility(false);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"No IMixedRealityCursor component found on {cursorInstance.name}");
+                    }
                 }
             }
         }
@@ -380,12 +386,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPreSceneQuery() { }
 
+        private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnPostSceneQuery");
+
         /// <inheritdoc />
         public virtual void OnPostSceneQuery()
         {
-            if (IsSelectPressed)
+            using (OnPostSceneQueryPerfMarker.Auto())
             {
-                CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                if (IsSelectPressed)
+                {
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                }
             }
         }
 
@@ -452,24 +463,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealitySourcePoseHandler Implementation
 
+        private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnSourceLost");
+
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
         {
-            base.OnSourceLost(eventData);
-
-            if (eventData.SourceId == InputSourceParent.SourceId)
+            using (OnSourceLostPerfMarker.Auto())
             {
-                if (requiresHoldAction)
-                {
-                    IsHoldPressed = false;
-                }
+                base.OnSourceLost(eventData);
 
-                if (IsSelectPressed)
+                if (eventData.SourceId == InputSourceParent.SourceId)
                 {
-                    CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
-                }
+                    if (requiresHoldAction)
+                    {
+                        IsHoldPressed = false;
+                    }
 
-                IsSelectPressed = false;
+                    if (IsSelectPressed)
+                    {
+                        CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    }
+
+                    IsSelectPressed = false;
+                }
             }
         }
 
@@ -477,52 +493,62 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityInputHandler Implementation
 
+        private static readonly ProfilerMarker OnInputUpPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnInputUp");
+
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
-            if(!IsInteractionEnabled) { return; }
+            if (!IsInteractionEnabled) { return; }
 
-            base.OnInputUp(eventData);
-
-            if (eventData.SourceId == InputSourceParent.SourceId)
+            using (OnInputUpPerfMarker.Auto())
             {
-                if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
-                {
-                    IsHoldPressed = false;
-                }
+                base.OnInputUp(eventData);
 
-                if (eventData.MixedRealityInputAction == pointerAction)
+                if (eventData.SourceId == InputSourceParent.SourceId)
                 {
-                    IsSelectPressed = false;
+                    if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
+                    {
+                        IsHoldPressed = false;
+                    }
 
-                    CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
-                    CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    if (eventData.MixedRealityInputAction == pointerAction)
+                    {
+                        IsSelectPressed = false;
+
+                        CoreServices.InputSystem.RaisePointerClicked(this, pointerAction, 0, Handedness);
+                        CoreServices.InputSystem.RaisePointerUp(this, pointerAction, Handedness);
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker OnInputDownPerfMarker = new ProfilerMarker("[MRTK] BaseControllerPointer.OnInputDown");
 
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
             if (!IsInteractionEnabled) { return; }
 
-            base.OnInputDown(eventData);
-
-            if (eventData.SourceId == InputSourceParent.SourceId)
+            using (OnInputDownPerfMarker.Auto())
             {
-                if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
-                {
-                    IsHoldPressed = true;
-                }
+                base.OnInputDown(eventData);
 
-                if (eventData.MixedRealityInputAction == pointerAction)
+                if (eventData.SourceId == InputSourceParent.SourceId)
                 {
-                    IsSelectPressed = true;
-                    HasSelectPressedOnce = true;
-
-                    if (IsInteractionEnabled)
+                    if (requiresHoldAction && eventData.MixedRealityInputAction == activeHoldAction)
                     {
-                        CoreServices.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
+                        IsHoldPressed = true;
+                    }
+
+                    if (eventData.MixedRealityInputAction == pointerAction)
+                    {
+                        IsSelectPressed = true;
+                        HasSelectPressedOnce = true;
+
+                        if (IsInteractionEnabled)
+                        {
+                            CoreServices.InputSystem.RaisePointerDown(this, pointerAction, Handedness);
+                        }
                     }
                 }
             }
