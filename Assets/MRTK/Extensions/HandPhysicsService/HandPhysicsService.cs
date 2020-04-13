@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
         {
             if(jointKinematicBodies.Count > 0)
             {
-                //Tear down the old kinematicBodies
+                // Tear down the old kinematicBodies
                 foreach (JointKinematicBody jointKinematicBody in jointKinematicBodies)
                 {
                     UnityEngine.Object.Destroy(jointKinematicBody.gameObject);

@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UInput = UnityEngine.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
@@ -71,47 +71,50 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         protected MixedRealityPose CurrentControllerPose = MixedRealityPose.ZeroIdentity;
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateController");
+
         /// <summary>
         /// Update the controller data from Unity's Input Manager
         /// </summary>
         public virtual void UpdateController()
         {
-            if (!Enabled) { return; }
-
-            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateController");
-
-            if (Interactions == null)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                Debug.LogError($"No interaction configuration for {GetType().Name}");
-                Enabled = false;
-            }
+                if (!Enabled) { return; }
 
-            for (int i = 0; i < Interactions?.Length; i++)
-            {
-                switch (Interactions[i].AxisType)
+                if (Interactions == null)
                 {
-                    case AxisType.None:
-                        break;
-                    case AxisType.Digital:
-                        UpdateButtonData(Interactions[i]);
-                        break;
-                    case AxisType.SingleAxis:
-                        UpdateSingleAxisData(Interactions[i]);
-                        break;
-                    case AxisType.DualAxis:
-                        UpdateDualAxisData(Interactions[i]);
-                        break;
-                    case AxisType.SixDof:
-                        UpdatePoseData(Interactions[i]);
-                        break;
-                    default:
-                        Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");
-                        break;
+                    Debug.LogError($"No interaction configuration for {GetType().Name}");
+                    Enabled = false;
+                }
+
+                for (int i = 0; i < Interactions?.Length; i++)
+                {
+                    switch (Interactions[i].AxisType)
+                    {
+                        case AxisType.None:
+                            break;
+                        case AxisType.Digital:
+                            UpdateButtonData(Interactions[i]);
+                            break;
+                        case AxisType.SingleAxis:
+                            UpdateSingleAxisData(Interactions[i]);
+                            break;
+                        case AxisType.DualAxis:
+                            UpdateDualAxisData(Interactions[i]);
+                            break;
+                        case AxisType.SixDof:
+                            UpdatePoseData(Interactions[i]);
+                            break;
+                        default:
+                            Debug.LogError($"Input [{Interactions[i].InputType}] is not handled for this controller [{GetType().Name}]");
+                            break;
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateController
         }
+
+        private static readonly ProfilerMarker UpdateButtonDataPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateButtonData");
 
         /// <summary>
         /// Update an Interaction Bool data type from a Bool input
@@ -122,63 +125,28 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </remarks>
         protected void UpdateButtonData(MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateButtonData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
-
-            // Update the interaction data source
-            switch (interactionMapping.InputType)
+            using (UpdateButtonDataPerfMarker.Auto())
             {
-                case DeviceInputType.TriggerPress:
-                    interactionMapping.BoolData = UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(1);
-                    break;
-                case DeviceInputType.TriggerNearTouch:
-                case DeviceInputType.ThumbNearTouch:
-                case DeviceInputType.IndexFingerNearTouch:
-                case DeviceInputType.MiddleFingerNearTouch:
-                case DeviceInputType.RingFingerNearTouch:
-                case DeviceInputType.PinkyFingerNearTouch:
-                    interactionMapping.BoolData = !UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(0);
-                    break;
-                default:
-                    interactionMapping.BoolData = UInput.GetKey(interactionMapping.KeyCode);
-                    break;
-            }
+                Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                if (interactionMapping.BoolData)
+                // Update the interaction data source
+                switch (interactionMapping.InputType)
                 {
-                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    case DeviceInputType.TriggerPress:
+                        interactionMapping.BoolData = UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(1);
+                        break;
+                    case DeviceInputType.TriggerNearTouch:
+                    case DeviceInputType.ThumbNearTouch:
+                    case DeviceInputType.IndexFingerNearTouch:
+                    case DeviceInputType.MiddleFingerNearTouch:
+                    case DeviceInputType.RingFingerNearTouch:
+                    case DeviceInputType.PinkyFingerNearTouch:
+                        interactionMapping.BoolData = !UInput.GetAxisRaw(interactionMapping.AxisCodeX).Equals(0);
+                        break;
+                    default:
+                        interactionMapping.BoolData = UInput.GetKey(interactionMapping.KeyCode);
+                        break;
                 }
-                else
-                {
-                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-            }
-
-            Profiler.EndSample(); // UpdateButtonData
-        }
-
-        /// <summary>
-        /// Update an Interaction Float data type from a SingleAxis (float) input 
-        /// </summary>
-        /// <remarks>
-        /// Raises a Float Input Changed event when the float data changes
-        /// </remarks>
-        protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
-        {
-            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateSingleAxisData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
-
-            var singleAxisValue = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
-
-            if (interactionMapping.InputType == DeviceInputType.TriggerPress)
-            {
-                interactionMapping.BoolData = singleAxisValue.Equals(1);
 
                 // If our value changed raise it.
                 if (interactionMapping.Changed)
@@ -194,84 +162,120 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     }
                 }
             }
-            else
-            {
-                // Update the interaction data source
-                interactionMapping.FloatData = singleAxisValue;
+        }
 
-                // If our value changed raise it.
-                if (interactionMapping.Changed)
+        private static readonly ProfilerMarker UpdateSingleAxisDataPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateSingleAxisData");
+
+        /// <summary>
+        /// Update an Interaction Float data type from a SingleAxis (float) input 
+        /// </summary>
+        /// <remarks>
+        /// Raises a Float Input Changed event when the float data changes
+        /// </remarks>
+        protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
+        {
+            using (UpdateSingleAxisDataPerfMarker.Auto())
+            {
+                Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
+
+                var singleAxisValue = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
+
+                if (interactionMapping.InputType == DeviceInputType.TriggerPress)
                 {
-                    // Raise input system event if it's enabled
-                    CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                    interactionMapping.BoolData = singleAxisValue.Equals(1);
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system event if it's enabled
+                        if (interactionMapping.BoolData)
+                        {
+                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                        else
+                        {
+                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        }
+                    }
+                }
+                else
+                {
+                    // Update the interaction data source
+                    interactionMapping.FloatData = singleAxisValue;
+
+                    // If our value changed raise it.
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system event if it's enabled
+                        CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateSingleAxisData
         }
+
+        private static readonly ProfilerMarker UpdateDualAxisDataPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdateDualAxisData");
 
         /// <summary>
         /// Update the Touchpad / Thumbstick input from the device (in OpenVR, touchpad and thumbstick are the same input control)
         /// </summary>
         protected void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdateDualAxisData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
-
-            dualAxisPosition.x = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
-            dualAxisPosition.y = UInput.GetAxisRaw(interactionMapping.AxisCodeY);
-
-            // Update the interaction data source
-            interactionMapping.Vector2Data = dualAxisPosition;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
+            using (UpdateDualAxisDataPerfMarker.Auto())
             {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
-            }
+                Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
 
-            Profiler.EndSample(); // UpdateDualAxisData
+                dualAxisPosition.x = UInput.GetAxisRaw(interactionMapping.AxisCodeX);
+                dualAxisPosition.y = UInput.GetAxisRaw(interactionMapping.AxisCodeY);
+
+                // Update the interaction data source
+                interactionMapping.Vector2Data = dualAxisPosition;
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
+                }
+            }
         }
+
+        private static readonly ProfilerMarker UpdatePoseDataPerfMarker = new ProfilerMarker("[MRTK] GenericJoystickController.UpdatePoseData");
 
         /// <summary>
         /// Update Spatial Pointer Data.
         /// </summary>
         protected void UpdatePoseData(MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] GenericJoystickController.UpdatePoseData");
-
-            Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
-
-            if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
+            using (UpdatePoseDataPerfMarker.Auto())
             {
-                pointerOffsetPose.Position = CurrentControllerPose.Position;
-                pointerOffsetPose.Rotation = CurrentControllerPose.Rotation * Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
+                Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);
 
-                // Update the interaction data source
-                interactionMapping.PoseData = pointerOffsetPose;
-            }
-            else if (interactionMapping.InputType == DeviceInputType.SpatialGrip)
-            {
-                // Update the interaction data source
-                interactionMapping.PoseData = CurrentControllerPose;
-            }
-            else
-            {
-                Debug.LogWarning("Unhandled Interaction");
-                Profiler.EndSample(); // UpdatePoseData - unhandled
-                return;
-            }
+                if (interactionMapping.InputType == DeviceInputType.SpatialPointer)
+                {
+                    pointerOffsetPose.Position = CurrentControllerPose.Position;
+                    pointerOffsetPose.Rotation = CurrentControllerPose.Rotation * Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
 
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
-            }
+                    // Update the interaction data source
+                    interactionMapping.PoseData = pointerOffsetPose;
+                }
+                else if (interactionMapping.InputType == DeviceInputType.SpatialGrip)
+                {
+                    // Update the interaction data source
+                    interactionMapping.PoseData = CurrentControllerPose;
+                }
+                else
+                {
+                    Debug.LogWarning("Unhandled Interaction");
+                    return;
+                }
 
-            Profiler.EndSample(); // UpdatePoseData
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
+                }
+            }
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.InputSystem
             // Make sure if we set the same value it's false
             Assert.IsFalse(interaction.Changed);
 
-            //Check setting the value twice with the same value produces no change
+            // Check setting the value twice with the same value produces no change
             var newValue = interaction.RawData;
 
             // Make sure if we set the same value it's false

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -107,112 +108,136 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IMixedRealityPointer Implementation
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] LinePointer.OnPreSceneQuery");
+
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            PreUpdateLineRenderers();
-
-            UpdateRays();
+            using (OnPreSceneQueryPerfMarker.Auto())
+            {
+                PreUpdateLineRenderers();
+                UpdateRays();
+            }
         }
+
+        private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] LinePointer.OnPostSceneQuery");
 
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
-            base.OnPostSceneQuery();
-
-            bool isEnabled = IsInteractionEnabled;
-            LineBase.enabled = isEnabled;
-            if (BaseCursor != null)
+            using (OnPostSceneQueryPerfMarker.Auto())
             {
-                BaseCursor.SetVisibility(isEnabled);
-            }
+                base.OnPostSceneQuery();
 
-            PostUpdateLineRenderers();
+                bool isEnabled = IsInteractionEnabled;
+                LineBase.enabled = isEnabled;
+                if (BaseCursor != null)
+                {
+                    BaseCursor.SetVisibility(isEnabled);
+                }
+
+                PostUpdateLineRenderers();
+            }
         }
+
+        private static readonly ProfilerMarker PreUpdateLineRenderersPerfMarker = new ProfilerMarker("[MRTK] LinePointer.PreUpdateLineRenderers");
 
         protected virtual void PreUpdateLineRenderers()
         {
-            Debug.Assert(lineBase != null);
-
-            lineBase.UpdateMatrix();
-
-            // Set our first and last points
-            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
+            using (PreUpdateLineRenderersPerfMarker.Auto())
             {
-                // Make the final point 'stick' to the target at the distance of the target
-                SetLinePoints(Position, Result.Details.Point);
-            }
-            else
-            {
-                SetLinePoints(Position, Position + Rotation * Vector3.forward * DefaultPointerExtent);
+                Debug.Assert(lineBase != null);
+
+                lineBase.UpdateMatrix();
+
+                // Set our first and last points
+                if (IsFocusLocked && IsTargetPositionLockedOnFocusLock && Result != null)
+                {
+                    // Make the final point 'stick' to the target at the distance of the target
+                    SetLinePoints(Position, Result.Details.Point);
+                }
+                else
+                {
+                    SetLinePoints(Position, Position + Rotation * Vector3.forward * DefaultPointerExtent);
+                }
             }
         }
+
+        private static readonly ProfilerMarker PostUpdateLineRenderersPerfMarker = new ProfilerMarker("[MRTK] LinePointer.PostUpdateLineRenderers");
 
         protected virtual void PostUpdateLineRenderers()
         {
-            if (!IsInteractionEnabled)
+            using (PostUpdateLineRenderersPerfMarker.Auto())
             {
-                return;
-            }
+                if (!IsInteractionEnabled)
+                {
+                    return;
+                }
 
-            // The distance the ray travels through the world before it hits something. Measured in world-units (as opposed to normalized distance).
-            float clearWorldLength;
-            Gradient lineColor = LineColorNoTarget;
+                // The distance the ray travels through the world before it hits something. Measured in world-units (as opposed to normalized distance).
+                float clearWorldLength;
+                Gradient lineColor = LineColorNoTarget;
 
-            if (Result?.CurrentPointerTarget != null)
-            {
-                // We hit something
-                clearWorldLength = Result.Details.RayDistance;
-                lineColor = IsSelectPressed ? LineColorSelected : LineColorValid;
-            }
-            else
-            {
-                clearWorldLength = DefaultPointerExtent;
-                lineColor = IsSelectPressed ? LineColorSelected : LineColorNoTarget;
-            }
+                if (Result?.CurrentPointerTarget != null)
+                {
+                    // We hit something
+                    clearWorldLength = Result.Details.RayDistance;
+                    lineColor = IsSelectPressed ? LineColorSelected : LineColorValid;
+                }
+                else
+                {
+                    clearWorldLength = DefaultPointerExtent;
+                    lineColor = IsSelectPressed ? LineColorSelected : LineColorNoTarget;
+                }
 
-            if (IsFocusLocked)
-            {
-                lineColor = LineColorLockFocus;
-            }
+                if (IsFocusLocked)
+                {
+                    lineColor = LineColorLockFocus;
+                }
 
-            int maxClampLineSteps = 2;
-            for (int i = 0; i < LineRenderers.Length; i++)
-            {
-                // Renderers are enabled by default if line is enabled
-                maxClampLineSteps = Mathf.Max(maxClampLineSteps, LineRenderers[i].LineStepCount);
-                LineRenderers[i].LineColor = lineColor;
-            }
+                int maxClampLineSteps = 2;
+                for (int i = 0; i < LineRenderers.Length; i++)
+                {
+                    // Renderers are enabled by default if line is enabled
+                    maxClampLineSteps = Mathf.Max(maxClampLineSteps, LineRenderers[i].LineStepCount);
+                    LineRenderers[i].LineColor = lineColor;
+                }
 
-            // Used to ensure the line doesn't extend beyond the cursor
-            float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
+                // Used to ensure the line doesn't extend beyond the cursor
+                float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
 
-            // If focus is locked, we're sticking to the target
-            // So don't clamp the world length
-            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
-            {
-                float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
-                LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
-            }
-            else
-            {
-                // Otherwise clamp the line end by the clear distance
-                float clearLocalLength = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
-                LineBase.LineEndClamp = clearLocalLength;
+                // If focus is locked, we're sticking to the target
+                // So don't clamp the world length
+                if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
+                {
+                    float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
+                    LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
+                }
+                else
+                {
+                    // Otherwise clamp the line end by the clear distance
+                    float clearLocalLength = lineBase.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
+                    LineBase.LineEndClamp = clearLocalLength;
+                }
             }
         }
 
+        private static readonly ProfilerMarker UpdateRaysPerfMarker = new ProfilerMarker("[MRTK] LinePointer.UpdateRays");
+
         protected virtual void UpdateRays()
         {
-            const int LineLength = 1;
-
-            // Make sure our array will hold
-            if (Rays == null || Rays.Length != LineLength)
+            using (UpdateRaysPerfMarker.Auto())
             {
-                Rays = new RayStep[LineLength];
-            }
+                const int LineLength = 1;
 
-            Rays[0].UpdateRayStep(ref lineStartPoint, ref lineEndPoint);
+                // Make sure our array will hold
+                if (Rays == null || Rays.Length != LineLength)
+                {
+                    Rays = new RayStep[LineLength];
+                }
+
+                Rays[0].UpdateRayStep(ref lineStartPoint, ref lineEndPoint);
+            }
         }
 
         protected void SetLinePoints(Vector3 startPoint, Vector3 endPoint)

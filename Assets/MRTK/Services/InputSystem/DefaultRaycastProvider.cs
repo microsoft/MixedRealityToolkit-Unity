@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -36,26 +37,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Default Raycast Provider";
 
+        private static readonly ProfilerMarker RaycastPerfMarker = new ProfilerMarker("[MRTK] DefaultRaycastProvider.Raycast");
+
         /// <inheritdoc />
         public bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
-            bool result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
-            return result;
+            using (RaycastPerfMarker.Auto())
+            {
+                bool result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
+                hitInfo = new MixedRealityRaycastHit(result, physicsHit);
+                return result;
+            }
         }
+
+        private static readonly ProfilerMarker SphereCastPerfMarker = new ProfilerMarker("[MRTK] DefaultRaycastProvider.SphereCast");
 
         /// <inheritdoc />
         public bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
-            var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
-            return result;
+            using (SphereCastPerfMarker.Auto())
+            {
+                bool result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out RaycastHit physicsHit);
+                hitInfo = new MixedRealityRaycastHit(result, physicsHit);
+                return result;
+            }
         }
+
+        private static readonly ProfilerMarker GraphicsRaycastPerfMarker = new ProfilerMarker("[MRTK] DefaultRaycastProvider.GraphicsRaycast");
 
         /// <inheritdoc />
         public RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
         {
-            return eventSystem.Raycast(pointerEventData, layerMasks);
+            using (GraphicsRaycastPerfMarker.Auto())
+            {
+                return eventSystem.Raycast(pointerEventData, layerMasks);
+            }
         }
     }
 }

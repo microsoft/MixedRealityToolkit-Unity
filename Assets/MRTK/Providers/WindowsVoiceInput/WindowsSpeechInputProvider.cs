@@ -3,9 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 using System;
-using UnityEngine.Profiling;
+using Unity.Profiling;
+using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
 using UnityEngine.Windows.Speech;
@@ -175,23 +175,24 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsSpeechInputProvider.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("[MRTK] WindowsSpeechInputProvider.Update");
-
-            if (keywordRecognizer != null && keywordRecognizer.IsRunning)
+            using (UpdatePerfMarker.Auto())
             {
-                for (int i = 0; i < Commands.Length; i++)
+                if (keywordRecognizer != null && keywordRecognizer.IsRunning)
                 {
-                    if (UInput.GetKeyDown(Commands[i].KeyCode))
+                    for (int i = 0; i < Commands.Length; i++)
                     {
-                        OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].LocalizedKeyword);
+                        if (UInput.GetKeyDown(Commands[i].KeyCode))
+                        {
+                            OnPhraseRecognized((ConfidenceLevel)RecognitionConfidenceLevel, TimeSpan.Zero, DateTime.UtcNow, Commands[i].LocalizedKeyword);
+                        }
                     }
                 }
             }
-
-            Profiler.EndSample();
         }
 
         /// <inheritdoc />
@@ -222,22 +223,23 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             OnPhraseRecognized(args.confidence, args.phraseDuration, args.phraseStartTime, args.text);
         }
 
+        private static readonly ProfilerMarker OnPhraseRecognizedPerfMarker = new ProfilerMarker("[MRTK] WindowsSpeechInputProvider.OnPhraseRecognized");
+
         private void OnPhraseRecognized(ConfidenceLevel confidence, TimeSpan phraseDuration, DateTime phraseStartTime, string text)
         {
-            Profiler.BeginSample("[MRTK] WindowsSpeechInputProvider.OnPhraseRecognized");
-
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            for (int i = 0; i < Commands?.Length; i++)
+            using (OnPhraseRecognizedPerfMarker.Auto())
             {
-                if (Commands[i].LocalizedKeyword == text)
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+                for (int i = 0; i < Commands?.Length; i++)
                 {
-                    inputSystem?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
-                    break;
+                    if (Commands[i].LocalizedKeyword == text)
+                    {
+                        inputSystem?.RaiseSpeechCommandRecognized(InputSource, (RecognitionConfidenceLevel)confidence, phraseDuration, phraseStartTime, Commands[i]);
+                        break;
+                    }
                 }
             }
-
-            Profiler.EndSample(); // OnPhraseRecognized
         }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }

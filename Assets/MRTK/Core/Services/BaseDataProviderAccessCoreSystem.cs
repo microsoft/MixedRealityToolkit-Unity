@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using UnityEngine.Profiling;
+using Unity.Profiling;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -74,70 +74,82 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] BaseDataProviderAccessCoreSystem.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.Update");
-
-            base.Update();
-
-            try
+            using (UpdatePerfMarker.Auto())
             {
-                foreach (IMixedRealityDataProvider provider in dataProviders)
+                base.Update();
+
+                try
                 {
-                    try
+                    foreach (IMixedRealityDataProvider provider in dataProviders)
                     {
-                        provider.Update();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError($"{provider.Name}'s Update method threw {e.GetType()}. Continuing to the next service.");
+                        try
+                        {
+                            provider.Update();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"{provider.Name}'s Update method threw {e.GetType()}. Continuing to the next service.");
+                        }
                     }
                 }
-            }
-            catch (InvalidOperationException)
-            {
-                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-                // of data providers may change mid-Update, causing an InvalidOperationException to be thrown during enumeration.
-                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
-            }
+                catch (InvalidOperationException)
+                {
+                    // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+                    // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+                    // of data providers may change mid-Update, causing an InvalidOperationException to be thrown during enumeration.
+                    // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+                    // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
+                }
 
-            Profiler.EndSample(); // Update
+                foreach (var provider in dataProviders)
+                {
+                    provider.Update();
+                }
+            }
         }
+
+        private static readonly ProfilerMarker LateUpdatePerfMarker = new ProfilerMarker("[MRTK] BaseDataProviderAccessCoreSystem.LateUpdate");
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.LateUpdate");
-
-            base.LateUpdate();
-
-            try
+            using (LateUpdatePerfMarker.Auto())
             {
-                foreach (IMixedRealityDataProvider provider in dataProviders)
+                base.LateUpdate();
+
+                try
                 {
-                    try
+                    foreach (IMixedRealityDataProvider provider in dataProviders)
                     {
-                        provider.LateUpdate();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError($"{provider.Name}'s LateUpdate method threw {e.GetType()}. Continuing to the next service.");
+                        try
+                        {
+                            provider.LateUpdate();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"{provider.Name}'s LateUpdate method threw {e.GetType()}. Continuing to the next service.");
+                        }
                     }
                 }
-            }
-            catch (InvalidOperationException)
-            {
-                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-                // of data providers may change mid-LateUpdate, causing an InvalidOperationException to be thrown during enumeration.
-                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
-            }
+                catch (InvalidOperationException)
+                {
+                    // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
+                    // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
+                    // of data providers may change mid-LateUpdate, causing an InvalidOperationException to be thrown during enumeration.
+                    // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
+                    // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
+                }
 
-            Profiler.EndSample(); // LateUpdate
+                foreach (var provider in dataProviders)
+                {
+                    provider.LateUpdate();
+                }
+            }
         }
 
         /// <inheritdoc />

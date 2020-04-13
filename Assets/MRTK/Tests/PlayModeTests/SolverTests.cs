@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     {
         private const float DistanceThreshold = 1.5f;
         private const float HandDistanceThreshold = 0.5f;
-        private const float SolverUpdateWaitTime = 1.0f; //seconds
+        private const float SolverUpdateWaitTime = 1.0f; // Seconds
 
         /// <summary>
         /// Internal class used to store data for setup

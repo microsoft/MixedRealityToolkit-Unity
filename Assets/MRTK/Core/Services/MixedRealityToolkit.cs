@@ -10,8 +10,8 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             isInitializing = true;
 
-            //If the Mixed Reality Toolkit is not configured, stop.
+            // If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
                 if (!Application.isPlaying)
@@ -941,30 +941,32 @@ namespace Microsoft.MixedReality.Toolkit
             ExecuteOnAllServicesInOrder(service => service.Enable());
         }
 
+        private static readonly ProfilerMarker UpdateAllServicesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.UpdateAllServices");
+
         private void UpdateAllServices()
         {
-            Profiler.BeginSample("[MRTK] MixedRealityToolkit.UpdateAllServices");
-
-            // Update all systems
-            ExecuteOnAllServicesInOrder(service => service.Update());
-
-            Profiler.EndSample(); // UpdateAllServices
+            using (UpdateAllServicesPerfMarker.Auto())
+            {
+                // Update all systems
+                ExecuteOnAllServicesInOrder(service => service.Update());
+            }
         }
+
+        private static readonly ProfilerMarker LateUpdateAllServicesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.LateUpdateAllServices");
 
         private void LateUpdateAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
+            using (LateUpdateAllServicesPerfMarker.Auto())
+            {
+                // If the Mixed Reality Toolkit is not configured, stop.
+                if (activeProfile == null) { return; }
 
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
+                // If the Mixed Reality Toolkit is not initialized, stop.
+                if (!IsInitialized) { return; }
 
-            Profiler.BeginSample("[MRTK] MixedRealityToolkit.LateUpdateAllServices");
-
-            // Update all systems
-            ExecuteOnAllServicesInOrder(service => service.LateUpdate());
-
-            Profiler.EndSample(); // LateUpdateAllServices
+                // Update all systems
+                ExecuteOnAllServicesInOrder(service => service.LateUpdate());
+            }
         }
 
         private void DisableAllServices()
@@ -1019,58 +1021,49 @@ namespace Microsoft.MixedReality.Toolkit
             MixedRealityServiceRegistry.ClearAllServices();
         }
 
+        private static readonly ProfilerMarker ExecuteOnAllServicesInOrderPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesInOrder");
+
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesInOrder");
+            using (ExecuteOnAllServicesInOrderPerfMarker.Auto())
+            {
+                if (!HasProfileAndIsInitialized)
+                {
+                    return false;
+                }
 
-            bool result = ExecuteOnServiceCollection(
-                execute,
-                MixedRealityServiceRegistry.GetAllServices());
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    execute(services[i]);
+                }
 
-            Profiler.EndSample(); // ExecuteOnAllServicesInOrder
+                return true;
+            }
+        }
 
-            return result
-       }
+        private static readonly ProfilerMarker ExecuteOnAllServicesReverseOrderPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesReverseOrder");
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnAllServiceReverseOrder");
-
-            bool result = ExecuteOnServiceCollection(
-                execute,
-                MixedRealityServiceRegistry.GetAllServices().Reverse());
-
-            Profiler.EndSample(); // ExecuteOnAllServiceReverseOrder
-            
-            return result
-        }
-
-        private bool ExecuteOnServiceCollection(
-            Action<IMixedRealityService> execute,
-            IEnumerable<IMixedRealityService> services)
-        {
-            if (!HasProfileAndIsInitialized)
+            using (ExecuteOnAllServicesReverseOrderPerfMarker.Auto())
             {
-                return false;
+                if (!HasProfileAndIsInitialized)
+                {
+                    return false;
+                }
+
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
+
+                for (int i = length - 1; i >= 0; i--)
+                {
+                    execute(services[i]);
+                }
+
+                return true;
             }
-
-            Profiler.BeginSample("[MRTK] MixedRealityToolkit.ExecuteOnServiceCollection");
-
-            var services = MixedRealityServiceRegistry.GetAllServices();
-            int length = services.Count;
-
-            for (int i = length - 1; i >= 0; i--)
-            {
-                // Applications may choose to trigger service changes (i.e. setting MixedRealityToolkit.ActiveProfile) in
-                // response to user input, such as a button press. Since most code runs on Unity's main thread, the collection
-                // of data providers may change mid-enumeration, causing an InvalidOperationException to be thrown.
-                // To avoid unneccessary error logging, we catch the exception. It is safe to abort the loop in this fashion since
-                // it is extremely unlikely that the data providers being enumerated are the same as when we started enumeration.
-            }
-
-            Profiler.EndSample(); // ExecuteOnServiceCollection
-
-            return true;
         }
 
         #endregion Multiple Service Management

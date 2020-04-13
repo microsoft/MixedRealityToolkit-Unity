@@ -5,8 +5,8 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_WSA
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.XR.WSA.Input;
 #endif
 
@@ -50,68 +50,72 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Update data functions
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateController");
+
         /// <summary>
         /// Update the source data from the provided platform state.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         public virtual void UpdateController(InteractionSourceState interactionSourceState)
         {
-            if (!Enabled) { return; }
-
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateController");
-
-            UpdateSourceData(interactionSourceState);
-            UpdateVelocity(interactionSourceState);
-
-            if (Interactions == null)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                Debug.LogError($"No interaction configuration for Windows Mixed Reality {ControllerHandedness} Source");
-                Enabled = false;
-            }
+                if (!Enabled) { return; }
 
-            for (int i = 0; i < Interactions?.Length; i++)
-            {
-                switch (Interactions[i].InputType)
+                UpdateSourceData(interactionSourceState);
+                UpdateVelocity(interactionSourceState);
+
+                if (Interactions == null)
                 {
-                    case DeviceInputType.None:
-                        break;
-                    case DeviceInputType.SpatialPointer:
-                        UpdatePointerData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.Select:
-                    case DeviceInputType.Trigger:
-                    case DeviceInputType.TriggerTouch:
-                    case DeviceInputType.TriggerPress:
-                        UpdateTriggerData(interactionSourceState, Interactions[i]);
-                        break;
-                    case DeviceInputType.SpatialGrip:
-                        UpdateGripData(interactionSourceState, Interactions[i]);
-                        break;
+                    Debug.LogError($"No interaction configuration for Windows Mixed Reality {ControllerHandedness} Source");
+                    Enabled = false;
                 }
+
+                for (int i = 0; i < Interactions?.Length; i++)
+                {
+                    switch (Interactions[i].InputType)
+                    {
+                        case DeviceInputType.None:
+                            break;
+                        case DeviceInputType.SpatialPointer:
+                            UpdatePointerData(interactionSourceState, Interactions[i]);
+                            break;
+                        case DeviceInputType.Select:
+                        case DeviceInputType.Trigger:
+                        case DeviceInputType.TriggerTouch:
+                        case DeviceInputType.TriggerPress:
+                            UpdateTriggerData(interactionSourceState, Interactions[i]);
+                            break;
+                        case DeviceInputType.SpatialGrip:
+                            UpdateGripData(interactionSourceState, Interactions[i]);
+                            break;
+                    }
+                }
+
+                LastSourceStateReading = interactionSourceState;
             }
-
-            LastSourceStateReading = interactionSourceState;
-
-            Profiler.EndSample(); // UpdateController
         }
+
+        private static readonly ProfilerMarker UpdateVelocityPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");
 
         public void UpdateVelocity(InteractionSourceState interactionSourceState)
         {
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateVelocity");
-
-            Vector3 newVelocity;
-            if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
+            using (UpdateVelocityPerfMarker.Auto())
             {
-                Velocity = newVelocity;
+                Vector3 newVelocity;
+                if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
+                {
+                    Velocity = newVelocity;
+                }
+                Vector3 newAngularVelocity;
+                if (interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity))
+                {
+                    AngularVelocity = newAngularVelocity;
+                }
             }
-            Vector3 newAngularVelocity;
-            if (interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity))
-            {
-                AngularVelocity = newAngularVelocity;
-            }
-
-            Profiler.EndSample(); // UpdateVelocity
         }
+
+        private static readonly ProfilerMarker UpdateSourceDataPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateSourceData");
 
         /// <summary>
         /// Update the source input from the device.
@@ -119,72 +123,73 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateSourceData(InteractionSourceState interactionSourceState)
         {
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSourceData");
-
-            var lastState = TrackingState;
-            var sourceKind = interactionSourceState.source.kind;
-
-            lastSourcePose = currentSourcePose;
-
-            if (sourceKind == InteractionSourceKind.Hand ||
-               (sourceKind == InteractionSourceKind.Controller && interactionSourceState.source.supportsPointing))
+            using (UpdateSourceDataPerfMarker.Auto())
             {
-                // The source is either a hand or a controller that supports pointing.
-                // We can now check for position and rotation.
-                IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentSourcePosition);
+                var lastState = TrackingState;
+                var sourceKind = interactionSourceState.source.kind;
 
-                if (IsPositionAvailable)
+                lastSourcePose = currentSourcePose;
+
+                if (sourceKind == InteractionSourceKind.Hand ||
+                   (sourceKind == InteractionSourceKind.Controller && interactionSourceState.source.supportsPointing))
                 {
-                    IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
+                    // The source is either a hand or a controller that supports pointing.
+                    // We can now check for position and rotation.
+                    IsPositionAvailable = interactionSourceState.sourcePose.TryGetPosition(out currentSourcePosition);
+
+                    if (IsPositionAvailable)
+                    {
+                        IsPositionApproximate = (interactionSourceState.sourcePose.positionAccuracy == InteractionSourcePositionAccuracy.Approximate);
+                    }
+                    else
+                    {
+                        IsPositionApproximate = false;
+                    }
+
+                    IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
+
+                    // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                    // put the source pose into world space.
+                    currentSourcePosition = MixedRealityPlayspace.TransformPoint(currentSourcePosition);
+                    currentSourceRotation = MixedRealityPlayspace.Rotation * currentSourceRotation;
+
+                    // Devices are considered tracked if we receive position OR rotation data from the sensors.
+                    TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
                 }
                 else
                 {
-                    IsPositionApproximate = false;
+                    // The input source does not support tracking.
+                    TrackingState = TrackingState.NotApplicable;
                 }
 
-                IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
+                currentSourcePose.Position = currentSourcePosition;
+                currentSourcePose.Rotation = currentSourceRotation;
 
-                // We want the source to follow the Playspace, so fold in the playspace transform here to 
-                // put the source pose into world space.
-                currentSourcePosition = MixedRealityPlayspace.TransformPoint(currentSourcePosition);
-                currentSourceRotation = MixedRealityPlayspace.Rotation * currentSourceRotation;
-
-                // Devices are considered tracked if we receive position OR rotation data from the sensors.
-                TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
-            }
-            else
-            {
-                // The input source does not support tracking.
-                TrackingState = TrackingState.NotApplicable;
-            }
-
-            currentSourcePose.Position = currentSourcePosition;
-            currentSourcePose.Rotation = currentSourceRotation;
-
-            // Raise input system events if it is enabled.
-            if (lastState != TrackingState)
-            {
-                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
-            }
-
-            if (TrackingState == TrackingState.Tracked && lastSourcePose != currentSourcePose)
-            {
-                if (IsPositionAvailable && IsRotationAvailable)
+                // Raise input system events if it is enabled.
+                if (lastState != TrackingState)
                 {
-                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentSourcePose);
+                    CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
                 }
-                else if (IsPositionAvailable && !IsRotationAvailable)
+
+                if (TrackingState == TrackingState.Tracked && lastSourcePose != currentSourcePose)
                 {
-                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentSourcePosition);
-                }
-                else if (!IsPositionAvailable && IsRotationAvailable)
-                {
-                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentSourceRotation);
+                    if (IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, currentSourcePose);
+                    }
+                    else if (IsPositionAvailable && !IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentSourcePosition);
+                    }
+                    else if (!IsPositionAvailable && IsRotationAvailable)
+                    {
+                        CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, currentSourceRotation);
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateSourceData
         }
+
+        private static readonly ProfilerMarker UpdatePointerDataPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdatePointerData");
 
         /// <summary>
         /// Update the spatial pointer input from the device.
@@ -192,31 +197,32 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdatePointerData");
-
-            if (interactionSourceState.source.supportsPointing)
+            using (UpdatePointerDataPerfMarker.Auto())
             {
-                interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
-                interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
+                if (interactionSourceState.source.supportsPointing)
+                {
+                    interactionSourceState.sourcePose.TryGetPosition(out currentPointerPosition, InteractionSourceNode.Pointer);
+                    interactionSourceState.sourcePose.TryGetRotation(out currentPointerRotation, InteractionSourceNode.Pointer);
 
-                // We want the source to follow the Playspace, so fold in the playspace transform here to 
-                // put the source pose into world space.
-                currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
-                currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
+                    // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                    // put the source pose into world space.
+                    currentPointerPose.Position = MixedRealityPlayspace.TransformPoint(currentPointerPosition);
+                    currentPointerPose.Rotation = MixedRealityPlayspace.Rotation * currentPointerRotation;
+                }
+
+                // Update the interaction data source
+                interactionMapping.PoseData = currentPointerPose;
+
+                // If our value changed raise it.
+                if (interactionMapping.Changed)
+                {
+                    // Raise input system event if it's enabled
+                    CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
+                }
             }
-
-            // Update the interaction data source
-            interactionMapping.PoseData = currentPointerPose;
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system event if it's enabled
-                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentPointerPose);
-            }
-
-            Profiler.EndSample(); // UpdatePointerData
         }
+
+        private static readonly ProfilerMarker UpdateGripDataPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateGripData");
 
         /// <summary>
         /// Update the spatial grip input from the device.
@@ -224,32 +230,33 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateSpatialGrip");
-
-            switch (interactionMapping.AxisType)
+            using (UpdateGripDataPerfMarker.Auto())
             {
-                case AxisType.SixDof:
+                switch (interactionMapping.AxisType)
                 {
-                    // The data queried in UpdateSourceData is the grip pose.
-                    // Reuse that data to save two method calls and transforms.
-                    currentGripPose.Position = currentSourcePosition;
-                    currentGripPose.Rotation = currentSourceRotation;
+                    case AxisType.SixDof:
+                        {
+                            // The data queried in UpdateSourceData is the grip pose.
+                            // Reuse that data to save two method calls and transforms.
+                            currentGripPose.Position = currentSourcePosition;
+                            currentGripPose.Rotation = currentSourceRotation;
 
-                    // Update the interaction data source
-                    interactionMapping.PoseData = currentGripPose;
+                            // Update the interaction data source
+                            interactionMapping.PoseData = currentGripPose;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
-                    }
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
+                            }
+                        }
+                        break;
                 }
-                break;
             }
-
-            Profiler.EndSample(); // UpdateSpatialGrip
         }
+
+        private static readonly ProfilerMarker UpdateTriggerDataPerfMarker = new ProfilerMarker("[MRTK] BaseWindowsMixedRealitySource.UpdateTriggerData");
 
         /// <summary>
         /// Update the trigger and grasped input from the device.
@@ -257,88 +264,87 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
-            Profiler.BeginSample("[MRTK] BaseWindowsMixedRealitySource.UpdateTriggerData");
-
-            switch (interactionMapping.InputType)
+            using (UpdateTriggerDataPerfMarker.Auto())
             {
-                case DeviceInputType.TriggerPress:
+                switch (interactionMapping.InputType)
                 {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.grasped;
+                    case DeviceInputType.TriggerPress:
+                        {
+                            // Update the interaction data source
+                            interactionMapping.BoolData = interactionSourceState.grasped;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionMapping.BoolData)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionMapping.BoolData)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
                         }
-                        else
+                    case DeviceInputType.Select:
                         {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
-                }
-                case DeviceInputType.Select:
-                {
-                    // Get the select pressed state, factoring in a workaround for Unity issue #1033526.
-                    // When that issue is fixed, it should be possible change the line below to:
-                    // interactionMapping.BoolData = interactionSourceState.selectPressed;
-                    interactionMapping.BoolData = GetSelectPressedWorkaround(interactionSourceState);
+                            // Get the select pressed state, factoring in a workaround for Unity issue #1033526.
+                            // When that issue is fixed, it should be possible change the line below to:
+                            // interactionMapping.BoolData = interactionSourceState.selectPressed;
+                            interactionMapping.BoolData = GetSelectPressedWorkaround(interactionSourceState);
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionMapping.BoolData)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionMapping.BoolData)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
                         }
-                        else
+                    case DeviceInputType.Trigger:
                         {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
-                }
-                case DeviceInputType.Trigger:
-                {
-                    // Update the interaction data source
-                    interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
+                            // Update the interaction data source
+                            interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
-                    }
-                    break;
-                }
-                case DeviceInputType.TriggerTouch:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.selectPressedAmount > 0;
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                            }
+                            break;
+                        }
+                    case DeviceInputType.TriggerTouch:
+                        {
+                            // Update the interaction data source
+                            interactionMapping.BoolData = interactionSourceState.selectPressedAmount > 0;
 
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
-                    {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.selectPressedAmount > 0)
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // If our value changed raise it.
+                            if (interactionMapping.Changed)
+                            {
+                                // Raise input system event if it's enabled
+                                if (interactionSourceState.selectPressedAmount > 0)
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                                else
+                                {
+                                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                                }
+                            }
+                            break;
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
-                    }
-                    break;
                 }
             }
-
-            Profiler.EndSample(); // UpdateTriggerData
         }
 
         /// <summary>
