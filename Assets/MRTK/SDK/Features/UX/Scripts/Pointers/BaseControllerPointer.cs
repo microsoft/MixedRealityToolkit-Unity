@@ -498,10 +498,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
+            if (!IsInteractionEnabled) { return; }
+
             using (OnInputUpPerfMarker.Auto())
             {
-                if (!IsInteractionEnabled) { return; }
-
                 base.OnInputUp(eventData);
 
                 if (eventData.SourceId == InputSourceParent.SourceId)
@@ -527,10 +527,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
+            if (!IsInteractionEnabled) { return; }
+
             using (OnInputDownPerfMarker.Auto())
             {
-                if (!IsInteractionEnabled) { return; }
-
                 base.OnInputDown(eventData);
 
                 if (eventData.SourceId == InputSourceParent.SourceId)

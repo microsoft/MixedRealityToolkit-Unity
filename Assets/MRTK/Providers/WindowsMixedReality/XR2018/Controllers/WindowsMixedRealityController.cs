@@ -74,10 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform</param>
         public override void UpdateController(InteractionSourceState interactionSourceState)
         {
+            if (!Enabled) { return; }
+
             using (UpdateControllerPerfMarker.Auto())
             {
-                if (!Enabled) { return; }
-
                 base.UpdateController(interactionSourceState);
 
                 for (int i = 0; i < Interactions?.Length; i++)

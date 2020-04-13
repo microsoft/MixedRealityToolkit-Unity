@@ -71,10 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
         /// <inheritdoc />
         public override void UpdateController(InputDevice inputDevice)
         {
+            if (!Enabled) { return; }
+
             using (UpdateControllerPerfMarker.Auto())
             {
-                if (!Enabled) { return; }
-
                 base.UpdateController(inputDevice);
 
                 UpdateHandData(inputDevice);
