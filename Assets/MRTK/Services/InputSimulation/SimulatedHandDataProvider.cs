@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandStateLeft = new SimulatedHandState(Handedness.Left);
             HandStateRight = new SimulatedHandState(Handedness.Right);
-            HandStateGaze = new SimulatedHandState(Handedness.Any);
+            HandStateGaze = new SimulatedHandState(Handedness.None);
 
             HandStateLeft.Gesture = profile.DefaultHandGesture;
             HandStateRight.Gesture = profile.DefaultHandGesture;

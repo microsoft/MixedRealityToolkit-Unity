@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // HandDataGaze is only enabled if the user is simulating via mouse and keyboard
                     if(UserInputEnabled)
-                        UpdateHandDevice(HandSimulationMode.Gestures, Handedness.Any, HandDataGaze);
+                        UpdateHandDevice(HandSimulationMode.Gestures, Handedness.None, HandDataGaze);
                     lastHandUpdateTimestamp = currentTime.Ticks;
                 }
             }
