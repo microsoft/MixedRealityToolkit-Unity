@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Class for manually controlling the camera in the Unity editor. Attach to the MainCamera object.
+    /// Class for manually controlling the camera in the Unity editor. Used by the Input Simulation Service.
     /// </summary>
     public class ManualCameraControl
     {
