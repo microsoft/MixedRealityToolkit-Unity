@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityController(
         SupportedControllerType.GGVHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right, Handedness.None })]
     public class SimulatedGestureHand : SimulatedHand
     {
         /// <inheritdoc />
@@ -47,11 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-            EnsureProfileSettings();
-            if (controllerHandedness == Handedness.Any)
-            {
-                SetupDefaultInteractions();
-            }
         }
 
         /// Lazy-init settings based on profile.
@@ -110,8 +105,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>A single interaction mapping works for both left and right controllers.</remarks>
         public override MixedRealityInteractionMapping[] DefaultInteractions => new[]
         {
-            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select, selectAction),
-            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, holdAction),
+            new MixedRealityInteractionMapping(0, "Select", AxisType.Digital, DeviceInputType.Select),
+            new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip),
         };
 
         /// <inheritdoc />
