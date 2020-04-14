@@ -4,9 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
+
+#if !UNITY_2019_3_OR_NEWER
+using System.IO;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
