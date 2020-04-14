@@ -439,7 +439,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ArticulatedHandPose.GestureId ToggleGesture(ArticulatedHandPose.GestureId gesture)
         {
             // See comments in SelectGesture for why both the button down and gesture are checked.
-            if (KeyInputSystem.GetKey(profile.InteractionButton) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            if (KeyInputSystem.GetKeyDown(profile.InteractionButton) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.LeftMouseHandGesture ? profile.LeftMouseHandGesture : profile.DefaultHandGesture);
             }

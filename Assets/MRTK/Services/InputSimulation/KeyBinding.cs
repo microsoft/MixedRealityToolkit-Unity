@@ -200,7 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Utility class to poll input for key bindings.
+    /// Utility class to poll input for key bindings and to simulate key presses
+    /// Need to add mechanisms to poll and simulate input axis: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7659
     /// </summary>
     public static class KeyInputSystem
     {

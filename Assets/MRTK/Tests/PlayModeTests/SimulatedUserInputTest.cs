@@ -10,6 +10,7 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -20,9 +21,10 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
-    class SimulatedUserinputTest
+    class SimulatedUserInputTest
     {
-        private GameObject cube;
+        GameObject cube;
+        Interactable interactable;
 
         [SetUp]
         public void SetUp()
@@ -30,15 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             PlayModeTestUtilities.Setup();
 
             // Explicitly enable user input to test in editor behavior.
-            InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
-            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
-            inputSimulationService.UserInputEnabled = true;
+            InputSimulationService iss = PlayModeTestUtilities.GetInputSimulationService();
+            Assert.IsNotNull(iss, "InputSimulationService is null!");
+            iss.UserInputEnabled = true;
 
 
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
 
+            interactable = cube.AddComponent<Interactable>();
+            
             KeyInputSystem.StartKeyInputStimulation();
         }
 
@@ -56,14 +60,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             TestUtilities.PlayspaceToOriginLookingForward();
             yield return null;
 
-            cube.AddComponent<NearInteractionGrabbable>();
-            yield return new WaitForFixedUpdate();
-            yield return null;
 
-            TestUtilities.PlayspaceToOriginLookingForward();
-            yield return new WaitForFixedUpdate();
-            yield return null;
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
 
+            // start click on the cube
             KeyInputSystem.PressKey(iss.InputSimulationProfile.InteractionButton);
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -71,34 +73,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             yield return new WaitForFixedUpdate();
             yield return null;
 
-
-            // full circle
-            const int numCircleSteps = 10;
-            const int degreeStep = 360 / numCircleSteps;
-
-            // rotating the camera in a circle
-            for (int i = 1; i <= numCircleSteps; ++i)
-            {
-                // rotate main camera (user)
-                CameraCache.Main.transform.Rotate(new Vector3(degreeStep, 0, 0));
-
-                yield return null;
-                
-                // make sure that the cube moved
-            }
-
+            // release the click on the cube
             KeyInputSystem.ReleaseKey(iss.InputSimulationProfile.InteractionButton);
+            yield return new WaitForFixedUpdate();
             yield return null;
             KeyInputSystem.AdvanceSimulation();
+            yield return new WaitForFixedUpdate();
             yield return null;
 
-            // make sure that the cube is back in original position
-
-
-            CameraCache.Main.transform.Rotate(new Vector3(degreeStep, 0, 0));
-
-            // make sure that the cube is no longer grabbed
-
+            // Check to see that the cube was clicked on
+            Assert.True(wasClicked);
         }
     }
 }

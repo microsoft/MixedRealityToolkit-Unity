@@ -119,8 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.InitializePlayspace();
 
             // Ensure user input is disabled during the tests
-            InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
-            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
+            InputSimulationService inputSimulationService = GetInputSimulationService();
             inputSimulationService.UserInputEnabled = false;
         }
 
@@ -177,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
-            inputSimulationService.UserInputEnabled = false;
             return inputSimulationService;
         }
 
