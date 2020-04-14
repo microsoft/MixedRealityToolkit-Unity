@@ -51,6 +51,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public string MouseScroll => mouseScroll;
         [SerializeField]
+        [Tooltip("Button pressed to interact with objects")]
+        [FormerlySerializedAs("Interaction Button")]
+        private KeyBinding interactionButton = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Left);
+        /// <summary>
+        /// Button pressed to interact with objects
+        /// </summary>
+        public KeyBinding InteractionButton => interactionButton;
+        [SerializeField]
         [Tooltip("Maximum time interval for double press")]
         private float doublePressTime = 0.4f;
         /// <summary>
