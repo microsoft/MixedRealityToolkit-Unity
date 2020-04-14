@@ -18,6 +18,9 @@ MonoBehaviour:
   mouseX: Mouse X
   mouseY: Mouse Y
   mouseScroll: Mouse ScrollWheel
+  interactionButton:
+    bindingType: 1
+    code: 0
   doublePressTime: 0.4
   isCameraControlEnabled: 1
   mouseLookSpeed: 3
