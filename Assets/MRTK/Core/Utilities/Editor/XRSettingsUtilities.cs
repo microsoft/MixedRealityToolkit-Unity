@@ -28,14 +28,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Gets or sets the legacy virtual reality supported property in the player settings.
         /// </summary>
+        /// <remarks>Returns true if legacy XR is disabled due to XR SDK in Unity 2019.3+.</remarks>
         public static bool LegacyXREnabled
         {
             get
             {
                 // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
+                // with legacy requirements. Returns true if legacy XR is disabled due to XR SDK.
 #pragma warning disable 0618
-                return ShouldLegacyVRBeDisabled || PlayerSettings.virtualRealitySupported;
+                return !IsLegacyXRActive || PlayerSettings.virtualRealitySupported;
 #pragma warning restore 0618
             }
 
@@ -50,20 +51,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
 #if UNITY_2019_3_OR_NEWER
-        private static bool? shouldLegacyVRBeDisabled = null;
+        private static bool? isLegacyXRActive = null;
 #endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
-        /// Checks if an XR SDK plug-in is installed that disables legacy VR.
+        /// Checks if an XR SDK plug-in is installed that disables legacy VR. Returns false if so.
         /// </summary>
-        public static bool ShouldLegacyVRBeDisabled
+        public static bool IsLegacyXRActive
         {
             get
             {
 #if UNITY_2019_3_OR_NEWER
-                if (!shouldLegacyVRBeDisabled.HasValue)
+                if (!isLegacyXRActive.HasValue)
                 {
-                    shouldLegacyVRBeDisabled = false;
+                    isLegacyXRActive = true;
 
                     List<ISubsystemDescriptor> descriptors = new List<ISubsystemDescriptor>();
                     SubsystemManager.GetAllSubsystemDescriptors(descriptors);
@@ -74,15 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         {
                             if (displayDescriptor.disablesLegacyVr)
                             {
-                                shouldLegacyVRBeDisabled = true;
+                                isLegacyXRActive = false;
                             }
                         }
                     }
                 }
 
-                return shouldLegacyVRBeDisabled.HasValue && shouldLegacyVRBeDisabled.Value;
+                return isLegacyXRActive.HasValue && isLegacyXRActive.Value;
 #else
-                return false;
+                return true;
 #endif // UNITY_2019_3_OR_NEWER
             }
         }
@@ -91,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Called when packages are installed or uninstalled, to toggle a new check on XR SDK package installation status.
         /// </summary>
-        private static void EditorApplication_projectChanged() => shouldLegacyVRBeDisabled = null;
+        private static void EditorApplication_projectChanged() => isLegacyXRActive = null;
 #endif // UNITY_2019_3_OR_NEWER
     }
 }
