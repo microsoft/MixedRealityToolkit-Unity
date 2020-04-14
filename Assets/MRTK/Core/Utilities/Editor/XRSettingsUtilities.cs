@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             if (displayDescriptor.disablesLegacyVr)
                             {
                                 isLegacyXRActive = false;
+                                break;
                             }
                         }
                     }
