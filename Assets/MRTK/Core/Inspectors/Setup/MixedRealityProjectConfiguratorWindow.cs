@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
                 RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
                 RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
-                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
+                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && !XRSettingsUtilities.ShouldLegacyVrBeDisabled)
                 {
 #if UNITY_2019_3_OR_NEWER
                     RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
