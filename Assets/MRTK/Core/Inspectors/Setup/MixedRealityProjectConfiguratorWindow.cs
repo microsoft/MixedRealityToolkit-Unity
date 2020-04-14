@@ -164,14 +164,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 scrollPosition = scrollView.scrollPosition;
                 EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
-                RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
-                RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
-                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
+                RenderToggle(MRConfig.ForceTextSerialization, "Force text asset serialization");
+                RenderToggle(MRConfig.VisibleMetaFiles, "Enable visible meta files");
+                if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS() && XRSettingsUtilities.IsLegacyXRActive)
                 {
 #if UNITY_2019_3_OR_NEWER
-                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable Legacy XR");
+                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable legacy XR");
 #else
-                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+                    RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR supported");
 #endif // UNITY_2019_3_OR_NEWER
                 }
 #if UNITY_2019_3_OR_NEWER
