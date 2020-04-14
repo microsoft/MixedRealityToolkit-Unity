@@ -19,8 +19,8 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     > [!NOTE]
     > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
     - If using Unity 2018.4.x
-        - Navigate to **Mixed Reality Toolkit** > **Utilities** > **Leap Motion** > **Configure Leap Motion**
-        - In Unity 2018.4, the configuration checker sometimes does not update after the Leap Motion Core Assets import, this case only occurs if the MRTK source is from the Unity packages. If the integration of leap and MRTK has not occurred, users can select Configure Leap Motion menu option to force integration. 
+        - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present go to the [Leap Motion Common Errors](#Leap-Motion-has-not-integrated-with-MRTK). If the file is present, go to step 3.
+        
     - If using Unity 2019.3.x, got to step 3.
 
 1. Adding the Leap Motion Data Provider
@@ -70,15 +70,23 @@ If errors are logged after reopening, restart Unity again.
 
 ### Leap Motion Obsolete Errors
 
-If the source of MRTK is from the repo and the Unity version is 2019.3.x, the following error might be in the console after the import of the Leap Motion Core Assets.
+If the source of MRTK is from the repo and the Unity version is 2019.3.x, the following error might be in the console after the import of the Leap Motion Core Assets:
 
 ```
 Assets\LeapMotion\Core\Scripts\EditorTools\LeapPreferences.cs(84,6): error CS0618: 'PreferenceItem' is obsolete: '[PreferenceItem] is deprecated. Use [SettingsProvider] instead.
 ```
 
-In Unity version 2018.4.x, multiple obsolete errors might be logged.
+In Unity version 2018.4.x, the following obsolete errors might be logged:
 
-This error appears if **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion** was not selected BEFORE the Leap Motion Core Assets import.
+```
+Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,7): error CS0618: 'PrefabType' is obsolete: 'PrefabType no longer tells everything about Prefab instance.'
+```
+
+```
+Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,31): error CS0618: 'PrefabUtility.GetPrefabType(Object)' is obsolete: 'Use GetPrefabAssetType and GetPrefabInstanceStatus to get the full picture about Prefab types.'
+```
+
+These errors appear if **Mixed Reality Toolkit > Utilities > Leap Motion > Configure CSC File for Leap Motion** was not selected BEFORE the Leap Motion Core Assets import.
 
 ####  Solution 
 
@@ -86,9 +94,8 @@ This error appears if **Mixed Reality Toolkit > Utilities > Leap Motion > Config
 - Close Unity
 - Reopen Unity
 
-
-### Leap Motion is in the project but MRTK does not recognize the presence
-This error can occur if the MRTK source is from the Unity packages, in Unity 2018.4, and after the Leap Motion Core Assets import.
+### Leap Motion has not integrated with MRTK
+This error can occur if the Unity version is 2018.4.x, the MRTK source is from the Unity packages and after the import of the Leap Motion Core Assets.
 
 To test if MRTK recognizes the presence of the Leap Motion Core Assets, open the LeapMotionHandTrackingExample scene located in MRTK/Examples/Demos/HandTracking/ and press play.  If the Leap Motion Core Assets are recognized a green message on the informational panel in the scene will appear.  If the Core Assets are not recognized a red message will appear.
 
