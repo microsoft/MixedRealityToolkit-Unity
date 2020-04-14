@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
-        /// Gets or sets the legacy virtual reality supported property in the player settings object.
+        /// Gets or sets the legacy virtual reality supported property in the player settings.
         /// </summary>
         public static bool LegacyXREnabled
         {
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
                 // with legacy requirements.
 #pragma warning disable 0618
-                return ShouldLegacyVrBeDisabled || PlayerSettings.virtualRealitySupported;
+                return ShouldLegacyVRBeDisabled || PlayerSettings.virtualRealitySupported;
 #pragma warning restore 0618
             }
 
@@ -50,20 +50,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
 #if UNITY_2019_3_OR_NEWER
-        private static bool? shouldLegacyVrBeDisabled = null;
+        private static bool? shouldLegacyVRBeDisabled = null;
 #endif // UNITY_2019_3_OR_NEWER
 
         /// <summary>
         /// Checks if an XR SDK plug-in is installed that disables legacy VR.
         /// </summary>
-        public static bool ShouldLegacyVrBeDisabled
+        public static bool ShouldLegacyVRBeDisabled
         {
             get
             {
 #if UNITY_2019_3_OR_NEWER
-                if (!shouldLegacyVrBeDisabled.HasValue)
+                if (!shouldLegacyVRBeDisabled.HasValue)
                 {
-                    shouldLegacyVrBeDisabled = false;
+                    shouldLegacyVRBeDisabled = false;
 
                     List<ISubsystemDescriptor> descriptors = new List<ISubsystemDescriptor>();
                     SubsystemManager.GetAllSubsystemDescriptors(descriptors);
@@ -74,13 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         {
                             if (displayDescriptor.disablesLegacyVr)
                             {
-                                shouldLegacyVrBeDisabled = true;
+                                shouldLegacyVRBeDisabled = true;
                             }
                         }
                     }
                 }
 
-                return shouldLegacyVrBeDisabled.HasValue && shouldLegacyVrBeDisabled.Value;
+                return shouldLegacyVRBeDisabled.HasValue && shouldLegacyVRBeDisabled.Value;
 #else
                 return false;
 #endif // UNITY_2019_3_OR_NEWER
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Called when packages are installed or uninstalled, to toggle a new check on XR SDK package installation status.
         /// </summary>
-        private static void EditorApplication_projectChanged() => shouldLegacyVrBeDisabled = null;
+        private static void EditorApplication_projectChanged() => shouldLegacyVRBeDisabled = null;
 #endif // UNITY_2019_3_OR_NEWER
     }
 }
