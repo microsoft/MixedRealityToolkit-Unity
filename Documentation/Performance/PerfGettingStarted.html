@@ -97,6 +97,19 @@
 <p>Generally, these settings involve rendering configurations that are ideal for mixed reality. Mixed reality applications are unique compared to traditional 3D graphics development in that there are two screens (i.e two eyes) to render for the entire scene.</p>
 <p>The recommended settings referenced below can be auto-configured in a Unity project by leveraging the MRTK Optimize Window.</p>
 <p><img src="../Images/Performance/OptimizeWindow_Settings.png" alt="MRTK Optimize Window Settings"></p>
+<h3 id="unity-profiler">Unity Profiler</h3>
+<p>The <a href="https://docs.unity3d.com/Manual/ProfilerWindow.html">Unity Profiler</a> is a useful tool to investigate details of application performance at a frame-by-frame level.</p>
+<h4 id="time-spent-on-the-cpu">Time spent on the CPU</h4>
+<p><img src="../Images/Performance/UnityProfilerGraph.png" alt="Example Unity Profiler Graph"></p>
+<p>To maintain comfortable frame rates (typically 60 frames per second), applications need to achieve a maximum frame time of 16.6 milliseconds of CPU time. To help identify the cost of MRTK functionality, the Microsoft Mixed Reality Toolkit contains a markers for inner loop (per frame) code paths. These markers use the following format, to assist in understanding the specific functionality being utilized:</p>
+<pre><code>[MRTK] className.methodName
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>There may be additional data following the method name. This is used to identify conditionally executed, potentially expensive functionality that may be avoided by small changes to application code.</p>
+</div>
+<p><img src="../Images/Performance/UnityProfilerHierarchy.png" alt="Example Unity Profiler Hierarchy"></p>
+<p>In this example, the hierarchy has been expanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.</p>
 <h2 id="recommended-settings-for-unity">Recommended settings for Unity</h2>
 <h3 id="single-pass-instanced-rendering">Single-Pass Instanced rendering</h3>
 <p>The default rendering configuration for XR in Unity is <a href="https://docs.unity3d.com/ScriptReference/StereoRenderingPath.MultiPass.html">Multi-pass</a>. This setting instructs Unity to execute the entire render pipeline twice, once for each eye. This can be optimized by selecting <a href="https://docs.unity3d.com/Manual/SinglePassInstancing.html">Single Pass Instanced rendering</a> instead. This configuration leverages <a href="https://en.wikipedia.org/wiki/Multiple_Render_Targets">render target arrays</a> to be able to perform a single draw call that instances into the appropriate <a href="https://en.wikipedia.org/wiki/Render_Target">render target</a> for each eye. Furthermore, this mode allows all rendering to be done in a single execution of the rendering pipeline. Thus, selecting Single Pass Instanced rendering as the rendering path for a mixed reality application can <a href="https://blogs.unity3d.com/2017/11/21/how-to-maximize-ar-and-vr-performance-with-advanced-stereo-rendering/">save substantial time on both the CPU &amp; GPU</a> and is the recommended rendering configuration.</p>

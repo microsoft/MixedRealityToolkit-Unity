@@ -220,6 +220,25 @@ else
 <p>For analog controls (ex: touchpad position) the InputChanged event should be raised.</p>
 <pre><code class="lang-c#">InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
 </code></pre>
+<h3 id="add-unity-profiler-instrumentation">Add Unity Profiler instrumentation</h3>
+<p>Performance is critical in mixed reality applications. Every component adds some amount of overhead for which applications must account. To this end, it is important that all input data providers contain Unity Profiler instrumentation in inner loop and frequently utilized code paths.</p>
+<p>It is recommended to implement the pattern utilized by the MRTK when instrumenting custom providers.</p>
+<pre><code class="lang-c#">        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker(&quot;[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController&quot;);
+
+        private async void GetOrAddController(InteractionSourceState interactionSourceState)
+        {
+            using (GetOrAddControllerPerfMarker.Auto())
+            {
+                // Code to be measured.
+            }
+        }
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The name used to identify the profiler marker is arbitrary. The MRTK uses the following pattern.</p>
+<p>&quot;[product] className.methodName - optional note&quot;</p>
+<p>It is recommended that custom data providers follow a similar pattern to help simplify identification of specific components and methods when analyzing traces.</p>
+</div>
 <h2 id="create-the-profile-and-inspector">Create the profile and inspector</h2>
 <p>In the Mixed Reality Toolkit, data providers are configured using <a href="../Profiles/Profiles.html">profiles</a>.</p>
 <p>Data providers with additional configuration options (ex: <a href="../InputSimulation/InputSimulationService.html">InputSimulationService</a>) should create a profile and inspector to allow
