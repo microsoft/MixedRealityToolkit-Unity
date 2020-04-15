@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty cellWidth;
         private SerializedProperty cellHeight;
         private SerializedProperty anchor;
+        private SerializedProperty rowAlignment;
+        private SerializedProperty colAlignment;
 
 
         protected override void OnEnable()
@@ -36,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             cellWidth = serializedObject.FindProperty("cellWidth");
             cellHeight = serializedObject.FindProperty("cellHeight");
             anchor = serializedObject.FindProperty("anchor");
+            rowAlignment = serializedObject.FindProperty("rowAlignment");
+            colAlignment = serializedObject.FindProperty("colAlignment");
         }
 
         protected override void OnInspectorGUIInsertion()
@@ -51,11 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 EditorGUILayout.HelpBox("ColumnThenRow will lay out content first horizontally (by column), then vertically (by row). NumColumns specifies number of columns per row.", MessageType.Info);
                 EditorGUILayout.PropertyField(cols, new GUIContent("Num Columns", "Number of columns per row."));
+                EditorGUILayout.PropertyField(colAlignment);
             }
             else if (layoutTypeIndex == LayoutOrder.RowThenColumn)
             {
                 EditorGUILayout.HelpBox("RowThenColumns will lay out content first vertically (by row), then horizontally (by column). NumRows specifies number of rows per column.", MessageType.Info);
                 EditorGUILayout.PropertyField(rows, new GUIContent("Num Rows", "Number of rows per column."));
+                EditorGUILayout.PropertyField(rowAlignment);
             }
             else
             {
@@ -87,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // layout anchor has no effect on radial layout, it is always at center.
                 EditorGUILayout.PropertyField(anchor);
             }
-            
         }
     }
 }

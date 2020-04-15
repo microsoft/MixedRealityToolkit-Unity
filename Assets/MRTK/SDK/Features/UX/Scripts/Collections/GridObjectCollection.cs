@@ -63,6 +63,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { anchor = value; }
         }
 
+        [SerializeField, Tooltip("How the columns are aligned in the grid")]
+        private LayoutHorizontalAlignment colAlignment = LayoutHorizontalAlignment.Center;
+        public LayoutHorizontalAlignment ColAlignment 
+        {
+            get { return colAlignment; }
+            set { colAlignment = value; }
+        }
+
+        [SerializeField, Tooltip("How the rows are aligned in the gridn")]
+        private LayoutVerticalAlignment rowAlignment = LayoutVerticalAlignment.Top;
+        public LayoutVerticalAlignment RowAlignment
+        {
+            get { return rowAlignment; }
+            set { rowAlignment = value; }
+        }
+
         [Range(0.05f, 100.0f)]
         [Tooltip("Radius for the sphere or cylinder")]
         [SerializeField]
@@ -333,38 +349,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 startOffsetY = yMax * CellHeight;
             }
+            float alignmentOffsetX = 0;
+            float alignmentOffsetY = 0;
 
             if (layout == LayoutOrder.ColumnThenRow)
             {
                 for (int y = 0; y < yMax; y++)
+                {
                     for (int x = 0; x < xMax; x++)
                     {
+                        if(y == yMax - 1)
                         {
-                            if (cellCounter < NodeList.Count)
+                            switch (ColAlignment)
                             {
-                                grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                                     (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
-                                                     0.0f);
+                                case LayoutHorizontalAlignment.Left:
+                                    alignmentOffsetX = 0;
+                                    break;
+                                case LayoutHorizontalAlignment.Center:
+                                    alignmentOffsetX = CellWidth *((xMax - (NodeList.Count % xMax)) % xMax) * 0.5f;
+                                    break;
+                                case LayoutHorizontalAlignment.Right:
+                                    alignmentOffsetX = CellWidth * ((xMax - (NodeList.Count % xMax)) % xMax);
+                                    break;
                             }
-                            cellCounter++;
                         }
-                    }
 
+                        if (cellCounter < NodeList.Count)
+                        {
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x + alignmentOffsetX,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y + alignmentOffsetY,
+                                                 0.0f);
+                        }
+                        cellCounter++;
+                    }
+                }
             }
             else
             {
-
                 for (int x = 0; x < xMax; x++)
                 {
                     for (int y = 0; y < yMax; y++)
                     {
+                        if (x == xMax - 1)
+                        {
+                            switch (RowAlignment)
+                            {
+                                case LayoutVerticalAlignment.Top:
+                                    alignmentOffsetY = 0;
+                                    break;
+                                case LayoutVerticalAlignment.Middle:
+                                    alignmentOffsetY = -CellHeight * ((yMax - (NodeList.Count % yMax)) % yMax) * 0.5f;
+                                    break;
+                                case LayoutVerticalAlignment.Bottom:
+                                    alignmentOffsetY = -CellHeight * ((yMax - (NodeList.Count % yMax)) % yMax);
+                                    break;
+                            }
+                        }
+
                         if (cellCounter < NodeList.Count)
                         {
-                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x + alignmentOffsetX,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y + alignmentOffsetY,
                                                  0.0f);
                         }
-                        cellCounter++;
+                    cellCounter++;
                     }
                 }
             }
