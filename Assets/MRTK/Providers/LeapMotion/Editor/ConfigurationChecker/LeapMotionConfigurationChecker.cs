@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// root of the core assets, and add the leap editor asmdefs.  If the core assets are not in the project, make sure the reference
         /// in the Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef does not contain a ref to LeapMotion.
         /// </summary>
-        /// <param name="isLeapInProject"></param>
+        /// <param name="isLeapInProject">Bool that determines if the Leap Motion Core assets are in the project</param>
         private static void ConfigureLeapMotion(bool isLeapInProject)
         {
             FileInfo[] leapDataProviderAsmDefFile = FileUtilities.FindFilesInAssets("Microsoft.MixedReality.Toolkit.Providers.LeapMotion.asmdef");
