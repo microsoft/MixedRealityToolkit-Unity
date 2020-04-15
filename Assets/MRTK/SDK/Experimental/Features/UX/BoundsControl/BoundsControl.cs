@@ -22,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
     public class BoundsControl : MonoBehaviour,
-        IMixedRealityPointerHandler,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler,
@@ -379,9 +378,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Vector3 currentBoundsExtents;
 
         private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
-      
+
         private List<IMixedRealityController> sourcesDetected;
-      
+
         // Current axis of rotation about the center of the rig root
         private Vector3 currentRotationAxis;
 
@@ -553,7 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
             rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
             boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
-            linksConfiguration.configurationChanged.AddListener(CreateRig);          
+            linksConfiguration.configurationChanged.AddListener(CreateRig);
         }
 
         private void OnDestroy()
@@ -598,9 +597,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 Active = true;
                 Active = false;
             }
-            
-            // Subscribing to bubble up propagation phase
-            CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnDisable()
@@ -611,8 +607,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 DropController();
             }
-
-            CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void Update()
@@ -831,7 +825,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
             }
         }
-       
+
 
         private Vector3 CalculateBoundsExtents()
         {
@@ -971,6 +965,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             var rigRootObj = new GameObject(rigRootName);
             rigRoot = rigRootObj.transform;
             rigRoot.parent = Target.transform;
+
+            var pH = rigRootObj.AddComponent<PointerHandler>();
+            pH.OnPointerDown.AddListener(OnPointerDown);
+            pH.OnPointerDragged.AddListener(OnPointerDragged);
+            pH.OnPointerUp.AddListener(OnPointerUp);
         }
 
         private void InitializeDataStructures()
@@ -1058,7 +1057,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData) { }
 
-        void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
+        private void OnPointerUp(MixedRealityPointerEventData eventData)
         {
             if (currentPointer != null && eventData.Pointer == currentPointer)
             {
@@ -1067,16 +1066,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
+        private void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            // Only events originated from interaction with corner handles should be handled. 
-            // Another approach would be checking current propagation phase and ignoring if target phase
-            // var propagationEventData = (IMixedRealityEventPropagationData) eventData;
-            // if (propagationEventData!= null && propagationEventData.Phase == PropagationPhase.Target) return;
-            if (eventData.selectedObject == gameObject)
-            {
-                return;
-            }
             if (currentPointer == null && !eventData.used)
             {
                 GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
@@ -1132,7 +1123,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        private void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnSourceDetected(SourceStateEventData eventData)
         {
@@ -1177,9 +1168,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
 
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
-
         #endregion Unused Event Handlers
+
 
         #region BoundsControl Visuals Private Methods
 
@@ -1269,5 +1259,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         }
 
         #endregion BoundsControl Visuals Private Methods
+
     }
 }

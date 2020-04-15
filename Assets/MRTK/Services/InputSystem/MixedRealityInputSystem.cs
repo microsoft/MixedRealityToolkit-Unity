@@ -650,7 +650,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
-            List<EventPropagationHandlerEntry> handlers;
 
             propagationExecutionDepth++;
 
@@ -658,10 +657,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
             {
                 eventPropagationData.Phase = PropagationPhase.TrickleDown;
+                List<EventPropagationHandlerEntry> handlers;
 
                 for (int i = targetHierarchy.Length - 1; i > 0; i--)
                 {
-                    if(eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
+                    if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
                     {
                         break;
                     }
@@ -670,7 +670,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         continue;
                     }
 
-                    // Hieranchy object have propagation handlers
+                    // Hierarchy object have handlers registered for a propagation phase
                     if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
                     {
                         foreach (var handler in handlers)
@@ -689,10 +689,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 catch (Exception ex)
                                 {
                                     Debug.LogException(ex);
-                                }                     
+                                }
                             }
                         }
-                    }                   
+                    }
                 }
             }
 
@@ -721,10 +721,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // Bubbles Up
+            // Bubbles Up. Handlers will catch bubble events by default unless registered for tickle down only
             if (eventPropagationData.Propagation.HasFlag(EventPropagation.BubblesUp))
             {
                 eventPropagationData.Phase = PropagationPhase.BubbleUp;
+                List<EventPropagationHandlerEntry> handlers;
 
                 for (int i = 1; i < targetHierarchy.Length; i++)
                 {
@@ -737,36 +738,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         continue;
                     }
 
-                    // Hieranchy object have propagation handlers
-                    if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
+                    // Check if hierarchy game object has handler registered for propagation
+                    bool isElementRegistered = EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers);
+
+                    var elementHandlers = targetHierarchy[i].gameObject.GetComponents<T>();
+                    foreach (var elementHandler in elementHandlers)
                     {
-                        foreach (var handler in handlers)
+                        if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
                         {
-                            if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
+                            break;
+                        }
+                        if (isElementRegistered)
+                        {
+                            foreach (var handler in handlers)
                             {
-                                break;
-                            }
-                            if (handler.handlerType == typeof(T) && handler.phase.HasFlag(PropagationPhase.BubbleUp))
-                            {
-                                // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
-                                try
+                                // If handler was registered for propagation, make sure bubble phase is required
+                                if (elementHandler.Equals((T)handler.handler) && !handler.phase.HasFlag(PropagationPhase.BubbleUp))
                                 {
-                                    eventHandler.Invoke((T)handler.handler, baseInputEventData);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Debug.LogException(ex);
+                                    continue;
                                 }
                             }
                         }
+
+                        // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                        try
+                        {
+                            eventHandler.Invoke(elementHandler, baseInputEventData);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.LogException(ex);
+                        }
                     }
+
+                    propagationExecutionDepth--;
+                    ProcessPostponedActions();
                 }
             }
-
-            propagationExecutionDepth--;
-            ProcessPostponedActions();
         }
-
         /// <summary>
         /// Register a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen to events that will receive all input events, regardless
         /// of which other <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s might have handled the event beforehand.

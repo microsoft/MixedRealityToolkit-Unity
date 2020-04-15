@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Slider Axis Visuals")]
-    
+
         [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject trackVisuals = null;
@@ -231,12 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion  
 
         #region Unity methods
-
-        private void OnEnable()
-        {
-            // Register for bubble up events
-            CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityPointerHandler>(this);
-        }
         public void Start()
         {
             if (thumbRoot == null)
@@ -253,7 +247,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 EndInteraction();
             }
-            CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityPointerHandler>(this);
         }
 
         private void OnValidate()
