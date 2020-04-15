@@ -176,6 +176,34 @@ private void SendMeshObjects()
 > [!NOTE]
 > The [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) class does not raise `OnObservationUpdated` events since the 3D model is only loaded once. The implementation in the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class provides an example of raising an `OnObservationUpdated` event for an observed mesh.
 
+### Add Unity Profiler instrumentation
+
+Performance is critical in mixed reality applications. Every component adds some amount of overhead for which applications must account. To this end, it is important that all spatial awareness data providers contain Unity Profiler instrumentation in inner loop and frequently utilized code paths.
+
+It is recommended to implement the pattern utilized by the MRTK when instrumenting custom providers.
+
+```c#
+        private static readonly ProfilerMarker UpdateObserverPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealitySpatialMeshObserver.UpdateObserver");
+
+        /// <summary>
+        /// Requests updates from the surface observer.
+        /// </summary>
+        private void UpdateObserver()
+        {
+            using (UpdateObserverPerfMarker.Auto())
+            {
+                // Code to be measured.
+            }
+        }
+```
+
+> [!Note]
+> The name used to identify the profiler marker is arbitrary. The MRTK uses the following pattern.
+> 
+> "[product] className.methodName - optional note"
+>
+> It is recommended that custom data providers follow a similar pattern to help simplify identification of specific components and methods when analyzing traces.
+
 ## Create the profile and inspector
 
 In the Mixed Reality Toolkit, data providers are configured using [profiles](../Profiles/Profiles.md).
