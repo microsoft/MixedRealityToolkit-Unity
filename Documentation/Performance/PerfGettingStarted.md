@@ -44,7 +44,7 @@ To maintain comfortable frame rates (typically 60 frames per second), applicatio
 
 ![Example Unity Profiler Hierarchy](../../Documentation/Images/Performance/UnityProfilerHierarchy.png)
 
-In this example, the hierarchy has been exapanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.
+In this example, the hierarchy has been expanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.
 
 ## Recommended settings for Unity
 
