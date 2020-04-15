@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit
                 throw new IndexOutOfRangeException();
             }
 
-            Color32 toColor = fillColor; //Implicit cast
+            Color32 toColor = fillColor; // Implicit cast
             Color32[] colors = new Color32[width * height];
             for (int i=0; i < colors.Length; i++)
             {

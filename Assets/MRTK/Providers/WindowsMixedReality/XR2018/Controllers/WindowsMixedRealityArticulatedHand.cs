@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
 
 #if UNITY_WSA
-using UnityEngine.Profiling;
+using Unity.Profiling;
 using UnityEngine.XR.WSA.Input;
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
 using System;
@@ -90,29 +90,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #region Update data functions
 
+        private static readonly ProfilerMarker UpdateControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHand.UpdateController");
+
         /// <inheritdoc />
         public override void UpdateController(InteractionSourceState interactionSourceState)
         {
-            if (!Enabled) { return; }
-
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulatedHand.UpdateController");
-
-            base.UpdateController(interactionSourceState);
-
-            UpdateHandData(interactionSourceState);
-
-            for (int i = 0; i < Interactions?.Length; i++)
+            using (UpdateControllerPerfMarker.Auto())
             {
-                switch (Interactions[i].InputType)
+                if (!Enabled) { return; }
+
+                base.UpdateController(interactionSourceState);
+
+                UpdateHandData(interactionSourceState);
+
+                for (int i = 0; i < Interactions?.Length; i++)
                 {
-                    case DeviceInputType.IndexFinger:
-                        handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
-                        break;
+                    switch (Interactions[i].InputType)
+                    {
+                        case DeviceInputType.IndexFinger:
+                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
+                            break;
+                    }
                 }
             }
-
-            Profiler.EndSample(); // UpdateController
         }
+
+#if WINDOWS_UWP || DOTNETWINRT_PRESENT
+        private static readonly ProfilerMarker UpdateHandDataPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityArticulatedHand.UpdateHandData");
+#endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
 
         /// <summary>
         /// Update the hand data from the device.
@@ -121,57 +126,56 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private void UpdateHandData(InteractionSourceState interactionSourceState)
         {
 #if WINDOWS_UWP || DOTNETWINRT_PRESENT
-            // Articulated hand support is only present in the 18362 version and beyond Windows
-            // SDK (which contains the V8 drop of the Universal API Contract). In particular,
-            // the HandPose related APIs are only present on this version and above.
-            if (!articulatedHandApiAvailable)
+            using (UpdateHandDataPerfMarker.Auto())
             {
-                return;
-            }
-
-            Profiler.BeginSample("[MRTK] WindowsMixedRealityArticulatedHand.UpdateHandData");
-
-            PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
-            IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
-            foreach (SpatialInteractionSourceState sourceState in sources)
-            {
-                if (sourceState.Source.Id.Equals(interactionSourceState.source.id))
+                // Articulated hand support is only present in the 18362 version and beyond Windows
+                // SDK (which contains the V8 drop of the Universal API Contract). In particular,
+                // the HandPose related APIs are only present on this version and above.
+                if (!articulatedHandApiAvailable)
                 {
+                    return;
+                }
+
+                PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
+                IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
+                foreach (SpatialInteractionSourceState sourceState in sources)
+                {
+                    if (sourceState.Source.Id.Equals(interactionSourceState.source.id))
+                    {
 #if WINDOWS_UWP
-                    handDefinition?.UpdateHandMesh(sourceState);
+                        handDefinition?.UpdateHandMesh(sourceState);
 #endif // WINDOWS_UWP
 
-                    HandPose handPose = sourceState.TryGetHandPose();
+                        HandPose handPose = sourceState.TryGetHandPose();
 
-                    if (handPose != null && handPose.TryGetJoints(WindowsMixedRealityUtilities.SpatialCoordinateSystem, jointIndices, jointPoses))
-                    {
-                        for (int i = 0; i < jointPoses.Length; i++)
+                        if (handPose != null && handPose.TryGetJoints(WindowsMixedRealityUtilities.SpatialCoordinateSystem, jointIndices, jointPoses))
                         {
-                            Vector3 jointPosition = jointPoses[i].Position.ToUnityVector3();
-                            Quaternion jointOrientation = jointPoses[i].Orientation.ToUnityQuaternion();
-
-                            // We want the joints to follow the playspace, so fold in the playspace transform here to 
-                            // put the joint pose into world space.
-                            jointPosition = MixedRealityPlayspace.TransformPoint(jointPosition);
-                            jointOrientation = MixedRealityPlayspace.Rotation * jointOrientation;
-
-                            TrackedHandJoint handJoint = ConvertHandJointKindToTrackedHandJoint(jointIndices[i]);
-
-                            if (handJoint == TrackedHandJoint.IndexTip)
+                            for (int i = 0; i < jointPoses.Length; i++)
                             {
-                                lastIndexTipRadius = jointPoses[i].Radius;
+                                Vector3 jointPosition = jointPoses[i].Position.ToUnityVector3();
+                                Quaternion jointOrientation = jointPoses[i].Orientation.ToUnityQuaternion();
+
+                                // We want the joints to follow the playspace, so fold in the playspace transform here to 
+                                // put the joint pose into world space.
+                                jointPosition = MixedRealityPlayspace.TransformPoint(jointPosition);
+                                jointOrientation = MixedRealityPlayspace.Rotation * jointOrientation;
+
+                                TrackedHandJoint handJoint = ConvertHandJointKindToTrackedHandJoint(jointIndices[i]);
+
+                                if (handJoint == TrackedHandJoint.IndexTip)
+                                {
+                                    lastIndexTipRadius = jointPoses[i].Radius;
+                                }
+
+                                unityJointPoses[handJoint] = new MixedRealityPose(jointPosition, jointOrientation);
                             }
 
-                            unityJointPoses[handJoint] = new MixedRealityPose(jointPosition, jointOrientation);
+                            handDefinition?.UpdateHandJoints(unityJointPoses);
                         }
-
-                        handDefinition?.UpdateHandJoints(unityJointPoses);
+                        break;
                     }
-                    break;
                 }
             }
-
-            Profiler.EndSample(); // UpdateHandData
 #endif // WINDOWS_UWP || DOTNETWINRT_PRESENT
         }
 

@@ -6,8 +6,8 @@ using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Runtime.InteropServices;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -61,114 +61,111 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         #region Controller Utilities
 
+        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] OpenVRDeviceManager.GetOrAddController");
+
         /// <inheritdoc />
         protected override GenericJoystickController GetOrAddController(string joystickName)
         {
-            Profiler.BeginSample("[MRTK] OpenVRDeviceManager.GetOrAddController");
-
-            // If a device is already registered with the ID provided, just return it.
-            if (ActiveControllers.ContainsKey(joystickName))
+            using (GetOrAddControllerPerfMarker.Auto())
             {
-                var controller = ActiveControllers[joystickName];
-                Debug.Assert(controller != null);
+                // If a device is already registered with the ID provided, just return it.
+                if (ActiveControllers.ContainsKey(joystickName))
+                {
+                    var controller = ActiveControllers[joystickName];
+                    Debug.Assert(controller != null);
+                    return controller;
+                }
 
-                Profiler.EndSample(); // GetOrAddController - already registered
-                return controller;
-            }
+                Handedness controllingHand;
 
-            Handedness controllingHand;
+                if (joystickName.Contains("Left"))
+                {
+                    controllingHand = Handedness.Left;
+                }
+                else if (joystickName.Contains("Right"))
+                {
+                    controllingHand = Handedness.Right;
+                }
+                else
+                {
+                    controllingHand = Handedness.None;
+                }
 
-            if (joystickName.Contains("Left"))
-            {
-                controllingHand = Handedness.Left;
-            }
-            else if (joystickName.Contains("Right"))
-            {
-                controllingHand = Handedness.Right;
-            }
-            else
-            {
-                controllingHand = Handedness.None;
-            }
+                var currentControllerType = GetCurrentControllerType(joystickName);
+                Type controllerType;
 
-            var currentControllerType = GetCurrentControllerType(joystickName);
-            Type controllerType;
+                switch (currentControllerType)
+                {
+                    case SupportedControllerType.GenericOpenVR:
+                        controllerType = typeof(GenericOpenVRController);
+                        break;
+                    case SupportedControllerType.ViveWand:
+                        controllerType = typeof(ViveWandController);
+                        break;
+                    case SupportedControllerType.ViveKnuckles:
+                        controllerType = typeof(ViveKnucklesController);
+                        break;
+                    case SupportedControllerType.OculusTouch:
+                        controllerType = typeof(OculusTouchController);
+                        break;
+                    case SupportedControllerType.OculusRemote:
+                        controllerType = typeof(OculusRemoteController);
+                        break;
+                    case SupportedControllerType.WindowsMixedReality:
+                        controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
+                        break;
+                    default:
+                        return null;
+                }
 
-            switch (currentControllerType)
-            {
-                case SupportedControllerType.GenericOpenVR:
-                    controllerType = typeof(GenericOpenVRController);
-                    break;
-                case SupportedControllerType.ViveWand:
-                    controllerType = typeof(ViveWandController);
-                    break;
-                case SupportedControllerType.ViveKnuckles:
-                    controllerType = typeof(ViveKnucklesController);
-                    break;
-                case SupportedControllerType.OculusTouch:
-                    controllerType = typeof(OculusTouchController);
-                    break;
-                case SupportedControllerType.OculusRemote:
-                    controllerType = typeof(OculusRemoteController);
-                    break;
-                case SupportedControllerType.WindowsMixedReality:
-                    controllerType = typeof(WindowsMixedRealityOpenVRMotionController);
-                    break;
-                default:
-                    Profiler.EndSample(); // GetOrAddController - not OpenVR controller type
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+
+                var pointers = RequestPointers(currentControllerType, controllingHand);
+                var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
+                var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
+
+                if (detectedController == null || !detectedController.Enabled)
+                {
+                    // Controller failed to be set up correctly.
+                    Debug.LogError($"Failed to create {controllerType.Name} controller");
+
+                    // Return null so we don't raise the source detected.
                     return null;
+                }
+
+                for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
+                {
+                    detectedController.InputSource.Pointers[i].Controller = detectedController;
+                }
+
+                ActiveControllers.Add(joystickName, detectedController);
+
+                return detectedController;
             }
-
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            var pointers = RequestPointers(currentControllerType, controllingHand);
-            var inputSource = inputSystem?.RequestNewGenericInputSource($"{currentControllerType} Controller {controllingHand}", pointers, InputSourceType.Controller);
-            var detectedController = Activator.CreateInstance(controllerType, TrackingState.NotTracked, controllingHand, inputSource, null) as GenericOpenVRController;
-
-            if (detectedController == null || !detectedController.Enabled)
-            {
-                // Controller failed to be set up correctly.
-                Debug.LogError($"Failed to create {controllerType.Name} controller");
-
-                Profiler.EndSample(); // GetOrAddController - failure
-
-                // Return null so we don't raise the source detected.
-                return null;
-            }
-
-            for (int i = 0; i < detectedController.InputSource?.Pointers?.Length; i++)
-            {
-                detectedController.InputSource.Pointers[i].Controller = detectedController;
-            }
-
-            ActiveControllers.Add(joystickName, detectedController);
-
-            Profiler.EndSample(); // GetOrAddController
-
-            return detectedController;
         }
+
+        private static readonly ProfilerMarker RemoveControllerPerfMarker = new ProfilerMarker("[MRTK] OpenVRDeviceManager.RemoveController");
 
         /// <inheritdoc />
         protected override void RemoveController(string joystickName)
         {
-            Profiler.BeginSample("[MRTK] OpenVRDeviceManager.RemoveController");
-
-            var controller = GetOrAddController(joystickName);
-
-            if (controller != null)
+            using (RemoveControllerPerfMarker.Auto())
             {
-                RecyclePointers(controller.InputSource);
+                var controller = GetOrAddController(joystickName);
 
-                if (controller.Visualizer != null &&
-                    controller.Visualizer.GameObjectProxy != null)
+                if (controller != null)
                 {
-                    controller.Visualizer.GameObjectProxy.SetActive(false);
+                    RecyclePointers(controller.InputSource);
+
+                    if (controller.Visualizer != null &&
+                        controller.Visualizer.GameObjectProxy != null)
+                    {
+                        controller.Visualizer.GameObjectProxy.SetActive(false);
+                    }
                 }
+
+                base.RemoveController(joystickName);
             }
-
-            base.RemoveController(joystickName);
-
-            Profiler.EndSample(); // RemoveController
         }
 
         /// <inheritdoc />

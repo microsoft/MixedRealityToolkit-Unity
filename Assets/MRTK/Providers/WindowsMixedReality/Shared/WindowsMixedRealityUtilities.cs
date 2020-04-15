@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
                 return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
             }
         }
-#endif //ENABLE_DOTNET
+#endif // ENABLE_DOTNET
 
         /// <summary>
         /// Access the underlying native spatial coordinate system.

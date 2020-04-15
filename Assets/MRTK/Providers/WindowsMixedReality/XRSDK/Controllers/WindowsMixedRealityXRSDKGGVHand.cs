@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
 {
     /// <summary>
-    /// A Windows Mixed Reality GGV hand instance for XR SDK.
+    /// A Windows Mixed Reality GGV (Gaze, Gesture, and Voice) hand instance for XR SDK.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.GGVHand,

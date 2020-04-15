@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
 
-            //Cleanup
+            // Cleanup
             GameObject.Destroy(interactable.gameObject);
         }
 

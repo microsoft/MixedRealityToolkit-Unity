@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         const string RenderingMode = "Single Pass Instanced";
 #endif
 
-
         public MixedRealityEditorSettings()
         {
             callbackOrder = 0;

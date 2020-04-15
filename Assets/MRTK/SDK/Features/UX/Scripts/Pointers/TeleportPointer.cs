@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Unity.Profiling;
 using UnityEngine;
 using UnityPhysics = UnityEngine.Physics;
 
@@ -226,89 +227,99 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnPreSceneQuery");
+
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            // Set up our rays
-            // Turn off gravity so we get accurate rays
-            GravityDistorter.enabled = false;
+            using (OnPreSceneQueryPerfMarker.Auto())
+            {
+                // Set up our rays
+                // Turn off gravity so we get accurate rays
+                GravityDistorter.enabled = false;
 
-            base.OnPreSceneQuery();
+                base.OnPreSceneQuery();
 
-            // Re-enable gravity if we're looking at a hotspot
-            GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                // Re-enable gravity if we're looking at a hotspot
+                GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+            }
         }
+
+        private static readonly ProfilerMarker OnPostSceneQueryPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnPostSceneQuery");
 
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
-            if (IsSelectPressed)
+            using (OnPostSceneQueryPerfMarker.Auto())
             {
-                CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
-            }
-
-            // Use the results from the last update to set our NavigationResult
-            float clearWorldLength = 0f;
-            TeleportSurfaceResult = TeleportSurfaceResult.None;
-            GravityDistorter.enabled = false;
-
-            if (IsInteractionEnabled)
-            {
-                LineBase.enabled = true;
-
-                // If we hit something
-                if (Result.CurrentPointerTarget != null)
+                if (IsSelectPressed)
                 {
-                    // Check if it's in our valid layers
-                    if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
+                    CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                }
+
+                // Use the results from the last update to set our NavigationResult
+                float clearWorldLength = 0f;
+                TeleportSurfaceResult = TeleportSurfaceResult.None;
+                GravityDistorter.enabled = false;
+
+                if (IsInteractionEnabled)
+                {
+                    LineBase.enabled = true;
+
+                    // If we hit something
+                    if (Result.CurrentPointerTarget != null)
                     {
-                        // See if it's a hot spot
-                        if (TeleportHotSpot != null && TeleportHotSpot.IsActive)
+                        // Check if it's in our valid layers
+                        if (((1 << Result.CurrentPointerTarget.layer) & ValidLayers.value) != 0)
                         {
-                            TeleportSurfaceResult = TeleportSurfaceResult.HotSpot;
-                            // Turn on gravity, point it at hotspot
-                            GravityDistorter.WorldCenterOfGravity = TeleportHotSpot.Position;
-                            GravityDistorter.enabled = true;
+                            // See if it's a hot spot
+                            if (TeleportHotSpot != null && TeleportHotSpot.IsActive)
+                            {
+                                TeleportSurfaceResult = TeleportSurfaceResult.HotSpot;
+                                // Turn on gravity, point it at hotspot
+                                GravityDistorter.WorldCenterOfGravity = TeleportHotSpot.Position;
+                                GravityDistorter.enabled = true;
+                            }
+                            else
+                            {
+                                // If it's NOT a hotspot, check if the hit normal is too steep
+                                // (Hotspots override dot requirements)
+                                TeleportSurfaceResult = Vector3.Dot(Result.Details.LastRaycastHit.normal, Vector3.up) > upDirectionThreshold
+                                    ? TeleportSurfaceResult.Valid
+                                    : TeleportSurfaceResult.Invalid;
+                            }
+                        }
+                        else if (((1 << Result.CurrentPointerTarget.layer) & InvalidLayers) != 0)
+                        {
+                            TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
                         }
                         else
                         {
-                            // If it's NOT a hotspot, check if the hit normal is too steep
-                            // (Hotspots override dot requirements)
-                            TeleportSurfaceResult = Vector3.Dot(Result.Details.LastRaycastHit.normal, Vector3.up) > upDirectionThreshold
-                                ? TeleportSurfaceResult.Valid
-                                : TeleportSurfaceResult.Invalid;
+                            TeleportSurfaceResult = TeleportSurfaceResult.None;
                         }
-                    }
-                    else if (((1 << Result.CurrentPointerTarget.layer) & InvalidLayers) != 0)
-                    {
-                        TeleportSurfaceResult = TeleportSurfaceResult.Invalid;
+
+                        clearWorldLength = Result.Details.RayDistance;
+
+                        // Clamp the end of the parabola to the result hit's point
+                        LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
+                        BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
                     }
                     else
                     {
-                        TeleportSurfaceResult = TeleportSurfaceResult.None;
+                        BaseCursor?.SetVisibility(false);
+                        LineBase.LineEndClamp = 1f;
                     }
 
-                    clearWorldLength = Result.Details.RayDistance;
-
-                    // Clamp the end of the parabola to the result hit's point
-                    LineBase.LineEndClamp = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength, LineCastResolution);
-                    BaseCursor?.SetVisibility(TeleportSurfaceResult == TeleportSurfaceResult.Valid || TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
+                    // Set the line color
+                    for (int i = 0; i < LineRenderers.Length; i++)
+                    {
+                        LineRenderers[i].LineColor = GetLineGradient(TeleportSurfaceResult);
+                    }
                 }
                 else
                 {
-                    BaseCursor?.SetVisibility(false);
-                    LineBase.LineEndClamp = 1f;
+                    LineBase.enabled = false;
                 }
-
-                // Set the line color
-                for (int i = 0; i < LineRenderers.Length; i++)
-                {
-                    LineRenderers[i].LineColor = GetLineGradient(TeleportSurfaceResult);
-                }
-            }
-            else
-            {
-                LineBase.enabled = false;
             }
         }
 
@@ -316,122 +327,127 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #region IMixedRealityInputHandler Implementation
 
+        private static readonly ProfilerMarker OnInputChangedPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnInputChanged");
+
         /// <inheritdoc />
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
-            // Don't process input if we've got an active teleport request in progress.
-            if (isTeleportRequestActive || CoreServices.TeleportSystem == null)
+            using (OnInputChangedPerfMarker.Auto())
             {
-                return;
-            }
-
-            if (eventData.SourceId == InputSourceParent.SourceId &&
-                eventData.Handedness == Handedness &&
-                eventData.MixedRealityInputAction == teleportAction)
-            {
-                currentInputPosition = eventData.InputData;
-            }
-
-            if (currentInputPosition.sqrMagnitude > InputThresholdSquared)
-            {
-                // Get the angle of the pointer input
-                float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
-
-                // Offset the angle so it's 'forward' facing
-                angle += angleOffset;
-                PointerOrientation = angle;
-
-                if (!TeleportRequestRaised)
+                // Don't process input if we've got an active teleport request in progress.
+                if (isTeleportRequestActive || CoreServices.TeleportSystem == null)
                 {
-                    float absoluteAngle = Mathf.Abs(angle);
+                    return;
+                }
 
-                    if (absoluteAngle < teleportActivationAngle)
-                    {
-                        TeleportRequestRaised = true;
+                if (eventData.SourceId == InputSourceParent.SourceId &&
+                    eventData.Handedness == Handedness &&
+                    eventData.MixedRealityInputAction == teleportAction)
+                {
+                    currentInputPosition = eventData.InputData;
+                }
 
-                        CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
-                    }
-                    else if (canMove)
+                if (currentInputPosition.sqrMagnitude > InputThresholdSquared)
+                {
+                    // Get the angle of the pointer input
+                    float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
+
+                    // Offset the angle so it's 'forward' facing
+                    angle += angleOffset;
+                    PointerOrientation = angle;
+
+                    if (!TeleportRequestRaised)
                     {
-                        // wrap the angle value.
-                        if (absoluteAngle > 180f)
+                        float absoluteAngle = Mathf.Abs(angle);
+
+                        if (absoluteAngle < teleportActivationAngle)
                         {
-                            absoluteAngle = Mathf.Abs(absoluteAngle - 360f);
+                            TeleportRequestRaised = true;
+
+                            CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                         }
-
-                        // Calculate the offset rotation angle from the 90 degree mark.
-                        // Half the rotation activation angle amount to make sure the activation angle stays centered at 90.
-                        float offsetRotationAngle = 90f - rotateActivationAngle;
-
-                        // subtract it from our current angle reading
-                        offsetRotationAngle = absoluteAngle - offsetRotationAngle;
-
-                        // if it's less than zero, then we don't have activation
-                        if (offsetRotationAngle > 0)
+                        else if (canMove)
                         {
-                            // check to make sure we're still under our activation threshold.
-                            if (offsetRotationAngle < 2 * rotateActivationAngle)
+                            // wrap the angle value.
+                            if (absoluteAngle > 180f)
                             {
-                                canMove = false;
-                                // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
-                                MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                absoluteAngle = Mathf.Abs(absoluteAngle - 360f);
                             }
-                            else // We may be trying to strafe backwards.
-                            {
-                                // Calculate the offset rotation angle from the 180 degree mark.
-                                // Half the strafe activation angle to make sure the activation angle stays centered at 180f
-                                float offsetStrafeAngle = 180f - backStrafeActivationAngle;
-                                // subtract it from our current angle reading
-                                offsetStrafeAngle = absoluteAngle - offsetStrafeAngle;
 
-                                // Check to make sure we're still under our activation threshold.
-                                if (offsetStrafeAngle > 0 && offsetStrafeAngle <= backStrafeActivationAngle)
+                            // Calculate the offset rotation angle from the 90 degree mark.
+                            // Half the rotation activation angle amount to make sure the activation angle stays centered at 90.
+                            float offsetRotationAngle = 90f - rotateActivationAngle;
+
+                            // subtract it from our current angle reading
+                            offsetRotationAngle = absoluteAngle - offsetRotationAngle;
+
+                            // if it's less than zero, then we don't have activation
+                            if (offsetRotationAngle > 0)
+                            {
+                                // check to make sure we're still under our activation threshold.
+                                if (offsetRotationAngle < 2 * rotateActivationAngle)
                                 {
                                     canMove = false;
-                                    var height = MixedRealityPlayspace.Position.y;
-                                    var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
-                                    newPosition.y = height;
-                                    MixedRealityPlayspace.Position = newPosition;
+                                    // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
+                                    MixedRealityPlayspace.RotateAround(CameraCache.Main.transform.position, Vector3.up, angle >= 0.0f ? rotationAmount : -rotationAmount);
+                                }
+                                else // We may be trying to strafe backwards.
+                                {
+                                    // Calculate the offset rotation angle from the 180 degree mark.
+                                    // Half the strafe activation angle to make sure the activation angle stays centered at 180f
+                                    float offsetStrafeAngle = 180f - backStrafeActivationAngle;
+                                    // subtract it from our current angle reading
+                                    offsetStrafeAngle = absoluteAngle - offsetStrafeAngle;
+
+                                    // Check to make sure we're still under our activation threshold.
+                                    if (offsetStrafeAngle > 0 && offsetStrafeAngle <= backStrafeActivationAngle)
+                                    {
+                                        canMove = false;
+                                        var height = MixedRealityPlayspace.Position.y;
+                                        var newPosition = -CameraCache.Main.transform.forward * strafeAmount + MixedRealityPlayspace.Position;
+                                        newPosition.y = height;
+                                        MixedRealityPlayspace.Position = newPosition;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            else
-            {
-                if (!canTeleport && !TeleportRequestRaised)
+                else
                 {
-                    // Reset the move flag when the user stops moving the joystick
-                    // but hasn't yet started teleport request.
-                    canMove = true;
-                }
-
-                if (canTeleport)
-                {
-                    canTeleport = false;
-                    TeleportRequestRaised = false;
-
-                    if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                        TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
+                    if (!canTeleport && !TeleportRequestRaised)
                     {
-                        CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        // Reset the move flag when the user stops moving the joystick
+                        // but hasn't yet started teleport request.
+                        canMove = true;
+                    }
+
+                    if (canTeleport)
+                    {
+                        canTeleport = false;
+                        TeleportRequestRaised = false;
+
+                        if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
+                            TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
+                        {
+                            CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        }
+                    }
+
+                    if (TeleportRequestRaised)
+                    {
+                        canTeleport = false;
+                        TeleportRequestRaised = false;
+                        CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                     }
                 }
 
-                if (TeleportRequestRaised)
+                if (TeleportRequestRaised &&
+                    TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
+                    TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                 {
-                    canTeleport = false;
-                    TeleportRequestRaised = false;
-                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    canTeleport = true;
                 }
-            }
-
-            if (TeleportRequestRaised &&
-                TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
-                TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
-            {
-                canTeleport = true;
             }
         }
 
@@ -439,42 +455,62 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #region IMixedRealityTeleportHandler Implementation
 
+        private static readonly ProfilerMarker OnTeleportRequestPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnPreSceneQuery");
+
         /// <inheritdoc />
         public virtual void OnTeleportRequest(TeleportEventData eventData)
         {
-            // Only turn off the pointer if we're not the one sending the request
-            if (eventData.Pointer.PointerId == PointerId)
+            using (OnTeleportRequestPerfMarker.Auto())
             {
-                isTeleportRequestActive = false;
-                BaseCursor?.SetVisibility(true);
+                // Only turn off the pointer if we're not the one sending the request
+                if (eventData.Pointer.PointerId == PointerId)
+                {
+                    isTeleportRequestActive = false;
+                    BaseCursor?.SetVisibility(true);
+                }
+                else
+                {
+                    isTeleportRequestActive = true;
+                    BaseCursor?.SetVisibility(false);
+                }
             }
-            else
+        }
+
+        private static readonly ProfilerMarker OnTeleportStartedPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnTeleportStarted");
+
+        /// <inheritdoc />
+        public virtual void OnTeleportStarted(TeleportEventData eventData)
+        {
+            using (OnTeleportStartedPerfMarker.Auto())
             {
+                // Turn off all pointers while we teleport.
                 isTeleportRequestActive = true;
                 BaseCursor?.SetVisibility(false);
             }
         }
 
-        /// <inheritdoc />
-        public virtual void OnTeleportStarted(TeleportEventData eventData)
-        {
-            // Turn off all pointers while we teleport.
-            isTeleportRequestActive = true;
-            BaseCursor?.SetVisibility(false);
-        }
+        private static readonly ProfilerMarker OnTeleportCompletedPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnTeleportCompleted");
 
         /// <inheritdoc />
         public virtual void OnTeleportCompleted(TeleportEventData eventData)
         {
-            isTeleportRequestActive = false;
-            BaseCursor?.SetVisibility(false);
+            using (OnTeleportCompletedPerfMarker.Auto())
+            {
+                isTeleportRequestActive = false;
+                BaseCursor?.SetVisibility(false);
+            }
         }
+
+        private static readonly ProfilerMarker OnTeleportCanceledPerfMarker = new ProfilerMarker("[MRTK] TeleportPointer.OnTeleportCanceled");
 
         /// <inheritdoc />
         public virtual void OnTeleportCanceled(TeleportEventData eventData)
         {
-            isTeleportRequestActive = false;
-            BaseCursor?.SetVisibility(false);
+            using (OnTeleportCanceledPerfMarker.Auto())
+            {
+                isTeleportRequestActive = false;
+                BaseCursor?.SetVisibility(false);
+            }
         }
 
         #endregion IMixedRealityTeleportHandler Implementation

@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 pivotPositions = new Vector3[NumPivotLocations];
             }
 
-            //Get the extents of our content size
+            // Get the extents of our content size
             localContentSize *= 0.5f;
 
             pivotPositions[(int)ToolTipAttachPoint.BottomMiddle] = new Vector3(0f, -localContentSize.y, 0f);

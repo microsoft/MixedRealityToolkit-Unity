@@ -5,7 +5,7 @@ using UnityEngine.XR;
 
 #if XR_MANAGEMENT_ENABLED
 using UnityEngine.XR.Management;
-#endif //XR_MANAGEMENT_ENABLED
+#endif // XR_MANAGEMENT_ENABLED
 
 namespace Microsoft.MixedReality.Toolkit.XRSDK
 {
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 {
                     inputSubsystem = ActiveLoader.GetLoadedSubsystem<XRInputSubsystem>();
                 }
-#endif //XR_MANAGEMENT_ENABLED
+#endif // XR_MANAGEMENT_ENABLED
 
                 return inputSubsystem;
             }

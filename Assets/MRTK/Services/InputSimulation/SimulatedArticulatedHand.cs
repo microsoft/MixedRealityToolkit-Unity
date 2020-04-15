@@ -62,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 currentPointerPose.Rotation = Quaternion.LookRotation(ray.direction);
 
                 currentGripPose = jointPoses[TrackedHandJoint.Palm];
-
                 currentIndexPose = jointPoses[TrackedHandJoint.IndexTip];
             }
 
@@ -101,20 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         break;
                     case DeviceInputType.Select:
-                        Interactions[i].BoolData = handData.IsPinching;
-
-                        if (Interactions[i].Changed)
-                        {
-                            if (Interactions[i].BoolData)
-                            {
-                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                            }
-                            else
-                            {
-                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
-                            }
-                        }
-                        break;
                     case DeviceInputType.TriggerPress:
                         Interactions[i].BoolData = handData.IsPinching;
 

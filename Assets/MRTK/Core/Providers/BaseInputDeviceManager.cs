@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -91,10 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private static PointerEqualityComparer defaultComparer;
 
-            internal static PointerEqualityComparer Default
-            {
-                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
-            }
+            internal static PointerEqualityComparer Default => defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
 
             /// <summary>
             /// Check that references equals for two pointers
@@ -105,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             /// <summary>
-            /// Unity objects have unique equals comparison and to check keys in a dictionary, 
-            /// we want the hascode match to be Unity's unique InstanceID to compare objects
+            /// Unity objects have unique equals comparison and to check keys in a dictionary,
+            /// we want the hash code match to be Unity's unique InstanceID to compare objects.
             /// </summary>
             public int GetHashCode(IMixedRealityPointer pointer)
             {
@@ -121,10 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
+        private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private readonly Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion
@@ -188,8 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
-            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RequestPointers");
-
             using (RequestPointersPerfMarker.Auto())
             {
                 var returnPointers = new List<IMixedRealityPointer>();
@@ -237,11 +231,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                 }
 
-                Profiler.EndSample(); // RequestPointers
-
                 return returnPointers.Count == 0 ? null : returnPointers.ToArray();
             }
         }
+
+        private static readonly ProfilerMarker RecyclePointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.RecyclePointers");
 
         /// <summary>
         /// Recycle all pointers associated with the provided <see cref="IMixedRealityInputSource"/>. 
@@ -249,50 +243,51 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RecyclePointers(IMixedRealityInputSource inputSource)
         {
-            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.RecyclePointers");
-
-            if (inputSource != null)
+            using (RecyclePointersPerfMarker.Auto())
             {
-                CleanActivePointers();
-
-                var pointers = inputSource.Pointers;
-                for (int i = 0; i < pointers.Length; i++)
+                if (inputSource != null)
                 {
-                    var pointer = pointers[i];
-                    var pointerComponent = pointer as MonoBehaviour;
-                    if (!UnityObjectExtensions.IsNull(pointerComponent))
+                    CleanActivePointers();
+
+                    var pointers = inputSource.Pointers;
+                    for (int i = 0; i < pointers.Length; i++)
                     {
-                        // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
-                        // At least if this is a controller we know about and we expect it to be destroyed, skip
-                        if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
+                        var pointer = pointers[i];
+                        var pointerComponent = pointer as MonoBehaviour;
+                        if (!UnityObjectExtensions.IsNull(pointerComponent))
                         {
-                            continue;
-                        }
-
-                        if (EnablePointerCache)
-                        {
-                            pointer.Reset();
-                            pointerComponent.gameObject.SetActive(false);
-
-                            if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                            // Unfortunately, it's possible the gameobject source is *being* destroyed so we are not null now but will be soon.
+                            // At least if this is a controller we know about and we expect it to be destroyed, skip
+                            if (pointer is IMixedRealityControllerPoseSynchronizer controller && controller.DestroyOnSourceLost)
                             {
-                                uint pointerOptionIndex = activePointersToConfig[pointer];
-                                activePointersToConfig.Remove(pointer);
-
-                                // Add our pointer back to our cache
-                                pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                                continue;
                             }
-                        }
-                        else
-                        {
-                            GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+
+                            if (EnablePointerCache)
+                            {
+                                pointer.Reset();
+                                pointerComponent.gameObject.SetActive(false);
+
+                                if (EnablePointerCache && activePointersToConfig.ContainsKey(pointer))
+                                {
+                                    uint pointerOptionIndex = activePointersToConfig[pointer];
+                                    activePointersToConfig.Remove(pointer);
+
+                                    // Add our pointer back to our cache
+                                    pointerConfigurations[(int)pointerOptionIndex].cache.Push(pointer);
+                                }
+                            }
+                            else
+                            {
+                                GameObjectExtensions.DestroyGameObject(pointerComponent.gameObject);
+                            }
                         }
                     }
                 }
             }
-
-            Profiler.EndSample(); // RecyclePointers
         }
+
+        private static readonly ProfilerMarker CreatePointerPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.CreatePointer");
 
         /// <summary>
         /// Instantiate the Pointer prefab with supplied PointerOption details. If there is no IMixedRealityPointer on the prefab, then destroy and log error
@@ -302,50 +297,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         private IMixedRealityPointer CreatePointer(in PointerOption option)
         {
-            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CreatePointer");
-
-            var pointerObject = Object.Instantiate(option.PointerPrefab);
-            MixedRealityPlayspace.AddChild(pointerObject.transform);
-            var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
-            if (pointer == null)
+            using (CreatePointerPerfMarker.Auto())
             {
-                Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
+                var pointerObject = Object.Instantiate(option.PointerPrefab);
+                MixedRealityPlayspace.AddChild(pointerObject.transform);
+                var pointer = pointerObject.GetComponent<IMixedRealityPointer>();
+                if (pointer == null)
+                {
+                    Debug.LogError($"{option.PointerPrefab} does not have {typeof(IMixedRealityPointer).Name} component. Cannot create and utilize pointer");
 
-                GameObjectExtensions.DestroyGameObject(pointerObject);
+                    GameObjectExtensions.DestroyGameObject(pointerObject);
+                }
+
+                return pointer;
             }
-
-            Profiler.EndSample(); // CreatePointer
-
-            return pointer;
         }
 
+        private static readonly ProfilerMarker CleanActivePointersPerfMarker = new ProfilerMarker("[MRTK] BaseInputDeviceManager.CleanActivePointers");
+
         /// <summary>
-        /// This class tracks pointers that have been requested and thus are considered "active" gameobjects in the scene. 
+        /// This class tracks pointers that have been requested and thus are considered "active" GameObjects in the scene. 
         /// As GameObjects, these pointers may be destroyed and thus their entry becomes "null" although the managed object is not destroyed
         /// This helper loops through all dictionary entries and checks if it is null, if so it is removed
         /// </summary>
         private void CleanActivePointers()
         {
-            Profiler.BeginSample("[MRTK] BaseInputDeviceManager.CleanActivePointers");
-
-            var removal = new List<IMixedRealityPointer>();
-
-            var enumerator = activePointersToConfig.GetEnumerator();
-            while (enumerator.MoveNext())
+            using (CleanActivePointersPerfMarker.Auto())
             {
-                var pointer = enumerator.Current.Key as MonoBehaviour;
-                if (UnityObjectExtensions.IsNull(pointer))
+                var removal = new List<IMixedRealityPointer>();
+
+                var enumerator = activePointersToConfig.GetEnumerator();
+                while (enumerator.MoveNext())
                 {
-                    removal.Add(enumerator.Current.Key);
+                    var pointer = enumerator.Current.Key as MonoBehaviour;
+                    if (UnityObjectExtensions.IsNull(pointer))
+                    {
+                        removal.Add(enumerator.Current.Key);
+                    }
+                }
+
+                for (int i = 0; i < removal.Count; i++)
+                {
+                    activePointersToConfig.Remove(removal[i]);
                 }
             }
-
-            for (int i = 0; i < removal.Count; i++)
-            {
-                activePointersToConfig.Remove(removal[i]);
-            }
-
-            Profiler.EndSample(); // CleanActivePointers
         }
 
         /// <summary>

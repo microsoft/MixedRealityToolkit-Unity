@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -308,42 +308,44 @@ namespace Microsoft.MixedReality.Toolkit
             return TryGetServiceInternal(interfaceType, out serviceInstance, out registrar, name);
         }
 
+        private static readonly ProfilerMarker TryGetServiceInternalPerfMarker = new ProfilerMarker("[MRTK] MixedRealityServiceRegistry.TryGetServiceInternal");
+
         private static bool TryGetServiceInternal(Type interfaceType,
             out IMixedRealityService serviceInstance,
             out IMixedRealityServiceRegistrar registrar,
             string name = null)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityServiceRegistry.TryGetServiceInternal");
-
-            // Assume failed and return null unless proven otherwise
-            serviceInstance = null;
-            registrar = null;
-
-            // If there is an entry for the interface key provided, search that small list first
-            if (registry.ContainsKey(interfaceType))
+            using (TryGetServiceInternalPerfMarker.Auto())
             {
-                if (FindEntry(registry[interfaceType], interfaceType, name, out serviceInstance, out registrar))
-                {
-                    Profiler.EndSample(); // TryGetServiceInternal - found entry
-                    return true;
-                }
-            }
+                // Assume failed and return null unless proven otherwise
+                serviceInstance = null;
+                registrar = null;
 
-            // Either there is no entry for the interface type, or it was not placed in that list. 
-            // Services can have multiple supported interfaces thus they may match the requested query but be placed in a different registry bin
-            // Thus, search all bins until a match is found
-            foreach (var list in registry.Values)
-            {
-                if (FindEntry(list, interfaceType, name, out serviceInstance, out registrar))
+                // If there is an entry for the interface key provided, search that small list first
+                if (registry.ContainsKey(interfaceType))
                 {
-                    Profiler.EndSample(); // TryGetServiceInternal - found entry
-                    return true;
+                    if (FindEntry(registry[interfaceType], interfaceType, name, out serviceInstance, out registrar))
+                    {
+                        return true;
+                    }
                 }
-            }
 
-            Profiler.EndSample(); // TryGetServiceInternal
-            return false;
+                // Either there is no entry for the interface type, or it was not placed in that list. 
+                // Services can have multiple supported interfaces thus they may match the requested query but be placed in a different registry bin
+                // Thus, search all bins until a match is found
+                foreach (var list in registry.Values)
+                {
+                    if (FindEntry(list, interfaceType, name, out serviceInstance, out registrar))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
+
+        private static readonly ProfilerMarker FindEntryPerfMarker = new ProfilerMarker("[MRTK] MixedRealityServiceRegistry.FindEntry");
 
         /// <summary>
         /// Helper method to search list of IMixedRealityService/IMixedRealityServiceRegistrar pairs to find first service that matches name and interface type query
@@ -360,27 +362,26 @@ namespace Microsoft.MixedReality.Toolkit
             out IMixedRealityService serviceInstance, 
             out IMixedRealityServiceRegistrar registrar)
         {
-            Profiler.BeginSample("[MRTK] MixedRealityServiceRegistry.FindEntry");
-
-            // Assume failed and return null unless proven otherwise
-            serviceInstance = null;
-            registrar = null;
-
-            for (int i = 0; i < serviceList.Count; ++i)
+            using (FindEntryPerfMarker.Auto())
             {
-                var svc = serviceList[i].Key;
-                if ((string.IsNullOrEmpty(name) || svc.Name == name) && interfaceType.IsAssignableFrom(svc.GetType()))
+                // Assume failed and return null unless proven otherwise
+                serviceInstance = null;
+                registrar = null;
+
+                for (int i = 0; i < serviceList.Count; ++i)
                 {
-                    serviceInstance = svc;
-                    registrar = serviceList[i].Value;
+                    var svc = serviceList[i].Key;
+                    if ((string.IsNullOrEmpty(name) || svc.Name == name) && interfaceType.IsAssignableFrom(svc.GetType()))
+                    {
+                        serviceInstance = svc;
+                        registrar = serviceList[i].Value;
 
-                    Profiler.EndSample(); // FindEntry - found
-                    return true;
+                        return true;
+                    }
                 }
-            }
 
-            Profiler.EndSample(); // FindEntry
-            return false;
+                return false;
+            }
         }
 
         /// <summary>

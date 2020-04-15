@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using UnityEngine.Profiling;
+using Unity.Profiling;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -41,34 +41,36 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] BaseDataProviderAccessCoreSystem.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.Update");
-
-            base.Update();
-
-            foreach (var provider in dataProviders)
+            using (UpdatePerfMarker.Auto())
             {
-                provider.Update();
-            }
+                base.Update();
 
-            Profiler.EndSample(); // Update
+                foreach (var provider in dataProviders)
+                {
+                    provider.Update();
+                }
+            }
         }
+
+        private static readonly ProfilerMarker LateUpdatePerfMarker = new ProfilerMarker("[MRTK] BaseDataProviderAccessCoreSystem.LateUpdate");
 
         /// <inheritdoc />
         public override void LateUpdate()
         {
-            Profiler.BeginSample("[MRTK] BaseDataAccessCoreSystem.LateUpdate");
-
-            base.LateUpdate();
-
-            foreach (var provider in dataProviders)
+            using (LateUpdatePerfMarker.Auto())
             {
-                provider.LateUpdate();
-            }
+                base.LateUpdate();
 
-            Profiler.EndSample(); // LateUpdate
+                foreach (var provider in dataProviders)
+                {
+                    provider.LateUpdate();
+                }
+            }
         }
 
         /// <summary>
