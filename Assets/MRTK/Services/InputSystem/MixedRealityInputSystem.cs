@@ -703,141 +703,146 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker PropagateEventPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.PropagateEvent");
+
         /// <summary>
         /// Propagates an event down and up the target object hierarchy if the event supports propagation.
         /// Propagation is not halting in case of event data already used. Handlers are expected to check use of event.
         /// </summary>
         private void PropagateEvent<T>(GameObject targetObject, BaseInputEventData baseInputEventData, ExecuteEvents.EventFunction<T> eventHandler) where T : IEventSystemHandler
         {
-            if (!(baseInputEventData is IMixedRealityEventPropagationData eventPropagationData))
+            using (PropagateEventPerfMarker.Auto())
             {
-                return;
-            }
-
-            var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
-
-            propagationExecutionDepth++;
-
-            // Trickles Down
-            if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
-            {
-                eventPropagationData.Phase = PropagationPhase.TrickleDown;
-                List<EventPropagationHandlerEntry> handlers;
-
-                for (int i = targetHierarchy.Length - 1; i > 0; i--)
+                if (!(baseInputEventData is IMixedRealityEventPropagationData eventPropagationData))
                 {
-                    if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
-                    {
-                        break;
-                    }
-                    if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
-                    {
-                        continue;
-                    }
+                    return;
+                }
 
-                    // Hierarchy object have handlers registered for a propagation phase
-                    if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
+                var targetHierarchy = targetObject.GetComponentsInParent<Transform>();
+
+                propagationExecutionDepth++;
+
+                // Trickles Down
+                if (eventPropagationData.Propagation.HasFlag(EventPropagation.TricklesDown))
+                {
+                    eventPropagationData.Phase = PropagationPhase.TrickleDown;
+                    List<EventPropagationHandlerEntry> handlers;
+
+                    for (int i = targetHierarchy.Length - 1; i > 0; i--)
                     {
-                        foreach (var handler in handlers)
+                        if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
                         {
-                            if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
+                            break;
+                        }
+                        if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
+                        {
+                            continue;
+                        }
+
+                        // Hierarchy object have handlers registered for a propagation phase
+                        if (EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers))
+                        {
+                            foreach (var handler in handlers)
                             {
-                                break;
-                            }
-                            if (handler.handlerType == typeof(T) && handler.phase.HasFlag(PropagationPhase.TrickleDown))
-                            {
-                                // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
-                                try
+                                if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
                                 {
-                                    eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                    break;
                                 }
-                                catch (Exception ex)
+                                if (handler.handlerType == typeof(T) && handler.phase.HasFlag(PropagationPhase.TrickleDown))
                                 {
-                                    Debug.LogException(ex);
+                                    // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                                    try
+                                    {
+                                        eventHandler.Invoke((T)handler.handler, baseInputEventData);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Debug.LogException(ex);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            // Target - event should always reach target unless PreventDefault was called on the event
-            if (!eventPropagationData.Status.HasFlag(LifeStatus.DefaultPrevented))
-            {
-                eventPropagationData.Phase = PropagationPhase.Target;
-
-                var targetHandlers = targetObject.GetComponents<T>();
-                foreach (var targetHandler in targetHandlers)
+                // Target - event should always reach target unless PreventDefault was called on the event
+                if (!eventPropagationData.Status.HasFlag(LifeStatus.DefaultPrevented))
                 {
-                    if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
-                    {
-                        break;
-                    }
+                    eventPropagationData.Phase = PropagationPhase.Target;
 
-                    // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
-                    try
-                    {
-                        eventHandler.Invoke((T)targetHandler, baseInputEventData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogException(ex);
-                    }
-                }
-            }
-
-            // Bubbles Up. Handlers will catch bubble events by default unless registered for tickle down only
-            if (eventPropagationData.Propagation.HasFlag(EventPropagation.BubblesUp))
-            {
-                eventPropagationData.Phase = PropagationPhase.BubbleUp;
-                List<EventPropagationHandlerEntry> handlers;
-
-                for (int i = 1; i < targetHierarchy.Length; i++)
-                {
-                    if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
-                    {
-                        break;
-                    }
-                    if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
-                    {
-                        continue;
-                    }
-
-                    // Check if hierarchy game object has handler registered for propagation
-                    bool isElementRegistered = EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers);
-
-                    var elementHandlers = targetHierarchy[i].gameObject.GetComponents<T>();
-                    foreach (var elementHandler in elementHandlers)
+                    var targetHandlers = targetObject.GetComponents<T>();
+                    foreach (var targetHandler in targetHandlers)
                     {
                         if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
                         {
                             break;
                         }
-                        if (isElementRegistered)
-                        {
-                            foreach (var handler in handlers)
-                            {
-                                // If handler was registered for propagation, make sure bubble phase is required
-                                if (elementHandler.Equals((T)handler.handler) && !handler.phase.HasFlag(PropagationPhase.BubbleUp))
-                                {
-                                    continue;
-                                }
-                            }
-                        }
 
                         // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
                         try
                         {
-                            eventHandler.Invoke(elementHandler, baseInputEventData);
+                            eventHandler.Invoke((T)targetHandler, baseInputEventData);
                         }
                         catch (Exception ex)
                         {
                             Debug.LogException(ex);
                         }
                     }
+                }
 
-                    propagationExecutionDepth--;
-                    ProcessPostponedActions();
+                // Bubbles Up. Handlers will catch bubble events by default unless registered for tickle down only
+                if (eventPropagationData.Propagation.HasFlag(EventPropagation.BubblesUp))
+                {
+                    eventPropagationData.Phase = PropagationPhase.BubbleUp;
+                    List<EventPropagationHandlerEntry> handlers;
+
+                    for (int i = 1; i < targetHierarchy.Length; i++)
+                    {
+                        if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStopped))
+                        {
+                            break;
+                        }
+                        if (eventPropagationData.Skip(targetHierarchy[i].gameObject))
+                        {
+                            continue;
+                        }
+
+                        // Check if hierarchy game object has handler registered for propagation
+                        bool isElementRegistered = EventPropagationHandlersByObject.TryGetValue(targetHierarchy[i].gameObject, out handlers);
+
+                        var elementHandlers = targetHierarchy[i].gameObject.GetComponents<T>();
+                        foreach (var elementHandler in elementHandlers)
+                        {
+                            if (eventPropagationData.Status.HasFlag(LifeStatus.PropagationStoppedImmediately))
+                            {
+                                break;
+                            }
+                            if (isElementRegistered)
+                            {
+                                foreach (var handler in handlers)
+                                {
+                                    // If handler was registered for propagation, make sure bubble phase is required
+                                    if (elementHandler.Equals((T)handler.handler) && !handler.phase.HasFlag(PropagationPhase.BubbleUp))
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            // Protecting propagation execution depth ensuring client code does not put the event dispatch system into a bad state.
+                            try
+                            {
+                                eventHandler.Invoke(elementHandler, baseInputEventData);
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.LogException(ex);
+                            }
+                        }
+
+                        propagationExecutionDepth--;
+                        ProcessPostponedActions();
+                    }
                 }
             }
         }
@@ -975,23 +980,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker ProcessPostponedActionsPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputSystem.ProcessPostponedActions");
+
         private void ProcessPostponedActions()
         {
-            if (propagationExecutionDepth == 0 && postponedActions.Count > 0)
+            using (ProcessPostponedActionsPerfMarker.Auto())
             {
-                foreach (var handler in postponedActions)
+                if (propagationExecutionDepth == 0 && postponedActions.Count > 0)
                 {
-                    if (handler.Item1 == PostponedAction.Add)
+                    foreach (var handler in postponedActions)
                     {
-                        AddPropagationHandlerToMap(handler.Item2, handler.Item3, handler.Item4);
+                        if (handler.Item1 == PostponedAction.Add)
+                        {
+                            AddPropagationHandlerToMap(handler.Item2, handler.Item3, handler.Item4);
+                        }
+                        else if (handler.Item1 == PostponedAction.Remove)
+                        {
+                            RemovePropagationHandlerFromMap(handler.Item2, handler.Item3, handler.Item4);
+                        }
                     }
-                    else if (handler.Item1 == PostponedAction.Remove)
-                    {
-                        RemovePropagationHandlerFromMap(handler.Item2, handler.Item3, handler.Item4);
-                    }
-                }
 
-                postponedActions.Clear();
+                    postponedActions.Clear();
+                }
             }
         }
 
