@@ -53,11 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty pressDistance;
         private SerializedProperty releaseDistanceDelta;
 
-        private static Vector3[] startPlaneVertices = new Vector3[4];
-        private static Vector3[] endPlaneVertices = new Vector3[4];
-        private static Vector3[] pressPlaneVertices = new Vector3[4];
-        private static Vector3[] pressStartPlaneVertices = new Vector3[4];
-        private static Vector3[] releasePlaneVertices = new Vector3[4];
+        private static readonly Vector3[] startPlaneVertices = new Vector3[4];
+        private static readonly Vector3[] endPlaneVertices = new Vector3[4];
+        private static readonly Vector3[] pressPlaneVertices = new Vector3[4];
+        private static readonly Vector3[] pressStartPlaneVertices = new Vector3[4];
+        private static readonly Vector3[] releasePlaneVertices = new Vector3[4];
 
         private static readonly GUIContent DistanceSpaceModeLabel = new GUIContent("Coordinate Space Mode");
         private static readonly string[] excludeProperties = new string[] { "distanceSpaceMode", "movingButtonVisuals", "m_Script" };
@@ -400,8 +400,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Intersect ray with XY plane.
             Plane xyPlane = new Plane(Vector3.forward, 0.0f);
-            float intersectionDistance = 0.0f;
-            if (xyPlane.Raycast(mouseRay, out intersectionDistance))
+            if (xyPlane.Raycast(mouseRay, out float intersectionDistance))
             {
                 Vector3 intersection = mouseRay.GetPoint(intersectionDistance);
                 return (Mathf.Abs(intersection.x) <= halfExtents.x && Mathf.Abs(intersection.y) <= halfExtents.y);
