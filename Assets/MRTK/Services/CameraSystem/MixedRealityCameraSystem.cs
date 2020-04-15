@@ -57,17 +57,21 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     }
                 }
 #if UNITY_WSA
-                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
-#pragma warning disable 0618
-                else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-#pragma warning restore 0618
+                else
                 {
-                    currentDisplayType = DisplayType.Transparent;
-                }
+                    Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
 
-                Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
+                    // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+                    // with legacy requirements.
+#pragma warning disable 0618
+                    if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                    {
+                        currentDisplayType = DisplayType.Transparent;
+                    }
+#pragma warning restore 0618
+                }
 #endif
+
                 return currentDisplayType == DisplayType.Opaque;
             }
         }
