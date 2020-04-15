@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         [SerializeField]
         [Tooltip("Local space forward direction")]
-        protected Vector3 localForward = Vector3.forward;
+        protected Vector3 localForward = -Vector3.forward;
 
         /// <summary>
         /// Local space forward direction
