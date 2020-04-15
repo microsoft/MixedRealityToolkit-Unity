@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         #region Lock Profile Preferences
 
-        private static readonly GUIContent LockContent = new GUIContent("Lock SDK profiles", "Locks the SDK profiles from being edited.\n\nThis setting only applies to the currently running project.");
+        private static readonly GUIContent LockContent = new GUIContent("Lock SDK profiles", "Locks the SDK profiles from being edited.");
         private const string LOCK_KEY = "_MixedRealityToolkit_Editor_LockProfiles";
         private static bool lockPrefLoaded;
         private static bool lockProfiles;
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Ignore startup settings prompt
 
-        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore settings prompt on startup", "Prevents settings dialog popup from showing on startup.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private static readonly GUIContent IgnoreContent = new GUIContent("Ignore MRTK project configurator", "Prevents settings dialog popup from showing.");
         private const string IGNORE_KEY = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private static bool ignorePrefLoaded;
         private static bool ignoreSettingsPrompt;
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Run optimal configuration analysis on Play
 
-        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis", "Run optimal configuration analysis for current project and log warnings on entering play mode or building.\n\nThis setting applies to all projects using the Mixed Reality Toolkit.");
+        private static readonly GUIContent RunOptimalConfigContent = new GUIContent("Run optimal configuration analysis", "Run optimal configuration analysis for current project and log warnings on entering play mode or building.");
         private const string RUN_OPTIMAL_CONFIG_KEY = "MixedRealityToolkit_Editor_RunOptimalConfig";
         private static bool runOptimalConfigPrefLoaded;
         private static bool runOptimalConfig;
