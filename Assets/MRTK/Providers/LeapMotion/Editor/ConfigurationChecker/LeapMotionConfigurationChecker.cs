@@ -19,7 +19,40 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         // The presence of the LeapXRServiceProvider.cs is used to determine if the Leap Motion Core Assets are in the project.
         private const string trackedLeapFileName = "LeapXRServiceProvider.cs";
         private static readonly string[] definitions = { "LEAPMOTIONCORE_PRESENT" };
+
+        // True if the Leap Motion Core Assets are in the project.
         private static bool isLeapInProject = false;
+
+        // The path difference between the root of assets and the root of the Leap Motion Core Assets.
+        private static string pathDifference = "";
+
+        // Array of paths to Leap Motion testing directories that will be removed from the project.
+        private static readonly string[] pathsToDelete = new string[]
+        {
+            "LeapMotion/Core/Editor/Tests/",
+            "LeapMotion/Core/Plugins/LeapCSharp/Editor/Tests/",
+            "LeapMotion/Core/Scripts/Algorithms/Editor/Tests/",
+            "LeapMotion/Core/Scripts/DataStructures/Editor/Tests/",
+            "LeapMotion/Core/Scripts/Encoding/Editor/",
+            "LeapMotion/Core/Scripts/Query/Editor/",
+            "LeapMotion/Core/Scripts/Utils/Editor/BitConverterNonAllocTests.cs",
+            "LeapMotion/Core/Scripts/Utils/Editor/ListAndArrayExtensionTests.cs",
+            "LeapMotion/Core/Scripts/Utils/Editor/TransformUtilTests.cs",
+            "LeapMotion/Core/Scripts/Utils/Editor/UtilsTests.cs",
+        };
+
+        // Dictionary of names and references of new asmdefs that will be added to the Leap Motion Core Assets.
+        private static readonly Dictionary<string, string[]> leapEditorDirectories = new Dictionary<string, string[]>
+        {
+            { "LeapMotion.Core.Editor", new string[] { "LeapMotion" } },
+            { "LeapMotion.Core.Scripts.Animation.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor", "LeapMotion.Core.Scripts.Utils.Editor" } },
+            { "LeapMotion.Core.Scripts.Attachments.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
+            { "LeapMotion.Core.Scripts.Attributes.Editor", new string[] { "LeapMotion" } },
+            { "LeapMotion.Core.Scripts.DataStructures.Editor", new string[] { "LeapMotion" } },
+            { "LeapMotion.Core.Scripts.EditorTools.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Scripts.Utils.Editor" } },
+            { "LeapMotion.Core.Scripts.Utils.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
+            { "LeapMotion.Core.Scripts.XR.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } }
+        };
 
         static LeapMotionConfigurationChecker()
         {
@@ -66,12 +99,25 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             if (isLeapInProject && !references.Contains("LeapMotion"))
             {
-                RemoveTestingFolders();
-                AddAndUpdateAsmDefs();
-                AddLeapEditorAsmDefs();
+                // Get the location of the Leap Core Assets relative to the root directory
+                pathDifference = GetPathDifference();
 
-                // Refresh the database because tests were removed and 11 asmdefs were added
-                AssetDatabase.Refresh();
+                // Make sure the Leap Core Assets imported are version 4.4.0
+                bool isLeapCoreAssetsVersionSupported = LeapCoreAssetsVersionSupport();
+
+                if (isLeapCoreAssetsVersionSupported)
+                {
+                    RemoveTestingFolders();
+                    AddAndUpdateAsmDefs();
+                    AddLeapEditorAsmDefs();
+
+                    // Refresh the database because tests were removed and 11 asmdefs were added
+                    AssetDatabase.Refresh();
+                }
+                else
+                {
+                    Debug.LogError("MRTK only supports the Leap Motion Core Assets Version 4.4.0, the Leap Motion Core Assets imported are not Version 4.4.0.");
+                }
             }
             
             if (!isLeapInProject && references.Contains("LeapMotion"))
@@ -79,6 +125,32 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                 references.Remove("LeapMotion");
                 leapDataProviderAsmDef.References = references.ToArray();
                 leapDataProviderAsmDef.Save(leapDataProviderAsmDefFile[0].FullName);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the Leap Motion Core Assets are version 4.4.0.
+        /// </summary>
+        /// <returns>True, if the Leap Motion Core Assets imported are version 4.4.0.</returns>
+        private static bool LeapCoreAssetsVersionSupport()
+        {
+            string versionLeapPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
+
+            string leapCoreAssetsVersionNumber = "4.4.0";
+
+            using (StreamReader streamReader = new StreamReader(versionLeapPath))
+            {
+                while (streamReader.Peek() > -1)
+                {
+                    string line = streamReader.ReadLine();
+
+                    if (line.Contains(leapCoreAssetsVersionNumber))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
 
@@ -91,24 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void RemoveTestingFolders()
         {
-
-            string[] pathsToDelete = new string[]
-            {
-                "LeapMotion/Core/Editor/Tests/",
-                "LeapMotion/Core/Plugins/LeapCSharp/Editor/Tests/",
-                "LeapMotion/Core/Scripts/Algorithms/Editor/Tests/",
-                "LeapMotion/Core/Scripts/DataStructures/Editor/Tests/",
-                "LeapMotion/Core/Scripts/Encoding/Editor/",
-                "LeapMotion/Core/Scripts/Query/Editor/",
-                "LeapMotion/Core/Scripts/Utils/Editor/BitConverterNonAllocTests.cs",
-                "LeapMotion/Core/Scripts/Utils/Editor/ListAndArrayExtensionTests.cs",
-                "LeapMotion/Core/Scripts/Utils/Editor/TransformUtilTests.cs",
-                "LeapMotion/Core/Scripts/Utils/Editor/UtilsTests.cs",
-            };
-
-            // Find where the leap motion core assets are relative to the assets directory
-            string pathDifference = GetPathDifference();
-
             // If one of the leap test directories exists then the rest have not been deleted
             if (Directory.Exists(Path.Combine(Application.dataPath, pathDifference, pathsToDelete[0])))
             {
@@ -145,9 +199,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void AddAndUpdateAsmDefs()
         {
-            // Find where the leap motion core assets are relative to the assets directory
-            string pathDifference = GetPathDifference();
-
             string leapCoreAsmDefPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "LeapMotion.asmdef");
 
             // If the asmdef has already been created then do not create another one
@@ -191,23 +242,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             if (FileUtilities.FindFilesInAssets("LeapMotion.Core.Editor.asmdef").Length == 0)
             {
-                // Names of all Leap Motion editor directories that need assembly definitions
-                // Key: Asmdef name
-                // Value: References for the asmdef
-                Dictionary<string, string[]> leapEditorDirectories = new Dictionary<string, string[]>
-                {
-                    { "LeapMotion.Core.Editor", new string[] { "LeapMotion" } },
-                    { "LeapMotion.Core.Scripts.Animation.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor", "LeapMotion.Core.Scripts.Utils.Editor" } },
-                    { "LeapMotion.Core.Scripts.Attachments.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
-                    { "LeapMotion.Core.Scripts.Attributes.Editor", new string[] { "LeapMotion" } },
-                    { "LeapMotion.Core.Scripts.DataStructures.Editor", new string[] { "LeapMotion" } },
-                    { "LeapMotion.Core.Scripts.EditorTools.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Scripts.Utils.Editor" } },
-                    { "LeapMotion.Core.Scripts.Utils.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } },
-                    { "LeapMotion.Core.Scripts.XR.Editor", new string[] { "LeapMotion", "LeapMotion.Core.Editor" } }
-                };
-
-                string pathDifference = GetPathDifference();
-
                 foreach (KeyValuePair<string, string[]> leapAsmDef in leapEditorDirectories)
                 {
                     // Convert asmdef name to a path
@@ -292,8 +326,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                     if (cscFileLine.Contains("-nowarn"))
                     {
-                        string[] nums = cscFileLine.Split(',',':');
-                        warningNumbers = nums.ToList();
+                        string[] currentWarningNumbers = cscFileLine.Split(',',':');
+                        warningNumbers = currentWarningNumbers.ToList();
 
                         // Remove "nowarn" from the warningNumbers list
                         warningNumbers.Remove("-nowarn");
