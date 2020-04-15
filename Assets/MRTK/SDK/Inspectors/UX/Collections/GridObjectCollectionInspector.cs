@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty cellHeight;
         private SerializedProperty anchor;
         private SerializedProperty rowAlignment;
-        private SerializedProperty colAlignment;
+        private SerializedProperty columnAlignment;
 
 
         protected override void OnEnable()
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             cellHeight = serializedObject.FindProperty("cellHeight");
             anchor = serializedObject.FindProperty("anchor");
             rowAlignment = serializedObject.FindProperty("rowAlignment");
-            colAlignment = serializedObject.FindProperty("colAlignment");
+            columnAlignment = serializedObject.FindProperty("columnAlignment");
         }
 
         protected override void OnInspectorGUIInsertion()
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 EditorGUILayout.HelpBox("ColumnThenRow will lay out content first horizontally (by column), then vertically (by row). NumColumns specifies number of columns per row.", MessageType.Info);
                 EditorGUILayout.PropertyField(cols, new GUIContent("Num Columns", "Number of columns per row."));
-                EditorGUILayout.PropertyField(colAlignment);
+                EditorGUILayout.PropertyField(columnAlignment);
             }
             else if (layoutTypeIndex == LayoutOrder.RowThenColumn)
             {

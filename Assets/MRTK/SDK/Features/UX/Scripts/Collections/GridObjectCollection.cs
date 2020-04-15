@@ -69,15 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [SerializeField, Tooltip("How the columns are aligned in the grid")]
-        private LayoutHorizontalAlignment colAlignment = LayoutHorizontalAlignment.Left;
+        private LayoutHorizontalAlignment columnAlignment = LayoutHorizontalAlignment.Left;
 
         /// <summary>
         /// How the columns are aligned in the grid
         /// </summary>
-        public LayoutHorizontalAlignment ColAlignment 
+        public LayoutHorizontalAlignment ColumnAlignment 
         {
-            get { return colAlignment; }
-            set { colAlignment = value; }
+            get { return columnAlignment; }
+            set { columnAlignment = value; }
         }
 
         [SerializeField, Tooltip("How the rows are aligned in the grid")]
@@ -371,9 +371,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     for (int x = 0; x < xMax; x++)
                     {
-                        if(y == yMax - 1)
+                        if (y == yMax - 1)
                         {
-                            switch (ColAlignment)
+                            switch (ColumnAlignment)
                             {
                                 case LayoutHorizontalAlignment.Left:
                                     alignmentOffsetX = 0;

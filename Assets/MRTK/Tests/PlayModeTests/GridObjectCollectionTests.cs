@@ -120,13 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 child.transform.localScale = Vector3.one * 0.1f;
             }
 
-            grid.ColAlignment = LayoutHorizontalAlignment.Left;
+            grid.ColumnAlignment = LayoutHorizontalAlignment.Left;
             grid.UpdateCollection();
 
             int expectedIdx = 0;
             foreach (LayoutHorizontalAlignment alignment in Enum.GetValues(typeof(LayoutHorizontalAlignment)))
             {
-                grid.ColAlignment = alignment;
+                grid.ColumnAlignment = alignment;
                 grid.UpdateCollection();
                 int j = 0;
                 foreach (Transform child2 in go.transform)
