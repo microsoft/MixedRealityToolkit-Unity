@@ -69,6 +69,11 @@ We have introduced two helper components, [`UI_KeyboardInputField`](xref:Microso
 
 For more information, see - [Mixed Reality Keyboard Helpers](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md).
 
+**Grid Object Collection Alignment Options**
+
+<img src="https://user-images.githubusercontent.com/39840334/79289136-5c228780-7e7d-11ea-82b4-07959e42c3ed.gif" width="300" />
+
+We have added the ability to choose how the elements in the grid are aligned, whether they are aligned in the center or along the left/right axis (top/bottom axis when doing row then column layout)
 
 ### Breaking changes in 2.4.0
 

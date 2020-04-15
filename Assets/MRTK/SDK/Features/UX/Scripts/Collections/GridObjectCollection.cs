@@ -42,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { orientType = value; }
         }
 
-        [Tooltip("Specify direction in which children are laid out.")]
+        [Tooltip("Specify direction in which children are laid out")]
         [SerializeField]
         private LayoutOrder layout = LayoutOrder.RowThenColumn;
 
         /// <summary>
-        /// Specify direction in which children are laid out.
+        /// Specify direction in which children are laid out
         /// </summary>
         public LayoutOrder Layout
         {
@@ -55,8 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { layout = value; }
         }
 
+
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
         private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
+
+        /// <summary>
+        /// Where the grid is anchored relative to local origin
+        /// </summary>
         public LayoutAnchor Anchor
         {
             get { return anchor; }
@@ -64,15 +69,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         [SerializeField, Tooltip("How the columns are aligned in the grid")]
-        private LayoutHorizontalAlignment colAlignment = LayoutHorizontalAlignment.Center;
+        private LayoutHorizontalAlignment colAlignment = LayoutHorizontalAlignment.Left;
+
+        /// <summary>
+        /// How the columns are aligned in the grid
+        /// </summary>
         public LayoutHorizontalAlignment ColAlignment 
         {
             get { return colAlignment; }
             set { colAlignment = value; }
         }
 
-        [SerializeField, Tooltip("How the rows are aligned in the gridn")]
+        [SerializeField, Tooltip("How the rows are aligned in the grid")]
         private LayoutVerticalAlignment rowAlignment = LayoutVerticalAlignment.Top;
+
+        /// <summary>
+        /// How the rows are aligned in the grid
+        /// </summary>
         public LayoutVerticalAlignment RowAlignment
         {
             get { return rowAlignment; }
