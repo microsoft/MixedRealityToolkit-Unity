@@ -113,11 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private ButtonInfo GatherCurrentInfo()
         {
-            ButtonInfo info = new ButtonInfo();
-
-            info.LocalCenter = touchable.LocalCenter;
-            info.PlaneExtents = touchable.Bounds;
-
             Vector3 pressDirLocal = (touchable != null) ? touchable.LocalPressDirection : Vector3.forward;
             Vector3 upDirLocal = Vector3.up;
 
@@ -126,14 +121,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 upDirLocal = touchableConcrete.LocalUp;
             }
 
-            info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
-            
-            info.StartPushDistance = startPushDistance.floatValue;
-            info.MaxPushDistance = maxPushDistance.floatValue;
-            info.PressDistance = pressDistance.floatValue;
-            info.ReleaseDistance = pressDistance.floatValue - releaseDistanceDelta.floatValue;
-
-            return info;
+            return new ButtonInfo
+            {
+                LocalCenter = touchable.LocalCenter,
+                PlaneExtents = touchable.Bounds,
+                PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal),
+                StartPushDistance = startPushDistance.floatValue,
+                MaxPushDistance = maxPushDistance.floatValue,
+                PressDistance = pressDistance.floatValue,
+                ReleaseDistance = pressDistance.floatValue - releaseDistanceDelta.floatValue
+            };
         }
 
         private void DrawButtonInfo(ButtonInfo info, bool editingEnabled)
@@ -189,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Undo.RecordObject(target, string.Concat("Modify Button Planes of ", button.name));
 
                 startPushDistance.floatValue = info.StartPushDistance;
-                maxPushDistance.floatValue = info.MaxPushDistance; 
+                maxPushDistance.floatValue = info.MaxPushDistance;
                 pressDistance.floatValue = info.PressDistance;
                 releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
 
