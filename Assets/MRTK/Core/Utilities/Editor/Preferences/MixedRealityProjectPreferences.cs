@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Auto-Enable UWP Capabilities
 
-        private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-Enable UWP Capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
+        private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-enable UWP capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
         private const string AUTO_ENABLE_CAPABILITIES_KEY = "_MixedRealityToolkit_Editor_AutoEnableUWPCapabilities";
         private static bool autoEnabledCapabilitiesPrefLoaded;
         private static bool autoEnabledCapabilitiesSettingsPrompt;
