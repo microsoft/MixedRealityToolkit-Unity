@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using Unity.Profiling;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
@@ -86,99 +87,119 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         }
 #endif
 
+        private static readonly ProfilerMarker DisableTrackingLostVisualPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.DisableTrackingLostVisual");
+
         private void DisableTrackingLostVisual()
         {
-            if (visual != null && visual.Enabled)
+            using (DisableTrackingLostVisualPerfMarker.Auto())
             {
-                CameraCache.Main.cullingMask = cullingMaskOnTrackingLost;
-
-                if (profile.HaltTimeWhileTrackingLost)
+                if (visual != null && visual.Enabled)
                 {
-                    Time.timeScale = timeScaleOnTrackingLost;
-                }
+                    CameraCache.Main.cullingMask = cullingMaskOnTrackingLost;
 
-                if (profile.HaltAudioOnTrackingLost)
-                {
-                    AudioListener.pause = false;
-                }
+                    if (profile.HaltTimeWhileTrackingLost)
+                    {
+                        Time.timeScale = timeScaleOnTrackingLost;
+                    }
 
-                visual.Enabled = false;
+                    if (profile.HaltAudioOnTrackingLost)
+                    {
+                        AudioListener.pause = false;
+                    }
+
+                    visual.Enabled = false;
+                }
             }
         }
+
+        private static readonly ProfilerMarker EnableTrackingLostVisualPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.EnableTrackingLostVisual");
 
         private void EnableTrackingLostVisual()
         {
-            if (visual == null)
+            using (EnableTrackingLostVisualPerfMarker.Auto())
             {
-                GameObject visualObject = UnityEngine.Object.Instantiate(profile.TrackingLostVisualPrefab);
-
-                if (visualObject != null)
-                {
-                    visual = visualObject.GetComponentInChildren<ILostTrackingVisual>();
-                }
-
                 if (visual == null)
                 {
-                    Debug.LogError("No ILostTrackingVisual found on prefab supplied by LostTrackingServiceProfile.");
-                    return;
+                    GameObject visualObject = UnityEngine.Object.Instantiate(profile.TrackingLostVisualPrefab);
+
+                    if (visualObject != null)
+                    {
+                        visual = visualObject.GetComponentInChildren<ILostTrackingVisual>();
+                    }
+
+                    if (visual == null)
+                    {
+                        Debug.LogError("No ILostTrackingVisual found on prefab supplied by LostTrackingServiceProfile.");
+                        return;
+                    }
+
+                    visual.Enabled = false;
                 }
 
-                visual.Enabled = false;
-            }
-
-            if (!visual.Enabled)
-            {
-                // Store these settings for later when tracking is regained
-                cullingMaskOnTrackingLost = CameraCache.Main.cullingMask;
-                timeScaleOnTrackingLost = Time.timeScale;
-                CameraCache.Main.cullingMask = profile.TrackingLostCullingMask;
-
-                if (profile.HaltTimeWhileTrackingLost)
+                if (!visual.Enabled)
                 {
-                    Time.timeScale = 0.0f;
-                }
+                    // Store these settings for later when tracking is regained
+                    cullingMaskOnTrackingLost = CameraCache.Main.cullingMask;
+                    timeScaleOnTrackingLost = Time.timeScale;
+                    CameraCache.Main.cullingMask = profile.TrackingLostCullingMask;
 
-                if (profile.HaltAudioOnTrackingLost)
-                {
-                    AudioListener.pause = true;
-                }
+                    if (profile.HaltTimeWhileTrackingLost)
+                    {
+                        Time.timeScale = 0.0f;
+                    }
 
-                visual.Enabled = true;
-                visual.SetLayer(profile.TrackingLostVisualLayer);
-                visual.ResetVisual();
+                    if (profile.HaltAudioOnTrackingLost)
+                    {
+                        AudioListener.pause = true;
+                    }
+
+                    visual.Enabled = true;
+                    visual.SetLayer(profile.TrackingLostVisualLayer);
+                    visual.ResetVisual();
+                }
             }
         }
 
+        private static readonly ProfilerMarker SetTrackingLostPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.SetTrackingLost");
+
         private void SetTrackingLost(bool trackingLost)
         {
-            if (TrackingLost != trackingLost)
+            using (SetTrackingLostPerfMarker.Auto())
             {
-                TrackingLost = trackingLost;
-                if (TrackingLost)
+                if (TrackingLost != trackingLost)
                 {
-                    OnTrackingLost?.Invoke();
-                    EnableTrackingLostVisual();
-                }
-                else
-                {
-                    OnTrackingRestored?.Invoke();
-                    DisableTrackingLostVisual();
+                    TrackingLost = trackingLost;
+                    if (TrackingLost)
+                    {
+                        OnTrackingLost?.Invoke();
+                        EnableTrackingLostVisual();
+                    }
+                    else
+                    {
+                        OnTrackingRestored?.Invoke();
+                        DisableTrackingLostVisual();
+                    }
                 }
             }
         }
 
 #if UNITY_WSA
+        private static readonly ProfilerMarker OnPositionLocatorStateChangedPerfMarker = new ProfilerMarker("[MRTK] LostTrackingService.OnPositionalLocatorStateChanged");
+
         private void OnPositionalLocatorStateChanged(PositionalLocatorState oldState, PositionalLocatorState newState)
         {
-            switch (newState)
+            using (OnPositionLocatorStateChangedPerfMarker.Auto())
             {
-                case PositionalLocatorState.Inhibited:
-                    SetTrackingLost(true);
-                    break;
+                switch (newState)
+                {
+                    case PositionalLocatorState.Inhibited:
+                        SetTrackingLost(true);
+                        break;
 
-                default:
-                    SetTrackingLost(false);
-                    break;
+                    default:
+                        SetTrackingLost(false);
+                        break;
+                }
             }
         }
 #endif
