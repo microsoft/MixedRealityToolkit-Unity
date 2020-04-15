@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class NearInteractionTouchable : NearInteractionTouchableSurface
     {
         [SerializeField]
+        [Tooltip("Local space forward direction")]
         protected Vector3 localForward = Vector3.forward;
 
         /// <summary>
@@ -24,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Vector3 LocalForward { get => localForward; }
 
         [SerializeField]
+        [Tooltip("Local space up direction")]
         protected Vector3 localUp = Vector3.up;
 
         /// <summary>
@@ -40,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool AreLocalVectorsOrthogonal => Vector3.Dot(localForward, localUp) == 0;
 
         [SerializeField]
+        [Tooltip("Local space object center")]
         protected Vector3 localCenter = Vector3.zero;
 
         /// <summary>
@@ -79,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override Vector3 LocalPressDirection => -localForward;
 
         [SerializeField]
+        [Tooltip("Bounds or size of the 2D NearInteractionTouchablePlane")]
         protected Vector2 bounds = Vector2.zero;
 
         /// <summary>
@@ -194,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             Math.Abs(Vector3.Dot(newCollider.size, LocalUp)));
 
                 SetBounds(adjustedSize);
-                
+
                 // Set x and y center to match the newCollider but change the position of the
                 // z axis so the plane is always in front of the object
                 SetLocalCenter(newCollider.center + Vector3.Scale(newCollider.size / 2.0f, LocalForward));
