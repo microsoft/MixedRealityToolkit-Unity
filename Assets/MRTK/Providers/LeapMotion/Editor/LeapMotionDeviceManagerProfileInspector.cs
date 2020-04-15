@@ -2,12 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.LeapMotion;
 using Microsoft.MixedReality.Toolkit.LeapMotion.Input;
+using Microsoft.MixedReality.Toolkit.LeapMotion.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
 {
@@ -43,16 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
             // Add the documentation help button
             using (new EditorGUILayout.HorizontalScope())
             {
-                
                 // Draw an empty title to align the documentation button to the right
                 InspectorUIUtility.DrawLabel("", InspectorUIUtility.DefaultFontSize, InspectorUIUtility.ColorTint10);
 
                 var helpURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
-                if (helpURL != null)
-                {
-                    InspectorUIUtility.RenderDocumentationButton(helpURL);
-                }            
+
+                InspectorUIUtility.RenderDocumentationButton(helpURL);      
             }
+
             RenderCustomInspector();
         }
 
@@ -63,24 +60,24 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         {
             using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
-                serializedObject.Update();
-
                 // Show warning if the leap core assets are not in the project
-                if (FileUtilities.FindFilesInAssets("LeapXRServiceProvider.cs").Length == 0)
+                if (!LeapMotionUtilities.IsLeapInProject)
                 {
                     EditorGUILayout.HelpBox("The Leap Motion Core Assets could not be found in your project. For more information, visit the Leap Motion MRTK documentation.", MessageType.Error);
                 }
                 else
                 {
+                    serializedObject.Update();
+
                     EditorGUILayout.PropertyField(leapControllerOrientation);
 
                     if (instance.LeapControllerOrientation == LeapControllerOrientation.Desk)
                     {
                         EditorGUILayout.PropertyField(leapControllerOffset);
                     }
-                }
 
-                serializedObject.ApplyModifiedProperties();
+                    serializedObject.ApplyModifiedProperties();
+                }
             }
         }
 
