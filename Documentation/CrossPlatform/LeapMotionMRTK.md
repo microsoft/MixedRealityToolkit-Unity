@@ -19,7 +19,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     > [!NOTE]
     > On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.
     - If using Unity 2018.4.x
-        - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present go to the [Leap Motion Common Errors](#Leap-Motion-has-not-integrated-with-MRTK). If the file is present, go to step 3.
+        - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the [Leap Motion Common Errors](#leap-motion-has-not-integrated-with-MRTK). If the file is present, go to step 3.
         
     - If using Unity 2019.3.x, got to step 3.
 
