@@ -206,6 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class KeyInputSystem
     {
         private static bool isSimulated;
+        public static bool SimulatingUserInput => isSimulated;
 
         private static HashSet<int> SimulatedMouseDownSet;
         private static HashSet<KeyCode> SimulatedKeyDownSet;

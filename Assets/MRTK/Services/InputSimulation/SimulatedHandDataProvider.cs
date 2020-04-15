@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
 
-            if (!Application.isFocused)
+            if (!Application.isFocused && !KeyInputSystem.SimulatingUserInput)
             {
                 isSimulatingLeft = false;
                 isSimulatingRight = false;
