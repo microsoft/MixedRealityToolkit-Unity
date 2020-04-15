@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool ignoreSettingsPrompt;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should the project configurator show when the project isn't configured according to MRTK's recommendations?
         /// </summary>
         public static bool IgnoreSettingsPrompt
         {
@@ -75,8 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool autoEnabledCapabilitiesSettingsPrompt;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should the UWP capabilities required by MRTK services be auto-enabled in Publishing Settings?
         /// </summary>
+        /// <remarks>Only valid for UWP Build Target projects. UWP Capabilities can be viewed under Player Settings > Publishing Settings.</remarks>
         public static bool AutoEnableUWPCapabilities
         {
             get
@@ -102,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool runOptimalConfig;
 
         /// <summary>
-        /// Should the settings prompt show on startup?
+        /// Should configuration analysis be run and warnings logged when settings don't match MRTK's recommendations?
         /// </summary>
         public static bool RunOptimalConfiguration
         {
