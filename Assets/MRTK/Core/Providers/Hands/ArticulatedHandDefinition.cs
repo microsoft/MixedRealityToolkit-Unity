@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -71,15 +72,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
+
         /// <summary>
         /// Updates the current hand joints with new data.
         /// </summary>
         /// <param name="jointPoses">The new joint poses.</param>
         public void UpdateHandJoints(Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses)
         {
-            unityJointPoses = jointPoses;
-            CoreServices.InputSystem?.RaiseHandJointsUpdated(inputSource, handedness, unityJointPoses);
+            using (UpdateHandJointsPerfMarker.Auto())
+            {
+                unityJointPoses = jointPoses;
+                CoreServices.InputSystem?.RaiseHandJointsUpdated(inputSource, handedness, unityJointPoses);
+            }
         }
+
+        private static readonly ProfilerMarker UpdateCurrentIndexPosePerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateCurrentIndexPose");
 
         /// <summary>
         /// Updates the MixedRealityInteractionMapping with the latest index pose and fires a corresponding pose event.
@@ -87,16 +95,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="interactionMapping">The index finger's interaction mapping.</param>
         public void UpdateCurrentIndexPose(MixedRealityInteractionMapping interactionMapping)
         {
-            if (unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out currentIndexPose))
+            using (UpdateCurrentIndexPosePerfMarker.Auto())
             {
-                // Update the interaction data source
-                interactionMapping.PoseData = currentIndexPose;
-
-                // If our value changed raise it
-                if (interactionMapping.Changed)
+                if (unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out currentIndexPose))
                 {
-                    // Raise input system event if it's enabled
-                    CoreServices.InputSystem?.RaisePoseInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                    // Update the interaction data source
+                    interactionMapping.PoseData = currentIndexPose;
+
+                    // If our value changed raise it
+                    if (interactionMapping.Changed)
+                    {
+                        // Raise input system event if it's enabled
+                        CoreServices.InputSystem?.RaisePoseInputChanged(inputSource, handedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                    }
                 }
             }
         }

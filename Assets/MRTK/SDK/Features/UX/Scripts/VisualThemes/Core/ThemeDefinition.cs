@@ -139,10 +139,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region ISerializationCallbackReceiver implementation
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            //backward compatibility at runtime in case some custom properties have been added in code after first serialization
+            // Backward compatibility at runtime in case some custom properties have been added in code after first serialization
             ThemeDefinition defaultDefinition = GetDefaultThemeDefinition(ThemeType).Value;
 
             if (defaultDefinition.CustomProperties.Count > CustomProperties.Count)
@@ -163,7 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
         }

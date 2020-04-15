@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void LateUpdate()
         {
-            //Deferring the LateUpdate() call to OnCameraPreRender()
+            // Deferring the LateUpdate() call to OnCameraPreRender()
             if (!useOnPreRender)
             {
                 UpdateRenderers();

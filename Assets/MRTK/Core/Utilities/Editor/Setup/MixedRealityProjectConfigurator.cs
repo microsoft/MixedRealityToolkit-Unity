@@ -4,9 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
+
+#if !UNITY_2019_3_OR_NEWER
+using System.IO;
+#endif // !UNITY_2019_3_OR_NEWER
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -129,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         // The configure functions for each type of setting
         private static readonly Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
         {
-            { Configurations.LatestScriptingRuntime,SetLatestScriptingRuntime },
+            { Configurations.LatestScriptingRuntime, SetLatestScriptingRuntime },
             { Configurations.ForceTextSerialization, SetForceTextSerialization },
             { Configurations.VisibleMetaFiles, SetVisibleMetaFiles },
             { Configurations.VirtualRealitySupported, () => XRSettingsUtilities.LegacyXREnabled = true },
@@ -243,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
 #else
-        return true;
+            return true;
 #endif // UNITY_2019_3_OR_NEWER
         }
 

@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -119,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
                     UnityEditor.PlayerSettings.WSACapability.GazeInput,
                     this.GetType());
-#endif
+#endif // UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
 
             if (Application.isPlaying && eyesApiAvailable)
             {
@@ -130,33 +131,40 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
+#if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.Update");
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
+
         /// <inheritdoc />
         public override void Update()
         {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
-            if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !eyesApiAvailable)
+            using (UpdatePerfMarker.Auto())
             {
-                return;
-            }
-
-            SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-            if (pointerPose != null)
-            {
-                var eyes = pointerPose.Eyes;
-                if (eyes != null)
+                if (WindowsMixedRealityUtilities.SpatialCoordinateSystem == null || !eyesApiAvailable)
                 {
-                    Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
+                    return;
+                }
 
-                    if (eyes.Gaze.HasValue)
+                SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(WindowsMixedRealityUtilities.SpatialCoordinateSystem, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
+                if (pointerPose != null)
+                {
+                    var eyes = pointerPose.Eyes;
+                    if (eyes != null)
                     {
-                        Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
+                        Service?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, eyes.IsCalibrationValid);
 
-                        if (SmoothEyeTracking)
+                        if (eyes.Gaze.HasValue)
                         {
-                            newGaze = SmoothGaze(newGaze);
-                        }
+                            Ray newGaze = new Ray(eyes.Gaze.Value.Origin.ToUnityVector3(), eyes.Gaze.Value.Direction.ToUnityVector3());
 
-                        Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                            if (SmoothEyeTracking)
+                            {
+                                newGaze = SmoothGaze(newGaze);
+                            }
+
+                            Service?.EyeGazeProvider?.UpdateEyeGaze(this, newGaze, eyes.UpdateTimestamp.TargetTime.UtcDateTime);
+                        }
                     }
                 }
             }
@@ -195,104 +203,114 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         }
 #endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
 
+        private static readonly ProfilerMarker SmoothGazePerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.SmoothGaze");
+
         private Ray SmoothGaze(Ray? newGaze)
         {
-            if (!oldGaze.HasValue)
+            using (SmoothGazePerfMarker.Auto())
             {
-                oldGaze = newGaze;
-                return newGaze.Value;
-            }
-
-            Ray smoothedGaze = new Ray();
-            bool isSaccading = false;
-
-            // Handle saccades vs. outliers: Instead of simply checking that two successive gaze points are sufficiently 
-            // apart, we check for clusters of gaze points instead.
-            // 1. If the user's gaze points are far enough apart, this may be a saccade, but also could be an outlier.
-            //    So, let's mark it as a potential saccade.
-            if ((IsSaccading(oldGaze.Value, newGaze.Value) && (confidenceOfSaccade == 0)))
-            {
-                confidenceOfSaccade++;
-                saccade_initialGazePoint = oldGaze.Value;
-                saccade_newGazeCluster.Clear();
-                saccade_newGazeCluster.Add(newGaze.Value);
-            }
-            // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of 
-            //    the initial saccade point.
-            else if ((confidenceOfSaccade > 0) && (confidenceOfSaccade < confidenceOfSaccadeThreshold))
-            {
-                confidenceOfSaccade++;
-
-                // First, let's check that we don't just have a bunch of random outliers
-                // The assumption is that after a person saccades, they fixate for a certain 
-                // amount of time resulting in a cluster of gaze points.
-                for (int i = 0; i < saccade_newGazeCluster.Count; i++)
+                if (!oldGaze.HasValue)
                 {
-                    if (IsSaccading(saccade_newGazeCluster[i], newGaze.Value))
-                    {
-                        confidenceOfSaccade = 0;
-                    }
-
-                    // Meanwhile we want to make sure that we are still looking sufficiently far away from our 
-                    // original gaze point before saccading.
-                    if (!IsSaccading(saccade_initialGazePoint, newGaze.Value))
-                    {
-                        confidenceOfSaccade = 0;
-                    }
+                    oldGaze = newGaze;
+                    return newGaze.Value;
                 }
-                saccade_newGazeCluster.Add(newGaze.Value);
-            }
-            else if (confidenceOfSaccade == confidenceOfSaccadeThreshold)
-            {
-                isSaccading = true;
-            }
 
-            Vector3 v1 = oldGaze.Value.origin + oldGaze.Value.direction;
-            Vector3 v2 = newGaze.Value.origin + newGaze.Value.direction;
+                Ray smoothedGaze = new Ray();
+                bool isSaccading = false;
 
-            // Saccade-dependent local smoothing
-            if (isSaccading)
-            {
-                smoothedGaze.direction = newGaze.Value.direction;
-                smoothedGaze.origin = newGaze.Value.origin;
-                confidenceOfSaccade = 0;
-            }
-            else
-            {
-                smoothedGaze.direction = oldGaze.Value.direction * smoothFactorNormalized + newGaze.Value.direction * (1 - smoothFactorNormalized);
-                smoothedGaze.origin = oldGaze.Value.origin * smoothFactorNormalized + newGaze.Value.origin * (1 - smoothFactorNormalized);
-            }
+                // Handle saccades vs. outliers: Instead of simply checking that two successive gaze points are sufficiently 
+                // apart, we check for clusters of gaze points instead.
+                // 1. If the user's gaze points are far enough apart, this may be a saccade, but also could be an outlier.
+                //    So, let's mark it as a potential saccade.
+                if ((IsSaccading(oldGaze.Value, newGaze.Value) && (confidenceOfSaccade == 0)))
+                {
+                    confidenceOfSaccade++;
+                    saccade_initialGazePoint = oldGaze.Value;
+                    saccade_newGazeCluster.Clear();
+                    saccade_newGazeCluster.Add(newGaze.Value);
+                }
+                // 2. If we have a potential saccade marked, let's check if the new points are within the proximity of 
+                //    the initial saccade point.
+                else if ((confidenceOfSaccade > 0) && (confidenceOfSaccade < confidenceOfSaccadeThreshold))
+                {
+                    confidenceOfSaccade++;
 
-            oldGaze = smoothedGaze;
-            return smoothedGaze;
+                    // First, let's check that we don't just have a bunch of random outliers
+                    // The assumption is that after a person saccades, they fixate for a certain 
+                    // amount of time resulting in a cluster of gaze points.
+                    for (int i = 0; i < saccade_newGazeCluster.Count; i++)
+                    {
+                        if (IsSaccading(saccade_newGazeCluster[i], newGaze.Value))
+                        {
+                            confidenceOfSaccade = 0;
+                        }
+
+                        // Meanwhile we want to make sure that we are still looking sufficiently far away from our 
+                        // original gaze point before saccading.
+                        if (!IsSaccading(saccade_initialGazePoint, newGaze.Value))
+                        {
+                            confidenceOfSaccade = 0;
+                        }
+                    }
+                    saccade_newGazeCluster.Add(newGaze.Value);
+                }
+                else if (confidenceOfSaccade == confidenceOfSaccadeThreshold)
+                {
+                    isSaccading = true;
+                }
+
+                Vector3 v1 = oldGaze.Value.origin + oldGaze.Value.direction;
+                Vector3 v2 = newGaze.Value.origin + newGaze.Value.direction;
+
+                // Saccade-dependent local smoothing
+                if (isSaccading)
+                {
+                    smoothedGaze.direction = newGaze.Value.direction;
+                    smoothedGaze.origin = newGaze.Value.origin;
+                    confidenceOfSaccade = 0;
+                }
+                else
+                {
+                    smoothedGaze.direction = oldGaze.Value.direction * smoothFactorNormalized + newGaze.Value.direction * (1 - smoothFactorNormalized);
+                    smoothedGaze.origin = oldGaze.Value.origin * smoothFactorNormalized + newGaze.Value.origin * (1 - smoothFactorNormalized);
+                }
+
+                oldGaze = smoothedGaze;
+                return smoothedGaze;
+            }
         }
+
+        private static readonly ProfilerMarker IsSaccadingPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityEyeGazeDataProvider.IsSaccading");
 
         private bool IsSaccading(Ray rayOld, Ray rayNew)
         {
-            Vector3 v1 = rayOld.origin + rayOld.direction;
-            Vector3 v2 = rayNew.origin + rayNew.direction;
-
-            if (Vector3.Angle(v1, v2) > saccadeThreshInDegree)
+            using (IsSaccadingPerfMarker.Auto())
             {
-                Vector2 hv1 = new Vector2(v1.x, 0);
-                Vector2 hv2 = new Vector2(v2.x, 0);
-                if (Vector2.Angle(hv1, hv2) > saccadeThreshInDegree)
+                Vector3 v1 = rayOld.origin + rayOld.direction;
+                Vector3 v2 = rayNew.origin + rayNew.direction;
+
+                if (Vector3.Angle(v1, v2) > saccadeThreshInDegree)
                 {
-                    Post_OnSaccadeHorizontally();
+                    Vector2 hv1 = new Vector2(v1.x, 0);
+                    Vector2 hv2 = new Vector2(v2.x, 0);
+                    if (Vector2.Angle(hv1, hv2) > saccadeThreshInDegree)
+                    {
+                        Post_OnSaccadeHorizontally();
+                    }
+
+                    Vector2 vv1 = new Vector2(0, v1.y);
+                    Vector2 vv2 = new Vector2(0, v2.y);
+                    if (Vector2.Angle(vv1, vv2) > saccadeThreshInDegree)
+                    {
+                        Post_OnSaccadeVertically();
+                    }
+
+                    Post_OnSaccade();
+
+                    return true;
                 }
-
-                Vector2 vv1 = new Vector2(0, v1.y);
-                Vector2 vv2 = new Vector2(0, v2.y);
-                if (Vector2.Angle(vv1, vv2) > saccadeThreshInDegree)
-                {
-                    Post_OnSaccadeVertically();
-                }
-
-                Post_OnSaccade();
-
-                return true;
+                return false;
             }
-            return false;
         }
 
         private void Post_OnSaccade()

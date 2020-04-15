@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,17 +30,22 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
         }
 
+        private static readonly ProfilerMarker LoadContentPerfMarker = new ProfilerMarker("[MRTK] LoadContentScene.LoadContent");
+
         /// <summary>
         /// Load a scene with contentScene.Name
         /// </summary>
         public void LoadContent()
-		{
-			ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
-			if (transitions.TransitionInProgress)
+        {
+            using (LoadContentPerfMarker.Auto())
             {
-                return;
+                ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
+                if (transitions.TransitionInProgress)
+                {
+                    return;
+                }
+                transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
             }
-            transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
         }
 	}
 }

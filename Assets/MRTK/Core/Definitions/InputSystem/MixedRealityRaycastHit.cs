@@ -34,7 +34,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 distance = hitInfo.distance;
                 triangleIndex = hitInfo.triangleIndex;
                 textureCoord = hitInfo.textureCoord;
-                textureCoord2 = hitInfo.textureCoord2;
+                MeshCollider meshCollider = hitInfo.collider as MeshCollider;
+                if (meshCollider == null || meshCollider.sharedMesh.isReadable)
+                {
+                    textureCoord2 = hitInfo.textureCoord2;
+                }
+                else
+                {
+                    textureCoord2 = Vector2.zero;
+                }
                 transform = hitInfo.transform;
                 lightmapCoord = hitInfo.lightmapCoord;
                 collider = hitInfo.collider;

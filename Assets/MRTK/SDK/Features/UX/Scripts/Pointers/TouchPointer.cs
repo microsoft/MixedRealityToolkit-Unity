@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -35,24 +36,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public Ray TouchRay { get; set; } = default(Ray);
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] TouchPointer.OnPreSceneQuery");
+
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            Rays[0].CopyRay(TouchRay, PointerExtent);
-
-            if (RayStabilizer != null)
+            using (OnPreSceneQueryPerfMarker.Auto())
             {
-                RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
-                Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
+                Rays[0].CopyRay(TouchRay, PointerExtent);
 
-                if (MixedRealityRaycaster.DebugEnabled)
+                if (RayStabilizer != null)
                 {
-                    Debug.DrawRay(RayStabilizer.StableRay.origin, RayStabilizer.StableRay.direction * PointerExtent, Color.green);
+                    RayStabilizer.UpdateStability(Rays[0].Origin, Rays[0].Direction);
+                    Rays[0].CopyRay(RayStabilizer.StableRay, PointerExtent);
+
+                    if (MixedRealityRaycaster.DebugEnabled)
+                    {
+                        Debug.DrawRay(RayStabilizer.StableRay.origin, RayStabilizer.StableRay.direction * PointerExtent, Color.green);
+                    }
                 }
-            }
-            else if (MixedRealityRaycaster.DebugEnabled)
-            {
-                Debug.DrawRay(TouchRay.origin, TouchRay.direction * PointerExtent, Color.yellow);
+                else if (MixedRealityRaycaster.DebugEnabled)
+                {
+                    Debug.DrawRay(TouchRay.origin, TouchRay.direction * PointerExtent, Color.yellow);
+                }
             }
         }
 
@@ -74,27 +80,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker OnSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] TouchPointer.OnSourceDetected");
+
         /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
-            base.OnSourceDetected(eventData);
-
-            if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
+            using (OnSourceDetectedPerfMarker.Auto())
             {
-                isInteractionEnabled = true;
+                base.OnSourceDetected(eventData);
+
+                if (eventData.InputSource.SourceId == Controller.InputSource.SourceId)
+                {
+                    isInteractionEnabled = true;
+                }
             }
         }
+
+        private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] TouchPointer.OnSourceLost");
 
         /// <inheritdoc />
         public override void OnSourceLost(SourceStateEventData eventData)
         {
-            base.OnSourceLost(eventData);
-
-            if (Controller != null &&
-                eventData.Controller != null &&
-                eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+            using (OnSourceLostPerfMarker.Auto())
             {
-                isInteractionEnabled = false;
+                base.OnSourceLost(eventData);
+
+                if (Controller != null &&
+                    eventData.Controller != null &&
+                    eventData.Controller.InputSource.SourceId == Controller.InputSource.SourceId)
+                {
+                    isInteractionEnabled = false;
+                }
             }
         }
     }

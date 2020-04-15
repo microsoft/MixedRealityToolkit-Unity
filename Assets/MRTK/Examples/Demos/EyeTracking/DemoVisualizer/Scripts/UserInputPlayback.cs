@@ -403,7 +403,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         private Ray? GetEyeRay(string[] split)
         {
             return GetRay(split[9], split[10], split[11], split[12], split[13], split[14]);
-            //TODO: do not hard code indices.
         }
 
         private Ray? GetRay(string ox, string oy, string oz, string dirx, string diry, string dirz)

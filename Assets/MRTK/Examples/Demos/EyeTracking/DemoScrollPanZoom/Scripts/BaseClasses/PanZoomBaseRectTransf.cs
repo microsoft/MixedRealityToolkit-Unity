@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             offset = LimitPanning();
 
             // Assign new values
-            navRectTransf.anchoredPosition = offset; //pivot
+            navRectTransf.anchoredPosition = offset; // pivot
             navRectTransf.localScale = new Vector3(scale.x, scale.y, 1);
         }
 
