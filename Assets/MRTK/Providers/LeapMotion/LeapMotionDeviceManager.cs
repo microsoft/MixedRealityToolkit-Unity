@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Profiling;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap;
@@ -60,38 +61,46 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// </summary>
         public LeapMotionDeviceManagerProfile SettingsProfile => ConfigurationProfile as LeapMotionDeviceManagerProfile;
 
-        // This value can only be set in the profile, the default is LeapControllerOrientation.Headset
+        /// <summary>
+        /// If true, the leap motion controller is connected and detected.
+        /// </summary>
+        public bool IsLeapConnected => LeapMotionServiceProvider.IsConnected();
+
+        /// <summary>
+        /// The LeapServiceProvider is added to the scene at runtime in OnEnable. 
+        /// </summary>
+        public LeapServiceProvider LeapMotionServiceProvider { get; protected set; }
+
+        /// <summary>
+        /// The Leap attachment hands, used to determine which hand is currently tracked by leap.
+        /// </summary>
+        public AttachmentHands LeapAttachmentHands { get; protected set; }
+
+        /// <summary>
+        /// List of hands that are currently in frame and detected by the leap motion controller. If there are no hands in the current frame, this list will be empty.
+        /// </summary>
+        public List<Hand> CurrentHandsDetectedByLeap => LeapMotionServiceProvider.CurrentFrame.Hands;
+
+        // This value can only be set in the profile, the default is LeapControllerOrientation.Headset.
         private LeapControllerOrientation leapControllerOrientation => SettingsProfile.LeapControllerOrientation;
 
         /// <summary>
         /// Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation
-        /// is LeapControllerOrientation.Desk and is nessesary for the hand to appear in front of the main camera. If the leap controller is on the 
+        /// is LeapControllerOrientation.Desk and is necessary for the hand to appear in front of the main camera. If the leap controller is on the 
         /// desk, the LeapServiceProvider is added to the scene instead of the LeapXRServiceProvider. The anchor point for the position of the leap hands is 
         /// the position of the game object with the LeapServiceProvider attached.
         /// </summary>
         private Vector3 leapHandsOffset => SettingsProfile.LeapControllerOffset;
 
         /// <summary>
-        /// If true, the leap motion controller connected and detected.
-        /// </summary>
-        public bool IsLeapConnected => leapServiceProvider.IsConnected();
-
-        /// <summary>
         /// Dictionary to capture all active leap motion hands detected.
         /// </summary>
         private readonly Dictionary<Handedness, LeapMotionArticulatedHand> trackedHands = new Dictionary<Handedness, LeapMotionArticulatedHand>();
 
-        // The LeapServiceProvider is added to the scene at runtime in OnEnable 
-        public LeapServiceProvider leapServiceProvider { get; protected set;}
-
-        // The Leap attachment hands, used to determine which hand is currently tracked by leap
-        public AttachmentHands attachmentHands { get; protected set; }
-
         private AttachmentHand leftAttachmentHand = null;
         private AttachmentHand rightAttachmentHand = null;
 
-        // List of hands that are currently in frame and detected by the leap motion controller. If there are no hands in the current frame, this list will be empty.
-        public List<Hand> CurrentHandsDetectedByLeap => leapServiceProvider.CurrentFrame.Hands;
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionDeviceManager.Update");
 
         public override void Enable()
         {
@@ -101,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             {
                 // If the leap controller is mounted on a headset then add the LeapXRServiceProvider to the scene
                 // The LeapXRServiceProvider can only be attached to a camera 
-                leapServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
+                LeapMotionServiceProvider = CameraCache.Main.gameObject.AddComponent<LeapXRServiceProvider>();
             }
 
             if (leapControllerOrientation == LeapControllerOrientation.Desk)
@@ -110,30 +119,24 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 GameObject leapProvider = new GameObject("LeapProvider");
 
                 // The LeapServiceProvider does not need to be attached to a camera, but the location of this gameobject is the anchor for the desk hands
-                leapServiceProvider = leapProvider.AddComponent<LeapServiceProvider>();
+                LeapMotionServiceProvider = leapProvider.AddComponent<LeapServiceProvider>();
 
                 // Follow the transform of the main camera by adding the service provider as a child of the main camera
                 leapProvider.transform.parent = CameraCache.Main.transform;
 
                 // Apply hand position offset, an offset is required to render the hands in view and in front of the camera
-                leapServiceProvider.transform.position += leapHandsOffset;
+                LeapMotionServiceProvider.transform.position += leapHandsOffset;
             }
 
             // Add the attachment hands to the scene for the purpose of getting the tracking state of each hand and joint positions
             GameObject leapAttachmentHands = new GameObject("LeapAttachmentHands");
-            attachmentHands = leapAttachmentHands.AddComponent<AttachmentHands>();
+            LeapAttachmentHands = leapAttachmentHands.AddComponent<AttachmentHands>();
 
-            foreach (var hand in attachmentHands.attachmentHands)
-            {
-                if (hand.chirality == Chirality.Left)
-                {
-                    leftAttachmentHand = hand;
-                }
-                else
-                {
-                    rightAttachmentHand = hand;
-                }
-            }
+            // The first hand in attachmentHands.attachmentHands is always left
+            leftAttachmentHand = LeapAttachmentHands.attachmentHands[0];
+
+            // The second hand in attachmentHands.attachmentHands is always right
+            rightAttachmentHand = LeapAttachmentHands.attachmentHands[1];  
         }
 
         /// <summary>
@@ -172,17 +175,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 CoreServices.InputSystem.RaiseSourceLost(trackedHands[handedness].InputSource);
             }
 
-            // Remove the pointer gameobjects
-            // Should I be destroying the gameobjects or change the tracking state of the hand?
-            foreach (var pointer in trackedHands[handedness].InputSource.Pointers)
-            {
-                if (pointer != null && (MonoBehaviour)pointer != null && ((MonoBehaviour)pointer).gameObject != null)
-                {
-                    GameObject.Destroy(((MonoBehaviour)pointer).gameObject);
-                }
-            }
+            // Disable the pointers if the hand is not tracking
+            RecyclePointers(trackedHands[handedness].InputSource);
 
-            // Remove tracked hands
+            // Remove hand from tracked hands
             trackedHands.Remove(trackedHands[handedness].ControllerHandedness);
         }
 
@@ -197,9 +193,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             if (isLeftTracked && !trackedHands.ContainsKey(Handedness.Left))
             {
                 OnHandDetected(Handedness.Left);
-            }
-            
-            if (!isLeftTracked && trackedHands.ContainsKey(Handedness.Left))
+            }            
+            else if (!isLeftTracked && trackedHands.ContainsKey(Handedness.Left))
             {
                 OnHandDetectionLost(Handedness.Left);
             }
@@ -210,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 OnHandDetected(Handedness.Right);
             }
 
-            if (!isRightTracked && trackedHands.ContainsKey(Handedness.Right))
+            else if (!isRightTracked && trackedHands.ContainsKey(Handedness.Right))
             {
                 OnHandDetectionLost(Handedness.Right);
             }
@@ -218,20 +213,23 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         public override void Update()
         {
-            base.Update();
-
-            if (IsLeapConnected)
+            using (UpdatePerfMarker.Auto())
             {
-                // if the number of tracked hands in frame has changed
-                if (CurrentHandsDetectedByLeap.Count != trackedHands.Count)
-                {
-                    UpdateLeapTrackedHands(leftAttachmentHand.isTracked, rightAttachmentHand.isTracked);
-                }
+                base.Update();
 
-                // Update the hand/hands that are in trackedhands
-                foreach (KeyValuePair<Handedness, LeapMotionArticulatedHand> hand in trackedHands)
+                if (IsLeapConnected)
                 {
-                    hand.Value.UpdateState();
+                    // if the number of tracked hands in frame has changed
+                    if (CurrentHandsDetectedByLeap.Count != trackedHands.Count)
+                    {
+                        UpdateLeapTrackedHands(leftAttachmentHand.isTracked, rightAttachmentHand.isTracked);
+                    }
+
+                    // Update the hand/hands that are in trackedhands
+                    foreach (KeyValuePair<Handedness, LeapMotionArticulatedHand> hand in trackedHands)
+                    {
+                        hand.Value.UpdateState();
+                    }
                 }
             }
         }

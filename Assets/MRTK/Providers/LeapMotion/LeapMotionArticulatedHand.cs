@@ -6,6 +6,7 @@ using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using Unity.Profiling;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap.Unity.Attachments;
@@ -15,10 +16,9 @@ using Leap;
 
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 {
-
     [MixedRealityController(
-    SupportedControllerType.ArticulatedHand,
-    new[] { Handedness.Left, Handedness.Right })]
+        SupportedControllerType.ArticulatedHand,
+        new[] { Handedness.Left, Handedness.Right })]
     /// <summary>
     /// Class that represents one Leap Motion Articulated Hand.
     /// </summary>
@@ -45,22 +45,38 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         // Set the interations for each hand to the Default interactions of the hand definition
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
+        private static readonly ProfilerMarker TryGetJointPerfMarker = new ProfilerMarker("[MRTK] LeapMotionArticulatedHand.TryGetJoint");
+
 #if LEAPMOTIONCORE_PRESENT
+
+        /// <summary>
+        /// If true, the current joint pose supports far interaction via the default controller ray.  
+        /// </summary>
+        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
+
+        /// <summary>
+        /// If true, the hand is in air tap gesture, also called the pinch gesture.
+        /// </summary>
+        public bool IsPinching => handDefinition.IsPinching;
 
         protected LeapMotionDeviceManager LeapMotionDeviceManager => CoreServices.GetInputSystemDataProvider<LeapMotionDeviceManager>();
 
-        protected AttachmentHands AttachmentHands => LeapMotionDeviceManager.attachmentHands;
-
-        // Attachment hand needed for this hand, left or right hand
-        private AttachmentHand attachmentHand = null;
-
-        // Number of joints in an MRTK Tracked Hand
-        protected static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+        // Array of TrackedHandJoint names
+        protected static readonly TrackedHandJoint[] TrackedHandJointEnum = (TrackedHandJoint[])Enum.GetValues(typeof(TrackedHandJoint));
 
         // Joint poses of the MRTK hand based on the leap hand data
         protected readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
-        private TrackedHandJoint[] metacarpals = new TrackedHandJoint[]
+        protected AttachmentHands AttachmentHands => LeapMotionDeviceManager.LeapAttachmentHands;
+
+        // The leap AttachmentHand contains the joint poses for the current leap hand in frame. There is one AttachmentHand, either 
+        // left or right, associated with a LeapMotionArticulatedHand.
+        private AttachmentHand attachmentHand = null;
+
+        // Fully tracked leap motion hand data, used to retrieve the metacarpal joint poses.
+        private Hand leapMotionMetacarpalHand = null;
+
+        private List<TrackedHandJoint> metacarpals = new List<TrackedHandJoint>
         {
             TrackedHandJoint.ThumbMetacarpalJoint,
             TrackedHandJoint.IndexMetacarpal,
@@ -70,65 +86,88 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         };
 
         /// <summary>
-        /// If true, the current joint pose supports far interaction via the default controller ray.  
+        /// Set the Leap hands required for retrieving joint pose data.  A Leap AttachmentHand contain AttachmentPointFlags which are equivalent to 
+        /// MRTK's TrackedHandJoint.  The Leap AttachmentHand contains all joint poses for a hand except the metacarpals.  The Leap Hand is 
+        /// used to retrieve the metacarpal joint poses.
         /// </summary>
-        public override bool IsInPointingPose => handDefinition.IsInPointingPose;
-
-        /// <summary>
-        /// If true, the hand is in air tap gesture, also called the pinch gesture
-        /// </summary>
-        public bool IsPinching => handDefinition.IsPinching;
-
         private void SetAttachmentHands()
         {
             // Only get the attachment hands if the application is playing. The attachment hands are added at runtime and do not exist in edit mode.
             if (Application.isPlaying)
             {
-                // Get the attachment hand data based on controller handedness
-                attachmentHand = Array.Find(AttachmentHands.attachmentHands, (hand => HandChiralityToHandedness(hand.chirality) == ControllerHandedness));
+                if (ControllerHandedness == Handedness.Left)
+                {
+                    attachmentHand = AttachmentHands.attachmentHands[0];
+                }
+                else
+                {
+                    attachmentHand = AttachmentHands.attachmentHands[1];
+                }
 
                 // Enable all attachment point flags in the leap hand. By default, only the wrist and the palm are enabled.
                 foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
                 {
                     AttachmentHands.attachmentPoints |= ConvertMRTKJointToLeapJoint(joint);
-                }            
+                }
+
+                // Set the fully tracked leapMotionMetacarpalHand with the correct handedness for metacarpal joint pose data.
+                foreach (var hand in LeapMotionDeviceManager.CurrentHandsDetectedByLeap)
+                {
+                    if (ControllerHandedness == Handedness.Left && hand.IsLeft)
+                    {
+                        leapMotionMetacarpalHand = hand;
+                    }
+                    else if (ControllerHandedness == Handedness.Right && hand.IsRight)
+                    {
+                        leapMotionMetacarpalHand = hand;
+                    }
+                }
             }
         }
 #endif
+
         public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {
-#if LEAPMOTIONCORE_PRESENT
-            if (attachmentHand != null && attachmentHand.isTracked)
+            using (TryGetJointPerfMarker.Auto())
             {
-                // Is the current joint a metacarpal
-                bool isMetacarpal = Array.Exists(metacarpals, (metacarpalJoint => metacarpalJoint == joint));
-
-                // AttachmentPointFlags does not include metacarpals.  
-                if (isMetacarpal) 
+#if LEAPMOTIONCORE_PRESENT
+                if (attachmentHand != null && attachmentHand.isTracked)
                 {
-                    MixedRealityPose metacarpalPose = GetMetacarpals(joint);
+                    // Is the current joint a metacarpal
+                    bool isMetacarpal = metacarpals.Contains(joint);
 
-                    pose = metacarpalPose;
+                    // AttachmentPointFlags does not include metacarpals.  
+                    if (isMetacarpal)
+                    {
+                        MixedRealityPose metacarpalPose = GetMetacarpalPose(joint);
+
+                        pose = metacarpalPose;
+                        return true;
+                    }
+
+                    AttachmentPointFlags leapAttachmentFlag = ConvertMRTKJointToLeapJoint(joint);
+
+                    // Get the pose of the leap joint
+                    AttachmentPointBehaviour leapJoint = attachmentHand.GetBehaviourForPoint(leapAttachmentFlag);
+
+                    // Set the pose calculated by the leap motion to a mixed reality pose
+                    pose = new MixedRealityPose(leapJoint.transform.position, leapJoint.transform.rotation);
                     return true;
                 }
-
-                AttachmentPointFlags leapAttachmentFlag = ConvertMRTKJointToLeapJoint(joint);
-
-                // Get the pose of the leap joint
-                AttachmentPointBehaviour leapJoint = attachmentHand.GetBehaviourForPoint(leapAttachmentFlag);
-
-                // Set the pose calculated by the leap motion to a mixed reality pose
-                pose = new MixedRealityPose(leapJoint.transform.position, leapJoint.transform.rotation);
-                return true;
-            }          
 #endif
-            pose = MixedRealityPose.ZeroIdentity;
-            return false;
+                pose = MixedRealityPose.ZeroIdentity;
+                return false;
+            }
         }
+
 #if LEAPMOTIONCORE_PRESENT
 
-        // Convert leap hand chirality to MRTK handedness
-        private Handedness HandChiralityToHandedness(Chirality chirality)
+        /// <summary>
+        /// Convert leap hand chirality to MRTK handedness
+        /// </summary>
+        /// <param name="chirality">Leap hand Chirality (Left or Right)</param>
+        /// <returns>MRTK Handedness given Leap Hand Chirality</returns>
+        public static Handedness HandChiralityToHandedness(Chirality chirality)
         {
             return (chirality == Chirality.Left) ? Handedness.Left : Handedness.Right;
         }
@@ -139,27 +178,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// </summary>
         /// <param name="metacarpalJoint">A metacarpal TrackedHandJoint</param>
         /// <returns>The MixedRealityPose for the leap metacarpal joint</returns>
-        private MixedRealityPose GetMetacarpals(TrackedHandJoint metacarpalJoint)
+        private MixedRealityPose GetMetacarpalPose(TrackedHandJoint metacarpalJoint)
         {
-            // Get the leap hand data in the current frame
-            List<Hand> hands = LeapMotionDeviceManager.CurrentHandsDetectedByLeap;
-
-            Hand leapHand;
-
-            if (ControllerHandedness == Handedness.Left)
-            {
-                leapHand = hands.Find(hand => hand.IsLeft);
-            }
-            else
-            {
-                leapHand = hands.Find(hand => hand.IsRight);
-            }
-
-            int metacarpalIndex = Array.IndexOf(metacarpals, metacarpalJoint);
+            int metacarpalIndex = metacarpals.IndexOf(metacarpalJoint);
 
             // Get the pose of the metacarpal 
-            Vector3 position = leapHand.Fingers[metacarpalIndex].bones[0].PrevJoint.ToVector3();
-            Quaternion rotation = leapHand.Fingers[metacarpalIndex].bones[0].Rotation.ToQuaternion();
+            Vector3 position = leapMotionMetacarpalHand.Fingers[metacarpalIndex].bones[0].PrevJoint.ToVector3();
+            Quaternion rotation = leapMotionMetacarpalHand.Fingers[metacarpalIndex].bones[0].Rotation.ToQuaternion();
 
             return new MixedRealityPose(position, rotation);
         }
@@ -208,16 +233,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         public void UpdateState()
         {
             // Populate the jointPoses 
-            for (int i = 0; i < jointCount; i++)
+            foreach (TrackedHandJoint handJoint in TrackedHandJointEnum)
             {
-                TrackedHandJoint handJoint = (TrackedHandJoint)i;
-                TryGetJoint(handJoint, out MixedRealityPose pose);
-
-                if (!jointPoses.ContainsKey(handJoint))
-                {
-                    jointPoses.Add(handJoint, pose);
-                }
-                else
+                if (TryGetJoint(handJoint, out MixedRealityPose pose))
                 {
                     jointPoses[handJoint] = pose;
                 }
@@ -285,8 +303,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                         Interactions[i].PoseData = indexPose;
                         if (Interactions[i].Changed)
                         {
-                            // Update the index pose in hand definition 
-                            handDefinition?.UpdateCurrentIndexPose(Interactions[i]);
                             CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, indexPose);
                         }
                         break;
