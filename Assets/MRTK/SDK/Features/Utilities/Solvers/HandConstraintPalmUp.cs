@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Augments the HandConstraint to also check if the palm is facing the user before activation. This solver only works 
-    /// with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers, with other <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/> types this solver will behave just like it's base class.
+    /// with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers, with other <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/> types this solver will behave just like its base class.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/HandConstraintPalmUp")]
     public class HandConstraintPalmUp : HandConstraint
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// palm is currently facing the user.
         /// </summary>
         /// <param name="controller">The hand to check against.</param>
-        /// <returns>True if this hand should be used from tracking.</returns>
+        /// <returns>True if this hand should be used for tracking.</returns>
         protected override bool IsValidController(IMixedRealityController controller)
         {
             if (!base.IsValidController(controller))
