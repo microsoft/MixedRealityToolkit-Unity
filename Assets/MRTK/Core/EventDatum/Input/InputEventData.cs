@@ -2,6 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -9,12 +11,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Describes an Input Event that has a source id.
     /// </summary>
-    public class InputEventData : BaseInputEventData
+    public class InputEventData : BaseInputEventData, IMixedRealityEventPropagationData
     {
         /// <summary>
         /// Handedness of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSource"/>.
         /// </summary>
         public Handedness Handedness { get; private set; } = Handedness.None;
+
+        /// <inheritdoc />
+        public virtual EventPropagation Propagation { get; set; }
+
+        /// <inheritdoc />
+        public PropagationPhase Phase { get; set; }
+
+        /// <inheritdoc />
+        public LifeStatus Status { get; set; }
 
         /// <inheritdoc />
         public InputEventData(EventSystem eventSystem) : base(eventSystem) { }
@@ -26,7 +37,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             BaseInitialize(inputSource, inputAction);
             Handedness = handedness;
+
+            skipElements.Clear();
+
+            Status = LifeStatus.None;
+            Propagation = EventPropagation.BubblesUp | EventPropagation.TricklesDown;
+            Phase = PropagationPhase.None;
         }
+
+        /// <inheritdoc />
+        public void PreventDefault()
+        {
+            Status |= LifeStatus.DefaultPrevented;
+        }
+
+        /// <inheritdoc />
+        public void StopPropagation()
+        {
+            Status |= LifeStatus.PropagationStopped;
+        }
+
+        /// <inheritdoc />
+        public void StopPropagationImmediately()
+        {
+            Status |= LifeStatus.PropagationStoppedImmediately;
+            Status |= LifeStatus.PropagationStopped;
+        }
+
+        /// <inheritdoc />
+        public bool Skip(GameObject gameObject)
+        {
+            return skipElements.Contains(gameObject);
+        }
+
+        private List<GameObject> skipElements = new List<GameObject>();
     }
 
     /// <summary>

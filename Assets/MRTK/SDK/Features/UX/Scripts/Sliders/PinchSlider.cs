@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Header("Slider Axis Visuals")]
-    
+
         [Tooltip("The gameObject that contains the trackVisuals. This will get rotated to match the slider axis")]
         [SerializeField]
         private GameObject trackVisuals = null;
