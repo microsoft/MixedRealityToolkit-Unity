@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bounds.y = Mathf.Max(bounds.y, 0);
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (touchableCollider == null)
             {
