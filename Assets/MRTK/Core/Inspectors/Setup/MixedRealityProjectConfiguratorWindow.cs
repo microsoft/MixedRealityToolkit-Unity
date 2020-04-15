@@ -41,13 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { MRConfig.IOSCameraUsageDescription, true },
         };
 
-        private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
         private const float Default_Window_Height = 640.0f;
         private const float Default_Window_Width = 400.0f;
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
-        private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
+        private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > Mixed Reality Toolkit");
 
         private bool showConfigurations = true;
 
