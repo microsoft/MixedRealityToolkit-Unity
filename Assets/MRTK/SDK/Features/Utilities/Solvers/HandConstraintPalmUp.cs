@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
                 else
                 {
-                    Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
+                    Debug.LogWarning($"HandConstraintPalmUp requires a palm joint, but none was provided by {controller.InputSource.SourceName}.");
                 }
 
                 return palmFacingThresholdMet;
