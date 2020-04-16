@@ -346,21 +346,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
-                startOffsetX = 0;
+                startOffsetX = 0.5f * CellWidth;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = xMax * CellWidth;
+                startOffsetX = (xMax - 0.5f) * CellWidth;
             }
 
             float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
-                startOffsetY = 0;
+                startOffsetY = 0.5f * CellHeight;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = yMax * CellHeight;
+                startOffsetY = (yMax - 0.5f) * CellHeight;
             }
             float alignmentOffsetX = 0;
             float alignmentOffsetY = 0;
