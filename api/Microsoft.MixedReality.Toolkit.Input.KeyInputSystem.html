@@ -86,7 +86,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem" class="text-break">Class KeyInputSystem
   </h1>
-  <div class="markdown level0 summary"><p>Utility class to poll input for key bindings.</p>
+  <div class="markdown level0 summary"><p>Utility class to poll input for key bindings and to simulate key presses
+Need to add mechanisms to poll and simulate input axis: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7659">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7659</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -124,8 +125,46 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class KeyInputSystem</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_SimulatingInput_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.SimulatingInput*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_SimulatingInput" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.SimulatingInput">SimulatingInput</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool SimulatingInput { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_AdvanceSimulation_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.AdvanceSimulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_AdvanceSimulation" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.AdvanceSimulation">AdvanceSimulation()</h4>
+  <div class="markdown level1 summary"><p>Advances the Key press simulation by 1 frame. Keybindings will no longer trigger <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyDown_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyDown(KeyBinding)</a>  or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyUp_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyUp(KeyBinding)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdvanceSimulation()</code></pre>
+  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKey_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.GetKey*"></a>
@@ -258,6 +297,97 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_PressKey_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.PressKey*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_PressKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.PressKey(Microsoft.MixedReality.Toolkit.Input.KeyBinding)">PressKey(KeyBinding)</h4>
+  <div class="markdown level1 summary"><p>Presses a key. <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyDown_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyDown(KeyBinding)</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKey(KeyBinding)</a> will be true for the keybinding.
+<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyUp_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyUp(KeyBinding)</a> will no longer be true for the keybinding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PressKey(KeyBinding kb)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBinding.html">KeyBinding</a></td>
+        <td><span class="parametername">kb</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_ReleaseKey_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.ReleaseKey*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_ReleaseKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.ReleaseKey(Microsoft.MixedReality.Toolkit.Input.KeyBinding)">ReleaseKey(KeyBinding)</h4>
+  <div class="markdown level1 summary"><p>Releases a key. <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyUp_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyUp(KeyBinding)</a> will be true for the keybinding.
+<a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyDown_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyDown(KeyBinding)</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKey(KeyBinding)</a>  will no longer be true for the keybinding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ReleaseKey(KeyBinding kb)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBinding.html">KeyBinding</a></td>
+        <td><span class="parametername">kb</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_ResetKeyInputSimulation_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.ResetKeyInputSimulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_ResetKeyInputSimulation" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.ResetKeyInputSimulation">ResetKeyInputSimulation()</h4>
+  <div class="markdown level1 summary"><p>Resets the key input simulation. All keys will not trigger <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyDown_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyDown(KeyBinding)</a>, <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKey(KeyBinding)</a>, or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_GetKeyUp_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">GetKeyUp(KeyBinding)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void ResetKeyInputSimulation()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_StartKeyInputStimulation_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.StartKeyInputStimulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_StartKeyInputStimulation" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.StartKeyInputStimulation">StartKeyInputStimulation()</h4>
+  <div class="markdown level1 summary"><p>Starts the key input simulation. Inputs can now be simulated via <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_PressKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">PressKey(KeyBinding)</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html#Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_ReleaseKey_Microsoft_MixedReality_Toolkit_Input_KeyBinding_">ReleaseKey(KeyBinding)</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void StartKeyInputStimulation()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_StopKeyInputSimulation_" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.StopKeyInputSimulation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_KeyInputSystem_StopKeyInputSimulation" data-uid="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.StopKeyInputSimulation">StopKeyInputSimulation()</h4>
+  <div class="markdown level1 summary"><p>Stops the key input simulation</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void StopKeyInputSimulation()</code></pre>
+  </div>
 </article>
           </div>
           
