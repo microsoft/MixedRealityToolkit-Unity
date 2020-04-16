@@ -696,7 +696,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // Events with no propagation configuration
                     else
                     {
-                        ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                        using (ExecuteHierarchyPerfMarker.Auto())
+                        {
+                            ExecuteEvents.ExecuteHierarchy(focusedObject, baseInputEventData, eventHandler);
+                        }
                     }
                 }
                 return modalEventHandled;
