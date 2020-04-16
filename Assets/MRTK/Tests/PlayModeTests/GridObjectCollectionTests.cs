@@ -131,6 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             grid.Columns = 2;
 
             grid.Anchor = LayoutAnchor.UpperCenter;
+            grid.UseLegacyAnchor = false;
 
             for (int i = 0; i < 3; i++)
             {
