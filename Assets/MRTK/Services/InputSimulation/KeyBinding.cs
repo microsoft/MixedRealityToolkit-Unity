@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class KeyInputSystem
     {
         private static bool isSimulated;
-        public static bool SimulatingUserInput => isSimulated;
+        public static bool SimulatingInput => isSimulated;
 
         private static HashSet<int> SimulatedMouseDownSet;
         private static HashSet<KeyCode> SimulatedKeyDownSet;
@@ -217,17 +217,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static HashSet<int> SimulatedMouseUpSet;
         private static HashSet<KeyCode> SimulatedKeyUpSet;
 
+        /// <summary>
+        /// Starts the key input simulation. Inputs can now be simulated via <see cref="PressKey(KeyBinding)"/> and <see cref="ReleaseKey(KeyBinding)"/>
+        /// </summary>
         public static void StartKeyInputStimulation()
         {
             ResetKeyInputSimulation();
             isSimulated = true;
         }
 
+        /// <summary>
+        /// Stops the key input simulation
+        /// </summary>
         public static void StopKeyInputSimulation()
         {
             isSimulated = false;
         }
 
+        /// <summary>
+        /// Resets the key input simulation. All keys will not trigger <see cref="GetKeyDown(KeyBinding)"/>, <see cref="GetKey(KeyBinding)"/>, or <see cref="GetKeyUp(KeyBinding)"/>
+        /// </summary>
         public static void ResetKeyInputSimulation()
         {
             SimulatedMouseDownSet = new HashSet<int>();
@@ -240,6 +249,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulatedKeyUpSet = new HashSet<KeyCode>();
         }
 
+        /// <summary>
+        /// Presses a key. <see cref="GetKeyDown(KeyBinding)"/> and <see cref="GetKey(KeyBinding)"/> will be true for the keybinding. 
+        /// <see cref="GetKeyUp(KeyBinding)"/> will no longer be true for the keybinding.
+        /// </summary>
         public static void PressKey(KeyBinding kb)
         {
             if (kb.TryGetMouseButton(out int mouseButton))
@@ -255,7 +268,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 SimulatedKeyUpSet.Remove(keyCode);
             }
         }
-
+        /// <summary>
+        /// Releases a key. <see cref="GetKeyUp(KeyBinding)"/> will be true for the keybinding. 
+        /// <see cref="GetKeyDown(KeyBinding)"/> and <see cref="GetKey(KeyBinding)"/>  will no longer be true for the keybinding.
+        /// </summary>
         public static void ReleaseKey(KeyBinding kb)
         {
             if (kb.TryGetMouseButton(out int mouseButton))
@@ -272,6 +288,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Advances the Key press simulation by 1 frame. Keybindings will no longer trigger <see cref="GetKeyDown(KeyBinding)"/>  or <see cref="GetKeyUp(KeyBinding)"/> 
+        /// </summary>
         public static void AdvanceSimulation()
         {
             // keys that were just pressed are no longer trigger GetKeyDown
