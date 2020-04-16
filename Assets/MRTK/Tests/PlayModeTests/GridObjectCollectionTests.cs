@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             grid.Layout = LayoutOrder.Horizontal;
 
-            //Testing Legacy Anchors
+            // Testing Legacy Anchors
             grid.UseLegacyAnchor = true;
             int expectedIdx = 0;
             foreach (LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return null;
             }
 
-            //Testing Anchors
+            // Testing Anchors
             grid.UseLegacyAnchor = false;
             expectedIdx = 0;
             foreach(LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
