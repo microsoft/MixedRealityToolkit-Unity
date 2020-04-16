@@ -170,6 +170,31 @@ For analog controls (ex: touchpad position) the InputChanged event should be rai
 InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
 ```
 
+### Add Unity Profiler instrumentation
+
+Performance is critical in mixed reality applications. Every component adds some amount of overhead for which applications must account. To this end, it is important that all input data providers contain Unity Profiler instrumentation in inner loop and frequently utilized code paths.
+
+It is recommended to implement the pattern utilized by the MRTK when instrumenting custom providers.
+
+```c#
+        private static readonly ProfilerMarker GetOrAddControllerPerfMarker = new ProfilerMarker("[MRTK] WindowsMixedRealityDeviceManager.GetOrAddController");
+
+        private async void GetOrAddController(InteractionSourceState interactionSourceState)
+        {
+            using (GetOrAddControllerPerfMarker.Auto())
+            {
+                // Code to be measured.
+            }
+        }
+```
+
+> [!Note]
+> The name used to identify the profiler marker is arbitrary. The MRTK uses the following pattern.
+> 
+> "[product] className.methodName - optional note"
+>
+> It is recommended that custom data providers follow a similar pattern to help simplify identification of specific components and methods when analyzing traces.
+
 ## Create the profile and inspector
 
 In the Mixed Reality Toolkit, data providers are configured using [profiles](../Profiles/Profiles.md).

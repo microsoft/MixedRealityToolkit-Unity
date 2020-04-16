@@ -42,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { orientType = value; }
         }
 
-        [Tooltip("Specify direction in which children are laid out.")]
+        [Tooltip("Specify direction in which children are laid out")]
         [SerializeField]
         private LayoutOrder layout = LayoutOrder.RowThenColumn;
 
         /// <summary>
-        /// Specify direction in which children are laid out.
+        /// Specify direction in which children are laid out
         /// </summary>
         public LayoutOrder Layout
         {
@@ -55,12 +55,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { layout = value; }
         }
 
+
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
         private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
+
+        /// <summary>
+        /// Where the grid is anchored relative to local origin
+        /// </summary>
         public LayoutAnchor Anchor
         {
             get { return anchor; }
             set { anchor = value; }
+        }
+
+        [SerializeField, Tooltip("How the columns are aligned in the grid")]
+        private LayoutHorizontalAlignment columnAlignment = LayoutHorizontalAlignment.Left;
+
+        /// <summary>
+        /// How the columns are aligned in the grid
+        /// </summary>
+        public LayoutHorizontalAlignment ColumnAlignment 
+        {
+            get { return columnAlignment; }
+            set { columnAlignment = value; }
+        }
+
+        [SerializeField, Tooltip("How the rows are aligned in the grid")]
+        private LayoutVerticalAlignment rowAlignment = LayoutVerticalAlignment.Top;
+
+        /// <summary>
+        /// How the rows are aligned in the grid
+        /// </summary>
+        public LayoutVerticalAlignment RowAlignment
+        {
+            get { return rowAlignment; }
+            set { rowAlignment = value; }
         }
 
         [Range(0.05f, 100.0f)]
@@ -333,38 +362,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 startOffsetY = yMax * CellHeight;
             }
+            float alignmentOffsetX = 0;
+            float alignmentOffsetY = 0;
 
             if (layout == LayoutOrder.ColumnThenRow)
             {
                 for (int y = 0; y < yMax; y++)
+                {
                     for (int x = 0; x < xMax; x++)
                     {
+                        if (y == yMax - 1)
                         {
-                            if (cellCounter < NodeList.Count)
+                            switch (ColumnAlignment)
                             {
-                                grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                                     (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
-                                                     0.0f);
+                                case LayoutHorizontalAlignment.Left:
+                                    alignmentOffsetX = 0;
+                                    break;
+                                case LayoutHorizontalAlignment.Center:
+                                    alignmentOffsetX = CellWidth *((xMax - (NodeList.Count % xMax)) % xMax) * 0.5f;
+                                    break;
+                                case LayoutHorizontalAlignment.Right:
+                                    alignmentOffsetX = CellWidth * ((xMax - (NodeList.Count % xMax)) % xMax);
+                                    break;
                             }
-                            cellCounter++;
                         }
-                    }
 
+                        if (cellCounter < NodeList.Count)
+                        {
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x + alignmentOffsetX,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y + alignmentOffsetY,
+                                                 0.0f);
+                        }
+                        cellCounter++;
+                    }
+                }
             }
             else
             {
-
                 for (int x = 0; x < xMax; x++)
                 {
                     for (int y = 0; y < yMax; y++)
                     {
+                        if (x == xMax - 1)
+                        {
+                            switch (RowAlignment)
+                            {
+                                case LayoutVerticalAlignment.Top:
+                                    alignmentOffsetY = 0;
+                                    break;
+                                case LayoutVerticalAlignment.Middle:
+                                    alignmentOffsetY = -CellHeight * ((yMax - (NodeList.Count % yMax)) % yMax) * 0.5f;
+                                    break;
+                                case LayoutVerticalAlignment.Bottom:
+                                    alignmentOffsetY = -CellHeight * ((yMax - (NodeList.Count % yMax)) % yMax);
+                                    break;
+                            }
+                        }
+
                         if (cellCounter < NodeList.Count)
                         {
-                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x,
-                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y,
+                            grid[cellCounter].Set((-startOffsetX + (x * CellWidth) + HalfCell.x) + NodeList[cellCounter].Offset.x + alignmentOffsetX,
+                                                 (startOffsetY - (y * CellHeight) - HalfCell.y) + NodeList[cellCounter].Offset.y + alignmentOffsetY,
                                                  0.0f);
                         }
-                        cellCounter++;
+                    cellCounter++;
                     }
                 }
             }

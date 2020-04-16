@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
@@ -123,22 +124,27 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         #region IMixedRealitySpatialAwarenessObserver Implementation
 
+        private static readonly ProfilerMarker ClearObservationsPerfMarker = new ProfilerMarker("[MRTK] SpatialObjectMeshObserver.ClearObservations");
+
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            if (IsRunning)
+            using (ClearObservationsPerfMarker.Auto())
             {
-                Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
-                Suspend();
-            }
+                if (IsRunning)
+                {
+                    Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
+                    Suspend();
+                }
 
-            foreach (int id in Meshes.Keys)
-            {
-                RemoveMeshObject(id);
-            }
+                foreach (int id in Meshes.Keys)
+                {
+                    RemoveMeshObject(id);
+                }
 
-            // Resend file observations when resumed.
-            sendObservations = true;
+                // Resend file observations when resumed.
+                sendObservations = true;
+            }
         }
 
         /// <inheritdoc />
@@ -161,6 +167,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         
         private int currentMeshId = 0;
 
+        private static readonly ProfilerMarker SendMeshObjectsPerfMarker = new ProfilerMarker("[MRTK] SpatialObjectMeshObserver.SendMeshObjects");
+
         /// <summary>
         /// Sends the observations using the mesh data contained within the configured 3D model.
         /// </summary>
@@ -168,52 +176,60 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         {
             if (!sendObservations) { return; }
 
-            if (spatialMeshObject != null)
+            using (SendMeshObjectsPerfMarker.Auto())
             {
-                MeshFilter[] meshFilters = spatialMeshObject.GetComponentsInChildren<MeshFilter>();
-                for (int i = 0; i < meshFilters.Length; i++)
+                if (spatialMeshObject != null)
                 {
-                    SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
-                        meshFilters[i].sharedMesh,
-                        MeshPhysicsLayer,
-                        $"Spatial Object Mesh {currentMeshId}",
-                        currentMeshId,
-                        ObservedObjectParent);
+                    MeshFilter[] meshFilters = spatialMeshObject.GetComponentsInChildren<MeshFilter>();
+                    for (int i = 0; i < meshFilters.Length; i++)
+                    {
+                        SpatialAwarenessMeshObject meshObject = SpatialAwarenessMeshObject.Create(
+                            meshFilters[i].sharedMesh,
+                            MeshPhysicsLayer,
+                            $"Spatial Object Mesh {currentMeshId}",
+                            currentMeshId,
+                            ObservedObjectParent);
 
-                    meshObject.GameObject.transform.localPosition = meshFilters[i].transform.position;
-                    meshObject.GameObject.transform.localRotation = meshFilters[i].transform.rotation;
+                        meshObject.GameObject.transform.localPosition = meshFilters[i].transform.position;
+                        meshObject.GameObject.transform.localRotation = meshFilters[i].transform.rotation;
 
-                    ApplyMeshMaterial(meshObject);
+                        ApplyMeshMaterial(meshObject);
 
-                    meshes.Add(currentMeshId, meshObject);
+                        meshes.Add(currentMeshId, meshObject);
 
-                    meshEventData.Initialize(this, currentMeshId, meshObject);
-                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                        meshEventData.Initialize(this, currentMeshId, meshObject);
+                        SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
 
-                    currentMeshId++;
+                        currentMeshId++;
+                    }
                 }
-            }
 
-            sendObservations = false;
+                sendObservations = false;
+            }
         }
+
+        private static readonly ProfilerMarker RemoveMeshObjectPerfMarker = new ProfilerMarker("[MRTK] SpatialObjectMeshObserver.RemoveMeshObject");
 
         /// <summary>
         /// Removes an observation.
         /// </summary>
         private void RemoveMeshObject(int meshId)
         {
-            if (meshes.TryGetValue(meshId, out SpatialAwarenessMeshObject meshObject))
+            using (RemoveMeshObjectPerfMarker.Auto())
             {
-                // Remove the mesh object from the collection.
-                meshes.Remove(meshId);
-                if (meshObject != null)
+                if (meshes.TryGetValue(meshId, out SpatialAwarenessMeshObject meshObject))
                 {
-                    SpatialAwarenessMeshObject.Cleanup(meshObject);
-                }
+                    // Remove the mesh object from the collection.
+                    meshes.Remove(meshId);
+                    if (meshObject != null)
+                    {
+                        SpatialAwarenessMeshObject.Cleanup(meshObject);
+                    }
 
-                // Send the mesh removed event
-                meshEventData.Initialize(this, meshId, null);
-                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    // Send the mesh removed event
+                    meshEventData.Initialize(this, meshId, null);
+                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                }
             }
         }
 

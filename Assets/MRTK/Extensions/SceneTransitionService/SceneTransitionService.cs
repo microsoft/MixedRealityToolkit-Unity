@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
-using System.Collections.Generic;
-using System;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.Profiling;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
@@ -137,70 +138,75 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             await DoSceneTransition(sceneOperations, FadeOutTime, FadeInTime, progressIndicator);
         }
 
+        private static readonly ProfilerMarker DoSceneTransitionPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.DoSceneTransition");
+
         /// <inheritdoc />
         public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)
         {
-            fadeOutTime = Mathf.Clamp(fadeOutTime, 0, maxFadeOutTime);
-            fadeInTime = Mathf.Clamp(fadeInTime, 0, maxFadeInTime);
-
-            if (TransitionInProgress)
+            using (DoSceneTransitionPerfMarker.Auto())
             {
-                throw new Exception("Attempting to do a transition while one is already in progress.");
+                fadeOutTime = Mathf.Clamp(fadeOutTime, 0, maxFadeOutTime);
+                fadeInTime = Mathf.Clamp(fadeInTime, 0, maxFadeInTime);
+
+                if (TransitionInProgress)
+                {
+                    throw new Exception("Attempting to do a transition while one is already in progress.");
+                }
+
+                #region Transition begin
+
+                TransitionInProgress = true;
+                OnTransitionStarted?.Invoke();
+
+                if (progressIndicator == null && sceneTransitionServiceProfile.UseDefaultProgressIndicator)
+                {   // If we haven't been given a progress indicator, and we're supposed to use a default
+                    // find / create the default progress indicator
+                    CreateDefaultProgressIndicator();
+                    progressIndicator = defaultProgressIndicator;
+                }
+
+                if (UseFadeColor)
+                {
+                    await FadeOut(fadeOutTime);
+                }
+
+                if (progressIndicator != null)
+                {
+                    await progressIndicator.OpenAsync();
+                }
+
+                #endregion
+
+                #region Task execution
+
+                // Make sure we're on the main thread
+
+                foreach (Func<Task> sceneOperation in sceneOperations)
+                {
+                    await sceneOperation();
+                }
+
+                #endregion
+
+                #region Transition end
+
+                // If we used a progress indicator, close it
+                if (progressIndicator != null)
+                {
+                    await progressIndicator.CloseAsync();
+                }
+
+
+                if (UseFadeColor)
+                {
+                    await FadeIn(fadeInTime);
+                }
+
+                TransitionInProgress = false;
+                OnTransitionCompleted?.Invoke();
+
+                #endregion
             }
-
-            #region Transition begin
-
-            TransitionInProgress = true;
-            OnTransitionStarted?.Invoke();
-
-            if (progressIndicator == null && sceneTransitionServiceProfile.UseDefaultProgressIndicator)
-            {   // If we haven't been given a progress indicator, and we're supposed to use a default
-                // find / create the default progress indicator
-                CreateDefaultProgressIndicator();
-                progressIndicator = defaultProgressIndicator;
-            }
-
-            if (UseFadeColor)
-            {
-                await FadeOut(fadeOutTime);
-            }
-
-            if (progressIndicator != null)
-            {
-                await progressIndicator.OpenAsync();
-            }
-
-            #endregion
-
-            #region Task execution
-
-            // Make sure we're on the main thread
-
-            foreach (Func<Task> sceneOperation in sceneOperations)
-            {
-                await sceneOperation();
-            }
-
-            #endregion
-
-            #region Transition end
-
-            // If we used a progress indicator, close it
-            if (progressIndicator != null)
-            {
-                await progressIndicator.CloseAsync();
-            }
-
-
-            if (UseFadeColor)
-            {
-                await FadeIn(fadeInTime);
-            }
-
-            TransitionInProgress = false;
-            OnTransitionCompleted?.Invoke();
-
-            #endregion
         }
 
         /// <inheritdoc />
@@ -222,93 +228,110 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             await FadeIn(FadeInTime);
         }
 
+        private static readonly ProfilerMarker FadeOutPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.FadeOut");
+
         /// <inheritdoc />
         public async Task FadeOut(float fadeOutTime)
         {
-            CreateCameraFader();
-
-            switch (cameraFader.State)
+            using (FadeOutPerfMarker.Auto())
             {
-                case CameraFaderState.Clear:
-                    // Ready to go!
-                    break;
+                CreateCameraFader();
 
-                case CameraFaderState.FadingOut:
-                    Debug.LogWarning("Already fading out. Taking no action.");
-                    break;
+                switch (cameraFader.State)
+                {
+                    case CameraFaderState.Clear:
+                        // Ready to go!
+                        break;
 
-                case CameraFaderState.Opaque:
-                    Debug.LogWarning("Already faded out. Taking no action.");
-                    break;
+                    case CameraFaderState.FadingOut:
+                        Debug.LogWarning("Already fading out. Taking no action.");
+                        break;
 
-                case CameraFaderState.FadingIn:
-                    while (cameraFader.State == CameraFaderState.FadingIn)
-                    {   // Wait until we're done fading in to fade back in
-                        await Task.Yield();
-                    }
-                    break;
+                    case CameraFaderState.Opaque:
+                        Debug.LogWarning("Already faded out. Taking no action.");
+                        break;
+
+                    case CameraFaderState.FadingIn:
+                        while (cameraFader.State == CameraFaderState.FadingIn)
+                        {   // Wait until we're done fading in to fade back in
+                            await Task.Yield();
+                        }
+                        break;
+                }
+
+                await cameraFader.FadeOutAsync(fadeOutTime, FadeColor, GatherFadeTargetCameras());
             }
-
-            await cameraFader.FadeOutAsync(fadeOutTime, FadeColor, GatherFadeTargetCameras());
         }
+
+        private static readonly ProfilerMarker FadeInPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.FadeIn");
 
         /// <inheritdoc />
         public async Task FadeIn(float fadeInTime)
         {
-            CreateCameraFader();
-
-            switch (cameraFader.State)
+            using (FadeInPerfMarker.Auto())
             {
-                case CameraFaderState.Opaque:
-                    // Ready to go!
-                    break;
+                CreateCameraFader();
 
-                case CameraFaderState.FadingOut:
-                    while (cameraFader.State == CameraFaderState.FadingOut)
-                    {   // Wait until we're done fading out to fade back in
-                        await Task.Yield();
-                    }
-                    break;
+                switch (cameraFader.State)
+                {
+                    case CameraFaderState.Opaque:
+                        // Ready to go!
+                        break;
 
-                case CameraFaderState.FadingIn:
-                    Debug.LogWarning("Already fading in. Taking no action.");
-                    return;
+                    case CameraFaderState.FadingOut:
+                        while (cameraFader.State == CameraFaderState.FadingOut)
+                        {   // Wait until we're done fading out to fade back in
+                            await Task.Yield();
+                        }
+                        break;
 
-                case CameraFaderState.Clear:
-                    // If we haven't faded out yet, do so now - make it instantaneous
-                    await cameraFader.FadeOutAsync(0, FadeColor, GatherFadeTargetCameras());
-                    break;
+                    case CameraFaderState.FadingIn:
+                        Debug.LogWarning("Already fading in. Taking no action.");
+                        return;
+
+                    case CameraFaderState.Clear:
+                        // If we haven't faded out yet, do so now - make it instantaneous
+                        await cameraFader.FadeOutAsync(0, FadeColor, GatherFadeTargetCameras());
+                        break;
+                }
+
+                await cameraFader.FadeInAsync(fadeInTime);
             }
-
-            await cameraFader.FadeInAsync(fadeInTime);
         }
+
+        private static readonly ProfilerMarker ShowDefaultProgressIndicatorPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.ShowDefaultProgressIndicator");
 
         /// <inheritdoc />
         public Transform ShowDefaultProgressIndicator()
         {
-            CreateDefaultProgressIndicator();
-
-            switch (defaultProgressIndicator.State)
+            using (ShowDefaultProgressIndicatorPerfMarker.Auto())
             {
-                case ProgressIndicatorState.Open:
-                case ProgressIndicatorState.Opening:
-                    // If it's already open / opening, don't bother to open again
-                    break;
+                CreateDefaultProgressIndicator();
 
-                case ProgressIndicatorState.Closed:
-                    // Open it now - don't await result, we want to return the transform promptly 
-                    defaultProgressIndicator.OpenAsync();
-                    break;
+                switch (defaultProgressIndicator.State)
+                {
+                    case ProgressIndicatorState.Open:
+                    case ProgressIndicatorState.Opening:
+                        // If it's already open / opening, don't bother to open again
+                        break;
 
-                case ProgressIndicatorState.Closing:
-                default:
-                    // Open it now - don't await result, we want to return the transform promptly
-                    defaultProgressIndicator.OpenAsync();
-                    break;
+                    case ProgressIndicatorState.Closed:
+                        // Open it now - don't await result, we want to return the transform promptly 
+                        defaultProgressIndicator.OpenAsync();
+                        break;
+
+                    case ProgressIndicatorState.Closing:
+                    default:
+                        // Open it now - don't await result, we want to return the transform promptly
+                        defaultProgressIndicator.OpenAsync();
+                        break;
+                }
+
+                return defaultProgressIndicator.MainTransform;
             }
-
-            return defaultProgressIndicator.MainTransform;
         }
+
+        private static readonly ProfilerMarker HideProgressIndicatorPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.HideProgressIndicator");
 
         /// <inheritdoc />
         public async Task HideProgressIndicator()
@@ -325,30 +348,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 return;
             }
 
-            switch (defaultProgressIndicator.State)
+            using (HideProgressIndicatorPerfMarker.Auto())
             {
-                case ProgressIndicatorState.Closed:
-                    // No need to do anything.
-                    return;
+                switch (defaultProgressIndicator.State)
+                {
+                    case ProgressIndicatorState.Closed:
+                        // No need to do anything.
+                        return;
 
-                case ProgressIndicatorState.Closing:
-                    while (defaultProgressIndicator.State == ProgressIndicatorState.Closing)
-                    {   // Wait for progress indicator to be done closing
-                        await Task.Yield();
-                    }
-                    return;
+                    case ProgressIndicatorState.Closing:
+                        while (defaultProgressIndicator.State == ProgressIndicatorState.Closing)
+                        {   // Wait for progress indicator to be done closing
+                            await Task.Yield();
+                        }
+                        return;
 
-                case ProgressIndicatorState.Open:
-                    await defaultProgressIndicator.CloseAsync();
-                    return;
+                    case ProgressIndicatorState.Open:
+                        await defaultProgressIndicator.CloseAsync();
+                        return;
 
-                case ProgressIndicatorState.Opening:
-                    while (defaultProgressIndicator.State == ProgressIndicatorState.Opening)
-                    {   // Wait for it to be done opening, then close it
-                        await Task.Yield();
-                    }
-                    await defaultProgressIndicator.CloseAsync();
-                    return;
+                    case ProgressIndicatorState.Opening:
+                        while (defaultProgressIndicator.State == ProgressIndicatorState.Opening)
+                        {   // Wait for it to be done opening, then close it
+                            await Task.Yield();
+                        }
+                        await defaultProgressIndicator.CloseAsync();
+                        return;
+                }
             }
         }
 
@@ -378,50 +404,55 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         #region private methods
 
+        private static readonly ProfilerMarker GatherFadeTargetCamerasPerfMarker = new ProfilerMarker("[MRTK] SceneTransitionService.GatherFrameTargetCameras");
+
         private List<Camera> GatherFadeTargetCameras()
         {
-            List<Camera> targetCameras = new List<Camera>();
-
-            switch (FadeTargets)
+            using (GatherFadeTargetCamerasPerfMarker.Auto())
             {
-                case CameraFaderTargets.All:
-                    // Add every single camera in all scenes
-                    targetCameras.AddRange(GameObject.FindObjectsOfType<Camera>());
-                    break;
+                List<Camera> targetCameras = new List<Camera>();
 
-                case CameraFaderTargets.Main:
-                    targetCameras.Add(CameraCache.Main);
-                    break;
+                switch (FadeTargets)
+                {
+                    case CameraFaderTargets.All:
+                        // Add every single camera in all scenes
+                        targetCameras.AddRange(GameObject.FindObjectsOfType<Camera>());
+                        break;
 
-                case CameraFaderTargets.UI:
-                    foreach (Canvas canvas in GameObject.FindObjectsOfType<Canvas>())
-                    {
-                        switch (canvas.renderMode)
+                    case CameraFaderTargets.Main:
+                        targetCameras.Add(CameraCache.Main);
+                        break;
+
+                    case CameraFaderTargets.UI:
+                        foreach (Canvas canvas in GameObject.FindObjectsOfType<Canvas>())
                         {
-                            case RenderMode.ScreenSpaceCamera:
-                            case RenderMode.WorldSpace:
-                                if (canvas.worldCamera != null)
-                                {
-                                    targetCameras.Add(canvas.worldCamera);
-                                }
-                                break;
+                            switch (canvas.renderMode)
+                            {
+                                case RenderMode.ScreenSpaceCamera:
+                                case RenderMode.WorldSpace:
+                                    if (canvas.worldCamera != null)
+                                    {
+                                        targetCameras.Add(canvas.worldCamera);
+                                    }
+                                    break;
 
-                            case RenderMode.ScreenSpaceOverlay:
-                            default:
-                                break;
+                                case RenderMode.ScreenSpaceOverlay:
+                                default:
+                                    break;
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                case CameraFaderTargets.Custom:
-                    if (customFadeTargetCameras.Count == 0)
-                        throw new Exception("Attempting to fade custom target cameras but none were supplied. Use SetCustomFadeCameras prior to calling TransitionToScene.");
+                    case CameraFaderTargets.Custom:
+                        if (customFadeTargetCameras.Count == 0)
+                            throw new Exception("Attempting to fade custom target cameras but none were supplied. Use SetCustomFadeCameras prior to calling TransitionToScene.");
 
-                    targetCameras.AddRange(customFadeTargetCameras);
-                    break;
+                        targetCameras.AddRange(customFadeTargetCameras);
+                        break;
+                }
+
+                return targetCameras;
             }
-
-            return targetCameras;
         }
 
         private void CreateDefaultProgressIndicator()

@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Augments the HandConstraint to also check if the palm is facing the user before activation. This solver only works 
-    /// with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers, with other <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/> types this solver will behave just like it's base class.
+    /// with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers, with other <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/> types this solver will behave just like its base class.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/HandConstraintPalmUp")]
     public class HandConstraintPalmUp : HandConstraint
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// palm is currently facing the user.
         /// </summary>
         /// <param name="controller">The hand to check against.</param>
-        /// <returns>True if this hand should be used from tracking.</returns>
+        /// <returns>True if this hand should be used for tracking.</returns>
         protected override bool IsValidController(IMixedRealityController controller)
         {
             if (!base.IsValidController(controller))
@@ -103,14 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return false;
             }
 
-            MixedRealityPose palmPose;
-            var jointedHand = controller as IMixedRealityHand;
-
             bool palmFacingThresholdMet = false;
 
-            if (jointedHand != null)
+            if (controller is IMixedRealityHand jointedHand)
             {
-                if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+                if (jointedHand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palmPose))
                 {
                     float palmCameraAngle = Vector3.Angle(palmPose.Up, CameraCache.Main.transform.forward);
 
@@ -155,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 }
                 else
                 {
-                    Debug.LogError("HandConstraintPalmUp requires controllers of type IMixedRealityHand to perform hand activation tests.");
+                    Debug.LogWarning($"HandConstraintPalmUp requires a palm joint, but none was provided by {controller.InputSource.SourceName}.");
                 }
 
                 return palmFacingThresholdMet;
