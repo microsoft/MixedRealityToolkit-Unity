@@ -77,9 +77,9 @@ We have added the ability to choose how the elements in the grid are aligned, wh
 
 **Grid Object Collection Anchor Changes**
 
-<img src="https://user-images.githubusercontent.com/39840334/79499692-33ff6980-7fe0-11ea-9b41-63b5d969a853.gif" width="300" />
+<img src="https://user-images.githubusercontent.com/39840334/79516745-17bff480-8001-11ea-8492-cfa953c451da.gif" width="300" />
 
-We made changes to Grid Object Collection behavior to more more in line with Unity's layout group behaviors. The legacy Grid Object Collection behavior can be toggled with the `UseLegacyAnchor` field.
+We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the `AnchorAlongAxis` field.
 
 ### Breaking changes in 2.4.0
 

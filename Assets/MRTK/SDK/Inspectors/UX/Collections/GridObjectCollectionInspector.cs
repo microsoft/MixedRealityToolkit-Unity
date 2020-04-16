@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty cellWidth;
         private SerializedProperty cellHeight;
         private SerializedProperty anchor;
-        private SerializedProperty useLegacyAnchor;
+        private SerializedProperty anchorAlongAxis;
         private SerializedProperty rowAlignment;
         private SerializedProperty columnAlignment;
 
@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             cellWidth = serializedObject.FindProperty("cellWidth");
             cellHeight = serializedObject.FindProperty("cellHeight");
             anchor = serializedObject.FindProperty("anchor");
-            useLegacyAnchor = serializedObject.FindProperty("useLegacyAnchor");
+            anchorAlongAxis = serializedObject.FindProperty("anchorAlongAxis");
             rowAlignment = serializedObject.FindProperty("rowAlignment");
             columnAlignment = serializedObject.FindProperty("columnAlignment");
         }
@@ -95,7 +95,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // layout anchor has no effect on radial layout, it is always at center.
                 EditorGUILayout.PropertyField(anchor);
             }
-            EditorGUILayout.PropertyField(useLegacyAnchor);
+
+            LayoutAnchor layoutAnchor = (LayoutAnchor)anchor.enumValueIndex;
+            if (layoutAnchor != LayoutAnchor.MiddleCenter)
+            {
+                EditorGUILayout.PropertyField(anchorAlongAxis);
+            }
         }
     }
 }

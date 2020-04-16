@@ -68,16 +68,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { anchor = value; }
         }
 
-        [SerializeField, Tooltip("Whether or not to use the legacy anchor layout")]
-        private bool useLegacyAnchor = true;
+        [SerializeField, Tooltip("Whether anchoring occurs along an objects axis or not")]
+        private bool anchorAlongAxis = false;
 
         /// <summary>
-        /// Where the grid is anchored relative to local origin
+        /// Whether anchoring occurs along an objects axis or not
         /// </summary>
-        public bool UseLegacyAnchor
+        public bool AnchorAlongAxis
         {
-            get { return useLegacyAnchor; }
-            set { useLegacyAnchor = value; }
+            get { return anchorAlongAxis; }
+            set { anchorAlongAxis = value; }
         }
 
 
@@ -359,21 +359,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
-                startOffsetX = useLegacyAnchor ? 0 :  0.5f * CellWidth;
+                startOffsetX = anchorAlongAxis ? 0.5f * CellWidth : 0;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = useLegacyAnchor ? xMax * CellWidth : (xMax - 0.5f) * CellWidth;
+                startOffsetX = anchorAlongAxis ? (xMax - 0.5f) * CellWidth : xMax * CellWidth;
             }
 
             float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
-                startOffsetY = useLegacyAnchor ? 0 : 0.5f * CellHeight;
+                startOffsetY = anchorAlongAxis ? 0.5f * CellHeight: 0;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = useLegacyAnchor ? yMax * CellHeight : (yMax - 0.5f) * CellHeight;
+                startOffsetY = anchorAlongAxis ? (yMax - 0.5f) * CellHeight : yMax * CellHeight;
             }
             float alignmentOffsetX = 0;
             float alignmentOffsetY = 0;

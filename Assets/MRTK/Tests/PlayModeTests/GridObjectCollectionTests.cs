@@ -69,8 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             grid.Layout = LayoutOrder.Horizontal;
 
-            // Testing Legacy Anchors
-            grid.UseLegacyAnchor = true;
+            // Testing anchoring along axis
+            grid.AnchorAlongAxis = true;
             int expectedIdx = 0;
             foreach (LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
             {
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 grid.UpdateCollection();
                 foreach (Transform childTransform in go.transform)
                 {
-                    var expected = legacyAnchorTestExpected[expectedIdx];
+                    var expected = axisAnchorTestExpected[expectedIdx];
                     var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual,
@@ -90,8 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return null;
             }
 
-            // Testing Anchors
-            grid.UseLegacyAnchor = false;
+            // Testing non-axis aligned anchors
+            grid.AnchorAlongAxis = false;
             expectedIdx = 0;
             foreach(LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
             {
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 grid.UpdateCollection();
                 foreach(Transform childTransform in go.transform)
                 {
-                    var expected = anchorTestExpected[expectedIdx];
+                    var expected = freeAnchorTestExpected[expectedIdx];
                     var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual, 
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             grid.Columns = 2;
 
             grid.Anchor = LayoutAnchor.UpperCenter;
-            grid.UseLegacyAnchor = false;
+            grid.AnchorAlongAxis = true;
 
             for (int i = 0; i < 3; i++)
             {
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Expected Values
         // You can use GridObjectLayoutControl.cs in the examples package to
         // quickly generate the expected positions used in these tests.
-        private Vector3[] legacyAnchorTestExpected = new Vector3[] {
+        private Vector3[] freeAnchorTestExpected = new Vector3[] {
             new Vector3(0.08f, -0.08f, 0.75f), // UpperLeft index 0
             new Vector3(0.23f, -0.08f, 0.75f), // UpperLeft index 1
             new Vector3(0.38f, -0.08f, 0.75f), // UpperLeft index 2
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             new Vector3(-0.23f, 0.08f, 0.75f), // BottomRight index 1
             new Vector3(-0.08f, 0.08f, 0.75f) // BottomRight index 2
         };
-        private Vector3[] anchorTestExpected = new Vector3[] {
+        private Vector3[] axisAnchorTestExpected = new Vector3[] {
             new Vector3(0.0f, -0.0f, 0.75f), // UpperLeft index 0
             new Vector3(0.15f, -0.0f, 0.75f), // UpperLeft index 1
             new Vector3(0.30f, -0.0f, 0.75f), // UpperLeft index 2
