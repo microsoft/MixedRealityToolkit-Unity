@@ -75,6 +75,12 @@ For more information, see - [Mixed Reality Keyboard Helpers](../Assets/MRTK/SDK/
 
 We have added the ability to choose how the elements in the grid are aligned, whether they are aligned in the center or along the left/right axis (top/bottom axis when doing row then column layout)
 
+**Grid Object Collection Anchor Changes**
+
+<img src="https://user-images.githubusercontent.com/39840334/79499692-33ff6980-7fe0-11ea-9b41-63b5d969a853.gif" width="300" />
+
+We made changes to Grid Object Collection behavior to more more in line with Unity's layout group behaviors. The legacy Grid Object Collection behavior can be toggled with the `UseLegacyAnchor` field.
+
 ### Breaking changes in 2.4.0
 
 **Eye gaze setup change**

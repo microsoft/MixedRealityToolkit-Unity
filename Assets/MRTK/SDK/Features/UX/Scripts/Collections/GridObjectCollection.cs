@@ -68,6 +68,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { anchor = value; }
         }
 
+        [SerializeField, Tooltip("Whether or not to use the legacy anchor layout")]
+        private bool useLegacyAnchor = true;
+
+        /// <summary>
+        /// Where the grid is anchored relative to local origin
+        /// </summary>
+        public bool UseLegacyAnchor
+        {
+            get { return useLegacyAnchor; }
+            set { useLegacyAnchor = value; }
+        }
+
+
         [SerializeField, Tooltip("How the columns are aligned in the grid")]
         private LayoutHorizontalAlignment columnAlignment = LayoutHorizontalAlignment.Left;
 
@@ -346,21 +359,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
-                startOffsetX = 0.5f * CellWidth;
+                startOffsetX = useLegacyAnchor ? 0 :  0.5f * CellWidth;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = (xMax - 0.5f) * CellWidth;
+                startOffsetX = useLegacyAnchor ? xMax * CellWidth : (xMax - 0.5f) * CellWidth;
             }
 
             float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
-                startOffsetY = 0.5f * CellHeight;
+                startOffsetY = useLegacyAnchor ? 0 : 0.5f * CellHeight;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = (yMax - 0.5f) * CellHeight;
+                startOffsetY = useLegacyAnchor ? yMax * CellHeight : (yMax - 0.5f) * CellHeight;
             }
             float alignmentOffsetX = 0;
             float alignmentOffsetY = 0;
