@@ -288,12 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         }
                         else
                         {
-                            if (supportedControllerType == SupportedControllerType.GGVHand &&
-                                handedness == Handedness.None)
-                            {
-                                controllerTitle = "HoloLens Voice and Clicker";
-                            }
-
                             if (handedness != Handedness.Right)
                             {
                                 if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }

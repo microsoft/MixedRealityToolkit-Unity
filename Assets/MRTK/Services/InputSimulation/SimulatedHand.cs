@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isTracked)
             {
-                generator(Joints);
+                generator?.Invoke(Joints);
                 handDataChanged = true;
             }
 

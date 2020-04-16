@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [MixedRealityController(
         SupportedControllerType.GGVHand,
-        new[] { Handedness.Left, Handedness.Right })]
+        new[] { Handedness.Left, Handedness.Right, Handedness.None })]
     public class SimulatedGestureHand : SimulatedHand
     {
         /// <inheritdoc />
@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+
         /// <summary>
         /// The GGV default interactions.
         /// </summary>
@@ -125,7 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < Interactions?.Length; i++)
             {
-
                 switch (Interactions[i].InputType)
                 {
                     case DeviceInputType.SpatialGrip:
@@ -137,7 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         break;
                     case DeviceInputType.Select:
                         Interactions[i].BoolData = handData.IsPinching;
-
                         if (Interactions[i].Changed)
                         {
                             if (Interactions[i].BoolData)

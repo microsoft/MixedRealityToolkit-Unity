@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void SetUp()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
 
             // Target frame rate is set to 50 to match the physics

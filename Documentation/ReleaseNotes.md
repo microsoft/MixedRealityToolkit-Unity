@@ -81,6 +81,12 @@ We have added the ability to choose how the elements in the grid are aligned, wh
 
 We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the `AnchorAlongAxis` field.
 
+**Hands-free GGV input simulation**
+
+<img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300"/>
+
+We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
+
 ### Breaking changes in 2.4.0
 
 **Eye gaze setup change**

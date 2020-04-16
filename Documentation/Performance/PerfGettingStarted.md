@@ -46,6 +46,8 @@ To maintain comfortable frame rates (typically 60 frames per second), applicatio
 
 In this example, the hierarchy has been expanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.
 
+It is highly recommended that developers instrument application code in a similar fashion. Primary areas of focus for application code instrumentation is within event handlers as these methods are charged to the MRTK update loop as events are raised. High frame times within the MRTK update loop can be indicative of expensive code in event handler methods.
+
 ## Recommended settings for Unity
 
 ### Single-Pass Instanced rendering
