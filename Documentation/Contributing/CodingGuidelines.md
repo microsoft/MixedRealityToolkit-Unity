@@ -212,13 +212,13 @@ private Foo()
 
 ### Naming conventions
 
-Always use `PascalCase` for public / protected / virtual properties, and `camelCase` for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
+Always use `PascalCase` for properties. Use `camelCase` for most fields, except use `PascalCase` for `static readonly` and `const` fields. The only exception to this is for data structures that require the fields to be serialized by the `JsonUtility`.
 
 #### Don't
 
 ```c#
-public string myProperty; // <- Starts with a lower case letter
-private string MyProperty; // <- Starts with an uppercase case letter
+public string myProperty; // <- Starts with a lowercase letter
+private string MyField; // <- Starts with an uppercase letter
 ```
 
 #### Do
@@ -226,7 +226,8 @@ private string MyProperty; // <- Starts with an uppercase case letter
 ```c#
 public string MyProperty;
 protected string MyProperty;
-private string myProperty;
+private static readonly string MyField;
+private string myField;
 ```
 
 ### Access modifiers
