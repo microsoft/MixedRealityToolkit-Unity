@@ -151,11 +151,18 @@ For manipulating objects with two hands at the same time, the persistent hand mo
 
 ### GGV (Gaze, Gesture, and Voice) interaction
 
+1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
+1. Click and hold **left mouse button** to interact
+1. Rotate the camera again to manipulate the object
+
+In addition, you can use simulated hands for GGV interaction
+
 1. Enable GGV simulation by switching **Hand Simulation Mode** to *Gestures* in the [Input Simulation Profile](#enabling-the-input-simulation-service)
 1. Rotate the camera to point the gaze cursor at the interactable object (right mouse button)
 1. Hold **Space** to control the right hand
 1. Click and hold **left mouse button** to interact
-1. Rotate the camera again to manipulate the object
+1. Use your mouse to move the object
+1. Release the mouse button to stop interaction
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 

@@ -3079,6 +3079,36 @@ MonoBehaviour:
       invertYAxis: 0
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
+    handedness: 0
+    interactions:
+    - id: 0
+      description: Select
+      axisType: 2
+      inputType: 25
+      inputAction:
+        id: 1
+        description: Select
+        axisConstraint: 2
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+    - id: 1
+      description: Grip Pose
+      axisType: 7
+      inputType: 14
+      inputAction:
+        id: 3
+        description: Grip Pose
+        axisConstraint: 7
+      keyCode: 0
+      axisCodeX: 
+      axisCodeY: 
+      invertXAxis: 0
+      invertYAxis: 0
+  - controllerType:
+      reference: Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand, Microsoft.MixedReality.Toolkit.Services.InputSimulation
     handedness: 1
     interactions:
     - id: 0

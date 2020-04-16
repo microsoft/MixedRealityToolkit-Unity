@@ -117,6 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create an MRTK instance and set up playspace
             TestUtilities.InitializeMixedRealityToolkit(true);
             TestUtilities.InitializePlayspace();
+
+            // Ensure user input is disabled during the tests
+            InputSimulationService inputSimulationService = GetInputSimulationService();
+            inputSimulationService.UserInputEnabled = false;
         }
 
         /// <summary>
@@ -172,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
-            inputSimulationService.UserInputEnabled = false;
             return inputSimulationService;
         }
 

@@ -200,10 +200,108 @@ namespace Microsoft.MixedReality.Toolkit.Input
     }
 
     /// <summary>
-    /// Utility class to poll input for key bindings.
+    /// Utility class to poll input for key bindings and to simulate key presses
+    /// Need to add mechanisms to poll and simulate input axis: https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7659
     /// </summary>
     public static class KeyInputSystem
     {
+        private static bool isSimulated;
+        public static bool SimulatingInput => isSimulated;
+
+        private static HashSet<int> SimulatedMouseDownSet;
+        private static HashSet<KeyCode> SimulatedKeyDownSet;
+
+        private static HashSet<int> SimulatedMouseSet;
+        private static HashSet<KeyCode> SimulatedKeySet;
+
+        private static HashSet<int> SimulatedMouseUpSet;
+        private static HashSet<KeyCode> SimulatedKeyUpSet;
+
+        /// <summary>
+        /// Starts the key input simulation. Inputs can now be simulated via <see cref="PressKey(KeyBinding)"/> and <see cref="ReleaseKey(KeyBinding)"/>
+        /// </summary>
+        public static void StartKeyInputStimulation()
+        {
+            ResetKeyInputSimulation();
+            isSimulated = true;
+        }
+
+        /// <summary>
+        /// Stops the key input simulation
+        /// </summary>
+        public static void StopKeyInputSimulation()
+        {
+            isSimulated = false;
+        }
+
+        /// <summary>
+        /// Resets the key input simulation. All keys will not trigger <see cref="GetKeyDown(KeyBinding)"/>, <see cref="GetKey(KeyBinding)"/>, or <see cref="GetKeyUp(KeyBinding)"/>
+        /// </summary>
+        public static void ResetKeyInputSimulation()
+        {
+            SimulatedMouseDownSet = new HashSet<int>();
+            SimulatedKeyDownSet = new HashSet<KeyCode>();
+
+            SimulatedMouseSet = new HashSet<int>();
+            SimulatedKeySet = new HashSet<KeyCode>();
+
+            SimulatedMouseUpSet = new HashSet<int>();
+            SimulatedKeyUpSet = new HashSet<KeyCode>();
+        }
+
+        /// <summary>
+        /// Presses a key. <see cref="GetKeyDown(KeyBinding)"/> and <see cref="GetKey(KeyBinding)"/> will be true for the keybinding. 
+        /// <see cref="GetKeyUp(KeyBinding)"/> will no longer be true for the keybinding.
+        /// </summary>
+        public static void PressKey(KeyBinding kb)
+        {
+            if (kb.TryGetMouseButton(out int mouseButton))
+            {
+                SimulatedMouseDownSet.Add(mouseButton);
+                SimulatedMouseSet.Add(mouseButton);
+                SimulatedMouseUpSet.Remove(mouseButton);
+            }
+            if (kb.TryGetKeyCode(out KeyCode keyCode))
+            {
+                SimulatedKeyDownSet.Add(keyCode);
+                SimulatedKeySet.Add(keyCode);
+                SimulatedKeyUpSet.Remove(keyCode);
+            }
+        }
+        /// <summary>
+        /// Releases a key. <see cref="GetKeyUp(KeyBinding)"/> will be true for the keybinding. 
+        /// <see cref="GetKeyDown(KeyBinding)"/> and <see cref="GetKey(KeyBinding)"/>  will no longer be true for the keybinding.
+        /// </summary>
+        public static void ReleaseKey(KeyBinding kb)
+        {
+            if (kb.TryGetMouseButton(out int mouseButton))
+            {
+                SimulatedMouseDownSet.Remove(mouseButton);
+                SimulatedMouseSet.Remove(mouseButton);
+                SimulatedMouseUpSet.Add(mouseButton);
+            }
+            if (kb.TryGetKeyCode(out KeyCode keyCode))
+            {
+                SimulatedKeyDownSet.Remove(keyCode);
+                SimulatedKeySet.Remove(keyCode);
+                SimulatedKeyUpSet.Add(keyCode);
+            }
+        }
+
+        /// <summary>
+        /// Advances the Key press simulation by 1 frame. Keybindings will no longer trigger <see cref="GetKeyDown(KeyBinding)"/>  or <see cref="GetKeyUp(KeyBinding)"/> 
+        /// </summary>
+        public static void AdvanceSimulation()
+        {
+            // keys that were just pressed are no longer trigger GetKeyDown
+            SimulatedMouseDownSet = new HashSet<int>();
+            SimulatedKeyDownSet = new HashSet<KeyCode>();
+
+            // keys that were just released are no longer trigger GetKeyUp
+            SimulatedMouseUpSet = new HashSet<int>();
+            SimulatedKeyUpSet = new HashSet<KeyCode>();
+        }
+
         /// <summary>
         /// Test if the key is currently pressed.
         /// </summary>
@@ -212,11 +310,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                return UnityEngine.Input.GetMouseButton(mouseButton);
+                if (isSimulated)
+                    return SimulatedMouseSet.Contains(mouseButton);
+                else
+                    return UnityEngine.Input.GetMouseButton(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                return UnityEngine.Input.GetKey(keyCode);
+                if (isSimulated)
+                    return SimulatedKeySet.Contains(keyCode);
+                else
+                    return UnityEngine.Input.GetKey(keyCode);
             }
             return false;
         }
@@ -229,11 +333,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                return UnityEngine.Input.GetMouseButtonDown(mouseButton);
+                if (isSimulated)
+                    return SimulatedMouseDownSet.Contains(mouseButton);
+                else
+                    return UnityEngine.Input.GetMouseButtonDown(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                return UnityEngine.Input.GetKeyDown(keyCode);
+                if (isSimulated)
+                    return SimulatedKeyDownSet.Contains(keyCode);
+                else
+                    return UnityEngine.Input.GetKeyDown(keyCode);
             }
             return false;
         }
@@ -246,11 +356,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {
-                return UnityEngine.Input.GetMouseButtonUp(mouseButton);
+                if (isSimulated)
+                    return SimulatedMouseUpSet.Contains(mouseButton);
+                else
+                    return UnityEngine.Input.GetMouseButtonUp(mouseButton);
             }
             if (kb.TryGetKeyCode(out KeyCode keyCode))
             {
-                return UnityEngine.Input.GetKeyUp(keyCode);
+                if (isSimulated)
+                    return SimulatedKeyUpSet.Contains(keyCode);
+                else
+                    return UnityEngine.Input.GetKeyUp(keyCode);
             }
             return false;
         }
