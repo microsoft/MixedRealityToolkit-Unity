@@ -108,7 +108,7 @@ public class MyNewComponent : MonoBehaviour
 
 ### Adding new Unity inspector scripts
 
-In general, try to avoid creating custom inspector scripts for MRTK components. It adds additional overhead and management of the codebase that could be handled by the Unity engine. 
+In general, try to avoid creating custom inspector scripts for MRTK components. It adds additional overhead and management of the codebase that could be handled by the Unity engine.
 
 If an inspector class is necessary, try to use Unity's [`DrawDefaultInspector()`](https://docs.unity3d.com/ScriptReference/Editor.DrawDefaultInspector.html). This again simplifies the inspector class and leaves much of the work to Unity.
 
@@ -121,9 +121,9 @@ public override void OnInspectorGUI()
 }
 ```
 
-If custom rendering is required in the inspector class, try to utilize [`SerializedProperty`](https://docs.unity3d.com/ScriptReference/SerializedProperty.html) and [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html). This will ensure Unity correctly handles rendering nested prefabs and modified values. 
+If custom rendering is required in the inspector class, try to utilize [`SerializedProperty`](https://docs.unity3d.com/ScriptReference/SerializedProperty.html) and [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html). This will ensure Unity correctly handles rendering nested prefabs and modified values.
 
-If [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html) cannot be used due to a requirement in custom logic, ensure all usage is wrapped around a [`EditorGUI.PropertyScope`](https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyScope.html). This will ensure Unity renders the inspector correctly for nested prefabs and modified values with the given property. 
+If [`EditorGUILayout.PropertyField`](https://docs.unity3d.com/ScriptReference/EditorGUILayout.PropertyField.html) cannot be used due to a requirement in custom logic, ensure all usage is wrapped around a [`EditorGUI.PropertyScope`](https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyScope.html). This will ensure Unity renders the inspector correctly for nested prefabs and modified values with the given property.
 
 Furthermore, try to decorate the custom inspector class with a [`CanEditMultipleObjects`](https://docs.unity3d.com/ScriptReference/CanEditMultipleObjects.html). This tag ensure multiple objects with this component in the scene can be selected and modified together. Any new inspector classes should test that their code works in this situation in the scene.
 
@@ -153,15 +153,15 @@ Furthermore, try to decorate the custom inspector class with a [`CanEditMultiple
                 var currentHandedness = (Handedness)handedness.enumValueIndex;
 
                 handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(
-                    position, 
-                    label, 
+                    position,
+                    label,
                     currentHandedness,
-                    (value) => { 
+                    (value) => {
                         // This function is executed by Unity to determine if a possible enum value
                         // is valid for selection in the editor view
                         // In this case, only Handedness.Left and Handedness.Right can be selected
-                        return (Handedness)value == Handedness.Left 
-                        || (Handedness)value == Handedness.Right; 
+                        return (Handedness)value == Handedness.Left
+                        || (Handedness)value == Handedness.Right;
                     });
             }
         }
@@ -481,8 +481,8 @@ These steps ensure that MRTK works on both Windows and Unix-based systems.
 ### Don't
 
 ```c#
-private const string Filepath = "Mypath\\to\\a\\file.txt";
-private const string OtherFilePath = "Mypath\to\a\file.txt";
+private const string FilePath = "MyPath\\to\\a\\file.txt";
+private const string OtherFilePath = "MyPath\to\a\file.txt";
 
 string filePath = myVarRootPath + myRelativePath;
 ```
@@ -490,7 +490,7 @@ string filePath = myVarRootPath + myRelativePath;
 ### Do
 
 ```c#
-private const string Filepath = "Mypath/to/a/file.txt";
+private const string FilePath = "MyPath/to/a/file.txt";
 private const string OtherFilePath = "folder{Path.DirectorySeparatorChar}file.txt";
 
 string filePath = Path.Combine(myVarRootPath,myRelativePath);
