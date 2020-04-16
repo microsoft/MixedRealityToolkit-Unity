@@ -473,8 +473,8 @@ public enum Handedness
 
 When generating string file paths, and in particular writing hard-coded string paths, do the following:
 
-1. Use C#'s [`Path` APIs](https://docs.microsoft.com/en-us/dotnet/api/system.io.path?view=netframework-4.8) whenever possible such as `Path.Combine` or `Path.GetFullPath`.
-1. Use / or [`Path.DirectorySeparatorChar`](https://docs.microsoft.com/en-us/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8) instead of \ or \\\\.
+1. Use C#'s [`Path` APIs](https://docs.microsoft.com/dotnet/api/system.io.path?view=netframework-4.8) whenever possible such as `Path.Combine` or `Path.GetFullPath`.
+1. Use / or [`Path.DirectorySeparatorChar`](https://docs.microsoft.com/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8) instead of \ or \\\\.
 
 These steps ensure that MRTK works on both Windows and Unix-based systems.
 
