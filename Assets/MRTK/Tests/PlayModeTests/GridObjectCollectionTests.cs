@@ -75,17 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 grid.Anchor = et;
                 grid.UpdateCollection();
-                int j = 0;
-                foreach(Transform child2 in go.transform)
+                foreach(Transform childTransform in go.transform)
                 {
                     var expected = anchorTestExpected[expectedIdx];
-                    var actual = child2.transform.localPosition;
+                    var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual, 
                         expected, 
                         "Child object not in expected position, layout " + et, 
                         0.01f);
-                    j++;
                     expectedIdx++;
                 }
                 yield return null;
@@ -128,17 +126,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 grid.ColumnAlignment = alignment;
                 grid.UpdateCollection();
-                int j = 0;
-                foreach (Transform child2 in go.transform)
+                foreach (Transform childTransform in go.transform)
                 {
                     var expected = alignmentTestExpected[expectedIdx];
-                    var actual = child2.transform.localPosition;
+                    var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual,
                         expected,
                         "Child object not in expected position, horizontal alignment " + alignment,
                         0.01f);
-                    j++;
                     expectedIdx++;
                 }
                 yield return null;
@@ -153,17 +149,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 grid.RowAlignment = alignment;
                 grid.UpdateCollection();
-                int j = 0;
-                foreach (Transform child2 in go.transform)
+                foreach (Transform childTransform in go.transform)
                 {
                     var expected = alignmentTestExpected[expectedIdx];
-                    var actual = child2.transform.localPosition;
+                    var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual,
                         expected,
                         "Child object not in expected position, horizontal alignment " + alignment,
                         0.01f);
-                    j++;
                     expectedIdx++;
                 }
                 yield return null;
