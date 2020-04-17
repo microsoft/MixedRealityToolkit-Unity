@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [TearDown]
         public void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
 
         private const string HoloLens1ProfileName = "DefaultHoloLens1ConfigurationProfile";
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestDefaultProfile()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            PlayModeTestUtilities.Setup();
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.forward);

@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
-        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight;
+        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight;
         /// <summary>
         /// Left hand is controlled by user input.
         /// </summary>
