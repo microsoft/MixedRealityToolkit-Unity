@@ -72,6 +72,9 @@ If hand joints over remoting are still not working after following the above ste
 
 In the event that the installation of the DotNetAdapter cannot be performed via MSBuild for Unity, the following steps can be performed.
 
+> [!Important]
+> Using both MSBuild for Unity and another NuGet client within the same project is not supported and can result in potential dependency resolution issues.
+
 1. Install a NuGet client
 
     > [!Note]
