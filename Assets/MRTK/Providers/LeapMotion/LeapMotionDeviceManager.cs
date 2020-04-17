@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.Profiling;
+using System;
 
 #if LEAPMOTIONCORE_PRESENT
 using Leap;
@@ -102,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionDeviceManager.Update");
 
+        /// <inheritdoc />
         public override void Enable()
         {
             base.Enable();
@@ -136,7 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             leftAttachmentHand = LeapAttachmentHands.attachmentHands[0];
 
             // The second hand in attachmentHands.attachmentHands is always right
-            rightAttachmentHand = LeapAttachmentHands.attachmentHands[1];  
+            rightAttachmentHand = LeapAttachmentHands.attachmentHands[1];
+
+            // Enable all attachment point flags in the leap hand. By default, only the wrist and the palm are enabled.
+            foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
+            {
+                LeapAttachmentHands.attachmentPoints |= LeapMotionArticulatedHand.ConvertMRTKJointToLeapJoint(joint);
+            }
         }
 
         /// <summary>
@@ -152,6 +160,16 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 var inputSource = CoreServices.InputSystem?.RequestNewGenericInputSource($"Leap {handedness} Controller", pointers, InputSourceType.Hand);
                 var leapHand = new LeapMotionArticulatedHand(TrackingState.Tracked, handedness, inputSource);
 
+                // Set the leap attachment hand to the corresponding handedness
+                if (handedness == Handedness.Left)
+                {
+                    leapHand.SetAttachmentHands(leftAttachmentHand, LeapMotionServiceProvider);
+                }
+                else // handedness == Handedness.Right
+                {
+                    leapHand.SetAttachmentHands(rightAttachmentHand, LeapMotionServiceProvider);
+                }
+                
                 // Set the pointers for an articulated hand to the leap hand
                 foreach (var pointer in pointers)
                 {
@@ -204,13 +222,13 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             {
                 OnHandDetected(Handedness.Right);
             }
-
             else if (!isRightTracked && trackedHands.ContainsKey(Handedness.Right))
             {
                 OnHandDetectionLost(Handedness.Right);
             }
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
             using (UpdatePerfMarker.Auto())

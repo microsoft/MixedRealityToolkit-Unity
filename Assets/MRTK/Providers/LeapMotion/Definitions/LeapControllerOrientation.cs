@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <summary>
         /// The Leap Motion Controller is mounted on a headset and the hand positions are always calculated relative to the HMD camera.
         /// </summary>
-        Headset,
+        Headset = 0,
 
         /// <summary>
         /// The Leap Motion Controller is static and placed flat on a desk. The hand positions are calculated relative to the camera, but can also be configured to 

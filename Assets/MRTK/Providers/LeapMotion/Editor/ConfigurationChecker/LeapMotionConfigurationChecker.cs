@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
     {
         // The presence of the LeapXRServiceProvider.cs is used to determine if the Leap Motion Core Assets are in the project.
         private const string trackedLeapFileName = "LeapXRServiceProvider.cs";
-        private static readonly string[] definitions = { "LEAPMOTIONCORE_PRESENT" };
+        private static readonly string[] Definitions = { "LEAPMOTIONCORE_PRESENT" };
 
         // True if the Leap Motion Core Assets are in the project.
         private static bool isLeapInProject = false;
@@ -72,12 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
             if (files.Length > 0)
             {
-                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, definitions);
+                ScriptUtilities.AppendScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
                 return true;
             }
             else
             {
-                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, definitions);
+                ScriptUtilities.RemoveScriptingDefinitions(BuildTargetGroup.Standalone, Definitions);
                 return false;
             }
         }
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
                     AddAndUpdateAsmDefs();
                     AddLeapEditorAsmDefs();
 
-                    // Refresh the database because tests were removed and 11 asmdefs were added
+                    // Refresh the database because tests were removed and 10 asmdefs were added
                     AssetDatabase.Refresh();
                 }
                 else
