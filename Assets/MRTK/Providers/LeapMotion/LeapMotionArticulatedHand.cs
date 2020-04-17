@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <param name="controllerHandedness">Handedness of this controller (Left or Right)</param>
         /// <param name="inputSource">The origin of user input for this controller</param>
         /// <param name="interactions">The controller interaction map between physical inputs and the logical representation in MRTK</param>
-        public LeapMotionArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null) 
+        public LeapMotionArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
             : base(trackingState, controllerHandedness, inputSource, interactions)
         {
             handDefinition = new ArticulatedHandDefinition(inputSource, controllerHandedness);
@@ -43,6 +43,16 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         public override MixedRealityInteractionMapping[] DefaultInteractions => handDefinition?.DefaultInteractions;
 
         private static readonly ProfilerMarker UpdateStatePerfMarker = new ProfilerMarker("[MRTK] LeapMotionArticulatedHand.UpdateState");
+
+        // Joint poses of the MRTK hand based on the leap hand data
+        private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
+
+        #region IMixedRealityHand Implementation
+
+        /// <inheritdoc/>
+        public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => jointPoses.TryGetValue(joint, out pose);
+
+        #endregion IMixedRealityHand Implementation
 
 #if LEAPMOTIONCORE_PRESENT
 
@@ -58,9 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 
         // Array of TrackedHandJoint names
         private static readonly TrackedHandJoint[] TrackedHandJointEnum = (TrackedHandJoint[])Enum.GetValues(typeof(TrackedHandJoint));
-
-        // Joint poses of the MRTK hand based on the leap hand data
-        private readonly Dictionary<TrackedHandJoint, MixedRealityPose> jointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
 
         // The leap AttachmentHand contains the joint poses for the current leap hand in frame. There is one AttachmentHand, either 
         // left or right, associated with a LeapMotionArticulatedHand.
@@ -80,13 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             TrackedHandJoint.RingMetacarpal,
             TrackedHandJoint.PinkyMetacarpal
         };
-
-        #region IMixedRealityHand Implementation
-
-        /// <inheritdoc/>
-        public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => jointPoses.TryGetValue(joint, out pose);
-
-        #endregion IMixedRealityHand Implementation
 
         /// <summary>
         /// Set the Leap hands required for retrieving joint pose data.  A Leap AttachmentHand contains AttachmentPointFlags which are equivalent to 
