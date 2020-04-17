@@ -79,11 +79,11 @@ In the event that the installation of the DotNetAdapter cannot be performed via 
 
 1. Navigate to the NuGet client UI
 
-    ![Launch NuGet UI](../../Images/Tools/Remoting/LaunchNuGetForUnity.png)
+    ![Launch NuGet UI](../Images/Tools/Remoting/LaunchNuGetForUnity.png)
 
 1. Locate the `Microsoft.Windows.MixedReality.DotNetWinRT` package
 
-    ![Locate Package](../../Images/Tools/Remoting/LocateDotNetWinRT.png)
+    ![Locate Package](../Images/Tools/Remoting/LocateDotNetWinRT.png)
 
 1. Select Install
 
