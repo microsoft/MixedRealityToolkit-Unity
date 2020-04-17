@@ -1099,7 +1099,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
-        private static readonly string rigRootName = "rigRoot";
+        private static readonly string RigRootName = "rigRoot";
 
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
         private static List<Vector3> totalBoundsCorners = new List<Vector3>();
@@ -1832,7 +1832,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             foreach (Transform childTransform in Target.transform)
             {
-                if (childTransform.name.Equals(rigRootName)) { continue; }
+                if (childTransform.name.Equals(RigRootName)) { continue; }
                 childTransforms.AddRange(childTransform.GetComponentsInChildren<Transform>());
             }
 
@@ -1975,7 +1975,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void InitializeRigRoot()
         {
-            var rigRootObj = new GameObject(rigRootName);
+            var rigRootObj = new GameObject(RigRootName);
             rigRoot = rigRootObj.transform;
             rigRoot.parent = Target.transform;
 

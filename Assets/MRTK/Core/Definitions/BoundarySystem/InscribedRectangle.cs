@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Angles to use for fitting the rectangle within the boundary.
         /// </summary>
-        private static readonly float[] fitAngles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
+        private static readonly float[] FitAngles = { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165 };
 
         /// <summary>
         /// Aspect ratios used when fitting rectangles within the boundary.
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                 }
             }
 
-            for (int angleIndex = 0; angleIndex < fitAngles.Length; angleIndex++)
+            for (int angleIndex = 0; angleIndex < FitAngles.Length; angleIndex++)
             {
                 for (int pointIndex = 0; pointIndex < startingPoints.Length; pointIndex++)
                 {
@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                     Vector2 leftCollisionPoint;
                     Vector2 rightCollisionPoint;
 
-                    float angleRadians = MathUtilities.DegreesToRadians(fitAngles[angleIndex]);
+                    float angleRadians = MathUtilities.DegreesToRadians(FitAngles[angleIndex]);
 
                     // Find the collision point of a cross through the given point at the given angle.
                     // Note, we are ignoring the return value as we are checking each point's validity
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                             out newHeight))
                         {
                             Center = verticalMidpoint;
-                            Angle = fitAngles[angleIndex];
+                            Angle = FitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
                             out newHeight))
                         {
                             Center = horizontalMidpoint;
-                            Angle = fitAngles[angleIndex];
+                            Angle = FitAngles[angleIndex];
                             Width = newWidth;
                             Height = newHeight;
                         }

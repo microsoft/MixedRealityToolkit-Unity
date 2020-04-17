@@ -147,11 +147,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
-        private static readonly int defaultValueRowsCols = 3;
+        private static readonly int DefaultValueRowsCols = 3;
 
         [Tooltip("Number of rows per column")]
         [SerializeField]
-        private int rows = defaultValueRowsCols;
+        private int rows = DefaultValueRowsCols;
 
         /// <summary>
         /// Number of rows per column. Can only be assigned when layout type is
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [Tooltip("Number of columns per row")]
         [SerializeField]
-        private int columns = defaultValueRowsCols;
+        private int columns = DefaultValueRowsCols;
 
         /// <summary>
         /// Number of columns per row. Can only be assigned when layout type is 
