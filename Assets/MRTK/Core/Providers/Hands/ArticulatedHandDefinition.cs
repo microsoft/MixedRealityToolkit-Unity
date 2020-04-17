@@ -28,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
 
+        // Pinch distance thresholds
+        private readonly float enterPinchDistance = 0.02f;
+        private readonly float exitPinchDistance = 0.05f;
+
+        private bool isPinching = false;
+
         /// <summary>
         /// The articulated hands default interactions.
         /// </summary>
@@ -83,13 +89,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 MixedRealityPose indexTip;
                 if (unityJointPoses.TryGetValue(TrackedHandJoint.ThumbTip, out thumbTip) && unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out indexTip))
                 {
-                    if (Vector3.Distance(thumbTip.Position, indexTip.Position) < 0.02f)
+                    float distance = Vector3.Distance(thumbTip.Position, indexTip.Position);
+
+                    if (isPinching && distance > exitPinchDistance)
                     {
-                        return true;
+                        isPinching = false;
+                    }
+                    else if (!isPinching && distance < enterPinchDistance)
+                    {
+                        isPinching = true;
                     }
                 }
-                
-                return false;             
+                else
+                {
+                    isPinching = false;
+                }
+
+                return isPinching;
             }
         }
 

@@ -14,6 +14,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     ![LeapMotionUpdateCSCFile](../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png)
 
 1. Importing the Leap Motion Core Assets
+    - Import the **Microsoft.MixedReality.Toolkit.Foundation** package into the unity project.
     - Install the [Leap Motion SDK 4.0.0](https://developer.leapmotion.com/releases/?category=orion)
     - Download and import the [Leap Motion Core Assets 4.4.0](https://developer.leapmotion.com/unity#5436356)
     > [!NOTE]
@@ -21,7 +22,7 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     - If using Unity 2018.4.x
         - After the Leap Motion Core Assets import, navigate to **Assets/LeapMotion/**, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the [Leap Motion Common Errors](#leap-motion-has-not-integrated-with-mrtk). If the file is present, go to step 3.
         
-    - If using Unity 2019.3.x, got to step 3.
+    - If using Unity 2019.3.x, go to step 3.
 
 1. Adding the Leap Motion Data Provider
     - Create a new Unity scene
@@ -29,6 +30,10 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     - Select the MixedRealityToolkit game object in the hierarchy and select **Copy and Customize** to clone the default mixed reality profile.
     
     ![LeapMotionProfileClone](../Images/CrossPlatform/LeapMotion/LeapProfileClone.png)
+
+    - Select the **Input** Configuration Profile
+
+    ![InputConfigurationProfile](../Images/CrossPlatform/LeapMotion/LeapInputConfigurationProfile.png)
 
     - Select **Clone** in the input system profile to enable modification.
 
@@ -53,6 +58,36 @@ The Leap Motion Data Provider enables articulated hand tracking for VR and could
     - Navigate to **File > Build Settings**
     - Only Standalone builds are supported if using the Leap Motion Data Provider.
 
+## Getting the hand joints 
+
+Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see [Hand Tracking](../Input/HandTracking.md#polling-joint-pose-from-handjointutils).
+
+The following is a simple example of how to retrieve the pose of the palm joint and adds a sphere to follow the hand joint.
+```
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
+
+public class HandJointsLeap : MonoBehaviour
+{
+    private GameObject sphere;
+
+    private void Start()
+    {
+        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.localScale = Vector3.one * 0.03f;
+    }
+
+    private void Update()
+    {
+        // If the hand joint pose is available set the position of the sphere to the palm of the right hand
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out MixedRealityPose index))
+        {
+            sphere.transform.position = index.Position;
+        }
+    }
+}
+```
 
 ## Removing Leap Motion from the Project
 
@@ -105,42 +140,11 @@ If the Leap Motion Core Assets are in your project and you see a red message on 
 - Navigate to **Mixed Reality Toolkit > Utilities > Leap Motion > Configure Leap Motion**
     - This will force Leap Motion integration if the configuration process was not started after the Leap Motion Core Assets import.
 
-## Getting the hand joints 
-
-Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see [Hand Tracking](../Input/HandTracking.md#polling-joint-pose-from-handjointutils).
-
-The following is a simple example of how to retrieve the pose of the palm joint and adds a sphere to follow the hand joint.
-```
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
-
-public class HandJointsLeap : MonoBehaviour
-{
-    private GameObject sphere;
-
-    private void Start()
-    {
-        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.localScale = Vector3.one * 0.03f;
-    }
-
-    private void Update()
-    {
-        // If the hand joint pose is available set the position of the sphere to the palm of the right hand
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out MixedRealityPose index))
-        {
-            sphere.transform.position = index.Position;
-        }
-    }
-}
-```
-
 ## Leap Motion Example Scene
 
 The example scene uses the DefaultLeapMotionConfiguration profile and determines if the Unity project has been configured correctly to use the Leap Motion Data Provider.
 
-LeapMotionHandTrackingExample scene location: MRTK/Examples/Demos/HandTracking/.  
+The example scene is contained in the **Microsoft.MixedReality.Toolkit.Examples** package in the **MRTK/Examples/Demos/HandTracking/** directory.  
 
 ## See also
 
