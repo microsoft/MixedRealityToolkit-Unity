@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 eulerAngles = worldRotation.eulerAngles;
 
             // Create an offset to rotation to align with the behavior of simulated hand
-            int yOffsetSign = handedness == Handedness.Left ? -1 : 1;
+            int yOffsetSign = Handedness == Handedness.Left ? -1 : 1;
             Quaternion modifiedRotation = Quaternion.Euler(eulerAngles.x + rotationXOffset, eulerAngles.y + rotationYOffset * yOffsetSign, eulerAngles.z);
             return new MixedRealityPose(worldPosition, modifiedRotation);
         }

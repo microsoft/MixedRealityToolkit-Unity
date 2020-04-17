@@ -41,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // Interpolation between current pose and target gesture
         private float gestureBlending = 0.0f;
+
+        /// <summary>
+        /// Interpolation between current pose and target gesture.
+        /// </summary>
         public float GestureBlending
         {
             get { return gestureBlending; }
@@ -89,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 worldPosition = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
 
             Quaternion worldRotation = CameraCache.Main.transform.rotation * Quaternion.Euler(ViewportRotation);
-            pose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
+            pose.ComputeJointPoses(Handedness, worldRotation, worldPosition, jointsOut);
         }
     }
 
