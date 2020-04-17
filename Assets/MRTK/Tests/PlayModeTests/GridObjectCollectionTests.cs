@@ -67,17 +67,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 child.transform.parent = go.transform;
                 child.transform.localScale = Vector3.one * 0.1f;
             }
-
             grid.Layout = LayoutOrder.Horizontal;
 
+            // Testing anchoring along axis
+            grid.AnchorAlongAxis = true;
             int expectedIdx = 0;
+            foreach (LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
+            {
+                grid.Anchor = et;
+                grid.UpdateCollection();
+                foreach (Transform childTransform in go.transform)
+                {
+                    var expected = axisAnchorTestExpected[expectedIdx];
+                    var actual = childTransform.transform.localPosition;
+                    TestUtilities.AssertAboutEqual(
+                        actual,
+                        expected,
+                        "Child object not in expected position, layout " + et,
+                        0.01f);
+                    expectedIdx++;
+                }
+                yield return null;
+            }
+
+            // Testing non-axis aligned anchors
+            grid.AnchorAlongAxis = false;
+            expectedIdx = 0;
             foreach(LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
             {
                 grid.Anchor = et;
                 grid.UpdateCollection();
                 foreach(Transform childTransform in go.transform)
                 {
-                    var expected = anchorTestExpected[expectedIdx];
+                    var expected = freeAnchorTestExpected[expectedIdx];
                     var actual = childTransform.transform.localPosition;
                     TestUtilities.AssertAboutEqual(
                         actual, 
@@ -87,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     expectedIdx++;
                 }
                 yield return null;
-
             }
             yield return null;
         }
@@ -110,6 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             grid.Columns = 2;
 
             grid.Anchor = LayoutAnchor.UpperCenter;
+            grid.AnchorAlongAxis = true;
 
             for (int i = 0; i < 3; i++)
             {
@@ -170,8 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Expected Values
         // You can use GridObjectLayoutControl.cs in the examples package to
         // quickly generate the expected positions used in these tests.
-
-        private Vector3[] anchorTestExpected = new Vector3[] {
+        private Vector3[] freeAnchorTestExpected = new Vector3[] {
             new Vector3(0.08f, -0.08f, 0.75f), // UpperLeft index 0
             new Vector3(0.23f, -0.08f, 0.75f), // UpperLeft index 1
             new Vector3(0.38f, -0.08f, 0.75f), // UpperLeft index 2
@@ -200,25 +221,54 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             new Vector3(-0.23f, 0.08f, 0.75f), // BottomRight index 1
             new Vector3(-0.08f, 0.08f, 0.75f) // BottomRight index 2
         };
+        private Vector3[] axisAnchorTestExpected = new Vector3[] {
+            new Vector3(0.0f, -0.0f, 0.75f), // UpperLeft index 0
+            new Vector3(0.15f, -0.0f, 0.75f), // UpperLeft index 1
+            new Vector3(0.30f, -0.0f, 0.75f), // UpperLeft index 2
+            new Vector3(-0.15f, -0.0f, 0.75f), // UpperCenter index 0
+            new Vector3(0.00f, -0.0f, 0.75f), // UpperCenter index 1
+            new Vector3(0.15f, -0.0f, 0.75f), // UpperCenter index 2
+            new Vector3(-0.30f, -0.0f, 0.75f), // UpperRight index 0
+            new Vector3(-0.15f, -0.0f, 0.75f), // UpperRight index 1
+            new Vector3(-0.0f, -0.0f, 0.75f), // UpperRight index 2
+            new Vector3(0.0f, 0.00f, 0.75f), // MiddleLeft index 0
+            new Vector3(0.15f, 0.00f, 0.75f), // MiddleLeft index 1
+            new Vector3(0.30f, 0.00f, 0.75f), // MiddleLeft index 2
+            new Vector3(-0.15f, 0.00f, 0.75f), // MiddleCenter index 0
+            new Vector3(0.00f, 0.00f, 0.75f), // MiddleCenter index 1
+            new Vector3(0.15f, 0.00f, 0.75f), // MiddleCenter index 2
+            new Vector3(-0.30f, 0.00f, 0.75f), // MiddleRight index 0
+            new Vector3(-0.15f, 0.00f, 0.75f), // MiddleRight index 1
+            new Vector3(-0.0f, 0.00f, 0.75f), // MiddleRight index 2
+            new Vector3(0.0f, 0.0f, 0.75f), // BottomLeft index 0
+            new Vector3(0.15f, 0.0f, 0.75f), // BottomLeft index 1
+            new Vector3(0.30f, 0.0f, 0.75f), // BottomLeft index 2
+            new Vector3(-0.15f, 0.0f, 0.75f), // BottomCenter index 0
+            new Vector3(0.00f, 0.0f, 0.75f), // BottomCenter index 1
+            new Vector3(0.15f, 0.0f, 0.75f), // BottomCenter index 2
+            new Vector3(-0.30f, 0.0f, 0.75f), // BottomRight index 0
+            new Vector3(-0.15f, 0.0f, 0.75f), // BottomRight index 1
+            new Vector3(-0.0f, 0.0f, 0.75f) // BottomRight index 2
+        };
         private Vector3[] alignmentTestExpected = new Vector3[] {
-            new Vector3(-0.075f, -0.075f, 0.75f), // Left Horizontal 0
-            new Vector3(0.075f, -0.075f, 0.75f), // Left Horizontal 1
-            new Vector3(-0.075f, -0.225f, 0.75f), // Left Horizontal 2
-            new Vector3(-0.075f, -0.075f, 0.75f), // Center Horizontal 0
-            new Vector3(0.075f, -0.075f, 0.75f), // Center Horizontal 1
-            new Vector3(0f, -0.225f, 0.75f), // Center Horizontal 2
-            new Vector3(-0.075f, -0.075f, 0.75f), // Right Horizontal 0
-            new Vector3(0.075f, -0.075f, 0.75f), // Right Horizontal 1
-            new Vector3(0.075f, -0.225f, 0.75f), // Right Horizontal 2
-            new Vector3(-0.075f, -0.075f, 0.75f), // Top Vertical 0
-            new Vector3(-0.075f, -0.225f, 0.75f), // Top Vertical 1
-            new Vector3(0.075f, -0.075f, 0.75f), // Top Vertical 2
-            new Vector3(-0.075f, -0.075f, 0.75f), // Middle Vertical 0
-            new Vector3(-0.075f, -0.225f, 0.75f), // Middle Vertical 1
-            new Vector3(0.075f, -0.150f, 0.75f), // Middle Vertical 2
-            new Vector3(-0.075f, -0.075f, 0.75f), // Bottom Vertical 0
-            new Vector3(-0.075f, -0.225f, 0.75f), // Middle Vertical 1
-            new Vector3(0.075f, -0.225f, 0.75f), // Top Vertical 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Left Horizontal 0
+            new Vector3(0.075f, 0.0f, 0.75f), // Left Horizontal 1
+            new Vector3(-0.075f, -0.150f, 0.75f), // Left Horizontal 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Center Horizontal 0
+            new Vector3(0.075f, 0.0f, 0.75f), // Center Horizontal 1
+            new Vector3(0f, -0.150f, 0.75f), // Center Horizontal 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Right Horizontal 0
+            new Vector3(0.075f, 0.0f, 0.75f), // Right Horizontal 1
+            new Vector3(0.075f, -0.150f, 0.75f), // Right Horizontal 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Top Vertical 0
+            new Vector3(-0.075f, -0.150f, 0.75f), // Top Vertical 1
+            new Vector3(0.075f, 0.0f, 0.75f), // Top Vertical 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Middle Vertical 0
+            new Vector3(-0.075f, -0.150f, 0.75f), // Middle Vertical 1
+            new Vector3(0.075f, -0.075f, 0.75f), // Middle Vertical 2
+            new Vector3(-0.075f, 0.0f, 0.75f), // Bottom Vertical 0
+            new Vector3(-0.075f, -0.150f, 0.75f), // Middle Vertical 1
+            new Vector3(0.075f, -0.150f, 0.75f), // Top Vertical 2
         };
     #endregion
     

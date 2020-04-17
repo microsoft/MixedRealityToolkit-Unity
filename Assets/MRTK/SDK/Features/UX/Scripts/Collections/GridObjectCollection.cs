@@ -68,6 +68,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { anchor = value; }
         }
 
+        [SerializeField, Tooltip("Whether anchoring occurs along an objects axis or not")]
+        private bool anchorAlongAxis = false;
+
+        /// <summary>
+        /// Whether anchoring occurs along an objects axis or not
+        /// </summary>
+        public bool AnchorAlongAxis
+        {
+            get { return anchorAlongAxis; }
+            set { anchorAlongAxis = value; }
+        }
+
+
         [SerializeField, Tooltip("How the columns are aligned in the grid")]
         private LayoutHorizontalAlignment columnAlignment = LayoutHorizontalAlignment.Left;
 
@@ -346,21 +359,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             float startOffsetX = (xMax * 0.5f) * CellWidth;
             if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
-                startOffsetX = 0;
+                startOffsetX = anchorAlongAxis ? 0.5f * CellWidth : 0;
             }
             else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
-                startOffsetX = xMax * CellWidth;
+                startOffsetX = anchorAlongAxis ? (xMax - 0.5f) * CellWidth : xMax * CellWidth;
             }
 
             float startOffsetY = (yMax * 0.5f) * CellHeight;
             if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
-                startOffsetY = 0;
+                startOffsetY = anchorAlongAxis ? 0.5f * CellHeight: 0;
             }
             else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
-                startOffsetY = yMax * CellHeight;
+                startOffsetY = anchorAlongAxis ? (yMax - 0.5f) * CellHeight : yMax * CellHeight;
             }
             float alignmentOffsetX = 0;
             float alignmentOffsetY = 0;
