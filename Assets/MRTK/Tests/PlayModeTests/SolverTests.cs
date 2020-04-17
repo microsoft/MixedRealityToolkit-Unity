@@ -753,7 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls8
+        /// Tests tap to place object placement if there is a surface hit on another collider through Start/StopPlacement calls
         /// instead of OnPointerClicked.
         /// </summary>
         [UnityTest]
@@ -1271,4 +1271,3 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     }
 }
 #endif
-
