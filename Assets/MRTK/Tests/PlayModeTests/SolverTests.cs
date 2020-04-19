@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const float DistanceThreshold = 1.5f;
         private const float HandDistanceThreshold = 0.5f;
         private const float SolverUpdateWaitTime = 1.0f; //seconds
+        private const float RadialUlnarTestActivationPointModifier = .03f;
+        private const float AboveFingerTipsTestActivationPointModifier = .06f;
+        private const float WristTestActivationPointModifier = .05f;
 
         /// <summary>
         /// Internal class used to store data for setup
@@ -411,22 +414,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var manipHandler = testObjects.target.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObjects.target.transform;
             manipHandler.SmoothingActive = false;
-
+            manipHandler.OnManipulationStarted.AddListener((eventData) => testObjects.handler.UpdateSolvers = false);
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObjects.target.AddComponent<NearInteractionGrabbable>();
 
-
             var boxCollider = testObjects.target.AddComponent<BoxCollider>();
-            boxCollider.size = new Vector3(10f, 10f, 10f);
+            boxCollider.size = new Vector3(.5f, .5f, .5f);
 
             var handConstraintSolver = (HandConstraintPalmUp)testObjects.solver;
             handConstraintSolver.FollowHandUntilFacingCamera = true;
             handConstraintSolver.UseGazeActivation = true;
+            manipHandler.OnManipulationEnded.AddListener((eventData) => handConstraintSolver.StartWorldLockReattachCheckCoroutine());
 
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
             Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
 
@@ -440,50 +443,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Generate hand rotation with hand palm facing camera
             var handRotation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
 
-            // Add a right hand.
+            // Add a left hand, then  a right hand.
             var leftHand = new TestHand(Handedness.Left);
             yield return leftHand.Show(handTestPos);
+            yield return null;
+
             yield return leftHand.SetRotation(handRotation);
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
-
-            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand rightHand = new TestHand(Handedness.Right);            
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+            yield return null;
+
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
-            yield return rightHand.MoveTo(testObjects.target.transform.position, 5);
-            
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return rightHand.Move(testObjects.target.transform.position);
+            yield return null;
             
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            testObjects.handler.UpdateSolvers = false;
-            
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
- 
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+
             var delta = new Vector3(0.5f, 0.5f, 0f);
-            yield return rightHand.Move(delta, 5);
-            
+            yield return rightHand.Move(delta);            
 
             // Grab the menu position to compare it later on
             Vector3 menuPosition = testObjects.target.transform.position;
             Vector3 movedLeftHand = handTestPos - Vector3.right;
 
             // Move the left hand so it doesn't immediately snap
-            yield return leftHand.MoveTo(movedLeftHand, 5);
+            yield return leftHand.Move(movedLeftHand);
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            handConstraintSolver.StartWorldLockReattachCheckCoroutine();
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             // Before the right hand opens, make sure that the transform of the attached menu is farther than it would if attached
             Assert.IsTrue((testObjects.target.transform.position - movedLeftHand).sqrMagnitude > .1f);
             
             // Then move the left hand back to the point of activation
-            yield return leftHand.MoveTo(handTestPos, 5);
+            yield return leftHand.Move(handTestPos);
             yield return leftHand.SetRotation(handRotation);
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             // Then move the hand back and see if the attached menu follows
             Assert.IsTrue(testObjects.handler.UpdateSolvers, "Did not properly reattach; UpdateSolver has not been updated to true");
@@ -491,7 +493,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.Hide();
             yield return leftHand.Hide();
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
         }
 
         /// <summary>
@@ -1241,28 +1243,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 case HandConstraint.SolverSafeZone.RadialSide:
                     if (targetHand == Handedness.Left)
                     {
-                        return Vector3.left * .03f;
+                        return Vector3.left * RadialUlnarTestActivationPointModifier;
                     }
                     else
                     {
-                        return Vector3.right * .03f;
+                        return Vector3.right * RadialUlnarTestActivationPointModifier;
                     }
 
                 case HandConstraint.SolverSafeZone.BelowWrist:
-                    return Vector3.up * .05f;
+                    return Vector3.up * WristTestActivationPointModifier;
 
                 case HandConstraint.SolverSafeZone.AboveFingerTips:
-                    return Vector3.down * .06f;
+                    return Vector3.down * AboveFingerTipsTestActivationPointModifier;
 
                 default:
                 case HandConstraint.SolverSafeZone.UlnarSide:
                     if (targetHand == Handedness.Left)
                     {
-                        return Vector3.right * .03f;
+                        return Vector3.right * RadialUlnarTestActivationPointModifier;
                     }
                     else
                     {
-                        return Vector3.left * .03f;
+                        return Vector3.left * RadialUlnarTestActivationPointModifier;
                     }
             }
         }

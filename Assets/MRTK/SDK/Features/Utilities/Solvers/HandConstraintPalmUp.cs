@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float distanceToHandPlane;
 
                 // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
-                if (GenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
+                if (TryGenerateHandPlaneAndActivationPoint(jointedHand, out handPlane, out activationPoint) && 
                     handPlane.Raycast(gazeRay, out distanceToHandPlane))
                 {
                         // Now that we know the dist to the plane, create a vector at that point
@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <param name="handPlane"></param>
         /// <param name="activationPoint"></param>
         /// <returns></returns>
-        private bool GenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
+        private bool TryGenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
         {
             // Generate the hand plane that we're using to generate a distance value.
             // This is done by using the index knuckle, pinky knuckle, and wrist
@@ -306,8 +306,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out wrist))
             {
                 handPlane = new Plane(indexKnuckle.Position, pinkyKnuckle.Position, wrist.Position);
-                activationPoint = handPlane.ClosestPointOnPlane(GenerateActivationPoint(jointedHand));
-                return true;
+                Vector3 generatedActivationPoint;
+                if (TryGenerateActivationPoint(jointedHand, out generatedActivationPoint))
+                {
+                    activationPoint = handPlane.ClosestPointOnPlane(generatedActivationPoint);
+                    return true;
+                }
+                else
+                {
+                    activationPoint = Vector3.zero;
+                    return false;
+                }
             }
             else // Otherwise, set the activation point and plane to default values and return false
             {
@@ -319,17 +328,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         /// <summary>
         /// This function attempts to generate an activation point based on what the currently-selected safe zone is.
-        /// The activation point is a Vector3 that represents the "Center" point of the area that a user needs to gaze at to
-        /// activate the attached 
+        /// activate the attached menu. If joints successfully obtained, assigns activation point for currently selected
+        /// safe zone and returns true. On failure, assigns it Vector3.zero and returns false.
         /// </summary>
         /// <param name="jointedHand"></param>
         /// <returns></returns>
-        private Vector3 GenerateActivationPoint(IMixedRealityHand jointedHand)
+        private bool TryGenerateActivationPoint(IMixedRealityHand jointedHand, out Vector3 activationPoint)
         {
             TrackedHandJoint referenceJoint1;
             TrackedHandJoint referenceJoint2;
             MixedRealityPose referenceJointPose1;
             MixedRealityPose referenceJointPose2;
+            activationPoint = Vector3.zero;
 
             switch (SafeZone)
             {
@@ -338,8 +348,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     referenceJoint2 = TrackedHandJoint.RingTip;
                     break;
                 case SolverSafeZone.BelowWrist:
-                    return jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJointPose1) ? referenceJointPose1.Position : Vector3.zero;
-
+                    if (jointedHand.TryGetJoint(TrackedHandJoint.Wrist, out referenceJointPose1))
+                    {
+                        activationPoint = referenceJointPose1.Position;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 case SolverSafeZone.RadialSide:
                     referenceJoint1 = TrackedHandJoint.IndexKnuckle;
                     referenceJoint2 = TrackedHandJoint.ThumbProximalJoint;
@@ -355,11 +372,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (!jointedHand.TryGetJoint(referenceJoint1, out referenceJointPose1) ||
                 !jointedHand.TryGetJoint(referenceJoint2, out referenceJointPose2))
             {
-                return Vector3.zero;
+                return false;
             }
 
 
-            return Vector3.Lerp(referenceJointPose1.Position, referenceJointPose2.Position, .5f);
+            activationPoint = Vector3.Lerp(referenceJointPose1.Position, referenceJointPose2.Position, .5f);
+            return true;
         }
 
         /// <summary>
