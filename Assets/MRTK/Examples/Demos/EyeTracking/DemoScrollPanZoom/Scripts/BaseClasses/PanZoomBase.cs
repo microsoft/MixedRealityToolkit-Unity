@@ -271,13 +271,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             // Let's rotate the normalized gesture offset based on camera rotation. Let's check if the zoom direction changed
             Vector3 transfPnt = normalizedOffset;
-            //# Rotate around the y axis
+            // Rotate around the y axis
             transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transfPnt;
 
-            //# Rotate around the x axis
+            // Rotate around the x axis
             transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.left) * transfPnt;
 
-            //# Rotate around the z axis
+            // Rotate around the z axis
             transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transfPnt;
 
             if ((navPos.z >= 0) && (transfPnt.z < 0))
@@ -295,10 +295,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         // Update is called once per frame
         protected virtual void Update()
         {
-            //# Let's make sure that the correct GameObject is targeted and update the pan and zoom parameters.
+            // Let's make sure that the correct GameObject is targeted and update the pan and zoom parameters.
             if (UpdateCursorPosInHitBox())
             {
-                //# Dynamically increase hit box size once user looks at this target
+                // Dynamically increase hit box size once user looks at this target
                 if (!wasLookedAtBefore)
                 {
                     wasLookedAtBefore = true;
@@ -309,15 +309,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
 
-                //# Pan
+                // Pan
                 AutomaticGazePanning();
 
-                //# Zoom
+                // Zoom
                 UpdateZoom();
             }
             else
             {
-                //# Dynamically decrease hit box size back to original once user isn't looking at this target anymore
+                // Dynamically decrease hit box size back to original once user isn't looking at this target anymore
                 if (wasLookedAtBefore)
                 {
                     wasLookedAtBefore = false;
@@ -356,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void LateUpdate()
         {
-            //# Update offset based on the animation rate and previous offset
+            // Update offset based on the animation rate and previous offset
             if (useSkimProof)
             {
                 if (isFocused)
@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             UpdatePanZoom();
 
-            //# Reset rate of change
+            // Reset rate of change
             offsetRate_Pan = new Vector2(0, 0);
             offsetRate_Zoom = new Vector2(0, 0);
         }

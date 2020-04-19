@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AnimateDotTransforms()
         {
-            //Set dot groups' scale
+            // Set dot groups' scale
             float sinScaleCalc = dotSetScale + Mathf.Sin(Cycles * tau / 2) * dotScaleMultipler;
             float cosScaleCalc = dotSetScale + Mathf.Cos(Cycles * tau / 2) * dotScaleMultipler;
 

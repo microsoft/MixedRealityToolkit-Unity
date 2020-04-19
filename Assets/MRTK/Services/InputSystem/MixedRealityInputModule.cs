@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -97,171 +98,196 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.DeactivateModule();
         }
 
+        private static readonly ProfilerMarker ProcessPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.Process");
+
         /// <summary>
         /// Process the active pointers from MixedRealityInputManager and all other Unity input.
         /// </summary>
         public override void Process()
         {
-            CursorLockMode cursorLockStateBackup = Cursor.lockState;
-
-            try
+            using (ProcessPerfMarker.Auto())
             {
-                // Disable cursor lock for MRTK pointers.
-                Cursor.lockState = CursorLockMode.None;
+                CursorLockMode cursorLockStateBackup = Cursor.lockState;
 
-                // Process pointer events as mouse events.
-                foreach(var p in pointerDataToUpdate)
+                try
                 {
-                    PointerData pointerData = p.Value;
-                    IMixedRealityPointer pointer = pointerData.pointer;
+                    // Disable cursor lock for MRTK pointers.
+                    Cursor.lockState = CursorLockMode.None;
 
-                    if (pointer.IsInteractionEnabled
-                        && pointer.Rays != null
-                        && pointer.Rays.Length > 0
-                        && pointer.SceneQueryType == Physics.SceneQueryType.SimpleRaycast)
+                    // Process pointer events as mouse events.
+                    foreach (var p in pointerDataToUpdate)
                     {
-                        ProcessMouseEvent((int)pointer.PointerId);
+                        PointerData pointerData = p.Value;
+                        IMixedRealityPointer pointer = pointerData.pointer;
+
+                        if (pointer.IsInteractionEnabled
+                            && pointer.Rays != null
+                            && pointer.Rays.Length > 0
+                            && pointer.SceneQueryType == Physics.SceneQueryType.SimpleRaycast)
+                        {
+                            ProcessMouseEvent((int)pointer.PointerId);
+                        }
+                        else
+                        {
+                            ProcessMrtkPointerLost(pointerData);
+                        }
                     }
-                    else
+
+                    for (int i = 0; i < pointerDataToRemove.Count; i++)
                     {
-                        ProcessMrtkPointerLost(pointerData);
+                        ProcessMrtkPointerLost(pointerDataToRemove[i]);
                     }
+                    pointerDataToRemove.Clear();
+                }
+                finally
+                {
+                    Cursor.lockState = cursorLockStateBackup;
                 }
 
-                for (int i = 0; i < pointerDataToRemove.Count; i++)
-                {
-                    ProcessMrtkPointerLost(pointerDataToRemove[i]);
-                }
-                pointerDataToRemove.Clear();
+                base.Process();
             }
-            finally
-            {
-                Cursor.lockState = cursorLockStateBackup;
-            }
-
-            base.Process();
         }
+
+        private static readonly ProfilerMarker ProcessMrtkPointerLostPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.ProcessMrtkPointerLost");
 
         private void ProcessMrtkPointerLost(PointerData pointerData)
         {
-            // Process a final mouse event in case the pointer is currently down.
-            if (pointerData.lastMousePoint3d != null)
+            using (ProcessMrtkPointerLostPerfMarker.Auto())
             {
-                IMixedRealityPointer pointer = pointerData.pointer;
+                // Process a final mouse event in case the pointer is currently down.
+                if (pointerData.lastMousePoint3d != null)
+                {
+                    IMixedRealityPointer pointer = pointerData.pointer;
 
-                ProcessMouseEvent((int)pointer.PointerId);
+                    ProcessMouseEvent((int)pointer.PointerId);
 
-                ResetMousePointerEventData(pointerData);
+                    ResetMousePointerEventData(pointerData);
+                }
             }
         }
+
+        private static readonly ProfilerMarker GetMousePointerEventDataPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.GetMousePointerEventData");
 
         /// <summary>
         /// Adds MRTK pointer support as mouse input for Unity UI.
         /// </summary>
         protected override MouseState GetMousePointerEventData(int pointerId)
         {
-            // Search for MRTK pointer with given id.
-            // If found, generate mouse event data for pointer, otherwise call base implementation.
-            PointerData pointerData;
-            if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
+            using (GetMousePointerEventDataPerfMarker.Auto())
             {
-                UpdateMousePointerEventData(pointerData);
-                return pointerData.mouseState;
-            }
+                // Search for MRTK pointer with given id.
+                // If found, generate mouse event data for pointer, otherwise call base implementation.
+                PointerData pointerData;
+                if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
+                {
+                    UpdateMousePointerEventData(pointerData);
+                    return pointerData.mouseState;
+                }
 
-            return base.GetMousePointerEventData(pointerId);
+                return base.GetMousePointerEventData(pointerId);
+            }
         }
+
+        private static readonly ProfilerMarker UpdateMousePointerEventDataPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.UpdateMousePointerEventData");
 
         protected void UpdateMousePointerEventData(PointerData pointerData)
         {
-            IMixedRealityPointer pointer = pointerData.pointer;
-
-            // Reset the RaycastCamera for projecting (used in calculating deltas)
-            Debug.Assert(pointer.Rays != null && pointer.Rays.Length > 0);
-
-            if (pointer.Controller != null && pointer.Controller.IsRotationAvailable)
+            using (UpdateMousePointerEventDataPerfMarker.Auto())
             {
-                RaycastCamera.transform.position = pointer.Rays[0].Origin;
-                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+                IMixedRealityPointer pointer = pointerData.pointer;
+
+                // Reset the RaycastCamera for projecting (used in calculating deltas)
+                Debug.Assert(pointer.Rays != null && pointer.Rays.Length > 0);
+
+                if (pointer.Controller != null && pointer.Controller.IsRotationAvailable)
+                {
+                    RaycastCamera.transform.position = pointer.Rays[0].Origin;
+                    RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+                }
+                else
+                {
+                    // The pointer.Controller does not provide rotation, for example on HoloLens 1 hands.
+                    // In this case pointer.Rays[0].Origin will be the head position, but we want the 
+                    // hand to do drag operations, not the head.
+                    // pointer.Position gives the position of the hand, use that to compute drag deltas.
+                    RaycastCamera.transform.position = pointer.Position;
+                    RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
+                }
+
+                // Populate eventDataLeft
+                pointerData.eventDataLeft.Reset();
+
+                // The RayCastCamera is placed so that the current cursor position is in the center of the camera's view space.
+                Vector3 viewportPos = new Vector3(0.5f, 0.5f, 1.0f);
+                Vector2 newPos = RaycastCamera.ViewportToScreenPoint(viewportPos);
+
+                // Populate initial data or drag data
+                Vector2 lastPosition;
+                if (pointerData.lastMousePoint3d == null)
+                {
+                    // For the first event, use the same position for 'last' and 'new'.
+                    lastPosition = newPos;
+                }
+                else
+                {
+                    // Otherwise, re-project the last pointer position.
+                    lastPosition = RaycastCamera.WorldToScreenPoint(pointerData.lastMousePoint3d.Value);
+                }
+
+                // Save off the 3D position of the cursor.
+                pointerData.lastMousePoint3d = RaycastCamera.ViewportToWorldPoint(viewportPos);
+
+                // Calculate delta
+                pointerData.eventDataLeft.delta = newPos - lastPosition;
+                pointerData.eventDataLeft.position = newPos;
+
+                // Move the press position to allow dragging
+                pointerData.eventDataLeft.pressPosition += pointerData.eventDataLeft.delta;
+
+                // Populate raycast data
+                pointerData.eventDataLeft.pointerCurrentRaycast = pointer.Result != null ? pointer.Result.Details.LastGraphicsRaycastResult : new RaycastResult();
+                // TODO: Simulate raycast for 3D objects?
+
+                // Populate the data for the buttons
+                pointerData.eventDataLeft.button = PointerEventData.InputButton.Left;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Left, StateForPointer(pointerData), pointerData.eventDataLeft);
+
+                // Need to provide data for middle and right button for MouseState, although not used by MRTK pointers.
+                CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataRight);
+                pointerData.eventDataRight.button = PointerEventData.InputButton.Right;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Right, PointerEventData.FramePressState.NotChanged, pointerData.eventDataRight);
+
+                CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
+                pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
             }
-            else
-            {
-                // The pointer.Controller does not provide rotation, for example on HoloLens 1 hands.
-                // In this case pointer.Rays[0].Origin will be the head position, but we want the 
-                // hand to do drag operations, not the head.
-                // pointer.Position gives the position of the hand, use that to compute drag deltas.
-                RaycastCamera.transform.position = pointer.Position;
-                RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
-            }
-
-            // Populate eventDataLeft
-            pointerData.eventDataLeft.Reset();
-
-            // The RayCastCamera is placed so that the current cursor position is in the center of the camera's view space.
-            Vector3 viewportPos = new Vector3(0.5f, 0.5f, 1.0f);
-            Vector2 newPos = RaycastCamera.ViewportToScreenPoint(viewportPos);
-
-            // Populate initial data or drag data
-            Vector2 lastPosition;
-            if (pointerData.lastMousePoint3d == null)
-            {
-                // For the first event, use the same position for 'last' and 'new'.
-                lastPosition = newPos;
-            }
-            else
-            {
-                // Otherwise, re-project the last pointer position.
-                lastPosition = RaycastCamera.WorldToScreenPoint(pointerData.lastMousePoint3d.Value);
-            }
-
-            // Save off the 3D position of the cursor.
-            pointerData.lastMousePoint3d = RaycastCamera.ViewportToWorldPoint(viewportPos);
-
-            // Calculate delta
-            pointerData.eventDataLeft.delta = newPos - lastPosition;
-            pointerData.eventDataLeft.position = newPos;
-
-            // Move the press position to allow dragging
-            pointerData.eventDataLeft.pressPosition += pointerData.eventDataLeft.delta;
-
-            // Populate raycast data
-            pointerData.eventDataLeft.pointerCurrentRaycast = pointer.Result != null ? pointer.Result.Details.LastGraphicsRaycastResult : new RaycastResult();
-            // TODO: Simulate raycast for 3D objects?
-
-            // Populate the data for the buttons
-            pointerData.eventDataLeft.button = PointerEventData.InputButton.Left;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Left, StateForPointer(pointerData), pointerData.eventDataLeft);
-
-            // Need to provide data for middle and right button for MouseState, although not used by MRTK pointers.
-            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataRight);
-            pointerData.eventDataRight.button = PointerEventData.InputButton.Right;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Right, PointerEventData.FramePressState.NotChanged, pointerData.eventDataRight);
-
-            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
-            pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
         }
+
+        private static readonly ProfilerMarker ResetMousePointerEventDataPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.ResetMousePointerEventData");
 
         protected void ResetMousePointerEventData(PointerData pointerData)
         {
-            // Invalidate last mouse point.
-            pointerData.lastMousePoint3d = null; 
-            pointerData.pointer.Result = null;
+            using (ResetMousePointerEventDataPerfMarker.Auto())
+            {
+                // Invalidate last mouse point.
+                pointerData.lastMousePoint3d = null;
+                pointerData.pointer.Result = null;
 
-            pointerData.eventDataLeft.pointerCurrentRaycast = new RaycastResult();
+                pointerData.eventDataLeft.pointerCurrentRaycast = new RaycastResult();
 
-            // Populate the data for the buttons
-            pointerData.eventDataLeft.button = PointerEventData.InputButton.Left;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.NotChanged, pointerData.eventDataLeft);
+                // Populate the data for the buttons
+                pointerData.eventDataLeft.button = PointerEventData.InputButton.Left;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.NotChanged, pointerData.eventDataLeft);
 
-            // Need to provide data for middle and right button for MouseState, although not used by MRTK pointers.
-            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataRight);
-            pointerData.eventDataRight.button = PointerEventData.InputButton.Right;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Right, PointerEventData.FramePressState.NotChanged, pointerData.eventDataRight);
+                // Need to provide data for middle and right button for MouseState, although not used by MRTK pointers.
+                CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataRight);
+                pointerData.eventDataRight.button = PointerEventData.InputButton.Right;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Right, PointerEventData.FramePressState.NotChanged, pointerData.eventDataRight);
 
-            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
-            pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
-            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
+                CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
+                pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
+                pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
+            }
         }
 
         protected PointerEventData.FramePressState StateForPointer(PointerData pointerData)
@@ -305,43 +331,53 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnSourceDetected(eventData.InputSource);
         }
 
+        private static readonly ProfilerMarker OnSourceDetectedPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.OnSourceDetected");
+
         void OnSourceDetected(IMixedRealityInputSource inputSource)
         {
-            for (int i = 0; i < inputSource.Pointers.Length; i++)
+            using (OnSourceDetectedPerfMarker.Auto())
             {
-                var pointer = inputSource.Pointers[i];
-                if (pointer.InputSourceParent == inputSource)
+                for (int i = 0; i < inputSource.Pointers.Length; i++)
                 {
-                    // This !ContainsKey is only necessary due to inconsistent initialization of
-                    // various input providers and this class's ActivateModule() call.
-                    int pointerId = (int)pointer.PointerId;
-                    if (!pointerDataToUpdate.ContainsKey(pointerId))
+                    var pointer = inputSource.Pointers[i];
+                    if (pointer.InputSourceParent == inputSource)
                     {
-                        pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                        // This !ContainsKey is only necessary due to inconsistent initialization of
+                        // various input providers and this class's ActivateModule() call.
+                        int pointerId = (int)pointer.PointerId;
+                        if (!pointerDataToUpdate.ContainsKey(pointerId))
+                        {
+                            pointerDataToUpdate.Add(pointerId, new PointerData(pointer, eventSystem));
+                        }
                     }
                 }
             }
         }
 
+        private static readonly ProfilerMarker OnSourceLostPerfMarker = new ProfilerMarker("[MRTK] MixedRealityInputModule.OnSourceLost");
+
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
-            var inputSource = eventData.InputSource;
-
-            for (int i = 0; i < inputSource.Pointers.Length; i++)
+            using (OnSourceLostPerfMarker.Auto())
             {
-                var pointer = inputSource.Pointers[i];
-                if (pointer.InputSourceParent == inputSource)
+                var inputSource = eventData.InputSource;
+
+                for (int i = 0; i < inputSource.Pointers.Length; i++)
                 {
-                    int pointerId = (int)pointer.PointerId;
-                    Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
-
-                    PointerData pointerData = null;
-                    if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
+                    var pointer = inputSource.Pointers[i];
+                    if (pointer.InputSourceParent == inputSource)
                     {
-                        Debug.Assert(!pointerDataToRemove.Contains(pointerData));
-                        pointerDataToRemove.Add(pointerData);
+                        int pointerId = (int)pointer.PointerId;
+                        Debug.Assert(pointerDataToUpdate.ContainsKey(pointerId));
 
-                        pointerDataToUpdate.Remove(pointerId);
+                        PointerData pointerData = null;
+                        if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
+                        {
+                            Debug.Assert(!pointerDataToRemove.Contains(pointerData));
+                            pointerDataToRemove.Add(pointerData);
+
+                            pointerDataToUpdate.Remove(pointerId);
+                        }
                     }
                 }
             }

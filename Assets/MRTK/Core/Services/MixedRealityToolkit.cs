@@ -10,6 +10,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
@@ -322,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             isInitializing = true;
 
-            //If the Mixed Reality Toolkit is not configured, stop.
+            // If the Mixed Reality Toolkit is not configured, stop.
             if (ActiveProfile == null)
             {
                 if (!Application.isPlaying)
@@ -935,22 +936,32 @@ namespace Microsoft.MixedReality.Toolkit
             ExecuteOnAllServicesInOrder(service => service.Enable());
         }
 
+        private static readonly ProfilerMarker UpdateAllServicesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.UpdateAllServices");
+
         private void UpdateAllServices()
         {
-            // Update all systems
-            ExecuteOnAllServicesInOrder(service => service.Update());
+            using (UpdateAllServicesPerfMarker.Auto())
+            {
+                // Update all systems
+                ExecuteOnAllServicesInOrder(service => service.Update());
+            }
         }
+
+        private static readonly ProfilerMarker LateUpdateAllServicesPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.LateUpdateAllServices");
 
         private void LateUpdateAllServices()
         {
-            // If the Mixed Reality Toolkit is not configured, stop.
-            if (activeProfile == null) { return; }
+            using (LateUpdateAllServicesPerfMarker.Auto())
+            {
+                // If the Mixed Reality Toolkit is not configured, stop.
+                if (activeProfile == null) { return; }
 
-            // If the Mixed Reality Toolkit is not initialized, stop.
-            if (!IsInitialized) { return; }
+                // If the Mixed Reality Toolkit is not initialized, stop.
+                if (!IsInitialized) { return; }
 
-            // Update all systems
-            ExecuteOnAllServicesInOrder(service => service.LateUpdate());
+                // Update all systems
+                ExecuteOnAllServicesInOrder(service => service.LateUpdate());
+            }
         }
 
         private void DisableAllServices()
@@ -1005,39 +1016,49 @@ namespace Microsoft.MixedReality.Toolkit
             MixedRealityServiceRegistry.ClearAllServices();
         }
 
+        private static readonly ProfilerMarker ExecuteOnAllServicesInOrderPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesInOrder");
+
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            if (!HasProfileAndIsInitialized)
+            using (ExecuteOnAllServicesInOrderPerfMarker.Auto())
             {
-                return false;
-            }
+                if (!HasProfileAndIsInitialized)
+                {
+                    return false;
+                }
 
-            var services = MixedRealityServiceRegistry.GetAllServices();
-            int length = services.Count;
-            for (int i = 0; i < length; i++)
-            {
-                execute(services[i]);
-            }
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
+                for (int i = 0; i < length; i++)
+                {
+                    execute(services[i]);
+                }
 
-            return true;
+                return true;
+            }
         }
+
+        private static readonly ProfilerMarker ExecuteOnAllServicesReverseOrderPerfMarker = new ProfilerMarker("[MRTK] MixedRealityToolkit.ExecuteOnAllServicesReverseOrder");
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            if (!HasProfileAndIsInitialized)
+            using (ExecuteOnAllServicesReverseOrderPerfMarker.Auto())
             {
-                return false;
+                if (!HasProfileAndIsInitialized)
+                {
+                    return false;
+                }
+
+                var services = MixedRealityServiceRegistry.GetAllServices();
+                int length = services.Count;
+
+                for (int i = length - 1; i >= 0; i--)
+                {
+                    execute(services[i]);
+                }
+
+                return true;
             }
-
-            var services = MixedRealityServiceRegistry.GetAllServices();
-            int length = services.Count;
-
-            for (int i = length - 1; i >= 0; i--)
-            {
-                execute(services[i]);
-            }
-
-            return true;
         }
 
         #endregion Multiple Service Management

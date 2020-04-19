@@ -49,12 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             // Eye gaze hit position
             Vector3? eyeHitPos = null;
-            if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsEyeGazeValid)
+            if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsEyeTrackingEnabledAndValid)
                 eyeHitPos = EyeTrackingProvider.HitPosition;
 
             object[] data = new object[]
             { 
-                //-------------------------------
                 // Cam / Head tracking
                 CameraCache.Main.transform.position.x,
                 CameraCache.Main.transform.position.y,
@@ -64,13 +63,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 0,
 
                 // Smoothed eye gaze signal 
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeOrigin.x : 0,
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeOrigin.y : 0,
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeOrigin.z : 0,
-
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeDirection.x : 0,
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeDirection.y : 0,
-                EyeTrackingProvider.IsEyeGazeValid ? EyeTrackingProvider.GazeDirection.z : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.x : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.y : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.z : 0,
+                                    
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.x : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.y : 0,
+                EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.z : 0,
 
                 (eyeHitPos != null) ? eyeHitPos.Value.x : float.NaN,
                 (eyeHitPos != null) ? eyeHitPos.Value.y : float.NaN,

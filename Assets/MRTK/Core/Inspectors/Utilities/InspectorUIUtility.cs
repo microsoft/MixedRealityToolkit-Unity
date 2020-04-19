@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     public static class InspectorUIUtility
     {
-        //Colors
+        // Colors
         private static readonly Color PersonalThemeColorTint100 = new Color(1f, 1f, 1f);
         private static readonly Color PersonalThemeColorTint75 = new Color(0.75f, 0.75f, 0.75f);
         private static readonly Color PersonalThemeColorTint50 = new Color(0.5f, 0.5f, 0.5f);

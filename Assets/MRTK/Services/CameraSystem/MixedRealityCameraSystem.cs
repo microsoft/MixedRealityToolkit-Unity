@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
@@ -56,17 +57,21 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     }
                 }
 #if UNITY_WSA
-                // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
-                // with legacy requirements.
-#pragma warning disable 0618
-                else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
-#pragma warning restore 0618
+                else
                 {
-                    currentDisplayType = DisplayType.Transparent;
-                }
+                    Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
 
-                Debug.LogWarning("Windows Mixed Reality specific camera code has been moved into Windows Mixed Reality Camera Settings. Please ensure you have this added under your Camera System's Settings Providers, as this deprecated code path may be removed in a future update.");
+                    // Ensure compatibility with the pre-2019.3 XR architecture for customers / platforms
+                    // with legacy requirements.
+#pragma warning disable 0618
+                    if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                    {
+                        currentDisplayType = DisplayType.Transparent;
+                    }
+#pragma warning restore 0618
+                }
 #endif
+
                 return currentDisplayType == DisplayType.Opaque;
             }
         }
@@ -189,10 +194,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             base.Destroy();
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] MixedRealityCameraSystem.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            if (useFallbackBehavior)
+            if (!useFallbackBehavior) { return; }
+
+            using (UpdatePerfMarker.Auto())
             {
                 if (IsOpaque != cameraOpaqueLastFrame)
                 {
@@ -210,28 +219,38 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
+        private static readonly ProfilerMarker ApplySettingsForOpaquePerfMarker = new ProfilerMarker("[MRTK] MixedRealityCameraSystem.ApplySettingsForOpaqueDisplay");
+
         /// <summary>
         /// Applies opaque settings from camera profile.
         /// </summary>
         private void ApplySettingsForOpaqueDisplay()
         {
-            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
-            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
-            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
-            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
-            QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
+            using (ApplySettingsForOpaquePerfMarker.Auto())
+            {
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
+            }
         }
+
+        private static readonly ProfilerMarker ApplySettingsForTransparentPerfMarker = new ProfilerMarker("[MRTK] MixedRealityCameraSystem.ApplySettingsForTransparentDisplay");
 
         /// <summary>
         /// Applies transparent settings from camera profile.
         /// </summary>
         private void ApplySettingsForTransparentDisplay()
         {
-            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
-            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
-            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
-            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
-            QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
+            using (ApplySettingsForTransparentPerfMarker.Auto())
+            {
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
+            }
         }
 
         /// <inheritdoc />

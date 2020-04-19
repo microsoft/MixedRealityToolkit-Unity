@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -105,10 +106,15 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
 
         #region IMixedRealityDataProvider Implementation
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            UpdateObserver();
+            using (UpdatePerfMarker.Auto())
+            {
+                UpdateObserver();
+            }
         }
 
         #endregion IMixedRealityDataProvider Implementation
@@ -141,6 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// </summary>
         private float lastUpdated = 0;
 
+        private static readonly ProfilerMarker ResumePerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.Resume");
+
         /// <inheritdoc/>
         public override void Resume()
         {
@@ -150,12 +158,17 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return;
             }
 
-            // We want the first update immediately.
-            lastUpdated = 0;
+            using (ResumePerfMarker.Auto())
+            {
+                // We want the first update immediately.
+                lastUpdated = 0;
 
-            // UpdateObserver keys off of this value to start observing.
-            IsRunning = true;
+                // UpdateObserver keys off of this value to start observing.
+                IsRunning = true;
+            }
         }
+
+        private static readonly ProfilerMarker SuspendPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.Suspend");
 
         /// <inheritdoc/>
         public override void Suspend()
@@ -166,39 +179,49 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return;
             }
 
-            // UpdateObserver keys off of this value to stop observing.
-            IsRunning = false;
+            using (SuspendPerfMarker.Auto())
+            {
+                // UpdateObserver keys off of this value to stop observing.
+                IsRunning = false;
 
-            // Clear any pending work.
-            meshWorkQueue.Clear();
+                // Clear any pending work.
+                meshWorkQueue.Clear();
+            }
         }
+
+        private static readonly ProfilerMarker ClearObservationsPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.ClearObservations");
 
         /// <inheritdoc />
         public override void ClearObservations()
         {
-            bool wasRunning = false;
-
-            if (IsRunning)
+            using (ClearObservationsPerfMarker.Auto())
             {
-                wasRunning = true;
-                Suspend();
-            }
+                bool wasRunning = false;
 
-            IReadOnlyList<int> observations = new List<int>(Meshes.Keys);
-            foreach (int meshId in observations)
-            {
-                RemoveMeshObject(meshId);
-            }
+                if (IsRunning)
+                {
+                    wasRunning = true;
+                    Suspend();
+                }
 
-            if (wasRunning)
-            {
-                Resume();
+                IReadOnlyList<int> observations = new List<int>(Meshes.Keys);
+                foreach (int meshId in observations)
+                {
+                    RemoveMeshObject(meshId);
+                }
+
+                if (wasRunning)
+                {
+                    Resume();
+                }
             }
         }
 
         #endregion IMixedRealitySpatialAwarenessObserver Implementation
 
         #region Helpers
+
+        private static readonly ProfilerMarker UpdateObserverPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver.UpdateObserver");
 
         /// <summary>
         /// Requests updates from the surface observer.
@@ -207,40 +230,43 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             if (SpatialAwarenessSystem == null || XRSDKSubsystemHelpers.MeshSubsystem == null) { return; }
 
-            // Only update the observer if it is running.
-            if (IsRunning && (outstandingMeshObject == null))
+            using (UpdateObserverPerfMarker.Auto())
             {
-                // If we have a mesh to work on...
-                if (meshWorkQueue.Count > 0)
+                // Only update the observer if it is running.
+                if (IsRunning && (outstandingMeshObject == null))
                 {
-                    // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
-                    // the queue based on distance to the user or some other metric.
-                    RequestMesh(meshWorkQueue.Dequeue());
-                }
-                // If enough time has passed since the previous observer update...
-                else if (Time.time - lastUpdated >= UpdateInterval)
-                {
-                    // Update the observer orientation if user aligned
-                    if (ObserverVolumeType == VolumeType.UserAlignedCube)
+                    // If we have a mesh to work on...
+                    if (meshWorkQueue.Count > 0)
                     {
-                        ObserverRotation = CameraCache.Main.transform.rotation;
+                        // We're using a simple first-in-first-out rule for requesting meshes, but a more sophisticated algorithm could prioritize
+                        // the queue based on distance to the user or some other metric.
+                        RequestMesh(meshWorkQueue.Dequeue());
                     }
-
-                    // Update the observer location if it is not stationary
-                    if (!IsStationaryObserver)
+                    // If enough time has passed since the previous observer update...
+                    else if (Time.time - lastUpdated >= UpdateInterval)
                     {
-                        ObserverOrigin = CameraCache.Main.transform.position;
+                        // Update the observer orientation if user aligned
+                        if (ObserverVolumeType == VolumeType.UserAlignedCube)
+                        {
+                            ObserverRotation = CameraCache.Main.transform.rotation;
+                        }
+
+                        // Update the observer location if it is not stationary
+                        if (!IsStationaryObserver)
+                        {
+                            ObserverOrigin = CameraCache.Main.transform.position;
+                        }
+
+                        // The application can update the observer volume at any time, make sure we are using the latest.
+                        ConfigureObserverVolume();
+
+                        if (XRSDKSubsystemHelpers.MeshSubsystem.TryGetMeshInfos(meshInfos))
+                        {
+                            UpdateMeshes(meshInfos);
+                        }
+
+                        lastUpdated = Time.time;
                     }
-
-                    // The application can update the observer volume at any time, make sure we are using the latest.
-                    ConfigureObserverVolume();
-
-                    if (XRSDKSubsystemHelpers.MeshSubsystem.TryGetMeshInfos(meshInfos))
-                    {
-                        UpdateMeshes(meshInfos);
-                    }
-
-                    lastUpdated = Time.time;
                 }
             }
         }
@@ -261,18 +287,25 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return rhs.GetTransformedBy(lhs);
             }
 
+            private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.Update");
+
             /// <summary>
             /// Compute and set the parent's transform.
             /// </summary>
             private void Update()
             {
-                Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
-                Pose anchorPose = new Pose(transform.position, transform.rotation);
-                Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
-                transform.parent.position = parentPose.position;
-                transform.parent.rotation = parentPose.rotation;
+                using (UpdatePerfMarker.Auto())
+                {
+                    Pose worldFromPlayspace = new Pose(MixedRealityPlayspace.Position, MixedRealityPlayspace.Rotation);
+                    Pose anchorPose = new Pose(transform.position, transform.rotation);
+                    Pose parentPose = Concatenate(worldFromPlayspace, anchorPose);
+                    transform.parent.position = parentPose.position;
+                    transform.parent.rotation = parentPose.rotation;
+                }
             }
         }
+
+        private static readonly ProfilerMarker RequestMeshPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.RequestMesh");
 
         /// <summary>
         /// Issue a request to the Surface Observer to begin baking the mesh.
@@ -280,36 +313,41 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <param name="meshId">ID of the mesh to bake.</param>
         private void RequestMesh(MeshId meshId)
         {
-            string meshName = ("SpatialMesh - " + meshId);
-
-            SpatialAwarenessMeshObject newMesh;
-
-            if (spareMeshObject == null)
+            using (RequestMeshPerfMarker.Auto())
             {
-                newMesh = SpatialAwarenessMeshObject.Create(
-                    null,
-                    MeshPhysicsLayer,
-                    meshName,
-                    meshId.GetHashCode());
+                string meshName = ("SpatialMesh - " + meshId);
 
-                GameObject anchorHolder = new GameObject(meshName + "_anchor");
-                anchorHolder.AddComponent<PlayspaceAdapter>();
-                // Right now, we don't add an anchor to the mesh. This may be resolved with the AnchorSubsystem.
-                anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
+                SpatialAwarenessMeshObject newMesh;
+
+                if (spareMeshObject == null)
+                {
+                    newMesh = SpatialAwarenessMeshObject.Create(
+                        null,
+                        MeshPhysicsLayer,
+                        meshName,
+                        meshId.GetHashCode());
+
+                    GameObject anchorHolder = new GameObject(meshName + "_anchor");
+                    anchorHolder.AddComponent<PlayspaceAdapter>();
+                    // Right now, we don't add an anchor to the mesh. This may be resolved with the AnchorSubsystem.
+                    anchorHolder.transform.SetParent(newMesh.GameObject.transform, false);
+                }
+                else
+                {
+                    newMesh = spareMeshObject;
+                    spareMeshObject = null;
+
+                    newMesh.GameObject.name = meshName;
+                    newMesh.Id = meshId.GetHashCode();
+                    newMesh.GameObject.SetActive(true);
+                }
+
+                XRSDKSubsystemHelpers.MeshSubsystem.GenerateMeshAsync(meshId, newMesh.Filter.mesh, newMesh.Collider, MeshVertexAttributes.Normals, (MeshGenerationResult meshGenerationResult) => MeshGenerationAction(meshGenerationResult));
+                outstandingMeshObject = newMesh;
             }
-            else
-            {
-                newMesh = spareMeshObject;
-                spareMeshObject = null;
-
-                newMesh.GameObject.name = meshName;
-                newMesh.Id = meshId.GetHashCode();
-                newMesh.GameObject.SetActive(true);
-            }
-
-            XRSDKSubsystemHelpers.MeshSubsystem.GenerateMeshAsync(meshId, newMesh.Filter.mesh, newMesh.Collider, MeshVertexAttributes.Normals, (MeshGenerationResult meshGenerationResult) => MeshGenerationAction(meshGenerationResult));
-            outstandingMeshObject = newMesh;
         }
+
+        private static readonly ProfilerMarker RemoveMeshObjectPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.RemoveMeshObject");
 
         /// <summary>
         /// Removes the <see cref="SpatialAwareness.SpatialAwarenessMeshObject"/> associated with the specified id.
@@ -317,44 +355,54 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// <param name="id">The id of the mesh to be removed.</param>
         protected void RemoveMeshObject(int id)
         {
-            SpatialAwarenessMeshObject mesh;
-            if (meshes.TryGetValue(id, out mesh))
+            using (RemoveMeshObjectPerfMarker.Auto())
             {
-                // Remove the mesh object from the collection.
-                meshes.Remove(id);
+                SpatialAwarenessMeshObject mesh;
+                if (meshes.TryGetValue(id, out mesh))
+                {
+                    // Remove the mesh object from the collection.
+                    meshes.Remove(id);
 
-                // Reclaim the mesh object for future use.
-                ReclaimMeshObject(mesh);
+                    // Reclaim the mesh object for future use.
+                    ReclaimMeshObject(mesh);
 
-                // Send the mesh removed event
-                meshEventData.Initialize(this, id, null);
-                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                    // Send the mesh removed event
+                    meshEventData.Initialize(this, id, null);
+                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
+                }
             }
         }
+
+        private static readonly ProfilerMarker ReclaimMeshObjectPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.ReclaimMeshObject");
 
         /// <summary>
         /// Reclaims the <see cref="SpatialAwareness.SpatialAwarenessMeshObject"/> to allow for later reuse.
         /// </summary>
         protected void ReclaimMeshObject(SpatialAwarenessMeshObject availableMeshObject)
         {
-            if (spareMeshObject == null)
+            using (ReclaimMeshObjectPerfMarker.Auto())
             {
-                // Cleanup the mesh object.
-                // Do not destroy the game object, destroy the meshes.
-                SpatialAwarenessMeshObject.Cleanup(availableMeshObject, false);
+                if (spareMeshObject == null)
+                {
+                    // Cleanup the mesh object.
+                    // Do not destroy the game object, destroy the meshes.
+                    SpatialAwarenessMeshObject.Cleanup(availableMeshObject, false);
 
-                availableMeshObject.GameObject.name = "Unused Spatial Mesh";
-                availableMeshObject.GameObject.SetActive(false);
+                    availableMeshObject.GameObject.name = "Unused Spatial Mesh";
+                    availableMeshObject.GameObject.SetActive(false);
 
-                spareMeshObject = availableMeshObject;
-            }
-            else
-            {
-                // Cleanup the mesh object.
-                // Destroy the game object, destroy the meshes.
-                SpatialAwarenessMeshObject.Cleanup(availableMeshObject);
+                    spareMeshObject = availableMeshObject;
+                }
+                else
+                {
+                    // Cleanup the mesh object.
+                    // Destroy the game object, destroy the meshes.
+                    SpatialAwarenessMeshObject.Cleanup(availableMeshObject);
+                }
             }
         }
+
+        private static readonly ProfilerMarker ConfigureObserverVolumePerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.ConfigureObserverVolume");
 
         /// <summary>
         /// Applies the configured observation extents.
@@ -366,18 +414,23 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 return;
             }
 
-            // Update the observer
-            switch (ObserverVolumeType)
+            using (ConfigureObserverVolumePerfMarker.Auto())
             {
-                case VolumeType.AxisAlignedCube:
-                    XRSDKSubsystemHelpers.MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
-                    break;
+                // Update the observer
+                switch (ObserverVolumeType)
+                {
+                    case VolumeType.AxisAlignedCube:
+                        XRSDKSubsystemHelpers.MeshSubsystem.SetBoundingVolume(ObserverOrigin, ObservationExtents);
+                        break;
 
-                default:
-                    Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
-                    break;
+                    default:
+                        Debug.LogError($"Unsupported ObserverVolumeType value {ObserverVolumeType}");
+                        break;
+                }
             }
         }
+
+        private static readonly ProfilerMarker UpdateMeshesPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.UpdateMeshes");
 
         /// <summary>
         /// Updates meshes based on the result of the MeshSubsystem.TryGetMeshInfos method.
@@ -386,90 +439,98 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         {
             if (!IsRunning) { return; }
 
-            foreach (MeshInfo meshInfo in meshInfos)
+            using (UpdateMeshesPerfMarker.Auto())
             {
-                switch (meshInfo.ChangeState)
+                foreach (MeshInfo meshInfo in meshInfos)
                 {
-                    case MeshChangeState.Added:
-                    case MeshChangeState.Updated:
-                        meshWorkQueue.Enqueue(meshInfo.MeshId);
-                        break;
+                    switch (meshInfo.ChangeState)
+                    {
+                        case MeshChangeState.Added:
+                        case MeshChangeState.Updated:
+                            meshWorkQueue.Enqueue(meshInfo.MeshId);
+                            break;
 
-                    case MeshChangeState.Removed:
-                        RemoveMeshObject(meshInfo.MeshId.GetHashCode());
-                        break;
+                        case MeshChangeState.Removed:
+                            RemoveMeshObject(meshInfo.MeshId.GetHashCode());
+                            break;
+                    }
                 }
             }
         }
+
+        private static readonly ProfilerMarker MeshGenerationActionPerfMarker = new ProfilerMarker("[MRTK] GenericXRSDKSpatialMeshObserver+PlayspaceAdapter.MeshGenerationAction");
 
         private void MeshGenerationAction(MeshGenerationResult meshGenerationResult)
         {
             if (!IsRunning) { return; }
 
-            if (outstandingMeshObject == null)
+            using (MeshGenerationActionPerfMarker.Auto())
             {
-                Debug.LogWarning($"MeshGenerationAction called for mesh id {meshGenerationResult.MeshId} while no request was outstanding.");
-                return;
-            }
+                if (outstandingMeshObject == null)
+                {
+                    Debug.LogWarning($"MeshGenerationAction called for mesh id {meshGenerationResult.MeshId} while no request was outstanding.");
+                    return;
+                }
 
-            switch (meshGenerationResult.Status)
-            {
-                case MeshGenerationStatus.InvalidMeshId:
-                case MeshGenerationStatus.Canceled:
-                case MeshGenerationStatus.UnknownError:
-                    outstandingMeshObject = null;
-                    break;
-                case MeshGenerationStatus.Success:
-                    // Since there is only one outstanding mesh object, update the id to match
-                    // the one received after baking.
-                    SpatialAwarenessMeshObject meshObject = outstandingMeshObject;
-                    meshObject.Id = meshGenerationResult.MeshId.GetHashCode();
-                    outstandingMeshObject = null;
+                switch (meshGenerationResult.Status)
+                {
+                    case MeshGenerationStatus.InvalidMeshId:
+                    case MeshGenerationStatus.Canceled:
+                    case MeshGenerationStatus.UnknownError:
+                        outstandingMeshObject = null;
+                        break;
+                    case MeshGenerationStatus.Success:
+                        // Since there is only one outstanding mesh object, update the id to match
+                        // the one received after baking.
+                        SpatialAwarenessMeshObject meshObject = outstandingMeshObject;
+                        meshObject.Id = meshGenerationResult.MeshId.GetHashCode();
+                        outstandingMeshObject = null;
 
-                    // Apply the appropriate material to the mesh.
-                    SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
-                    if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
-                    {
-                        meshObject.Renderer.enabled = true;
-                        meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
-                            VisibleMaterial :
-                            OcclusionMaterial;
-                    }
-                    else
-                    {
-                        meshObject.Renderer.enabled = false;
-                    }
+                        // Apply the appropriate material to the mesh.
+                        SpatialAwarenessMeshDisplayOptions displayOption = DisplayOption;
+                        if (displayOption != SpatialAwarenessMeshDisplayOptions.None)
+                        {
+                            meshObject.Renderer.enabled = true;
+                            meshObject.Renderer.sharedMaterial = (displayOption == SpatialAwarenessMeshDisplayOptions.Visible) ?
+                                VisibleMaterial :
+                                OcclusionMaterial;
+                        }
+                        else
+                        {
+                            meshObject.Renderer.enabled = false;
+                        }
 
-                    // Recalculate the mesh normals if requested.
-                    if (RecalculateNormals)
-                    {
-                        meshObject.Filter.sharedMesh.RecalculateNormals();
-                    }
+                        // Recalculate the mesh normals if requested.
+                        if (RecalculateNormals)
+                        {
+                            meshObject.Filter.sharedMesh.RecalculateNormals();
+                        }
 
-                    // Add / update the mesh to our collection
-                    bool sendUpdatedEvent = false;
-                    if (meshes.ContainsKey(meshObject.Id))
-                    {
-                        // Reclaim the old mesh object for future use.
-                        ReclaimMeshObject(meshes[meshObject.Id]);
-                        meshes.Remove(meshObject.Id);
+                        // Add / update the mesh to our collection
+                        bool sendUpdatedEvent = false;
+                        if (meshes.ContainsKey(meshObject.Id))
+                        {
+                            // Reclaim the old mesh object for future use.
+                            ReclaimMeshObject(meshes[meshObject.Id]);
+                            meshes.Remove(meshObject.Id);
 
-                        sendUpdatedEvent = true;
-                    }
-                    meshes.Add(meshObject.Id, meshObject);
+                            sendUpdatedEvent = true;
+                        }
+                        meshes.Add(meshObject.Id, meshObject);
 
-                    meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
+                        meshObject.GameObject.transform.parent = (ObservedObjectParent.transform != null) ? ObservedObjectParent.transform : null;
 
-                    meshEventData.Initialize(this, meshObject.Id, meshObject);
-                    if (sendUpdatedEvent)
-                    {
-                        SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
-                    }
-                    else
-                    {
-                        SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
-                    }
-                    break;
+                        meshEventData.Initialize(this, meshObject.Id, meshObject);
+                        if (sendUpdatedEvent)
+                        {
+                            SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshUpdated);
+                        }
+                        else
+                        {
+                            SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+                        }
+                        break;
+                }
             }
         }
 

@@ -17,12 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
     {
         private const string AsmDefFileName = "Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef";
         private const string XRManagementReference = "Unity.XR.Management";
-        private const string ARSubsystemsReference = "Unity.XR.ARSubsystems";
         private const string SpatialTrackingReference = "UnityEngine.SpatialTracking";
 
 #if UNITY_2019_3_OR_NEWER
         private static readonly VersionDefine XRManagementDefine = new VersionDefine("com.unity.xr.management", "", "XR_MANAGEMENT_ENABLED");
-        private static readonly VersionDefine ARSubsystemsDefine = new VersionDefine("com.unity.xr.arsubsystems", "", "ARSUBSYSTEMS_ENABLED");
         private static readonly VersionDefine SpatialTrackingDefine = new VersionDefine("com.unity.xr.legacyinputhelpers", "", "SPATIALTRACKING_ENABLED");
 #endif // UNITY_2019_3_OR_NEWER
 
@@ -40,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
         /// To ensure proper compilation on each Unity version, the following steps are performed:
         /// - Load the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
         /// - If Unity 2018: nothing
-        /// - If Unity 2019 and newer: Unity.XR.Management and Unity.XR.ARSubsystems
+        /// - If Unity 2019 and newer: Unity.XR.Management and UnityEngine.SpatialTracking
         /// - Save the Microsoft.MixedReality.Toolkit.Providers.XRSDK.asmdef file
         /// This will result in Unity reloading the assembly with the appropriate dependencies.
         /// </remarks>
@@ -86,12 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 references.Add(XRManagementReference);
                 changed = true; 
             }
-            if (!references.Contains(ARSubsystemsReference))
-            {
-                // Add a reference to the ARSubsystems assembly
-                references.Add(ARSubsystemsReference);
-                changed = true;
-            }
             if (!references.Contains(SpatialTrackingReference))
             {
                 // Add a reference to the spatial tracking assembly
@@ -105,12 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
                 versionDefines.Add(XRManagementDefine);
                 changed = true;
             }
-            if (!versionDefines.Contains(ARSubsystemsDefine))
-            {
-                // Add the ARSubsystems #define
-                versionDefines.Add(ARSubsystemsDefine);
-                changed = true;
-            }
             if (!versionDefines.Contains(SpatialTrackingDefine))
             {
                 // Add the spatial tracking #define
@@ -122,12 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 // Remove the reference to the XRManagement assembly
                 references.Remove(XRManagementReference);
-                changed = true;
-            }
-            if (references.Contains(ARSubsystemsReference))
-            {
-                // Remove the reference to the ARSubsystems assembly
-                references.Remove(ARSubsystemsReference);
                 changed = true;
             }
             if (references.Contains(SpatialTrackingReference))

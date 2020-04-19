@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Threading.Tasks;
+using Unity.Profiling;
 using UnityEngine;
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -77,110 +78,122 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             await StopRecordingAsync();
         }
 
+        private static readonly ProfilerMarker StartRecordingAsyncPerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.StartRecordingAsync");
+
         /// <inheritdoc />
         public async Task StartRecordingAsync(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10, string micDeviceName = "")
         {
+            using (StartRecordingAsyncPerfMarker.Auto())
+            {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (IsListening || isTransitioning || inputSystem == null || !Application.isPlaying)
-            {
-                Debug.LogWarning("Unable to start recording");
-                return;
-            }
+                if (IsListening || isTransitioning || inputSystem == null || !Application.isPlaying)
+                {
+                    Debug.LogWarning("Unable to start recording");
+                    return;
+                }
 
-            if (dictationRecognizer == null && InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.ManualStart)
-            {
-                InitializeDictationRecognizer();
-            }
+                if (dictationRecognizer == null && InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.ManualStart)
+                {
+                    InitializeDictationRecognizer();
+                }
 
-            hasFailed = false;
-            IsListening = true;
-            isTransitioning = true;
+                hasFailed = false;
+                IsListening = true;
+                isTransitioning = true;
 
-            if (listener != null)
-            {
-                hasListener = true;
-                inputSystem.PushModalInputHandler(listener);
-            }
+                if (listener != null)
+                {
+                    hasListener = true;
+                    inputSystem.PushModalInputHandler(listener);
+                }
 
-            if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
-            {
-                PhraseRecognitionSystem.Shutdown();
-            }
+                if (PhraseRecognitionSystem.Status == SpeechSystemStatus.Running)
+                {
+                    PhraseRecognitionSystem.Shutdown();
+                }
 
-            await waitUntilPhraseRecognitionSystemHasStopped;
-            Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Stopped);
+                await waitUntilPhraseRecognitionSystemHasStopped;
+                Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Stopped);
 
-            // Query the maximum frequency of the default microphone.
-            int minSamplingRate; // Not used.
-            deviceName = micDeviceName;
-            Microphone.GetDeviceCaps(deviceName, out minSamplingRate, out samplingRate);
+                // Query the maximum frequency of the default microphone.
+                int minSamplingRate; // Not used.
+                deviceName = micDeviceName;
+                Microphone.GetDeviceCaps(deviceName, out minSamplingRate, out samplingRate);
 
-            dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
-            dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
-            dictationRecognizer.Start();
+                dictationRecognizer.InitialSilenceTimeoutSeconds = initialSilenceTimeout;
+                dictationRecognizer.AutoSilenceTimeoutSeconds = autoSilenceTimeout;
+                dictationRecognizer.Start();
 
-            await waitUntilDictationRecognizerHasStarted;
-            Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Running);
+                await waitUntilDictationRecognizerHasStarted;
+                Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Running);
 
-            if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
-            {
-                inputSystem.RaiseDictationError(inputSource, "Dictation recognizer failed to start!");
-                return;
-            }
+                if (dictationRecognizer.Status == SpeechSystemStatus.Failed)
+                {
+                    inputSystem.RaiseDictationError(inputSource, "Dictation recognizer failed to start!");
+                    return;
+                }
 
-            // Start recording from the microphone.
-            dictationAudioClip = Microphone.Start(deviceName, false, recordingTime, samplingRate);
-            textSoFar = new StringBuilder();
-            isTransitioning = false;
+                // Start recording from the microphone.
+                dictationAudioClip = Microphone.Start(deviceName, false, recordingTime, samplingRate);
+                textSoFar = new StringBuilder();
+                isTransitioning = false;
 #else
-            await Task.CompletedTask;
+                await Task.CompletedTask;
 #endif
+            }
         }
+
+        private static readonly ProfilerMarker StopRecordingAsyncPerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.StopRecordingAsync");
 
         /// <inheritdoc />
         public async Task<AudioClip> StopRecordingAsync()
         {
+            using (StopRecordingAsyncPerfMarker.Auto())
+            {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
-            if (!IsListening || isTransitioning || !Application.isPlaying)
-            {
-                Debug.LogWarning("Unable to stop recording");
-                return null;
-            }
+                if (!IsListening || isTransitioning || !Application.isPlaying)
+                {
+                    Debug.LogWarning("Unable to stop recording");
+                    return null;
+                }
 
-            IsListening = false;
-            isTransitioning = true;
+                IsListening = false;
+                isTransitioning = true;
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (hasListener)
-            {
-                inputSystem?.PopModalInputHandler();
-                hasListener = false;
-            }
+                if (hasListener)
+                {
+                    inputSystem?.PopModalInputHandler();
+                    hasListener = false;
+                }
 
-            Microphone.End(deviceName);
+                Microphone.End(deviceName);
 
-            if (dictationRecognizer.Status == SpeechSystemStatus.Running)
-            {
-                dictationRecognizer.Stop();
-            }
+                if (dictationRecognizer.Status == SpeechSystemStatus.Running)
+                {
+                    dictationRecognizer.Stop();
+                }
 
-            await waitUntilDictationRecognizerHasStopped;
-            Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Stopped);
+                await waitUntilDictationRecognizerHasStopped;
+                Debug.Assert(dictationRecognizer.Status == SpeechSystemStatus.Stopped);
 
-            PhraseRecognitionSystem.Restart();
+                PhraseRecognitionSystem.Restart();
 
-            await waitUntilPhraseRecognitionSystemHasStarted;
-            Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
+                await waitUntilPhraseRecognitionSystemHasStarted;
+                Debug.Assert(PhraseRecognitionSystem.Status == SpeechSystemStatus.Running);
 
-            isTransitioning = false;
-            return dictationAudioClip;
+                isTransitioning = false;
+
+                return dictationAudioClip;
 #else
-            await Task.CompletedTask;
-            return null;
+                await Task.CompletedTask;
+
+                return null;
 #endif
+            }
         }
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
@@ -279,23 +292,28 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 
+        private static readonly ProfilerMarker UpdatePerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.Update");
+
         /// <inheritdoc />
         public override void Update()
         {
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-
-            if (!Application.isPlaying || inputSystem == null || dictationRecognizer == null) { return; }
-
-            if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
+            using (UpdatePerfMarker.Auto())
             {
-                // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
-                StopRecording();
-            }
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-            if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
-            {
-                hasFailed = true;
-                inputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
+                if (!Application.isPlaying || inputSystem == null || dictationRecognizer == null) { return; }
+
+                if (!isTransitioning && IsListening && !Microphone.IsRecording(deviceName) && dictationRecognizer.Status == SpeechSystemStatus.Running)
+                {
+                    // If the microphone stops as a result of timing out, make sure to manually stop the dictation recognizer.
+                    StopRecording();
+                }
+
+                if (!hasFailed && dictationRecognizer.Status == SpeechSystemStatus.Failed)
+                {
+                    hasFailed = true;
+                    inputSystem.RaiseDictationError(inputSource, "Dictation recognizer has failed!");
+                }
             }
         }
 
@@ -322,18 +340,25 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
             }
         }
 
+        private static readonly ProfilerMarker DictationHypothesisPerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.DictationRecognizer_DictationHypothesis");
+
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.
         /// </summary>
         /// <param name="text">The currently hypothesized recognition.</param>
         private void DictationRecognizer_DictationHypothesis(string text)
         {
-            // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
-            dictationResult = $"{textSoFar} {text}...";
+            using (DictationHypothesisPerfMarker.Auto())
+            {
+                // We don't want to append to textSoFar yet, because the hypothesis may have changed on the next event.
+                dictationResult = $"{textSoFar} {text}...";
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseDictationHypothesis(inputSource, dictationResult);
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                inputSystem?.RaiseDictationHypothesis(inputSource, dictationResult);
+            }
         }
+
+        private static readonly ProfilerMarker DictationResultPerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.DictationRecognizer_DictationResult");
 
         /// <summary>
         /// This event is fired after the user pauses, typically at the end of a sentence. The full recognized string is returned here.
@@ -342,13 +367,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="confidence">A representation of how confident (rejected, low, medium, high) the recognizer is of this recognition.</param>
         private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
         {
-            textSoFar.Append($"{text}. ");
+            using (DictationResultPerfMarker.Auto())
+            {
+                textSoFar.Append($"{text}. ");
 
-            dictationResult = textSoFar.ToString();
+                dictationResult = textSoFar.ToString();
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseDictationResult(inputSource, dictationResult);
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                inputSystem?.RaiseDictationResult(inputSource, dictationResult);
+            }
         }
+
+        private static readonly ProfilerMarker DictationCompletePerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.DictationRecognizer_DictationComplete");
 
         /// <summary>
         /// This event is fired when the recognizer stops, whether from StartRecording() being called, a timeout occurring, or some other error.
@@ -357,19 +387,24 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="cause">An enumerated reason for the session completing.</param>
         private void DictationRecognizer_DictationComplete(DictationCompletionCause cause)
         {
-            // If Timeout occurs, the user has been silent for too long.
-            if (cause == DictationCompletionCause.TimeoutExceeded)
+            using (DictationCompletePerfMarker.Auto())
             {
-                Microphone.End(deviceName);
+                // If Timeout occurs, the user has been silent for too long.
+                if (cause == DictationCompletionCause.TimeoutExceeded)
+                {
+                    Microphone.End(deviceName);
 
-                dictationResult = "Dictation has timed out. Please try again.";
+                    dictationResult = "Dictation has timed out. Please try again.";
+                }
+
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                inputSystem?.RaiseDictationComplete(inputSource, dictationResult, dictationAudioClip);
+                textSoFar = null;
+                dictationResult = string.Empty;
             }
-
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseDictationComplete(inputSource, dictationResult, dictationAudioClip);
-            textSoFar = null;
-            dictationResult = string.Empty;
         }
+
+        private static readonly ProfilerMarker DictationErrorPerfMarker = new ProfilerMarker("[MRTK] WindowsDictationInputProvider.DictationRecognizer_DictationError");
 
         /// <summary>
         /// This event is fired when an error occurs.
@@ -378,12 +413,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <param name="hresult">The int representation of the hresult.</param>
         private void DictationRecognizer_DictationError(string error, int hresult)
         {
-            dictationResult = $"{error}\nHRESULT: {hresult}";
+            using (DictationErrorPerfMarker.Auto())
+            {
+                dictationResult = $"{error}\nHRESULT: {hresult}";
 
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseDictationError(inputSource, dictationResult);
-            textSoFar = null;
-            dictationResult = string.Empty;
+                IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
+                inputSystem?.RaiseDictationError(inputSource, dictationResult);
+                textSoFar = null;
+                dictationResult = string.Empty;
+            }
         }
 #endif // UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
     }

@@ -94,7 +94,15 @@
     - name: Controllers
       href: Input/Controllers.md
     - name: Eyes
-      href: EyeTracking/EyeTracking_Main.md
+      items:
+      - name: Overview
+        href: EyeTracking/EyeTracking_Main.md
+      - name: Getting Started
+        href: EyeTracking/EyeTracking_BasicSetup.md
+      - name: Access Data via Code
+        href: EyeTracking/EyeTracking_EyeGazeProvider.md
+      - name: Validate Tracking Calibration
+        href: EyeTracking/EyeTracking_IsUserCalibrated.md
     - name: Gaze
       href: Input/Gaze.md
     - name: Gestures
@@ -216,6 +224,8 @@
       href: README_SystemKeyboard.md
     - name: Tooltips
       href: README_Tooltip.md
+    - name: Progress Indicator
+      href: README_ProgressIndicator.md
     - name: Solvers
       href: README_Solver.md
       items:
@@ -237,6 +247,10 @@
       href: ../Assets/MRTK/SDK/Experimental/HandCoach/README_HandCoach.md
     - name: Pulse Shader
       href: ../Assets/MRTK/SDK/Experimental/PulseShader/README.md
+    - name: Dock Control
+      href: ../Assets/MRTK/SDK/Experimental/Dock/README_Dock.md
+    - name: HoloLens Keyboard Helpers
+      href: ../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md
 - name: Contributing
   items:
   - name: Contributing Overview

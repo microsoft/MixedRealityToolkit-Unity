@@ -25,6 +25,29 @@ The recommended settings referenced below can be auto-configured in a Unity proj
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_Settings.png)
 
+### Unity Profiler
+
+The [Unity Profiler](https://docs.unity3d.com/Manual/ProfilerWindow.html) is a useful tool to investigate details of application performance at a frame-by-frame level.
+
+#### Time spent on the CPU
+
+![Example Unity Profiler Graph](../../Documentation/Images/Performance/UnityProfilerGraph.png)
+
+To maintain comfortable frame rates (typically 60 frames per second), applications need to achieve a maximum frame time of 16.6 milliseconds of CPU time. To help identify the cost of MRTK functionality, the Microsoft Mixed Reality Toolkit contains a markers for inner loop (per frame) code paths. These markers use the following format, to assist in understanding the specific functionality being utilized:
+
+```
+[MRTK] className.methodName
+```
+
+> [!Note] 
+> There may be additional data following the method name. This is used to identify conditionally executed, potentially expensive functionality that may be avoided by small changes to application code.
+
+![Example Unity Profiler Hierarchy](../../Documentation/Images/Performance/UnityProfilerHierarchy.png)
+
+In this example, the hierarchy has been expanded to show that the UpdateHandData method of WindowsMixedRealityArticulatedHand class is consuming 0.44 ms of CPU time during the frame being analyzed. This data can be used to help determine if a performance issue is related to application code or from elsewhere in the system.
+
+It is highly recommended that developers instrument application code in a similar fashion. Primary areas of focus for application code instrumentation is within event handlers as these methods are charged to the MRTK update loop as events are raised. High frame times within the MRTK update loop can be indicative of expensive code in event handler methods.
+
 ## Recommended settings for Unity
 
 ### Single-Pass Instanced rendering

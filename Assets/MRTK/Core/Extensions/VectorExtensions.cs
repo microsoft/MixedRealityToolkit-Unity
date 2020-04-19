@@ -163,6 +163,18 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Determines if the distance between two vectors is within a given tolerance.
+        /// </summary>
+        /// <param name="v1">The first vector.</param>
+        /// <param name="v2">The second vector.</param>
+        /// <param name="distanceTolerance">The maximum distance that will cause this to return true.</param>
+        /// <returns>True if the distance between the two vectors is within the tolerance, false otherwise.</returns>
+        public static bool CloseEnough(Vector3 v1, Vector3 v2, float distanceTolerance)
+        {
+            return Mathf.Abs(Vector3.Distance(v1, v2)) < distanceTolerance;
+        }
+
+        /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for spherical mapping.
         /// </summary>
         /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to sphere</param>

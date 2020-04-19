@@ -13,7 +13,8 @@
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem",
         "Microsoft.MixedReality.Toolkit.Providers.ObjectMeshObserver",
-        "Microsoft.MixedReality.Toolkit.Tests.Utilities"
+        "Microsoft.MixedReality.Toolkit.Tests.Utilities",
+        "Microsoft.MixedReality.Toolkit.Gltf"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

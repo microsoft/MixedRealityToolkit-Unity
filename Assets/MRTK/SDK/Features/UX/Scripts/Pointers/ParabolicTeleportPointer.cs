@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Teleport
@@ -61,31 +62,36 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #region IMixedRealityPointer Implementation
 
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] ParabolicTeleportPointer.OnPreSceneQuery");
+
         /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
-            parabolicLineData.LineTransform.rotation = Quaternion.identity;
-            parabolicLineData.Direction = transform.forward;
-
-            // when pointing straight up, upDot should be close to 1.
-            // when pointing straight down, upDot should be close to -1.
-            // when pointing straight forward in any direction, upDot should be 0.
-            var upDot = Vector3.Dot(transform.forward, Vector3.up);
-
-            var velocity = minParabolaVelocity;
-            var distance = minDistanceModifier;
-
-            // If we're pointing below the horizon, always use the minimum modifiers.
-            if (upDot > 0f)
+            using (OnPreSceneQueryPerfMarker.Auto())
             {
-                // Increase the modifier multipliers the higher we point.
-                velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, upDot);
-                distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, upDot);
-            }
+                parabolicLineData.LineTransform.rotation = Quaternion.identity;
+                parabolicLineData.Direction = transform.forward;
 
-            parabolicLineData.Velocity = velocity;
-            parabolicLineData.DistanceMultiplier = distance;
-            base.OnPreSceneQuery();
+                // when pointing straight up, upDot should be close to 1.
+                // when pointing straight down, upDot should be close to -1.
+                // when pointing straight forward in any direction, upDot should be 0.
+                var upDot = Vector3.Dot(transform.forward, Vector3.up);
+
+                var velocity = minParabolaVelocity;
+                var distance = minDistanceModifier;
+
+                // If we're pointing below the horizon, always use the minimum modifiers.
+                if (upDot > 0f)
+                {
+                    // Increase the modifier multipliers the higher we point.
+                    velocity = Mathf.Lerp(minParabolaVelocity, maxParabolaVelocity, upDot);
+                    distance = Mathf.Lerp(minDistanceModifier, maxDistanceModifier, upDot);
+                }
+
+                parabolicLineData.Velocity = velocity;
+                parabolicLineData.DistanceMultiplier = distance;
+                base.OnPreSceneQuery();
+            }
         }
 
         #endregion IMixedRealityPointer Implementation
