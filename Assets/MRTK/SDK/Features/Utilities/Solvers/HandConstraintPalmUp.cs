@@ -415,13 +415,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         /// <summary>
         /// When enabled, ensure that there are no outlying status changes that would prevent HandConstraintPalmUp from 
-        /// properly working (like gazeActivationAlreadyTriggered being set to true previously, or SolverHandlers.UpdateSolvers being false)
+        /// properly working (like gazeActivationAlreadyTriggered being set to true previously)
         /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
             gazeActivationAlreadyTriggered = false;
-            SolverHandler.UpdateSolvers = true;
         }
 
         #endregion MonoBehaviour Implementation
