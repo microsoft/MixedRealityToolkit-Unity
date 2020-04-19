@@ -1201,7 +1201,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Ensure that FacingCameraTrackingThreshold is greater than FollowHandCameraFacingThresholdAngle
             Assert.AreEqual(handConstraintSolver.FacingCameraTrackingThreshold - handConstraintSolver.FollowHandCameraFacingThresholdAngle > 0, true);
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraintPalmUp solver did not start at the origin");
 
@@ -1217,17 +1217,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var hand = new TestHand(targetHand);
             yield return hand.Show(handTestPos);
             yield return hand.SetRotation(handRotation);
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             var delta = new Vector3(0.5f, 0.5f, 0f);
             yield return hand.Move(delta, 5);
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
 
             // Ensure Activation occured by making sure the testObjects position isn't still Vector3.zero
             Assert.AreNotEqual(testObjects.target.transform.position, Vector3.zero);
 
             yield return hand.Hide();
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return null;
         }
 
         /// <summary>
