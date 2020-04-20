@@ -151,7 +151,7 @@ with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHan
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsOppositeHandNear_IMixedRealityController_">HandConstraint.IsOppositeHandNear(IMixedRealityController)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnEnable">HandConstraint.OnEnable()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_GetController_Microsoft_MixedReality_Toolkit_Utilities_Handedness_">HandConstraint.GetController(Handedness)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateLinkedTransform">Solver.UpdateLinkedTransform</a>
@@ -246,6 +246,32 @@ with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHan
   </div>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_EyeGazeProximityThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.EyeGazeProximityThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_EyeGazeProximityThreshold" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.EyeGazeProximityThreshold">EyeGazeProximityThreshold</h4>
+  <div class="markdown level1 summary"><p>The distance threshold calculated between the planar intersection of the eye gaze ray and the activation transform. Uses square magnitude between two points for distance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float EyeGazeProximityThreshold { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_FacingCameraTrackingThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.FacingCameraTrackingThreshold*"></a>
@@ -378,6 +404,33 @@ public float FacingThreshold { get; set; }</code></pre>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_HeadGazeProximityThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.HeadGazeProximityThreshold*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_HeadGazeProximityThreshold" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.HeadGazeProximityThreshold">HeadGazeProximityThreshold</h4>
+  <div class="markdown level1 summary"><p>The distance threshold calculated between the planar intersection of the head gaze ray and the activation transform. Uses square magnitude between two points for distance
+This is used if eye gaze isn't available for the user</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float HeadGazeProximityThreshold { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_RequireFlatHand_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.RequireFlatHand*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_RequireFlatHand" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.RequireFlatHand">RequireFlatHand</h4>
   <div class="markdown level1 summary"><p>Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers.</p>
@@ -402,6 +455,32 @@ public float FacingThreshold { get; set; }</code></pre>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_UseGazeActivation_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.UseGazeActivation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_UseGazeActivation" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.UseGazeActivation">UseGazeActivation</h4>
+  <div class="markdown level1 summary"><p>With this active, solver will activate after the palm threshold has been met and the user gazes at the activation point.  If eye gaze information is not available, the head gaze will be used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseGazeActivation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -409,7 +488,8 @@ public float FacingThreshold { get; set; }</code></pre>
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_IsValidController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.IsValidController*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_IsValidController_IMixedRealityController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.IsValidController(IMixedRealityController)">IsValidController(IMixedRealityController)</h4>
   <div class="markdown level1 summary"><p>Determines if a controller meets the requirements for use with constraining the tracked object and determines if the
-palm is currently facing the user.</p>
+palm is currently facing the user. This function will modify the position and rotation behavior of the hand constraint if
+the followHandUntilFacingCamera variable is enabled.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -452,6 +532,33 @@ palm is currently facing the user.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsValidController_IMixedRealityController_">HandConstraint.IsValidController(IMixedRealityController)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.OnEnable*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_OnEnable" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.OnEnable">OnEnable()</h4>
+  <div class="markdown level1 summary"><p>When enabled, ensure that there are no outlying status changes that would prevent HandConstraintPalmUp from
+properly working (like gazeActivationAlreadyTriggered being set to true previously)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnEnable">HandConstraint.OnEnable()</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_StartWorldLockReattachCheckCoroutine_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraintPalmUp_StartWorldLockReattachCheckCoroutine" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.StartWorldLockReattachCheckCoroutine">StartWorldLockReattachCheckCoroutine()</h4>
+  <div class="markdown level1 summary"><p>Coroutine function called by the ManipulationHandler of the attached object whenever the object is done
+being manipulated by the user. This triggers a coroutine that checks to see whether the object should
+reattach to the hand.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StartWorldLockReattachCheckCoroutine()</code></pre>
+  </div>
 </article>
           </div>
           

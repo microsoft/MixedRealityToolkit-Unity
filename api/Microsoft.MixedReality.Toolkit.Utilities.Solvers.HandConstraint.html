@@ -561,6 +561,51 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_GetController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.GetController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_GetController_Microsoft_MixedReality_Toolkit_Utilities_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.GetController(Microsoft.MixedReality.Toolkit.Utilities.Handedness)">GetController(Handedness)</h4>
+  <div class="markdown level1 summary"><p>Returns the first detected controller in the input system that matches the passed-in handedness</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static IMixedRealityController GetController(Handedness handedness)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
+        <td><span class="parametername">handedness</span></td>
+        <td><p>The handedness of the returned controller</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityController</span></td>
+        <td><p>The IMixedRealityController for the desired handedness, or null if none are present.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsOppositeHandNear_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsOppositeHandNear*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsOppositeHandNear_IMixedRealityController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsOppositeHandNear(IMixedRealityController)">IsOppositeHandNear(IMixedRealityController)</h4>
   <div class="markdown level1 summary"><p>Performs an intersection test to see if the left hand is near the right hand or vice versa.</p>

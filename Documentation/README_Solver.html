@@ -214,26 +214,8 @@ public class InFront : Solver
 <p>Finally, surfaces farther than the <code>MaxRaycastDistance</code> property setting will be ignored by the <code>SurfaceMagnetism</code> raycasts.</p>
 <h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand menu with HandConstraint and HandConstraintPalmUp</h3>
 <p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt="Hand Menu UX Example"></p>
-<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under <code>MRTK/Examples/Demos/HandTracking/Scenes/</code>.</p>
-<p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
-<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
-<ul>
-<li><p><strong>Safe Zone</strong>: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.</p>
-</li>
-<li><p><strong>Follow Hand Until Facing Camera</strong> With this active, solver will follow hand rotation until the menu is sufficiently aligned with the gaze, at which point it faces the camera. This works by changing the SolverRotationBehavior in the HandConstraintSolver, from LookAtTrackedObject to LookAtMainCamera as the GazeAlignment angle with the solver varies.</p>
-</li>
-</ul>
-<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
-<ul>
-<li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under <code>MRTK/Examples/Demos/HandTracking/Scenes/</code> for examples of these behaviors.</p>
-<ul>
-<li><em>OnHandActivate</em>: triggers when a hand satisfies the IsHandActive method</li>
-<li><em>OnHandDeactivate</em>: triggers when the IsHandActive method is no longer satisfied.</li>
-<li><em>OnFirstHandDetected</em>: occurs when the hand tracking state changes from no hands in view, to the first hand in view.</li>
-<li><em>OnLastHandLost</em>: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.</li>
-</ul>
-</li>
-</ul>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user.</p>
+<p><a href="README_HandMenu.html">Please see Hand Menu page</a> for the examples of using Hand Constraint solver to create hand menus.</p>
 <h2 id="experimental-solvers">Experimental solvers</h2>
 <p>These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.</p>
 <h3 id="directional-indicator">Directional indicator</h3>

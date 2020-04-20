@@ -2957,6 +2957,72 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example4.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example4.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example5.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_Example5.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_ExampleScene.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/HandMenu/MRTK_HandMenu_ExampleScene.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/ControllerInputMapping.png",
       "output": {
         "resource": {
@@ -7147,6 +7213,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_HandMenu.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_HandMenu.html",
+          "hash": "UzqsOI9oNMFSEBlXtehioQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_Interactable.md",
       "output": {
         ".html": {
@@ -7271,7 +7349,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "014fpHzOBCb7ifqHSMf9Iw=="
+          "hash": "agHGmnVc2f8AAGVAAXIG3A=="
         }
       },
       "is_incremental": false,
@@ -7679,7 +7757,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "DplDYEmlrEitO+RrWwzAjw=="
+          "hash": "vNg2ULpNrU3IVwaHbYWQGw=="
         }
       },
       "is_incremental": false,
@@ -20794,7 +20872,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SolverTests.html",
-          "hash": "1gSqnmosxnhaLZczA+GJLA=="
+          "hash": "IJnHzU+mxbtzFsL5vA9Tcw=="
         }
       },
       "is_incremental": false,
@@ -25522,7 +25600,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html",
-          "hash": "B7z2xFIxxgwpFzXLr4z1mg=="
+          "hash": "DL+3zdwc4jCqGYmTSbdKGg=="
         }
       },
       "is_incremental": false,
@@ -25534,7 +25612,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html",
-          "hash": "EpARq2oxjoViuz3X7pEeIA=="
+          "hash": "obBzMIMIR67LqFdZN9XxlQ=="
         }
       },
       "is_incremental": false,
@@ -26892,7 +26970,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 156,
+          "total_file_count": 157,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1594,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -26900,12 +26984,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1594,
           "skipped_file_count": 0
         }
       }
