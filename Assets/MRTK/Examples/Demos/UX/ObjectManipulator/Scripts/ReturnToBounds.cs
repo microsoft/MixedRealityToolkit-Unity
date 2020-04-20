@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class ReturnToBounds : MonoBehaviour
     {

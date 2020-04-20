@@ -10,7 +10,6 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System.Collections;
@@ -21,7 +20,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
+namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ObjectManipulatorTests
     {
