@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool useGazeActivation = false;
 
         /// <summary> 
-        /// With this active, solver will activate after the palm threshold has been met and the user gazes at the activation point
+        /// With this active, solver will activate after the palm threshold has been met and the user gazes at the activation point.  If eye gaze information is not available, the head gaze will be used.
         /// </summary>
         public bool UseGazeActivation
         {
