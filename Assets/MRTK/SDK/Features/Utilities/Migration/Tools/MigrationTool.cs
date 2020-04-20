@@ -125,7 +125,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     if (migrationObjects[i] is GameObject)
                     {
-                        MigratePrefab(assetPath);
+                        PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects[i]);
+                        if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
+                        {
+                            // there's currently 5 types of prefab asset types - we're supporting the following:
+                            // - Regular: a regular prefab object
+                            // - Variant: a prefab derived from another prefab which could be a model, regular or variant prefab
+                            // we won't support the following types:
+                            // - Model: we can't migrate fbx or other mesh files
+                            // - MissingAsset: we can't migrate missing data
+                            // - NotAPrefab: we can't migrate as prefab if the given asset isn't a prefab
+                            MigratePrefab(assetPath);
+                        }
                     }
                     else if (migrationObjects[i] is SceneAsset)
                     {
