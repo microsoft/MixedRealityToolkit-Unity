@@ -81,6 +81,10 @@ We have added the ability to choose how the elements in the grid are aligned, wh
 
 We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the `AnchorAlongAxis` field.
 
+**Adjusted input simulation camera control**
+
+Camera control speed using in-editor input simulation is slower for a smoother experience and is now untied from framerate. Fast camera control now activated with Right Shift instead of Right Ctrl
+
 **Hands-free GGV input simulation**
 
 <img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300"/>
