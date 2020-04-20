@@ -178,8 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                using (new EditorGUILayout.ScrollViewScope(scrollPosition))
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition))
                 {
+                    scrollPosition = scrollView.scrollPosition;
                     var migrationObjects = migrationTool.MigrationObjects;
                     foreach (var migrationObject in migrationObjects)
                     {
