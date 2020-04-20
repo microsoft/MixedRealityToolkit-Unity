@@ -253,22 +253,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Obsolete("Use a TransformScaleHandler script rather than setting minimum on BoundingBox directly", false)]
+        [Obsolete("Use a MinMaxScaleConstraint script rather than setting minimum on BoundingBox directly", false)]
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
 
         [SerializeField]
-        [Obsolete("Use a TransformScaleHandler script rather than setting maximum on BoundingBox directly")]
+        [Obsolete("Use a MinMaxScaleConstraint script rather than setting maximum on BoundingBox directly")]
         [Tooltip("Maximum scaling allowed relative to the initial size")]
         private float scaleMaximum = 2.0f;
 
 
         /// <summary>
-        /// Deprecated: Use TransformScaleHandler component instead.
+        /// Deprecated: Use <see cref="Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint"/> component instead.
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale")]
+        [Obsolete("Use a MinMaxScaleConstraint. ScaleMinimum as it is the authoritative value for min scale")]
         public float ScaleMinimum
         {
             get
@@ -282,11 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Deprecated: Use TransformScaleHandler component instead.
+        /// Deprecated: Use <see cref="Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint"/> component instead.
         /// Public property for the scale maximum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale")]
+        [Obsolete("Use a MinMaxScaleConstraint component instead. ScaleMinimum as it is the authoritative value for max scale")]
         public float ScaleMaximum
         {
             get
@@ -1185,7 +1185,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="min">Minimum scale</param>
         /// <param name="max">Maximum scale</param>
         /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
-        [Obsolete("Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly")]
+        [Obsolete("Use a MinMaxScaleConstraint script rather than setting min/max scale on BoundingBox directly")]
         public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
             scaleMinimum = min;
@@ -1502,7 +1502,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
                 AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, scaleHandleColliderPadding);
-                corners.Add(corner.transform);
+                corners.Add(cornerVisual.transform);
 
                 handles.Add(new Handle()
                 {
@@ -1634,8 +1634,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
-
-                balls.Add(midpoint.transform);
+                balls.Add(midpointVisual.transform);
 
                 handles.Add(new Handle()
                 {
@@ -2259,14 +2258,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
                 {
-                    if (IsPointWithinBounds(pointer.Position, maxRadius))
-                    {
-                        proximityPoints.Add(pointer.Position);
-                    }
+                    proximityPoints.Add(pointer.Position);
 
                     Vector3? point = pointer.Result?.Details.Point;
-
-                    if (point.HasValue && IsPointWithinBounds(point.Value, maxRadius))
+                    if (point.HasValue)
                     {
                         proximityPoints.Add(pointer.Result.Details.Point);
                     }
@@ -2364,19 +2359,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Determine if passed point is within sphere of radius around this GameObject
-        /// To avoid function overhead, request compiler to inline this function since repeatedly called every Update() for every pointer position and result
-        /// </summary>
-        /// <param name="point">world space position</param>
-        /// <param name="radiusSqr">radius of sphere in distance squared for faster comparison</param>
-        /// <returns>true if point is within sphere</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool IsPointWithinBounds(Vector3 point, float radiusSqr)
-        {
-            return (transform.position - point).sqrMagnitude < radiusSqr;
-        }
-
-        /// <summary>
         /// Helper method to check if handle type may be visible based on configuration
         /// </summary>
         /// <param name="h">handle reference to check</param>
@@ -2410,14 +2392,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < balls.Count; ++i)
             {
-                if (handle == balls[i])
+                if (handle.position == balls[i].position && handle.rotation == balls[i].rotation)
                 {
                     return HandleType.Rotation;
                 }
             }
             for (int i = 0; i < corners.Count; ++i)
             {
-                if (handle == corners[i])
+                if (handle.position == corners[i].position && handle.rotation == corners[i].rotation)
                 {
                     return HandleType.Scale;
                 }
