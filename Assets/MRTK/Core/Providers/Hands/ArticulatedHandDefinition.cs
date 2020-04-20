@@ -28,6 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<TrackedHandJoint, MixedRealityPose> unityJointPoses = new Dictionary<TrackedHandJoint, MixedRealityPose>();
         private MixedRealityPose currentIndexPose = MixedRealityPose.ZeroIdentity;
 
+        // Pinch distance thresholds
+        private readonly float enterPinchDistance = 0.02f;
+        private readonly float exitPinchDistance = 0.05f;
+
+        private bool isPinching = false;
+
         /// <summary>
         /// The articulated hands default interactions.
         /// </summary>
@@ -73,6 +79,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private static readonly ProfilerMarker UpdateHandJointsPerfMarker = new ProfilerMarker("[MRTK] ArticulatedHandDefinition.UpdateHandJoints");
+
+        /// <summary>
+        /// Calculates whether the current the current joint pose is selecting (air tap gesture).
+        /// </summary>
+        public bool IsPinching
+        {
+            get
+            {
+                MixedRealityPose thumbTip;
+                MixedRealityPose indexTip;
+                if (unityJointPoses.TryGetValue(TrackedHandJoint.ThumbTip, out thumbTip) && unityJointPoses.TryGetValue(TrackedHandJoint.IndexTip, out indexTip))
+                {
+                    float distance = Vector3.Distance(thumbTip.Position, indexTip.Position);
+
+                    if (isPinching && distance > exitPinchDistance)
+                    {
+                        isPinching = false;
+                    }
+                    else if (!isPinching && distance < enterPinchDistance)
+                    {
+                        isPinching = true;
+                    }
+                }
+                else
+                {
+                    isPinching = false;
+                }
+
+                return isPinching;
+            }
+        }
 
         /// <summary>
         /// Updates the current hand joints with new data.
