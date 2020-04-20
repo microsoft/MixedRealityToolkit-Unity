@@ -758,6 +758,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CrossPlatform/LeapMotionMRTK.html",
+          "hash": "MDcqP5mcNaKZpWs3HRdOTw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/CrossPlatform/UsingARFoundation.md",
       "output": {
         ".html": {
@@ -2114,6 +2126,105 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapAddDataProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapAddDataProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapCloneInputSystemProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapCloneInputSystemProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeskOrientationExampleMetacarpals.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDeskOrientationExampleMetacarpals.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHeadsetOrientationExampleMetacarpals.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapHeadsetOrientationExampleMetacarpals.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapInputConfigurationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapInputConfigurationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapProfileClone.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/LeapMotion/LeapProfileClone.png"
         }
       },
       "is_incremental": false,
@@ -7972,7 +8083,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "qXxoqAq6CQaXCt8MLXIQxw=="
+          "hash": "tOj7PLniS9cRGMmOd2rWTw=="
         }
       },
       "is_incremental": false,
@@ -13024,7 +13135,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.html",
-          "hash": "+9LCMsZ166JNXcvh7GP6Hg=="
+          "hash": "6gTTQZM7X+6gOe9YXgBe7A=="
         }
       },
       "is_incremental": false,
@@ -13348,7 +13459,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.DeviceInputType.html",
-          "hash": "t5uuqmhwZdLqsqjkDC69wQ=="
+          "hash": "Aficsa7pUvZzVwDr1uY20w=="
         }
       },
       "is_incremental": false,
@@ -16073,6 +16184,90 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LayerExtensions.html",
           "hash": "B34fpWsrCRCh45w1eBQZVA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapControllerOrientation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapControllerOrientation.html",
+          "hash": "Z+6M24kBknJtWcKWw2bIWQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionArticulatedHand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionArticulatedHand.html",
+          "hash": "3Cps5UexeokVnTeCUVFuGQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManager.html",
+          "hash": "ih2wpCLwik+sUhQMhM6PUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.html",
+          "hash": "8JvVTirYSRRLb51KZy41Vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.html",
+          "hash": "v1DhidBkK4Bu8o7g8ySy7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.LeapMotionDeviceManagerProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.LeapMotionDeviceManagerProfileInspector.html",
+          "hash": "C87qj0u+etA8ao0whgPIsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.html",
+          "hash": "Yq7GukIjU95OtM73oy4Wxg=="
         }
       },
       "is_incremental": false,
@@ -26908,7 +27103,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "eky6uofTLd1HxanJKxSzpg=="
+          "hash": "GauPNchxWjxdwUB09DkBcw=="
         }
       },
       "is_incremental": false,
@@ -26970,13 +27165,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 157,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1594,
+          "total_file_count": 158,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -26984,6 +27173,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1601,
           "skipped_file_count": 0
         }
       }

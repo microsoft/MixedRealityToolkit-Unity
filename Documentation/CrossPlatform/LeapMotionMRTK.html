@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>How to Configure Leap Motion Hand Tracking in MRTK | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="How to Configure Leap Motion Hand Tracking in MRTK | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="how-to-configure-leap-motion-hand-tracking-in-mrtk">How to Configure Leap Motion Hand Tracking in MRTK</h1>
+
+<p>A <a href="https://www.ultraleap.com/product/leap-motion-controller/">Leap Motion Controller</a> is required to use this data provider.</p>
+<p>The Leap Motion Data Provider enables articulated hand tracking for VR and could be useful for rapid prototyping in the editor.  The data provider can be configured to use the leap motion controller mounted on a headset or placed on a desk face up.</p>
+<h2 id="using-leap-motion-tracking-in-mrtk">Using Leap Motion tracking in MRTK</h2>
+<ol>
+<li><p>Prepare MRTK project for Leap Motion</p>
+<ul>
+<li><p><strong>This step only applies if the source of MRTK is cloned from the git repo and NOT the from the Unity packages. If the MRTK source is from the Unity packages, go to step 2.</strong></p>
+</li>
+<li><p>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong>. Updating the csc file filters out the obsolete warnings produced by the Leap Motion Core Assets.  The MRTK repo contains a csc file that converts warnings to errors, this conversion halts the Leap Motion MRTK configuration process.  The obsolete warnings issue is tracked <a href="https://github.com/leapmotion/UnityModules/issues/1082">here</a>.</p>
+</li>
+</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapMotionConfigureCSCFile2.png" alt="LeapMotionUpdateCSCFile"></p>
+</li>
+<li><p>Importing the Leap Motion Core Assets</p>
+<ul>
+<li>Import the <strong>Microsoft.MixedReality.Toolkit.Foundation</strong> package into the unity project.</li>
+<li>Install the <a href="https://developer.leapmotion.com/releases/?category=orion">Leap Motion SDK 4.0.0</a></li>
+<li>Download and import the <a href="https://developer.leapmotion.com/unity#5436356">Leap Motion Core Assets 4.4.0</a></li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>On import of the Leap Core Assets, test directories are removed and 10 assembly definitions are added to the project. Make sure Visual Studio is closed.</p>
+</div>
+<ul>
+<li><p>If using Unity 2018.4.x</p>
+<ul>
+<li>After the Leap Motion Core Assets import, navigate to <strong>Assets/LeapMotion/</strong>, there should be a LeapMotion.asmdef file next to the Core directory.  If the asmdef file is not present, go to the <a href="#leap-motion-has-not-integrated-with-mrtk">Leap Motion Common Errors</a>. If the file is present, go to step 3.</li>
+</ul>
+</li>
+<li><p>If using Unity 2019.3.x, go to step 3.</p>
+</li>
+</ul>
+</li>
+<li><p>Adding the Leap Motion Data Provider</p>
+<ul>
+<li>Create a new Unity scene</li>
+<li>Add MRTK to the scene by navigating to <strong>Mixed Reality Toolkit</strong> &gt; <strong>Add to Scene and Configure</strong></li>
+<li>Select the MixedRealityToolkit game object in the hierarchy and select <strong>Copy and Customize</strong> to clone the default mixed reality profile.</li>
+</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapProfileClone.png" alt="LeapMotionProfileClone"></p>
+<ul>
+<li>Select the <strong>Input</strong> Configuration Profile</li>
+</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapInputConfigurationProfile.png" alt="InputConfigurationProfile"></p>
+<ul>
+<li>Select <strong>Clone</strong> in the input system profile to enable modification.</li>
+</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapCloneInputSystemProfile.png" alt="LeapMotionInputProfileClone"></p>
+<ul>
+<li>Open the <strong>Input Data Providers</strong> section, select <strong>Add Data Provider</strong> at the top, a new data provider will be added at the end of the list.  Open the new data provider and set the <strong>Type</strong> to <strong>Microsoft.MixedReality.Toolkit.LeapMotion.Input &gt; LeapMotionDeviceManager</strong></li>
+</ul>
+<p><img src="../Images/CrossPlatform/LeapMotion/LeapAddDataProvider.png" alt="LeapAddDataProvider"></p>
+<ul>
+<li>The Leap Motion Data Provider contains the <code>LeapControllerOrientation</code> property which is the location of the leap motion controller. <code>LeapControllerOrientation.Headset</code> indicates the controller is mounted on a headset. <code>LeapControllerOrientation.Desk</code> indicates the controller is placed flat on desk. The default value is set to <code>LeapControllerOrientation.Headset</code>.  If the orientation is the desk, an extra property <code>LeapControllerOffset</code> will appear.  <code>LeapControllerOffset</code> is the anchor for the position of the desk leap hands.  The offset is calculated relative to the main camera position and the default value is (0,-0.2, 0.2) to make sure the hands appear in front and in view of the camera.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><code>LeapControllerOrientation</code>: Headset (Default)</th>
+<th style="text-align: center;"><code>LeapControllerOrientation</code>: Desk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapHeadsetOrientationExampleMetacarpals.gif" alt="LeapHeadsetGif"></td>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDeskOrientationExampleMetacarpals.gif" alt="LeapDeskGif"></td>
+</tr>
+<tr>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDevManagerHeadset.png" alt="LeapHeadsetGif"></td>
+<td style="text-align: center;"><img src="../Images/CrossPlatform/LeapMotion/LeapDevManagerDesk.png" alt="LeapHeadsetGif"></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Testing the Leap Motion Data Provider</p>
+<ul>
+<li>After Leap Motion Data Provider has been added to the input system profile, press play, move your hand in front of the Leap Motion Controller and you should see the joint representation of the hand.</li>
+</ul>
+</li>
+<li><p>Building your project</p>
+<ul>
+<li>Navigate to <strong>File &gt; Build Settings</strong></li>
+<li>Only Standalone builds are supported if using the Leap Motion Data Provider.</li>
+</ul>
+</li>
+</ol>
+<h2 id="getting-the-hand-joints">Getting the hand joints</h2>
+<p>Getting joints using the Leap Motion Data Provider is identical to hand joint retrieval for an MRTK Articulated Hand.  For more information, see <a href="../Input/HandTracking.html#polling-joint-pose-from-handjointutils">Hand Tracking</a>.</p>
+<p>The following is a simple example of how to retrieve the pose of the palm joint and adds a sphere to follow the hand joint.</p>
+<pre><code>using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
+
+public class HandJointsLeap : MonoBehaviour
+{
+    private GameObject sphere;
+
+    private void Start()
+    {
+        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.transform.localScale = Vector3.one * 0.03f;
+    }
+
+    private void Update()
+    {
+        // If the hand joint pose is available set the position of the sphere to the palm of the right hand
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out MixedRealityPose index))
+        {
+            sphere.transform.position = index.Position;
+        }
+    }
+}
+</code></pre>
+<h2 id="removing-leap-motion-from-the-project">Removing Leap Motion from the Project</h2>
+<ol>
+<li>Close Unity</li>
+<li>Close Visual Studio, if it's open</li>
+<li>Open File Explorer and navigate to the root of the MRTK Unity project
+<ul>
+<li>Delete the <strong>UnityProjectName/Library</strong> directory</li>
+<li>Delete the <strong>UnityProjectName/Assets/LeapMotion</strong> directory</li>
+<li>Delete the <strong>UnityProjectName/Assets/LeapMotion.meta</strong> file</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>Reopen Unity</li>
+</ul>
+<p>If errors are logged after reopening, restart Unity again.</p>
+<h2 id="common-errors">Common Errors</h2>
+<h3 id="leap-motion-obsolete-errors">Leap Motion Obsolete Errors</h3>
+<p>If the source of MRTK is from the repo and the Unity version is 2019.3.x, the following error might be in the console after the import of the Leap Motion Core Assets:</p>
+<pre><code>Assets\LeapMotion\Core\Scripts\EditorTools\LeapPreferences.cs(84,6): error CS0618: 'PreferenceItem' is obsolete: '[PreferenceItem] is deprecated. Use [SettingsProvider] instead.
+</code></pre>
+<p>In Unity version 2018.4.x, the following obsolete errors might be logged:</p>
+<pre><code>Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,7): error CS0618: 'PrefabType' is obsolete: 'PrefabType no longer tells everything about Prefab instance.'
+</code></pre>
+<pre><code>Assets\LeapMotion\Core\Scripts\Attachments\AttachmentHands.cs(105,31): error CS0618: 'PrefabUtility.GetPrefabType(Object)' is obsolete: 'Use GetPrefabAssetType and GetPrefabInstanceStatus to get the full picture about Prefab types.'
+</code></pre>
+<p>These errors appear if <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong> was not selected BEFORE the Leap Motion Core Assets import.</p>
+<h4 id="solution">Solution</h4>
+<ul>
+<li>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure CSC File for Leap Motion</strong>, this will update the csc file to filter out Leap Motion warnings that are converted to errors in MRTK repo.</li>
+<li>Close Unity</li>
+<li>Reopen Unity</li>
+</ul>
+<h3 id="leap-motion-has-not-integrated-with-mrtk">Leap Motion has not integrated with MRTK</h3>
+<p>This error can occur if the Unity version is 2018.4.x, the MRTK source is from the Unity packages and after the import of the Leap Motion Core Assets.</p>
+<p>To test if MRTK recognizes the presence of the Leap Motion Core Assets, open the LeapMotionHandTrackingExample scene located in MRTK/Examples/Demos/HandTracking/ and press play.  If the Leap Motion Core Assets are recognized a green message on the informational panel in the scene will appear.  If the Core Assets are not recognized a red message will appear.</p>
+<p>If the Leap Motion Core Assets are in your project and you see a red message on the informational panel, the project needs to be configured.</p>
+<h4 id="solution-1">Solution</h4>
+<ul>
+<li>Navigate to <strong>Mixed Reality Toolkit &gt; Utilities &gt; Leap Motion &gt; Configure Leap Motion</strong>
+<ul>
+<li>This will force Leap Motion integration if the configuration process was not started after the Leap Motion Core Assets import.</li>
+</ul>
+</li>
+</ul>
+<h2 id="leap-motion-example-scene">Leap Motion Example Scene</h2>
+<p>The example scene uses the DefaultLeapMotionConfiguration profile and determines if the Unity project has been configured correctly to use the Leap Motion Data Provider.</p>
+<p>The example scene is contained in the <strong>Microsoft.MixedReality.Toolkit.Examples</strong> package in the <strong>MRTK/Examples/Demos/HandTracking/</strong> directory.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../Input/InputProviders.html">Input Providers</a></li>
+<li><a href="../Input/HandTracking.html">Hand Tracking</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/CrossPlatform/LeapMotionMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
