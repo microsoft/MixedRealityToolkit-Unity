@@ -4,8 +4,7 @@
 namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
 {
     /// <summary>
-    /// The location of the leap motion controller. LeapControllerOrientation.Headset indicates the controller is mounted on a headset. 
-    /// LeapControllerOrientation.Desk indicates the controller is placed flat on desk. The default value is set to LeapControllerOrientation.Headset.
+    /// The location of the Leap Motion Controller.
     /// </summary>
     public enum LeapControllerOrientation
     {

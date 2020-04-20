@@ -18,10 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Utilities
         /// If true, the LeapXRServiceProvider.cs file is in the project.  The presence of this file is used to determine if the 
         /// Leap Motion Core Assets are in the project.
         /// </summary>
-        public static bool IsLeapInProject => LeapMotionFileDetection();
+        public static bool IsLeapInProject => LeapMotionFileDetected();
 
         // Check if the LeapXRServiceProvider.cs file is in the project.
-        private static bool LeapMotionFileDetection()
+        private static bool LeapMotionFileDetected()
         {
             FileInfo[] files = FileUtilities.FindFilesInAssets(trackedLeapFileName);
 

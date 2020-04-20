@@ -147,6 +147,37 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             }
         }
 
+        /// <inheritdoc />
+        public override void Disable()
+        {
+            base.Disable();
+
+            // Only destroy the objects if the application is playing because the objects are added to the scene at runtime
+            if (Application.isPlaying)
+            {
+                // Destroy AttachmentHands GameObject
+                if (LeapAttachmentHands.gameObject != null)
+                {
+                    GameObject.Destroy(LeapAttachmentHands.gameObject);
+                }
+
+                if (LeapMotionServiceProvider != null)
+                {
+                    // Destroy the LeapProvider GameObject if the controller orientation is the desk
+                    if (leapControllerOrientation == LeapControllerOrientation.Desk)
+                    {
+                        GameObject.Destroy(LeapMotionServiceProvider.gameObject);
+                    }
+
+                    // Destroy the LeapXRServiceProvider attached to the main camera if the controller orientation is headset
+                    else if (leapControllerOrientation == LeapControllerOrientation.Headset)
+                    {
+                        GameObject.Destroy(LeapMotionServiceProvider);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Adds a new LeapMotionArticulatedHand to the scene.
         /// </summary>
@@ -231,10 +262,10 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <inheritdoc />
         public override void Update()
         {
+            base.Update();
+
             using (UpdatePerfMarker.Auto())
             {
-                base.Update();
-
                 if (IsLeapConnected)
                 {
                     // if the number of tracked hands in frame has changed

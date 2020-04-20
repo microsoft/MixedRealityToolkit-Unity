@@ -32,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
+        /// <summary>
+        /// TriggerPress maps to the Grab gesture.
+        /// </summary>
         TriggerPress,
         /// <summary>
         /// 6 DoF Grip with position and rotation.
@@ -53,6 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         TouchpadTouch,
         TouchpadNearTouch,
         TouchpadPress,
+        /// <summary>
+        /// Select maps to the Pinch/Air Tap gesture
+        /// </summary>
         Select,
         Start,
         Menu,

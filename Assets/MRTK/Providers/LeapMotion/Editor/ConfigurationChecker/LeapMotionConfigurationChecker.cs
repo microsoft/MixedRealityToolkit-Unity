@@ -23,10 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         // True if the Leap Motion Core Assets are in the project.
         private static bool isLeapInProject = false;
 
+        // The currently supported Leap Core Assets version number.
+        private static string leapCoreAssetsVersionNumber = "4.4.0";
+
         // The path difference between the root of assets and the root of the Leap Motion Core Assets.
         private static string pathDifference = "";
 
         // Array of paths to Leap Motion testing directories that will be removed from the project.
+        // Make sure each test directory ends with '/'
         private static readonly string[] pathsToDelete = new string[]
         {
             "LeapMotion/Core/Editor/Tests/",
@@ -136,8 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         {
             string versionLeapPath = Path.Combine(Application.dataPath, pathDifference, "LeapMotion", "Core", "Version.txt");
 
-            string leapCoreAssetsVersionNumber = "4.4.0";
-
             using (StreamReader streamReader = new StreamReader(versionLeapPath))
             {
                 while (streamReader.Peek() > -1)
@@ -163,12 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
         /// </summary>
         private static void RemoveTestingFolders()
         {
-            // If one of the leap test directories exists then the rest have not been deleted
+            // If one of the leap test directories exists, then we assume the rest have not been deleted
             if (Directory.Exists(Path.Combine(Application.dataPath, pathDifference, pathsToDelete[0])))
             {
                 foreach (string path in pathsToDelete)
                 {
-                    // What if leap is not imported to the root of assets?
+                    // Get the full path including the path difference in case the core assets are not imported to the root of the project
                     string fullPath = Path.Combine(Application.dataPath, pathDifference, path);
 
                     // If we are deleting a specific file, then we also need to remove the meta associated with the file
@@ -224,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                 List<string> references = leapDataProviderAsmDef.References.ToList();
                 
-                if(!references.Contains("LeapMotion"))
+                if (!references.Contains("LeapMotion"))
                 {
                     references.Add("LeapMotion");
                 }
@@ -326,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion
 
                     if (cscFileLine.Contains("-nowarn"))
                     {
-                        string[] currentWarningNumbers = cscFileLine.Split(',',':');
+                        string[] currentWarningNumbers = cscFileLine.Split(',', ':');
                         warningNumbers = currentWarningNumbers.ToList();
 
                         // Remove "nowarn" from the warningNumbers list
