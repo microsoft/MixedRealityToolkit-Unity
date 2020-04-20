@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         protected SerializedProperty leapControllerOrientation;
         protected SerializedProperty leapControllerOffset;
 
+        private const string leapDocURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
+
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -39,17 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         {
             RenderProfileHeader(ProfileTitle, ProfileDescription, target);
 
-            // Add the documentation help button
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                // Draw an empty title to align the documentation button to the right
-                InspectorUIUtility.DrawLabel("", InspectorUIUtility.DefaultFontSize, InspectorUIUtility.ColorTint10);
-
-                var helpURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/CrossPlatform/LeapMotionMRTK.html";
-
-                InspectorUIUtility.RenderDocumentationButton(helpURL);      
-            }
-
             RenderCustomInspector();
         }
 
@@ -60,6 +51,15 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors
         {
             using (new EditorGUI.DisabledGroupScope(IsProfileLock((BaseMixedRealityProfile)target)))
             {
+                // Add the documentation help button
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    // Draw an empty title to align the documentation button to the right
+                    InspectorUIUtility.DrawLabel("", InspectorUIUtility.DefaultFontSize, InspectorUIUtility.ColorTint10);
+
+                    InspectorUIUtility.RenderDocumentationButton(leapDocURL);
+                }
+
                 // Show warning if the leap core assets are not in the project
                 if (!LeapMotionUtilities.IsLeapInProject)
                 {

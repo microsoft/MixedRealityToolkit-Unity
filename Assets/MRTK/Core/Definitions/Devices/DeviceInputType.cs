@@ -32,9 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Trigger,
         TriggerTouch,
         TriggerNearTouch,
-        /// <summary>
-        /// TriggerPress maps to the Grab gesture.
-        /// </summary>
+        // TriggerPress, in some cases, maps to the Grab gesture.
         TriggerPress,
         /// <summary>
         /// 6 DoF Grip with position and rotation.

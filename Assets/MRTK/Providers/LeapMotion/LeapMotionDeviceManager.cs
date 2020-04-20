@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <summary>
         /// If true, the leap motion controller is connected and detected.
         /// </summary>
-        public bool IsLeapConnected => LeapMotionServiceProvider.IsConnected();
+        private bool IsLeapConnected => LeapMotionServiceProvider.IsConnected();
 
         /// <summary>
         /// The LeapServiceProvider is added to the scene at runtime in OnEnable. 
@@ -75,12 +75,12 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
         /// <summary>
         /// The Leap attachment hands, used to determine which hand is currently tracked by leap.
         /// </summary>
-        public AttachmentHands LeapAttachmentHands { get; protected set; }
+        private AttachmentHands leapAttachmentHands = null;
 
         /// <summary>
         /// List of hands that are currently in frame and detected by the leap motion controller. If there are no hands in the current frame, this list will be empty.
         /// </summary>
-        public List<Hand> CurrentHandsDetectedByLeap => LeapMotionServiceProvider.CurrentFrame.Hands;
+        private List<Hand> currentHandsDetectedByLeap => LeapMotionServiceProvider.CurrentFrame.Hands;
 
         // This value can only be set in the profile, the default is LeapControllerOrientation.Headset.
         private LeapControllerOrientation leapControllerOrientation => SettingsProfile.LeapControllerOrientation;
@@ -131,19 +131,19 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             }
 
             // Add the attachment hands to the scene for the purpose of getting the tracking state of each hand and joint positions
-            GameObject leapAttachmentHands = new GameObject("LeapAttachmentHands");
-            LeapAttachmentHands = leapAttachmentHands.AddComponent<AttachmentHands>();
+            GameObject leapAttachmentHandsGameObject = new GameObject("LeapAttachmentHands");
+            leapAttachmentHands = leapAttachmentHandsGameObject.AddComponent<AttachmentHands>();
 
             // The first hand in attachmentHands.attachmentHands is always left
-            leftAttachmentHand = LeapAttachmentHands.attachmentHands[0];
+            leftAttachmentHand = leapAttachmentHands.attachmentHands[0];
 
             // The second hand in attachmentHands.attachmentHands is always right
-            rightAttachmentHand = LeapAttachmentHands.attachmentHands[1];
+            rightAttachmentHand = leapAttachmentHands.attachmentHands[1];
 
             // Enable all attachment point flags in the leap hand. By default, only the wrist and the palm are enabled.
             foreach (TrackedHandJoint joint in Enum.GetValues(typeof(TrackedHandJoint)))
             {
-                LeapAttachmentHands.attachmentPoints |= LeapMotionArticulatedHand.ConvertMRTKJointToLeapJoint(joint);
+                leapAttachmentHands.attachmentPoints |= LeapMotionArticulatedHand.ConvertMRTKJointToLeapJoint(joint);
             }
         }
 
@@ -156,9 +156,9 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             if (Application.isPlaying)
             {
                 // Destroy AttachmentHands GameObject
-                if (LeapAttachmentHands != null)
+                if (leapAttachmentHands != null)
                 {
-                    GameObject.Destroy(LeapAttachmentHands.gameObject);
+                    GameObject.Destroy(leapAttachmentHands.gameObject);
                 }
 
                 if (LeapMotionServiceProvider != null)
@@ -168,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                     {
                         GameObject.Destroy(LeapMotionServiceProvider.gameObject);
                     }
-
                     // Destroy the LeapXRServiceProvider attached to the main camera if the controller orientation is headset
                     else if (leapControllerOrientation == LeapControllerOrientation.Headset)
                     {
@@ -269,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
                 if (IsLeapConnected)
                 {
                     // if the number of tracked hands in frame has changed
-                    if (CurrentHandsDetectedByLeap.Count != trackedHands.Count)
+                    if (currentHandsDetectedByLeap.Count != trackedHands.Count)
                     {
                         UpdateLeapTrackedHands(leftAttachmentHand.isTracked, rightAttachmentHand.isTracked);
                     }
