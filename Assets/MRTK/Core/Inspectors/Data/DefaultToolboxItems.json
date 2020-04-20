@@ -331,15 +331,7 @@
           "AssetModule": 5,
           "IconModule": 1,
           "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Bar.png",
-          "DocURL": ""
-        },
-        {
-          "Name": "Indeterminate",
-          "RelativeAssetPath": "Features/UX/Prefabs/Loader/IndeterminateLoader.prefab",
-          "AssetModule": 5,
-          "IconModule": 1,
-          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Orbs.png",
-          "DocURL": ""
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ProgressIndicator.html"
         },
         {
           "Name": "Rotating Orbs",
@@ -347,7 +339,7 @@
           "AssetModule": 5,
           "IconModule": 1,
           "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Ring.png",
-          "DocURL": ""
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ProgressIndicator.html"
         },
         {
           "Name": "Rotating Object",
@@ -355,6 +347,14 @@
           "AssetModule": 5,
           "IconModule": 1,
           "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Object.png",
+          "DocURL": "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ProgressIndicator.html"
+        },
+        {
+          "Name": "Indeterminate",
+          "RelativeAssetPath": "Features/UX/Prefabs/Loader/IndeterminateLoader.prefab",
+          "AssetModule": 5,
+          "IconModule": 1,
+          "RelativeIconPath": "Inspectors\\Icons\\MRTK_Toolbox_Indicator_Orbs.png",
           "DocURL": ""
         }
       ]
