@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var originalEdgeHandlerScale = bbox.RotateMidpoints[0].transform.localScale;
             var edgeHandlerPosition = bbox.RotateMidpoints[0].transform.position;
 
-            //Wait for the scaling/unscaling animation to finish
+            // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.2f);
 
             // Move the hand to a handler on the corner 
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return rightHand.MoveTo(cornerHandlerPosition, numSteps);
 
-            //Wait for the scaling/unscaling animation to finish
+            // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.4f);
 
             TestUtilities.AssertAboutEqual(bbox.RotateMidpoints[0].localScale, originalEdgeHandlerScale, "The edge handler changed mistakingly");
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Move the hand to a handler on the edge
             yield return rightHand.MoveTo(edgeHandlerPosition, numSteps);
-            //Wait for the scaling/unscaling animation to finish
+            // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.4f);
 
             TestUtilities.AssertAboutEqual(bbox.ScaleCorners[0].localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
