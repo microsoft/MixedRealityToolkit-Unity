@@ -10,8 +10,8 @@ using UnityEngine.Assertions;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Add a Dockable component to any object that has a <see cref="Dockable"/> and an <see cref="ObjectManipulator"/>
-    /// or <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/> to make it dockable in Docks. That allows this object to be used
+    /// Add a Dockable component to any object that has a <see cref="Dockable"/> and an <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/>
+    /// or <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> to make it dockable in Docks. That allows this object to be used
     /// as part of a palette, shelf or navigation bar together with other objects.
     /// </summary>
     /// <seealso cref="Dock"/>
