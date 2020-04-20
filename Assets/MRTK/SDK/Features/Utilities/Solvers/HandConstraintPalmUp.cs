@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Checks to see if the palm is currently facing the user; and if required, is it currently flat
+        /// Checks to see if the palm is currently facing the user; and if required, is it currently flat.
         /// </summary>
         /// <param name="jointedHand"></param>
         /// <param name="palmPose"></param>
