@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("With this active, solver will activate the UI after the palm threshold has been met and the user gazes at the activation point")]
+        [Tooltip("With this active, solver will activate the UI after the palm threshold has been met and the user gazes at the activation point. If eye gaze information is not available, the head gaze will be used.")]
         private bool useGazeActivation = false;
 
         /// <summary> 
