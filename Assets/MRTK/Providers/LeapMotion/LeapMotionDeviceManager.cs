@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.LeapMotion.Input
             if (Application.isPlaying)
             {
                 // Destroy AttachmentHands GameObject
-                if (LeapAttachmentHands.gameObject != null)
+                if (LeapAttachmentHands != null)
                 {
                     GameObject.Destroy(LeapAttachmentHands.gameObject);
                 }
