@@ -261,10 +261,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         Vector3 gazePosOnPlane = gazeRay.origin + gazeRay.direction.normalized * distanceToHandPlane;
                         Vector3 planePos = handPlane.ClosestPointOnPlane(gazePosOnPlane);
                         float gazePosDistToActivationPosition = (activationPoint - planePos).sqrMagnitude;
-                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold;
-                        bool gazeActivated = gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
+                        float gazeActivationThreshold = usedEyeGaze ? eyeGazeProximityThreshold : headGazeProximityThreshold; 
+                        gazeActivationAlreadyTriggered = (gazePosDistToActivationPosition < gazeActivationThreshold);
 
-                        return gazeActivated;
+                        return gazeActivationAlreadyTriggered;
                     }
                 }
 
