@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectManipulator.html")]
     public class ObjectManipulator : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
@@ -471,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (pointerIdToPointerMap.Count > 0)
             {
                 // Always mark the pointer data as used to prevent any other behavior to handle pointer events
-                // as long as the ManipulationHandler is active.
+                // as long as the ObjectManipulator is active.
                 // This is due to us reacting to both "Select" and "Grip" events.
                 eventData.Use();
             }
