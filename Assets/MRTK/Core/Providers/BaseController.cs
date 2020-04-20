@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsControllerMappingEnabled() && Interactions == null)
             {
                 // We can only enable controller profiles if mappings exist.
-                var controllerMappings = GetControllerMappings();
+                MixedRealityControllerMapping[] controllerMappings = GetControllerMappings();
 
                 // Have to test that a controller type has been registered in the profiles,
                 // else its Unity input manager mappings will not have been set up by the inspector.
@@ -180,10 +180,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (ControllerHandedness)
             {
                 case Handedness.Left:
-                    AssignControllerMappings(DefaultLeftHandedInteractions);
+                    AssignControllerMappings(DefaultLeftHandedInteractions ?? DefaultInteractions);
                     break;
                 case Handedness.Right:
-                    AssignControllerMappings(DefaultRightHandedInteractions);
+                    AssignControllerMappings(DefaultRightHandedInteractions ?? DefaultInteractions);
                     break;
                 default:
                     AssignControllerMappings(DefaultInteractions);

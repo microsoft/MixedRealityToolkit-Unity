@@ -12,14 +12,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public interface IMixedRealityEyeGazeProvider : IMixedRealityGazeProvider
     {
         /// <summary>
-        /// Whether eye gaze is valid. It may be invalid due to timeout or lack of tracking hardware or permissions.
+        /// Whether eye tracking data is currently been used for gaze rather then head pose. Eye Tracking must be both enabled and have valid data.
         /// </summary>
-        bool IsEyeGazeValid { get; }
+        bool IsEyeTrackingEnabledAndValid { get; }
+
+        /// <summary>
+        /// Whether eye tracking data is available. It may be unavailable due to timeout or lack of tracking hardware or permissions.
+        /// </summary>
+        bool IsEyeTrackingDataValid { get; }
 
         /// <summary>
         /// Whether the user is eye calibrated. It returns 'null', if the value has not yet received data from the eye tracking system.
         /// </summary>
         bool? IsEyeCalibrationValid { get; }
+
+        /// <summary>
+        /// The most recent eye tracking ray
+        /// </summary>
+        Ray LatestEyeGaze { get; }
 
         /// <summary>
         /// If true, eye-based tracking will be used when available.
@@ -29,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// and user approved, along with proper device eye calibration. This will fallback to head-based
         /// gaze when eye-based tracking is not available.
         /// </remarks>
-        bool UseEyeTracking { get; set; }
+        bool IsEyeTrackingEnabled { get; set; }
 
         /// <summary>
         /// DateTime in UTC when the signal was last updated.
@@ -50,6 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="provider">The provider raising the event.</param>
         /// <param name="userIsEyeCalibrated">Boolean whether the user is eye calibrated or not.</param>
+        /// <remarks>
+        /// Note that this function is not invoked when eye tracking is lost - use IsEyeTrackingAvailable
+        /// to detect when eye tracking is lost.
+        /// </remarks>
         void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated);
     }
 }

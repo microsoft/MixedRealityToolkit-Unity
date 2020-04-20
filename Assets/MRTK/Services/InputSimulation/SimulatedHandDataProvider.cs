@@ -26,7 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Show a tracked hand device
         public bool IsTracked = false;
         // Activate the pinch gesture
-        public bool IsPinching { get; private set; }
+        public bool IsPinching
+        {
+            get { return gesture == ArticulatedHandPose.GestureId.Pinch; }
+        }
 
         // Position of the hand in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
@@ -57,14 +60,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set
             {
                 gestureBlending = Mathf.Clamp(value, gestureBlending, 1.0f);
-
-                // Pinch is a special gesture that triggers the Select and TriggerPress input actions
-                IsPinching = (gesture == ArticulatedHandPose.GestureId.Pinch && gestureBlending > 0.9f);
             }
         }
 
         private float poseBlending = 0.0f;
         private ArticulatedHandPose pose = new ArticulatedHandPose();
+        private float viewportPositionZTarget;
+        private readonly float smoothScrollSpeed = 5f;
 
         public SimulatedHandState(Handedness _handedness)
         {
@@ -85,7 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                ViewportPosition += mouseDelta.viewportDelta;
+                ViewportPosition.x += mouseDelta.viewportDelta.x;
+				ViewportPosition.y += mouseDelta.viewportDelta.y;
+				viewportPositionZTarget += mouseDelta.viewportDelta.z;
             }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
@@ -102,11 +106,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Resets simulated hand position.
+        /// </summary>
+        /// <param name="resetTo">The position to reset hand to.</param>
+        public void ResetPosition(Vector3 resetTo)
+        {
+            ViewportPosition = resetTo;
+            viewportPositionZTarget = ViewportPosition.z;
+        }
+
         public void ResetRotation()
         {
             // Use wrist joint rotation as the default
             Quaternion rotationRef = pose.GetLocalJointPose(TrackedHandJoint.Wrist, handedness).Rotation;
             ViewportRotation = rotationRef.eulerAngles;
+        }
+
+        /// <summary>
+        /// Update information about the hand state or position.
+        /// </summary>
+        internal void Update()
+        {
+            ViewportPosition.z = Mathf.Lerp(ViewportPosition.z, viewportPositionZTarget, smoothScrollSpeed * Time.deltaTime);
         }
 
         internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
@@ -155,10 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         internal SimulatedHandState HandStateLeft;
         internal SimulatedHandState HandStateRight;
+        internal SimulatedHandState HandStateGaze;
 
         // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
         private bool isSimulatingRight = false;
+        private bool isSimulatingGaze => !isSimulatingLeft && !isSimulatingRight && !IsAlwaysVisibleLeft && !IsAlwaysVisibleRight;
         /// <summary>
         /// Left hand is controlled by user input.
         /// </summary>
@@ -171,12 +195,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Most recent time hand control was enabled,
         private float lastSimulationLeft = -1.0e6f;
         private float lastSimulationRight = -1.0e6f;
+        private float lastSimulationGaze = -1.0e6f;
         // Last timestamp when hands were tracked
         private long lastHandTrackedTimestampLeft = 0;
         private long lastHandTrackedTimestampRight = 0;
+        private long lastHandTrackedTimestampGaze = 0;
         // Cached delegates for hand joint generation
         private SimulatedHandData.HandJointDataGenerator generatorLeft;
         private SimulatedHandData.HandJointDataGenerator generatorRight;
+        private SimulatedHandData.HandJointDataGenerator generatorGaze;
 
         private static readonly KeyBinding cancelRotationKey = KeyBinding.FromKey(KeyCode.Escape);
         private readonly MouseRotationProvider mouseRotation = new MouseRotationProvider();
@@ -187,17 +214,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandStateLeft = new SimulatedHandState(Handedness.Left);
             HandStateRight = new SimulatedHandState(Handedness.Right);
+            HandStateGaze = new SimulatedHandState(Handedness.None);
 
             HandStateLeft.Gesture = profile.DefaultHandGesture;
             HandStateRight.Gesture = profile.DefaultHandGesture;
+            HandStateGaze.Gesture = profile.DefaultHandGesture;
         }
 
         /// <summary>
         /// Capture a snapshot of simulated hand data based on current state.
         /// </summary>
-        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, MouseDelta mouseDelta)
+        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, SimulatedHandData handDataGaze, MouseDelta mouseDelta)
         {
             SimulateUserInput(mouseDelta);
+
+            HandStateLeft.Update();
+            HandStateRight.Update();
+            HandStateGaze.Update();
 
             bool handDataChanged = false;
 
@@ -212,8 +245,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 generatorRight = HandStateRight.FillCurrentFrame;
             }
 
+            if (generatorGaze == null)
+            {
+                generatorGaze = HandStateGaze.FillCurrentFrame;
+            }
+
             handDataChanged |= handDataLeft.Update(HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
             handDataChanged |= handDataRight.Update(HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
+            handDataChanged |= handDataGaze.Update(HandStateGaze.IsTracked, HandStateGaze.IsPinching, generatorGaze);
 
             return handDataChanged;
         }
@@ -234,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
 
-            if (!Application.isFocused)
+            if (!Application.isFocused && !KeyInputSystem.SimulatingInput)
             {
                 isSimulatingLeft = false;
                 isSimulatingRight = false;
@@ -268,12 +307,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     isSimulatingRight = false;
                 }
+                if(isSimulatingGaze)
+                    lastSimulationGaze = time;
             }
 
             mouseRotation.Update(profile.HandRotateButton, cancelRotationKey, false);
 
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
+            SimulateHandInput(ref lastHandTrackedTimestampGaze, HandStateGaze, isSimulatingGaze, false, mouseDelta, mouseRotation.IsRotating);
 
             // This line explicitly uses unscaledDeltaTime because we don't want input simulation
             // to lag when the time scale is set to a value other than 1. Input should still continue
@@ -281,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.unscaledDeltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
+            HandStateGaze.GestureBlending += gestureAnimDelta;
         }
 
         /// Apply changes to one hand and update tracking
@@ -352,11 +395,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Start at current mouse position
                 Vector3 mousePos = UnityEngine.Input.mousePosition;
-                state.ViewportPosition = CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance));
+                state.ResetPosition(CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance)));
             }
             else
             {
-                state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
+                state.ResetPosition(new Vector3(0.5f, 0.5f, profile.DefaultHandDistance));
             }
 
             state.Gesture = profile.DefaultHandGesture;
@@ -375,15 +418,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If only #1 is checked and #2 is not checked, it's possible to "miss" transitions in cases where the user has
             // the left mouse button down and then while it is down, presses the right button, and then lifts the left.
             // It's not until both mouse buttons lift in that case, that the state finally "rests" to the DefaultHandGesture.
-            if (UnityEngine.Input.GetMouseButton(0) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            if (KeyInputSystem.GetKey(profile.InteractionButton) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.LeftMouseHandGesture;
             }
-            else if (UnityEngine.Input.GetMouseButton(1) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            else if (KeyInputSystem.GetKey(profile.MouseLookButton) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.RightMouseHandGesture;
             }
-            else if (UnityEngine.Input.GetMouseButton(2) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            else if (KeyInputSystem.GetKey(KeyBinding.FromMouseButton(KeyBinding.MouseButton.Middle)) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.MiddleMouseHandGesture;
             }
@@ -396,15 +439,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ArticulatedHandPose.GestureId ToggleGesture(ArticulatedHandPose.GestureId gesture)
         {
             // See comments in SelectGesture for why both the button down and gesture are checked.
-            if (UnityEngine.Input.GetMouseButtonDown(0) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            if (KeyInputSystem.GetKeyDown(profile.InteractionButton) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.LeftMouseHandGesture ? profile.LeftMouseHandGesture : profile.DefaultHandGesture);
             }
-            else if (UnityEngine.Input.GetMouseButtonDown(1) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            else if (KeyInputSystem.GetKeyDown(profile.MouseLookButton) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.RightMouseHandGesture ? profile.RightMouseHandGesture : profile.DefaultHandGesture);
             }
-            else if (UnityEngine.Input.GetMouseButtonDown(2) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
+            else if (KeyInputSystem.GetKeyDown(KeyBinding.FromMouseButton(KeyBinding.MouseButton.Middle)) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.MiddleMouseHandGesture ? profile.MiddleMouseHandGesture : profile.DefaultHandGesture);
             }

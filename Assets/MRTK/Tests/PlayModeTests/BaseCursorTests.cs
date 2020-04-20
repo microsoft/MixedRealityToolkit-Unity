@@ -27,13 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.
         private const int numFramesPerMove = 1;
 
-        GameObject cube;
+        private GameObject cube;
 
         // Initializes MRTK, instantiates the test content prefab 
         [SetUp]
         public void SetUp()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
             
             // Target frame rate is set to 50 to match the physics
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(state, baseCursor.CursorState);
         }
 
-        private void VerifyCursorContextFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorContextEnum context)
+        static internal void VerifyCursorContextFromPointers(IEnumerable<IMixedRealityPointer> pointers, CursorContextEnum context)
         {
             Assert.NotZero(pointers.ToReadOnlyCollection().Count);
             foreach (var pointer in pointers)
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        private void VerifyCursorContext(IMixedRealityCursor cursor, CursorContextEnum context)
+        static private void VerifyCursorContext(IMixedRealityCursor cursor, CursorContextEnum context)
         {
             var baseCursor = cursor as BaseCursor;
             Assert.IsNotNull(baseCursor);
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            //Part two tests if precalculated angularSize matches what is returned in baseCursor.ComputeScaleWithAngularScale() at two different distances
+            // Part two tests if precalculated angularSize matches what is returned in baseCursor.ComputeScaleWithAngularScale() at two different distances
 
             // FIRST DISTANCE
             float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));

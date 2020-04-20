@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void Init()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
+            PlayModeTestUtilities.Setup();
         }
 
         [TearDown]

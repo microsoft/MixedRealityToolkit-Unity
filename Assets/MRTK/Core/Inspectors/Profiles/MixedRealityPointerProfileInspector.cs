@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -28,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
         private SerializedProperty gazeProviderType;
+        private SerializedProperty useHeadGazeOverride;
+        private SerializedProperty isEyeTrackingEnabled;
         private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
         private SerializedProperty primaryPointerSelector;
@@ -43,6 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
             gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
             gazeProviderType = serializedObject.FindProperty("gazeProviderType");
+            useHeadGazeOverride = serializedObject.FindProperty("useHeadGazeOverride");
+            isEyeTrackingEnabled = serializedObject.FindProperty("isEyeTrackingEnabled");
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
@@ -65,6 +68,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(gazeCursorPrefab);
                     EditorGUILayout.PropertyField(gazeProviderType);
+                    EditorGUILayout.PropertyField(useHeadGazeOverride);
+                    EditorGUILayout.PropertyField(isEyeTrackingEnabled);
                     EditorGUILayout.Space();
 
                     if (InspectorUIUtility.RenderIndentedButton("Customize Gaze Provider Settings"))

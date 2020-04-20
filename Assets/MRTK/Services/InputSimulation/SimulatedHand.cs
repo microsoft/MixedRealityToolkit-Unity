@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Snapshot of simulated hand data.
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class SimulatedHandData
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Copy(SimulatedHandData other)
         {
             isTracked = other.isTracked;
-            isPinching = other.isPinching; 
+            isPinching = other.isPinching;
             for (int i = 0; i < jointCount; ++i)
             {
                 joints[i] = other.joints[i];
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isTracked)
             {
-                generator(Joints);
+                generator?.Invoke(Joints);
                 handDataChanged = true;
             }
 
@@ -79,14 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor.
         /// </summary>
         protected SimulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-                : base(trackingState, controllerHandedness, inputSource, interactions)
-        {}
+                : base(trackingState, controllerHandedness, inputSource, interactions) { }
 
         /// <inheritdoc />
-        public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
-        {
-            return jointPoses.TryGetValue(joint, out pose);
-        }
+        public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose) => jointPoses.TryGetValue(joint, out pose);
 
         public void UpdateState(SimulatedHandData handData)
         {

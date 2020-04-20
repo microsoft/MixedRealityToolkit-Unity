@@ -72,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Indent our rect, then reset indent to 0 so sub-properties don't get doubly indented
             position = EditorGUI.IndentedRect(position);
-            //position.width = propertyWidth;
             EditorGUI.indentLevel = 0;
 
             // Draw a box around our item

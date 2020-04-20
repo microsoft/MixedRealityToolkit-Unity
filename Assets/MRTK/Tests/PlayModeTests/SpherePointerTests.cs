@@ -31,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // Grabbable cube that we want to be manipulating
         private GameObject cube;
 
+        // Grabbable cube that we want to be manipulating to tests overlaps
+        private GameObject overlapRect;
+
         // Initializes MRTK, instantiates the test content prefab and adds a pointer handler to the test collider
         [SetUp]
         public override void Setup()
@@ -39,17 +42,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             float centerZ = 2.0f;
             float scale = 0.2f;
+            colliderSurfaceZ = centerZ - scale * 0.5f;
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, centerZ);
             cube.transform.localScale = Vector3.one * scale;
-
-            colliderSurfaceZ = centerZ - scale * 0.5f;
 
             var collider = cube.GetComponentInChildren<Collider>();
             Assert.IsNotNull(collider);
 
             var grabbable = cube.AddComponent<NearInteractionGrabbable>();
             Assert.IsNotNull(grabbable);
+            
+            float overlapCenterZ = centerZ;
+            overlapRect = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            overlapRect.transform.localPosition = new Vector3(0, 0, overlapCenterZ);
+            overlapRect.transform.localScale = new Vector3(1.5f,1.5f,1f) * scale;
+            overlapRect.SetActive(false);
+
+            var overlapCollider = overlapRect.GetComponentInChildren<Collider>();
+            Assert.IsNotNull(overlapCollider);
+
+            var overlapGrabbable = overlapRect.AddComponent<NearInteractionGrabbable>();
+            Assert.IsNotNull(overlapGrabbable);
         }
 
         [TearDown]
@@ -107,6 +121,54 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             Assert.True(pointer.IsNearObject);
             Assert.True(pointer.IsInteractionEnabled);
+        }
+
+        /// <summary>
+        /// Verifies that SpherePointer correctly returns IsNearObject and IsInteractionEnabled
+        /// and only objects on the correct grabbable layer are in focus
+        /// </summary>
+        [UnityTest]
+        public IEnumerator GrabLayerMasksWithOverlap()
+        {
+            // Initialize hand
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+
+            var pointer = rightHand.GetPointer<SpherePointer>();
+            Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");
+            Vector3 interactionEnabledPos = new Vector3(0.05f, 0, colliderSurfaceZ - pointer.SphereCastRadius);
+
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Initialize overlapRect
+            overlapRect.SetActive(true);
+
+            // Set the cube's layer to spatial mesh, which sphere pointer should be ignoring
+            // assumption: layer 31 is the spatial mesh layer
+            cube.SetLayerRecursively(31);
+            yield return null;
+            Assert.False(pointer.IsNearObject);
+            Assert.False(pointer.IsInteractionEnabled);
+
+            // Move hand to object, IsNearObject, IsInteractionEnabled should be true
+            yield return rightHand.MoveTo(interactionEnabledPos);
+            Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == overlapRect, " the overlapping rectangle was not in focus");
+            Assert.True(pointer.IsNearObject);
+            Assert.True(pointer.IsInteractionEnabled);
+
+            // Set cube's layer back to default
+            // Set overlapRect's layer to spatial mesh, which sphere pointer should be ignoring
+            // assumption: layer 31 is the spatial mesh layer
+            overlapRect.SetLayerRecursively(31);
+            cube.SetLayerRecursively(0);
+            yield return null;
+            Assert.True(CoreServices.InputSystem.FocusProvider.GetFocusedObject(pointer) == cube, " the inner cube was not in focus");
+
+            // Reinitialize the overlapRect
+            overlapRect.SetLayerRecursively(0);
+            overlapRect.SetActive(false);
         }
 
         /// <summary>

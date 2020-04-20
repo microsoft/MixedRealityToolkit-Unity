@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test ggv zooming instantiated from prefab
+        /// Test ggv (gaze, gesture, and voice) zooming instantiated from prefab
         /// </summary>
         [UnityTest]
         public IEnumerator Prefab_GGVZoom()

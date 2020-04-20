@@ -211,11 +211,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             {
                                 if (PlacementSurface == PlacementSurfaces.Horizontal)
                                 {
-                                    previewGameObject.transform.position = plausibleLocation.Value + previewGameObject.transform.localScale.y * new Vector3(0, 1, 0) / 2;  //EyeInputManager.Instance.HitPosition + pPreviewGameObj.transform.localScale.y * new Vector3(0, 1, 0);
+                                    previewGameObject.transform.position = plausibleLocation.Value + previewGameObject.transform.localScale.y * new Vector3(0, 1, 0) / 2;  // EyeInputManager.Instance.HitPosition + pPreviewGameObj.transform.localScale.y * new Vector3(0, 1, 0);
                                 }
                                 else
                                 {
-                                    previewGameObject.transform.position = plausibleLocation.Value; //EyeInputManager.Instance.HitPosition;
+                                    previewGameObject.transform.position = plausibleLocation.Value; // EyeInputManager.Instance.HitPosition;
                                 }
                                 prevPreviewPos = previewGameObject.transform.position;
                             }

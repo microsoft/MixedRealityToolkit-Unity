@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private static readonly HashSet<string> ExcludedYamlAssetExtensions = new HashSet<string> { ".jpg", ".csv", ".meta", ".pfx", ".txt", ".nuspec", ".asmdef", ".yml", ".cs", ".md", ".json", ".ttf", ".png", ".shader", ".wav", ".bin", ".gltf", ".glb", ".fbx", ".pdf", ".cginc", ".rsp", ".xml", ".targets", ".props", ".template", ".csproj", ".sln", ".psd", ".room" };
         private static readonly HashSet<string> ExcludedSuffixFromCopy = new HashSet<string>() { ".cs", ".cs.meta", ".asmdef", ".asmdef.meta" };
 
-        private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); //Guid, FileName
+        private static Dictionary<string, string> nonClassDictionary = new Dictionary<string, string>(); // Guid, FileName
 
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     {
                         throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
                     }
-                    //{ fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
+                    // { fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
 
                     await writer.WriteLineAsync(line);
                 }
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 nonClassDictionary.Add(guid, Path.GetFileName(filePath));
                                 // anborod: This warning is very noisy, and often is correct due to "interface", "abstract", "enum" classes that won't return type with call to GetClass above.
                                 // To turn it on, we should do extra checking, but removing for now.
-                                //Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
+                                // Debug.LogWarning($"Found script that we can't get type from: {monoScript.name}");
                             }
                         }
                     }
@@ -567,16 +567,16 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             foreach (KeyValuePair<AssemblyInformation, FileInfo[]> mapping in mappings)
             {
-                //Editor is guid + 1; which has done when we processed Editor DLLs
-                //Standalone is guid + 2
-                //UAP is guid + 3
-                //Editor PDB is + 4
-                //Standalone PDB is +5
-                //UAP PDB is +6
-                //Android is guid + 7
-                //iOS is guid + 8
-                //Android PDB is +9
-                //iOS  PDB is +10
+                // Editor is guid + 1; which has done when we processed Editor DLLs
+                // Standalone is guid + 2
+                // UAP is guid + 3
+                // Editor PDB is + 4
+                // Standalone PDB is +5
+                // UAP PDB is +6
+                // Android is guid + 7
+                // iOS is guid + 8
+                // Android PDB is +9
+                // iOS  PDB is +10
                 string templateToUse = editorMetaFileTemplate;
                 foreach (FileInfo file in mapping.Value)
                 {
@@ -675,7 +675,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             StringBuilder guidBuilder = new StringBuilder();
             guid = guid.ToLower();
 
-            //Add one to each hexit in the guid to make it unique, but also reproducible
+            // Add one to each hexit in the guid to make it unique, but also reproducible
             foreach (char hexit in guid)
             {
                 switch (hexit)

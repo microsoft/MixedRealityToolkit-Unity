@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private bool showOverrideButtons = true;
         private bool showUnityEvents = false;
 
-        //Serialized properties purely for inspector visualization
+        // Serialized properties purely for inspector visualization
         private SerializedProperty nodeList;
         private SerializedProperty releaseDistance;
 
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
             disableClippedItems = serializedObject.FindProperty("disableClippedItems");
-            //serialized properties for visualization
+            // Serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
             releaseDistance = serializedObject.FindProperty("releaseDistance");
         }
@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 DisplayTouchPlane(scrollContainer);
 
-                //Display the item number on the list items
+                // Display the item number on the list items
                 for (int i = 0; i <= nodeList.arraySize-1; i++)
                 {
                     var node = nodeList.GetArrayElementAtIndex(i);

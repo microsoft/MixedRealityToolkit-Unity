@@ -57,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (BackgroundRenderer == null)
                 return;
 
-            //Get the size of the mesh and use this to adjust the local content size on the x / y axis
-            //This will accommodate meshes that aren't built to 1,1 scale
+            // Get the size of the mesh and use this to adjust the local content size on the x / y axis
+            // This will accommodate meshes that aren't built to 1,1 scale
             Bounds meshBounds = BackgroundRenderer.GetComponent<MeshFilter>().sharedMesh.bounds;
             localContentSize.x /= meshBounds.size.x;
             localContentSize.y /= meshBounds.size.y;

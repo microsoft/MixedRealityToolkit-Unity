@@ -151,8 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 {
                     await GetPowerStateAsync(targetDevice);
                 }
-
-                //Debug.LogError(response.ResponseBody);
                 return null;
             }
 
@@ -858,11 +856,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
                 }
 
                 string responseHeaders = webRequest.GetResponseHeaders().Aggregate(string.Empty, (current, header) => $"\n{header.Key}: {header.Value}");
-                Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{webRequest.downloadHandler?.text}{responseHeaders}");
-                return new Response(false, webRequest.downloadHandler?.text, webRequest.downloadHandler?.data, webRequest.responseCode);
+                string downloadHandlerText = webRequest.downloadHandler?.text;
+                Debug.LogError($"REST Auth Error: {webRequest.responseCode}\n{downloadHandlerText}{responseHeaders}");
+                return new Response(false, $"{downloadHandlerText}", webRequest.downloadHandler?.data, webRequest.responseCode);
             }
 
-            return new Response(true, webRequest.GetResponseHeader("Set-Cookie"), webRequest.downloadHandler?.data, webRequest.responseCode);
+            return new Response(true, () => webRequest.GetResponseHeader("Set-Cookie"), () => webRequest.downloadHandler?.data, webRequest.responseCode);
         }
     }
 }

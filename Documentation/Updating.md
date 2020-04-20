@@ -67,7 +67,27 @@ If your project was created using the [Mixed Reality Toolkit NuGet packages](MRT
 
 ## Updating 2.3.0 to 2.4.0
 
+[Folder renames](#folder-renames-in-240)
 [API changes](#api-changes-in-240)
+
+### Folder renames in 2.4.0
+
+The MixedRealityToolkit folders have been renamed and moved into a common hierarchy in version 2.4. If an application
+uses hard coded paths to MRTK resources, they will need to be updated per the following table.
+
+| Previous Folder | New Folder |
+| --- | --- |
+| MixedRealityToolkit | MRTK/Core |
+| MixedRealityToolkit.Examples | MRTK/Examples |
+| MixedRealityToolkit.Extensions | MRTK/Extensions |
+| MixedRealityToolkit.Providers | MRTK/Providers |
+| MixedRealityToolkit.SDK | MRTK/SDK |
+| MixedRealityToolkit.Services | MRTK/Services |
+| MixedRealityToolkit.Tests | MRTK/Tests |
+| MixedRealityToolkit.Tools | MRTK/Tools |
+
+> [!IMPORTANT]
+> The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
 ### API changes in 2.4.0
 
@@ -87,6 +107,11 @@ The following WindowsApiChecker properties have been marked as obsolete. Please 
 - UniversalApiContractV3_IsAvailable
 
 There are no plans to add properties to WindowsApiChecker for future API contract versions.
+
+**GltfMeshPrimitiveAttributes read-only**
+
+The gltf mesh primitive attributes used to be settable, they are now read-only. Their values
+will be set once when deserialized.
 
 ## Updating 2.2.0 to 2.3.0
 

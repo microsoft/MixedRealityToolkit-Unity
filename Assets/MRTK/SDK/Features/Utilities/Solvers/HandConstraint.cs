@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 bool isValidController = IsValidController(trackedController);
                 if (!isValidController)
                 {
-                    // Attempt to switch by hands by asking solver handler to prefer the other controller if available
+                    // Attempt to switch hands by asking solver handler to prefer the other controller if available
                     SolverHandler.PreferredTrackedHandedness = SolverHandler.CurrentTrackedHandedness.GetOppositeHandedness();
                     SolverHandler.RefreshTrackedObject();
 
@@ -536,7 +536,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return controller.ControllerHandedness != Handedness.None;
         }
 
-        private static IMixedRealityController GetController(Handedness handedness)
+        /// <summary>
+        /// Returns the first detected controller in the input system that matches the passed-in handedness
+        /// </summary>
+        /// <param name="handedness">The handedness of the returned controller</param>
+        /// <returns>The IMixedRealityController for the desired handedness, or null if none are present.</returns>
+        protected static IMixedRealityController GetController(Handedness handedness)
         {
             foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
             {

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public int pointerDraggedCount = 0;
         public int pointerUpCount = 0;
         public int pointerClickedCount = 0;
-        public int speechCount = 0;
+        public List<string> speechCommandsReceived = new List<string>();
 
         protected override void OnEnable()
         {
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             pointerDraggedCount = 0;
             pointerUpCount = 0;
             pointerClickedCount = 0;
-            speechCount = 0;
+            speechCommandsReceived = new List<string>();
 
             if (useObjectBasedRegistration)
             {
@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
-            speechCount++;
+            speechCommandsReceived.Add(eventData.Command.Keyword);
         }
     }
 

@@ -29,6 +29,11 @@ If HoloLens 2 hand joints and eye tracking aren't working over remoting, there a
 
 #### MSBuildForUnity package import via writing into the package.manifest
 
+> [!Note]
+> There is a known issue that prevents MSBuild for Unity from functioning properly on some versions of Unity 2019. To avoid this issue, the MRTK does not support MSBuild for Unity on Unity 2019.3.
+> 
+> To acquire the required NuGet package when running on Unity 2019.3, please refer to the [manual installation instructions](#manual-dotnetadapter-installation).
+
 The best way to check is to open Window -> Package Manager and make sure MSBuild for Unity shows up in the packages list. If it's there, assume this step succeeded. If it's not there, try running Mixed Reality Toolkit -> Utilities -> Configure Unity and repeat the steps above for running the MRTK Configurator.
 
 ![MSB4U Package Manager](../Images/Tools/Remoting/MSB4UPackageManager.png)
@@ -41,7 +46,7 @@ The best way to check is to search the Assets folder for DotNetWinRT.dll. If thi
 
 #### DotNetAdapter.csproj missing
 
-If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
+If the previous step didn't succeed, it's good to double check that the appropriate csproj exists in your project. Check under MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter and check that DotNetAdapter.csproj exists. One common case where this file might not exist is if your .gitignore ignores csproj files and you've committed the MRTK files to a remote repo. In this case, please make sure you force add DotNetAdapter.csproj with `git add -f [path/to]/DotNetAdapter.csproj` to make sure it gets committed and cloned for all other collaborators or computers.
 
 #### `DOTNETWINRT_PRESENT` #define written into player settings
 
@@ -56,12 +61,35 @@ installed and present in the PATH environment variable. If neither of those requ
  true, this error may manifest in the Unity console:
 
 ```cmd
-Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MixedRealityToolkit.Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
+Win32Exception: ApplicationName='dotnet', CommandLine='msbuild DotNetAdapter.csproj -restore  -v:minimal -p:NuGetInteractive=true  -t:Build -p:Configuration=Release -nologo', CurrentDirectory='C:\src\Assets\MRTK\Providers\WindowsMixedReality\Shared\DotNetAdapter', Native error= The system cannot find the file specified.
 ```
 
 The solution to this is to ensure that the [.NET Core CLI tools are installed](https://docs.microsoft.com/dotnet/core/tools/?tabs=netcore2x) and reboot the system to force all apps to get a refreshed system path.
 
 If hand joints over remoting are still not working after following the above steps, there might be something misconfigured in the profiles for general hand joints on-device. In that case, please [reach out on one of our help resources](../GettingStartedWithTheMRTK.md#getting-help).
+
+#### Manual DotNetAdapter installation
+
+In the event that the installation of the DotNetAdapter cannot be performed via MSBuild for Unity, the following steps can be performed.
+
+> [!Important]
+> Using both MSBuild for Unity and another NuGet client within the same project is not supported and can result in potential dependency resolution issues.
+
+1. Install a NuGet client
+
+    > [!Note]
+    > The following instructions presume use of [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
+
+1. Navigate to the NuGet client UI
+
+    ![Launch NuGet UI](../Images/Tools/Remoting/LaunchNuGetForUnity.png)
+
+1. Locate the `Microsoft.Windows.MixedReality.DotNetWinRT` package
+
+    ![Locate Package](../Images/Tools/Remoting/LocateDotNetWinRT.png)
+
+1. Select Install
+
 
 ### Removing HoloLens 2-specific remoting support
 
@@ -71,7 +99,7 @@ You can also temporarily remove the adapter to workaround your issue via the fol
 
 1. In Unity, go to Window -> Package Manager and uninstall MSBuild for Unity.
 1. Search for DotNetWinRT.dll in your assets list in Unity and either delete the DLL or delete the Plugins (MRTK 2.2 or earlier) or Dependencies (MRTK 2.3 or later) folder that contains it a few levels up. That should remove these conflicting namespaces, while keeping MRTK around.
-1. (Optional) Navigate to MixedRealityToolkit.Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
+1. (Optional) Navigate to MRTK / Providers / WindowsMixedReality / Shared / DotNetAdapter in your file explorer (not Unity's Assets view) and delete the `.bin` and `.obj` folders. This removes the local cache of NuGet restored packages for DotNetWinRT.
 1. If you run the MRTK Configurator again, make sure you don't re-enable MSBuild for Unity.
 
 ## Connecting to the HoloLens

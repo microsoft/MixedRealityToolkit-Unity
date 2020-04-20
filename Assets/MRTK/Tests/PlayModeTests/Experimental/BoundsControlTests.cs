@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 endRotation = new Vector3(-0.18f, -0.109f, 0.504f); // end position for far interaction scaling
 
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
             // grab front right rotation point
             yield return hand.MoveTo(rightFrontRotationHandlePoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 scalePoint = new Vector3(0.165f, 0.267f, 0.794f); // end position for far interaction scaling
 
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
             yield return hand.MoveTo(rightCornerInteractionPoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);
@@ -697,7 +697,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // first test to interact with the cube without activating the app bar
             // this shouldn't scale the cube
             TestHand hand = new TestHand(Handedness.Left);
-            yield return hand.Show(pointOnCube); //initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
+            yield return hand.Show(pointOnCube); // Initially make sure that hand ray is pointed on cube surface so we won't go behind the cube with our ray
             yield return hand.MoveTo(rightCornerInteractionPoint);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.MoveTo(scalePoint);

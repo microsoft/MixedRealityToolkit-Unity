@@ -4766,7 +4766,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix34_t
     {
-        public float m0; //float[3][4]
+        public float m0; // float[3][4]
         public float m1;
         public float m2;
         public float m3;
@@ -4782,7 +4782,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix33_t
     {
-        public float m0; //float[3][3]
+        public float m0; // float[3][3]
         public float m1;
         public float m2;
         public float m3;
@@ -4795,7 +4795,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdMatrix44_t
     {
-        public float m0; //float[4][4]
+        public float m0; // float[4][4]
         public float m1;
         public float m2;
         public float m3;
@@ -4815,14 +4815,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector3_t
     {
-        public float v0; //float[3]
+        public float v0; // float[3]
         public float v1;
         public float v2;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector4_t
     {
-        public float v0; //float[4]
+        public float v0; // float[4]
         public float v1;
         public float v2;
         public float v3;
@@ -4830,14 +4830,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector3d_t
     {
-        public double v0; //double[3]
+        public double v0; // double[3]
         public double v1;
         public double v2;
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdVector2_t
     {
-        public float v0; //float[2]
+        public float v0; // float[2]
         public float v1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -4867,7 +4867,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct HmdQuad_t
     {
-        public HmdVector3_t vCorners0; //HmdVector3_t[4]
+        public HmdVector3_t vCorners0; // HmdVector3_t[4]
         public HmdVector3_t vCorners1;
         public HmdVector3_t vCorners2;
         public HmdVector3_t vCorners3;
@@ -4881,11 +4881,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct DistortionCoordinates_t
     {
-        public float rfRed0; //float[2]
+        public float rfRed0; // float[2]
         public float rfRed1;
-        public float rfGreen0; //float[2]
+        public float rfGreen0; // float[2]
         public float rfGreen1;
-        public float rfBlue0; //float[2]
+        public float rfBlue0; // float[2]
         public float rfBlue1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -5209,7 +5209,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public uint unPacketNum;
         public ulong ulButtonPressed;
         public ulong ulButtonTouched;
-        public VRControllerAxis_t rAxis0; //VRControllerAxis_t[5]
+        public VRControllerAxis_t rAxis0; // VRControllerAxis_t[5]
         public VRControllerAxis_t rAxis1;
         public VRControllerAxis_t rAxis2;
         public VRControllerAxis_t rAxis3;
@@ -5222,7 +5222,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
         public uint unPacketNum;
         public ulong ulButtonPressed;
         public ulong ulButtonTouched;
-        public VRControllerAxis_t rAxis0; //VRControllerAxis_t[5]
+        public VRControllerAxis_t rAxis0; // VRControllerAxis_t[5]
         public VRControllerAxis_t rAxis1;
         public VRControllerAxis_t rAxis2;
         public VRControllerAxis_t rAxis3;
@@ -5407,7 +5407,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     {
         public HmdVector3_t vPosition;
         public HmdVector3_t vNormal;
-        public float rfTextureCoord0; //float[2]
+        public float rfTextureCoord0; // float[2]
         public float rfTextureCoord1;
     }
     [StructLayout(LayoutKind.Sequential)]
@@ -5687,12 +5687,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
     [StructLayout(LayoutKind.Sequential)]
     public struct VRSkeletalSummaryData_t
     {
-        public float flFingerCurl0; //float[5]
+        public float flFingerCurl0; // float[5]
         public float flFingerCurl1;
         public float flFingerCurl2;
         public float flFingerCurl3;
         public float flFingerCurl4;
-        public float flFingerSplay0; //float[4]
+        public float flFingerSplay0; // float[4]
         public float flFingerSplay1;
         public float flFingerSplay2;
         public float flFingerSplay3;

@@ -106,6 +106,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             objManip.OnHoverEntered = manipHandler.OnHoverEntered;
             objManip.OnHoverExited = manipHandler.OnHoverExited;
 
+            // finally check if there's a CursorContextManipulationHandler on the gameObject that we have to swap
+            CursorContextManipulationHandler cursorContextManipHandler = gameObject.GetComponent<CursorContextManipulationHandler>();
+            if (cursorContextManipHandler)
+            {
+                gameObject.AddComponent<CursorContextObjectManipulator>();
+                // remove old component
+                Object.DestroyImmediate(cursorContextManipHandler);
+            }
+
             Object.DestroyImmediate(manipHandler);
         }
 
