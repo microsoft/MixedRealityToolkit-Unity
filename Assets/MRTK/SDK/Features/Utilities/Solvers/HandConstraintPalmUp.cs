@@ -207,10 +207,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Checks to see if the palm is currently facing the user; and if required, is it currently flat
         /// </summary>
-        /// <param name="jointedHand"></param>
-        /// <param name="palmPose"></param>
-        /// <param name="palmCameraAngle"></param>
-        /// <returns></returns>
+        /// <param name="jointedHand">Reference to the user hand that is checked if the palm is meeting the threshold requirements</param>
+        /// <param name="palmPose">Reference to the palm pose that's used to determine if the hand is flat or not</param>
+        /// <param name="palmCameraAngle">The palm's current angle that's used to determine if it meets the min threshold or not</param>
+        /// <returns>True if the palm is meeting the threshold requirements</returns>
         private bool IsPalmMeetingThresholdRequirements(IMixedRealityHand jointedHand, MixedRealityPose palmPose, float palmCameraAngle)
         {
             if (requireFlatHand)
@@ -240,8 +240,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// Checks to see if the user is currently gazing at the activation point; it first attempts to do so 
         /// using eyegaze, and then falls back to head-based gaze if eyegaze isn't available for use.
         /// </summary>
-        /// <param name="jointedHand"></param>
-        /// <returns></returns>
+        /// <param name="jointedHand">Hand reference to the user's hand that is used to determine if user gaze meets the gaze threshold</param>
+        /// <returns>True if the user's gaze is within the proximity threshold of the activation point (both relative to the hand plane)</returns>
         private bool IsUserGazeMeetingThresholdRequirements(IMixedRealityHand jointedHand)
         {
             Ray gazeRay;
@@ -289,10 +289,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// needs to gaze at to activate the constrained object.
         /// On a failure, it assigns them to be default values and then returns false
         /// </summary>
-        /// <param name="jointedHand"></param>
-        /// <param name="handPlane"></param>
-        /// <param name="activationPoint"></param>
-        /// <returns></returns>
+        /// <param name="jointedHand">Hand reference to the user's hand that is used to generate the hand plane and activation point</param>
+        /// <param name="handPlane">Out Plane that represents the hand and is raycasted against to determine whether the users gaze is close to the activation point or not</param>
+        /// <param name="activationPoint">Out Vector3 that represents the point on the hand-based plane to determine whther the menu activates or not</param>
+        /// <returns>True if the function can properly generate an activation point using the hand-based plane</returns>
         private bool TryGenerateHandPlaneAndActivationPoint(IMixedRealityHand jointedHand, out Plane handPlane, out Vector3 activationPoint)
         {
             // Generate the hand plane that we're using to generate a distance value.
@@ -331,8 +331,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// activate the attached menu. If joints successfully obtained, assigns activation point for currently selected
         /// safe zone and returns true. On failure, assigns it Vector3.zero and returns false.
         /// </summary>
-        /// <param name="jointedHand"></param>
-        /// <returns></returns>
+        /// <param name="jointedHand">An instance of the user's hand that is being used to generate an activation point for the menu</param>
+        /// <param name="activationPoint"> Out Vector3 that represents the generated activation point for the selected safe zone</param>
+        /// <returns>True if all of the joints used for generating the activation point are present (and the point can be calculated)</returns>
         private bool TryGenerateActivationPoint(IMixedRealityHand jointedHand, out Vector3 activationPoint)
         {
             TrackedHandJoint referenceJoint1;
@@ -385,7 +386,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// logical checks invoked during IsValidController to determine whether the menu should reattach
         /// to the hand or not.
         /// </summary>
-        /// <returns></returns>
         private IEnumerator WorldLockedReattachCheck()
         {
             while (!SolverHandler.UpdateSolvers && useGazeActivation)

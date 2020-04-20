@@ -1181,10 +1181,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// A generalized testing functionality for the HandConstraintPalmUp script that takes in a safezone and target handedness configuration
         /// and then tests it (using those configurations to generate a target test hand placement for activation)
         /// </summary>
-        /// <param name="safeZone"></param>
-        /// <param name="targetHand"></param>
-        /// <returns></returns>
-        private IEnumerator TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone safeZone, Handedness targetHand)
+        /// <param name="safeZone"> The safezone tested against for this test</param>
+        /// <param name="targetHandedness">The target handedness tested against for these activation tests</param>=
+        private IEnumerator TestHandConstraintPalmUpGazeActivationByZoneAndHand(HandConstraint.SolverSafeZone safeZone, Handedness targetHandedness)
         {
             // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraintPalmUp>();
@@ -1207,14 +1206,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var cameraTransform = CameraCache.Main.transform;
             // Place hand 1 meter in front of user, and near the activation zone
-            var handTestPos = cameraTransform.position + cameraTransform.forward + DetermineHandOriginPositionOffset(safeZone, targetHand);
+            var handTestPos = cameraTransform.position + cameraTransform.forward + DetermineHandOriginPositionOffset(safeZone, targetHandedness);
 
             // Generate hand rotation with hand palm facing camera
             var cameraLookVector = (handTestPos - cameraTransform.position).normalized;
             var handRotation = Quaternion.LookRotation(cameraTransform.up, cameraLookVector);
 
             // Add a hand based on the passed in handedness.
-            var hand = new TestHand(targetHand);
+            var hand = new TestHand(targetHandedness);
             yield return hand.Show(handTestPos);
             yield return hand.SetRotation(handRotation);
             yield return null;
@@ -1233,15 +1232,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Based on the type of handconstraint solver safe zone and handedness, returns the offset that the tested hand should apply initially.
         /// </summary>
-        /// <param name="safeZone"></param>
-        /// <param name="targetHand"></param>
-        /// <returns></returns>
-        private Vector3 DetermineHandOriginPositionOffset(HandConstraint.SolverSafeZone safeZone, Handedness targetHand)
+        /// <param name="safeZone">The target safezone type that's used to determine the position calculations done</param>
+        /// <param name="targetHandedness"> The target handedness that's used to calculate the initial activation position</param>
+        /// <returns>The Vector3 representing where the hand should be positioned to during the test to trigger the activation</returns>
+        private Vector3 DetermineHandOriginPositionOffset(HandConstraint.SolverSafeZone safeZone, Handedness targetHandedness)
         {
             switch(safeZone)
             {   
                 case HandConstraint.SolverSafeZone.RadialSide:
-                    if (targetHand == Handedness.Left)
+                    if (targetHandedness == Handedness.Left)
                     {
                         return Vector3.left * RadialUlnarTestActivationPointModifier;
                     }
@@ -1258,7 +1257,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 default:
                 case HandConstraint.SolverSafeZone.UlnarSide:
-                    if (targetHand == Handedness.Left)
+                    if (targetHandedness == Handedness.Left)
                     {
                         return Vector3.right * RadialUlnarTestActivationPointModifier;
                     }
