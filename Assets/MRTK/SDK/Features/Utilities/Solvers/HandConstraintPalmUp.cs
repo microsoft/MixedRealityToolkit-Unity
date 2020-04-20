@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
