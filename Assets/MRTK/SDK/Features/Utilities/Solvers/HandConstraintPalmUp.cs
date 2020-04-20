@@ -137,7 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         /// <summary>
         /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
-        /// palm is currently facing the user.
+        /// palm is currently facing the user. This function will modify the position and rotation behavior of the hand constraint if 
+        /// the followHandUntilFacingCamera variable is enabled.
         /// </summary>
         /// <param name="controller">The hand to check against.</param>
         /// <returns>True if this hand should be used for tracking.</returns>
