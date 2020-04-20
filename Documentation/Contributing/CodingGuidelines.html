@@ -184,15 +184,15 @@ public class MyNewComponent : MonoBehaviour
                 var currentHandedness = (Handedness)handedness.enumValueIndex;
 
                 handedness.enumValueIndex = (int)(Handedness)EditorGUI.EnumPopup(
-                    position, 
-                    label, 
+                    position,
+                    label,
                     currentHandedness,
-                    (value) =&gt; { 
+                    (value) =&gt; {
                         // This function is executed by Unity to determine if a possible enum value
                         // is valid for selection in the editor view
                         // In this case, only Handedness.Left and Handedness.Right can be selected
-                        return (Handedness)value == Handedness.Left 
-                        || (Handedness)value == Handedness.Right; 
+                        return (Handedness)value == Handedness.Left
+                        || (Handedness)value == Handedness.Right;
                     });
             }
         }
@@ -225,15 +225,16 @@ public class MyNewProfile : ScriptableObject
 }
 </code></pre>
 <h3 id="naming-conventions">Naming conventions</h3>
-<p>Always use <code>PascalCase</code> for public / protected / virtual properties, and <code>camelCase</code> for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
+<p>Always use <code>PascalCase</code> for properties. Use <code>camelCase</code> for most fields, except use <code>PascalCase</code> for <code>static readonly</code> and <code>const</code> fields. The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
 <h4 id="dont-1">Don't</h4>
-<pre><code class="lang-c#">public string myProperty; // &lt;- Starts with a lower case letter
-private string MyProperty; // &lt;- Starts with an uppercase case letter
+<pre><code class="lang-c#">public string myProperty; // &lt;- Starts with a lowercase letter
+private string MyField; // &lt;- Starts with an uppercase letter
 </code></pre>
 <h4 id="do-1">Do</h4>
 <pre><code class="lang-c#">public string MyProperty;
 protected string MyProperty;
-private string myProperty;
+private static readonly string MyField;
+private string myField;
 </code></pre>
 <h3 id="access-modifiers">Access modifiers</h3>
 <p>Always declare an access modifier for all fields, properties and methods.</p>
@@ -418,18 +419,18 @@ public enum Handedness
 <h3 id="hard-coded-file-paths">Hard-coded file paths</h3>
 <p>When generating string file paths, and in particular writing hard-coded string paths, do the following:</p>
 <ol>
-<li>Use C#'s <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.path?view=netframework-4.8"><code>Path</code> APIs</a> whenever possible such as <code>Path.Combine</code> or <code>Path.GetFullPath</code>.</li>
-<li>Use / or <a href="https://docs.microsoft.com/en-us/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8"><code>Path.DirectorySeparatorChar</code></a> instead of \ or \\.</li>
+<li>Use C#'s <a href="https://docs.microsoft.com/dotnet/api/system.io.path?view=netframework-4.8"><code>Path</code> APIs</a> whenever possible such as <code>Path.Combine</code> or <code>Path.GetFullPath</code>.</li>
+<li>Use / or <a href="https://docs.microsoft.com/dotnet/api/system.io.path.directoryseparatorchar?view=netframework-4.8"><code>Path.DirectorySeparatorChar</code></a> instead of \ or \\.</li>
 </ol>
 <p>These steps ensure that MRTK works on both Windows and Unix-based systems.</p>
 <h3 id="dont-9">Don't</h3>
-<pre><code class="lang-c#">private const string Filepath = &quot;Mypath\\to\\a\\file.txt&quot;;
-private const string OtherFilePath = &quot;Mypath\to\a\file.txt&quot;;
+<pre><code class="lang-c#">private const string FilePath = &quot;MyPath\\to\\a\\file.txt&quot;;
+private const string OtherFilePath = &quot;MyPath\to\a\file.txt&quot;;
 
 string filePath = myVarRootPath + myRelativePath;
 </code></pre>
 <h3 id="do-9">Do</h3>
-<pre><code class="lang-c#">private const string Filepath = &quot;Mypath/to/a/file.txt&quot;;
+<pre><code class="lang-c#">private const string FilePath = &quot;MyPath/to/a/file.txt&quot;;
 private const string OtherFilePath = &quot;folder{Path.DirectorySeparatorChar}file.txt&quot;;
 
 string filePath = Path.Combine(myVarRootPath,myRelativePath);
