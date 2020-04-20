@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the ray> representing the position and direction of the user's eyes.
+        /// Gets the ray representing the position and direction of the user's eyes.
         /// </summary>
         /// <param name="ray">The ray being returned</param>
         /// <returns>
@@ -33,11 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             IMixedRealityEyeGazeProvider eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             if ((eyeGazeProvider == null) ||
-                !eyeGazeProvider.IsEyeGazeValid)
-            { return false; }
-
-            ray.origin = eyeGazeProvider.GazeOrigin;
-            ray.direction = eyeGazeProvider.GazeDirection;
+                !eyeGazeProvider.IsEyeTrackingDataValid)
+            { 
+                return false; 
+            }
+          
+            ray = eyeGazeProvider.LatestEyeGaze;
+            
             return true;
         }
 

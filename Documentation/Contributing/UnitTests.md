@@ -15,6 +15,8 @@ Before submitting a pull request, make sure to:
 
 1. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
+Currently playmode tests are meant to be run in Unity 2018.4 and may fail in other versions of Unity
+
 ## Running tests
 
 ### Unity editor
@@ -25,13 +27,13 @@ The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunne
 
 Tests can also be run by a [powershell](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
-Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
+Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4 (for example Unity 2018.4.1f1)
 
 ```ps
 .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
 ```
 
-Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out
+Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4, output results to C:\playmode_test_out
 
 ```ps
 .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"

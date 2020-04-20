@@ -12617,6 +12617,7 @@ GameObject:
   - component: {fileID: 114593871428788132}
   - component: {fileID: 6050639456931552995}
   - component: {fileID: 583446739}
+  - component: {fileID: 6363978764271269843}
   m_Layer: 0
   m_Name: NonNativeKeyboard
   m_TagString: Untagged
@@ -12767,6 +12768,19 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
+--- !u!114 &6363978764271269843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c72a967253428ca4896d1e2639256334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clickSound: {fileID: 8300000, guid: 291bf9326e517b0489c2ee53d0a6a63f, type: 3}
 --- !u!1 &146124
 GameObject:
   m_ObjectHideFlags: 0

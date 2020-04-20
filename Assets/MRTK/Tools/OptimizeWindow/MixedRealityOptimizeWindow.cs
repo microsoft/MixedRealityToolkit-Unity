@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public class MixedRealityOptimizeWindow : EditorWindow
     {
+
         private int selectedToolbarIndex = 0;
         private readonly string[] ToolbarTitles = { "Setting Optimizations", "Scene Analysis", "Shader Analysis" };
         private enum ToolbarSection
@@ -86,10 +87,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
         private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/OptimizeWindow.html";
-        private const string SinglePassInstanced_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
+#if UNITY_ANDROID
+        private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassStereoRendering.html";
+#else
+        private const string OptimalRenderingPath_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
+#endif
         private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-sharing";
         private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/hologram-stabilization.html#depth-buffer-format";
         private const string GlobalIllumination_URL = "https://docs.unity3d.com/Manual/GlobalIllumination.html";
+
+#if UNITY_ANDROID
+        private const string RenderingMode = "Single Pass Stereo Rendering";
+        private const string GpuMode = "Single Pass Stereo Rendering";
+#else
+        private const string RenderingMode = "Single Pass Instanced Rendering";
+        private const string GpuMode = "GPU Instancing";
+#endif
 
         private readonly int[] SceneLightCountMax = { 1, 2, 4 };
 
@@ -395,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUILayout.LabelField(ToolbarTitles[(int)ToolbarSection.Settings], MixedRealityStylesUtility.BoldLargeTitleStyle);
                 using (new EditorGUI.IndentLevelScope())
                 {
-                    RenderSinglePassSection();
+                    RenderOptimalRenderingSection();
 
                     RenderDepthBufferSharingSection();
 
@@ -470,20 +483,20 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             });
         }
 
-        private void RenderSinglePassSection()
+        private void RenderOptimalRenderingSection()
         {
-            bool isSinglePassInstancedEnabled = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
-            BuildSection("Single Pass Instanced Rendering", SinglePassInstanced_URL, GetTitleIcon(isSinglePassInstancedEnabled), () =>
+            bool isOptimalRenderingPath = MixedRealityOptimizeUtils.IsOptimalRenderingPath();
+            BuildSection(RenderingMode, OptimalRenderingPath_URL, GetTitleIcon(isOptimalRenderingPath), () =>
             {
-                EditorGUILayout.LabelField("Single Pass Instanced Rendering is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
+                EditorGUILayout.LabelField($"{RenderingMode} is an option in the Unity graphics pipeline to more efficiently render your scene and optimize CPU & GPU work.");
 
-                if (!isSinglePassInstancedEnabled)
+                if (!isOptimalRenderingPath)
                 {
-                    EditorGUILayout.HelpBox("This rendering configuration requires shaders to be written to support GPU instancing which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support instancing.", MessageType.Info);
+                    EditorGUILayout.HelpBox($"This rendering configuration requires shaders to be written to support {GpuMode} which is automatic in all Unity & MRTK shaders.Click the \"Documentation\" button for instruction to update your custom shaders to support {GpuMode}.", MessageType.Info);
 
-                    if (InspectorUIUtility.RenderIndentedButton("Enable Single Pass Instanced rendering"))
+                    if (InspectorUIUtility.RenderIndentedButton(RenderingMode))
                     {
-                        PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+                        MixedRealityOptimizeUtils.SetOptimalRenderingPath();
                     }
                 }
             });

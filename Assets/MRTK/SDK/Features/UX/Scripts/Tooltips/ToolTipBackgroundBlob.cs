@@ -204,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             localContentSize.y /= meshBounds.size.y;
             localContentSize.z = 1;
 
-            localContentBounds.size = Vector3.one; //localContentSize;
+            localContentBounds.size = Vector3.one; // localContentSize;
             localContentBounds.center = localContentOffset;
         }
 

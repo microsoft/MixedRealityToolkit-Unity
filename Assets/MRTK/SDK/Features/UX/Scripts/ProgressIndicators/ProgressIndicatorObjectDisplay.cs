@@ -145,6 +145,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             gameObject.SetActive(false);
         }
 
+        /// <inheritdoc/>
+        public async Task AwaitTransitionAsync()
+        {
+            while (isActiveAndEnabled)
+            {
+                switch (state)
+                {
+                    case ProgressIndicatorState.Open:
+                    case ProgressIndicatorState.Closed:
+                        return;
+
+                    default:
+                        break;
+                }
+
+                await Task.Yield();
+            }
+        }
+
         private void Reset()
         {
             currentScale = minScale;

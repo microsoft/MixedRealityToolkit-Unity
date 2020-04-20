@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
         private void OnEnable()
         {
-            //make sure we find a collection
+            // Make sure we find a collection
             if (scrollCollection == null)
             {
                 scrollCollection = GetComponentInChildren<ScrollingObjectCollection>();
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 newScroll.SetActive(false);
                 scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
 
-                //prevent the scrolling collection from running until we're done dynamically populating it.
+                // Prevent the scrolling collection from running until we're done dynamically populating it.
                 scrollCollection.SetUpAtRuntime = false;
                 scrollCollection.CellHeight = 0.032f;
                 scrollCollection.CellWidth = 0.032f;
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
             else
             {
-                if(loader != null)
+                if (loader != null)
                 {
                     loader.SetActive(true);
                 }
@@ -158,11 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 yield return null;
             }
 
-            //Now that the list is populated, hide the loader and show the list
+            // Now that the list is populated, hide the loader and show the list
             loaderViz.SetActive(false);
             scrollCollection.gameObject.SetActive(true);
 
-            //Finally, manually call UpdateCollection to set up the collection
+            // Finally, manually call UpdateCollection to set up the collection
             scrollCollection.UpdateCollection();
         }
 

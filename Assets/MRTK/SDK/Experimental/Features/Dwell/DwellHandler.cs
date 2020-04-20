@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
                 // check intent to resume
                 if (CurrentDwellState == DwellStateType.DwellCanceled
-                    && pointer.InputSourceParent.SourceId == eventData.Pointer.InputSourceParent.SourceId //make sure the returning pointer id is the same
+                    && pointer.InputSourceParent.SourceId == eventData.Pointer.InputSourceParent.SourceId // Make sure the returning pointer id is the same
                     && (DateTime.UtcNow - focusExitTime) <= dwellProfile.TimeToAllowDwellResume)
                 {
                     // Add the time duration focus was away since this is a dwell resume and we need to account for the time that focus was lost for the target.

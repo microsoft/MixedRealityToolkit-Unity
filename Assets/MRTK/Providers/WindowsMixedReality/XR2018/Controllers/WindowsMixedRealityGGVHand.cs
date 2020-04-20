@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 {
     /// <summary>
-    /// A Windows Mixed Reality GGV hand instance.
+    /// A Windows Mixed Reality GGV (Gaze, Gesture, and Voice) hand instance.
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.GGVHand,

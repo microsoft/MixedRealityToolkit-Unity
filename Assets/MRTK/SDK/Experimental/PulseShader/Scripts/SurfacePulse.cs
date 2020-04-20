@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 			}
 		}
 
-#endif //UNITY_EDITOR
+#endif // UNITY_EDITOR
 
 		private void OnDestroy()
 		{

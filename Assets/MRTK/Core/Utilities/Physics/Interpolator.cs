@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
 
                 transform.position = newPosition;
 
-                //calculate interpolatedVelocity and store position for next frame
+                // Calculate interpolatedVelocity and store position for next frame
                 PositionVelocity = oldPosition - newPosition;
                 oldPosition = newPosition;
             }

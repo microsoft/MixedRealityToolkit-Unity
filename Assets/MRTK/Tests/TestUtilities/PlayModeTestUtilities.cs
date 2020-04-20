@@ -117,6 +117,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Create an MRTK instance and set up playspace
             TestUtilities.InitializeMixedRealityToolkit(true);
             TestUtilities.InitializePlayspace();
+
+            // Ensure user input is disabled during the tests
+            InputSimulationService inputSimulationService = GetInputSimulationService();
+            inputSimulationService.UserInputEnabled = false;
         }
 
         /// <summary>
@@ -124,16 +128,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         public static void TearDown()
         {
-            TestUtilities.ShutdownMixedRealityToolkit();
-
             Scene playModeTestScene = SceneManager.GetSceneByName(playModeTestSceneName);
             if (playModeTestScene.isLoaded)
             {
                 foreach (GameObject gameObject in playModeTestScene.GetRootGameObjects())
                 {
-                    GameObject.Destroy(gameObject);
+                    // Delete the MixedRealityToolkit and MixedRealityPlayspace gameobjects are managed by the ShutdownMixedRealityToolkit() function
+                    if (gameObject != MixedRealityToolkit.Instance && gameObject.transform != MixedRealityPlayspace.Transform)
+                        GameObject.Destroy(gameObject);
                 }
             }
+            // Delete the MixedRealityToolkit and MixedRealityPlayspace after other objects to allow handlers to get cleaned up
+            TestUtilities.ShutdownMixedRealityToolkit();
 
             // If we created a temporary untitled scene in edit mode to get us started, unload that now
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -170,7 +176,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             InputSimulationService inputSimulationService = CoreServices.GetInputSystemDataProvider<InputSimulationService>();
             Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
-            inputSimulationService.UserInputEnabled = false;
             return inputSimulationService;
         }
 

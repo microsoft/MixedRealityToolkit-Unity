@@ -97,6 +97,41 @@ function CheckEmptyDoccomment {
 
 <#
 .SYNOPSIS
+    Checks if the given file (at the given line number) contains a comment of the type:
+    //This comment doesn't have a space between // and This.
+    There should be a space between // and the comment.
+#>
+function CheckSpacelessComments {
+    [CmdletBinding()]
+    param(
+        [string]$FileName,
+        [string[]]$FileContent,
+        [int]$LineNumber
+    )
+    process {
+        $hasIssue = $false
+
+        # This regex looks for any non doccomment (i.e. //, not ///) where there isn't
+        # a space after the //.
+        # Explanation of the stuff inside the regex:
+        # \s      - matches a space, to ensure that we don't capture cases like https://
+        # //      - matches '//'
+        # [^\s//] - matches a single character that is not a whitespace character and also
+        #           not the '/' character (because doccomments like /// <summary> would
+        #           otherwise get matched).
+        $matcher = "\s//[^\s//]"
+        if ($FileContent[$LineNumber] -match $matcher) {
+            Write-Host "Comment in $FileName at line $LineNumber is missing a space after '//'"
+            Write-Host $FileContent[$LineNumber]
+            $hasIssue = $true
+        }
+        
+        $hasIssue
+    }
+}
+
+<#
+.SYNOPSIS
     Checks if the given file (at the given line number) contains a reference to Camera.main
     Returns true if such a reference exists.
 #>
@@ -313,6 +348,9 @@ function CheckScript {
                 $containsIssue = $true
             }
             if (CheckMainCamera $FileName $fileContent $i) {
+                $containsIssue = $true
+            }
+            if (CheckSpacelessComments $FileName $fileContent $i) {
                 $containsIssue = $true
             }
         }

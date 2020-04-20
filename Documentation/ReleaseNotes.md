@@ -2,6 +2,7 @@
 
 - [What's new](#whats-new-in-240)
 - [Known issues](#known-issues-in-240)
+- [Breaking changes](#breaking-changes-in-240)
 - [Updating guidance](Updating.md#updating-230-to-240)
 
 This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
@@ -47,9 +48,52 @@ This version of MRTK modifies the layout of the MRTK folder structure. This chan
 > [!IMPORTANT]
 > The `MixedRealityToolkit.Generated` contains customer generated files and remains unchanged.
 
+**Unity Profiler markers**
+
+This version of MRTK has added Unity Profiler markers to the input system and data providers. These markers provide detailed information on where time is spent in
+the MRTK input system that can be used to help optimize applications.
+
+Markers take the format of "[MRTK] ClassWithoutNamespace.Method".
+
+_example image coming soon_
+
 **WindowsApiChecker: IsMethodAvailable(), IsPropertyAvailable() and IsTypeAvailable()**
 
-This version of MRTK adds three new methods to the `WindowsApiChecker` class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+This version of MRTK adds three new methods to the [`WindowsApiChecker`](xref:Microsoft.MixedReality.Toolkit.Windows.Utilities.WindowsApiChecker) class: `IsMethodAvailable`, `IsPropertyAvailable` and `IsTypeAvailable`. These methods allow for checking for feature support on Windows 10 and are prefered over using the `UniversalApiContractV#_IsAvailable` properties.
+
+**Helpers to get text input fields working with MixedRealityKeyboard for UnityUI, TextMeshPro (Experimental)**
+
+<img src="https://user-images.githubusercontent.com/168492/77582981-86e07800-6e9d-11ea-86e5-bf2c0840296c.png" width="300" />
+
+We have introduced two helper components, [`UI_KeyboardInputField`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.UI_KeyboardInputField) and [`TMP_KeyboardInputField`](xref:Microsoft.MixedReality.Toolkit.Experimental.UI.TMP_KeyboardInputField) that can be added to text input fields in Unity UI to enable the HoloLens 2 and Windows Mixed Reality Keyboard to show up when the fields are clicked.
+
+For more information, see - [Mixed Reality Keyboard Helpers](../Assets/MRTK/SDK/Experimental/MixedRealityKeyboard/README_MixedRealityKeyboard.md).
+
+**Grid Object Collection Alignment Options**
+
+<img src="https://user-images.githubusercontent.com/39840334/79289136-5c228780-7e7d-11ea-82b4-07959e42c3ed.gif" width="300" />
+
+We have added the ability to choose how the elements in the grid are aligned, whether they are aligned in the center or along the left/right axis (top/bottom axis when doing row then column layout)
+
+**Grid Object Collection Anchor Changes**
+
+<img src="https://user-images.githubusercontent.com/39840334/79516745-17bff480-8001-11ea-8492-cfa953c451da.gif" width="300" />
+
+We made changes to Grid Object Collection behavior to be more in line with Unity's layout group behaviors by aligning the anchor along an object's central axis. The old Grid Object Collection behavior can be toggled with the `AnchorAlongAxis` field.
+
+**Hands-free GGV input simulation**
+
+<img src="https://user-images.githubusercontent.com/39840334/79164615-40908180-7d96-11ea-8195-6be34d4df8d6.gif" width="300"/>
+
+We've enabled the ability to interact with objects without bringing hands within the in-editor input simulation service. Rotate the camera so that the gaze cursor is over an interactable object, and click on the left mouse button to interact with it.
+
+### Breaking changes in 2.4.0
+
+**Eye gaze setup change**
+
+This version of MRTK modifies the steps required for eye gaze setup. The _'IsEyeTrackingEnabled'_ checkbox can be found in the gaze settings of the input pointer profile. Checking this box will enable eye based gaze, rather then the default head based gaze.
+
+For more information on these changes and complete instructions for eye tracking setup, please see the [eye tracking](EyeTracking/EyeTracking_BasicSetup.md) article.
 
 ### Known issues in 2.4.0
 
