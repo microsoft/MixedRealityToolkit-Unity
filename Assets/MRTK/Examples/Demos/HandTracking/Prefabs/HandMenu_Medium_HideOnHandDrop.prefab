@@ -207,7 +207,7 @@ MonoBehaviour:
   flatHandThreshold: 45
   followHandUntilFacingCamera: 1
   followHandCameraFacingThresholdAngle: 50
-  useGazeActivation: 1
+  useGazeActivation: 0
   eyeGazeProximityThreshold: 0.0125
   headGazeProximityThreshold: 0.03
 --- !u!1 &2665847549932021734
@@ -328,6 +328,9 @@ MonoBehaviour:
   orientType: 0
   layout: 1
   anchor: 4
+  anchorAlongAxis: 0
+  columnAlignment: 0
+  rowAlignment: 0
   radius: 2
   radialRange: 180
   distance: 0
