@@ -208,11 +208,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             Scene scene = EditorSceneManager.OpenScene(path);
 
+            bool didAnySceneObjectChange = false;
             foreach (var parent in scene.GetRootGameObjects())
             {
-                MigrateGameObjectHierarchy(parent);
+                didAnySceneObjectChange |= MigrateGameObjectHierarchy(parent);
             }
-            EditorSceneManager.SaveScene(scene);
+
+            if (didAnySceneObjectChange)
+            {
+                EditorSceneManager.SaveScene(scene);
+            }
         }
 
         private void MigratePrefab(String path)
@@ -223,20 +228,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             var parent = UnityEditor.PrefabUtility.LoadPrefabContents(path);
 
-            MigrateGameObjectHierarchy(parent);
+            if (MigrateGameObjectHierarchy(parent))
+            {
+                UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
+            }
 
-            UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
             PrefabUtility.UnloadPrefabContents(parent);
         }
 
-        private void MigrateGameObjectHierarchy(GameObject parent)
+        private bool MigrateGameObjectHierarchy(GameObject parent)
         {
+            bool changedAnyGameObject = false;
             foreach (var child in parent.GetComponentsInChildren<Transform>())
             {
                 try
                 {
                     if (migrationHandlerInstance.CanMigrate(child.gameObject))
                     {
+                        changedAnyGameObject = true;
                         migrationHandlerInstance.Migrate(child.gameObject);
                         Debug.Log($"Successfully migrated {parent.name} object");
                     }
@@ -246,6 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     Debug.LogError($"{e.Message}: GameObject {parent.name} could not be migrated");
                 }
             }
+
+            return changedAnyGameObject;
         }
 
         private static List<string> FindAllAssetsOfType(Type[] types)
