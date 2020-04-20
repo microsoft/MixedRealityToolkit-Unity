@@ -10,7 +10,7 @@ using UnityEngine;
 
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html"/>This is an utility window for the MigrationTool. 

@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// This tool allows the migration of obsolete components into up-to-date versions.
