@@ -10707,6 +10707,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.LeapCoreAssetsDetector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.LeapCoreAssetsDetector.html",
+          "hash": "FAaakGjozpBWfMHrd5J09g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.LoFiFilterSelection.yml",
       "output": {
         ".html": {
@@ -10951,7 +10963,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "Ohm6gijxaFB68BL7fbkDgw=="
+          "hash": "sRiPJNSq4myYdUTAvlPyvw=="
         }
       },
       "is_incremental": false,
@@ -27103,7 +27115,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "GauPNchxWjxdwUB09DkBcw=="
+          "hash": "ss9dm1+HtHsGpugq42Fmdg=="
         }
       },
       "is_incremental": false,
@@ -27168,17 +27180,17 @@
           "total_file_count": 158,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1602,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1601,
           "skipped_file_count": 0
         }
       }
