@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Resets the gameobjects positions to it's starting position as soon as it's moving outside the provided bounds
+    /// Resets the gameobject's position to its starting position as soon as it's moving outside the provided bounds
     /// </summary>
     public class ReturnToBounds : MonoBehaviour
     {
