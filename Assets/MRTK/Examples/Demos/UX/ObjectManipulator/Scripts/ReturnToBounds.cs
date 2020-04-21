@@ -5,8 +5,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// Resets the gameobjects positions to it's starting position as soon as it's moving outside the provided bounds
+    /// </summary>
     public class ReturnToBounds : MonoBehaviour
     {
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in -Z direction
+        /// </summary>
         [SerializeField]
         private Transform frontBounds = null;
     
@@ -15,7 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             get => frontBounds;
             set => frontBounds = value;
         }
-    
+
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in +Z direction
+        /// </summary>
         [SerializeField]
         private Transform backBounds = null;
     
@@ -24,7 +33,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             get => backBounds;
             set => backBounds = value;
         }
-    
+
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in -X direction
+        /// </summary>
         [SerializeField]
         private Transform leftBounds = null;
     
@@ -33,7 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             get => leftBounds;
             set => leftBounds = value;
         }
-    
+
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in +X direction
+        /// </summary>
         [SerializeField]
         private Transform rightBounds = null;
     
@@ -42,7 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             get => rightBounds;
             set => rightBounds = value;
         }
-    
+
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in -Y direction
+        /// </summary>
         [SerializeField]
         private Transform bottomBounds = null;
     
@@ -51,7 +69,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             get => bottomBounds;
             set => bottomBounds = value;
         }
-    
+
+        /// <summary>
+        /// Limiting bounds for moving the gameobject in +Y direction
+        /// </summary>
         [SerializeField]
         private Transform topBounds = null;
     
@@ -63,13 +84,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     
         private Vector3 positionAtStart;
     
-        // Start is called before the first frame update
+
+        /// <summary>
+        /// Caches start position of gameobject this script is attached to
+        /// </summary>
         void Start()
         {
             positionAtStart = transform.position;
         }
-    
-        // Update is called once per frame
+
+        /// <summary>
+        /// Checks gameobjects position and resets to start position as soon as it's passing one of the bound limits.
+        /// </summary>
         void Update()
         {
             if (transform.position.x > rightBounds.position.x || transform.position.x < leftBounds.position.x ||
