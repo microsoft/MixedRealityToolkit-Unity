@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.PlayspaceToOriginLookingForward();
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.AddComponent<ObjectManipulator>(); // Add focus handler so focus can lock
             cube.transform.position = Vector3.right;
             cube.transform.localScale = Vector3.one * 0.2f;
 
@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             TestUtilities.PlayspaceToOriginLookingForward();
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.AddComponent<ObjectManipulator>(); // Add focus handler so focus can lock
             cube.transform.position = Vector3.right;
             cube.transform.localScale = Vector3.one * 0.2f;
 
@@ -462,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static GameObject CreateTestCube(Vector3 position, float scale = 0.2f)
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.AddComponent<ObjectManipulator>(); // Add focus handler so focus can lock
             cube.transform.position = position;
             cube.transform.localScale = Vector3.one * scale;
             return cube;

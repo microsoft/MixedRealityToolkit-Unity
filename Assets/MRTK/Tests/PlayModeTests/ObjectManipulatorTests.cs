@@ -10,7 +10,6 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
 using NUnit.Framework;
 using System.Collections;
@@ -21,7 +20,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
+namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ObjectManipulatorTests
     {
@@ -1272,15 +1271,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // The cube needs to be moved from under the gaze cursor before we add the manipulation handler.
             // Because the cube is under the gaze cursor from the beginning, it gets a focus gained event
             // in Setup(). When we show the right hand, we get a focus lost event from the gaze pointer. 
-            // This messes with the CursorContextManipulationHandler hoverCount, as it decrements without
+            // This messes with the CursorContextObjectManipulator hoverCount, as it decrements without
             // ever having incremented. To avoid this, we move the cube out of focus before we add the
-            // ManipulationHandler and CursorContextManipulationHandler.
+            // ObjectManipulator and CursorContextObjectManipulator.
             cube.transform.localPosition = new Vector3(0, -2, 2);
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            ObjectManipulator manipulationHandler = cube.AddComponent<ObjectManipulator>();
-            CursorContextObjectManipulator cursorContextManipulationHandler = cube.AddComponent<CursorContextObjectManipulator>();
+            ObjectManipulator objectManipulator = cube.AddComponent<ObjectManipulator>();
+            CursorContextObjectManipulator cursorContextObjectManipulator = cube.AddComponent<CursorContextObjectManipulator>();
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Move cube back to original position (described above)
@@ -1320,8 +1319,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             BaseCursorTests.VerifyCursorContextFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorContextEnum.MoveCross);
 
-            UnityEngine.Object.Destroy(cursorContextManipulationHandler);
-            UnityEngine.Object.Destroy(manipulationHandler);
+            UnityEngine.Object.Destroy(cursorContextObjectManipulator);
+            UnityEngine.Object.Destroy(objectManipulator);
         }
 
 

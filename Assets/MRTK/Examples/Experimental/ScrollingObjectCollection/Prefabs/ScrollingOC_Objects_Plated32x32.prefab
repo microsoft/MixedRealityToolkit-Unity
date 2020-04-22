@@ -26,7 +26,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 1
---- !u!114 &8253665853486484236
+--- !u!114 &612581597640708506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -35,22 +35,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042308922132579069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 181cd563a8349c34ea8978b0bc8d9c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 5789272205665485377}
-  manipulationType: 2
-  twoHandedManipulationType: 5
+  manipulationType: 3
+  twoHandedManipulationType: 7
   allowFarManipulation: 1
-  oneHandRotationModeNear: 6
-  oneHandRotationModeFar: 6
+  oneHandRotationModeNear: 1
+  oneHandRotationModeFar: 1
   releaseBehavior: 3
-  constraintOnRotation: 2
-  useLocalSpaceForConstraint: 0
-  constraintOnMovement: 0
   smoothingActive: 1
-  smoothingAmountOneHandManip: 0.001
-  OnManipulationStarted:
+  moveLerpTime: 0.001
+  rotateLerpTime: 0.001
+  scaleLerpTime: 0.001
+  onManipulationStarted:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2686288303876650085}
@@ -99,9 +98,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnManipulationEnded:
+  onManipulationEnded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2686288303876650085}
@@ -128,18 +125,29 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverEntered:
+  onHoverEntered:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  OnHoverExited:
+  onHoverExited:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.UI.ManipulationEvent, Microsoft.MixedReality.Toolkit.SDK,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &2190938837097587409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042308922132579069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3e6359c9750ad4fb8a05c9b8704d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 5789272205665485377}
+  handType: 3
+  proximityType: 3
+  constraintOnRotation: 5
+  useLocalSpaceForConstraint: 0
 --- !u!1 &5789272205566588858
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,83 +197,56 @@ MonoBehaviour:
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (1)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (2)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (3)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (4)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (5)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (6)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (7)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   - Name: CheeseUnit (8)
     Offset: {x: 0, y: 0}
     Radius: 0
     Transform: {fileID: 0}
-    GameObject: {fileID: 0}
-    Collider: {fileID: 0}
     Colliders:
     - {fileID: 0}
-    isClipped: 1
   ignoreInactiveTransforms: 0
   sortType: 0
   canScroll: 1
@@ -314,8 +295,6 @@ MonoBehaviour:
   ClickEvent:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
-      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   TouchStarted:
     m_PersistentCalls:
       m_Calls:
@@ -331,8 +310,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
-      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   TouchEnded:
     m_PersistentCalls:
       m_Calls:
@@ -348,13 +325,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.Experimental.UI.ScrollingObjectCollection+ScrollEvent,
-      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   ListMomentumEnded:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
   cameraMethods: {fileID: 0}
   scrollContainer: {fileID: 0}
   clippingObject: {fileID: 0}
