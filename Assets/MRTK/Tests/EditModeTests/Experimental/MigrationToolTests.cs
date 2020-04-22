@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
 
                 GameObject gameObject = SetUpGameObjectWithComponentOfType(oldType);
 
-                migrationTool.TryAddObjectForMigration(gameObject);
+                migrationTool.TryAddObjectForMigration(migrationHandlerType,gameObject);
                 migrationTool.MigrateSelection(migrationHandlerType, false);
 
                 Assert.IsNull(gameObject.GetComponent(oldType), $"Migrated Component of type {oldType.Name} could not be removed");
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
                 PrefabUtility.SaveAsPrefabAsset(gameObject, prefabPath);
                 assetsForDeletion.Add(prefabPath);
 
-                migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
+                migrationTool.TryAddObjectForMigration(migrationHandlerType, AssetDatabase.LoadAssetAtPath(prefabPath, typeof(GameObject)));
                 migrationTool.MigrateSelection(migrationHandlerType, false);
 
                 GameObject prefabGameObject = PrefabUtility.LoadPrefabContents(prefabPath);
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode
                 EditorSceneManager.SaveScene(scene, scenePath);
                 assetsForDeletion.Add(scenePath);
 
-                migrationTool.TryAddObjectForMigration(AssetDatabase.LoadAssetAtPath(scenePath, typeof(SceneAsset)));
+                migrationTool.TryAddObjectForMigration(migrationHandlerType, AssetDatabase.LoadAssetAtPath(scenePath, typeof(SceneAsset)));
                 migrationTool.MigrateSelection(migrationHandlerType, false);
 
                 var openScene = EditorSceneManager.OpenScene(scenePath);

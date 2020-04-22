@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 var component = (ManipulationHandler)target;
 
-                migrationTool.TryAddObjectForMigration((GameObject)component.gameObject);
+                migrationTool.TryAddObjectForMigration(typeof(ObjectManipulatorMigrationHandler),(GameObject)component.gameObject);
                 migrationTool.MigrateSelection(typeof(ObjectManipulatorMigrationHandler), true);
 #endif
             }
