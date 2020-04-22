@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// This tool allows the migration of obsolete components into up-to-date versions.
@@ -125,7 +125,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 {
                     if (migrationObjects[i] is GameObject)
                     {
-                        MigratePrefab(assetPath);
+                        PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects[i]);
+                        if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
+                        {
+                            // there's currently 5 types of prefab asset types - we're supporting the following:
+                            // - Regular: a regular prefab object
+                            // - Variant: a prefab derived from another prefab which could be a model, regular or variant prefab
+                            // we won't support the following types:
+                            // - Model: we can't migrate fbx or other mesh files
+                            // - MissingAsset: we can't migrate missing data
+                            // - NotAPrefab: we can't migrate as prefab if the given asset isn't a prefab
+                            MigratePrefab(assetPath);
+                        }
                     }
                     else if (migrationObjects[i] is SceneAsset)
                     {
@@ -197,11 +208,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             Scene scene = EditorSceneManager.OpenScene(path);
 
+            bool didAnySceneObjectChange = false;
             foreach (var parent in scene.GetRootGameObjects())
             {
-                MigrateGameObjectHierarchy(parent);
+                didAnySceneObjectChange |= MigrateGameObjectHierarchy(parent);
             }
-            EditorSceneManager.SaveScene(scene);
+
+            if (didAnySceneObjectChange)
+            {
+                EditorSceneManager.SaveScene(scene);
+            }
         }
 
         private void MigratePrefab(String path)
@@ -212,20 +228,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             var parent = UnityEditor.PrefabUtility.LoadPrefabContents(path);
 
-            MigrateGameObjectHierarchy(parent);
+            if (MigrateGameObjectHierarchy(parent))
+            {
+                UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
+            }
 
-            UnityEditor.PrefabUtility.SaveAsPrefabAsset(parent, path);
             PrefabUtility.UnloadPrefabContents(parent);
         }
 
-        private void MigrateGameObjectHierarchy(GameObject parent)
+        private bool MigrateGameObjectHierarchy(GameObject parent)
         {
+            bool changedAnyGameObject = false;
             foreach (var child in parent.GetComponentsInChildren<Transform>())
             {
                 try
                 {
                     if (migrationHandlerInstance.CanMigrate(child.gameObject))
                     {
+                        changedAnyGameObject = true;
                         migrationHandlerInstance.Migrate(child.gameObject);
                         Debug.Log($"Successfully migrated {parent.name} object");
                     }
@@ -235,12 +255,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     Debug.LogError($"{e.Message}: GameObject {parent.name} could not be migrated");
                 }
             }
+
+            return changedAnyGameObject;
         }
 
         private static List<string> FindAllAssetsOfType(Type[] types)
         {
             var filter = string.Join(" ", types
-                                          .Select(x => string.Format("t{0}", x.Name))
+                                          .Select(x => string.Format("t:{0}", x.Name))
                                           .ToArray());
             return AssetDatabase.FindAssets(filter).Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
         }
