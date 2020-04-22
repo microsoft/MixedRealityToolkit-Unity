@@ -178,19 +178,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if(migrationObjects.Count == 0)
             {
-                Debug.LogError($"{e.Message}: List of objects for migration is empty.");
+                Debug.LogError($"List of objects for migration is empty.");
                 return false;
             }
 
              if(migrationHandlerInstanceType == null)
             {
-                Debug.LogError($"{e.Message}: Please select type of migration handler.");
+                Debug.LogError($"Please select type for migration.");
                 return false;
             }
             
             if (type == null || migrationHandlerInstanceType != type)
             {
-                Debug.LogError($"{e.Message}: Selected objects should be migrated with type: {migrationHandlerInstanceType}");
+                Debug.LogError($"Selected objects should be migrated with type: {migrationHandlerInstanceType}");
                 return false;
             }
 
