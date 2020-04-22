@@ -189,6 +189,49 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Gets the position of where grasp happens
+        /// For IMixedRealityHand it's the axis from the palm to the grasp point
+        /// For any other IMixedRealityController, return just the pointer's forward orientation
+        /// </summary>
+        public bool TryGetNearGraspAxis(out Vector3 result)
+        {
+            using (TryGetNearGraspPointPerfMarker.Auto())
+            {
+                // If controller is of kind IMixedRealityHand, return average of index and thumb
+                if (Controller is IMixedRealityHand hand)
+                {
+                    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
+                    {
+                        if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                        {
+                            Vector3 palmToIndex = index.Position - palm.Position;
+                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, 0.9f);
+
+                            // Visualization for debuggin
+                            Debug.DrawRay(palm.Position, result, Color.red);
+                            return true;
+                        }
+                    }
+
+                    // If controller is of kind IMixedRealityHand, return average of index and thumb
+                    // Other implementation for testing
+                    // Vector3 graspPosition;
+                    // TryGetNearGraspPoint(out graspPosition);
+                    // if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                    // {
+                    //     result = graspPosition - palm.Position;
+                    //     // Visualization for debuggin
+                    //     Debug.DrawRay(palm.Position, result, Color.red);
+                    //     return true;
+                    // }
+                }
+
+                result = transform.forward;
+                return false;
+            }
+        }
+
         private static readonly ProfilerMarker TryGetDistanceToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetDistanceToNearestSurface");
 
         /// <inheritdoc />

@@ -1306,18 +1306,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         Vector3 relativeColliderPosition = closestPointToCollider - testPoint;
                                         float leewaySqrDistance = pointer.SphereCastRadius * pointer.SphereCastRadius * 0.5f;
 
+                                        Vector3 forwardAxis;
+                                        ((IMixedRealityNearPointer)pointer).TryGetNearGraspAxis(out forwardAxis);
+
                                         float coneAngle = 60.0f * Mathf.Deg2Rad;
-                                        bool inAngle = Vector3.Dot(Vector3.forward, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
+                                        bool inAngle = Vector3.Dot(forwardAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
                                         if (relativeColliderPosition != Vector3.zero && !inAngle)
                                         {
-                                            Debug.Log(i + "ray not within the proper angle");
-                                            Debug.Log("angle was " + Mathf.Acos(Vector3.Dot(Vector3.forward, relativeColliderPosition.normalized)) * Mathf.Rad2Deg);
-                                            //continue;
-                                        }
-                                        else
-                                        {
-                                            Debug.Log(relativeColliderPosition);
-                                            Debug.DrawRay(testPoint, relativeColliderPosition, Color.yellow);
+                                            continue;
                                         }
 
                                         // Keep track of the object closest to the test point.
