@@ -2277,17 +2277,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 // Get the max radius possible of our current bounds plus the proximity
-                float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
-                maxRadius *= maxRadius;
-                maxRadius += handleCloseProximity + handleMediumProximity;
+                float maxRadius = currentBoundsExtents.sqrMagnitude;
+                maxRadius += 3 * handleMediumProximity * handleMediumProximity;
 
                 // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
                 {
-                    proximityPoints.Add(pointer.Position);
+                    if (IsPointWithinBounds(pointer.Position, maxRadius))
+                    {
+                        proximityPoints.Add(pointer.Position);
+                    }
 
                     Vector3? point = pointer.Result?.Details.Point;
-                    if (point.HasValue)
+                    if (point.HasValue && IsPointWithinBounds(point.Value, maxRadius))
                     {
                         proximityPoints.Add(pointer.Result.Details.Point);
                     }
@@ -2357,6 +2359,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return HandleProximityState.FullsizeNoProximity;
             }
+        }
+
+        /// <summary>
+        /// Determine if passed point is within sphere of radius around this GameObject
+        /// To avoid function overhead, request compiler to inline this function since repeatedly called every Update() for every pointer position and result
+        /// </summary>
+        /// <param name="point">world space position</param>
+        /// <param name="radiusSqr">radius of sphere in distance squared for faster comparison</param>
+        /// <returns>true if point is within sphere</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool IsPointWithinBounds(Vector3 point, float radiusSqr)
+        {
+            return (Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position - point).sqrMagnitude < radiusSqr;
         }
 
         private void ScaleHandle(Handle handle, bool lerp = false)
