@@ -148,7 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private class Handle
         {
-            public GameObject HandleGameObject;
             public Transform HandleVisual;
             public Renderer HandleVisualRenderer;
             public HandleType Type = HandleType.None;
@@ -1527,7 +1526,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 handles.Add(new Handle()
                 {
-                    HandleGameObject = corner,
                     Type = HandleType.Scale,
                     HandleVisual = cornerVisual.transform,
                     HandleVisualRenderer = cornerVisual.GetComponentInChildren<Renderer>(),
@@ -1661,7 +1659,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 handles.Add(new Handle()
                 {
-                    HandleGameObject = midpoint,
                     Type = HandleType.Rotation,
                     HandleVisual = midpointVisual.transform,
                     HandleVisualRenderer = midpointVisual.GetComponent<Renderer>(),
@@ -2341,6 +2338,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Determine if passed point is within sphere of radius around this GameObject
+        /// To avoid function overhead, request compiler to inline this function since repeatedly called every Update() for every pointer position and result
+        /// </summary>
+        /// <param name="point">world space position</param>
+        /// <param name="radiusSqr">radius of sphere in distance squared for faster comparison</param>
+        /// <returns>true if point is within sphere</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool IsPointWithinBounds(Vector3 point, float radiusSqr)
+        {
+            return (Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position - point).sqrMagnitude < radiusSqr;
+        }
+
+        /// <summary>
         /// Get the ProximityState value based on the distanced provided
         /// </summary>
         /// <param name="sqrDistance">distance squared in proximity in meters</param>
@@ -2359,19 +2369,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return HandleProximityState.FullsizeNoProximity;
             }
-        }
-
-        /// <summary>
-        /// Determine if passed point is within sphere of radius around this GameObject
-        /// To avoid function overhead, request compiler to inline this function since repeatedly called every Update() for every pointer position and result
-        /// </summary>
-        /// <param name="point">world space position</param>
-        /// <param name="radiusSqr">radius of sphere in distance squared for faster comparison</param>
-        /// <returns>true if point is within sphere</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool IsPointWithinBounds(Vector3 point, float radiusSqr)
-        {
-            return (Vector3.Scale(TargetBounds.center, TargetBounds.gameObject.transform.lossyScale) + transform.position - point).sqrMagnitude < radiusSqr;
         }
 
         private void ScaleHandle(Handle handle, bool lerp = false)
