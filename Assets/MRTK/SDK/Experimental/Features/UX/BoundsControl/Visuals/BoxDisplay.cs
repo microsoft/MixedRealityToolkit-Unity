@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private BoxDisplayConfiguration config;
 
-        private Vector3 cachedExtents;
+        private Vector3 cachedExtents = Vector3.zero;
         private FlattenModeType flattenMode;
 
         private bool isVisible = true;
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // This has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
             boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Object.Destroy(boxDisplay.GetComponent<Collider>());
-            boxDisplay.name = "bounding box";
+            boxDisplay.name = "box display";
             flattenMode = flattenAxis;
             cachedExtents = currentBoundsExtents;
             ResetVisibility(isVisible);
@@ -98,6 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 boxDisplay.transform.localScale = GetBoxDisplayScale(boundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
             }
+
+            cachedExtents = boundsExtents;
+            flattenMode = flattenAxis;
         }
 
         internal void UpdateDisplayWithCache()

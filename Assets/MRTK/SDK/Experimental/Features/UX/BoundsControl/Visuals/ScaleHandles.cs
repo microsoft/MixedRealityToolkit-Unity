@@ -28,38 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             config.handlesChanged.RemoveListener(HandlesChanged);
         }
 
-        //private void HandlesChanged(HandlesBaseConfiguration.HandlesChangedEventType changedType)
-        //{
-        //    switch (changedType)
-        //    {
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL:
-        //            UpdateBaseMaterial();
-        //            break;
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.MATERIAL_GRABBED:
-        //            UpdateGrabbedMaterial();
-        //            break;
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.PREFAB:
-        //            RecreateVisuals();
-        //            break;
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_SIZE:
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.COLLIDER_PADDING:
-        //            UpdateColliderBounds();
-        //            break;
-        //        case HandlesBaseConfiguration.HandlesChangedEventType.VISIBILITY:
-        //            //TODO
-        //            break;
-        //    }
-        //}
-
-        //private void UpdateColliderBounds()
-        //{
-        //    foreach (var handle in handles)
-        //    {
-        //        var cornerbounds = VisualUtils.GetMaxBounds(GetVisual(handle).gameObject);
-        //        UpdateColliderBounds(handle, cornerbounds.size);
-        //    }
-        //}
-
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
             if (handles != null)
@@ -204,8 +172,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void UpdateFlattenMode(bool isFlattened)
         {
-            areHandlesFlattened = isFlattened;
-            RecreateVisuals();
+            if (areHandlesFlattened != isFlattened)
+            {
+                areHandlesFlattened = isFlattened;
+                RecreateVisuals();
+            }
         }
 
         #region BoundsControlHandlerBase

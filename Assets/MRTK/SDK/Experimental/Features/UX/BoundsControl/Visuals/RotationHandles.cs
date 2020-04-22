@@ -146,11 +146,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         internal void FlattenHandles(ref int[] flattenedHandles)
         {
-            if (flattenedHandles != null)
+            if (IsActive)
             {
-                for (int i = 0; i < flattenedHandles.Length; ++i)
+                foreach (var handle in handles)
                 {
-                    handles[flattenedHandles[i]].gameObject.SetActive(false);
+                    handle.gameObject.SetActive(IsVisible(handle));
+                }
+
+                if (flattenedHandles != null)
+                {
+                    for (int i = 0; i < flattenedHandles.Length; ++i)
+                    {
+                        handles[flattenedHandles[i]].gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -216,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         protected override void UpdateColliderBounds(Transform handle, Vector3 visualSize)
         {
             var invScale = config.HandleSize / visualSize.x;
-            handle.transform.localScale = new Vector3(invScale, invScale, invScale);
+            GetVisual(handle).transform.localScale = new Vector3(invScale, invScale, invScale);
             Vector3 colliderSizeScaled = visualSize * invScale;
             if (config.RotationHandlePrefabColliderType == HandlePrefabCollider.Box)
             {

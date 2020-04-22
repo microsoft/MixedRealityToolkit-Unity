@@ -150,9 +150,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     flattenAxis = value;
                     Flatten(flattenAxis);
-                    UpdateFlattenAxis();
                     UpdateExtents();
                     UpdateVisuals();
+                    ResetVisuals();
+
+                   // UpdateFlattenAxis();
                 }
             }
         }
@@ -434,6 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     active = value;
                     rigRoot?.gameObject.SetActive(value);
+                    UpdateExtents();
                     ResetVisuals();
 
                     if (active)
@@ -495,6 +498,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             DetermineTargetBounds();
             UpdateExtents();
             CreateVisuals();
+            // UpdateFlattenAxis();
+           // UpdateVisuals();
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
@@ -561,8 +566,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 activation == BoundsControlActivationType.ActivateByProximity ||
                 activation == BoundsControlActivationType.ActivateByPointer)
             {
-                wireframeOnly = true;
                 Active = true;
+                if (currentPointer == null || !DoesActivationMatchPointer(currentPointer))
+                {
+                    wireframeOnly = true;
+                }
             }
             else if (activation == BoundsControlActivationType.ActivateOnStart)
             {
@@ -572,6 +580,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 Active = false;
             }
+
+            
+            
         }
 
         private void OnDisable()
@@ -650,8 +661,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     Destroy(TargetBounds);
                 }
-                Bounds bounds = GetTargetBounds();
                 TargetBounds = Target.AddComponent<BoxCollider>();
+                Bounds bounds = GetTargetBounds();
 
                 TargetBounds.center = bounds.center;
                 TargetBounds.size = bounds.size;
@@ -676,8 +687,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
         private Bounds GetTargetBounds()
         {
-            KeyValuePair<Transform, Collider> colliderByTransform;
-            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
             totalBoundsCorners.Clear();
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
@@ -686,7 +695,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
-            childTransforms.Add(Target.transform);
+            if (Target != gameObject)
+            {
+                childTransforms.Add(Target.transform);
+            }
 
             foreach (Transform childTransform in Target.transform)
             {
@@ -700,56 +712,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             {
                 Debug.Assert(childTransform != rigRoot);
 
-                if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
-                {
-                    Collider collider = childTransform.GetComponent<Collider>();
-                    if (collider != null)
-                    {
-                        colliderByTransform = new KeyValuePair<Transform, Collider>(childTransform, collider);
-                    }
-                    else
-                    {
-                        colliderByTransform = new KeyValuePair<Transform, Collider>();
-                    }
-                }
-
-                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
-                {
-                    MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
-                    if (meshFilter != null && meshFilter.sharedMesh != null)
-                    {
-                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
-                    }
-                    else
-                    {
-                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
-                    }
-                }
-
-                // Encapsulate the collider bounds if criteria match
-
-                if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
-                    boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
-                {
-                    AddColliderBoundsToTarget(colliderByTransform);
-                    if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { continue; }
-                }
-
-                // Encapsulate the renderer bounds if criteria match
-
-                if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
-                {
-                    AddRendererBoundsToTarget(rendererBoundsByTransform);
-                    if (boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { continue; }
-                }
-
-                // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
-                AddColliderBoundsToTarget(colliderByTransform);
+                ExtractBoundsCorners(childTransform, boundsCalculationMethod);
             }
 
-            if (totalBoundsCorners.Count == 0) { return new Bounds(); }
-
             Transform targetTransform = Target.transform;
+
+            // In case we found nothing and this is the Target, we add it's inevitable collider's bounds
+            if (totalBoundsCorners.Count == 0 && Target == gameObject)
+            {
+                ExtractBoundsCorners(targetTransform, BoundsCalculationMethod.ColliderOnly);
+            }
 
             Bounds finalBounds = new Bounds(targetTransform.InverseTransformPoint(totalBoundsCorners[0]), Vector3.zero);
 
@@ -761,21 +733,76 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             return finalBounds;
         }
 
-        private void AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
+        private void ExtractBoundsCorners(Transform childTransform, BoundsCalculationMethod boundsCalculationMethod)
         {
-            if (rendererBoundsByTarget.Key == null) { return; }
+            KeyValuePair<Transform, Collider> colliderByTransform;
+            KeyValuePair<Transform, Bounds> rendererBoundsByTransform;
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.RendererOnly)
+            {
+                Collider collider = childTransform.GetComponent<Collider>();
+                if (collider != null)
+                {
+                    colliderByTransform = new KeyValuePair<Transform, Collider>(childTransform, collider);
+                }
+                else
+                {
+                    colliderByTransform = new KeyValuePair<Transform, Collider>();
+                }
+            }
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
+            {
+                MeshFilter meshFilter = childTransform.GetComponent<MeshFilter>();
+                if (meshFilter != null && meshFilter.sharedMesh != null)
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>(childTransform, meshFilter.sharedMesh.bounds);
+                }
+                else
+                {
+                    rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
+                }
+            }
+
+            // Encapsulate the collider bounds if criteria match
+
+            if (boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly ||
+                boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer)
+            {
+                if (AddColliderBoundsCornersToTarget(colliderByTransform) && boundsCalculationMethod == BoundsCalculationMethod.ColliderOverRenderer ||
+                    boundsCalculationMethod == BoundsCalculationMethod.ColliderOnly) { return; }
+            }
+
+            // Encapsulate the renderer bounds if criteria match
+
+            if (boundsCalculationMethod != BoundsCalculationMethod.ColliderOnly)
+            {
+                if (AddRendererBoundsCornersToTarget(rendererBoundsByTransform) && boundsCalculationMethod == BoundsCalculationMethod.RendererOverCollider ||
+                    boundsCalculationMethod == BoundsCalculationMethod.RendererOnly) { return; }
+            }
+
+            // Do the collider for the one case that we chose RendererOverCollider and did not find a renderer
+            AddColliderBoundsCornersToTarget(colliderByTransform);
+        }
+
+        private bool AddRendererBoundsCornersToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
+        {
+            if (rendererBoundsByTarget.Key == null) { return false; }
 
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
+            return true;
         }
 
-        private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
+        private bool AddColliderBoundsCornersToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
             if (colliderByTransform.Key != null)
             {
                 BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
             }
+
+            return colliderByTransform.Key != null;
         }
 
         private HandleType GetHandleType(Transform handle)
@@ -834,7 +861,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 }
             }
         }
-        private bool DoesActivationMatchFocus(FocusEventData eventData)
+        private bool DoesActivationMatchPointer(IMixedRealityPointer pointer)
         {
             switch (activation)
             {
@@ -842,9 +869,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 case BoundsControlActivationType.ActivateManually:
                     return false;
                 case BoundsControlActivationType.ActivateByProximity:
-                    return eventData.Pointer is IMixedRealityNearPointer;
+                    return pointer is IMixedRealityNearPointer;
                 case BoundsControlActivationType.ActivateByPointer:
-                    return eventData.Pointer is IMixedRealityPointer;
+                    return (pointer is IMixedRealityPointer && !(pointer is IMixedRealityNearPointer));
                 case BoundsControlActivationType.ActivateByProximityAndPointer:
                     return true;
                 default:
@@ -1010,7 +1037,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 return;
             }
 
-            if (!DoesActivationMatchFocus(eventData))
+            if (!DoesActivationMatchPointer(eventData.Pointer))
             {
                 return;
             }
@@ -1176,23 +1203,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             // Set rotation handle visibility
             rotationHandles.IsActive = isVisible;
             rotationHandles.FlattenHandles(ref flattenedHandles);
-        }
-
-        private void UpdateFlattenAxis()
-        {
-            if (!IsInitialized)
-            {
-                return;
-            }
-            ResetVisuals();
-            links.ResetVisibility(active);
-            links.Flatten(ref flattenedHandles);
-            bool isVisible = (active == true && wireframeOnly == false);
-            rotationHandles.IsActive = isVisible;
-            rotationHandles.FlattenHandles(ref flattenedHandles);
             scaleHandles.UpdateFlattenMode(flattenAxis != FlattenModeType.DoNotFlatten);
             boxDisplay.UpdateFlattenAxis(flattenAxis);
         }
+
         private void CreateVisuals()
         {
             // add corners
