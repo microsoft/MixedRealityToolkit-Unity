@@ -148,6 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private class Handle
         {
+            public GameObject HandleGameObject;
             public Transform HandleVisual;
             public Renderer HandleVisualRenderer;
             public HandleType Type = HandleType.None;
@@ -1139,7 +1140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<Handle> handles;
 
         private List<Transform> corners;
-
+        private List<Transform> cornersVisuals;
         /// <summary>
         /// Returns list of transforms pointing to the scale handles of the bounding box.
         /// </summary>
@@ -1148,7 +1149,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return corners; }
         }
 
+        /// <summary>
+        /// Returns list of transforms pointing to the scale handle visuals of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> ScaleCornerVisuals
+        {
+            get { return cornersVisuals; }
+        }
+
+
+
         private List<Transform> balls;
+        private List<Transform> ballVisuals;
 
         /// <summary>
         /// Returns list of transforms pointing to the rotation handles of the bounding box.
@@ -1156,6 +1168,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public IReadOnlyList<Transform> RotateMidpoints
         {
             get { return balls; }
+        }
+
+        /// <summary>
+        /// Returns list of transforms pointing to the rotation handle visuals of the bounding box.
+        /// </summary>
+        public IReadOnlyList<Transform> RotateMidpointVisuals
+        {
+            get { return ballVisuals; }
         }
 
         #endregion Public Properties
@@ -1502,10 +1522,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
                 AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, scaleHandleColliderPadding);
-                corners.Add(cornerVisual.transform);
+                corners.Add(corner.transform);
+                cornersVisuals.Add(cornerVisual.transform);
 
                 handles.Add(new Handle()
                 {
+                    HandleGameObject = corner,
                     Type = HandleType.Scale,
                     HandleVisual = cornerVisual.transform,
                     HandleVisualRenderer = cornerVisual.GetComponentInChildren<Renderer>(),
@@ -1634,10 +1656,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
-                balls.Add(midpointVisual.transform);
+                balls.Add(midpoint.transform);
+                ballVisuals.Add(midpointVisual.transform);
 
                 handles.Add(new Handle()
                 {
+                    HandleGameObject = midpoint,
                     Type = HandleType.Rotation,
                     HandleVisual = midpointVisual.transform,
                     HandleVisualRenderer = midpointVisual.GetComponent<Renderer>(),
@@ -1970,7 +1994,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boundsCorners = new Vector3[8];
 
             corners = new List<Transform>();
+            cornersVisuals = new List<Transform>();
             balls = new List<Transform>();
+            ballVisuals = new List<Transform>();
 
             handles = new List<Handle>();
 
@@ -2392,14 +2418,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < balls.Count; ++i)
             {
-                if (handle.position == balls[i].position && handle.rotation == balls[i].rotation)
+                if (handle == balls[i])
                 {
                     return HandleType.Rotation;
                 }
             }
             for (int i = 0; i < corners.Count; ++i)
             {
-                if (handle.position == corners[i].position && handle.rotation == corners[i].rotation)
+                if (handle == corners[i])
                 {
                     return HandleType.Scale;
                 }

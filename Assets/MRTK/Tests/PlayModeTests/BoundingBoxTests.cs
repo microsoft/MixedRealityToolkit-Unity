@@ -135,9 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // Definining the edge and corner handlers that will be used
-            var originalCornerHandlerScale = bbox.ScaleCorners[0].transform.localScale;
+            var originalCornerHandlerScale = bbox.ScaleCornerVisuals[0].transform.localScale;
             var cornerHandlerPosition = bbox.ScaleCorners[0].transform.position;
-            var originalEdgeHandlerScale = bbox.RotateMidpoints[0].transform.localScale;
+            var originalEdgeHandlerScale = bbox.RotateMidpointVisuals[0].transform.localScale;
             var edgeHandlerPosition = bbox.RotateMidpoints[0].transform.position;
 
             // Wait for the scaling/unscaling animation to finish
@@ -152,18 +152,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.4f);
 
-            TestUtilities.AssertAboutEqual(bbox.RotateMidpoints[0].localScale, originalEdgeHandlerScale, "The edge handler changed mistakingly");
-            TestUtilities.AssertAboutEqual(bbox.ScaleCorners[0].localScale.normalized, originalCornerHandlerScale.normalized, "The corner handler scale has changed");
-            Assert.AreApproximatelyEqual(bbox.ScaleCorners[0].localScale.x/originalCornerHandlerScale.x, bbox.MediumScale, 0.1f, "The corner handler did not grow when a pointer was near it");
+            TestUtilities.AssertAboutEqual(bbox.RotateMidpointVisuals[0].localScale, originalEdgeHandlerScale, "The edge handler changed mistakingly");
+            TestUtilities.AssertAboutEqual(bbox.ScaleCornerVisuals[0].localScale.normalized, originalCornerHandlerScale.normalized, "The corner handler scale has changed");
+            Assert.AreApproximatelyEqual(bbox.ScaleCornerVisuals[0].localScale.x/originalCornerHandlerScale.x, bbox.MediumScale, 0.1f, "The corner handler did not grow when a pointer was near it");
 
             // Move the hand to a handler on the edge
             yield return rightHand.MoveTo(edgeHandlerPosition, numSteps);
             // Wait for the scaling/unscaling animation to finish
             yield return new WaitForSeconds(0.4f);
 
-            TestUtilities.AssertAboutEqual(bbox.ScaleCorners[0].localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
-            TestUtilities.AssertAboutEqual(bbox.RotateMidpoints[0].localScale.normalized, originalEdgeHandlerScale.normalized, "The edge handler scale has changed");
-            Assert.AreApproximatelyEqual(bbox.RotateMidpoints[0].localScale.x/originalEdgeHandlerScale.x, bbox.MediumScale, 0.1f, "The edge handler did not grow when a pointer was near it");
+            TestUtilities.AssertAboutEqual(bbox.ScaleCornerVisuals[0].localScale, originalCornerHandlerScale, "The corner handler changed mistakingly");
+            TestUtilities.AssertAboutEqual(bbox.RotateMidpointVisuals[0].localScale.normalized, originalEdgeHandlerScale.normalized, "The edge handler scale has changed");
+            Assert.AreApproximatelyEqual(bbox.RotateMidpointVisuals[0].localScale.x/originalEdgeHandlerScale.x, bbox.MediumScale, 0.1f, "The edge handler did not grow when a pointer was near it");
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
