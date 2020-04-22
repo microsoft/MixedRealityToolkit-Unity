@@ -7,8 +7,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Component for setting the min/max scale values for ManipulationHandler
-    /// or BoundingBox
+    /// Component for setting the min/max scale values for ObjectManipulator
+    /// or BoundsControl
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/MinMaxScaleConstraint")]
     public class MinMaxScaleConstraint : TransformConstraint
