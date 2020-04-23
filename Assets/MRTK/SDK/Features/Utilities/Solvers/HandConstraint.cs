@@ -438,6 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, Transform targetTransform, IMixedRealityController hand, SolverSafeZone handSafeZone, SolverOffsetBehavior offsetBehavior)
         {
             Vector3 direction;
+            Vector3 lookAtCamera = targetTransform.transform.position - CameraCache.Main.transform.position;
 
             switch (handSafeZone)
             {
@@ -450,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         }
                         else
                         {
-                            direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                            direction = Vector3.Cross(lookAtCamera, Vector3.up);
                             direction = IsPalmFacingCamera(hand) ? direction : -direction;
                         }
 
@@ -470,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         }
                         else
                         {
-                            direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                            direction = Vector3.Cross(lookAtCamera, Vector3.up);
                             direction = IsPalmFacingCamera(hand) ? direction : -direction;
                         }
 
