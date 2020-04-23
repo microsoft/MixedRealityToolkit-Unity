@@ -472,16 +472,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.0299
       objectReference: {fileID: 0}
-    - target: {fileID: 3374018212467406988, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3374018212467406988, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_Materials.Array.data[1]
-      value: 
-      objectReference: {fileID: 2100000, guid: 1d3d3b8b33373be4ba8d3b1676d2b5ba, type: 2}
     - target: {fileID: 3515418990045158255, guid: 40b588bd40632eb41a0af374d91c4fc9,
         type: 3}
       propertyPath: m_Name
@@ -661,41 +651,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5972206227985548477, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5972206227985548483, guid: 40b588bd40632eb41a0af374d91c4fc9,
         type: 3}
