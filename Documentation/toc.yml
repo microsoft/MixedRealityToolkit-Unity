@@ -59,6 +59,8 @@
     items: 
     - name: Configure MRTK for iOS and Android
       href: CrossPlatform/UsingARFoundation.md
+    - name: Configure MRTK for Leap Motion Hand Tracking
+      href: CrossPlatform/LeapMotionMRTK.md
   - name: Detecting Platform Capabilities
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System
