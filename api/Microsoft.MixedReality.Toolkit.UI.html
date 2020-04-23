@@ -162,6 +162,12 @@ Good for responsive buttons that can stretch and object realign</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CursorContextManipulationHandler.html">CursorContextManipulationHandler</a></h4>
       <section><p>This script provides cursor context for the manipulation handler</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CursorContextObjectManipulator.html">CursorContextObjectManipulator</a></h4>
+      <section><p>This script provides cursor context for the object manipulator.
+It will show an icon next to the cursor indicating the available action
+that can be performed. Currently this component only supports context
+for moving an object.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver.html">CustomInteractablesReceiver</a></h4>
       <section><p>Example of building a custom receiver that can be loaded as part of the events on the Interactable or
 in InteractableReceiverList or InteractableReceiver</p>
@@ -176,8 +182,8 @@ Attach this script to any game object with Animator component to destroy on anim
 it always faces or faces away from the user</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.FixedDistanceConstraint.html">FixedDistanceConstraint</a></h4>
-      <section><p>Component for setting the min/max scale values for ManipulationHandler
-or BoundingBox</p>
+      <section><p>Component for setting the min/max scale values for ObjectManipulator
+or BoundsControl</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.FixedRotationToUserConstraint.html">FixedRotationToUserConstraint</a></h4>
       <section><p>Component for fixing the rotation of a manipulated object relative to the user</p>
@@ -331,8 +337,8 @@ Finds the first available component searching in order of TextMesh, Text, TextMe
       <section><p>Controls how the standard indeterminate loader moves and behaves over time.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.MaintainApparentSizeConstraint.html">MaintainApparentSizeConstraint</a></h4>
-      <section><p>Component for setting the min/max scale values for ManipulationHandler
-or BoundingBox</p>
+      <section><p>Component for setting the min/max scale values for ObjectManipulator
+or BoundsControl</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationEvent.html">ManipulationEvent</a></h4>
       <section><p>A UnityEvent callback containing a ManipulationEventData payload.</p>
@@ -346,12 +352,17 @@ You may also configure the script on only enable certain manipulations. The scri
 both HoloLens' gesture input and immersive headset's motion controller input.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.MinMaxScaleConstraint.html">MinMaxScaleConstraint</a></h4>
-      <section><p>Component for setting the min/max scale values for ManipulationHandler
-or BoundingBox</p>
+      <section><p>Component for setting the min/max scale values for ObjectManipulator
+or BoundsControl</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.MoveAxisConstraint.html">MoveAxisConstraint</a></h4>
-      <section><p>Component for limiting the translation axes for ManipulationHandler
-or BoundingBox</p>
+      <section><p>Component for limiting the translation axes for ObjectManipulator
+or BoundsControl</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.html">ObjectManipulator</a></h4>
+      <section><p>This script allows for an object to be movable, scalable, and rotatable with one or two hands.
+You may also configure the script on only enable certain manipulations. The script works with
+both HoloLens' gesture input and immersive headset's motion controller input.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PanUnityEvent.html">PanUnityEvent</a></h4>
       <section><p>Unity event for a pan / zoom event. Contains the hand pan event data</p>
@@ -390,8 +401,8 @@ Extend this class to build new events or receivers from Interactables</p>
 <p>InteractableReceiver or InteractableReceiverList can be used with ReceiverBase - built-in receivers</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.RotationAxisConstraint.html">RotationAxisConstraint</a></h4>
-      <section><p>Component for limiting the rotation axes for ManipulationHandler
-or BoundingBox</p>
+      <section><p>Component for limiting the rotation axes for ObjectManipulator
+or BoundsControl</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme.html">ScaleOffsetColorTheme</a></h4>
       <section><p>Theme Engine to control initialized GameObject's scale, local position offset, and color based on state changes
@@ -563,6 +574,20 @@ consists of.</p>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.TwoHandedManipulation.html">ManipulationHandler.TwoHandedManipulation</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.ReleaseBehaviorType.html">ObjectManipulator.ReleaseBehaviorType</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator.RotateInOneHandType.html">ObjectManipulator.RotateInOneHandType</a></h4>
+      <section><p>Describes what pivot the manipulated object will rotate about when
+you rotate your hand. This is not a description of any limits or
+additional rotation logic. If no other factors (such as constraints)
+are involved, rotating your hand by an amount should rotate the object
+by the same amount.
+For example a possible future value here is RotateAboutUserDefinedPoint
+where the user could specify a pivot that the object is to rotate
+around.
+An example of a value that should not be found here is MaintainRotationToUser
+as this restricts rotation of the object when we rotate the hand.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.html">PressableButton.SpaceMode</a></h4>
       <section><p>Enum for defining space of plane distances.</p>
 </section>
