@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>How to configure MRTK for iOS and Android [Experimental] | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="How to configure MRTK for iOS and Android [Experimental] | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="how-to-configure-mrtk-for-ios-and-android-experimental">How to configure MRTK for iOS and Android [Experimental]</h1>
+
+<h2 id="install-required-packages">Install required packages</h2>
+<ol>
+<li><p>Download and import the <strong>Microsoft.MixedReality.Toolkit.Unity.Foundation</strong> package, from <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.3.0">GitHub</a> or <a href="../MRTKNuGetPackage.html">NuGet</a></p>
+</li>
+<li><p>In the Unity Package Manager (UPM), install the following packages:</p>
+<p><strong>Unity 2018.4.x</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Android</strong></th>
+<th><strong>iOS</strong></th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AR Foundation  <br> Version: 1.5.0 - preview 6</td>
+<td>AR Foundation  <br> Version: 1.5.0 - preview 6</td>
+<td>For Unity 2018.4, this package is included as a preview. To view package: Window &gt; Package Manager &gt; Advanced &gt; Show Preview Packages</td>
+</tr>
+<tr>
+<td>ARCore XR Plugin <br> Version: 2.1.2</td>
+<td>ARKit XR Plugin <br> Version: 2.1.2</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Unity 2019.3.x</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Android</strong></th>
+<th><strong>iOS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AR Foundation  <br> Version: 2.1.4</td>
+<td>AR Foundation  <br> Version: 2.1.4</td>
+</tr>
+<tr>
+<td>ARCore XR Plugin <br> Version: 2.1.2</td>
+<td>ARKit XR Plugin <br> Version: 2.1.2</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<h2 id="enabling-the-unity-ar-camera-settings-provider">Enabling the Unity AR camera settings provider</h2>
+<p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
+<ol>
+<li><p>Select the MixedRealityToolkit object in the scene hierarchy.</p>
+<p><img src="../Images/MRTK_ConfiguredHierarchy.png" alt="MRTK Configured Scene Hierarchy"></p>
+</li>
+<li><p>Select <strong>Copy and Customize</strong> to Clone the MRTK Profile to enable custom configuration.</p>
+<p><img src="../Images/CameraSystem/CloneProfileARFoundation.png" alt="Clone MRTK Profile"></p>
+</li>
+<li><p>Select <strong>Clone</strong> next to the Camera Profile.</p>
+<p><img src="../Images/CameraSystem/CloneCameraProfileARFoundation.png" alt="Clone MRTK Camera Profile"></p>
+</li>
+<li><p>Navigate the Inspector panel to the camera system section and expand the <strong>Camera Settings Providers</strong> section.</p>
+<p><img src="../Images/CameraSystem/ExpandProviders.png" alt="Expand settings providers"></p>
+</li>
+<li><p>Click <strong>Add Camera Settings Provider</strong> and expand the newly added <strong>New camera settings</strong> entry.</p>
+<p><img src="../Images/CameraSystem/ExpandNewProvider.png" alt="Expand new settings provider"></p>
+</li>
+<li><p>Select the Unity AR Camera Settings provider</p>
+<p><img src="../Images/CameraSystem/SelectUnityArSettings.png" alt="Select Unity AR settings provider"></p>
+<p>For more information about configuring the Unity AR camera settings provider: <a href="../CameraSystem/UnityArCameraSettings.html">Unity AR camera settings provider</a>.</p>
+</li>
+</ol>
+<h2 id="building-a-scene-for-android-and-ios-devices">Building a scene for Android and iOS devices</h2>
+<ol>
+<li><p>Make sure you have added the UnityAR Camera Settings Provider to your scene.</p>
+</li>
+<li><p>Switch platform to either Android or iOS in the Unity Build Settings</p>
+<p>When you switch the platform you should see the MRTK Project Configurator Window with settings for your chosen platform.  Click Apply to enable platform specific settings.</p>
+<p>iOS Project Configurator Settings</p>
+<p><img src="../Images/CameraSystem/MRTKProjectConfigurator.png" alt="iOS Project Configurator"></p>
+</li>
+<li><p>There are no additional steps after switching the platform for Android.</p>
+</li>
+<li><p>If the platform is iOS, Edit &gt; Project Settings &gt; Player &gt; Other Settings, under the Optimization header, <strong>uncheck</strong> Strip Engine Code</p>
+<p><img src="../Images/CameraSystem/UncheckStripEngineCodeiOS.png" alt="iOS Settings"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Unchecking Strip Engine Code is the short term solution to an error in Xcode <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6646">#6646</a>.  We are working on a long term solution.</p>
+</div>
+</li>
+<li><p>Build and run the scene</p>
+</li>
+</ol>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="../CameraSystem/UnityArCameraSettings.html">Unity AR Camera Settings</a></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/CrossPlatform/UsingARFoundation.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
