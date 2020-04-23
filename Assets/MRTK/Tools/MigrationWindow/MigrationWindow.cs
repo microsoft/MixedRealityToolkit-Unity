@@ -115,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 selectedMigrationHandlerIndex = EditorGUILayout.Popup(selectedMigrationHandlerIndex, migrationHandlerTypeNames, GUILayout.Width(500));
                 if (EditorGUI.EndChangeCheck())
                 {
+                    migrationTool.ClearMigrationList();
                     SetMigrationHandlerType();
                 }
             }
@@ -148,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 {
                     if (GUILayout.Button("Add full project for migration"))
                     {
-                        migrationTool.TryAddProjectForMigration();
+                        migrationTool.TryAddProjectForMigration(selectedMigrationHandlerType);
                     }
                     return;
                 }
@@ -166,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                         if (check.changed && selection)
                         {
-                            migrationTool.TryAddObjectForMigration(selection);
+                            migrationTool.TryAddObjectForMigration(selectedMigrationHandlerType,selection);
                         }
                     }
                 }
