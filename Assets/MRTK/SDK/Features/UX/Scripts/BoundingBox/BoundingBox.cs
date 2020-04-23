@@ -1139,7 +1139,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private List<Handle> handles;
 
         private List<Transform> corners;
-        private List<Transform> cornersVisuals;
         /// <summary>
         /// Returns list of transforms pointing to the scale handles of the bounding box.
         /// </summary>
@@ -1148,18 +1147,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return corners; }
         }
 
-        /// <summary>
-        /// Returns list of transforms pointing to the scale handle visuals of the bounding box.
-        /// </summary>
-        public IReadOnlyList<Transform> ScaleCornerVisuals
-        {
-            get { return cornersVisuals; }
-        }
-
-
-
         private List<Transform> balls;
-        private List<Transform> ballVisuals;
 
         /// <summary>
         /// Returns list of transforms pointing to the rotation handles of the bounding box.
@@ -1167,14 +1155,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public IReadOnlyList<Transform> RotateMidpoints
         {
             get { return balls; }
-        }
-
-        /// <summary>
-        /// Returns list of transforms pointing to the rotation handle visuals of the bounding box.
-        /// </summary>
-        public IReadOnlyList<Transform> RotateMidpointVisuals
-        {
-            get { return ballVisuals; }
         }
 
         #endregion Public Properties
@@ -1522,7 +1502,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, scaleHandleColliderPadding);
                 corners.Add(corner.transform);
-                cornersVisuals.Add(cornerVisual.transform);
 
                 handles.Add(new Handle()
                 {
@@ -1655,7 +1634,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 AddComponentsToAffordance(midpoint, bounds, rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, rotateHandleColliderPadding);
                 balls.Add(midpoint.transform);
-                ballVisuals.Add(midpointVisual.transform);
 
                 handles.Add(new Handle()
                 {
@@ -1991,9 +1969,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boundsCorners = new Vector3[8];
 
             corners = new List<Transform>();
-            cornersVisuals = new List<Transform>();
             balls = new List<Transform>();
-            ballVisuals = new List<Transform>();
 
             handles = new List<Handle>();
 
@@ -2272,10 +2248,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                     }
                 }
-
-                // Get the max radius possible of our current bounds plus the proximity
-                float maxRadius = currentBoundsExtents.sqrMagnitude;
-                maxRadius += 3 * handleMediumProximity * handleMediumProximity;
+                
+                // Get the max radius possible of our current bounds and extent the range to include proximity scaled objects. This is done by adjusting the original bounds to include the ObjectMediumProximity range in x, y and z axis
+                float maxRadius = currentBoundsExtents.sqrMagnitude + (3 * handleMediumProximity * handleMediumProximity);
 
                 // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
