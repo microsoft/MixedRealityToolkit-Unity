@@ -10,7 +10,7 @@ using UnityEngine;
 
 using Object = UnityEngine.Object;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// <see href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/MigrationWindow.html"/>This is an utility window for the MigrationTool. 
@@ -178,8 +178,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                using (new EditorGUILayout.ScrollViewScope(scrollPosition))
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition))
                 {
+                    scrollPosition = scrollView.scrollPosition;
                     var migrationObjects = migrationTool.MigrationObjects;
                     foreach (var migrationObject in migrationObjects)
                     {

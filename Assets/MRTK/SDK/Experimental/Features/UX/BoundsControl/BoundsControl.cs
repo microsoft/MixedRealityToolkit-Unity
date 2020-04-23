@@ -478,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         /// <summary>
         /// Allows to manually enable wire (edge) highlighting (edges) of the bounds control.
         /// This is useful if connected to the Manipulation events of a
-        /// <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> 
+        /// <see cref="Microsoft.MixedReality.Toolkit.UI.ObjectManipulator"/> 
         /// when used in conjunction with this MonoBehavior.
         /// </summary>
         public void HighlightWires()
