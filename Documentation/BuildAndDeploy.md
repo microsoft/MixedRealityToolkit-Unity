@@ -22,6 +22,9 @@ Make sure that the "Target SDK Version" dropdown includes the option "10.0.18362
 
 The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platform (UWP) and Standalone builds.  A Standalone build for a WMR headset requires the following extra steps:
 
+> [!NOTE]
+> Unity's XR SDK also supports native WMR in Standalone builds, but does not require SteamVR or WMR plugin. These steps are required for Unity's legacy XR.
+
 1. Install [Steam](https://store.steampowered.com/about/) 
 1. Install [SteamVR](https://store.steampowered.com/app/250820/SteamVR/)
 1. Install the [WMR Plugin](https://store.steampowered.com/app/719950/Windows_Mixed_Reality_for_SteamVR/)
