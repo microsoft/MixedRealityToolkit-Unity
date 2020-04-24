@@ -30,39 +30,40 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         internal class ToolboxItemCollection
         {
             [SerializeField]
-            public ToolboxCategory[] Categories = null;
+            private ToolboxCategory[] categories = null;
+            public ToolboxCategory[] Categories => categories;
         }
 
         [Serializable]
         internal class ToolboxCategory
         {
             [SerializeField]
-            public string CategoryName = string.Empty;
+            private string categoryName = string.Empty;
+            public string CategoryName => categoryName;
 
             [SerializeField]
-            public ToolboxItem[] Items = null;
+            private ToolboxItem[] items = null;
+            public ToolboxItem[] Items => items;
         }
 
         [Serializable]
         internal class ToolboxItem
         {
-            public string Name = string.Empty;
+            [SerializeField]
+            private string name = string.Empty;
+            public string Name => name;
 
-            public string RelativeAssetPath = string.Empty;
+            [SerializeField]
+            private string docURL = string.Empty;
+            public string DocURL => docURL;
 
-            public MixedRealityToolkitModuleType AssetModule = MixedRealityToolkitModuleType.Core;
+            [SerializeField]
+            private string assetGUID = string.Empty;
+            public string AssetPath => AssetDatabase.GUIDToAssetPath(assetGUID);
 
-            public string AssetPath =>
-                MixedRealityToolkitFiles.MapRelativeFilePath(AssetModule, RelativeAssetPath);
-
-            public MixedRealityToolkitModuleType IconModule = MixedRealityToolkitModuleType.Core;
-
-            public string RelativeIconPath = string.Empty;
-
-            public string IconPath 
-                => MixedRealityToolkitFiles.MapRelativeFilePath(IconModule, RelativeIconPath);
-
-            public string DocURL = string.Empty;
+            [SerializeField]
+            private string iconGUID = string.Empty;
+            public string IconPath => AssetDatabase.GUIDToAssetPath(iconGUID);
 
             public GameObject Prefab { get; protected set; }
 
@@ -131,9 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void OnGUI()
         {
-            centeredStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
-            centeredStyle.alignment = TextAnchor.UpperCenter;
-            centeredStyle.wordWrap = true;
+            centeredStyle = new GUIStyle(GUI.skin.GetStyle("Label"))
+            {
+                alignment = TextAnchor.UpperCenter,
+                wordWrap = true
+            };
 
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
