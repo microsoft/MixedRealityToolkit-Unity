@@ -26,49 +26,95 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const float ToolboxItemButtonWidth = 100f;
         private const float ToolboxItemHeight = 64f;
 
+        /// <summary>
+        /// Represents a collection of categories, each containing specific prefabs to be displayed in the Toolbox.
+        /// </summary>
         [Serializable]
         internal class ToolboxItemCollection
         {
             [SerializeField]
             private ToolboxCategory[] categories = null;
+
+            /// <summary>
+            /// The prefab type categories represented by this collection.
+            /// </summary>
             public ToolboxCategory[] Categories => categories;
         }
 
+        /// <summary>
+        /// Represents a distinct categorization of prefabs for display in the toolbox window.
+        /// </summary>
         [Serializable]
         internal class ToolboxCategory
         {
             [SerializeField]
             private string categoryName = string.Empty;
+
+            /// <summary>
+            /// The friendly name representing this category.
+            /// </summary>
             public string CategoryName => categoryName;
 
             [SerializeField]
             private ToolboxItem[] items = null;
+
+            /// <summary>
+            /// The prefabs represented by this category.
+            /// </summary>
             public ToolboxItem[] Items => items;
         }
 
+        /// <summary>
+        /// Represents a prefab and additional data about the prefab for the toolbox.
+        /// </summary>
         [Serializable]
         internal class ToolboxItem
         {
             [SerializeField]
             private string name = string.Empty;
+
+            /// <summary>
+            /// The friendly name of this prefab.
+            /// </summary>
             public string Name => name;
 
             [SerializeField]
             private string docURL = string.Empty;
+
+            /// <summary>
+            /// A link to documentation about this prefab.
+            /// </summary>
             public string DocURL => docURL;
 
             [SerializeField]
             private string assetGUID = string.Empty;
+
+            /// <summary>
+            /// The path from the AssetDatabase to the prefab.
+            /// </summary>
             public string AssetPath => AssetDatabase.GUIDToAssetPath(assetGUID);
 
             [SerializeField]
             private string iconGUID = string.Empty;
+
+            /// <summary>
+            /// The path from the AssetDatabase to the icon representing this prefab in the toolbox UI.
+            /// </summary>
             public string IconPath => AssetDatabase.GUIDToAssetPath(iconGUID);
 
+            /// <summary>
+            /// The actual prefab GameObject represented by this item.
+            /// </summary>
             public GameObject Prefab { get; protected set; }
 
+            /// <summary>
+            /// The icon representing this prefab in the toolbox UI.
+            /// </summary>
             public Texture Icon { get; protected set; }
 
+            /// <summary>
+            /// Initialize this item by loading the prefab and icon from the AssetDatabase.
+            /// </summary>
             public void Init()
             {
                 Prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetPath);
