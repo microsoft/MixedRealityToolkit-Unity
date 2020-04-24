@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -8,17 +9,17 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// 
+    /// Collection of utilities to manage the configured audio spatializer.
     /// </summary>
     public static class SpatializerUtilities
     {
         /// <summary>
-        /// 
+        /// Returns the name of the currently selected spatializer plugin.
         /// </summary>
         public static string CurrentSpatializer => AudioSettings.GetSpatializerPluginName();
 
         /// <summary>
-        /// 
+        /// Returns the names of installed spatializer plugins.
         /// </summary>
         public static string[] InstalledSpatializers => AudioSettings.GetSpatializerPluginNames();
 
@@ -50,12 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return false;
             }
 
-            // Next, check to see if the cached collection matches the current install
-            bool collectionIsSmaller = false;
-            if (SpatializerCollectionChanged(out collectionIsSmaller) && 
-                !collectionIsSmaller)
+            // Next, check to see if the count of installed spatializers has changed
+            if (!CheckSpatializerCount())
             {
-                // A new spatializer has been installed.
+                // A spatializer has been added or removed.
                 return false;
             }
 
@@ -85,19 +84,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             AudioSettings.SetSpatializerPluginName(spatializer);
             spatializerPlugin.stringValue = spatializer;
             audioMgrSettings.ApplyModifiedProperties();
-    }
+
+            MixedRealityProjectPreferences.AudioSpatializerCount = InstalledSpatializers.Length;
+        }
 
         /// <summary>
-        /// 
+        /// Compares the previous and current count of installed spatializer plugins.
         /// </summary>
-        /// <returns></returns>
-        private static bool SpatializerCollectionChanged(out bool isSmaller)
+        /// <returns>True if the count of installed spatializers is unchanged, false otherwise.</returns>
+        private static bool CheckSpatializerCount()
         {
-            isSmaller = false;
+            int previousCount = MixedRealityProjectPreferences.AudioSpatializerCount;
+            int currentCount = InstalledSpatializers.Length;
 
-            // todo
-
-            return false;
+            return (previousCount == currentCount);
         }
     }
 }

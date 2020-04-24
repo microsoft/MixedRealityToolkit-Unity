@@ -122,6 +122,36 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Run optimal configuration analysis on Play
 
+        #region Project configuration cache
+
+        // This section contains data that gets cached for future reference to help detect configuration
+        // changes that may result in a need to alert the application developer (ex: count of installed
+        // plugins of a specific type). There is no UI in the project settings dialog for these properties.
+
+        private const string AUDIO_SPATIALIZER_COUNT_KEY = "MixedRealityToolkit_Editor_AudioSpatializerCount";
+        private static bool audioSpatializerCountLoaded;
+        private static int audioSpatializerCount;
+
+        /// <summary>
+        /// Should configuration analysis be run and warnings logged when settings don't match MRTK's recommendations?
+        /// </summary>
+        public static int AudioSpatializerCount
+        {
+            get
+            {
+                if (!audioSpatializerCountLoaded)
+                {
+                    audioSpatializerCount = ProjectPreferences.Get(AUDIO_SPATIALIZER_COUNT_KEY, 0);
+                    audioSpatializerCountLoaded = true;
+                }
+
+                return audioSpatializerCount;
+            }
+            set => ProjectPreferences.Set(AUDIO_SPATIALIZER_COUNT_KEY, audioSpatializerCount = value);
+        }
+
+        #endregion Project configuration cache
+
         [SettingsProvider]
         private static SettingsProvider Preferences()
         {
