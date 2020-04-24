@@ -19,6 +19,8 @@
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
+  - name: Using MRTK in large projects
+    href: LargeProjects.md
 - name: Architecture
   items:
   - name: Overview
