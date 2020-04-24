@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public class MixedRealityEditorSettings : IActiveBuildTargetChanged, IPreprocessBuildWithReport
     {
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
+        // todo: remove
         private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
 #if UNITY_ANDROID
         const string RenderingMode = "Single Pass Stereo";
@@ -123,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
                 }
 
+                // todo: change this to check for no spatializer instead of a specific value
                 if (!AudioSettings.GetSpatializerPluginName().Equals(MSFT_AudioSpatializerPlugin))
                 {
                     // If using UWP, developers should use the Microsoft Audio Spatializer plugin

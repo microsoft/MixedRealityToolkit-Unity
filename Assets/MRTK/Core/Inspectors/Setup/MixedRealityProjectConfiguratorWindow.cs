@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             { MRConfig.EnableMSBuildForUnity, true },
 #endif // !UNITY_2019_3_OR_NEWER
+            { MRConfig.AudioSpatializer, true },
+
             // UWP Capabilities
             { MRConfig.MicrophoneCapability, true },
             { MRConfig.InternetClientCapability, true },
@@ -79,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             Instance = this;
 
             CompilationPipeline.assemblyCompilationStarted += CompilationPipeline_assemblyCompilationStarted;
+            MixedRealityProjectConfigurator.SelectedSpatializer = SpatializerUtilities.CurrentSpatializer;
         }
 
         private void CompilationPipeline_assemblyCompilationStarted(string obj)
@@ -183,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
 #endif // UNITY_2019_3_OR_NEWER
                 RenderToggle(MRConfig.SpatialAwarenessLayer, "Set default Spatial Awareness layer");
+                PromptForAudioSpatializer();
                 EditorGUILayout.Space();
 
                 if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
@@ -242,6 +246,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             MixedRealityProjectConfigurator.ConfigureProject(configurationFilter);
+        }
+
+        /// <summary>
+        /// Provide the user with the list of spatializers that can be selected.
+        /// </summary>
+        private void PromptForAudioSpatializer()
+        {
+            string selectedSpatializer = MixedRealityProjectConfigurator.SelectedSpatializer;
+            List<string> spatializers = new List<string>();
+            spatializers.Add("None");
+            spatializers.AddRange(SpatializerUtilities.InstalledSpatializers);
+            RenderDropDown(MRConfig.AudioSpatializer, "Audio spatializer:", spatializers.ToArray(), ref selectedSpatializer);
+            MixedRealityProjectConfigurator.SelectedSpatializer = selectedSpatializer;
+        }
+
+        private void RenderDropDown(MRConfig configKey, string title, string[] collection, ref string selection)
+        {
+            int index = 0;
+            for (int i = 0; i < collection.Length; i++)
+            {
+                if (collection[i] != selection) { continue; }
+
+                index = i;
+            }
+            index = EditorGUILayout.Popup(title, index, collection, EditorStyles.popup);
+
+            selection = collection[index];
+            if (selection == "None") 
+            {
+                // The uer selected "None", return null. Unity uses this string where null
+                // is the underlying value.
+                selection = null; 
+            }
         }
 
         private void RenderToggle(MRConfig configKey, string title)
