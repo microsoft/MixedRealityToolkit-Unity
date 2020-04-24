@@ -1252,6 +1252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             }
                             break;
                         case SceneQueryType.SphereOverlap:
+                        case SceneQueryType.ConeOverlap:
                             // Set up our results array
                             if (colliders == null)
                             {
@@ -1301,20 +1302,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                         // address these cases with a smarter approach in the future.
                                         //        See github issue https://github.com/microsoft/MixedRealityToolkit-Unity/issues/7629
                                         Vector3 closestPointToCollider = collider.ClosestPoint(testPoint);
-
-                                        // Check if the collider is within the activation cone
-                                        Vector3 relativeColliderPosition = closestPointToCollider - testPoint;
-                                        float leewaySqrDistance = pointer.SphereCastRadius * pointer.SphereCastRadius * 0.5f;
-
-                                        Vector3 forwardAxis;
-                                        ((IMixedRealityNearPointer)pointer).TryGetNearGraspAxis(out forwardAxis);
-
-                                        float coneAngle = 60.0f * Mathf.Deg2Rad;
-                                        bool inAngle = Vector3.Dot(forwardAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
-                                        if (relativeColliderPosition != Vector3.zero && !inAngle)
-                                        {
-                                            continue;
-                                        }
 
                                         // Keep track of the object closest to the test point.
                                         float distance = (testPoint - closestPointToCollider).sqrMagnitude;

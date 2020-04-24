@@ -9,9 +9,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
-    public class SpherePointer : BaseControllerPointer, IMixedRealityNearPointer
+    public class ConePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
-        private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
+        private SceneQueryType raycastMode = SceneQueryType.ConeOverlap;
 
         /// <inheritdoc />
         public override SceneQueryType SceneQueryType
@@ -19,6 +19,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get => raycastMode;
             set => raycastMode = value;
         }
+
+        [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Angle of the cone's tip in degrees ")]
+        private float coneTipAngle = 60.0f;
+
+        /// <summary>
+        /// Additional distance on top of<see cref="BaseControllerPointer.SphereCastRadius"/> when pointer is considered 'near' an object and far interaction will turn off.
+        /// </summary>
+        /// <remarks>
+        /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
+        /// </remarks>
+        public float ConeTipAngle => coneTipAngle;
 
         [SerializeField]
         [Min(0.0f)]
@@ -88,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => ignoreCollidersNotInFOV = value;
         }
 
-        private SpherePointerQueryInfo queryBufferNearObjectRadius;
-        private SpherePointerQueryInfo queryBufferInteractionRadius;
+        private ConePointerQueryInfo queryBufferNearObjectRadius;
+        private ConePointerQueryInfo queryBufferInteractionRadius;
 
         /// <summary>
         /// Test if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
@@ -108,8 +121,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius);
-            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius);
+            queryBufferNearObjectRadius = new ConePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius, ConeTipAngle);
+            queryBufferInteractionRadius = new ConePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, ConeTipAngle);
         }
 
         private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
@@ -125,7 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 Vector3 pointerPosition;
-                if (TryGetNearGraspPoint(out pointerPosition))
+                Vector3 pointerAxis;
+                if (TryGetNearGraspPoint(out pointerPosition) && TryGetNearGraspAxis(out pointerAxis))
                 {
                     Vector3 endPoint = Vector3.forward * SphereCastRadius;
                     Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
@@ -133,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
@@ -141,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     for (int i = 0; i < PrioritizedLayerMasksOverride.Length; i++)
                     {
-                        if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, triggerInteraction, ignoreCollidersNotInFOV))
+                        if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(PrioritizedLayerMasksOverride[i], pointerPosition, pointerAxis, triggerInteraction, ignoreCollidersNotInFOV))
                         {
                             break;
                         }
@@ -189,6 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNearGraspAxis");
+
         /// <summary>
         /// Gets the position of where grasp happens
         /// For IMixedRealityHand it's the axis from the palm to the grasp point
@@ -196,8 +212,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool TryGetNearGraspAxis(out Vector3 result)
         {
-            result = transform.forward;
-            return false;
+            using (TryGetNearGraspAxisPerfMarker.Auto())
+            {
+                // If controller is of kind IMixedRealityHand, return average of index and thumb
+                if (Controller is IMixedRealityHand hand)
+                {
+                    if (hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index) && index != null)
+                    {
+                        if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                        {
+                            Vector3 palmToIndex = index.Position - palm.Position;
+                            result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, 0.9f);
+
+                            // Visualization for debuggin
+                            Debug.DrawRay(palm.Position, result, Color.red);
+                            return true;
+                        }
+                    }
+
+                    // If controller is of kind IMixedRealityHand, return average of index and thumb
+                    // Other implementation for testing
+                    // Vector3 graspPosition;
+                    // TryGetNearGraspPoint(out graspPosition);
+                    // if (hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose palm) && palm != null)
+                    // {
+                    //     result = graspPosition - palm.Position;
+                    //     // Visualization for debuggin
+                    //     Debug.DrawRay(palm.Position, result, Color.red);
+                    //     return true;
+                    // }
+                }
+
+                result = transform.forward;
+                return false;
+            }
         }
 
         private static readonly ProfilerMarker TryGetDistanceToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetDistanceToNearestSurface");
@@ -249,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Helper class for storing and managing near grabbables close to a point
         /// </summary>
-        private class SpherePointerQueryInfo
+        private class ConePointerQueryInfo
         {
             /// <summary>
             /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
@@ -267,15 +315,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private readonly float queryRadius;
 
             /// <summary>
+            /// Angle in degrees for the cone to query.
+            /// </summary>
+            private readonly float queryAngle;
+
+            /// <summary>
             /// The grabbable near the QueryRadius. 
             /// </summary>
             private NearInteractionGrabbable grabbable;
 
-            public SpherePointerQueryInfo(int bufferSize, float radius)
+            public ConePointerQueryInfo(int bufferSize, float radius, float angle)
             {
                 numColliders = 0;
                 queryBuffer = new Collider[bufferSize];
                 queryRadius = radius;
+                queryAngle = angle;
             }
 
             private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
@@ -291,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <param name="pointerPosition">The position of the pointer to query against.</param>
             /// <param name="triggerInteraction">Passed along to the OverlapSphereNonAlloc call.</param>
             /// <param name="ignoreCollidersNotInFOV">Whether to ignore colliders that are not visible.</param>
-            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
+            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, Vector3 pointerAxis, QueryTriggerInteraction triggerInteraction, bool ignoreCollidersNotInFOV)
             {
                 using (TryUpdateQueryBufferForLayerMaskPerfMarker.Auto())
                 {
@@ -313,6 +367,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         Collider collider = queryBuffer[i];
                         grabbable = collider.GetComponent<NearInteractionGrabbable>();
+
+                        // Check if the collider is within the activation cone
+                        Vector3 closestPointToCollider = collider.ClosestPoint(pointerPosition);
+                        Vector3 relativeColliderPosition = closestPointToCollider - pointerPosition;
+                        
+                        // Leeway for objects that are right at the tip of the cone pointer
+                        float leewaySqrDistance = queryRadius * queryRadius * 0.25f;
+
+                        float coneAngle = queryAngle * Mathf.Deg2Rad;
+                        bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
+                        if (relativeColliderPosition != Vector3.zero && !inAngle)
+                        {
+                            continue;
+                        }
+
                         if (grabbable != null)
                         {
                             if (ignoreCollidersNotInFOV)
