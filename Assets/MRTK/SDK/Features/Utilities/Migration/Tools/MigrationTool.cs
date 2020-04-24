@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public List<Object> MigrationObjects => new List<Object>(migrationObjects);
 
         private IMigrationHandler migrationHandlerInstance;
+        private Type migrationHandlerInstanceType;
 
         public MigrationTool()
         {
@@ -43,34 +44,95 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Adds selectedObject to the list of objects to be migrated. Return false if the object is not of type GameObject, or SceneAsset.
         /// </summary>
-        /// <param name="selectedObject">Unity Object of type GameObject or SceneAsset</param>
-        public bool TryAddObjectForMigration(Object selectedObject)
+        public bool TryAddObjectForMigration(Type type, Object selectedObject)
         {
+            if (type == null)
+            {
+                Debug.LogError("Migration type needs to be selected before migration.");
+                return false;
+            }
+
+            if (type != migrationHandlerInstanceType)
+            {
+                ClearMigrationList();
+                Debug.Log("New migration type selected for migration. Clearing previous selection.");
+
+                if (!SetMigrationHandlerInstance(type))
+                {
+                    return false;
+                }
+            }
+
             if (!selectedObject)
             {
-                Debug.LogError("Selection is Empty. Could not add for migration.");
+                Debug.LogWarning("Selection is empty. Please select object for migration.");
                 return false;
             }
 
             if (selectedObject is GameObject || selectedObject is SceneAsset)
             {
-                if (!migrationObjects.Contains(selectedObject))
+                if (CheckIfCanMigrate(type, selectedObject) && !migrationObjects.Contains(selectedObject))
                 {
                     migrationObjects.Add(selectedObject);
-                    Debug.Log($"{selectedObject.name} object added for migration");
+                    return true;
                 }
-                return true;
+                else
+                {
+                    Debug.Log($"{selectedObject.name} does not support {type.Name} migration. Could not add object for migration");
+                    return false;
+                }
             }
             Debug.LogError("Object must be a GameObject, Prefab or SceneAsset. Could not add object for migration");
             return false;
         }
 
+        private bool CheckIfCanMigrate(Type type, Object selectedObject)
+        {
+            bool canMigrate = false;
+            string objectPath = AssetDatabase.GetAssetPath(selectedObject);
+
+            if (IsSceneGameObject(selectedObject))
+            {
+                var objectHierarchy = ((GameObject)selectedObject).GetComponentsInChildren<Transform>();
+                for (int i = 0; i < objectHierarchy.Length; i++)
+                {
+                    if (migrationHandlerInstance.CanMigrate(objectHierarchy[i].gameObject))
+                    { 
+                        return true;
+                    }
+                }
+            }
+            else if (IsPrefabAsset(selectedObject))
+            {
+                PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(selectedObject);
+                if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
+                {
+                    var parent = UnityEditor.PrefabUtility.LoadPrefabContents(objectPath);
+                    canMigrate = CheckIfCanMigrate(type, parent);
+                    PrefabUtility.UnloadPrefabContents(parent);
+                }
+            }
+            else if (IsSceneAsset(selectedObject))
+            {
+                Scene scene = EditorSceneManager.OpenScene(objectPath);
+
+                foreach (var parent in scene.GetRootGameObjects())
+                {
+                    if (CheckIfCanMigrate(type, parent))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return canMigrate;
+        }
+
         /// <summary>
         /// Adds all prefabs and scene assets found on the assets folder to the list of objects to be migrated
         /// </summary>
-        public void TryAddProjectForMigration()
+        public void TryAddProjectForMigration(Type migrationType)
         {
-            AddAllAssetsOfTypeForMigration(new Type[] { typeof(GameObject), typeof(SceneAsset) });
+            AddAllAssetsOfTypeForMigration(migrationType, new Type[] { typeof(GameObject), typeof(SceneAsset) });
         }
 
         /// <summary>
@@ -96,8 +158,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="type">A type that implements IMigrationhandler</param>
         public bool MigrateSelection(Type type, bool askToSaveCurrentScene)
         {
-            if (type == null || !SetMigrationHandlerInstance(type))
+            if (migrationObjects.Count == 0)
             {
+                Debug.LogError($"List of objects for migration is empty.");
+                return false;
+            }
+
+            if (migrationHandlerInstanceType == null)
+            {
+                Debug.LogError($"Please select type for migration.");
+                return false;
+            }
+
+            if (type == null || migrationHandlerInstanceType != type)
+            {
+                Debug.LogError($"Selected objects should be migrated with type: {migrationHandlerInstanceType}");
                 return false;
             }
 
@@ -116,32 +191,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
                 string assetPath = AssetDatabase.GetAssetPath(migrationObjects[i]);
 
-                // Object migrationObject is a scene game object
-                if (String.IsNullOrEmpty(assetPath))
+                if (IsSceneGameObject(migrationObjects[i]))
                 {
                     MigrateGameObjectHierarchy((GameObject)migrationObjects[i]);
                 }
-                else
+                else if (IsPrefabAsset(migrationObjects[i]))
                 {
-                    if (migrationObjects[i] is GameObject)
+                    PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects[i]);
+                    if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
                     {
-                        PrefabAssetType prefabType = PrefabUtility.GetPrefabAssetType(migrationObjects[i]);
-                        if (prefabType == PrefabAssetType.Regular || prefabType == PrefabAssetType.Variant)
-                        {
-                            // there's currently 5 types of prefab asset types - we're supporting the following:
-                            // - Regular: a regular prefab object
-                            // - Variant: a prefab derived from another prefab which could be a model, regular or variant prefab
-                            // we won't support the following types:
-                            // - Model: we can't migrate fbx or other mesh files
-                            // - MissingAsset: we can't migrate missing data
-                            // - NotAPrefab: we can't migrate as prefab if the given asset isn't a prefab
-                            MigratePrefab(assetPath);
-                        }
+                        // there's currently 5 types of prefab asset types - we're supporting the following:
+                        // - Regular: a regular prefab object
+                        // - Variant: a prefab derived from another prefab which could be a model, regular or variant prefab
+                        // we won't support the following types:
+                        // - Model: we can't migrate fbx or other mesh files
+                        // - MissingAsset: we can't migrate missing data
+                        // - NotAPrefab: we can't migrate as prefab if the given asset isn't a prefab
+                        MigratePrefab(assetPath);
                     }
-                    else if (migrationObjects[i] is SceneAsset)
-                    {
-                        MigrateScene(assetPath);
-                    }
+                }
+                else if (IsSceneAsset(migrationObjects[i]))
+                {
+                    MigrateScene(assetPath);
                 }
             }
             EditorUtility.ClearProgressBar();
@@ -154,15 +225,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return true;
         }
 
-        private void AddAllAssetsOfTypeForMigration(Type[] types)
+        private void AddAllAssetsOfTypeForMigration(Type migrationType, Type[] assetTypes)
         {
-            var assetPaths = FindAllAssetsOfType(types);
+            var assetPaths = FindAllAssetsOfType(assetTypes);
             if (assetPaths != null)
-            {
-                foreach (var path in assetPaths)
+            {                               
+                for (int i = 0; i < assetPaths.Count; i++)
                 {
-                    TryAddObjectForMigration(AssetDatabase.LoadMainAssetAtPath(path));
+                    var progress = (float)i / assetPaths.Count;
+                    if (EditorUtility.DisplayCancelableProgressBar("Migration Tool", $"Selecting all assets that support {migrationType.Name} migration.", progress))
+                    {
+                        break;
+                    }
+                    TryAddObjectForMigration(migrationType, AssetDatabase.LoadMainAssetAtPath(assetPaths[i]));
                 }
+                EditorUtility.ClearProgressBar();
             }
         }
 
@@ -170,23 +247,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             if (!typeof(IMigrationHandler).IsAssignableFrom(type))
             {
-                Debug.LogError($"{type.Name} is not a valid implementation of IMigrationHandler");
+                Debug.LogError($"{type.Name} is not a valid implementation of IMigrationHandler.");
                 return false;
             }
 
             if (!migrationHandlerTypes.Contains(type))
             {
-                Debug.LogError($"{type.Name} might not be a valid implementation of IMigrationHandler");
+                Debug.LogError($"{type.Name} might not be a valid implementation of IMigrationHandler.");
                 return false;
             }
 
             try
             {
                 migrationHandlerInstance = Activator.CreateInstance(type) as IMigrationHandler;
+                migrationHandlerInstanceType = type;
+                Debug.LogWarning($"Migration tool will use {type.Name} type for next migration.");
             }
             catch (Exception)
             {
-                Debug.LogError("Selected MigrationHandler implementation could not be instanciated");
+                Debug.LogError("Selected MigrationHandler implementation could not be instanciated.");
                 return false;
             }
             return true;
@@ -265,6 +344,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                                           .Select(x => string.Format("t:{0}", x.Name))
                                           .ToArray());
             return AssetDatabase.FindAssets(filter).Select(x => AssetDatabase.GUIDToAssetPath(x)).ToList();
+        }
+
+        private static bool IsSceneGameObject(Object selectedObject)
+        {
+            string objectPath = AssetDatabase.GetAssetPath(selectedObject);
+            return String.IsNullOrEmpty(objectPath) && selectedObject is GameObject;
+        }
+
+        private static bool IsPrefabAsset(Object selectedObject)
+        {
+            string objectPath = AssetDatabase.GetAssetPath(selectedObject);
+            return !String.IsNullOrEmpty(objectPath) && selectedObject is GameObject;
+        }
+
+        private static bool IsSceneAsset(Object selectedObject)
+        {
+            return selectedObject is SceneAsset;
         }
     }
 }
