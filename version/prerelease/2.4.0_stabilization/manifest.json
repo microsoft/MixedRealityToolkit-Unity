@@ -582,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/BuildAndDeploy.html",
-          "hash": "GfF+CYCGbGzU5fSlQIiU1w=="
+          "hash": "HGCqDoARgriY3M4+foxjWQ=="
         }
       },
       "is_incremental": false,
@@ -1246,6 +1246,61 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Proximity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPlugin.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPlugin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPluginActive.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPluginActive.png"
         }
       },
       "is_incremental": false,
@@ -7856,7 +7911,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ZAk6IiPGLHORYEIueD1hug=="
+          "hash": "HIiDY85WzOFeqEVjJYLJwA=="
         }
       },
       "is_incremental": false,
@@ -27191,16 +27246,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 159,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1603,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -27210,11 +27266,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1603,
           "skipped_file_count": 0
         }
       }

@@ -92,6 +92,57 @@ and &quot;Minimum Platform Version&quot; look like they do in the picture below:
 be changed inside the Visual Studio solution).</p>
 <p>Make sure that the &quot;Target SDK Version&quot; dropdown includes the option &quot;10.0.18362.0&quot; - if this is missing,
 <a href="https://developer.microsoft.com/windows/downloads/windows-10-sdk">the latest Windows SDK</a> needs to be installed.</p>
+<h2 id="building-and-deploying-mrtk-to-a-windows-mixed-reality-headset">Building and deploying MRTK to a Windows Mixed Reality Headset</h2>
+<p>The Windows Mixed Reality (WMR) headset can be used for Universal Windows Platform (UWP) and Standalone builds.  A Standalone build for a WMR headset requires the following extra steps:</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Unity's XR SDK also supports native WMR in Standalone builds, but does not require SteamVR or WMR plugin. These steps are required for Unity's legacy XR.</p>
+</div>
+<ol>
+<li>Install <a href="https://store.steampowered.com/about/">Steam</a></li>
+<li>Install <a href="https://store.steampowered.com/app/250820/SteamVR/">SteamVR</a></li>
+<li>Install the <a href="https://store.steampowered.com/app/719950/Windows_Mixed_Reality_for_SteamVR/">WMR Plugin</a></li>
+</ol>
+<h3 id="how-to-use-wmr-plugin">How to use WMR plugin</h3>
+<ol>
+<li><p>Open Steam and search for the Windows Mixed Reality Plugin</p>
+<ul>
+<li>Make sure SteamVR is closed before launching the WMR Plugin. Launching the WMR plugin also launches SteamVR.</li>
+<li>Make sure the WMR headset is plugged in.</li>
+</ul>
+<p><img src="Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png" alt="WMR Plugin Search"></p>
+</li>
+<li><p>Select <strong>Launch</strong> for the Windows Mixed Reality for SteamVR Plugin.</p>
+<p><img src="Images/BuildDeploy/WMR/WMRPlugin.png" alt="WMR Plugin"></p>
+<ul>
+<li><p>SteamVR and the WMR plugin will launch and a new tracking status window for the WMR headset will appear.</p>
+</li>
+<li><p>For more information visit the <a href="https://support.microsoft.com/en-us/help/4053622/windows-10-play-steamvr-games-in-windows-mixed-reality">Windows Mixed Reality Steam Documentation</a></p>
+<p><img src="Images/BuildDeploy/WMR/WMRPluginActive.png" alt="WMR Launch Appearance"></p>
+</li>
+</ul>
+</li>
+<li><p>In Unity, with your MRTK scene open, navigate to <strong>File &gt; Build Settings</strong></p>
+</li>
+<li><p>Build the scene</p>
+<ul>
+<li>Select <strong>Add Open Scene</strong></li>
+<li>Make sure the Platform is <strong>Standalone</strong></li>
+<li>Select <strong>Build</strong></li>
+<li>Choose the location for the new build in File Explorer</li>
+</ul>
+<p><img src="Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png" alt="Build Settings for Standalone"></p>
+</li>
+<li><p>A new Unity executable will be created, to launch your app select the Unity executable in File Explorer.</p>
+<p><img src="Images/BuildDeploy/WMR/FileExplorerUnityExe.png" alt="File Explorer Unity"></p>
+</li>
+</ol>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="CrossPlatform/UsingARFoundation.html">Android and iOS Support</a></li>
+<li><a href="CrossPlatform/LeapMotionMRTK.html">Leap Motion Support</a></li>
+<li><a href="DetectingPlatformCapabilities.html">Detecting Platform Capabilities</a></li>
+</ul>
 </article>
           </div>
           
