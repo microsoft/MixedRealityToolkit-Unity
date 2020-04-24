@@ -342,5 +342,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public bool ContainsGrabbable => grabbable != null;
         }
+
+    #if UNITY_EDITOR
+        /// <summary>
+        /// When in editor, draws a cone that represents the grabbable cone area
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            TryGetNearGraspPoint(out Vector3 point);
+
+            //Semi transparent green sphere
+            Gizmos.color = Color.green - Color.black * 0.5f;
+            Gizmos.DrawSphere(point, NearObjectRadius);
+        }
+    #endif
     }
 }

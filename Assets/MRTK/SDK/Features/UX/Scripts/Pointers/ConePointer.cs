@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [AddComponentMenu("Scripts/MRTK/SDK/SpherePointer")]
+    [AddComponentMenu("Scripts/MRTK/SDK/ConePointer")]
     public class ConePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
         private SceneQueryType raycastMode = SceneQueryType.ConeOverlap;
@@ -223,9 +223,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             Vector3 palmToIndex = index.Position - palm.Position;
                             result = Vector3.Lerp(palm.Forward, palmToIndex.normalized, 0.9f);
-
-                            // Visualization for debuggin
-                            Debug.DrawRay(palm.Position, result, Color.red);
                             return true;
                         }
                     }
@@ -243,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // }
                 }
 
-                result = transform.forward;
+                result = new Vector3(12f, 23f, 12);//transform.forward;
                 return false;
             }
         }
@@ -411,5 +408,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             public bool ContainsGrabbable => grabbable != null;
         }
+
+    #if UNITY_EDITOR
+        /// <summary>
+        /// When in editor, draws a cone that represents the grabbable cone area
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            TryGetNearGraspAxis(out Vector3 coneForwardAxis);
+            TryGetNearGraspPoint(out Vector3 point);
+
+            Vector3 centralAxis = coneForwardAxis.normalized;
+
+            Gizmos.color = Color.green;
+            UnityEditor.Handles.color = Color.green;
+            Gizmos.DrawLine(point, coneForwardAxis.normalized * NearObjectRadius);
+
+            // Draws the base of the cone pointer. gizmo representation is incorrect as ConeTipAngle apporaches 90 degress 
+            // (meaning anything within 90 degrees of the forward axis is grabbable)
+            UnityEditor.Handles.DrawWireDisc(point + coneForwardAxis.normalized * NearObjectRadius, coneForwardAxis.normalized, 
+                                                NearObjectRadius * Mathf.Sin(ConeTipAngle * Mathf.Deg2Rad));
+        }
+    #endif
     }
 }
