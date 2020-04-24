@@ -122,8 +122,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private const string RelativeJSONDataPath = @"Inspectors\Data\DefaultToolboxItems.json";
-        private string JSONDataPath => MixedRealityToolkitFiles.MapRelativeFilePath(RelativeJSONDataPath);
+        private const string JSONDataGUID = "23b7f096c52f5d74a90b0b05c72ca03c";
+        private string JSONDataPath => AssetDatabase.GUIDToAssetPath(JSONDataGUID);
 
         internal ToolboxItemCollection toolBoxCollection;
         internal ToolboxCategory[] ToolboxPrefabs
