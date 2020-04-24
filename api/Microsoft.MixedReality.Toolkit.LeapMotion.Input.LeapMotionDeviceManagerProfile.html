@@ -106,6 +106,60 @@ added to the MRTK input configuration profile.</p>
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_EnterPinchDistance_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.EnterPinchDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_EnterPinchDistance" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.EnterPinchDistance">EnterPinchDistance</h4>
+  <div class="markdown level1 summary"><p>The distance between the index finger tip and the thumb tip required to enter the pinch/air tap selection gesture.
+The pinch gesture enter will be registered for all values less than the EnterPinchDistance. The default EnterPinchDistance value is 0.02 and must be between 0.015 and 0.1.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float EnterPinchDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_ExitPinchDistance_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.ExitPinchDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_ExitPinchDistance" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.ExitPinchDistance">ExitPinchDistance</h4>
+  <div class="markdown level1 summary"><p>The minimum distance between the index finger tip and the thumb tip required to exit the pinch/air tap gesture to deselect.  The distance between the thumb and
+the index tip must be greater than than the ExitPinchDistance to raise the OnInputUp event</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ExitPinchDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOffset_" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOffset*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_LeapMotion_Input_LeapMotionDeviceManagerProfile_LeapControllerOffset" data-uid="Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.LeapControllerOffset">LeapControllerOffset</h4>
   <div class="markdown level1 summary"><p>Adds an offset to the game object with LeapServiceProvider attached.  This offset is only applied if the leapControllerOrientation
@@ -116,7 +170,7 @@ game object with the LeapServiceProvider attached.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 LeapControllerOffset { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3 LeapControllerOffset { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">

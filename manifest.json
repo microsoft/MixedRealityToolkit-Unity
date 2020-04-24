@@ -582,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/BuildAndDeploy.html",
-          "hash": "GfF+CYCGbGzU5fSlQIiU1w=="
+          "hash": "HGCqDoARgriY3M4+foxjWQ=="
         }
       },
       "is_incremental": false,
@@ -1246,6 +1246,61 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Proximity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/BuildSettingsStandaloneUnity.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/FileExplorerUnityExe.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/SteamSearchWMRPlugin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPlugin.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPlugin.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPluginActive.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/BuildDeploy/WMR/WMRPluginActive.png"
         }
       },
       "is_incremental": false,
@@ -7144,6 +7199,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/LargeProjects.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/LargeProjects.html",
+          "hash": "f2uQfBz6uG75qUOlVkWWJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/MRTKNuGetPackage.md",
       "output": {
         ".html": {
@@ -7844,7 +7911,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "O4g7o2zSb6+vTK4QVdJz+w=="
+          "hash": "HIiDY85WzOFeqEVjJYLJwA=="
         }
       },
       "is_incremental": false,
@@ -13063,7 +13130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ArticulatedHandDefinition.html",
-          "hash": "6gTTQZM7X+6gOe9YXgBe7A=="
+          "hash": "6LGRQCniVRRnfahD6qnVTg=="
         }
       },
       "is_incremental": false,
@@ -16159,7 +16226,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Input.LeapMotionDeviceManagerProfile.html",
-          "hash": "8JvVTirYSRRLb51KZy41Vw=="
+          "hash": "HdvJC2QWuzO0U+dCg2Fh3A=="
         }
       },
       "is_incremental": false,
@@ -16183,7 +16250,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.LeapMotion.Inspectors.LeapMotionDeviceManagerProfileInspector.html",
-          "hash": "C87qj0u+etA8ao0whgPIsw=="
+          "hash": "prWX0CFQKW6NhuVP0HmVng=="
         }
       },
       "is_incremental": false,
@@ -20335,7 +20402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html",
-          "hash": "6yxxTsk96WEg2YOUS9aVRg=="
+          "hash": "8nO9B4Ug9fqVpB2JU484YQ=="
         }
       },
       "is_incremental": false,
@@ -21451,7 +21518,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.BoundingBox.html",
-          "hash": "hmLwhMWpIMXiXC7+ECctCg=="
+          "hash": "FbQVu/r6/Wda9Mhnc41gOQ=="
         }
       },
       "is_incremental": false,
@@ -25783,7 +25850,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverOffsetBehavior.html",
-          "hash": "r7dgFv/4HVBA7+nUeT1v7A=="
+          "hash": "AmULAEGCQCUHKfscoL/ucQ=="
         }
       },
       "is_incremental": false,
@@ -27179,10 +27246,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 158,
+          "total_file_count": 159,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -27194,13 +27268,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
