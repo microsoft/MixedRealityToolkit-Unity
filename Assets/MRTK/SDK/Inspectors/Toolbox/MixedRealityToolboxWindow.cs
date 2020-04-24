@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public class MixedRealityToolboxWindow : EditorWindow
     {
-        private static readonly string searchDisplaySearchFieldKey = "MixedRealityToolboxWindow.SearchField";
+        private static readonly string SearchDisplaySearchFieldKey = "MixedRealityToolboxWindow.SearchField";
         private const string WindowTitle = "MRTK Toolbox";
 
         private Vector2 scrollPos;
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void OnEnable()
         {
-            searchString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty);
+            searchString = SessionState.GetString(SearchDisplaySearchFieldKey, string.Empty);
         }
 
         private void OnGUI()
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     searchString = string.Empty;
                 }
 
-                SessionState.SetString(searchDisplaySearchFieldKey, searchString);
+                SessionState.SetString(SearchDisplaySearchFieldKey, searchString);
             }
 
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
