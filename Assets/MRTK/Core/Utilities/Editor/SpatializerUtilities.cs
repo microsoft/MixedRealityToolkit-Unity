@@ -85,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             spatializerPlugin.stringValue = spatializer;
             audioMgrSettings.ApplyModifiedProperties();
 
+            // Cache the count of installed spatializers
             MixedRealityProjectPreferences.AudioSpatializerCount = InstalledSpatializers.Length;
         }
 
