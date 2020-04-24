@@ -263,21 +263,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void RenderDropDown(MRConfig configKey, string title, string[] collection, ref string selection)
         {
-            int index = 0;
-            for (int i = 0; i < collection.Length; i++)
+            bool configured = MixedRealityProjectConfigurator.IsConfigured(configKey);
+            using (new EditorGUI.DisabledGroupScope(configured))
             {
-                if (collection[i] != selection) { continue; }
+                if (configured)
+                {
+                    EditorGUILayout.LabelField(new GUIContent($"{title} {selection}", InspectorUIUtility.SuccessIcon));
 
-                index = i;
-            }
-            index = EditorGUILayout.Popup(title, index, collection, EditorStyles.popup);
+                }
+                else
+                {
+                    int index = 0;
+                    for (int i = 0; i < collection.Length; i++)
+                    {
+                        if (collection[i] != selection) { continue; }
 
-            selection = collection[index];
-            if (selection == "None") 
-            {
-                // The uer selected "None", return null. Unity uses this string where null
-                // is the underlying value.
-                selection = null; 
+                        index = i;
+                    }
+                    index = EditorGUILayout.Popup(title, index, collection, EditorStyles.popup);
+
+                    selection = collection[index];
+                    if (selection == "None")
+                    {
+                        // The uer selected "None", return null. Unity uses this string where null
+                        // is the underlying value.
+                        selection = null;
+                    }
+                }
             }
         }
 
