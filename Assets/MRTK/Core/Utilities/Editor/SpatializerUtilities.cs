@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -73,8 +74,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return;
             }
 
+            SerializedObject audioMgrSettings = MixedRealityOptimizeUtils.GetSettingsObject("AudioManager");
+            SerializedProperty spatializerPlugin = audioMgrSettings.FindProperty("m_SpatializerPlugin");
+            if (spatializerPlugin == null)
+            {
+                Debug.LogError("Unable to save the spatializer settings. The field could not be located into the Audio Manager settings object.");
+                return;
+            }
+
             AudioSettings.SetSpatializerPluginName(spatializer);
-        }
+            spatializerPlugin.stringValue = spatializer;
+            audioMgrSettings.ApplyModifiedProperties();
+    }
 
         /// <summary>
         /// 
