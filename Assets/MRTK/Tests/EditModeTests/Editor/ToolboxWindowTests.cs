@@ -6,26 +6,24 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEditor;
 using UnityEngine.TestTools;
-using static Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolboxWindow;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
 {
     /// <summary>
-    /// Set of tests to validate MRTK Toolbox Editor window
+    /// Set of tests to validate MRTK Toolbox Editor window.
     /// </summary>
     public class ToolboxWindowTests
     {
-#if UNITY_EDITOR
         /// <summary>
-        /// Tests that the MixedRealityToolboxWindow can load without exception and that none of 
-        /// it's internal item contents are null or invalid
+        /// Tests that the MixedRealityToolboxWindow can load without exception and that none of
+        /// its internal item contents are null or invalid.
         /// </summary>
         [UnityTest]
         public IEnumerator TestToolboxWindow()
         {
             MixedRealityToolboxWindow.ShowWindow();
 
-            var window = MixedRealityToolboxWindow.GetWindow<MixedRealityToolboxWindow>();
+            var window = EditorWindow.GetWindow<MixedRealityToolboxWindow>();
 
             yield return WaitForWindowLoad();
 
@@ -34,41 +32,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
             foreach (var category in window.ToolboxPrefabs)
             {
                 Assert.IsFalse(string.IsNullOrEmpty(category.CategoryName));
-                foreach (var item in category.Items)
+                foreach (MixedRealityToolboxWindow.ToolboxItem item in category.Items)
                 {
                     ValidateToolboxItem(item);
                 }
             }
 
             MixedRealityToolboxWindow.HideWindow();
-        }
-#endif
-
-        [UnityTest]
-        public IEnumerator TestToolboxWindow2()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-
-                MixedRealityToolboxWindow.ShowWindow();
-
-                var window = MixedRealityToolboxWindow.GetWindow<MixedRealityToolboxWindow>();
-
-                yield return WaitForWindowLoad();
-
-                Assert.IsNotNull(window.toolBoxCollection);
-
-                foreach (var category in window.ToolboxPrefabs)
-                {
-                    Assert.IsFalse(string.IsNullOrEmpty(category.CategoryName));
-                    foreach (var item in category.Items)
-                    {
-                        ValidateToolboxItem(item);
-                    }
-                }
-
-                MixedRealityToolboxWindow.HideWindow();
-            }
         }
 
         private static IEnumerator WaitForWindowLoad()
@@ -80,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
             }
         }
 
-        private static void ValidateToolboxItem(ToolboxItem item)
+        private static void ValidateToolboxItem(MixedRealityToolboxWindow.ToolboxItem item)
         {
             Assert.IsNotNull(item);
             Assert.IsFalse(string.IsNullOrEmpty(item.Name));
