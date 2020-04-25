@@ -21,24 +21,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
         [UnityTest]
         public IEnumerator TestToolboxWindow()
         {
-            MixedRealityToolboxWindow.ShowWindow();
-
-            var window = EditorWindow.GetWindow<MixedRealityToolboxWindow>();
-
-            yield return WaitForWindowLoad();
-
-            Assert.IsNotNull(window.toolBoxCollection);
-
-            foreach (var category in window.ToolboxPrefabs)
+            if (!UnityEditorInternal.InternalEditorUtility.inBatchMode)
             {
-                Assert.IsFalse(string.IsNullOrEmpty(category.CategoryName));
-                foreach (MixedRealityToolboxWindow.ToolboxItem item in category.Items)
-                {
-                    ValidateToolboxItem(item);
-                }
-            }
+                MixedRealityToolboxWindow.ShowWindow();
 
-            MixedRealityToolboxWindow.HideWindow();
+                var window = EditorWindow.GetWindow<MixedRealityToolboxWindow>();
+
+                yield return WaitForWindowLoad();
+
+                Assert.IsNotNull(window.toolBoxCollection);
+
+                foreach (var category in window.ToolboxPrefabs)
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(category.CategoryName));
+                    foreach (MixedRealityToolboxWindow.ToolboxItem item in category.Items)
+                    {
+                        ValidateToolboxItem(item);
+                    }
+                }
+
+                MixedRealityToolboxWindow.HideWindow();
+            }
         }
 
         private static IEnumerator WaitForWindowLoad()
