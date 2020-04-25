@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditModeTests.Editor
         [UnityTest]
         public IEnumerator TestToolboxWindow()
         {
-            if (!UnityEditorInternal.InternalEditorUtility.inBatchMode)
+            if (!UnityEngine.Application.isBatchMode)
             {
                 MixedRealityToolboxWindow.ShowWindow();
 
