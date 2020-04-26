@@ -342,6 +342,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             UpdatePressedState(currentPushDistance);
         }
 
+        private void ResetInteraction()
+        {
+            touchPoints.Clear();
+            currentInputSources.Clear();
+            IsTouching = false;
+            IsPressing = false;
+        }
+
         private void RetractButton()
         {
             float retractDistance = currentPushDistance - startPushDistance;
@@ -411,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (touchPoints.ContainsKey(eventData.Controller))
+            if (touchPoints.ContainsKey(eventData.Controller) || eventData.used)
             {
                 return;
             }
@@ -438,13 +446,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (touchPoints.ContainsKey(eventData.Controller))
             {
-                touchPoints[eventData.Controller] = eventData.InputData;
-                eventData.Use();
+                if (eventData.used)
+                {
+                    ResetInteraction();
+                }
+                else
+                {
+                    touchPoints[eventData.Controller] = eventData.InputData;
+                }
             }
+            eventData.Use();
+            return;
         }
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+            if(eventData.used)
+            {
+                return;
+            }
+
             if (touchPoints.ContainsKey(eventData.Controller))
             {
                 // When focus is lost, before removing controller, update the respective touch point to give a last chance for checking if pressed occurred 

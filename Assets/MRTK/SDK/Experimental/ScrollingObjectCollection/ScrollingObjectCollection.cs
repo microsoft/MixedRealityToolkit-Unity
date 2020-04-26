@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
@@ -17,7 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/SDK/ScrollingObjectCollection")]
-    public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler
+    public class ScrollingObjectCollection : BaseObjectCollection,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<Vector2>,
+        IMixedRealityInputHandler<Vector3>,
+        IMixedRealityInputHandler<MixedRealityPose>,
+        IMixedRealityPointerHandler,
+        IMixedRealitySourceStateHandler,
+        IMixedRealityTouchHandler
     {
         /// <summary>
         /// How velocity is applied to a <see cref="ScrollingObjectCollection"/> when a scroll is released.
@@ -368,6 +374,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public UnityEvent ListMomentumEnded = new UnityEvent();
 
         /// <summary>
+        /// Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity
+        /// </summary>
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is starting motion with velocity.")]
+        public UnityEvent ListMomentumBegin = new UnityEvent();
+
+        /// <summary>
         /// First item (visible) in the <see cref="ViewableArea"/>. 
         /// </summary>
         public int FirstItemInViewIndex
@@ -516,9 +528,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         // The ray length of original pointer down
         private float pointerHitDistance;
-
-        // This flag is set by PointerUp to prevent InputUp from continuing to propagate. e.g. Interactables
-        private bool shouldSwallowEvents = false;
 
         #endregion scroll state variables
 
@@ -878,13 +887,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void OnEnable()
         {
-            // Register for global input events
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+                // Register for event propagation on trickle down phase in order to handle events before children
+                CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityInputHandler>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityInputHandler<Vector2>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityInputHandler<Vector3>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityInputHandler<MixedRealityPose>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.RegisterPropagationHandler<IMixedRealityTouchHandler>(this, PropagationPhase.TrickleDown);               
+
+                // Register for global input events
+                CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+                CoreServices.InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
             }
 
             if (useOnPreRender)
@@ -946,14 +960,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         avgVelocity = 0.0f;
 
                         isDragging = true;
+                        ListMomentumBegin.Invoke();
                         velocityState = VelocityState.None;
-
-                        // Now that we're dragging, reset the interacted with interactable if it exists
-                        Interactable ixable = initialFocusedObject.GetComponent<Interactable>();
-                        if (ixable != null)
-                        {
-                            ixable.ResetInputTrackingStates();
-                        }
 
                         // Reset initialHandPos to prevent the scroller from jumping
                         initialScrollerPos = workingScrollerPos = scrollContainer.transform.localPosition;
@@ -1041,13 +1049,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void OnDisable()
         {
-            // Unregister global input events
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityTouchHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
-                CoreServices.InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+                // Unregister for event propagation on trickle down phase
+                CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityInputHandler>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityInputHandler<Vector2>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityInputHandler<Vector3>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityInputHandler<MixedRealityPose>>(this, PropagationPhase.TrickleDown);
+                CoreServices.InputPropagationSystem?.UnregisterPropagationHandler<IMixedRealityTouchHandler>(this, PropagationPhase.TrickleDown);
+
+                // Unregister global input events
+                CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+                CoreServices.InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
             }
 
             if (useOnPreRender && cameraMethods != null)
@@ -2072,7 +2085,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (isDragging)
                 {
                     eventData.Use();
-                    shouldSwallowEvents = true;
                     // Its a drag release
                     initialScrollerPos = workingScrollerPos;
                     velocityState = VelocityState.Calculating;
@@ -2131,6 +2143,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // We ignore this event and calculate click in the Update() loop;
         }
 
+        /// <inheritdoc/>
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData){}
+
         #endregion IMixedRealityPointerHandler implementation
 
         #region IMixedRealityTouchHandler implementation
@@ -2147,13 +2162,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             currentPointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
             if (currentPointer != null)
             {
-                // Quick check for the global listener to bail if the object is not in the list
-                if (currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(currentPointer.Result?.CurrentPointerTarget.transform))
-                {
-                    return;
-                }
-
                 StopAllCoroutines();
                 animateScroller = null;
 
@@ -2163,53 +2171,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     initialPressTime = Time.time;
                     initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
                     initialScrollerPos = scrollContainer.transform.localPosition;
-                    shouldSwallowEvents = true;
 
                     isTouched = true;
                     isEngaged = true;
                     isDragging = false;
 
                     TouchStarted?.Invoke(initialFocusedObject);
-
                 }
             }
-
         }
 
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            // Quick check for the global listener to bail if the object is not in the list
-            if (currentPointer != null && currentPointer.Result?.CurrentPointerTarget != null
-                && ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
+            if (isDragging)
             {
-                if (isDragging)
-                {
-                    eventData.Use();
-                }
-                return;
+                eventData.Use();
             }
         }
 
         /// <inheritdoc/>
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            IMixedRealityPointer p = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
-
-            if (p != null)
+            if (isDragging)
             {
-                // Quick check for the global listener to bail if the object is not in the list
-                if (currentPointer == null ||
-                    currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(p.Result.CurrentPointerTarget.transform) || initialFocusedObject != p.Result.CurrentPointerTarget)
-                {
-                    return;
-                }
-
-                if (p == currentPointer && isDragging)
-                {
-                    eventData.Use();
-                }
+                eventData.Use();
             }
         }
 
@@ -2236,20 +2222,54 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+        #endregion IMixedRealitySourceStateHandler implementation
 
+        #region IMixedRealityInputHandler implementation
+
+        /// <inheritdoc/>
         void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
         {
-            if (shouldSwallowEvents)
+            if (isDragging)
             {
-                // Prevents the handled event from PointerUp to continue propagating
                 eventData.Use();
-                shouldSwallowEvents = false;
             }
         }
 
-        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) { }
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData)
+        {
+            if(isDragging)
+            {
+                eventData.StopPropagation();
+            }
+        }
 
-        #endregion IMixedRealitySourceStateHandler implementation
+        /// <inheritdoc/>
+        public void OnInputChanged(InputEventData<Vector2> eventData)
+        {
+            if (isDragging)
+            {
+                eventData.Use();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void OnInputChanged(InputEventData<Vector3> eventData)
+        {
+            if (isDragging)
+            {
+                eventData.Use();
+            }
+        }
+
+        /// <inheritdoc/>
+        public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
+        {
+            if (isDragging)
+            {
+                eventData.Use();
+            }
+        }
+
+        #endregion IMixedRealityInputHandler implementation
     }
 }
