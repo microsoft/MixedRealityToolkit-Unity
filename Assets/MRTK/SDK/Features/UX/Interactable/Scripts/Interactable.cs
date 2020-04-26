@@ -1362,6 +1362,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListenToMoveEvent(eventData))
             {
+                if (eventData.used)
+                {
+                    ResetInputTrackingStates();
+                    return;
+                }
+
                 if (dragStartPosition == null)
                 {
                     dragStartPosition = inputPosition;
@@ -1546,7 +1552,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (!IsEnabled)
+            if (!IsEnabled || eventData.used)
             {
                 return;
             }
@@ -1558,7 +1564,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            if (!IsEnabled)
+            if (!IsEnabled || eventData.used)
             {
                 return;
             }
@@ -1568,7 +1574,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Use();
         }
 
-        public void OnTouchUpdated(HandTrackingInputEventData eventData) { }
+        public void OnTouchUpdated(HandTrackingInputEventData eventData)
+        {
+            if (IsEnabled && eventData.used && ShouldListenToMoveEvent(eventData))
+            {
+                ResetInputTrackingStates();
+                return;
+            }
+        }
 
         #endregion TouchHandlers
 
@@ -1584,6 +1597,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListenToUpDownEvent(eventData))
             {
+                if (eventData.used)
+                {
+                    ResetInputTrackingStates();
+                    return;
+                }
+
                 SetInputUp();
                 if (IsInputFromNearInteraction(eventData))
                 {
@@ -1605,6 +1624,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (ShouldListenToUpDownEvent(eventData))
             {
+                if (eventData.used)
+                {
+                    ResetInputTrackingStates();
+                    return;
+                }
+
                 pressingInputSources.Add(eventData.InputSource);
                 SetInputDown();
                 HasGrab = IsInputFromNearInteraction(eventData);
