@@ -189,11 +189,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <summary>
-        /// Gets the position of where grasp happens
-        /// For IMixedRealityHand it's the axis from the palm to the grasp point
-        /// For any other IMixedRealityController, return just the pointer's forward orientation
-        /// </summary>
+
+        /// <inheritdoc />
         public bool TryGetNearGraspAxis(out Vector3 result)
         {
             result = transform.forward;

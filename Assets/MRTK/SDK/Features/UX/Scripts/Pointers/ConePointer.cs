@@ -22,15 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
-        [Tooltip("Angle of the cone's tip in degrees ")]
+        [Tooltip("Angle of the cone's tip in degrees")]
         private float coneTipAngle = 60.0f;
 
         /// <summary>
-        /// Additional distance on top of<see cref="BaseControllerPointer.SphereCastRadius"/> when pointer is considered 'near' an object and far interaction will turn off.
+        /// Angle of the cone's tip in degrees
         /// </summary>
-        /// <remarks>
-        /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
-        /// </remarks>
         public float ConeTipAngle => coneTipAngle;
 
         [SerializeField]
@@ -125,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             queryBufferInteractionRadius = new ConePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius, ConeTipAngle);
         }
 
-        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.OnPreSceneQuery");
+        private static readonly ProfilerMarker OnPreSceneQueryPerfMarker = new ProfilerMarker("[MRTK] ConePointer.OnPreSceneQuery");
 
         /// <inheritdoc />
         public override void OnPreSceneQuery()
@@ -164,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker TryGetNearGraspPointPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNearGraspPoint");
+        private static readonly ProfilerMarker TryGetNearGraspPointPerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNearGraspPoint");
 
         /// <summary>
         /// Gets the position of where grasp happens
@@ -203,11 +200,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNearGraspAxis");
+        private static readonly ProfilerMarker TryGetNearGraspAxisPerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNearGraspAxis");
 
         /// <summary>
         /// Gets the position of where grasp happens
-        /// For IMixedRealityHand it's the axis from the palm to the grasp point
+        /// For the ConePointer it's the axis from the palm to the grasp point
         /// For any other IMixedRealityController, return just the pointer's forward orientation
         /// </summary>
         public bool TryGetNearGraspAxis(out Vector3 result)
@@ -240,12 +237,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // }
                 }
 
-                result = new Vector3(12f, 23f, 12);//transform.forward;
+                result = transform.forward;
                 return false;
             }
         }
 
-        private static readonly ProfilerMarker TryGetDistanceToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetDistanceToNearestSurface");
+        private static readonly ProfilerMarker TryGetDistanceToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetDistanceToNearestSurface");
 
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
@@ -268,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker TryGetNormalToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] SpherePointer.TryGetNormalToNearestSurface");
+        private static readonly ProfilerMarker TryGetNormalToNearestSurfacePerfMarker = new ProfilerMarker("[MRTK] ConePointer.TryGetNormalToNearestSurface");
 
         /// <inheritdoc />
         public bool TryGetNormalToNearestSurface(out Vector3 normal)
@@ -329,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 queryAngle = angle;
             }
 
-            private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] SpherePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
+            private static readonly ProfilerMarker TryUpdateQueryBufferForLayerMaskPerfMarker = new ProfilerMarker("[MRTK] ConePointerQueryInfo.TryUpdateQueryBufferForLayerMask");
 
             /// <summary>
             /// Intended to be called once per frame, this method performs a sphere intersection test against
@@ -356,7 +353,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (numColliders == queryBuffer.Length)
                     {
-                        Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+                        Debug.LogWarning($"Maximum number of {numColliders} colliders found in ConePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
                     }
 
                     Camera mainCam = CameraCache.Main;
@@ -373,9 +370,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         float leewaySqrDistance = queryRadius * queryRadius * 0.25f;
 
                         float coneAngle = queryAngle * Mathf.Deg2Rad;
+                        Debug.DrawRay(pointerPosition, pointerAxis, Color.red);
+                        Debug.DrawRay(pointerPosition, relativeColliderPosition.normalized, Color.white);
+
                         bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
-                        if (relativeColliderPosition != Vector3.zero && !inAngle)
+                        if (!(relativeColliderPosition == Vector3.zero || inAngle))
                         {
+                            Debug.Log("suffering");
                             continue;
                         }
 
@@ -395,6 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         if (grabbable != null)
                         {
+                            Debug.Log("here??");
                             return true;
                         }
                     }
@@ -422,7 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Gizmos.color = Color.green;
             UnityEditor.Handles.color = Color.green;
-            Gizmos.DrawLine(point, coneForwardAxis.normalized * NearObjectRadius);
+            Gizmos.DrawLine(point, point + coneForwardAxis.normalized * NearObjectRadius);
 
             // Draws the base of the cone pointer. gizmo representation is incorrect as ConeTipAngle apporaches 90 degress 
             // (meaning anything within 90 degrees of the forward axis is grabbable)
