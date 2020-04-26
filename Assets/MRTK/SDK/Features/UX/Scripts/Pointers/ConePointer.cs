@@ -370,13 +370,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         float leewaySqrDistance = queryRadius * queryRadius * 0.25f;
 
                         float coneAngle = queryAngle * Mathf.Deg2Rad;
-                        Debug.DrawRay(pointerPosition, pointerAxis, Color.red);
-                        Debug.DrawRay(pointerPosition, relativeColliderPosition.normalized, Color.white);
-
                         bool inAngle = Vector3.Dot(pointerAxis, relativeColliderPosition.normalized) > Mathf.Cos(coneAngle);
                         if (!(relativeColliderPosition == Vector3.zero || inAngle))
                         {
-                            Debug.Log("suffering");
                             continue;
                         }
 
@@ -396,7 +392,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         if (grabbable != null)
                         {
-                            Debug.Log("here??");
                             return true;
                         }
                     }

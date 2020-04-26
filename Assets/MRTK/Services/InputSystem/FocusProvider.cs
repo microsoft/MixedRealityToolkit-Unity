@@ -998,11 +998,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // e.g., by building its Rays array
                 pointerData.Pointer.OnPreSceneQuery();
 
-                if (pointerData.Pointer.SceneQueryType == SceneQueryType.ConeOverlap)
-                {
-                    Debug.Log(pointerData.Pointer.IsInteractionEnabled);
-                }
-
                 // If pointer interaction isn't enabled, clear its result object and return
                 if (!pointerData.Pointer.IsInteractionEnabled)
                 {
