@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     handleSlatePrefab = value;
                     handlesChanged.Invoke(HandlesChangedEventType.PREFAB);
-                    //configurationChanged.Invoke();
                 }
             }
         }
@@ -53,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     showScaleHandles = value;
                     handlesChanged.Invoke(HandlesChangedEventType.VISIBILITY);
-                    //visibilityChanged.Invoke();
                 }
             }
         }

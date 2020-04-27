@@ -681,7 +681,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Tests the different activation flags bounding box handles can be activated with
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ActivationTypeTest()
         {
@@ -1025,7 +1024,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(linkVisual, "link visual shouldn't be destroyed when changing edge radius");
 
-            //check if radius was applied
+            // check if radius was applied
             Assert.AreEqual(linkVisual.localScale.x, linkConfiguration.WireframeEdgeRadius, "Wireframe edge radius wasn't applied to link local scale");
 
             yield return null;
@@ -1061,7 +1060,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Assert.IsNotNull(rigRoot, "rigRoot got destroyed while configuring bounds control during runtime");
             Assert.IsNotNull(linkVisual, "link visual shouldn't be destroyed when switching mesh");
 
-            //check if shape was applied
+            // check if shape was applied
             Assert.IsTrue(linkMeshFilter.mesh.name == "Cylinder Instance", "Link shape wasn't switched to cylinder");
 
             yield return null;
@@ -1097,7 +1096,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests changing the box display default and grabbed material during runtime,
         /// making sure neither box display nor rig get recreated.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BoxDisplayMaterialTest()
         {
@@ -1492,7 +1490,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             // set test materials so we know if we're interacting with the handle later in the test
             handleConfig.HandleMaterial = testMaterial;
             handleConfig.HandleGrabbedMaterial = testMaterialGrabbed;
-            //handleConfig.HandleSize = 0.1f;
             yield return new WaitForFixedUpdate();
 
             // move hand to edge of rotation handle collider
