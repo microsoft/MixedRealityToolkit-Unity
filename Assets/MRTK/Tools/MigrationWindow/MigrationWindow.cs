@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     {
                         DrawObjectSelection();
                         DrawObjectsForMigration();
+                        DrawProcessedObjects();
                     }
                 }
             }
@@ -160,14 +161,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                     var allowSceneObjects = selectedToolbar == ToolbarOption.GameObjects;
                     var selectionType = allowSceneObjects ? typeof(GameObject) : typeof(SceneAsset);
-                    
+
                     using (var check = new EditorGUI.ChangeCheckScope())
                     {
                         var selection = EditorGUILayout.ObjectField(null, selectionType, allowSceneObjects);
 
                         if (check.changed && selection)
                         {
-                            migrationTool.TryAddObjectForMigration(selectedMigrationHandlerType,selection);
+                            migrationTool.TryAddObjectForMigration(selectedMigrationHandlerType, selection);
                         }
                     }
                 }
@@ -223,6 +224,59 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                             }
                         }
                     }
+                }
+            }
+        }
+
+
+        private void DrawProcessedObjects()
+        {
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition))
+                {
+                    scrollPosition = scrollView.scrollPosition;
+                    var migrationObjects = migrationTool.MigrationObjects; // Processed Objects
+                    foreach (var migrationObject in migrationObjects)
+                    {
+                        using (new GUILayout.HorizontalScope())
+                        {
+                            using (new EditorGUI.DisabledGroupScope(true))
+                            {
+                                EditorGUILayout.ObjectField(migrationObject, typeof(Object), false);
+                            }
+
+                            var removeIcon = EditorGUIUtility.IconContent("vcs_check"); // success or failure, get from object, create class object, type, status, log, tooltip
+                            if (GUILayout.Button(removeIcon, GUILayout.Width(30)))
+                            {
+                                // add description bellow or open pop up
+                                break;
+                            }
+                        }
+                    }
+                    EditorGUILayout.Space();
+
+                    //using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+                    //{
+                    //    using (new EditorGUI.DisabledGroupScope(migrationObjects.Count == 0))
+                    //    {
+                    //        if (GUILayout.Button("Migrate"))
+                    //        {
+                    //            migrationTool.MigrateSelection(selectedMigrationHandlerType, true);
+                    //        }
+
+                    //        if (migrationObjects.Count > 0)
+                    //        {
+                    //            using (new EditorGUILayout.HorizontalScope())
+                    //            {
+                    //                GUILayout.FlexibleSpace();
+
+                    //                string tooltip = $"{migrationObjects.Count} Objects selected for migration";
+                    //                EditorGUILayout.LabelField(new GUIContent(tooltip, InspectorUIUtility.WarningIcon));
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }

@@ -33,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public List<Object> MigrationObjects => new List<Object>(migrationObjects);
 
+        public Dictionary<Object, MigrationStatus> objectStatuses;
+
         private IMigrationHandler migrationHandlerInstance;
         private Type migrationHandlerInstanceType;
 
@@ -176,6 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return false;
             }
 
+            if(!EditorUtility.DisplayDialog("Migration Window",
+                "Migration operation cannot be reverted.\n\nDo you want to continue?", "Continue", "Cancel"))
+            {
+                return false;
+            }
+
             if (askToSaveCurrentScene && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             {
                 return false;
@@ -222,6 +230,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 EditorSceneManager.OpenScene(Path.Combine(Directory.GetCurrentDirectory(), previousScenePath));
             }
+            EditorUtility.DisplayDialog("Migration Window",
+                "Migration completed successfully!", "Close");
             return true;
         }
 
@@ -361,6 +371,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private static bool IsSceneAsset(Object selectedObject)
         {
             return selectedObject is SceneAsset;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class MigrationStatus
+        {
+            //public Object migrationObject { get; private set; }
+            //public Type type { get; private set; }
+
+            public bool IsProcessed { get; private set; }
+            public bool IsProcessSucess { get; private set; }
+            public String log { get; private set; }
         }
     }
 }
