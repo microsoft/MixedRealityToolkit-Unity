@@ -178,6 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             if (areHandlesFlattened != isFlattened)
             {
                 areHandlesFlattened = isFlattened;
+                // we have to recreate visuals in this case as flattened scale handles will use a different prefab
                 RecreateVisuals();
             }
         }

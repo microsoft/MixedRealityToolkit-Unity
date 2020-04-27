@@ -404,7 +404,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     active = value;
                     rigRoot?.gameObject.SetActive(value);
-                    UpdateExtents();
                     ResetVisuals();
 
                     if (active)

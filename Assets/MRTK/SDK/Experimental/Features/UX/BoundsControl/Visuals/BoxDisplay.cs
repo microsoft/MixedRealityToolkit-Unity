@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private BoxDisplayConfiguration config;
 
         private Vector3 cachedExtents = Vector3.zero;
-        private FlattenModeType flattenMode;
+        private FlattenModeType cachedFlattenMode;
 
         private bool isVisible = true;
 
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Object.Destroy(boxDisplay.GetComponent<Collider>());
             boxDisplay.name = "box display";
-            flattenMode = flattenAxis;
+            cachedFlattenMode = flattenAxis;
             cachedExtents = currentBoundsExtents;
             Reset(isVisible);
             boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
@@ -100,17 +100,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             }
 
             cachedExtents = boundsExtents;
-            flattenMode = flattenAxis;
+            cachedFlattenMode = flattenAxis;
         }
 
         internal void UpdateDisplayWithCache()
         {
-            UpdateDisplay(cachedExtents, flattenMode);
+            UpdateDisplay(cachedExtents, cachedFlattenMode);
         }
 
         internal void UpdateFlattenAxis(FlattenModeType flattenAxis)
         {
-            flattenMode = flattenAxis;
+            cachedFlattenMode = flattenAxis;
             UpdateDisplay(cachedExtents, flattenAxis);
         }
 
